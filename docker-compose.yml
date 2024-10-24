@@ -1,0 +1,31 @@
+# NOTE: for development use only
+# ports are not exposed, instead dynamic orb domains are used
+services:
+  # port 5432
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: development
+    volumes:
+      - app_postgres_data:/var/lib/postgresql/data/
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 2s
+      timeout: 5s
+      retries: 3
+
+  # port 6379
+  redis:
+    image: redis:latest
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping"]
+      interval: 2s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  # NOTE redis data is not persisted, assumed to be ephemeral
+  app_postgres_data:
