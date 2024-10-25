@@ -1,0 +1,31 @@
+.vscode
+.devcontainer
+.github
+.envrc
+.env
+.git
+.github
+.DS_Store
+.trunk
+
+.env*
+
+__pycache__
+.mypy_cache
+.venv
+.pytest_cache
+
+node_modules
+
+/celerybeat-schedule
+
+# TODO this may be a bad idea, but let's exclude this for now...
+/test
+/test_helpers
+
+/infra
+/tmp
+
+*.log
+
+# NOTE .nixpacks must be added to the docker container! Do not ignore.
