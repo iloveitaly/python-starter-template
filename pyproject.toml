@@ -4,3 +4,24 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
+dependencies = [
+    "click>=8.1.7",
+    "funcy-pipe>=0.11.1",
+    "jinja2>=3.1.4",
+    "python-decouple-typed>=3.11.0",
+    "redis>=5.2.0",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "deptry>=0.20.0",
+    "ipython>=8.28.0",
+    "pretty-traceback>=2024.1021",
+    "pyright>=1.1.386",
+    "pytest-asyncio>=0.24.0",
+    "pytest>=8.3.3",
+    "ruff>=0.7.1",
+]
+
+[tool.pytest.ini_options]
+addopts = "--pdbcls=pdbr:RichPdb"
