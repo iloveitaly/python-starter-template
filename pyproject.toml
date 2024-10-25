@@ -8,8 +8,10 @@ dependencies = [
     "click>=8.1.7",
     "funcy-pipe>=0.11.1",
     "jinja2>=3.1.4",
+    "openai>=1.52.2",
     "python-decouple-typed>=3.11.0",
     "redis>=5.2.0",
+    "structlog>=24.4.0",
 ]
 
 [tool.uv]
