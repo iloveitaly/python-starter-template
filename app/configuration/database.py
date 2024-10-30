@@ -2,7 +2,7 @@ from decouple import config
 from sqlalchemy import create_engine
 from sqlmodel import Session, SQLModel, text
 
-from .environments import is_production, is_testing
+from ..environments import is_production, is_testing
 
 
 def database_url():
