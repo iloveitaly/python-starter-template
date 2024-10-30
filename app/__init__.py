@@ -6,9 +6,10 @@ import logging
 import typing as t
 from pathlib import Path
 
+import decouple
 import openai
 import structlog
-from decouple import RepositoryEmpty, config
+from decouple import RepositoryEmpty
 
 from .configuration.sentry import configure_sentry
 from .environments import is_development, python_environment
@@ -85,8 +86,8 @@ def setup():
 
     # by default decouple loads from .env, but differently than direnv and other env sourcing tools
     # let's remove automatic loading of .env by decouple
-    for key in config.SUPPORTED.keys():
-        config.SUPPORTED[key] = RepositoryEmpty
+    for key in decouple.config.SUPPORTED.keys():
+        decouple.config.SUPPORTED[key] = RepositoryEmpty
 
     root = Path(__file__).parent.parent
     log = structlog.get_logger()

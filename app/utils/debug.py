@@ -2,6 +2,10 @@
 Should not be used in production. Helpful debugging tools for async code and other things.
 """
 
+import traceback
+from contextlib import contextmanager
+from logging import Logger
+
 
 def install_coroutine_trap():
     """
@@ -63,6 +67,8 @@ def install_thread_trap():
 
 @contextmanager
 def scalene_profile():
+    import time
+
     from scalene import scalene_profiler
     from scalene.scalene_profiler import Scalene
 
@@ -98,9 +104,10 @@ def memray_profile(log: Logger | None = None, live: bool = False):
       https://github.com/bloomberg/memray/discussions/585
     """
 
-    import memray
-    import time
     import sys
+    import time
+
+    import memray
 
     if live:
         live_socket = memray.SocketDestination(12345, "0.0.0.0")
@@ -134,4 +141,6 @@ def memray_profile(log: Logger | None = None, live: bool = False):
     if log:
         log.warn("memory tracing complete")
     else:
+        print("memory tracing complete", file=sys.stderr)
+        print("memory tracing complete", file=sys.stderr)
         print("memory tracing complete", file=sys.stderr)

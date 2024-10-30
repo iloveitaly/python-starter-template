@@ -1,5 +1,4 @@
 import asyncio
-import collections
 
 
 async def merge_iterables(*iterables):

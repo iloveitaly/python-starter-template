@@ -1,0 +1,18 @@
+# NOTE should be removed from your app, just for the app template
+
+name: Repository Metadata Sync
+
+on:
+  push:
+    branches: [main, master]
+
+jobs:
+  repo_sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetching Local Repository
+        uses: actions/checkout@v4
+      - name: Repository Metadata Sync
+        uses: iloveitaly/github-actions-metadata-sync@v1
+        with:
+          TOKEN: ${{ secrets.GH_PERSONAL_TOKEN }}
