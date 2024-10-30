@@ -1,4 +1,8 @@
 {
+  // typescript / web projects
+  "typescript.tsdk": "web/node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+
   "[python]": {
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
