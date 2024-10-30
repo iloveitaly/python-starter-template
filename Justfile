@@ -37,15 +37,20 @@ up: redis_up db_up
 # Python
 #######################
 
-# py_install-local-packages:
-# 	uv pip install --upgrade pip
-# 	uv pip install --upgrade --force-reinstall ipython git+https://github.com/iloveitaly/ipdb@support-executables "pdbr[ipython]" rich git+https://github.com/anntzer/ipython-autoimport.git IPythonClipboard ipython_ctrlr_fzf docrepr pyfzf jedi pretty-traceback pre-commit sqlparse debugpy ipython-suggestions git+https://github.com/iloveitaly/rpdb.git@multiple-continue datamodel-codgenerator funcy-pipe colorama
+py_install-local-packages:
+	uv pip install --upgrade pip
+	uv pip install --upgrade --force-reinstall ipython git+https://github.com/iloveitaly/ipdb@support-executables "pdbr[ipython]" rich git+https://github.com/anntzer/ipython-autoimport.git IPythonClipboard ipython_ctrlr_fzf docrepr pyfzf jedi pretty-traceback pre-commit sqlparse debugpy ipython-suggestions datamodel-code-generator funcy-pipe colorama
 
-# 	source ~/.functions && python-inject-startup
+	source ~/.functions && python-inject-startup
 
-py_nuke:
+# rebuild the venv from scratch
+py_nuke: && py_install-local-packages
 	rm -rf .venv
 	direnv reload
+	uv sync
+
+py_dev:
+  fastapi dev main.py
 
 py_lint:
 	# poetry run autoflake --exclude=migrations --imports=decouple,rich -i -r .

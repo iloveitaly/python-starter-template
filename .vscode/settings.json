@@ -29,10 +29,11 @@
   "python.analysis.packageIndexDepths": [
     {
       "name": "",
-      "depth": 3
-    }
+      "depth": 3,
+      "includeAllSymbols": true
+    },
     //   {"name":"pdf2image", "depth":3, "includeAllSymbols": true},
-    //   {"name":"schema", "depth":3, "includeAllSymbols": true},
+    // {"name":"decouple", "depth":3, "includeAllSymbols": true},
   ],
 
   // "flake8.importStrategy": "fromEnvironment",

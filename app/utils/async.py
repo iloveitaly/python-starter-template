@@ -1,11 +1,13 @@
+"""
+Let's make working with async utils fun
+"""
+
 import asyncio
 
 
 async def merge_iterables(*iterables):
     """
     Iterates over a list of iterables in parallel, yielding results as they become available.
-    This is helpful when running chunks of a capture in parallel and delivering documents to Estuary as soon as they
-    are available.
     """
 
     pending = {asyncio.create_task(it.__aiter__().__anext__()): it for it in iterables}
@@ -28,11 +30,3 @@ async def merge_iterables(*iterables):
                 pending[asyncio.create_task(it.__anext__())] = it
             except StopAsyncIteration:
                 pass
-
-
-def hash_function_code(func):
-    import hashlib
-    import inspect
-
-    source = inspect.getsource(func)
-    return hashlib.sha256(source.encode()).hexdigest()
