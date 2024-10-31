@@ -34,6 +34,13 @@ setup: requirements && db_reset
 up: redis_up db_up
 
 #######################
+# Javascript
+#######################
+
+js_dev:
+	cd web && pnpm run dev
+
+#######################
 # Python
 #######################
 

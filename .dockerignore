@@ -2,7 +2,6 @@
 .devcontainer
 .github
 .envrc
-.env
 .git
 .github
 .DS_Store
@@ -11,9 +10,13 @@
 .env*
 
 __pycache__
+.ruff_cache
 .mypy_cache
 .venv
 .pytest_cache
+.ipython_history
+
+.docker-compose.yml
 
 node_modules
 

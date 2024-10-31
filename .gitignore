@@ -2,6 +2,7 @@
 .DS_Store
 .venv
 .pytest_cache
+.ruff_cache
 __pycache__
 .mypy_cache
 
@@ -11,3 +12,5 @@ __pycache__
 /.env.local
 
 /celerybeat-schedule
+
+/infra/.terraform*
