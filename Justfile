@@ -37,8 +37,19 @@ up: redis_up db_up
 # Javascript
 #######################
 
+js_play:
+  cd web && pnpm run ./playground.ts
+
 js_dev:
 	cd web && pnpm run dev
+
+js_package-upgrade:
+	pnpx npm-check-updates --interactive
+
+js_generate-openapi:
+	# TODO should fail if server is not running, should pull from a domain vs port
+	http --pretty=format localhost:8000/openapi.json > tmp/openapi.json
+	pnpx @hey-api/openapi-ts -i tmp/openapi.json -o web/client -c @hey-api/client-fetch
 
 #######################
 # Python
@@ -163,5 +174,5 @@ build_run-as-production:
 	docker run --ulimit core=-1 --network=host -e LOG_LEVEL=DEBUG -e DATABASE_URL="$$DATABASE_URL" -e REDIS_URL="$$REDIS_URL" -e OPENAI_API_KEY="$$OPENAI_API_KEY" -e SENTRY_DSN="" $(IMAGE_NAME):$(IMAGE_TAG)
 
 clean:
-	rm -rf .nixpacks
+	rm -rf .nixpacks || true
 	rm -r tmp/*

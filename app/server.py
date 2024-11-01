@@ -3,6 +3,8 @@
 """
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from openai import BaseModel
 
 from app.environments import is_production
 
@@ -17,10 +19,23 @@ app = FastAPI(**fast_api_args)
 # TODO set this up for the static frontend build
 # app.mount("/static", StaticFiles(directory="static"), name="static")
 
+# even in development, some sort of CORS is required
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+class AppData(BaseModel, extra="forbid"):
+    message: str = "Hello, World!"
+
 
 @app.get("/")
-def read_root():
-    return {"Hello": "World"}
+def read_root() -> AppData:
+    return AppData()
 
 
 @app.get("/items/{item_id}")
