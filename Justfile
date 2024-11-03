@@ -1,4 +1,5 @@
 # _ is currently being used a recipe namespace char, use `-` to separate words
+# TODO this will be improved later on: https://github.com/casey/just/issues/2442
 
 set shell := ["zsh", "-cu"]
 
@@ -37,6 +38,8 @@ up: redis_up db_up
 # Javascript
 #######################
 
+# TODO .tool-versions update script could be neat for x.x.y
+
 js_play:
   cd web && pnpm run ./playground.ts
 
@@ -46,6 +49,7 @@ js_dev:
 js_package-upgrade:
 	pnpx npm-check-updates --interactive
 
+# maybe use watch + entr here?
 js_generate-openapi:
 	# TODO should fail if server is not running, should pull from a domain vs port
 	http --pretty=format localhost:8000/openapi.json > tmp/openapi.json
@@ -54,6 +58,9 @@ js_generate-openapi:
 #######################
 # Python
 #######################
+
+py_upgrad:
+	uv sync -U
 
 py_install-local-packages:
 	uv pip install --upgrade pip
