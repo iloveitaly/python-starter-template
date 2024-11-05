@@ -1,11 +1,9 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router"
 import type { LinksFunction } from "react-router"
 
+import { withProviders } from "~/configuration"
+
 import "~/app.css"
-import withChakraProvider from "~/configuration/chakra"
-import withClerkProvider from "~/configuration/clerk"
-import withPostHogProvider from "~/configuration/posthog"
-import withSentryProvider from "~/configuration/sentry"
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -42,17 +40,4 @@ function App() {
   return <Outlet />
 }
 
-// TODO(mbianco) figure out type issue here + move to config index
-function applyProviders(
-  app: () => React.ComponentType,
-  providers: ((app: React.ComponentType) => JSX.Element)[],
-) {
-  return providers.reduce((acc, provider) => provider(acc), app)
-}
-
-export default applyProviders(App, [
-  withChakraProvider,
-  withPostHogProvider,
-  // withClerkProvider,
-  withSentryProvider,
-])
+export default withProviders(App)

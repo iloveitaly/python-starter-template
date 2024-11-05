@@ -1,3 +1,27 @@
+/*
+Weird import structure is in place because of the following error. Most likely it's a RR7 issue that will be resolved:
+
+- https://github.com/PostHog/posthog-js/pull/1293
+- https://github.com/PostHog/posthog-js/pull/1293
+
+---
+
+x Build failed in 457ms
+[react-router] Named export 'PostHogProvider' not found. The requested module 'posthog-js/react/dist/esm/index.js' is a CommonJS module, which may not support all module.exports as named exports.
+CommonJS modules can always be imported via the default export, for example using:
+
+import pkg from 'posthog-js/react/dist/esm/index.js';
+const { PostHogProvider } = pkg;
+
+file:///Users/mike/Projects/python/python-starter-template/web/build/server/index.js:20
+import { PostHogProvider } from "posthog-js/react/dist/esm/index.js";
+         ^^^^^^^^^^^^^^^
+SyntaxError: Named export 'PostHogProvider' not found. The requested module 'posthog-js/react/dist/esm/index.js' is a CommonJS module, which may not support all module.exports as named exports.
+CommonJS modules can always be imported via the default export, for example using:
+
+import pkg from 'posthog-js/react/dist/esm/index.js';
+const { PostHogProvider } = pkg;
+*/
 import { posthog } from "posthog-js"
 import pkg from "posthog-js/react/dist/umd/index.js"
 

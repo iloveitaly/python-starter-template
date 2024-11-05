@@ -1,39 +1,33 @@
-import { useLoaderData, type MetaFunction, Meta } from 'react-router';
+import { Meta, type MetaFunction, useLoaderData } from "react-router"
+
 // TODO why do I need ../? I couldn't get .react-router to play well
-import * as Route from '../+types.root';
-import { invariant } from '@epic-web/invariant'
-
-import { client, readRootGet } from 'client/services.gen';
-
-client.setConfig({
-  baseUrl: 'http://127.0.0.1:8000',
-});
-
+import * as Route from "../+types.root"
+import { invariant } from "@epic-web/invariant"
+import { readRootGet } from "client/services.gen"
 
 export const meta: MetaFunction = () => {
   return [
     { title: "New React Router App" },
     { name: "description", content: "Welcome to React Router!" },
-  ];
-};
+  ]
+}
 
-export async function clientLoader({
-  params,
-}: Route.ClientLoaderArgs) {
-  const { data, error } = await readRootGet();
-  invariant(data !== undefined, 'Failed to load data')
+export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+  const { data, error } = await readRootGet()
+  invariant(data !== undefined, "Failed to load data")
   return data
 }
 
 export default function Index() {
-  let data = useLoaderData<typeof clientLoader>();
+  let data = useLoaderData<typeof clientLoader>()
 
   return (
     <div className="flex h-screen items-center justify-center">
       <div className="flex flex-col items-center gap-16">
         <header className="flex flex-col items-center gap-9">
           <h1 className="leading text-2xl font-bold text-gray-800 dark:text-gray-100">
-            {data.message}<span className="sr-only">React Router</span>
+            {data.message}
+            <span className="sr-only">React Router</span>
           </h1>
           <div className="w-[500px] max-w-[100vw] p-4">
             <img
@@ -70,7 +64,7 @@ export default function Index() {
         </nav>
       </div>
     </div>
-  );
+  )
 }
 
 const resources = [
@@ -113,4 +107,4 @@ const resources = [
       </svg>
     ),
   },
-];
+]
