@@ -1,7 +1,6 @@
 /*
 JS functional tooling is terrible by default, this should be the single entrypoint for all additional functional tooling
 */
-
 import * as R from "ramda"
 
 // TODO is there a ramda thing for this
