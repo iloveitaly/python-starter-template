@@ -40,14 +40,27 @@ up: redis_up db_up
 
 # TODO .tool-versions update script could be neat for x.x.y
 
-js_play:
-  cd web && pnpm run ./playground.ts
+WEB_DIR := "web"
+_pnpm := "cd " + WEB_DIR + " && pnpm"
 
 js_dev:
-	cd web && pnpm run dev
+	cd {{WEB_DIR}} && [[ -d node_modules ]] || just js_setup
+	{{_pnpm}} run dev
 
-js_package-upgrade:
-	pnpx npm-check-updates --interactive
+js_build:
+	{{_pnpm}} run build
+
+js_playground:
+	{{_pnpm}} dlx tsx
+
+js_setup:
+	{{_pnpm}} install
+
+js_nuke: && js_setup
+	cd {{WEB_DIR}} && rm -rf node_modules
+
+js_upgrade:
+	{{_pnpm}} exec npm-check-updates --interactive
 
 # maybe use watch + entr here?
 js_generate-openapi:
@@ -59,7 +72,8 @@ js_generate-openapi:
 # Python
 #######################
 
-py_upgrad:
+py_upgrade:
+	# https://github.com/astral-sh/uv/issues/6794
 	uv sync -U
 
 py_install-local-packages:
@@ -183,3 +197,5 @@ build_run-as-production:
 clean:
 	rm -rf .nixpacks || true
 	rm -r tmp/*
+	rm -rf web/build
+	rm -rf web/node_modules

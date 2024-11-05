@@ -3,6 +3,12 @@
   "typescript.tsdk": "web/node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
 
+  "prettier.prettierPath": "./web/node_modules/prettier",
+  "[typescript][typescriptreact]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+
   "[python]": {
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
@@ -38,6 +44,6 @@
 
   // "flake8.importStrategy": "fromEnvironment",
 
-  "cSpell.words": ["sqlmodel", "sqlalchemy", "sqltypes", "openai", "httpx", "structlog"],
+  "cSpell.words": ["posthog", "sqlmodel", "sqlalchemy", "sqltypes", "openai", "httpx", "structlog"],
   "cSpell.enableFiletypes": ["jinja-html"],
 }
