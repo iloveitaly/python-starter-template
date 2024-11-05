@@ -1,13 +1,5 @@
 {
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/.server/**/*.ts",
-    "**/.server/**/*.tsx",
-    "**/.client/**/*.ts",
-    "**/.client/**/*.tsx",
-    ".react-router/types/**/*"
-  ],
+  "include": ["**/*.ts", "**/*.tsx", "./.react-router/types/**/*"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "types": ["@react-router/node", "vite/client"],
@@ -27,7 +19,7 @@
       "~/*": ["./app/*"]
     },
     "noEmit": true,
-    "rootDirs": [".", "./.react-router/types"],
+    "rootDirs": [".", "./.react-router/types/"],
     "plugins": [{ "name": "@react-router/dev" }]
   }
 }
