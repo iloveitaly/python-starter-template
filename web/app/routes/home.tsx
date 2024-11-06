@@ -1,7 +1,8 @@
+// TODO why do I need ../? I couldn't get .react-router to play well
+// import * as Route from "/.react-router/types/app/+types.root"
 import { Meta, type MetaFunction, useLoaderData } from "react-router"
 
-// TODO why do I need ../? I couldn't get .react-router to play well
-import * as Route from "../+types.root"
+import type { Route } from "./+types.home"
 import { invariant } from "@epic-web/invariant"
 import { readRootGet } from "client/services.gen"
 
@@ -12,14 +13,14 @@ export const meta: MetaFunction = () => {
   ]
 }
 
-export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+export async function clientLoader({ params: any }: Route.ClientLoaderArgs) {
   const { data, error } = await readRootGet()
   invariant(data !== undefined, "Failed to load data")
   return data
 }
 
 export default function Index() {
-  let data = useLoaderData<typeof clientLoader>()
+  const data = useLoaderData<typeof clientLoader>()
 
   return (
     <div className="flex h-screen items-center justify-center">

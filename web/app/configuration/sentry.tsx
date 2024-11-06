@@ -31,7 +31,7 @@ if (isProduction()) {
 }
 
 export default function withSentryProvider(Component: React.ComponentType) {
-  return (props: any) => (
+  return (props: React.ComponentProps<typeof Component>) => (
     <Sentry.ErrorBoundary>
       <Component {...props} />
     </Sentry.ErrorBoundary>

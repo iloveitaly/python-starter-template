@@ -1,8 +1,6 @@
 // should be imported *first* before any other application logic
-
-import * from "./logging"
-import * from "./client"
-
+import * as _client from "./client"
+import * as _logging from "./logging"
 import withChakraProvider from "./chakra"
 import withClerkProvider from "./clerk"
 import withPostHogProvider from "./posthog"
