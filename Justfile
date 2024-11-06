@@ -106,16 +106,20 @@ py_nuke: && py_install-local-packages
 py_dev:
   fastapi dev main.py
 
+# run all linting operations and fail if any fail
 py_lint:
 	#!/usr/bin/env zsh
 
 	# poetry run autoflake --exclude=migrations --imports=decouple,rich -i -r .
 	if [ -n "$GITHUB_ACTIONS" ]; then
 		uv tool run ruff check --output-format=github . || exit_code=$?
+		uv run pyright --outputjson > report.json
 	else
 		uv tool run ruff check . || exit_code=$?
+		uv run pyright || exit_code=$?
 	fi
 
+	# TODO https://github.com/fpgmaas/deptry/issues/610#issue-2190147786
 	uv tool run deptry . || exit_code=$?
 
 	if [[ -n "$exit_code" ]]; then

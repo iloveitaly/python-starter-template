@@ -25,14 +25,31 @@ jobs:
     runs-on: ubuntu-latest
     # https://stackoverflow.com/questions/71679568/github-actions-ignore-or-exclude-dependabot-pull-requests
     # if: ${{ github.triggering_actor != 'dependabot[bot]' }}
+    # TODO would be great if we could DRY this up https://github.com/actions/runner/issues/1182
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+      postgres:
+        image: postgres
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_PASSWORD: postgres
     steps:
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
-      - name: Install zsh
-        run: sudo apt-get update; sudo apt-get install zsh
+      # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
+      - name: Install zsh, for Justfile
+        run: sudo apt-get update; sudo apt-get install -y zsh
       - run: just py_setup
       - run: just py_lint
-      # - uses: ./.github/actions/python-setup
 
   app:
     name: React Frontend
@@ -43,7 +60,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
-      - name: Install zsh
+      - name: Install zsh, for Justfile
         run: sudo apt-get update; sudo apt-get install zsh
       - run: just js_setup
       - run: just js_lint
@@ -58,35 +75,6 @@ jobs:
 
   #     - name: 🔎 Type check
   #       run: poetry run npx pyright
-
-  # pytest:
-  #   name: Pytest
-  #   runs-on: ubuntu-latest
-  #   if: ${{ github.triggering_actor != 'dependabot[bot]' }}
-  #   services:
-  #     redis:
-  #       image: redis
-  #       options: >-
-  #         --health-cmd "redis-cli ping"
-  #         --health-interval 10s
-  #         --health-timeout 5s
-  #         --health-retries 5
-  #       ports:
-  #         # Maps port 6379 on service container to the host
-  #         - 6379:6379
-  #     postgres:
-  #       image: postgres
-  #       ports:
-  #         - 5432:5432
-  #       env:
-  #         POSTGRES_PASSWORD: postgres
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: ./.github/actions/python-setup
-  #     - run: DATABASE_URL=$TEST_DATABASE_URL poetry run npx prisma migrate reset --force
-
-  #     - name: ⚡ Run Pytest
-  #       run: poetry run pytest
 
   # deploy:
   #   name: 🚀 Deploy
