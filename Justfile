@@ -105,8 +105,12 @@ py_dev:
 
 py_lint:
 	# poetry run autoflake --exclude=migrations --imports=decouple,rich -i -r .
-	uv tool run ruff check .
-	uv tool run deptry .
+	-if [ -n "$GITHUB_ACTIONS" ]; then \
+		uv tool run ruff check --output-format=github .; \
+	else \
+		uv tool run ruff check .; \
+	fi
+	-uv tool run deptry .
 
 #######################
 # Redis
