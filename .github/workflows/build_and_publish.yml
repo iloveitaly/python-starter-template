@@ -48,8 +48,8 @@ jobs:
       # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
       - name: Install zsh, for Justfile
         run: sudo apt-get update; sudo apt-get install -y zsh
-      - run: just py_setup
-      - run: just py_lint
+      - run: direnv allow . && just py_setup
+      - run: direnv allow . && just py_lint
 
   app:
     name: React Frontend
@@ -62,8 +62,8 @@ jobs:
       - uses: jdx/mise-action@v2
       - name: Install zsh, for Justfile
         run: sudo apt-get update; sudo apt-get install zsh
-      - run: just js_setup
-      - run: just js_lint
+      - run: direnv allow . && just js_setup
+      - run: direnv allow . && just js_lint
 
   # typecheck:
   #   name: pyright
