@@ -28,12 +28,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
+      - name: Install zsh
+        run: sudo apt-get update; sudo apt-get install zsh
       - run: just py_setup
       - run: just py_lint
       # - uses: ./.github/actions/python-setup
 
   app:
-    name: Python Web Application
+    name: React Frontend
     # TODO why can't we define runs-on this for the entire workflow?
     runs-on: ubuntu-latest
     # https://stackoverflow.com/questions/71679568/github-actions-ignore-or-exclude-dependabot-pull-requests
@@ -41,6 +43,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
+      - name: Install zsh
+        run: sudo apt-get update; sudo apt-get install zsh
       - run: just js_setup
       - run: just js_lint
 
