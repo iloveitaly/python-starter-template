@@ -109,6 +109,7 @@ py_dev:
 # run all linting operations and fail if any fail
 py_lint:
 	#!/usr/bin/env zsh
+	set -x
 
 	# poetry run autoflake --exclude=migrations --imports=decouple,rich -i -r .
 	if [ -n "$GITHUB_ACTIONS" ]; then
