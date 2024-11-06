@@ -24,6 +24,7 @@ requirements:
 upgrade:
 	echo "Include any upgrade commands here"
 
+# TODO should only be run locally, and not on CI
 setup: requirements && db_reset
 	@if [ ! -f .env.local ]; then \
 		cp .env.local-example .env.local; \
@@ -79,6 +80,9 @@ js_generate-openapi:
 #######################
 # Python
 #######################
+
+py_setup:
+	uv venv
 
 py_upgrade:
 	# https://github.com/astral-sh/uv/issues/6794
