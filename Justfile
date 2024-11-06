@@ -43,15 +43,23 @@ up: redis_up db_up
 WEB_DIR := "web"
 _pnpm := "cd " + WEB_DIR + " && pnpm"
 
+js_lint:
+	cd {{WEB_DIR}} && pnpx eslint --cache --cache-location ./node_modules/.cache/eslint .
+
+js_lint-fix:
+	cd {{WEB_DIR}} && pnpx prettier --write .
+	cd {{WEB_DIR}} && pnpx eslint --cache --cache-location ./node_modules/.cache/eslint . --fix
+
 js_dev:
-	cd {{WEB_DIR}} && [[ -d node_modules ]] || just js_setup
+	[[ -d {{WEB_DIR}}/node_modules ]] || just js_setup
 	{{_pnpm}} run dev
 
 js_build:
 	{{_pnpm}} run build
 
+# interactive repl for testing ts
 js_playground:
-	{{_pnpm}} dlx tsx
+	{{_pnpm}} dlx tsx ./playground.ts
 
 js_setup:
 	{{_pnpm}} install
@@ -60,7 +68,7 @@ js_nuke: && js_setup
 	cd {{WEB_DIR}} && rm -rf node_modules
 
 js_upgrade:
-	{{_pnpm}} exec npm-check-updates --interactive
+	{{_pnpm}} npm-check-updates --interactive
 
 # maybe use watch + entr here?
 js_generate-openapi:
@@ -199,3 +207,4 @@ clean:
 	rm -r tmp/*
 	rm -rf web/build
 	rm -rf web/node_modules
+	rm -rf web/.react-router
