@@ -1,9 +1,9 @@
 # TODO maybe allow larger dependency sprawl since nixpacks will only pick the system versions it cares about
 # limit to requirements shared by development AND production
 python 3.13.0
+uv 0.4.30
 node 22.6.0
 pnpm 9.12.3
-
 just 1.36.0
 
 # template is assumed to be tool-agnostic: mise-specific tooling is not used so it's asdf compatible
