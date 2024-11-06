@@ -3,6 +3,9 @@
 
 set shell := ["zsh", "-cu"]
 
+default:
+  just --list
+
 # include development-specific requirements here
 requirements:
 	# for procfile management
@@ -104,13 +107,21 @@ py_dev:
   fastapi dev main.py
 
 py_lint:
+	#!/usr/bin/env zsh
+
 	# poetry run autoflake --exclude=migrations --imports=decouple,rich -i -r .
-	-if [ -n "$GITHUB_ACTIONS" ]; then \
-		uv tool run ruff check --output-format=github .; \
-	else \
-		uv tool run ruff check .; \
+	if [ -n "$GITHUB_ACTIONS" ]; then
+		uv tool run ruff check --output-format=github . || exit_code=$?
+	else
+		uv tool run ruff check . || exit_code=$?
 	fi
-	-uv tool run deptry .
+
+	uv tool run deptry . || exit_code=$?
+
+	if [[ -n "$exit_code" ]]; then
+		echo "One or more commands failed"
+		exit 1
+	fi
 
 #######################
 # Redis
