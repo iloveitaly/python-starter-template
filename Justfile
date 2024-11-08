@@ -6,6 +6,7 @@ set shell := ["zsh", "-cu"]
 default:
   just --list
 
+# TODO should adjust for new mise config with additional tooling
 # include development-specific requirements here
 requirements:
 	# for procfile management
@@ -24,8 +25,10 @@ requirements:
 			exit 1; \
 	fi
 
-upgrade:
-	echo "Include any upgrade commands here"
+tooling_upgrade:
+  echo "updating tooling"
+
+upgrade: js_upgrade py_upgrade tooling_upgrade
 
 # TODO should only be run locally, and not on CI
 setup: requirements && db_reset
@@ -47,8 +50,11 @@ up: redis_up db_up
 WEB_DIR := "web"
 _pnpm := "cd " + WEB_DIR + " && pnpm"
 
+# TODO support GITHUB_ACTIONS formatting
 js_lint:
-	cd {{WEB_DIR}} && pnpx eslint --cache --cache-location ./node_modules/.cache/eslint .
+	{{_pnpm}} prettier --check .
+	{{_pnpm}} eslint --cache --cache-location ./node_modules/.cache/eslint .
+	{{_pnpm}} depcheck --ignore-bin-package
 
 js_lint-fix:
 	cd {{WEB_DIR}} && pnpx prettier --write .
@@ -58,7 +64,7 @@ js_dev:
 	[[ -d {{WEB_DIR}}/node_modules ]] || just js_setup
 	{{_pnpm}} run dev
 
-js_build:
+js_build: js_setup
 	{{_pnpm}} run build
 
 # interactive repl for testing ts
@@ -115,6 +121,7 @@ py_lint:
 	if [ -n "$GITHUB_ACTIONS" ]; then
 		uv tool run ruff check --output-format=github . || exit_code=$?
 		uv run pyright --outputjson > pyright_report.json
+		# TODO this is a neat trick, we should use it in other places too + document
 		jq -r '.generalDiagnostics[] | "::error file=\(.file),line=\(.range.start.line),col=\(.range.start.character)::\(.message)"' < pyright_report.json
 	else
 		uv tool run ruff check . || exit_code=$?
