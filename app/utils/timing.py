@@ -5,15 +5,16 @@ from time import perf_counter
 from .. import log
 
 
-# TODO there's got to be a package to do this for us, we can just hot-swap it out later
-# https://stackoverflow.com/questions/33987060/python-context-manager-that-measures-time
 class log_execution_time(ContextDecorator):
     """
+    Context manager that logs the execution time of a block of code.
+
+    https://stackoverflow.com/questions/33987060/python-context-manager-that-measures-time
+
     Usage:
-    ```
+
     with log_execution_time('description'):
         # Your code here...
-    ```
     """
 
     def __init__(self, msg=None):
@@ -42,6 +43,16 @@ class log_execution_time(ContextDecorator):
 
 
 def log_time(msg=None):
+    """
+    Decorator that debug logs the execution time of a function.
+
+    @log_time()
+    def my_function():
+        # Your code here...
+
+    @log_time('My custom message')
+    """
+
     def decorator(func):
         function_name = func.__name__
 
