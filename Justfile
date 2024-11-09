@@ -11,7 +11,7 @@
 set shell := ["zsh", "-cu"]
 
 default:
-  just --list
+	just --list
 
 # TODO should adjust for new mise config with additional tooling
 # include development-specific requirements here
@@ -33,7 +33,7 @@ requirements:
 	fi
 
 tooling_upgrade:
-  echo "updating tooling"
+	echo "updating tooling"
 
 upgrade: js_upgrade py_upgrade tooling_upgrade
 
@@ -92,10 +92,17 @@ OPENAPI_JSON_PATH := justfile_directory() / WEB_DIR / "openapi.json"
 OPENAPI_WEB_CLIENT_PATH := justfile_directory() / WEB_DIR / "client"
 
 # generate a typescript client from the openapi spec
-js_generate-openapi:
-	# TODO it's unclear to me why the PYTHONPATH is exactly needed here. We could add package=true to the pyproject.toml
+_js_generate-openapi:
 	PYTHONPATH=. uv run python -c "from app.server import app; import json; print(json.dumps(app.openapi()))" > "{{OPENAPI_JSON_PATH}}"
 	{{_pnpm}} dlx @hey-api/openapi-ts -i "{{OPENAPI_JSON_PATH}}" -c @hey-api/client-fetch -o "{{OPENAPI_WEB_CLIENT_PATH}}"
+	@# TODO it's unclear to me why the PYTHONPATH is exactly needed here. We could add package=true to the pyproject.toml
+
+js_generate-openapi *flag:
+	if {{ if flag == "--watch" { "true" } else { "false" } }}; then; \
+		fd --extension=py . | entr -c just _js_generate-openapi; \
+	else; \
+		just _js_generate-openapi; \
+	fi
 
 #######################
 # Python
@@ -121,7 +128,7 @@ py_nuke: && py_install-local-packages
 	uv sync
 
 py_dev:
-  fastapi dev main.py
+	fastapi dev main.py
 
 # run all linting operations and fail if any fail
 py_lint:
