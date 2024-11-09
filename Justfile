@@ -1,3 +1,10 @@
+#######################
+#
+# * No bin/ scripts scattered around the repo
+# * All development, CI, and production scripts in one place.
+# * No complicated scripts in CI. Include scripts here
+#######################
+
 # _ is currently being used a recipe namespace char, use `-` to separate words
 # TODO this will be improved later on: https://github.com/casey/just/issues/2442
 
@@ -81,10 +88,14 @@ js_upgrade:
 	{{_pnpm}} npm-check-updates --interactive
 
 # maybe use watch + entr here?
+OPENAPI_JSON_PATH := justfile_directory() / WEB_DIR / "openapi.json"
+OPENAPI_WEB_CLIENT_PATH := justfile_directory() / WEB_DIR / "client"
+
+# generate a typescript client from the openapi spec
 js_generate-openapi:
-	# TODO should fail if server is not running, should pull from a domain vs port
-	http --pretty=format localhost:8000/openapi.json > tmp/openapi.json
-	pnpx @hey-api/openapi-ts -i tmp/openapi.json -o web/client -c @hey-api/client-fetch
+	# TODO it's unclear to me why the PYTHONPATH is exactly needed here. We could add package=true to the pyproject.toml
+	PYTHONPATH=. uv run python -c "from app.server import app; import json; print(json.dumps(app.openapi()))" > "{{OPENAPI_JSON_PATH}}"
+	{{_pnpm}} dlx @hey-api/openapi-ts -i "{{OPENAPI_JSON_PATH}}" -c @hey-api/client-fetch -o "{{OPENAPI_WEB_CLIENT_PATH}}"
 
 #######################
 # Python
