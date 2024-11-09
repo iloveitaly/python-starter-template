@@ -6,9 +6,10 @@ from pathlib import Path
 
 import structlog
 
+from .configuration.logging import configure_logger
 from .configuration.sentry import configure_sentry
 from .environments import is_development, python_environment
-from .setup import configure_logger, configure_openai, get_root_path
+from .setup import configure_openai, get_root_path
 
 # must type manually, unfortunately :/
 # https://www.structlog.org/en/21.3.0/types.html
