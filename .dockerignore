@@ -31,4 +31,12 @@ node_modules
 
 *.log
 
+Justfile
+Procfile
+/TODO
+docker-compose*.yml
+
+# web code is built and bundled into the image separately
+/web
+
 # NOTE .nixpacks must be added to the docker container! Do not ignore.
