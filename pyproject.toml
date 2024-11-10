@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "activemodel",
     "backoff>=2.2.1",
     "celery-once>=3.0.1",
     "celery[redis]>=5.4.0",
@@ -37,5 +38,12 @@ dev-dependencies = [
     "ruff>=0.7.1",
 ]
 
+[tool.uv.sources]
+activemodel = { git = "https://github.com/iloveitaly/activemodel" }
+
 [tool.pytest.ini_options]
 addopts = "--pdbcls=pdbr:RichPdb"
+
+[tool.ruff.lint]
+# to be compatible with vs code ruff plugin
+extend-select = ["I"]
