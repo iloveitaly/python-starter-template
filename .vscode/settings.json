@@ -6,10 +6,10 @@
   "typescript.tsdk": "web/node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
 
-  "prettier.prettierPath": "./web/node_modules/prettier",
+  "prettier.prettierPath": "web/node_modules/prettier",
   "[typescript][typescriptreact][javascript][javascriptreact]": {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
   "[python]": {
@@ -42,13 +42,41 @@
       "name": "",
       "depth": 3,
       "includeAllSymbols": true
-    },
+    }
     //   {"name":"pdf2image", "depth":3, "includeAllSymbols": true},
     // {"name":"decouple", "depth":3, "includeAllSymbols": true},
   ],
 
-  // "flake8.importStrategy": "fromEnvironment",
-
-  "cSpell.words": ["posthog", "sqlmodel", "sqlalchemy", "sqltypes", "openai", "httpx", "structlog", "orjson"],
+  "cSpell.words": [
+    "posthog",
+    "sqlmodel",
+    "sqlalchemy",
+    "sqltypes",
+    "openai",
+    "httpx",
+    "structlog",
+    "orjson",
+    "fastapi",
+    "Procfile"
+  ],
   "cSpell.enableFiletypes": ["jinja-html"],
+
+  // in web, prettier is used by default, but we want it to be used outside that directly
+  "[json][jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+
+  // Procfile's don't have a default file association, but are essentially yaml files
+  "files.associations": {
+    "Procfile": "yaml",
+    "Procfile.*": "yaml"
+  },
+
+  "files.exclude": {
+    "web/node_modules": true,
+    ".ruff_cache": true,
+    ".pytest_cache": true,
+    ".venv": true
+  }
 }
