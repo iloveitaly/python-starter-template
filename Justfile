@@ -4,6 +4,7 @@
 # * No bin/ scripts scattered around the repo
 # * All development, CI, and production scripts in one place.
 # * No complicated scripts in CI. Include scripts here, run them on GH actions.
+# * No hidden magical scripts on developers machines without a place to go
 #
 #######################
 
@@ -95,8 +96,9 @@ js_upgrade:
 OPENAPI_JSON_PATH := justfile_directory() / WEB_DIR / "openapi.json"
 
 _js_generate-openapi:
-	@# TODO it's unclear to me why the PYTHONPATH is exactly needed here. We could add package=true to the pyproject.toml
-	PYTHONPATH=. uv run python -c "from app.server import app; import json; print(json.dumps(app.openapi()))" > "{{OPENAPI_JSON_PATH}}"
+	# js is used to pretty print the output
+	# TODO it's unclear to me why the PYTHONPATH is exactly needed here. We could add package=true to the pyproject.toml
+	LOG_LEVEL=ERROR PYTHONPATH=. uv run python -c "from app.server import app; import json; print(json.dumps(app.openapi()))" | jq -r . > "{{OPENAPI_JSON_PATH}}"
 	{{_pnpm}} openapi
 
 # generate a typescript client from the openapi spec
@@ -203,7 +205,7 @@ db_seed: db_migrate
 # less intense than nuking the, keeps existing migrations
 db_destroy: db_reset db_migrate db_seed
 
-# only for use in early development :)
+# only for use in early development
 db_nuke: db_reset && db_migrate db_seed
 	# destroy existing migrations, this is a terrible idea except when you are hacking :)
 	rm -rf migrations/versions/* || true
@@ -216,16 +218,69 @@ db_nuke: db_reset && db_migrate db_seed
 # Production Build
 #######################
 
-IMAGE_NAME := `basename $(pwd)`
-IMAGE_TAG := "latest"
-BUILD_CMD := "nixpacks build . --name " + IMAGE_NAME + " --tag " + IMAGE_TAG
-
 deploy:
 	if ! git remote | grep -q dokku; then \
 		git remote add dokku dokku@dokku.me:app; \
 	fi
 
 	git push dokku main
+
+# TODO maybe pull GH actions build and include it
+# https://devcenter.heroku.com/articles/dyno-metadata
+GIT_DIRTY := `if [ -n "$(git status --porcelain)" ]; then echo "-dirty"; fi`
+GIT_SHA := `git rev-parse HEAD` + GIT_DIRTY
+GIT_DESCRIPTION := `git log -1 --pretty=%s`
+BUILD_CREATED_AT := `date -u +%FT%TZ`
+NIXPACKS_BUILD_METADATA := (
+	'-e BUILD_COMMIT="' + GIT_SHA + '" ' +
+	'-e BUILD_DESCRIPTION="' + GIT_DESCRIPTION + '" ' +
+	'-e BUILD_CREATED_AT="' + BUILD_CREATED_AT + '" '
+)
+
+JAVASCRIPT_SECRETS_FILE := ".env.production.frontend"
+JAVASCRIPT_IMAGE_TAG := IMAGE_NAME + "-javascript:" + GIT_SHA
+JAVASCRIPT_CONTAINER_BUILD_DIR := "/app/build/client"
+JAVASCRIPT_PRODUCTION_BUILD_DIR := absolute_path("tmp/production-build")
+
+IMAGE_NAME := `basename $(pwd)`
+IMAGE_TAG := IMAGE_NAME + ":latest"
+BUILD_CMD := "nixpacks build . --name " + IMAGE_NAME + " " + NIXPACKS_BUILD_METADATA
+
+_production_build_assertions:
+	#!/usr/bin/env zsh
+	set -ue
+
+	# TODO we should abstract out "IS_CI" to some sort of Justfile check :/
+
+	# only run this on CI
+	[ ! -z "${GITHUB_ACTIONS:-}" ] || exit 0
+
+	if [ ! -z "{{GIT_DIRTY}}" ]; then \
+			echo "Git workspace is dirty! This should never happen on prod" >&2; \
+			exit 1; \
+	fi
+
+# build the javascript assets by creating an image, building assets inside the container, and then copying them to the host
+build_js-assets: _production_build_assertions
+	rm -rf "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}"
+
+	# production assets bundle public "secrets" which are extracted from the environment
+	# for this reason, we need to emulate the production environment, then build the assets statically
+	nixpacks build {{WEB_DIR}} --name "{{JAVASCRIPT_IMAGE_TAG}}" {{NIXPACKS_BUILD_METADATA}} \
+		--build-cmd='pnpm openapi' \
+		--start-cmd='pnpm build'
+
+	# we can't just mount /app/build/server with -v since the build process removes the entire /app/build directory
+	docker run $(just direnv_export_docker '{{JAVASCRIPT_SECRETS_FILE}}' --params) {{JAVASCRIPT_IMAGE_TAG}}
+
+	# container count check is paranioa around https://github.com/orbstack/orbstack/issues/1568. This could cause issues
+	# when testing this functionality out locally
+
+	# NOTE watch out for the escaped 'json .' here!
+	container_id=$(docker ps --no-trunc -a --format "{{ '{{ json . }}' }}" | jq -r 'select(.Image == "{{JAVASCRIPT_IMAGE_TAG}}") | .ID') && \
+		[ "$(echo "$container_id" | wc -l)" -eq 1 ] || (echo "Expected exactly one container, got $container_id" && exit 1) && \
+		docker cp $container_id:{{JAVASCRIPT_CONTAINER_BUILD_DIR}} "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}" && \
+		docker rm $container_id
 
 # build the docker container using nixpacks
 build:
@@ -264,12 +319,11 @@ build_run-as-production:
 	docker run --ulimit core=-1 --network=host -e LOG_LEVEL=DEBUG -e DATABASE_URL="$$DATABASE_URL" -e REDIS_URL="$$REDIS_URL" -e OPENAI_API_KEY="$$OPENAI_API_KEY" -e SENTRY_DSN="" $(IMAGE_NAME):$(IMAGE_TAG)
 
 clean:
-	rm -rf .nixpacks || true
+	rm -rf .nixpacks web/.nixpacks || true
 	rm -r tmp/*
 	rm -rf web/build
 	rm -rf web/node_modules
 	rm -rf web/.react-router
-
 
 #######################
 # Direnv Extensions
@@ -287,6 +341,13 @@ with_entries(
 # target a specific .env file (supports direnv features!) for export as a JSON blob
 @direnv_export target:
 	[ -f "{{target}}" ] || (echo "{{target}} does not exist"; exit 1)
-
 	RENDER_DIRENV={{target}} direnv exec ../ direnv export json 2>/dev/null | jq -r '{{jq_script}}'
-	# direnv dump json | jq -r 'to_entries | map(select((.key | startswith("NETSUITE_")) or (.key | startswith("PYTHON")) or .key == "LOG_LEVEL")) | .[] | "export \(.key)=\(.value)"'
+
+# export env variables for a particular target in a format docker can consume
+[doc("Export as docker '-e' params: --params")]
+@direnv_export_docker target *flag:
+	if {{ if flag == "--params" { "true" } else { "false" } }}; then; \
+		just direnv_export "{{target}}" | jq -r 'to_entries | map("-e \(.key)=\(.value)") | join(" ")'; \
+	else; \
+		just direnv_export "{{target}}" | jq -r 'to_entries[] | "\(.key)=\(.value)"'; \
+	fi
