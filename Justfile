@@ -1,14 +1,17 @@
 #######################
+# Goal of this file:
 #
 # * No bin/ scripts scattered around the repo
 # * All development, CI, and production scripts in one place.
-# * No complicated scripts in CI. Include scripts here
+# * No complicated scripts in CI. Include scripts here, run them on GH actions.
+#
 #######################
 
 # _ is currently being used a recipe namespace char, use `-` to separate words
 # TODO this will be improved later on: https://github.com/casey/just/issues/2442
 
 set shell := ["zsh", "-cu"]
+set ignore-comments := true
 
 default:
 	just --list
@@ -38,6 +41,7 @@ tooling_upgrade:
 upgrade: js_upgrade py_upgrade tooling_upgrade
 
 # TODO should only be run locally, and not on CI
+[macos]
 setup: requirements && db_reset
 	@if [ ! -f .env.local ]; then \
 		cp .env.local-example .env.local; \
@@ -87,16 +91,16 @@ js_nuke: && js_setup
 js_upgrade:
 	{{_pnpm}} npm-check-updates --interactive
 
-# maybe use watch + entr here?
+# this same path is referenced in package.json; do not change without updating there too
 OPENAPI_JSON_PATH := justfile_directory() / WEB_DIR / "openapi.json"
-OPENAPI_WEB_CLIENT_PATH := justfile_directory() / WEB_DIR / "client"
+
+_js_generate-openapi:
+	@# TODO it's unclear to me why the PYTHONPATH is exactly needed here. We could add package=true to the pyproject.toml
+	PYTHONPATH=. uv run python -c "from app.server import app; import json; print(json.dumps(app.openapi()))" > "{{OPENAPI_JSON_PATH}}"
+	{{_pnpm}} openapi
 
 # generate a typescript client from the openapi spec
-_js_generate-openapi:
-	PYTHONPATH=. uv run python -c "from app.server import app; import json; print(json.dumps(app.openapi()))" > "{{OPENAPI_JSON_PATH}}"
-	{{_pnpm}} dlx @hey-api/openapi-ts -i "{{OPENAPI_JSON_PATH}}" -c @hey-api/client-fetch -o "{{OPENAPI_WEB_CLIENT_PATH}}"
-	@# TODO it's unclear to me why the PYTHONPATH is exactly needed here. We could add package=true to the pyproject.toml
-
+[doc("Optional flag: --watch")]
 js_generate-openapi *flag:
 	if {{ if flag == "--watch" { "true" } else { "false" } }}; then; \
 		fd --extension=py . | entr -c just _js_generate-openapi; \
@@ -185,15 +189,15 @@ db_seed: db_migrate
 	python migrations/seed.py
 	PYTHON_ENV=test python migrations/seed.py
 
-db_generate_migration:
-	@if [ -z "$${MIGRATION_NAME}" ]; then \
-		echo "Enter the migration name: "; \
-		read name; \
-	else \
-		name=$${MIGRATION_NAME}; \
-	fi; \
+# db_generate_migration:
+# 	@if [ -z "{{MIGRATION_NAME}}" ]; then \
+# 		echo "Enter the migration name: "; \
+# 		read name; \
+# 	else \
+# 		name={{MIGRATION_NAME}}; \
+# 	fi; \
 
-	alembic revision --autogenerate -m "$$name"
+# 	alembic revision --autogenerate -m "$name"
 
 # destroy and rebuild the database from the ground up
 # less intense than nuking the, keeps existing migrations
@@ -203,7 +207,7 @@ db_destroy: db_reset db_migrate db_seed
 db_nuke: db_reset && db_migrate db_seed
 	# destroy existing migrations, this is a terrible idea except when you are hacking :)
 	rm -rf migrations/versions/* || true
-	just db:generate:migration MIGRATION_NAME="initial_commit"
+	just db_generate_migration MIGRATION_NAME="initial_commit"
 
 	PYTHON_ENV=test just db:migrate
 	PYTHON_ENV=test just db:seed
@@ -265,3 +269,24 @@ clean:
 	rm -rf web/build
 	rm -rf web/node_modules
 	rm -rf web/.react-router
+
+
+#######################
+# Direnv Extensions
+#######################
+
+jq_script := """
+with_entries(
+	select((
+		(.key | startswith("DIRENV") | not)
+		and (.key | IN("VIRTUAL_ENV", "VENV_ACTIVE", "UV_ACTIVE", "PATH") | not)
+	))
+)
+"""
+
+# target a specific .env file (supports direnv features!) for export as a JSON blob
+@direnv_export target:
+	[ -f "{{target}}" ] || (echo "{{target}} does not exist"; exit 1)
+
+	RENDER_DIRENV={{target}} direnv exec ../ direnv export json 2>/dev/null | jq -r '{{jq_script}}'
+	# direnv dump json | jq -r 'to_entries | map(select((.key | startswith("NETSUITE_")) or (.key | startswith("PYTHON")) or .key == "LOG_LEVEL")) | .[] | "export \(.key)=\(.value)"'
