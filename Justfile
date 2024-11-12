@@ -13,46 +13,72 @@
 
 set shell := ["zsh", "-cu"]
 set ignore-comments := true
+
+# for [script]
 set unstable := true
 
 default:
 	just --list
 
-# TODO should adjust for new mise config with additional tooling
-# include development-specific requirements here
+#######################
+# Setup
+#######################
+
+# include all development requirements not handled by `mise` for local development
+[macos]
 requirements:
+	@if ! which mise > /dev/null; then \
+		echo "mise is not installed. Please install."; \
+		echo "https://mise.jdx.dev"; \
+		exit 1; \
+	fi
+
 	# for procfile management
 	@if ! gem list -i foreman >/dev/null 2>&1; then \
 		echo "Installing foreman"; \
 		gem install foreman; \
 	fi
 
-	@if ! which direnv > /dev/null; then \
-			echo "direnv is not installed. Please install."; \
-			exit 1; \
+	@if ! which fd > /dev/null; then \
+		echo "fd is not installed. Please install."; \
+		brew install fd; \
 	fi
 
-	@if ! which uv > /dev/null; then \
-			echo "uv is not installed. Please install."; \
-			exit 1; \
+	@if ! which jq > /dev/null; then \
+		echo "jq is not installed. Please install."; \
+		brew install jq; \
 	fi
-
-tooling_upgrade:
-	echo "updating tooling"
-
-upgrade: js_upgrade py_upgrade tooling_upgrade
 
 # TODO should only be run locally, and not on CI
 [macos]
 setup: requirements && db_reset
 	@if [ ! -f .env.local ]; then \
 		cp .env.local-example .env.local; \
+		echo "Please edit .env.local to your liking."; \
 	fi
+
+	# TODO should check if `layout uv` is supported :/
 
 	# direnv will setup a venv & install packages
 	direnv allow .
 
-up: redis_up db_up
+[macos]
+tooling_upgrade:
+	brew upgrade jq fd
+	gem install foreman
+	mise self-update
+
+	# TODO should attempt to upgrade mise versions to the latest versions, this will require some tinkering
+
+[macos]
+upgrade: tooling_upgrade js_upgrade py_upgrade
+
+clean:
+	rm -rf .nixpacks web/.nixpacks || true
+	rm -r tmp/*
+	rm -rf web/build
+	rm -rf web/node_modules
+	rm -rf web/.react-router
 
 #######################
 # Javascript
@@ -63,6 +89,12 @@ up: redis_up db_up
 WEB_DIR := "web"
 _pnpm := "cd " + WEB_DIR + " && pnpm"
 
+js_setup:
+	{{_pnpm}} install
+
+js_nuke: && js_setup
+	cd {{WEB_DIR}} && rm -rf node_modules
+
 # TODO support GITHUB_ACTIONS formatting
 js_lint:
 	{{_pnpm}} prettier --check .
@@ -70,8 +102,8 @@ js_lint:
 	{{_pnpm}} depcheck --ignore-bin-package
 
 js_lint-fix:
-	cd {{WEB_DIR}} && pnpx prettier --write .
-	cd {{WEB_DIR}} && pnpx eslint --cache --cache-location ./node_modules/.cache/eslint . --fix
+	{{_pnpm}} prettier --write .
+	{{_pnpm}} eslint --cache --cache-location ./node_modules/.cache/eslint . --fix
 
 js_dev:
 	[[ -d {{WEB_DIR}}/node_modules ]] || just js_setup
@@ -83,12 +115,6 @@ js_build: js_setup
 # interactive repl for testing ts
 js_playground:
 	{{_pnpm}} dlx tsx ./playground.ts
-
-js_setup:
-	{{_pnpm}} install
-
-js_nuke: && js_setup
-	cd {{WEB_DIR}} && rm -rf node_modules
 
 js_upgrade:
 	{{_pnpm}} npm-check-updates --interactive
@@ -121,8 +147,10 @@ py_setup:
 py_upgrade:
 	# https://github.com/astral-sh/uv/issues/6794
 	uv sync -U
+	git add pyproject.toml uv.lock
 
 py_install-local-packages:
+	# TODO I don't think this does what we want, they are wiped out on a uv sync
 	uv pip install --upgrade pip
 	uv pip install --upgrade --force-reinstall ipython git+https://github.com/iloveitaly/ipdb@support-executables "pdbr[ipython]" rich git+https://github.com/anntzer/ipython-autoimport.git IPythonClipboard ipython_ctrlr_fzf docrepr pyfzf jedi pretty-traceback pre-commit sqlparse debugpy ipython-suggestions datamodel-code-generator funcy-pipe colorama
 
@@ -131,6 +159,7 @@ py_install-local-packages:
 # rebuild the venv from scratch
 py_nuke: && py_install-local-packages
 	rm -rf .venv
+	# reload will recreate the venv and reset VIRTUAL_ENV and friends
 	direnv reload
 	uv sync
 
@@ -140,10 +169,12 @@ py_dev:
 # run all linting operations and fail if any fail
 py_lint:
 	#!/usr/bin/env zsh
+
+	# NOTE this is important: we want all operations to run instead of fail fast
 	set -x
 
 	# poetry run autoflake --exclude=migrations --imports=decouple,rich -i -r .
-	if [ -n "$GITHUB_ACTIONS" ]; then
+	if [ -n "${GITHUB_ACTIONS:-}" ]; then
 		uv tool run ruff check --output-format=github . || exit_code=$?
 		uv run pyright --outputjson > pyright_report.json
 		# TODO this is a neat trick, we should use it in other places too + document
@@ -154,7 +185,7 @@ py_lint:
 	fi
 
 	# TODO https://github.com/fpgmaas/deptry/issues/610#issue-2190147786
-	uv tool run deptry . || exit_code=$?
+	uv tool run deptry --experimental-namespace-package . || exit_code=$?
 
 	if [[ -n "$exit_code" ]]; then
 		echo "One or more commands failed"
@@ -165,15 +196,16 @@ py_lint:
 	#   run: uv run pytest --cov=./
 
 #######################
-# Redis
+# Local Container Management
 #######################
+
+up: redis_up db_up
+
+down: db_down
+	docker compose down
 
 redis_up:
 	docker compose up --wait -d redis
-
-#######################
-# Database Migrations
-#######################
 
 db_up:
 	docker compose up -d --wait postgres
@@ -181,7 +213,13 @@ db_up:
 db_down:
 	docker compose down --volumes postgres
 
+#######################
+# Database Migrations
+#######################
+
+# completely destroy the dev and test databases without runnign migrations
 db_reset: db_down db_up
+	# dev database is created automatically, but test database is not
 	psql $DATABASE_URL -c "CREATE DATABASE test;"
 
 db_migrate:
@@ -216,7 +254,7 @@ db_nuke: db_reset && db_migrate db_seed
 	PYTHON_ENV=test just db:seed
 
 #######################
-# Production Build
+# Deployment
 #######################
 
 deploy:
@@ -225,6 +263,11 @@ deploy:
 	fi
 
 	git push dokku main
+
+#######################
+# Production Build
+#######################
+
 
 # TODO maybe pull GH actions build and include it
 # https://devcenter.heroku.com/articles/dyno-metadata
@@ -313,26 +356,20 @@ build_shell: build
 
 # open up a *second* shell in the *same* container that's already running
 build_shell-exec:
-	docker exec -it $(docker ps -q --filter ancestor=$(IMAGE_NAME):$(IMAGE_TAG)) bash -l
+	docker exec -it $(docker ps -q --filter "ancestor={{IMAGE_TAG}}") bash -l
 
 # run the container locally, as if it were in production (against production DB, resources, etc)
 build_run-as-production procname="":
 	# TODO I don't think we want ulimit here, that's just for core dumps, which doesn't seem to work
 	# TODO extract local variables from direnv and pass it over the wire
-	# TODO memory
+	# TODO memory limits
 	docker run -p 8000 $(just direnv_export_docker "" --params) --ulimit core=-1 {{IMAGE_TAG}} "$(just extract_proc "{{procname}}")"
 
+# extract worker start command from Procfile
 [script]
 extract_proc procname:
   [ -n "{{procname}}" ] || exit 0
   yq -r '.{{procname}}' Procfile
-
-clean:
-	rm -rf .nixpacks web/.nixpacks || true
-	rm -r tmp/*
-	rm -rf web/build
-	rm -rf web/node_modules
-	rm -rf web/.react-router
 
 #######################
 # Direnv Extensions
