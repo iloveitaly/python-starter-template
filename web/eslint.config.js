@@ -15,4 +15,21 @@ export default [
   ...tseslint.configs.recommended,
   // important change from the default
   pluginReact.configs.flat["jsx-runtime"],
+  // https://typescript-eslint.io/rules/no-unused-vars/
+  {
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          args: "all",
+          argsIgnorePattern: "^_",
+          caughtErrors: "all",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          ignoreRestSiblings: true,
+        },
+      ],
+    },
+  },
 ]
