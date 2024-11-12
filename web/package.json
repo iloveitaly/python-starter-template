@@ -11,7 +11,6 @@
     "typegen:watch": "react-router typegen --watch"
   },
   "dependencies": {
-    "@chakra-ui/react": "^3.1.1",
     "@clerk/clerk-react": "^5.15.3",
     "@epic-web/invariant": "^1.0.0",
     "@hey-api/client-fetch": "^0.4.3",
@@ -57,7 +56,7 @@
     "vite-tsconfig-paths": "^5.1.2"
   },
   "engines": {
-    "node": ">=20.0.0",
+    "node": ">=22.6.0",
     "pnpm": ">=9.12.3"
   },
   "prettier": {
@@ -69,17 +68,11 @@
       "^~/configuration$",
       "./+types",
       "^[:alpha].*$",
-      "^@remix(.*)$",
-      "^(@mantine|@emotion|@nivo)(.*)$",
-      "^@prisma(.*)$",
       "^~/",
       "./"
     ],
     "plugins": [
       "@trivago/prettier-plugin-sort-imports"
-    ],
-    "ignorePath": [
-      "*.lock"
     ]
   }
 }
