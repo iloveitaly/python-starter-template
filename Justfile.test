@@ -1,0 +1,8 @@
+set shell := ["zsh", "-cu"]
+
+two:
+	echo "two"
+
+one:
+	echo 'B start!'
+	just --justfile=Justfile.test two
