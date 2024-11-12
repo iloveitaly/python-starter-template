@@ -333,8 +333,14 @@ build_js-assets: _production_build_assertions
 		docker cp $container_id:{{JAVASCRIPT_CONTAINER_BUILD_DIR}} "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}" && \
 		docker rm $container_id
 
+_build_requirements:
+	@if ! which nixpacks > /dev/null; then \
+		echo "nixpacks is not installed. Installing...."; \
+		{{ if os() == "macos" { "brew install nixpacks" } else { "curl -sSL https://nixpacks.com/install.sh | bash" } }}; \
+	fi
+
 # build the docker container using nixpacks
-build: build_js-assets
+build: _build_requirements _production_build_assertions build_js-assets
 	@echo "Building python application..."
 	{{PYTHON_BUILD_CMD}}
 
