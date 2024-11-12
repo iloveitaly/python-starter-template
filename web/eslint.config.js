@@ -13,5 +13,6 @@ export default [
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
+  // important change from the default
   pluginReact.configs.flat["jsx-runtime"],
 ]
