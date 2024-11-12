@@ -40,7 +40,9 @@ if (isProduction()) {
 }
 
 export default function withPostHogProvider(Component: React.ComponentType) {
-  return function WithPostHogProviderWrapper(props: any) {
+  return function WithPostHogProviderWrapper(
+    props: React.ComponentProps<typeof Component>,
+  ) {
     return (
       <PostHogProvider client={posthog}>
         <Component {...props} />
