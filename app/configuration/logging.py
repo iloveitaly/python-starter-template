@@ -60,6 +60,8 @@ def _logger_factory():
 def redirect_stdlib_loggers():
     """
     Redirect all standard logging module loggers to use the structlog configuration.
+
+    Inspired by: https://gist.github.com/nymous/f138c7f06062b7c43c060bf03759c29e
     """
     from structlog.stdlib import ProcessorFormatter
 

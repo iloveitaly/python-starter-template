@@ -4,17 +4,31 @@
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from openai import BaseModel
 
-from app.environments import is_production
+from app.setup import get_root_path
+
+from .environments import is_production
 
 fast_api_args = {}
 
 # disable API documentation in production
 if is_production():
-    fast_api_args = {"docs_url": None, "redoc_url": None, "openapi_url": None}
+    fast_api_args = {
+        "docs_url": None,
+        "redoc_url": None,
+        "openapi_url": None,
+    }
 
-app = FastAPI(**fast_api_args)
+# TODO unclear how to type this correctly
+app = FastAPI(**fast_api_args)  # type: ignore
+
+app.mount(
+    "/public",
+    StaticFiles(directory=get_root_path() / "public", html=True),
+    name="public",
+)
 
 # TODO set this up for the static frontend build
 # app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -30,7 +44,7 @@ app.add_middleware(
 
 
 class AppData(BaseModel, extra="forbid"):
-    message: str = "Hello, World!"
+    message: str = "Hello From Python"
 
 
 @app.get("/")

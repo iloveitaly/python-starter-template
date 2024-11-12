@@ -2,13 +2,11 @@
 This file should be imported first in any application entrypoint.
 """
 
-from pathlib import Path
-
 import structlog
 
 from .configuration.logging import configure_logger
 from .configuration.sentry import configure_sentry
-from .environments import is_development, python_environment
+from .environments import python_environment
 from .setup import configure_openai, get_root_path
 
 # must type manually, unfortunately :/
@@ -17,7 +15,7 @@ log: structlog.stdlib.BoundLogger
 
 
 def setup():
-    if hasattr(setup, "complete") and setup.complete:
+    if hasattr(setup, "complete") and getattr(setup, "complete", False):
         return
 
     global root, log
@@ -30,7 +28,7 @@ def setup():
 
     log.info("application setup", environment=python_environment())
 
-    setup.complete = True
+    setattr(setup, "complete", True)
 
 
 # side effects are bad, but it's fun to do bad things

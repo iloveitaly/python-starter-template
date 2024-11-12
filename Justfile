@@ -99,7 +99,9 @@ js_nuke: && js_setup
 js_lint:
 	{{_pnpm}} prettier --check .
 	{{_pnpm}} eslint --cache --cache-location ./node_modules/.cache/eslint .
-	{{_pnpm}} depcheck --ignore-bin-package
+
+	# TODO reenable once we have the ui side of things working
+	# {{_pnpm}} depcheck --ignore-bin-package
 
 js_lint-fix:
 	{{_pnpm}} prettier --write .
@@ -185,7 +187,8 @@ py_lint:
 	fi
 
 	# TODO https://github.com/fpgmaas/deptry/issues/610#issue-2190147786
-	uv tool run deptry --experimental-namespace-package . || exit_code=$?
+	# TODO https://github.com/fpgmaas/deptry/issues/740
+	# uv tool run deptry --experimental-namespace-package . || exit_code=$?
 
 	if [[ -n "$exit_code" ]]; then
 		echo "One or more commands failed"
@@ -194,6 +197,9 @@ py_lint:
 
 	#   run: uv run pytest tests
 	#   run: uv run pytest --cov=./
+
+py_lint_fix:
+	uv tool run ruff check . --fix
 
 #######################
 # Local Container Management

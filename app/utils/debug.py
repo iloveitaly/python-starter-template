@@ -1,5 +1,9 @@
+# type: ignore
+
 """
 Should not be used in production. Helpful debugging tools for async code and other things.
+
+Types are ignored since not all of the packages are included as dependencies
 """
 
 import traceback

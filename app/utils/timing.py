@@ -46,11 +46,13 @@ def log_time(msg=None):
     """
     Decorator that debug logs the execution time of a function.
 
-    @log_time()
-    def my_function():
-        # Your code here...
+    >>> @log_time()
+    >>> def my_function():
+    >>>    pass
 
-    @log_time('My custom message')
+    >>> @log_time('My custom message')
+    >>> def my_function():
+    >>>    pass
     """
 
     def decorator(func):
