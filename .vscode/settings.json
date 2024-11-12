@@ -57,7 +57,9 @@
     "structlog",
     "orjson",
     "fastapi",
-    "Procfile"
+    "Procfile",
+    "direnv",
+    "openapi"
   ],
   "cSpell.enableFiletypes": ["jinja-html"],
 
@@ -78,5 +80,14 @@
     ".ruff_cache": true,
     ".pytest_cache": true,
     ".venv": true
+  },
+
+  "[justfile]": {
+    "editor.insertSpaces": false,
+    //   "editor.detectIndentation": false,
+    "editor.tabSize": 2,
+    "editor.trimAutoWhitespace": true,
+    // "editor.defaultFormatter": "nefrob.vscode-just-syntax",
+    "editor.formatOnSave": true
   }
 }
