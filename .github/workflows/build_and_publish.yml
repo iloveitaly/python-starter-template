@@ -58,8 +58,6 @@ jobs:
     name: React Frontend
     # TODO why can't we define runs-on this for the entire workflow?
     runs-on: ubuntu-latest
-    # https://stackoverflow.com/questions/71679568/github-actions-ignore-or-exclude-dependabot-pull-requests
-    # if: ${{ github.triggering_actor != 'dependabot[bot]' }}
     steps:
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
