@@ -26,6 +26,9 @@ dependencies = [
     "uvicorn>=0.32.0",
 ]
 
+[project.scripts]
+app_name = "app.cli:main"
+
 [tool.uv]
 dev-dependencies = [
     "deptry>=0.20.0",
