@@ -1,4 +1,26 @@
-# Python Project Template
+# Python & React Router Project Template
+
+This is an extremely opinionated template for a Python and React project. Here's the stack:
+
+* Python + FastAPI + SQLModel + SQLAlchemy + Alembic + Celery
+* TypeScript + React + Vite + React Router (in SPA mode) + ShadCN + Tailwind + ESLint + Prettier
+* Postgres + Redis
+* Sentry + Clerk + PostHog
+* Docker (via nixpacks) for containerization
+* GitHub Actions for CI/CD
+* Direnv + 1Password for secret management
+
+## Cost of Complexity
+
+There are many things I don't like about this setup. There's a cost to going this router and I'm not sure if it's worth it.
+
+It's all about tradeoffs:
+
+1. Use rails and hotwire. You lose React and all of the amazing ui libraries that come with it. You make hiring harder. You lose typing.
+2. Use full stack javascript. You have to work with Javascript everyday.
+3. Use this approach. You lose the beauty of batteries-included-rails and the deployment simplicity of the other approaches.
+
+### Architecture Notes
 
 notes:
 assume injection of pretty traceback
@@ -12,14 +34,6 @@ direnv allow config
 * Containers should be used instead of proprietary build systems (Heroku, etc).
 * Ability to build production-identical containers locally for debugging
 * Container building should be handled on CI
-
-## Cost of Complexity
-
-There are many things I don't like about this setup. It's all about tradeoffs:
-
-1. Use rails and hotwire. You lose React and all of the amazing ui libraries that come with it. You make hiring harder. You lose typing.
-2. Use full stack javascript. You have to work with Javascript everyday.
-3. Use this approach. You lose the beauty of batteries-included-rails and the deployment simplicity of the other approaches.
 
 ## Other Project Templates
 

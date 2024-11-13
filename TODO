@@ -1,28 +1,29 @@
-timing and logging documentation
-use ruff for linting, setup with vs code
-unicorn + fastapi setup
-https://reactrouter.com/dev/guides/start/installation
-github build
+## python
 celery job queue
-posthog
-https://github.com/clerk/clerk-sdk-python/blob/main/README.md
-json logging and log destination
 celery types
-regenerate openapi automatically
-clear vscode file cache
-maybe caddy or other tool for local development?
-there's no `--watch` on `typegen` yet
+https://github.com/0xthiagomartins/sqlmodel-controller/blob/main/.coveragerc - automatic coverage
+multi root config
+https://github.com/clerk/clerk-sdk-python/issues/49
+timeout issue https://github.com/celery/celery/issues/3430 and https://github.com/celery/celery/discussions/8692
 
 ## js
-pull functional from other project
-sentry config
-posthog config
+sentry config, not yet ready for v7 https://docs.sentry.io/platforms/javascript/guides/react/features/react-router/
+posthog config, fix when v7 is released
+posthog usage example
 logging config fine on the client side?
+tests from template, https://johnsmilga.com/articles/2024/10/15
+assert openapi.json version being used in production
+maybe https://www.cypress.io for full stack testing?
 
 ## deployment
-nicpacks with static build content
+https://developer.1password.com/docs/ci-cd/github-actions/ for secrets building on github (for frontend)
+can kamal work with a registry with container? https://github.com/basecamp/kamal/discussions/964
+log ingestion
+flightcontrol on AWS?
 
-## medium
+## dev
+maybe caddy or other tool for local development?
 should we use sops?
 should we be opinionated about asdf vs mise?
-nixpacks and uv compatibility
+https://pre-commit.com
+sync engine + pnpm version
