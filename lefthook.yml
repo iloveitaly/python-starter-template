@@ -1,4 +1,4 @@
-prepare-msg-hook:
+prepare-commit-msg:
   commands:
     aiautocommit:
       run: aiautocommit commit --output-file "$1"
@@ -11,7 +11,7 @@ prepare-msg-hook:
       skip:
         merge:
         rebase:
-        run: which aiautocommit > /dev/null
+        run: ! which aiautocommit > /dev/null
 
 pre-push:
   parallel: true
