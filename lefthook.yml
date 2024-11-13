@@ -1,0 +1,13 @@
+pre-commit:
+  aicommit:
+    skip:
+      - merge
+      - rebase
+    run: aiautocommit commit --output-file "$1"
+    only: which aiautocommit > /dev/null
+
+pre-push:
+  parallel: true
+  scripts:
+    "just py_lint":
+    "just js_lint":

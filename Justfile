@@ -34,7 +34,7 @@ _brew_check_and_install brew_target:
 
 # include all development requirements not handled by `mise` for local development
 [macos]
-requirements: && (_brew_check_and_install "jq") (_brew_check_and_install "fd")
+requirements: (_brew_check_and_install "lefthook") && (_brew_check_and_install "jq") (_brew_check_and_install "fd")
 	@if ! which mise > /dev/null; then \
 		echo "mise is not installed. Please install."; \
 		echo "https://mise.jdx.dev"; \
@@ -46,6 +46,9 @@ requirements: && (_brew_check_and_install "jq") (_brew_check_and_install "fd")
 		echo "Installing foreman"; \
 		gem install foreman; \
 	fi
+
+	lefthook install
+	rm .git/hooks/*.sample
 
 # TODO should only be run locally, and not on CI
 [macos]
@@ -77,6 +80,7 @@ clean:
 	rm -rf web/build
 	rm -rf web/node_modules
 	rm -rf web/.react-router
+	rm .git/hooks/*
 
 #######################
 # Javascript
