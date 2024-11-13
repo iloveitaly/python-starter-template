@@ -3,10 +3,9 @@
 """
 
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 
-from app.setup import get_root_path
+from app.routes.middleware import add_middleware
+from app.routes.static import mount_public_directory
 
 from .environments import is_production
 from .routes.internal import app as internal_app
@@ -24,23 +23,8 @@ if is_production():
 # TODO unclear how to type this correctly
 app = FastAPI(**fast_api_args)  # type: ignore
 
-app.mount(
-    "/public",
-    StaticFiles(directory=get_root_path() / "public", html=True),
-    name="public",
-)
-
-# TODO set this up for the static frontend build
-# app.mount("/static", StaticFiles(directory="static"), name="static")
-
-# even in development, some sort of CORS is required
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+mount_public_directory(app)
+add_middleware(app)
 
 app.include_router(internal_app)
 

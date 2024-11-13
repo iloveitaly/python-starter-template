@@ -5,10 +5,10 @@
     "version": "0.1.0"
   },
   "paths": {
-    "/": {
+    "/internal/v1/": {
       "get": {
         "summary": "Read Root",
-        "operationId": "read_root__get",
+        "operationId": "read_root_internal_v1__get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -20,7 +20,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
       }
     },
     "/items/{item_id}": {
@@ -130,8 +135,18 @@
           }
         },
         "type": "object",
-        "required": ["loc", "msg", "type"],
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
         "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
       }
     }
   }
