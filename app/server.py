@@ -5,11 +5,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
 
 from app.setup import get_root_path
 
 from .environments import is_production
+from .routes.internal import app as internal_app
 
 fast_api_args = {}
 
@@ -42,14 +42,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-class AppData(BaseModel, extra="forbid"):
-    message: str = "Hello From Python"
-
-
-@app.get("/")
-def read_root() -> AppData:
-    return AppData()
+app.include_router(internal_app)
 
 
 @app.get("/items/{item_id}")
