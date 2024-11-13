@@ -9,10 +9,10 @@ prepare-commit-msg:
         # ensures that LOG_LEVEL config of the current project does not interfere with aiautocommit
         LOG_LEVEL: info
         OPENAI_LOG: warn
-      # skip:
-      #   merge:
-      #   rebase:
-      #   run: ! which aiautocommit > /dev/null
+      skip:
+        merge:
+        rebase:
+        run: ! which aiautocommit > /dev/null
 
 pre-push:
   parallel: true
