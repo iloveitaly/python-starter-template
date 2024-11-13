@@ -1,10 +1,16 @@
-pre-commit:
-  aicommit:
-    skip:
-      - merge
-      - rebase
-    run: aiautocommit commit --output-file "$1"
-    only: which aiautocommit > /dev/null
+prepare-msg-hook:
+  commands:
+    aiautocommit:
+      run: aiautocommit commit --output-file "$1"
+      interactive: true
+      env:
+        LEFTHOOK: 0
+        LOG_LEVEL: info
+      # skip:
+      #   - merge
+      #   - rebase
+      # run: "aiautocommit commit --output-file \"$1\"":
+      # only: which aiautocommit > /dev/null
 
 pre-push:
   parallel: true
