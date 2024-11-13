@@ -1,10 +1,12 @@
 ## python
-celery job queue
 celery types
 https://github.com/0xthiagomartins/sqlmodel-controller/blob/main/.coveragerc - automatic coverage
-multi root config
+multi root config for fastapi
 https://github.com/clerk/clerk-sdk-python/issues/49
 timeout issue https://github.com/celery/celery/issues/3430 and https://github.com/celery/celery/discussions/8692
+llm cache
+user data model tied into clerk
+clerk middleware
 
 ## js
 sentry config, not yet ready for v7 https://docs.sentry.io/platforms/javascript/guides/react/features/react-router/
@@ -25,5 +27,4 @@ flightcontrol on AWS?
 maybe caddy or other tool for local development?
 should we use sops?
 should we be opinionated about asdf vs mise?
-https://pre-commit.com
 sync engine + pnpm version

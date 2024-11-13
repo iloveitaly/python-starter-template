@@ -2,25 +2,35 @@
 
 This is an extremely opinionated template for a Python and React project. Here's the stack:
 
+* Justfile + Direnv + Mise + Lefthook + 1Password for local development & secret configuration
 * Python + FastAPI + SQLModel + SQLAlchemy + Alembic + Celery
 * TypeScript + React + Vite + React Router (in SPA mode) + ShadCN + Tailwind + ESLint + Prettier
 * Postgres + Redis
 * Sentry + Clerk + PostHog
 * Docker (via nixpacks) for containerization
 * GitHub Actions for CI/CD
-* Direnv + 1Password for secret management
 
 ## Cost of Complexity
 
-There are many things I don't like about this setup. There's a cost to going this router and I'm not sure if it's worth it.
+There are many things I don't like about this setup. There's a complexity cost to going this route and I'm not sure if it's worth it.
 
-It's all about tradeoffs:
+It's all about tradeoffs. For modern web development, there are the options as I see them:
 
-1. Use rails and hotwire. You lose React and all of the amazing ui libraries that come with it. You make hiring harder. You lose typing.
-2. Use full stack javascript. You have to work with Javascript everyday.
-3. Use this approach. You lose the beauty of batteries-included-rails and the deployment simplicity of the other approaches.
+1. Use Rails and HotWire.
+   1. You lose React, all of the amazing ui libraries that come with it, the massive JS + Py labor market, great tooling, typing, and finely-tuned LLMs on massive training data.
+   2. You get a beautifully crafted battery-included framework.
+2. Use full stack javascript.
+   1. You have to work with Javascript everyday. I've given up on backend JavaScript. The whole ecosystem is a mess and I don't enjoy working in it. Non-starter for me.
+   2. You get access to a massive labor market, great tooling, typing, and finely-tuned LLMs on massive training data.
+3. Use React & Python.
+   1. You lose simplicity. You have to deal with two languages, which means more complex build systems.
+   2. You get full-stack typing (if you do it right).
+   3. You can move fast with React and all of the amazing UI libraries built on top of it, without having to deal with full stack JavaScript.
+   4. You get access to massive JS + Py labor markets.
 
-### Architecture Notes
+#3 is what is implemented here.
+
+## Architecture Notes
 
 notes:
 assume injection of pretty traceback
@@ -29,7 +39,11 @@ typing from python to typescript via pyright + openapi + typescript library gen
 react-router seems to wrap `vite preview`
 direnv allow config
 
-## Deployment
+### DevProd
+
+* There should be no secret scripts. Everything to setup and manage a environment should be within the repo. I've chosen a Justfile for this purpose.
+
+### Deployment
 
 * Containers should be used instead of proprietary build systems (Heroku, etc).
 * Ability to build production-identical containers locally for debugging

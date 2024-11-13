@@ -292,7 +292,11 @@ NIXPACKS_BUILD_METADATA := (
 	'-e BUILD_CREATED_AT="' + BUILD_CREATED_AT + '" '
 )
 
+# .env file without any secrets that should exist on all environments
 SHARED_ENV_FILE := ".env"
+
+# .env file with production variables, no secrets, for python
+PYTHON_PRODUCTION_ENV_FILE := ".env.production.backend"
 
 JAVASCRIPT_SECRETS_FILE := ".env.production.frontend"
 JAVASCRIPT_IMAGE_TAG := IMAGE_NAME + "-javascript:" + GIT_SHA
@@ -365,6 +369,7 @@ build: _build_requirements _production_build_assertions build_js-assets
 	@echo "Building python application..."
 	{{PYTHON_BUILD_CMD}} \
 		$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params) \
+		$(just direnv_export_docker '{{PYTHON_PRODUCTION_ENV_FILE}}' --params) \
 		--label org.opencontainers.image.revision={{GIT_SHA}} \
 		--label org.opencontainers.image.created="{{BUILD_CREATED_AT}}" \
 		--label org.opencontainers.image.source="$(just _repo_url)" \
