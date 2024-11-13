@@ -27,14 +27,15 @@ node_modules
 /test_helpers
 
 /infra
-/tmp
+/tmp/*
 
 *.log
 
-Justfile
+Justfile*
 Procfile
 /TODO
 docker-compose*.yml
+/playground.py
 
 # web code is built and bundled into the image separately
 /web
