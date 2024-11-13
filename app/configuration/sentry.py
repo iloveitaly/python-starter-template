@@ -29,4 +29,10 @@ def configure_sentry():
             # FlaskIntegration(),
         ],
         before_send_transaction=filter_transactions,
+        _experiments={
+            # Set continuous_profiling_auto_start to True
+            # to automatically start the profiler on when
+            # possible.
+            "continuous_profiling_auto_start": True,
+        },
     )

@@ -5,7 +5,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from openai import BaseModel
+from pydantic import BaseModel
 
 from app.setup import get_root_path
 
