@@ -24,9 +24,17 @@ default:
 # Setup
 #######################
 
+[macos]
+[script]
+_brew_check_and_install brew_target:
+	if ! which {{brew_target}} > /dev/null; then
+		echo "{{brew_target}} is not installed. Installing..."
+		brew install {{brew_target}}
+	fi
+
 # include all development requirements not handled by `mise` for local development
 [macos]
-requirements:
+requirements: && (_brew_check_and_install "jq") (_brew_check_and_install "fd")
 	@if ! which mise > /dev/null; then \
 		echo "mise is not installed. Please install."; \
 		echo "https://mise.jdx.dev"; \
@@ -37,16 +45,6 @@ requirements:
 	@if ! gem list -i foreman >/dev/null 2>&1; then \
 		echo "Installing foreman"; \
 		gem install foreman; \
-	fi
-
-	@if ! which fd > /dev/null; then \
-		echo "fd is not installed. Please install."; \
-		brew install fd; \
-	fi
-
-	@if ! which jq > /dev/null; then \
-		echo "jq is not installed. Please install."; \
-		brew install jq; \
 	fi
 
 # TODO should only be run locally, and not on CI
@@ -272,11 +270,14 @@ deploy:
 
 #######################
 # Production Build
+#
+# Some of the ENV variables and labels below are pulled from these projects:
+#
+#   - https://github.com/iloveitaly/github-action-nixpacks/blob/2ad8c4fab7059ede8b6103f17b2ec23f42961fd9/entrypoint.sh
+#   - https://devcenter.heroku.com/articles/dyno-metadata
+#
 #######################
 
-
-# TODO maybe pull GH actions build and include it
-# https://devcenter.heroku.com/articles/dyno-metadata
 GIT_DIRTY := `if [ -n "$(git status --porcelain)" ]; then echo "-dirty"; fi`
 GIT_SHA := `git rev-parse HEAD` + GIT_DIRTY
 GIT_DESCRIPTION := `git log -1 --pretty=%s`
@@ -287,6 +288,8 @@ NIXPACKS_BUILD_METADATA := (
 	'-e BUILD_CREATED_AT="' + BUILD_CREATED_AT + '" '
 )
 
+SHARED_ENV_FILE := ".env"
+
 JAVASCRIPT_SECRETS_FILE := ".env.production.frontend"
 JAVASCRIPT_IMAGE_TAG := IMAGE_NAME + "-javascript:" + GIT_SHA
 JAVASCRIPT_CONTAINER_BUILD_DIR := "/app/build/client"
@@ -296,10 +299,8 @@ IMAGE_NAME := `basename $(pwd)`
 IMAGE_TAG := IMAGE_NAME + ":latest"
 PYTHON_BUILD_CMD := "nixpacks build . --name " + IMAGE_NAME + " " + NIXPACKS_BUILD_METADATA
 
+[script]
 _production_build_assertions:
-	#!/usr/bin/env zsh
-	set -ue
-
 	# TODO we should abstract out "IS_CI" to some sort of Justfile check :/
 
 	# only run this on CI
@@ -322,7 +323,10 @@ build_js-assets: _production_build_assertions
 		--start-cmd='pnpm build'
 
 	# we can't just mount /app/build/server with -v since the build process removes the entire /app/build directory
-	docker run $(just direnv_export_docker '{{JAVASCRIPT_SECRETS_FILE}}' --params) {{JAVASCRIPT_IMAGE_TAG}}
+	docker run \
+		$(just direnv_export_docker '{{JAVASCRIPT_SECRETS_FILE}}' --params) \
+		$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params) \
+		{{JAVASCRIPT_IMAGE_TAG}}
 
 	# container count check is paranioa around https://github.com/orbstack/orbstack/issues/1568. This could cause issues
 	# when testing this functionality out locally
@@ -333,16 +337,42 @@ build_js-assets: _production_build_assertions
 		docker cp $container_id:{{JAVASCRIPT_CONTAINER_BUILD_DIR}} "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}" && \
 		docker rm $container_id
 
+# support non-macos installations for github actions
 _build_requirements:
 	@if ! which nixpacks > /dev/null; then \
 		echo "nixpacks is not installed. Installing...."; \
 		{{ if os() == "macos" { "brew install nixpacks" } else { "curl -sSL https://nixpacks.com/install.sh | bash" } }}; \
 	fi
 
+# url of the repo on github for build metadata
+@_repo_url:
+	gh repo view --json url --jq ".url" | tr -d " \n"
+
+# unique ID (mostly) to identify where/when this image was built for docker labeling
+@_build_id:
+	if [ -z "${GITHUB_RUN_ID:-}" ]; then \
+		echo "{{ os() }}-$(whoami)"; \
+	else \
+		echo "$GITHUB_RUN_ID"; \
+	fi
+
 # build the docker container using nixpacks
 build: _build_requirements _production_build_assertions build_js-assets
 	@echo "Building python application..."
-	{{PYTHON_BUILD_CMD}}
+	{{PYTHON_BUILD_CMD}} \
+		$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params) \
+		--label org.opencontainers.image.revision={{GIT_SHA}} \
+		--label org.opencontainers.image.created="{{BUILD_CREATED_AT}}" \
+		--label org.opencontainers.image.source="$(just _repo_url)" \
+		--label "build.run_id=$(just _build_id)"
+
+# dump json output of the built image, ex: j build_inspect '.Config.Env'
+build_inspect *flags:
+	docker image inspect --format "{{ '{{ json . }}' }}" "{{IMAGE_TAG}}" | jq -r {{ flags }}
+
+# interactively inspect the layers of the built image
+build_dive: (_brew_check_and_install "dive")
+  dive "{{IMAGE_TAG}}"
 
 # dump nixpacks-generated Dockerfile for manual build and production debugging
 build_dump:
@@ -353,8 +383,12 @@ build_clean:
 
 # inject a shell where the build fails
 build_debug: build_dump
+	# note that you *may* run into trouble using the interactive injected shell if you are using an old builder version
+	# Force the latest builder: `docker buildx use orbstack`
+
 	# store the modified build command in a variable rather than editing the file
-	BUILD_DEBUG_CMD=$(sed 's/docker build/BUILDX_EXPERIMENTAL=1 docker buildx debug --invoke bash build/' .nixpacks/build.sh) && eval "$BUILD_DEBUG_CMD"
+	BUILD_DEBUG_CMD=$(sed 's/docker build/BUILDX_EXPERIMENTAL=1 docker buildx debug --invoke bash build/' .nixpacks/build.sh) && \
+		eval "$BUILD_DEBUG_CMD"
 
 	# BUILDX_EXPERIMENTAL=1 docker buildx debug --invoke bash build . -f ./.nixpacks/Dockerfile
 
@@ -373,7 +407,6 @@ build_shell-exec:
 # run the container locally, as if it were in production (against production DB, resources, etc)
 build_run-as-production procname="":
 	# TODO I don't think we want ulimit here, that's just for core dumps, which doesn't seem to work
-	# TODO extract local variables from direnv and pass it over the wire
 	# TODO memory limits
 	docker run -p 8000 $(just direnv_export_docker "" --params) --ulimit core=-1 {{IMAGE_TAG}} "$(just extract_proc "{{procname}}")"
 
@@ -411,11 +444,18 @@ with_entries(
 	([ ! -n "{{target}}" ] || [ -f "{{target}}" ]) || (echo "{{target}} does not exist"; exit 1)
 	[ "{{target}}" != ".envrc" ] || (echo "You cannot use .envrc as a target"; exit 1)
 
-	RENDER_DIRENV={{target}} direnv exec ../ direnv export json 2>/dev/null | jq -r '{{jq_script}}'
+	# without clearing the env, any variables that you have set in your shell (via ~/.exports or similar) will *not*
+	# be included in the export. This was occuring on my machine since I set PYTHON* vars globally. To work around this
+	# we clear the environment, outside of the PATH + HOME required for direnv configuration.
+	env -i HOME="$HOME" PATH="$PATH" \
+		RENDER_DIRENV="{{target}}" direnv export json 2>/dev/null | jq -r '{{jq_script}}'
+
 
 # export env variables for a particular file in a format docker can consume
 [doc("Export as docker '-e' params: --params")]
 @direnv_export_docker target *flag:
+	# clear all contents of the tmp dir
+
 	if {{ if flag == "--params" { "true" } else { "false" } }}; then; \
 		just direnv_export "{{target}}" | jq -r 'to_entries | map("-e \(.key)=\(.value)") | join(" ")'; \
 	else; \
