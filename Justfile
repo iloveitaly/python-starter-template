@@ -380,6 +380,7 @@ build_inspect *flags:
 	docker image inspect --format "{{ '{{ json . }}' }}" "{{IMAGE_TAG}}" | jq -r {{ flags }}
 
 # interactively inspect the layers of the built image
+[macos]
 build_dive: (_brew_check_and_install "dive")
   dive "{{IMAGE_TAG}}"
 
