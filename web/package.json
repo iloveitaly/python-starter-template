@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.15.3",
+    "@clerk/remix": "^4.2.50",
     "@epic-web/invariant": "^1.0.0",
     "@hey-api/client-fetch": "^0.4.3",
     "@react-router/node": "7.0.0-pre.5",
@@ -50,6 +51,7 @@
     "globals": "^15.12.0",
     "postcss": "^8.4.49",
     "prettier": "^3.3.3",
+    "react-router-devtools": "2.0.0-beta.0",
     "tailwindcss": "^3.4.14",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.14.0",
@@ -60,7 +62,7 @@
   },
   "engines": {
     "node": ">=22.11.0",
-    "pnpm": ">=9.12.3"
+    "pnpm": ">=9.13.0"
   },
   "prettier": {
     "semi": false,
