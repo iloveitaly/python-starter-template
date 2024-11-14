@@ -48,10 +48,18 @@ function getModePlugins(mode: string) {
       }),
     ]
   }
-
+  return []
   return [Terminal(), reactRouterDevTools()]
 }
 export default defineConfig(({ mode }) => ({
+  server: {
+    // by default, vite will only listen on ipv6 loopback!
+    // there does not seem to be an easy way to listen on ipv4 & ipv6
+    // https://caddy.community/t/reverse-proxy-only-looking-to-ipv4-loopback/26345
+    host: "0.0.0.0",
+    // if the port is in use, fail loudly
+    strictPort: true,
+  },
   plugins: [
     ...getModePlugins(mode),
     requireEnvCheckerPlugin(mode),

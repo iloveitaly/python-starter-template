@@ -34,7 +34,7 @@ _brew_check_and_install brew_target:
 
 # include all development requirements not handled by `mise` for local development
 [macos]
-requirements: (_brew_check_and_install "lefthook") && (_brew_check_and_install "jq") (_brew_check_and_install "fd")
+requirements:
 	@if ! which mise > /dev/null; then \
 		echo "mise is not installed. Please install."; \
 		echo "https://mise.jdx.dev"; \
@@ -42,13 +42,20 @@ requirements: (_brew_check_and_install "lefthook") && (_brew_check_and_install "
 	fi
 
 	# for procfile management
+	# TODO maybe use? https://github.com/yukihirop/ultraman?tab=readme-ov-file
 	@if ! gem list -i foreman >/dev/null 2>&1; then \
 		echo "Installing foreman"; \
 		gem install foreman; \
 	fi
 
+	for brew_package in lefthook jq fd localias; do \
+		just _brew_check_and_install $brew_package; \
+	done
+
 	lefthook install
-	rm .git/hooks/*.sample
+
+	# sample scripts make the hooks dir look pretty messy
+	rm .git/hooks/*.sample || true
 
 # TODO should only be run locally, and not on CI
 [macos]
@@ -92,13 +99,27 @@ _mise_upgrade:
 	rm .tool-versions.bak
 
 [macos]
-tooling_upgrade: && _mise_upgrade
+tooling_upgrade: && _mise_upgrade js_sync-engine-versions
 	brew upgrade jq fd
 	gem install foreman
 	mise self-update
 
 [macos]
 upgrade: tooling_upgrade js_upgrade py_upgrade
+
+# run daemon to setup local development aliases
+[macos]
+[script]
+local-alias:
+	if [[ "$(localias status)" == "daemon running with pid "* ]]; then
+		echo "Daemon already running"
+		localias reload
+		exit 0
+	fi
+
+	localias start
+
+	localias debug config --print
 
 clean:
 	rm -rf .nixpacks web/.nixpacks || true
@@ -169,6 +190,7 @@ js_generate-openapi *flag:
 
 JAVASCRIPT_PACKAGE_JSON := WEB_DIR / "package.json"
 
+# update package.json engines to match the current versions in .tool-versions
 [macos]
 [script]
 js_sync-engine-versions:
@@ -216,7 +238,7 @@ py_nuke: && py_install-local-packages
 	uv sync
 
 py_dev:
-	fastapi dev main.py
+	fastapi dev
 
 # run all linting operations and fail if any fail
 py_lint:
