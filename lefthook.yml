@@ -12,7 +12,15 @@ prepare-commit-msg:
       skip:
         merge:
         rebase:
+        # only run this if the tool exists
         run: ! which aiautocommit > /dev/null
+
+# https://keisukeyamashita.github.io/commitlint-rs/
+# Use this to validate commit messages
+# commit-msg:
+#   commands:
+#     "lint commit message":
+#       run: yarn run commitlint --edit {1}
 
 pre-push:
   parallel: true

@@ -37,12 +37,20 @@
   // ],
 
   "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.autoSearchPaths": true,
   "python.analysis.packageIndexDepths": [
     {
       "name": "",
       "depth": 3,
       "includeAllSymbols": true
+    },
+    // TODO packages are not being indexed, can't find fastapi symbols in the symbol search but can in the import analysis...
+    {
+      "name": "fastapi",
+      "depth": 3,
+      "includeAllSymbols": true
     }
+
     //   {"name":"pdf2image", "depth":3, "includeAllSymbols": true},
     // {"name":"decouple", "depth":3, "includeAllSymbols": true},
   ],
@@ -66,7 +74,8 @@
     "tailwindcss",
     "typecheck",
     "typegen",
-    "aiautocommit"
+    "aiautocommit",
+    "uvicorn"
   ],
   "cSpell.enableFiletypes": ["jinja-html"],
 
@@ -76,10 +85,11 @@
     "editor.formatOnSave": true
   },
 
-  // Procfile's don't have a default file association, but are essentially yaml files
   "files.associations": {
-    "Procfile": "yaml",
-    "Procfile.*": "yaml"
+    // Procfile's don't have a default file association, but are essentially yaml files
+    "Procfile*": "yaml",
+    ".tool-versions": "shellscript",
+    "TODO*": "markdown"
   },
 
   "files.exclude": {
