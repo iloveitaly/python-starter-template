@@ -63,13 +63,39 @@ setup: requirements && db_reset
 	# direnv will setup a venv & install packages
 	direnv allow .
 
+# TODO should change the CURRENT_BASE for py and other x.x.y upgrades
+[script]
 [macos]
-tooling_upgrade:
+_mise_upgrade:
+	# Get current tools and versions from local .tool-versions only
+	TOOLS=("${(@f)$(mise list --current --json | jq -r --arg PWD "$PWD" 'to_entries | map(select(.value[0].source.path == $PWD + "/.tool-versions")) | from_entries | keys[]')}")
+
+	for TOOL in $TOOLS; do
+			# Get current version
+			CURRENT=$(mise list --current --json | jq -r --arg TOOL "$TOOL" --arg PWD "$PWD" 'to_entries | map(select(.value[0].source.path == $PWD + "/.tool-versions")) | from_entries | .[$TOOL][0].version')
+			echo "Current version of $TOOL: $CURRENT"
+
+			# Extract major version
+			CURRENT_BASE=$(echo $CURRENT | cut -d. -f1)
+			echo "Current base version of $TOOL: $CURRENT_BASE"
+
+			# Get latest version matching current major.minor
+			LATEST=$(mise ls-remote "$TOOL" | grep -E "^${CURRENT_BASE}\.[0-9.]+$" | sort -V | tail -n1)
+
+			if [[ -n $LATEST && $CURRENT != $LATEST ]]; then
+					# Update .tool-versions file
+					sed -i.bak "s/^$TOOL .*/$TOOL $LATEST/" .tool-versions
+					print "Updated $TOOL: $CURRENT -> $LATEST"
+			fi
+	done
+
+	rm .tool-versions.bak
+
+[macos]
+tooling_upgrade: && _mise_upgrade
 	brew upgrade jq fd
 	gem install foreman
 	mise self-update
-
-	# TODO should attempt to upgrade mise versions to the latest versions, this will require some tinkering
 
 [macos]
 upgrade: tooling_upgrade js_upgrade py_upgrade
@@ -140,6 +166,28 @@ js_generate-openapi *flag:
 	else; \
 		just _js_generate-openapi; \
 	fi
+
+JAVASCRIPT_PACKAGE_JSON := WEB_DIR / "package.json"
+
+[macos]
+[script]
+js_sync-engine-versions:
+	NODE_VERSION=$(mise list --current --json | jq -r ".node[0].version")
+	PNPM_VERSION=$(pnpm -v)
+
+	# jq does not have edit in place
+	# https://stackoverflow.com/questions/36565295/jq-to-replace-text-directly-on-file-like-sed-i
+	tmp_package=$(mktemp)
+
+	jq "
+		. + {
+			engines: {
+				node: \">=$NODE_VERSION\",
+				pnpm: \">=$PNPM_VERSION\"
+			}
+	}" "{{JAVASCRIPT_PACKAGE_JSON}}" > "$tmp_package"
+
+	mv "$tmp_package" "{{JAVASCRIPT_PACKAGE_JSON}}"
 
 #######################
 # Python
@@ -382,7 +430,7 @@ build_inspect *flags:
 # interactively inspect the layers of the built image
 [macos]
 build_dive: (_brew_check_and_install "dive")
-  dive "{{IMAGE_TAG}}"
+	dive "{{IMAGE_TAG}}"
 
 # dump nixpacks-generated Dockerfile for manual build and production debugging
 build_dump:
@@ -423,8 +471,8 @@ build_run-as-production procname="":
 # extract worker start command from Procfile
 [script]
 extract_proc procname:
-  [ -n "{{procname}}" ] || exit 0
-  yq -r '.{{procname}}' Procfile
+	[ -n "{{procname}}" ] || exit 0
+	yq -r '.{{procname}}' Procfile
 
 #######################
 # Direnv Extensions
