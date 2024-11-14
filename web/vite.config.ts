@@ -1,3 +1,4 @@
+import { reactRouterDevTools } from "react-router-devtools"
 import { defineConfig } from "vite"
 import { loadEnv } from "vite"
 import Terminal from "vite-plugin-terminal"
@@ -38,14 +39,22 @@ function requireEnvCheckerPlugin(mode: string) {
   }
 }
 
+function getModePlugins(mode: string) {
+  if (mode === "production") {
+    return [
+      sentryVitePlugin({
+        // real component names in errors
+        reactComponentAnnotation: { enabled: true },
+      }),
+    ]
+  }
+
+  return [Terminal(), reactRouterDevTools()]
+}
 export default defineConfig(({ mode }) => ({
   plugins: [
+    ...getModePlugins(mode),
     requireEnvCheckerPlugin(mode),
-    sentryVitePlugin({
-      // real component names in errors
-      reactComponentAnnotation: { enabled: true },
-    }),
-    mode !== "production" && Terminal(),
     reactRouter({ ssr: false }),
     tsconfigPaths(),
   ],
