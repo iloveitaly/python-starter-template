@@ -1,10 +1,11 @@
 // TODO why do I need ../? I couldn't get .react-router to play well
 // import * as Route from "/.react-router/types/app/+types.root"
-import { type MetaFunction, useLoaderData } from "react-router"
+import { type MetaFunction } from "react-router"
+
+import { getClient } from "~/configuration/clerk"
 
 import type { Route } from "./+types.home"
-import { invariant } from "@epic-web/invariant"
-import { readRootGet } from "client/services.gen"
+import { readRootInternalV1Get } from "client/services.gen"
 
 export const meta: MetaFunction = () => {
   return [
@@ -14,20 +15,33 @@ export const meta: MetaFunction = () => {
 }
 
 export async function clientLoader(_loader_args: Route.ClientLoaderArgs) {
-  const { data } = await readRootGet()
-  invariant(data !== undefined, "Failed to load data")
+  // TODO what's terrible about this is I believe the ClerkProvider will hit the clerk API yet again
+  const clerkClient = await getClient()
+
+  // only goal here is protecting this page from hitting the internal API
+  if (!clerkClient.user) {
+    await clerkClient.redirectToSignIn()
+    return
+  }
+
+  // this route is authenticated
+  const { data } = await readRootInternalV1Get()
+
+  // TODO need idiomatic error handling here
+  if (data === undefined) {
+    throw new Error("Failed to load data")
+  }
+
   return data
 }
 
-export default function Index() {
-  const data = useLoaderData<typeof clientLoader>()
-
+export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <div className="flex h-screen items-center justify-center">
       <div className="flex flex-col items-center gap-16">
         <header className="flex flex-col items-center gap-9">
           <h1 className="leading text-2xl font-bold text-gray-800 dark:text-gray-100">
-            {data.message}
+            {loaderData && loaderData.message}
             <span className="sr-only">React Router</span>
           </h1>
           <div className="w-[500px] max-w-[100vw] p-4">
