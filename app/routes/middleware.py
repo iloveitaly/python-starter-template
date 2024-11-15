@@ -11,3 +11,5 @@ def add_middleware(app: FastAPI):
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    return app

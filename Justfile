@@ -268,10 +268,13 @@ py_lint:
 		exit 1
 	fi
 
-	#   run: uv run pytest tests
-	#   run: uv run pytest --cov=./
+py_test:
+	uv run pytest --github-report
+	# TODO what about code coverage? --cov?
 
+# automatically fix linting errors
 py_lint_fix:
+	# TODO anything we can do here with pyright
 	uv tool run ruff check . --fix
 
 #######################

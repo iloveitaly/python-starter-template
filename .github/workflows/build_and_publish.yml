@@ -53,6 +53,12 @@ jobs:
       - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
       - run: just py_setup
       - run: just py_lint
+      - run: just py_test
+      - name: Add Coverage Comment to PR
+        id: coverage_comment
+        uses: py-cov-action/python-coverage-comment-action@v3
+        with:
+          GITHUB_TOKEN: ${{ github.token }}
 
   app:
     name: React Frontend

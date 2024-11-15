@@ -11,7 +11,7 @@ app = APIRouter(
 
 
 class AppData(BaseModel, extra="forbid"):
-    message: str = "Hello From Python"
+    message: str = "Hello From Internal Python"
 
 
 @app.get("/")

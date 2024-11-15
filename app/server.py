@@ -24,11 +24,17 @@ if is_production():
 app = FastAPI(**fast_api_args)  # type: ignore
 
 mount_public_directory(app)
-add_middleware(app)
 
 app.include_router(internal_app)
 
+add_middleware(app)
+
+
+@app.get("/")
+async def read_root():
+    return "Hello From Internal Python"
+
 
 @app.get("/items/{item_id}")
-def read_item(item_id: int, q: str | None = None):
+async def read_item(item_id: int, q: str | None = None):
     return {"item_id": item_id, "q": q}
