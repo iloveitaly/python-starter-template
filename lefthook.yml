@@ -22,8 +22,11 @@ prepare-commit-msg:
 #     "lint commit message":
 #       run: yarn run commitlint --edit {1}
 
+# scripts cannot be to run Justfile recipes, they must reference a specific file
 pre-push:
   parallel: true
-  scripts:
-    "just py_lint":
-    "just js_lint":
+  commands:
+    py_link:
+      run: just py_lint
+    js_lint:
+      run: just js_lint
