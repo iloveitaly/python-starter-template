@@ -48,7 +48,7 @@ function getModePlugins(mode: string) {
       }),
     ]
   }
-  return []
+
   return [Terminal(), reactRouterDevTools()]
 }
 export default defineConfig(({ mode }) => ({
@@ -59,6 +59,8 @@ export default defineConfig(({ mode }) => ({
     host: "0.0.0.0",
     // if the port is in use, fail loudly
     strictPort: true,
+    // random ports to avoid conflict with other projects
+    port: 8201,
   },
   plugins: [
     ...getModePlugins(mode),

@@ -238,7 +238,8 @@ py_nuke: && py_install-local-packages
 	uv sync
 
 py_dev:
-	fastapi dev
+	# TODO feels like port should be able to be defined via ENV
+	fastapi dev --port 8200
 
 # run all linting operations and fail if any fail
 py_lint:
