@@ -66,7 +66,7 @@ requirements:
 
 # TODO should only be run locally, and not on CI
 [macos]
-setup: requirements && db_reset
+setup: requirements && py_setup js_setup db_reset local-alias
 	@if [ ! -f .env.local ]; then \
 		cp .env.local-example .env.local; \
 		echo "Please edit .env.local to your liking."; \
@@ -162,6 +162,14 @@ js_lint:
 js_lint-fix:
 	{{_pnpm}} prettier --write .
 	{{_pnpm}} eslint --cache --cache-location ./node_modules/.cache/eslint . --fix
+
+[script]
+js_test:
+	if [ -n "${GITHUB_ACTIONS:-}" ]; then
+		{{_pnpm}} vitest run --reporter=github-actions
+	else \
+		{{_pnpm}} vitest run
+	fi
 
 js_dev:
 	[[ -d {{WEB_DIR}}/node_modules ]] || just js_setup
