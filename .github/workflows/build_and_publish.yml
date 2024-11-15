@@ -77,6 +77,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
+      # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
+      - name: Cache zsh
+        id: cache-zsh
+        uses: actions/cache@v4
+        with:
+          path: /usr/bin/zsh
+          key: ${{ runner.os }}-zsh
+
+      - name: Install zsh
+        if: steps.cache-zsh.outputs.cache-hit != 'true'
+        run: sudo apt-get update && sudo apt-get install -y zsh && which zsh
       - name: Install zsh, for Justfile
         run: sudo apt-get update; sudo apt-get install zsh
       - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
