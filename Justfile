@@ -48,9 +48,16 @@ requirements:
 		gem install foreman; \
 	fi
 
-	for brew_package in lefthook jq fd localias; do \
+	@for brew_package in lefthook jq fd localias; do \
 		just _brew_check_and_install $brew_package; \
 	done
+
+	@if ! which commitlint > /dev/null; then \
+		if ! cargo --list | grep -q binstall; then \
+			echo "cargo binstall not available, skipping commitlint installation"; \
+		fi && \
+		cargo binstall -y commitlint-rs; \
+	fi
 
 	lefthook install
 

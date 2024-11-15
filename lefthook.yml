@@ -17,10 +17,14 @@ prepare-commit-msg:
 
 # https://keisukeyamashita.github.io/commitlint-rs/
 # Use this to validate commit messages
-# commit-msg:
-#   commands:
-#     "lint commit message":
-#       run: yarn run commitlint --edit {1}
+commit-msg:
+  commands:
+    commitlint:
+      run: commitlint
+    skip:
+      # only run this if the tool exists
+      run: ! which commitlint > /dev/null
+
 
 # scripts cannot be to run Justfile recipes, they must reference a specific file
 pre-push:
