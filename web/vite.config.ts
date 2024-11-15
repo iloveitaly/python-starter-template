@@ -52,6 +52,7 @@ function getModePlugins(mode: string) {
   return [Terminal(), reactRouterDevTools()]
 }
 export default defineConfig(({ mode }) => ({
+  // test configuration is done via vitest.config.ts
   server: {
     // by default, vite will only listen on ipv6 loopback!
     // there does not seem to be an easy way to listen on ipv4 & ipv6

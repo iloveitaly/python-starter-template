@@ -183,7 +183,7 @@ js_playground:
 	{{_pnpm}} dlx tsx ./playground.ts
 
 js_upgrade:
-	{{_pnpm}} npm-check-updates --interactive
+	{{_pnpm}} dlx npm-check-updates --interactive
 
 # this same path is referenced in package.json; do not change without updating there too
 OPENAPI_JSON_PATH := justfile_directory() / WEB_DIR / "openapi.json"
