@@ -1,32 +1,30 @@
 ## python
 celery types
 https://github.com/0xthiagomartins/sqlmodel-controller/blob/main/.coveragerc - automatic coverage
-multi root config for fastapi
 timeout issue https://github.com/celery/celery/issues/3430 and https://github.com/celery/celery/discussions/8692
 llm cache
 maybe use griptape? do they have an llm cache?
 user data model tied into clerk https://discord.com/channels/856971667393609759/1306307540862238800
+  - https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/GetOrganization
+  - https://clerk.com/docs/reference/backend-api/tag/Users#operation/GetUser
 clerk middleware https://github.com/clerk/clerk-sdk-python/issues/49
-flower job management
+flower job management, serve through fastapi / uvicorn
+typeid
 
 ## js
 sentry config, not yet ready for v7 https://docs.sentry.io/platforms/javascript/guides/react/features/react-router/
 posthog config, fix when v7 is released
-posthog usage example
+add posthog usage example
 logging config fine on the client side?
 tests from template, https://johnsmilga.com/articles/2024/10/15
-assert openapi.json version being used in production
-maybe https://www.cypress.io for full stack testing?
+maybe https://www.cypress.io for full stack testing? We should try to do this in py land instead with production built assets.
 
 ## deployment
 https://developer.1password.com/docs/ci-cd/github-actions/ for secrets building on github (for frontend)
 can kamal work with a registry with container? https://github.com/basecamp/kamal/discussions/964
-log ingestion
+log ingestion service, need to investigate
 flightcontrol on AWS?
 https://developer.1password.com/docs/service-accounts/get-started/#create-a-service-account
 
 ## dev
-maybe caddy or other tool for local development?
-should we use sops?
-should we be opinionated about asdf vs mise?
-sync engine + pnpm version
+should we use sops? Probably can just use 1p, think about mutation risks here
