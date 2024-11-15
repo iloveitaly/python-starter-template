@@ -81,8 +81,6 @@ jobs:
       - uses: tecolicom/actions-use-apt-tools@v1
         with:
           tools: zsh
-      - name: Install zsh, for Justfile
-        run: sudo apt-get update; sudo apt-get install zsh
       - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
       - run: just js_setup
       - run: just js_lint
