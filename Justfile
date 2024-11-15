@@ -276,7 +276,7 @@ py_lint:
 	fi
 
 py_test:
-	uv run pytest --github-report
+	uv run pytest
 	# TODO what about code coverage? --cov?
 
 # automatically fix linting errors
