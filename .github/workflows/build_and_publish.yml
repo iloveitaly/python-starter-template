@@ -25,9 +25,7 @@ jobs:
   web:
     name: Python Web Application
     runs-on: ubuntu-latest
-    # https://stackoverflow.com/questions/71679568/github-actions-ignore-or-exclude-dependabot-pull-requests
-    # if: ${{ github.triggering_actor != 'dependabot[bot]' }}
-    # TODO would be great if we could DRY this up https://github.com/actions/runner/issues/1182
+    # TODO would be great if we could DRY up services definition https://github.com/actions/runner/issues/1182
     services:
       redis:
         image: redis
@@ -49,16 +47,9 @@ jobs:
       - uses: jdx/mise-action@v2
 
       # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
-      - name: Cache zsh
-        id: cache-zsh
-        uses: actions/cache@v4
+      - uses: tecolicom/actions-use-apt-tools@v1
         with:
-          path: /usr/bin/zsh
-          key: ${{ runner.os }}-zsh
-
-      - name: Install zsh
-        if: steps.cache-zsh.outputs.cache-hit != 'true'
-        run: sudo apt-get update && sudo apt-get install -y zsh && which zsh
+          tools: zsh
 
       - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
       - run: just py_setup
