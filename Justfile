@@ -163,13 +163,14 @@ js_lint-fix:
 	{{_pnpm}} prettier --write .
 	{{_pnpm}} eslint --cache --cache-location ./node_modules/.cache/eslint . --fix
 
-[script]
+# [script]
 js_test:
-	if [ -n "${GITHUB_ACTIONS:-}" ]; then
-		{{_pnpm}} vitest run --reporter=github-actions
-	else \
-		{{_pnpm}} vitest run
-	fi
+	{{_pnpm}} vitest run
+	# if [ -n "${GITHUB_ACTIONS:-}" ]; then
+	# 	{{_pnpm}} vitest run --reporter=github-actions
+	# else \
+	# 	{{_pnpm}} vitest run
+	# fi
 
 js_dev:
 	[[ -d {{WEB_DIR}}/node_modules ]] || just js_setup
