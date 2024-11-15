@@ -56,5 +56,6 @@ addopts = "--pdbcls=pdbr:RichPdb"
 # to be compatible with vs code ruff plugin
 extend-select = ["I"]
 
-[tool.coverage.run]
-plugins = ["covdefaults"]
+# TODO this doesn't play well with the docker image where the coverage comment is running
+# [tool.coverage.run]
+# plugins = ["covdefaults"]
