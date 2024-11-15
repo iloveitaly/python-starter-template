@@ -60,7 +60,7 @@ export default defineConfig(({ mode }) => ({
     // if the port is in use, fail loudly
     strictPort: true,
     // random ports to avoid conflict with other projects
-    port: 8201,
+    port: parseInt(process.env.JAVASCRIPT_SERVER_PORT ?? "5731"),
   },
   plugins: [
     ...getModePlugins(mode),
