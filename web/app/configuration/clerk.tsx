@@ -1,5 +1,5 @@
 import * as clerkPkg from "@clerk/clerk-js"
-import { ClerkProvider, Protect } from "@clerk/clerk-react"
+import { ClerkProvider } from "@clerk/clerk-react"
 import { invariant } from "@epic-web/invariant"
 
 // required in prod and dev
