@@ -147,6 +147,8 @@ _pnpm := "cd " + WEB_DIR + " && pnpm"
 
 js_setup:
 	{{_pnpm}} install
+	{{_pnpm}} run openapi
+	{{_pnpm}} react-router typegen
 
 js_nuke: && js_setup
 	cd {{WEB_DIR}} && rm -rf node_modules
