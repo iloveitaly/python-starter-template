@@ -1,7 +1,7 @@
 import { RouterProvider, createMemoryRouter } from "react-router"
 import { describe, expect, it } from "vitest"
 
-import App, { Layout } from "./root"
+import App from "./root"
 import { render, screen } from "@testing-library/react"
 
 describe("Root App", () => {
