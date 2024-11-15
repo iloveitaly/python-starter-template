@@ -40,7 +40,7 @@ class AuthenticateRequest:
         )
 
         # Authenticate the request
-        auth_state: RequestState = self.sdk.authenticate_request(
+        auth_state: RequestState = self.sdk.authenticate_request(  # type: ignore
             httpx_request,
             AuthenticateRequestOptions(),
         )

@@ -28,3 +28,7 @@ https://developer.1password.com/docs/service-accounts/get-started/#create-a-serv
 
 ## dev
 should we use sops? Probably can just use 1p, think about mutation risks here
+linting on lefthook should apply to files that are commited, not just staged
+
+## commitlint
+* removing unused import

@@ -4,8 +4,10 @@ This is an extremely opinionated template for a Python and React project. Here's
 
 * Justfile + Direnv + Mise + Lefthook + 1Password for local development & secret configuration
 * Python + FastAPI + SQLModel + SQLAlchemy + Alembic + Celery
-* TypeScript + React + Vite + React Router (in SPA mode) + ShadCN + Tailwind + ESLint + Prettier
+* TypeScript + React + Vite + React Router (in SPA mode) + ShadCN + Tailwind + ESLint + Prettier + HeyAPI (for OpenAPI)
 * Postgres + Redis
+  * Docker Compose for running locally
+  * OrbStack is recommended for local docker development
 * Sentry + Clerk + PostHog
 * Docker (via nixpacks) for containerization
 * GitHub Actions for CI/CD
@@ -38,6 +40,15 @@ ipython in prod for console exploration
 typing from python to typescript via pyright + openapi + typescript library gen
 react-router seems to wrap `vite preview`
 direnv allow config
+
+### Dependencies
+
+The development dependency story is a bit messy:
+
+* brew is used to install some tools required by development scripts
+* mise is used runtimes, package managers, and runners (direnv + just). Mise should be used to install any tools required for running `build*` and `test*` Justfile recipes but not tools that are *very* popular (like jq, etc).
+  * Note that asdf could probably be used instead of mise, but I haven't tested it and there's many Justfile recipes that use mise.
+* apt is used to install *some* of the tools required to run CI scripts (like zsh), but some are omitted since they should never run in production.
 
 ### DevProd
 
