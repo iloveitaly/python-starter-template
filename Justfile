@@ -276,12 +276,13 @@ py_lint:
 	fi
 
 py_test:
-	uv run pytest
+	# TODO I don't understand why we need PYTHONPATH here, there's got to be a better way...
+	PYTHONPATH=. uv run pytest
 	# TODO what about code coverage? --cov?
 
 # automatically fix linting errors
 py_lint_fix:
-	# TODO anything we can do here with pyright
+	# TODO anything we can do here with pyright?
 	uv tool run ruff check . --fix
 
 #######################
