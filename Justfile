@@ -170,7 +170,7 @@ js_test:
 	# TODO looks like some of the tests don't output the same errors in the GH test environment
 
 	# NOTE vitest automatically will detect GITHUB_ACTIONS and change the output format
-	{{_pnpm}} vitest run --reporter verbose
+	{{_pnpm}} vitest run --reporter=verbose
 
 js_dev:
 	[[ -d {{WEB_DIR}}/node_modules ]] || just js_setup
