@@ -2,20 +2,34 @@ import { log } from "~/configuration/logging"
 
 import { invariant } from "@epic-web/invariant"
 
+export function environmentName() {
+  return import.meta.env.MODE.toLowerCase()
+}
+
 export function isDevelopment() {
-  return process.env.NODE_ENV?.toLowerCase() === "development"
+  return environmentName() === "development"
 }
 
 export function isProduction() {
-  return process.env.NODE_ENV?.toLowerCase() === "production"
+  return environmentName() === "production"
 }
 
-export function isTest() {
-  return process.env.NODE_ENV?.toLowerCase() === "test"
+export function isStaging() {
+  return environmentName() === "staging"
+}
+
+export function isTesting() {
+  return environmentName() === "test"
 }
 
 // TODO(mbianco) can we get the type assertion to flow out?
 export function requireEnv(name: string) {
+  if (!name.startsWith("VITE_")) {
+    log.warn("environment variable name does not start with VITE_", {
+      name,
+    })
+  }
+
   const value = import.meta.env[name]
   invariant(value, `Missing environment variable: ${name}`)
   return value

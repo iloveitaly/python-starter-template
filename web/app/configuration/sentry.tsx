@@ -1,14 +1,23 @@
 import * as Sentry from "@sentry/react"
-import { invariant } from "@epic-web/invariant"
-import { isProduction } from "utils/environment"
+import {
+  environmentName,
+  isDevelopment,
+  isProduction,
+  isTesting,
+  requireEnv,
+} from "utils/environment"
+
+// TODO fix up react router when rr7 is supported https://docs.sentry.io/platforms/javascript/guides/react/features/react-router/
 
 if (isProduction()) {
-  const SENTRY_DSN = import.meta.env.VITE_SENTRY_DSN
-  invariant(SENTRY_DSN, "Missing Sentry Key")
-
   Sentry.init({
-    dsn: SENTRY_DSN,
+    dsn: requireEnv("VITE_SENTRY_DSN"),
+
+    environment: environmentName(),
+    release: requireEnv("VITE_BUILD_COMMIT"),
+
     integrations: [
+      Sentry.browserTracingIntegration(),
       // TODO(mbianco) we should add react-router 7 integration when it's available
       // Replay is only available in the client
       Sentry.replayIntegration(),
@@ -31,13 +40,14 @@ if (isProduction()) {
 }
 
 export default function withSentryProvider(Component: React.ComponentType) {
-  if (!isProduction()) {
+  // if this is enabled in testing, it impacts the resulting debugging output provided
+  // https://discord.com/channels/621778831602221064/1307425055667519578
+  if (isDevelopment() || isTesting()) {
     return Component
   }
 
-  return (props: React.ComponentProps<typeof Component>) => (
-    <Sentry.ErrorBoundary>
-      <Component {...props} />
-    </Sentry.ErrorBoundary>
-  )
+  return Sentry.withErrorBoundary(Component, {
+    // TODO implement custom fallback for a nicer experience
+    showDialog: true,
+  })
 }
