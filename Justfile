@@ -14,8 +14,11 @@
 set shell := ["zsh", "-cu"]
 set ignore-comments := true
 
-# for [script]
+# for [script] support
 set unstable := true
+
+# determines what shell to use for [script]
+set script-interpreter := ["zsh", "-euBh"]
 
 default:
 	just --list
@@ -23,6 +26,8 @@ default:
 #######################
 # Setup
 #######################
+
+BREW_PACKAGES := "lefthook jq fd localias"
 
 [macos]
 [script]
@@ -34,10 +39,11 @@ _brew_check_and_install brew_target:
 
 # include all development requirements not handled by `mise` for local development
 [macos]
-requirements:
+[doc("--extras to install non-essential productivity tooling")]
+requirements *flags:
 	@if ! which mise > /dev/null; then \
 		echo "mise is not installed. Please install."; \
-		echo "https://mise.jdx.dev"; \
+		echo "  => https://mise.jdx.dev"; \
 		exit 1; \
 	fi
 
@@ -48,7 +54,7 @@ requirements:
 		gem install foreman; \
 	fi
 
-	@for brew_package in lefthook jq fd localias; do \
+	@for brew_package in {{BREW_PACKAGES}}; do \
 		just _brew_check_and_install $brew_package; \
 	done
 
@@ -57,6 +63,10 @@ requirements:
 			echo "cargo binstall not available, skipping commitlint installation"; \
 		fi && \
 		cargo binstall -y commitlint-rs; \
+	fi
+
+	if [[ "{{flags}}" =~ "--extras" ]]; then \
+		uv tool add aiautocommit; \
 	fi
 
 	lefthook install
@@ -97,19 +107,19 @@ _mise_upgrade:
 			LATEST=$(mise ls-remote "$TOOL" | grep -E "^${CURRENT_BASE}\.[0-9.]+$" | sort -V | tail -n1)
 
 			if [[ -n $LATEST && $CURRENT != $LATEST ]]; then
-					# Update .tool-versions file
-					sed -i.bak "s/^$TOOL .*/$TOOL $LATEST/" .tool-versions
-					print "Updated $TOOL: $CURRENT -> $LATEST"
+					sed -i '' "s/^$TOOL .*/$TOOL $LATEST/" .tool-versions
+					echo "Updated $TOOL: $CURRENT -> $LATEST"
 			fi
 	done
 
-	rm .tool-versions.bak
+	mise install
 
+# upgrade mise, language versions, and essential packages
 [macos]
 tooling_upgrade: && _mise_upgrade js_sync-engine-versions
-	brew upgrade jq fd
-	gem install foreman
 	mise self-update
+	brew upgrade {{BREW_PACKAGES}}
+	gem install foreman
 
 [macos]
 upgrade: tooling_upgrade js_upgrade py_upgrade
@@ -130,11 +140,10 @@ local-alias:
 
 clean:
 	rm -rf .nixpacks web/.nixpacks || true
-	rm -r tmp/*
-	rm -rf web/build
-	rm -rf web/node_modules
-	rm -rf web/.react-router
-	rm .git/hooks/*
+	rm -rf tmp/* || true
+	rm -rf web/build web/client web/node_modules web/.react-router || true
+	rm -rf .git/hooks/* || true
+	rm -rf .pytest_cache .ruff_cache .venv
 
 #######################
 # Javascript
@@ -170,7 +179,6 @@ js_test:
 	# TODO looks like some of the tests don't output the same errors in the GH test environment
 
 	# NOTE vitest automatically will detect GITHUB_ACTIONS and change the output format
-	env
 	{{_pnpm}} vitest run --reporter=verbose
 
 js_dev:
@@ -417,7 +425,9 @@ build_js-assets: _production_build_assertions
 
 	# production assets bundle public "secrets" which are extracted from the environment
 	# for this reason, we need to emulate the production environment, then build the assets statically
-	nixpacks build {{WEB_DIR}} --name "{{JAVASCRIPT_IMAGE_TAG}}" {{NIXPACKS_BUILD_METADATA}} \
+	nixpacks build {{WEB_DIR}} --name "{{JAVASCRIPT_IMAGE_TAG}}" \
+		 {{NIXPACKS_BUILD_METADATA}} \
+		--env VITE_BUILD_COMMIT="{{GIT_SHA}}" \
 		--build-cmd='pnpm openapi' \
 		--start-cmd='pnpm build'
 
