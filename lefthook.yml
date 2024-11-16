@@ -15,14 +15,14 @@ prepare-commit-msg:
         # only run this if the tool exists
         run: ! which aiautocommit > /dev/null
 
-# https://keisukeyamashita.github.io/commitlint-rs/
 # Use this to validate commit messages
 commit-msg:
   commands:
     commitlint:
       run: commitlint
     skip:
-      # only run this if the tool exists
+      # only run this if the tool exists, it's conditionally installed
+      # https://keisukeyamashita.github.io/commitlint-rs/
       run: ! which commitlint > /dev/null
 
 
@@ -30,7 +30,7 @@ commit-msg:
 pre-push:
   parallel: true
   commands:
-    py_link:
+    py_lint:
       run: just py_lint
     js_lint:
       run: just js_lint

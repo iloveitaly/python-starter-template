@@ -59,3 +59,7 @@ extend-select = ["I"]
 # TODO this doesn't play well with the docker image where the coverage comment is running
 # [tool.coverage.run]
 # plugins = ["covdefaults"]
+
+# If I'm hacking on another package, I like to bundle this within the repository so I can use a single VS Code editor to mutate the files
+[tool.pyright]
+exclude = [".venv", "pypi"]

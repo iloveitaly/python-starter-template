@@ -255,9 +255,8 @@ py_dev:
 	fastapi dev --port 8200
 
 # run all linting operations and fail if any fail
+[script]
 py_lint:
-	#!/usr/bin/env zsh
-
 	# NOTE this is important: we want all operations to run instead of fail fast
 	set -x
 
@@ -276,7 +275,7 @@ py_lint:
 	# TODO https://github.com/fpgmaas/deptry/issues/740
 	# uv tool run deptry --experimental-namespace-package . || exit_code=$?
 
-	if [[ -n "$exit_code" ]]; then
+	if [[ -n "${exit_code:-}" ]]; then
 		echo "One or more commands failed"
 		exit 1
 	fi
