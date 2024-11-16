@@ -166,8 +166,11 @@ js_lint-fix:
 	{{_pnpm}} eslint --cache --cache-location ./node_modules/.cache/eslint . --fix
 
 js_test:
+	# TODO I should run in a full blown test environment: `GITHUB_ACTIONS=1 direnv exec . `
+	# TODO looks like some of the tests don't output the same errors in the GH test environment
+
 	# NOTE vitest automatically will detect GITHUB_ACTIONS and change the output format
-	{{_pnpm}} vitest run
+	{{_pnpm}} vitest run --reporter verbose
 
 js_dev:
 	[[ -d {{WEB_DIR}}/node_modules ]] || just js_setup
