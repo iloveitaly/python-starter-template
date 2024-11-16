@@ -14,6 +14,7 @@ if (isProduction()) {
     dsn: requireEnv("VITE_SENTRY_DSN"),
 
     environment: environmentName(),
+    // TODO this may not be needed if we integrate sentry release, unsure
     release: requireEnv("VITE_BUILD_COMMIT"),
 
     integrations: [
@@ -29,6 +30,7 @@ if (isProduction()) {
     tracesSampleRate: 1.0,
 
     // TODO(mbianco) pull domain from ENV
+    // TODO(mbianco) should pull localias as well
     // Set `tracePropagationTargets` to control for which URLs distributed tracing should be enabled
     tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
 

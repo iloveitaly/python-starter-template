@@ -23,6 +23,7 @@ export function isTesting() {
 }
 
 // TODO(mbianco) can we get the type assertion to flow out?
+// https://vite.dev/guide/env-and-mode
 export function requireEnv(name: string) {
   if (!name.startsWith("VITE_")) {
     log.warn("environment variable name does not start with VITE_", {
@@ -36,5 +37,5 @@ export function requireEnv(name: string) {
 }
 
 log.debug("environment status", {
-  env: process.env.NODE_ENV,
+  env: environmentName(),
 })
