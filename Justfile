@@ -138,12 +138,9 @@ local-alias:
 
 	localias debug config --print
 
-clean:
-	rm -rf .nixpacks web/.nixpacks || true
+clean: js_clean py_clean build_clean
 	rm -rf tmp/* || true
-	rm -rf web/build web/client web/node_modules web/.react-router || true
 	rm -rf .git/hooks/* || true
-	rm -rf .pytest_cache .ruff_cache .venv
 
 #######################
 # Javascript
@@ -159,8 +156,8 @@ js_setup:
 	{{_pnpm}} run openapi
 	{{_pnpm}} react-router typegen
 
-js_nuke: && js_setup
-	cd {{WEB_DIR}} && rm -rf node_modules
+js_clean:
+	rm -rf {{WEB_DIR}}/build {{WEB_DIR}}/client {{WEB_DIR}}/node_modules {{WEB_DIR}}/.react-router || true
 
 # TODO support GITHUB_ACTIONS formatting
 js_lint:
@@ -174,12 +171,11 @@ js_lint-fix:
 	{{_pnpm}} prettier --write .
 	{{_pnpm}} eslint --cache --cache-location ./node_modules/.cache/eslint . --fix
 
+# run tests in the exact same environment that will be used on CI
 js_test:
-	# TODO I should run in a full blown test environment: `GITHUB_ACTIONS=1 direnv exec . `
-	# TODO looks like some of the tests don't output the same errors in the GH test environment
-
 	# NOTE vitest automatically will detect GITHUB_ACTIONS and change the output format
-	{{_pnpm}} vitest run --reporter=verbose
+	# CI=true *will* impact how various JS tooling is run. This is needed to ensure the
+	cd {{WEB_DIR}} && CI=true direnv exec . pnpm vitest run
 
 js_dev:
 	[[ -d {{WEB_DIR}}/node_modules ]] || just js_setup
@@ -200,8 +196,7 @@ OPENAPI_JSON_PATH := justfile_directory() / WEB_DIR / "openapi.json"
 
 _js_generate-openapi:
 	# js is used to pretty print the output
-	# TODO it's unclear to me why the PYTHONPATH is exactly needed here. We could add package=true to the pyproject.toml
-	LOG_LEVEL=ERROR PYTHONPATH=. uv run python -c "from app.server import app; import json; print(json.dumps(app.openapi()))" | jq -r . > "{{OPENAPI_JSON_PATH}}"
+	LOG_LEVEL=ERROR uv run python -c "from app.server import app; import json; print(json.dumps(app.openapi()))" | jq -r . > "{{OPENAPI_JSON_PATH}}"
 	{{_pnpm}} openapi
 
 # generate a typescript client from the openapi spec
@@ -243,6 +238,15 @@ js_sync-engine-versions:
 py_setup:
 	uv venv
 
+py_clean:
+	rm -rf .pytest_cache .ruff_cache .venv
+
+# rebuild the venv from scratch
+py_nuke: py_clean && py_install-local-packages
+	# reload will recreate the venv and reset VIRTUAL_ENV and friends
+	direnv reload
+	uv sync
+
 py_upgrade:
 	# https://github.com/astral-sh/uv/issues/6794
 	uv sync -U
@@ -250,17 +254,8 @@ py_upgrade:
 
 py_install-local-packages:
 	# TODO I don't think this does what we want, they are wiped out on a uv sync
-	uv pip install --upgrade pip
 	uv pip install --upgrade --force-reinstall ipython git+https://github.com/iloveitaly/ipdb@support-executables "pdbr[ipython]" rich git+https://github.com/anntzer/ipython-autoimport.git IPythonClipboard ipython_ctrlr_fzf docrepr pyfzf jedi pretty-traceback pre-commit sqlparse debugpy ipython-suggestions datamodel-code-generator funcy-pipe colorama
-
-	source ~/.functions && python-inject-startup
-
-# rebuild the venv from scratch
-py_nuke: && py_install-local-packages
-	rm -rf .venv
-	# reload will recreate the venv and reset VIRTUAL_ENV and friends
-	direnv reload
-	uv sync
+# 	source ~/.functions && python-inject-startup
 
 py_dev:
 	# TODO feels like port should be able to be defined via ENV
@@ -293,8 +288,7 @@ py_lint:
 	fi
 
 py_test:
-	# TODO I don't understand why we need PYTHONPATH here, there's got to be a better way...
-	PYTHONPATH=. uv run pytest
+	CI=true direnv exec . uv run pytest
 	# TODO what about code coverage? --cov?
 
 # automatically fix linting errors
@@ -490,7 +484,7 @@ build_dump:
 	{{PYTHON_BUILD_CMD}} --out .
 
 build_clean:
-	rm -rf .nixpacks/
+	rm -rf .nixpacks web/.nixpacks || true
 
 # inject a shell where the build fails
 build_debug: build_dump
