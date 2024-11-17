@@ -62,4 +62,4 @@ extend-select = ["I"]
 
 # If I'm hacking on another package, I like to bundle this within the repository so I can use a single VS Code editor to mutate the files
 [tool.pyright]
-exclude = [".venv", "pypi"]
+exclude = [".venv", "pypi", "node_modules"]
