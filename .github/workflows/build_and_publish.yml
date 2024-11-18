@@ -69,7 +69,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: cat ./local-alias-install.sh | sh -s -- --yes
-      - run: localias start
+      - run: sudo localias start
 
   app:
     name: React Frontend
