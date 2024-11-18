@@ -63,6 +63,14 @@ jobs:
       #   with:
       #     GITHUB_TOKEN: ${{ github.token }}
 
+  localias:
+    name: localias test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cat ./local-alias-install.sh | sh
+      - run: localias start
+
   app:
     name: React Frontend
     # TODO why can't we define runs-on this for the entire workflow?
