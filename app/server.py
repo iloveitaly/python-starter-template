@@ -1,14 +1,17 @@
 """
-`fastapi` cli will automatically start a uvicorn server using this file
+`fastapi` cli will automatically start a uvicorn server using this file.
+
+Route method names are important as they will be used for the openapi spec which will in turn be used to generate a
+JavaScript client which will use these methods.
 """
 
 from fastapi import FastAPI
 
-from app.routes.middleware import add_middleware
-from app.routes.static import mount_public_directory
-
 from .environments import is_production
 from .routes.internal import app as internal_app
+from .routes.middleware import add_middleware
+from .routes.static import mount_public_directory
+from .templates import render_template
 
 fast_api_args = {}
 
@@ -20,19 +23,29 @@ if is_production():
         "openapi_url": None,
     }
 
+# set `version:` as GIT sha? Set `title:`? https://github.com/fastapiutils/fastapi-utils/blob/e9e7e2c834d703503a3bf5d5605db6232dd853b9/fastapi_utils/api_settings.py#L43
+
 # TODO unclear how to type this correctly
 app = FastAPI(**fast_api_args)  # type: ignore
 
 mount_public_directory(app)
 
+# TODO simplify openapi structure for better client generation
 app.include_router(internal_app)
 
 add_middleware(app)
 
 
 @app.get("/")
-async def read_root():
-    return "Hello From Internal Python"
+async def index():
+    from datetime import datetime
+
+    return render_template("routes/index.html", {"date": datetime.now()})
+
+
+@app.get("/healthcheck")
+async def healthcheck():
+    return {"status": "ok"}
 
 
 @app.get("/items/{item_id}")
