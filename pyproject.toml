@@ -19,6 +19,7 @@ dependencies = [
     "openai>=1.52.2",
     "orjson>=3.10.11",
     "posthog>=3.7.0",
+    "psycopg2-binary>=2.9.10",
     "python-decouple-typed>=3.11.0",
     "redis>=5.2.0",
     "sentry-sdk[fastapi]>=2.17.0",
@@ -44,10 +45,12 @@ dev-dependencies = [
     "pytest-github-actions-annotate-failures>=0.2.0",
     "pytest>=8.3.3",
     "ruff>=0.7.1",
+    "pytest-playwright>=0.5.2",
+    "djlint>=1.36.1",
 ]
 
 [tool.uv.sources]
-activemodel = { git = "https://github.com/iloveitaly/activemodel" }
+activemodel = { path = "pypi/activemodel" }
 
 [tool.pytest.ini_options]
 addopts = "--pdbcls=pdbr:RichPdb"
