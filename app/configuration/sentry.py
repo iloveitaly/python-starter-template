@@ -1,7 +1,7 @@
 import sentry_sdk
 from decouple import config
 
-from ..environments import is_production
+from ..environments import is_production, python_environment
 
 
 def configure_sentry():
@@ -23,6 +23,8 @@ def configure_sentry():
 
     sentry_sdk.init(
         dsn=config("SENTRY_DSN", cast=str),
+        release=config("BUILD_COMMIT", cast=str),
+        environment=python_environment(),
         enable_tracing=True,
         traces_sample_rate=0.1,
         integrations=[

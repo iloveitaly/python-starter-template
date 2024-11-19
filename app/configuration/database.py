@@ -2,7 +2,7 @@ from decouple import config
 from sqlalchemy import create_engine
 from sqlmodel import Session, SQLModel, text
 
-from ..environments import is_production, is_testing
+from ..environments import is_development, is_production, is_testing
 
 
 def database_url():
@@ -55,6 +55,8 @@ def create_db_and_tables():
     """
     Do not use when using alembic migrations, helpful for syncing the db during dev
     """
+
+    assert is_testing() or is_development()
 
     SQLModel.metadata.create_all(get_engine())
 

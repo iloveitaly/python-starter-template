@@ -15,5 +15,9 @@ def is_production():
     return python_environment() == "production"
 
 
+def is_staging():
+    return python_environment() == "staging"
+
+
 def is_development():
     return python_environment() == "development"

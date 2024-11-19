@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 from starlette.middleware.cors import CORSMiddleware
 
 
@@ -11,5 +12,7 @@ def add_middleware(app: FastAPI):
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    app.add_middleware(HTTPSRedirectMiddleware)
 
     return app

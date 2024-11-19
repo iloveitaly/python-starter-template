@@ -2,12 +2,16 @@
 This file should be imported first in any application entrypoint.
 """
 
+from pathlib import Path
+
 import structlog
 
 from .configuration.logging import configure_logger
 from .configuration.sentry import configure_sentry
 from .environments import python_environment
 from .setup import configure_openai, get_root_path
+
+root: Path
 
 # must type manually, unfortunately :/
 # https://www.structlog.org/en/21.3.0/types.html
