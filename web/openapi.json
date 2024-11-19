@@ -30,8 +30,24 @@
     },
     "/": {
       "get": {
-        "summary": "Read Root",
-        "operationId": "read_root__get",
+        "summary": "Index",
+        "operationId": "index__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/healthcheck": {
+      "get": {
+        "summary": "Healthcheck",
+        "operationId": "healthcheck_healthcheck_get",
         "responses": {
           "200": {
             "description": "Successful Response",

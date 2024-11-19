@@ -1,4 +1,4 @@
-import { reactRouterDevTools } from "react-router-devtools"
+// import { reactRouterDevTools } from "react-router-devtools"
 import { defineConfig } from "vite"
 import { loadEnv } from "vite"
 import Terminal from "vite-plugin-terminal"
@@ -46,10 +46,16 @@ function getModePlugins(mode: string) {
         // real component names in errors
         reactComponentAnnotation: { enabled: true },
       }),
+      // only check env vars when building for production
+      // some ENV is only available in prod
+      requireEnvCheckerPlugin(mode),
     ]
   }
 
-  return [Terminal(), reactRouterDevTools()]
+  return [
+    Terminal(),
+    // reactRouterDevTools()
+  ]
 }
 export default defineConfig(({ mode }) => ({
   // test configuration is done via vitest.config.ts
@@ -66,7 +72,6 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     ...getModePlugins(mode),
-    requireEnvCheckerPlugin(mode),
     reactRouter({ ssr: false }),
     tsconfigPaths(),
   ],
