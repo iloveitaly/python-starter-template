@@ -51,6 +51,7 @@ dev-dependencies = [
 
 [tool.uv.sources]
 activemodel = { path = "pypi/activemodel" }
+ipython-autoimport = { git = "https://github.com/anntzer/ipython-autoimport.git" }
 
 [tool.pytest.ini_options]
 addopts = "--pdbcls=pdbr:RichPdb"
@@ -66,3 +67,20 @@ extend-select = ["I"]
 # If I'm hacking on another package, I like to bundle this within the repository so I can use a single VS Code editor to mutate the files
 [tool.pyright]
 exclude = [".venv", "pypi", "web/node_modules"]
+
+[dependency-groups]
+debugging-extras = [
+    "colorama>=0.4.6",
+    "datamodel-code-generator>=0.26.3",
+    "debugpy>=1.8.8",
+    "docrepr>=0.2.0",
+    "ipython-autoimport",
+    "ipython-ctrlr-fzf>=0.2.1",
+    "ipython-suggestions>=1.0.0",
+    "ipythonclipboard>=1.0b2",
+    "jedi>=0.19.2",
+    "pdbr[ipython]>=0.8.9",
+    "pretty-traceback>=2024.1021",
+    "pyfzf>=0.3.1",
+    "sqlparse>=0.5.2",
+]
