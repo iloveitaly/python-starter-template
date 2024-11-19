@@ -234,7 +234,8 @@ js_sync-engine-versions:
 #######################
 
 py_setup:
-	uv venv --group=debugging-extras
+	uv venv
+	uv sync --group=debugging-extras
 
 # clean entire py project without rebuilding
 py_clean:
