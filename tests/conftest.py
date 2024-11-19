@@ -1,12 +1,18 @@
 # isort: off
 
-import typing as t
-from unittest.mock import patch
 
+from decouple import config
 import pytest
-from sqlmodel import Session, SQLModel
+from sqlmodel import SQLModel
+from fastapi.testclient import TestClient
 
 from app.configuration.database import get_engine
+from app.server import app
+
+
+@pytest.fixture
+def client():
+    return TestClient(app, base_url=config("VITE_PYTHON_URL", cast=str))
 
 
 def truncate_db():
@@ -27,53 +33,53 @@ def truncate_db():
             transaction.commit()
 
 
-truncate_db()
+# truncate_db()
 
 
-CLEANER_STRATEGY: t.Literal["truncate", "session"] = "truncate"
+# CLEANER_STRATEGY: t.Literal["truncate", "session"] = "truncate"
 
 
-if CLEANER_STRATEGY == "truncate":
+# if CLEANER_STRATEGY == "truncate":
 
-    @pytest.fixture(scope="session", autouse=True)
-    def truncate_db_tests():
-        """
-        Problem with truncation is you can't run multiple tests in parallel
-        """
+#     @pytest.fixture(scope="session", autouse=True)
+#     def truncate_db_tests():
+#         """
+#         Problem with truncation is you can't run multiple tests in parallel
+#         """
 
-        truncate_db()
+#         truncate_db()
 
-        yield
+#         yield
 
 
-if CLEANER_STRATEGY == "session":
+# if CLEANER_STRATEGY == "session":
 
-    @pytest.fixture(scope="session", autouse=True)
-    def reset_db():
-        """
-        https://stackoverflow.com/questions/62433018/how-to-make-sqlalchemy-transaction-rollback-drop-tables-it-created
-        https://aalvarez.me/posts/setting-up-a-sqlalchemy-and-pytest-based-test-suite/
-        https://github.com/nickjj/docker-flask-example/blob/93af9f4fbf185098ffb1d120ee0693abcd77a38b/test/conftest.py#L77
-        https://github.com/caiola/vinhos.com/blob/c47d0a5d7a4bf290c1b726561d1e8f5d2ac29bc8/backend/test/conftest.py#L46
-        """
+#     @pytest.fixture(scope="session", autouse=True)
+#     def reset_db():
+#         """
+#         https://stackoverflow.com/questions/62433018/how-to-make-sqlalchemy-transaction-rollback-drop-tables-it-created
+#         https://aalvarez.me/posts/setting-up-a-sqlalchemy-and-pytest-based-test-suite/
+#         https://github.com/nickjj/docker-flask-example/blob/93af9f4fbf185098ffb1d120ee0693abcd77a38b/test/conftest.py#L77
+#         https://github.com/caiola/vinhos.com/blob/c47d0a5d7a4bf290c1b726561d1e8f5d2ac29bc8/backend/test/conftest.py#L46
+#         """
 
-        engine = get_engine()
+#         engine = get_engine()
 
-        with engine.begin() as connection:
-            transaction = connection.begin_nested()
-            session = Session(bind=connection)
+#         with engine.begin() as connection:
+#             transaction = connection.begin_nested()
+#             session = Session(bind=connection)
 
-            # oh baby, we like dangerous, don't we?
-            # app.database.get_session = lambda: session
-            # monkeypatch.setattr(app.database, "get_session", lambda: session)
-            with patch.object(app.database, "_get_session", return_value=session):
-                try:
-                    yield
-                finally:
-                    transaction.rollback()
-                    session.close()
+#             # oh baby, we like dangerous, don't we?
+#             # app.database.get_session = lambda: session
+#             # monkeypatch.setattr(app.database, "get_session", lambda: session)
+#             with patch.object(app.database, "_get_session", return_value=session):
+#                 try:
+#                     yield
+#                 finally:
+#                     transaction.rollback()
+#                     session.close()
 
-    print("reset_db complete")
+#     print("reset_db complete")
 
 
 # TODO the problem with this approach is not every connection uses the same session
