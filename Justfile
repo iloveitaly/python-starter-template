@@ -5,6 +5,7 @@
 # * All development, CI, and production scripts in one place.
 # * No complicated scripts in CI. Include scripts here, run them on GH actions.
 # * No hidden magical scripts on developers machines without a place to go
+# * All ENV variables should be handled via direnv and not configured here
 #
 #######################
 
@@ -74,15 +75,13 @@ requirements *flags:
 	# sample scripts make the hooks dir look pretty messy
 	rm .git/hooks/*.sample || true
 
-# TODO should only be run locally, and not on CI
+# setup everything you need for local development
 [macos]
 setup: requirements && py_setup js_setup db_reset local-alias
 	@if [ ! -f .env.local ]; then \
 		cp .env.local-example .env.local; \
 		echo "Please edit .env.local to your liking."; \
 	fi
-
-	# TODO should check if `layout uv` is supported :/
 
 	# direnv will setup a venv & install packages
 	direnv allow .
@@ -121,6 +120,7 @@ tooling_upgrade: && _mise_upgrade js_sync-engine-versions
 	brew upgrade {{BREW_PACKAGES}}
 	gem install foreman
 
+# upgrade all packages, tooling, etc
 [macos]
 upgrade: tooling_upgrade js_upgrade py_upgrade
 
@@ -145,8 +145,6 @@ clean: js_clean py_clean build_clean
 #######################
 # Javascript
 #######################
-
-# TODO .tool-versions update script could be neat for x.x.y
 
 WEB_DIR := "web"
 _pnpm := "cd " + WEB_DIR + " && pnpm"
@@ -191,14 +189,6 @@ js_playground:
 js_upgrade:
 	{{_pnpm}} dlx npm-check-updates --interactive
 
-# this same path is referenced in package.json; do not change without updating there too
-OPENAPI_JSON_PATH := justfile_directory() / WEB_DIR / "openapi.json"
-
-_js_generate-openapi:
-	# js is used to pretty print the output
-	LOG_LEVEL=ERROR uv run python -c "from app.server import app; import json; print(json.dumps(app.openapi()))" | jq -r . > "{{OPENAPI_JSON_PATH}}"
-	{{_pnpm}} openapi
-
 # generate a typescript client from the openapi spec
 [doc("Optional flag: --watch")]
 js_generate-openapi *flag:
@@ -207,6 +197,14 @@ js_generate-openapi *flag:
 	else; \
 		just _js_generate-openapi; \
 	fi
+
+_js_generate-openapi:
+	# jq is used to pretty print the output
+	LOG_LEVEL=ERROR uv run python -c "from app.server import app; import json; print(json.dumps(app.openapi()))" | \
+		jq -r . > "$OPENAPI_JSON_PATH"
+
+	# generate the js client
+	{{_pnpm}} openapi
 
 JAVASCRIPT_PACKAGE_JSON := WEB_DIR / "package.json"
 
@@ -236,31 +234,34 @@ js_sync-engine-versions:
 #######################
 
 py_setup:
-	uv venv
+	uv venv --group=debugging-extras
 
+# clean entire py project without rebuilding
 py_clean:
 	rm -rf .pytest_cache .ruff_cache .venv
 
+	# pycache should never appear because of PYTHON* vars
+	# TODO I wonder if this is happening because of djlint
+
 # rebuild the venv from scratch
-py_nuke: py_clean && py_install-local-packages
+py_nuke: py_clean && py_setup
 	# reload will recreate the venv and reset VIRTUAL_ENV and friends
 	direnv reload
-	uv sync
 
 py_upgrade:
 	# https://github.com/astral-sh/uv/issues/6794
-	uv sync -U
+	uv sync -U --group=debugging-extras
 	git add pyproject.toml uv.lock
 
-py_install-local-packages:
-	# TODO I don't think this does what we want, they are wiped out on a uv sync
-	uv pip install --upgrade --force-reinstall ipython git+https://github.com/iloveitaly/ipdb@support-executables "pdbr[ipython]" rich git+https://github.com/anntzer/ipython-autoimport.git IPythonClipboard ipython_ctrlr_fzf docrepr pyfzf jedi pretty-traceback pre-commit sqlparse debugpy ipython-suggestions datamodel-code-generator funcy-pipe colorama
-# 	source ~/.functions && python-inject-startup
 
+# open up a development server
 py_dev:
 	# TODO feels like port should be able to be defined via ENV
 	fastapi dev --port 8200
 
+# TODO should have additional tool for workers and all server processes
+
+# TODO add djlint for jinja templates
 # run all linting operations and fail if any fail
 [script]
 py_lint:
@@ -287,6 +288,7 @@ py_lint:
 		exit 1
 	fi
 
+# run tests with the exact same environment that will be used on CI
 py_test:
 	CI=true direnv exec . uv run pytest
 	# TODO what about code coverage? --cov?
@@ -296,8 +298,15 @@ py_lint_fix:
 	# TODO anything we can do here with pyright?
 	uv tool run ruff check . --fix
 
+# record playwright interactions for integration tests
+py_playwright:
+	mkdir -p tmp/playwright
+
+	uv run playwright install
+	uv run playwright codegen --target python-pytest --output tmp/playwright/$(date +%m-%d-%s).py
+
 #######################
-# Local Container Management
+# Dev Container Management
 #######################
 
 up: redis_up db_up
@@ -321,38 +330,39 @@ db_down:
 # completely destroy the dev and test databases without runnign migrations
 db_reset: db_down db_up
 	# dev database is created automatically, but test database is not
-	psql $DATABASE_URL -c "CREATE DATABASE test;"
+	psql $DATABASE_URL -c "CREATE DATABASE ${TEST_DATABASE_NAME};"
 
 db_migrate:
-	alembic upgrade head
-	PYTHON_ENV=test alembic upgrade head
+	uv run alembic upgrade head
+	PYTHON_ENV=test uv run alembic upgrade head
 
 db_seed: db_migrate
-	python migrations/seed.py
-	PYTHON_ENV=test python migrations/seed.py
+	uv run python migrations/seed.py
+	PYTHON_ENV=test uv run python migrations/seed.py
 
-# db_generate_migration:
-# 	@if [ -z "{{MIGRATION_NAME}}" ]; then \
-# 		echo "Enter the migration name: "; \
-# 		read name; \
-# 	else \
-# 		name={{MIGRATION_NAME}}; \
-# 	fi; \
+[script]
+db_generate_migration migration_name="":
+	@if [ -z "{{migration_name}}" ]; then
+		echo "Enter the migration name: "
+		read name
+	else
+		name={{migration_name}}
+	fi
 
-# 	alembic revision --autogenerate -m "$name"
+	uv run alembic revision --autogenerate -m "$name"
 
 # destroy and rebuild the database from the ground up
-# less intense than nuking the, keeps existing migrations
 db_destroy: db_reset db_migrate db_seed
 
-# only for use in early development
+# destroy all migrations and rebuild everything: only for use in early development
 db_nuke: db_reset && db_migrate db_seed
 	# destroy existing migrations, this is a terrible idea except when you are hacking :)
+	# I personally hate having a nearly greenfield project with a thousand migrations when you're iterating on the database schema.
 	rm -rf migrations/versions/* || true
-	just db_generate_migration MIGRATION_NAME="initial_commit"
+	just db_generate_migration "initial_commit"
 
-	PYTHON_ENV=test just db:migrate
-	PYTHON_ENV=test just db:seed
+	PYTHON_ENV=test just db_migrate
+	PYTHON_ENV=test just db_seed
 
 #######################
 # Deployment
@@ -364,6 +374,10 @@ deploy:
 	fi
 
 	git push dokku main
+
+	# TODO can we push from the registry image?
+
+# TODO fly deployment
 
 #######################
 # Production Build
