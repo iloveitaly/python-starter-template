@@ -170,10 +170,15 @@ js_lint-fix:
 	{{_pnpm}} eslint --cache --cache-location ./node_modules/.cache/eslint . --fix
 
 # run tests in the exact same environment that will be used on CI
+[script]
 js_test:
 	# NOTE vitest automatically will detect GITHUB_ACTIONS and change the output format
-	# CI=true *will* impact how various JS tooling is run. This is needed to ensure the
-	cd {{WEB_DIR}} && CI=true direnv exec . pnpm vitest run
+	# CI=true *will* impact how various JS tooling is run
+	if [[ -n "${CI:-}" ]]; then
+		{{_pnpm}} vitest run
+	else
+		cd {{WEB_DIR}} && CI=true direnv exec . pnpm vitest run
+	fi
 
 js_dev:
 	[[ -d {{WEB_DIR}}/node_modules ]] || just js_setup
@@ -586,3 +591,42 @@ with_entries(
 	else; \
 		just direnv_export "{{target}}" | jq -r 'to_entries[] | "\(.key)=\(.value)"'; \
 	fi
+
+
+py_toggle-development:
+	#!/usr/bin/env python
+	from pathlib import Path
+	import toml
+	import argparse
+
+	def toggle_module_source(module_name: str, force_local: bool = False, force_published: bool = False):
+			pyproject_path = Path("pyproject.toml")
+			config = toml.loads(pyproject_path.read_text())
+
+			sources = config['tool']['uv']['sources']
+			current_source = sources.get(module_name, {})
+
+			published_source = {"git": f"https://github.com/iloveitally/{module_name}.git"}
+			local_source = {"path": f"pypi/{module_name}"}
+
+			if force_local:
+					new_source = local_source
+			elif force_published:
+					new_source = published_source
+			else:
+					# Toggle between sources
+					new_source = local_source if 'git' in current_source else published_source
+
+			sources[module_name] = new_source
+			pyproject_path.write_text(toml.dumps(config))
+
+			print(f"Set {module_name} source to: {new_source}")
+
+	if __name__ == "__main__":
+			parser = argparse.ArgumentParser()
+			parser.add_argument("module", help="Module name to toggle")
+			parser.add_argument("--local", action="store_true", help="Force local path")
+			parser.add_argument("--published", action="store_true", help="Force published source")
+
+			args = parser.parse_args()
+			toggle_module_source(args.module, args.local, args.published)
