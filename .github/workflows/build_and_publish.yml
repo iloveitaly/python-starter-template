@@ -52,6 +52,7 @@ jobs:
           tools: zsh
 
       - run: cat ./local-alias-install.sh | sh -s -- --yes && sudo localias start
+      - run: docker compose up -d
       - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
       - run: just py_setup
       - run: just py_lint
@@ -76,7 +77,6 @@ jobs:
         with:
           tools: zsh
       - run: cat ./local-alias-install.sh | sh -s -- --yes && sudo localias start
-      - run: docker compose up -d
       - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
       - run: just js_setup
       - run: just js_lint
