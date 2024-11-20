@@ -23,7 +23,7 @@ jobs:
   # timeout-minutes: 10
 
   web:
-    name: Python Web Application
+    name: Backend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,7 +32,7 @@ jobs:
       # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
       - uses: tecolicom/actions-use-apt-tools@v1
         with:
-          tools: zsh
+          tools: zsh libnss3-tools
 
       - name: Install localias
         run: cat ./local-alias-install.sh | sh -s -- --yes && sudo localias start
@@ -53,8 +53,7 @@ jobs:
       #     GITHUB_TOKEN: ${{ github.token }}
 
   app:
-    name: React Frontend
-    # TODO why can't we define runs-on this for the entire workflow?
+    name: Frontend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
