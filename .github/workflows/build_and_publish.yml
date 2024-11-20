@@ -44,11 +44,10 @@ jobs:
         run: cat ./local-alias-install.sh | sh -s -- --yes && sudo localias start
       # without any additional options, this simply installs the latest version of the cli
       - uses: 1password/load-secrets-action@v2
-      - run: just up
-      - run: docker ps
       - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
       - run: just py_setup
       - run: just py_lint
+      - run: just up
       - run: just db_migrate
       - run: just db_lint
       - run: just py_test
