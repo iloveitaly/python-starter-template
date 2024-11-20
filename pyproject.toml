@@ -50,7 +50,9 @@ dev-dependencies = [
 ]
 
 [tool.uv.sources]
-activemodel = { path = "pypi/activemodel" }
+# https://github.com/astral-sh/uv/issues/9258
+# activemodel = { path = "pypi/activemodel" }
+activemodel = { git = "https://github.com/iloveitaly/activemodel.git" }
 ipython-autoimport = { git = "https://github.com/anntzer/ipython-autoimport.git" }
 
 [tool.pytest.ini_options]
