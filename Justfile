@@ -247,7 +247,13 @@ js_sync-engine-versions:
 # create venv and install packages
 py_setup:
 	[ -d ".venv" ] || uv venv
-	uv sync --group=debugging-extras
+
+	# don't include debugging-extras on CI
+	if [ -z "$CI" ]; then \
+		uv sync --group=debugging-extras; \
+	else \
+		uv sync; \
+	fi
 
 # clean entire py project without rebuilding
 py_clean:
