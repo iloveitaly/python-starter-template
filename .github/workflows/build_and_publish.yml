@@ -75,6 +75,7 @@ jobs:
       # without any additional options, this simply installs the latest version of the cli
       - uses: 1password/load-secrets-action@v2
       - run: just secrets_ci_configure
+      - run: just secrets_ci_mask
       - run: just js_setup
       - run: just js_lint
       - run: just js_test
@@ -91,4 +92,5 @@ jobs:
         with:
           tools: zsh
       - run: just secrets_ci_configure
+      - run: just secrets_ci_mask
       - run: just build
