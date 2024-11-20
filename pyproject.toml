@@ -58,6 +58,10 @@ ipython-autoimport = { git = "https://github.com/anntzer/ipython-autoimport.git"
 [tool.pytest.ini_options]
 addopts = "--pdbcls=pdbr:RichPdb"
 
+[tool.ruff]
+extend-exclude = ["playground"]
+force-exclude = true
+
 [tool.ruff.lint]
 # to be compatible with vs code ruff plugin
 extend-select = ["I"]
