@@ -6,6 +6,7 @@ from pathlib import Path
 
 import structlog
 
+from .configuration.debugging import configure_debugging
 from .configuration.logging import configure_logger
 from .configuration.sentry import configure_sentry
 from .environments import python_environment
@@ -29,6 +30,7 @@ def setup():
 
     configure_openai()
     configure_sentry()
+    configure_debugging()
 
     log.info("application setup", environment=python_environment())
 
