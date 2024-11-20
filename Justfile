@@ -278,7 +278,7 @@ py_lint +FILES=".":
 	if [ -n "${CI:-}" ]; then
 		# TODO I'm surprised that ruff doesn't auto detect github...
 		uv tool run ruff check --output-format=github {{FILES}} || exit_code=$?
-		uv run pyright {{FILES}} --outputjson > pyright_report.json
+		uv run pyright {{FILES}} --outputjson > pyright_report.json || exit_code=$?
 		# TODO this is a neat trick, we should use it in other places too + document
 		jq -r '.generalDiagnostics[] | "::error file=\(.file),line=\(.range.start.line),col=\(.range.start.character)::\(.message)"' < pyright_report.json
 		rm pyright_report.json
