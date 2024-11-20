@@ -44,7 +44,7 @@ jobs:
         run: cat ./local-alias-install.sh | sh -s -- --yes && sudo localias start
       # without any additional options, this simply installs the latest version of the cli
       - uses: 1password/load-secrets-action@v2
-      - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
+      - run: just secrets_ci_configure
       - run: just py_setup
       - run: just py_lint
       - run: just up
@@ -74,7 +74,7 @@ jobs:
       - run: cat ./local-alias-install.sh | sh -s -- --yes && sudo localias start
       # without any additional options, this simply installs the latest version of the cli
       - uses: 1password/load-secrets-action@v2
-      - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
+      - run: just secrets_ci_configure
       - run: just js_setup
       - run: just js_lint
       - run: just js_test
@@ -90,5 +90,5 @@ jobs:
       - uses: tecolicom/actions-use-apt-tools@v1
         with:
           tools: zsh
-      - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
+      - run: just secrets_ci_configure
       - run: just build
