@@ -18,6 +18,9 @@ permissions:
   actions: write
   contents: read
 
+env:
+  OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
 jobs:
   # TODO consider adding a hard timeout for the tail cases
   # timeout-minutes: 10
@@ -37,11 +40,8 @@ jobs:
 
       - name: Install localias
         run: cat ./local-alias-install.sh | sh -s -- --yes && sudo localias start
-      # - name: Install OP
-      #   run: curl -sS https://raw.githubusercontent.com/1Password/load-secrets-action/refs/heads/main/install_cli.sh | sh
+      # with out any additional options, this simply installs the latest version of the cli
       - uses: 1password/load-secrets-action@v2
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
       - run: docker compose up -d
       - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
       - run: just py_setup
