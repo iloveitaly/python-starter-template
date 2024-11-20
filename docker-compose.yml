@@ -8,6 +8,8 @@ services:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
       POSTGRES_DB: development
+    ports:
+      - ${CI:+5432}:5432
     volumes:
       - app_postgres_data:/var/lib/postgresql/data/
     healthcheck:
