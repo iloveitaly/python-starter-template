@@ -21,6 +21,9 @@ set unstable := true
 # determines what shell to use for [script]
 set script-interpreter := ["zsh", "-euBh"]
 
+# used for image name, op vault access, etc
+PROJECT_NAME := `basename $(pwd)`
+
 default:
 	just --list
 
@@ -28,6 +31,7 @@ default:
 # Setup
 #######################
 
+# TODO should cask install 1password-cli
 BREW_PACKAGES := "lefthook jq fd localias"
 
 [macos]
@@ -191,8 +195,10 @@ js_build: js_setup
 js_playground:
 	{{_pnpm}} dlx tsx ./playground.ts
 
+# interactively upgrade all js packages
 js_upgrade:
-	{{_pnpm}} dlx npm-check-updates --interactive
+	{{_pnpm}} dlx npm-check-updates --interactive && \
+		git add package.json pnpm-lock.yaml
 
 # generate a typescript client from the openapi spec
 [doc("Optional flag: --watch")]
@@ -257,6 +263,7 @@ py_nuke: py_clean && py_setup
 py_upgrade:
 	# https://github.com/astral-sh/uv/issues/6794
 	uv sync -U --group=debugging-extras
+	uv tool upgrade --all
 	git add pyproject.toml uv.lock
 
 
@@ -301,6 +308,10 @@ py_lint +FILES=".":
 # run tests with the exact same environment that will be used on CI
 [script]
 py_test:
+	# integration tests should mimic production as closely as possible
+	# to do this, we need to build the app in production mode
+	VITE_BUILD_COMMIT={{GIT_SHA}} {{_pnpm}} build
+
 	# TODO what about code coverage? --cov?
 	if [[ -n "${CI:-}" ]]; then
 		uv run pytest
@@ -379,6 +390,31 @@ db_nuke: db_reset && db_migrate db_seed
 	PYTHON_ENV=test just db_seed
 
 #######################
+# Secrets
+#######################
+
+# grant GH actions access to the 1p vault, this needs to be done every 90d
+[macos]
+[script]
+secrets_ci_grant-github-actions:
+	# 90d is the max expiration time allowed
+	# this can be safely run multiple times, it will not regenerate the service account token
+	service_account_token=$(op service-account create {{PROJECT_NAME}}-github-actions \
+		 --expires-in '90d' \
+		 --vault "${OP_VAULT_UID}:read_items" \
+		 --raw \
+	)
+
+	gh secret set OP_SERVICE_ACCOUNT_TOKEN --app actions --body "$service_account_token"
+
+# manage the service account from the web ui
+[macos]
+secrets_ci_manage:
+	# you cannot revoke/delete a service account with the cli, you must login and delete it from the web ui
+	open https://$OP_ACCOUNT/developer-tools/directory
+
+
+#######################
 # Deployment
 #######################
 
@@ -424,7 +460,7 @@ JAVASCRIPT_IMAGE_TAG := IMAGE_NAME + "-javascript:" + GIT_SHA
 JAVASCRIPT_CONTAINER_BUILD_DIR := "/app/build/client"
 JAVASCRIPT_PRODUCTION_BUILD_DIR := absolute_path("public")
 
-IMAGE_NAME := `basename $(pwd)`
+IMAGE_NAME := PROJECT_NAME
 IMAGE_TAG := IMAGE_NAME + ":latest"
 PYTHON_BUILD_CMD := "nixpacks build . --name " + IMAGE_NAME + " " + NIXPACKS_BUILD_METADATA
 
