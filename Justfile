@@ -303,8 +303,6 @@ py_lint +FILES=".":
 		uv run pyright {{FILES}} || exit_code=$?
 	fi
 
-	just db_migrate_check || exit_code=$?
-
 	# TODO https://github.com/fpgmaas/deptry/issues/610#issue-2190147786
 	# TODO https://github.com/fpgmaas/deptry/issues/740
 	# uv tool run deptry --experimental-namespace-package . || exit_code=$?
@@ -367,7 +365,7 @@ db_reset: db_down db_up
 	# dev database is created automatically, but test database is not
 	psql $DATABASE_URL -c "CREATE DATABASE ${TEST_DATABASE_NAME};"
 
-db_migrate_check:
+db_lint:
 	uv run alembic check
 
 # open the database in the default macos GUI
@@ -385,14 +383,11 @@ db_cli:
 [script]
 db_migrate:
 	uv run alembic upgrade head
-
-	if [[ -n "${CI:-}" ]]; then
-		PYTHON_ENV=test uv run alembic upgrade head
-	fi
+	[ -n "$CI" ] || PYTHON_ENV=test uv run alembic upgrade head
 
 db_seed: db_migrate
 	uv run python migrations/seed.py
-	PYTHON_ENV=test uv run python migrations/seed.py
+	[ -n "$CI" ] || PYTHON_ENV=test uv run python migrations/seed.py
 
 # generate migration based on the current state of the database
 [script]

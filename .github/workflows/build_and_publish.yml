@@ -50,6 +50,7 @@ jobs:
       - run: just py_setup
       - run: just py_lint
       - run: just db_migrate
+      - run: just db_lint
       - run: just py_test
 
       # TODO coverage data is not outputting properly right now
