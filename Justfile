@@ -320,13 +320,12 @@ py_playwright:
 # Dev Container Management
 #######################
 
-up: redis_up db_up
+up: db_up
+	# db scripts have a dependency on DB status, so we have a separate task for that
+	docker compose up -d --wait
 
 down: db_down
 	docker compose down
-
-redis_up:
-	docker compose up --wait -d redis
 
 db_up:
 	docker compose up -d --wait postgres
