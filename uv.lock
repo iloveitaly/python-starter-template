@@ -8,16 +8,10 @@ resolution-markers = [
 [[package]]
 name = "activemodel"
 version = "0.2.0"
-source = { editable = "pypi/activemodel" }
+source = { git = "https://github.com/iloveitaly/activemodel.git#37a51d07c97b2338226a6629faaf62741846ce43" }
 dependencies = [
     { name = "sqlmodel" },
 ]
-
-[package.metadata]
-requires-dist = [{ name = "sqlmodel", specifier = ">=0.0.22" }]
-
-[package.metadata.requires-dev]
-dev = [{ name = "pytest", specifier = ">=8.3.3" }]
 
 [[package]]
 name = "alabaster"
@@ -1564,7 +1558,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "activemodel", editable = "pypi/activemodel" },
+    { name = "activemodel", git = "https://github.com/iloveitaly/activemodel.git" },
     { name = "alembic", specifier = ">=1.14.0" },
     { name = "backoff", specifier = ">=2.2.1" },
     { name = "celery", extras = ["redis"], specifier = ">=5.4.0" },
