@@ -34,7 +34,10 @@ jobs:
         with:
           tools: zsh
 
-      - run: cat ./local-alias-install.sh | sh -s -- --yes && sudo localias start
+      - name: Install localias
+        run: cat ./local-alias-install.sh | sh -s -- --yes && sudo localias start
+      - name: Install OP
+        run: curl -sS https://raw.githubusercontent.com/1Password/load-secrets-action/refs/heads/main/install_cli.sh | sh
       - run: docker compose up -d
       - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
       - run: just py_setup
