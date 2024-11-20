@@ -432,9 +432,11 @@ secrets_ci_grant-github-actions:
 
 	gh secret set OP_SERVICE_ACCOUNT_TOKEN --app actions --body "$service_account_token"
 
-secrets_ci_configure: && secrets_ci_mask
+# dump direnv configuration into a special file to be accessible to all CI actions
+secrets_ci_configure:
 	direnv allow . && direnv export gha >> "$GITHUB_ENV"
 
+# cannot be run at the same time as configuration
 secrets_ci_mask:
 	#!/usr/bin/env python
 	import os
