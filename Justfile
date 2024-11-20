@@ -290,9 +290,14 @@ py_lint:
 	fi
 
 # run tests with the exact same environment that will be used on CI
+[script]
 py_test:
-	CI=true direnv exec . uv run pytest
 	# TODO what about code coverage? --cov?
+	if [[ -n "${CI:-}" ]]; then
+		uv run pytest
+	else
+		CI=true direnv exec . uv run pytest
+	fi
 
 # automatically fix linting errors
 py_lint_fix:
