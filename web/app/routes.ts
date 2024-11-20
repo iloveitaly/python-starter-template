@@ -8,3 +8,5 @@ export const routes: RouteConfig = [
   index("routes/login.tsx"),
   layout("layouts/authenticated.tsx", [route("/home", "routes/home.tsx")]),
 ]
+
+export default routes
