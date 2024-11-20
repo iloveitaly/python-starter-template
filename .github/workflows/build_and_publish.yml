@@ -18,9 +18,6 @@ permissions:
   actions: write
   contents: read
 
-env:
-  OP_VAULT_UID: ${{ secrets.OP_VAULT_UID }}
-
 jobs:
   # TODO consider adding a hard timeout for the tail cases
   # timeout-minutes: 10
