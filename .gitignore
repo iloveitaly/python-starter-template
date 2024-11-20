@@ -9,7 +9,7 @@ __pycache__
 /tmp/*
 !/tmp/.gitkeep
 
-*.env*local
+*.env.*.local
 
 /celerybeat-schedule
 
@@ -19,3 +19,5 @@ __pycache__
 
 # for hacking on packages within this repo
 /pypi
+
+/playground/*
