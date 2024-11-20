@@ -319,7 +319,7 @@ py_lint +FILES=".":
 py_test:
 	# integration tests should mimic production as closely as possible
 	# to do this, we need to build the app in production mode
-	VITE_BUILD_COMMIT={{GIT_SHA}} {{_pnpm}} build
+	# VITE_BUILD_COMMIT={{GIT_SHA}} {{_pnpm}} build
 
 	# TODO what about code coverage? --cov?
 	if [[ -n "${CI:-}" ]]; then

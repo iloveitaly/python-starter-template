@@ -31,7 +31,6 @@ services:
   # smtp: 1025
   mailpit:
     image: axllent/mailpit
-    container_name: mailpit
     restart: unless-stopped
     volumes:
       - mailpit_data:/data
