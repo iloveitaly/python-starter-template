@@ -40,7 +40,7 @@ jobs:
 
       - name: Install localias
         run: cat ./local-alias-install.sh | sh -s -- --yes && sudo localias start
-      # with out any additional options, this simply installs the latest version of the cli
+      # without any additional options, this simply installs the latest version of the cli
       - uses: 1password/load-secrets-action@v2
       - run: docker compose up -d
       - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
@@ -64,8 +64,10 @@ jobs:
       # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
       - uses: tecolicom/actions-use-apt-tools@v1
         with:
-          tools: zsh
+          tools: zsh libnss3-tools
       - run: cat ./local-alias-install.sh | sh -s -- --yes && sudo localias start
+      # without any additional options, this simply installs the latest version of the cli
+      - uses: 1password/load-secrets-action@v2
       - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
       - run: just js_setup
       - run: just js_lint
