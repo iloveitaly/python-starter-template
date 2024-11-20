@@ -26,6 +26,4 @@ def test_unauthorized_good_credentials(client: TestClient):
         "/internal/v1/", headers={"Authorization": f"Bearer {testing_tokens.token}"}
     )
 
-    breakpoint()
-
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
