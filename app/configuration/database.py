@@ -57,6 +57,7 @@ def create_db_and_tables():
     """
 
     assert is_testing() or is_development()
+    assert len(SQLModel.metadata.tables.items()) > 0, "No tables found"
 
     SQLModel.metadata.create_all(get_engine())
 

@@ -244,8 +244,9 @@ js_sync-engine-versions:
 # Python
 #######################
 
+# create venv and install packages
 py_setup:
-	uv venv
+	[ -d ".venv" ] || uv venv
 	uv sync --group=debugging-extras
 
 # clean entire py project without rebuilding
@@ -296,6 +297,8 @@ py_lint +FILES=".":
 		uv run pyright {{FILES}} || exit_code=$?
 	fi
 
+	just db_migrate_check || exit_code=$?
+
 	# TODO https://github.com/fpgmaas/deptry/issues/610#issue-2190147786
 	# TODO https://github.com/fpgmaas/deptry/issues/740
 	# uv tool run deptry --experimental-namespace-package . || exit_code=$?
@@ -345,6 +348,7 @@ down: db_down
 db_up:
 	docker compose up -d --wait postgres
 
+# turn off the database *and* completely remove the data
 db_down:
 	docker compose down --volumes postgres
 
@@ -357,17 +361,37 @@ db_reset: db_down db_up
 	# dev database is created automatically, but test database is not
 	psql $DATABASE_URL -c "CREATE DATABASE ${TEST_DATABASE_NAME};"
 
+db_migrate_check:
+	uv run alembic check
+
+# open the database in the default macos GUI
+[macos]
+db_open:
+  open $DATABASE_URL
+
+# nice tui to interact with the database
+[macos]
+db_cli:
+	uv tool run pgcli $DATABASE_URL
+
+# TODO should I use CI=true with direnv instead of PYTHON_ENV=test?
+
+[script]
 db_migrate:
 	uv run alembic upgrade head
-	PYTHON_ENV=test uv run alembic upgrade head
+
+	if [[ -n "${CI:-}" ]]; then
+		PYTHON_ENV=test uv run alembic upgrade head
+	fi
 
 db_seed: db_migrate
 	uv run python migrations/seed.py
 	PYTHON_ENV=test uv run python migrations/seed.py
 
+# generate migration based on the current state of the database
 [script]
 db_generate_migration migration_name="":
-	@if [ -z "{{migration_name}}" ]; then
+	if [ -z "{{migration_name}}" ]; then
 		echo "Enter the migration name: "
 		read name
 	else
@@ -386,8 +410,8 @@ db_nuke: db_reset && db_migrate db_seed
 	rm -rf migrations/versions/* || true
 	just db_generate_migration "initial_commit"
 
-	PYTHON_ENV=test just db_migrate
-	PYTHON_ENV=test just db_seed
+	# PYTHON_ENV=test just db_migrate
+	# PYTHON_ENV=test just db_seed
 
 #######################
 # Secrets

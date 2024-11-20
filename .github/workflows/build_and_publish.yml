@@ -48,6 +48,7 @@ jobs:
       - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
       - run: just py_setup
       - run: just py_lint
+      - run: just db_migrate
       - run: just py_test
 
       # TODO coverage data is not outputting properly right now
