@@ -39,6 +39,8 @@ jobs:
       # - name: Install OP
       #   run: curl -sS https://raw.githubusercontent.com/1Password/load-secrets-action/refs/heads/main/install_cli.sh | sh
       - uses: 1password/load-secrets-action@v2
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
       - run: docker compose up -d
       - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
       - run: just py_setup
