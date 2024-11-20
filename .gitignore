@@ -6,9 +6,6 @@
 __pycache__
 .mypy_cache
 
-/tmp/*
-!/tmp/.gitkeep
-
 *.env.*.local
 
 /celerybeat-schedule
@@ -20,4 +17,8 @@ __pycache__
 # for hacking on packages within this repo
 /pypi
 
+# for logs and other system-generated files that can be safely wiped
+/tmp/*
+
+# for scripts, dumps, etc that are strictly for personal use
 /playground/*

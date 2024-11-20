@@ -73,3 +73,4 @@ The development dependency story is a bit messy:
 * https://github.com/danswer-ai/danswer
 * https://github.com/developaul/translate-app
 * https://github.com/vercel/ai-chatbot
+* https://github.com/zhanymkanov/fastapi-best-practices
