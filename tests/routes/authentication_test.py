@@ -20,6 +20,7 @@ def test_unauthorized_bad_credentials(client: TestClient):
 
 def test_unauthorized_good_credentials(client: TestClient):
     testing_tokens = clerk.testing_tokens.create()
+    assert testing_tokens
 
     response = client.get(
         "/internal/v1/", headers={"Authorization": f"Bearer {testing_tokens.token}"}
