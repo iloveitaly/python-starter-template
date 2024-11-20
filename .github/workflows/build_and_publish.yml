@@ -18,6 +18,9 @@ permissions:
   actions: write
   contents: read
 
+env:
+  OP_VAULT_UID: ${{ secrets.OP_VAULT_UID }}
+
 jobs:
   # TODO consider adding a hard timeout for the tail cases
   # timeout-minutes: 10
@@ -32,6 +35,7 @@ jobs:
       # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
       - uses: tecolicom/actions-use-apt-tools@v1
         with:
+          # localias requires libnss3-tools for cert generation
           tools: zsh libnss3-tools
 
       - name: Install localias
