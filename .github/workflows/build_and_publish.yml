@@ -44,7 +44,7 @@ jobs:
         run: cat ./local-alias-install.sh | sh -s -- --yes && sudo localias start
       # without any additional options, this simply installs the latest version of the cli
       - uses: 1password/load-secrets-action@v2
-      - run: docker compose up -d
+      - run: just up
       - run: docker ps
       - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
       - run: just py_setup
