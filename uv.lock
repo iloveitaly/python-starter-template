@@ -792,15 +792,9 @@ wheels = [
 [[package]]
 name = "ipython-suggestions"
 version = "1.0.0"
-source = { directory = "pypi/ipython-suggestions" }
+source = { git = "https://github.com/iloveitaly/ipython-suggestions.git?rev=py-13#92b270bed7188cd18e034b7727add1076f361d7f" }
 dependencies = [
     { name = "ipython" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "future", marker = "python_full_version < '3'" },
-    { name = "ipython", specifier = ">=4.0" },
 ]
 
 [[package]]
@@ -1590,7 +1584,7 @@ debugging-extras = [
     { name = "docrepr", specifier = ">=0.2.0" },
     { name = "ipython-autoimport", git = "https://github.com/anntzer/ipython-autoimport.git" },
     { name = "ipython-ctrlr-fzf", specifier = ">=0.2.1" },
-    { name = "ipython-suggestions", directory = "pypi/ipython-suggestions" },
+    { name = "ipython-suggestions", git = "https://github.com/iloveitaly/ipython-suggestions.git?rev=py-13" },
     { name = "ipythonclipboard", specifier = ">=1.0b2" },
     { name = "jedi", specifier = ">=0.19.2" },
     { name = "pdbr", extras = ["ipython"], specifier = ">=0.8.9" },
