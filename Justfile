@@ -157,10 +157,10 @@ js_setup:
 js_clean:
 	rm -rf {{WEB_DIR}}/build {{WEB_DIR}}/client {{WEB_DIR}}/node_modules {{WEB_DIR}}/.react-router || true
 
-# TODO support GITHUB_ACTIONS formatting
-js_lint:
-	{{_pnpm}} prettier --check .
-	{{_pnpm}} eslint --cache --cache-location ./node_modules/.cache/eslint .
+# TODO support GITHUB_ACTIONS/CI formatting
+js_lint +FILES=".":
+	{{_pnpm}} prettier --check {{FILES}}
+	{{_pnpm}} eslint --cache --cache-location ./node_modules/.cache/eslint {{FILES}}
 
 	# TODO reenable once we have the ui side of things working
 	# {{_pnpm}} depcheck --ignore-bin-package
@@ -270,19 +270,21 @@ py_dev:
 # TODO add djlint for jinja templates
 # run all linting operations and fail if any fail
 [script]
-py_lint:
+py_lint +FILES=".":
 	# NOTE this is important: we want all operations to run instead of fail fast
 	set -x
 
 	# poetry run autoflake --exclude=migrations --imports=decouple,rich -i -r .
-	if [ -n "${GITHUB_ACTIONS:-}" ]; then
-		uv tool run ruff check --output-format=github . || exit_code=$?
-		uv run pyright --outputjson > pyright_report.json
+	if [ -n "${CI:-}" ]; then
+		# TODO I'm surprised that ruff doesn't auto detect github...
+		uv tool run ruff check --output-format=github {{FILES}} || exit_code=$?
+		uv run pyright {{FILES}} --outputjson > pyright_report.json
 		# TODO this is a neat trick, we should use it in other places too + document
 		jq -r '.generalDiagnostics[] | "::error file=\(.file),line=\(.range.start.line),col=\(.range.start.character)::\(.message)"' < pyright_report.json
+		rm pyright_report.json
 	else
-		uv tool run ruff check . || exit_code=$?
-		uv run pyright || exit_code=$?
+		uv tool run ruff check {{FILES}} || exit_code=$?
+		uv run pyright {{FILES}} || exit_code=$?
 	fi
 
 	# TODO https://github.com/fpgmaas/deptry/issues/610#issue-2190147786
@@ -429,7 +431,7 @@ _production_build_assertions:
 	# TODO we should abstract out "IS_CI" to some sort of Justfile check :/
 
 	# only run this on CI
-	[ ! -z "${GITHUB_ACTIONS:-}" ] || exit 0
+	[ ! -z "${CI:-}" ] || exit 0
 
 	if [ ! -z "{{GIT_DIRTY}}" ]; then \
 			echo "Git workspace is dirty! This should never happen on prod" >&2; \

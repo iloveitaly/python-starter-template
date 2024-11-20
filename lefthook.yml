@@ -31,6 +31,9 @@ pre-push:
   parallel: true
   commands:
     py_lint:
-      run: just py_lint
+      glob: "*.py"
+      run: just py_lint {push_files}
     js_lint:
+      # TODO because of the subdirectory, passing the file list here does not work as well :/ Need to prefix with ../ or something.
+      # run: just js_lint {push_files}
       run: just js_lint
