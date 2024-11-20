@@ -25,23 +25,6 @@ jobs:
   web:
     name: Python Web Application
     runs-on: ubuntu-latest
-    # TODO would be great if we could DRY up services definition https://github.com/actions/runner/issues/1182
-    services:
-      redis:
-        image: redis
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 6379:6379
-      postgres:
-        image: postgres
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_PASSWORD: postgres
     steps:
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
