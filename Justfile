@@ -351,6 +351,8 @@ down: db_down
 
 db_up:
 	docker compose up -d --wait postgres
+	# dev database is created automatically, but test database is not
+	psql $DATABASE_URL -c "CREATE DATABASE ${TEST_DATABASE_NAME};"
 
 # turn off the database *and* completely remove the data
 db_down:
@@ -360,10 +362,8 @@ db_down:
 # Database Migrations
 #######################
 
-# completely destroy the dev and test databases without runnign migrations
+# completely destroy the dev and test databases without running migrations
 db_reset: db_down db_up
-	# dev database is created automatically, but test database is not
-	psql $DATABASE_URL -c "CREATE DATABASE ${TEST_DATABASE_NAME};"
 
 db_lint:
 	uv run alembic check
