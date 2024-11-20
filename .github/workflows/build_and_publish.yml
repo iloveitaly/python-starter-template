@@ -30,7 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # mise can rarely get stuck installing. It normally takes < 10s to install, so this should never be more than a minute
       - uses: jdx/mise-action@v2
+        timeout-minutes: 1
 
       # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
       - uses: tecolicom/actions-use-apt-tools@v1
@@ -60,7 +62,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # mise can rarely get stuck installing. It normally takes < 10s to install, so this should never be more than a minute
       - uses: jdx/mise-action@v2
+        timeout-minutes: 1
       # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
       - uses: tecolicom/actions-use-apt-tools@v1
         with:
