@@ -8,10 +8,16 @@ resolution-markers = [
 [[package]]
 name = "activemodel"
 version = "0.2.0"
-source = { git = "https://github.com/iloveitaly/activemodel.git#37a51d07c97b2338226a6629faaf62741846ce43" }
+source = { editable = "pypi/activemodel" }
 dependencies = [
     { name = "sqlmodel" },
 ]
+
+[package.metadata]
+requires-dist = [{ name = "sqlmodel", specifier = ">=0.0.22" }]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = ">=8.3.3" }]
 
 [[package]]
 name = "alabaster"
@@ -792,13 +798,15 @@ wheels = [
 [[package]]
 name = "ipython-suggestions"
 version = "1.0.0"
-source = { registry = "https://pypi.org/simple" }
+source = { directory = "pypi/ipython-suggestions" }
 dependencies = [
     { name = "ipython" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/56/9e/316a668ddd159f21cb8c134c47bfc9ba14c8cdb5c508d0faf3200ae6508c/ipython-suggestions-1.0.0.tar.gz", hash = "sha256:740015953c399d6bdba74f4e46f016cc3747dd90f3b6779a6ea157c06d8a10c9", size = 35778 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/e6/ba/b97303373038a5c8ea4e949e1a81841728e5fb4f29267ea5a3201934a9de/ipython_suggestions-1.0.0-py3-none-any.whl", hash = "sha256:b77a0aaf1b78d5036724692feff1c2f30c24498c49d371659827e1698b2af9bc", size = 15798 },
+
+[package.metadata]
+requires-dist = [
+    { name = "future", marker = "python_full_version < '3'" },
+    { name = "ipython", specifier = ">=4.0" },
 ]
 
 [[package]]
@@ -1556,7 +1564,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "activemodel", git = "https://github.com/iloveitaly/activemodel.git" },
+    { name = "activemodel", editable = "pypi/activemodel" },
     { name = "alembic", specifier = ">=1.14.0" },
     { name = "backoff", specifier = ">=2.2.1" },
     { name = "celery", extras = ["redis"], specifier = ">=5.4.0" },
@@ -1588,7 +1596,7 @@ debugging-extras = [
     { name = "docrepr", specifier = ">=0.2.0" },
     { name = "ipython-autoimport", git = "https://github.com/anntzer/ipython-autoimport.git" },
     { name = "ipython-ctrlr-fzf", specifier = ">=0.2.1" },
-    { name = "ipython-suggestions", specifier = ">=1.0.0" },
+    { name = "ipython-suggestions", directory = "pypi/ipython-suggestions" },
     { name = "ipythonclipboard", specifier = ">=1.0b2" },
     { name = "jedi", specifier = ">=0.19.2" },
     { name = "pdbr", extras = ["ipython"], specifier = ">=0.8.9" },

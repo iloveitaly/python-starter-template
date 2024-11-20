@@ -29,6 +29,23 @@ dependencies = [
     "uvicorn>=0.32.0",
 ]
 
+[dependency-groups]
+debugging-extras = [
+    "colorama>=0.4.6",
+    "datamodel-code-generator>=0.26.3",
+    "debugpy>=1.8.8",
+    "docrepr>=0.2.0",
+    "ipython-autoimport",
+    "ipython-ctrlr-fzf>=0.2.1",
+    "ipython-suggestions>=1.0.0",
+    "ipythonclipboard>=1.0b2",
+    "jedi>=0.19.2",
+    "pdbr[ipython]>=0.8.9",
+    "pretty-traceback>=2024.1021",
+    "pyfzf>=0.3.1",
+    "sqlparse>=0.5.2",
+]
+
 [project.scripts]
 app_name = "app.cli:main"
 
@@ -49,44 +66,34 @@ dev-dependencies = [
     "djlint>=1.36.1",
 ]
 
-[tool.uv.sources]
-# https://github.com/astral-sh/uv/issues/9258
-# activemodel = { path = "pypi/activemodel" }
-activemodel = { git = "https://github.com/iloveitaly/activemodel.git" }
-ipython-autoimport = { git = "https://github.com/anntzer/ipython-autoimport.git" }
+[tool.ruff]
+extend-exclude = ["playground", "migrations/env.py", "migrations/versions/*.py"]
+force-exclude = true
+
+[tool.pyright]
+exclude = [
+    ".venv",
+    # exclude our local package clones
+    "pypi",
+    # sometimes python code can be bundled in node repos
+    "web/node_modules",
+    # migrations are autogen'd
+    "migrations/versions",
+    # don't make playing less fun and force types
+    "playground",
+]
+
+[tool.ruff.lint]
+extend-select = ["I"]
 
 [tool.pytest.ini_options]
 addopts = "--pdbcls=pdbr:RichPdb"
 
-[tool.ruff]
-extend-exclude = ["playground"]
-force-exclude = true
+[tool.uv.sources.activemodel]
+git = "https://github.com/iloveitaly/activemodel.git"
 
-[tool.ruff.lint]
-# to be compatible with vs code ruff plugin
-extend-select = ["I"]
+[tool.uv.sources.ipython-autoimport]
+git = "https://github.com/anntzer/ipython-autoimport.git"
 
-# TODO this doesn't play well with the docker image where the coverage comment is running
-# [tool.coverage.run]
-# plugins = ["covdefaults"]
-
-# If I'm hacking on another package, I like to bundle this within the repository so I can use a single VS Code editor to mutate the files
-[tool.pyright]
-exclude = [".venv", "pypi", "web/node_modules"]
-
-[dependency-groups]
-debugging-extras = [
-    "colorama>=0.4.6",
-    "datamodel-code-generator>=0.26.3",
-    "debugpy>=1.8.8",
-    "docrepr>=0.2.0",
-    "ipython-autoimport",
-    "ipython-ctrlr-fzf>=0.2.1",
-    "ipython-suggestions>=1.0.0",
-    "ipythonclipboard>=1.0b2",
-    "jedi>=0.19.2",
-    "pdbr[ipython]>=0.8.9",
-    "pretty-traceback>=2024.1021",
-    "pyfzf>=0.3.1",
-    "sqlparse>=0.5.2",
-]
+[tool.uv.sources.ipython-suggestions]
+path = "pypi/ipython-suggestions"
