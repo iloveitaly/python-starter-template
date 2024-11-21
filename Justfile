@@ -34,7 +34,7 @@ default:
 #######################
 
 # TODO should cask install 1password-cli
-BREW_PACKAGES := "lefthook jq fd localias"
+BREW_PACKAGES := "lefthook jq fd localias nixpacks"
 
 [macos]
 [script]
@@ -192,7 +192,8 @@ js_dev:
 	{{_pnpm}} run dev
 
 js_build: js_setup
-	{{_pnpm}} run build
+	# as you'd expect, the `web/build` directory is wiped on each run
+	export VITE_BUILD_COMMIT="{{GIT_SHA}}" && {{_pnpm}} run build
 
 # interactive repl for testing ts
 js_playground:
@@ -257,6 +258,9 @@ py_setup:
 		uv sync; \
 	fi
 
+	# important for CI to install browsers for playwright
+	# the installation process is fast enough (<10s) to eliminate the need for attempting to cache via GHA
+	# if this turns out not to be true, we should implement: https://github.com/hirasso/thumbhash-custom-element/blob/main/.github/workflows/tests.yml
 	uv run playwright install chromium
 
 # clean entire py project without rebuilding
@@ -319,8 +323,8 @@ py_lint +FILES=".":
 [script]
 py_test:
 	# integration tests should mimic production as closely as possible
-	# to do this, we need to build the app in production mode
-	# VITE_BUILD_COMMIT={{GIT_SHA}} {{_pnpm}} build
+	# to do this, we build the app and serve it like it will be served in production
+	just js_build
 
 	# TODO what about code coverage? --cov?
 	if [[ -n "${CI:-}" ]]; then
@@ -334,10 +338,17 @@ py_lint_fix:
 	# TODO anything we can do here with pyright?
 	uv tool run ruff check . --fix
 
-# record playwright interactions for integration tests
+# record playwright interactions for integration tests and dump them to a file
+[macos]
+[script]
 py_playwright:
 	mkdir -p tmp/playwright
-	uv run playwright codegen --target python-pytest --output tmp/playwright/$(date +%m-%d-%s).py
+	recorded_interaction=tmp/playwright/$(date +%m-%d-%s).py
+
+	uv run playwright codegen --target python-pytest --output $recorded_interaction https://${JAVASCRIPT_SERVER_HOST}
+
+	echo $recorded_interaction
+	pbcopy < $recorded_interaction
 
 #######################
 # Dev Container Management
