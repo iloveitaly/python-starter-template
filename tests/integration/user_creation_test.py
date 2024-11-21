@@ -1,9 +1,13 @@
+import time
+
 import pytest
 import uvicorn
 from decouple import config
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 
 from app.server import api_app
+
+PYTHON_SERVER_TEST_PORT = config("PYTHON_TEST_SERVER_PORT", cast=int)
 
 
 def wait_for_port(port: int, timeout: int = 30) -> bool:
@@ -26,7 +30,7 @@ def wait_for_port(port: int, timeout: int = 30) -> bool:
 
 
 def run_server():
-    uvicorn.run(api_app, port=config("PYTHON_TEST_SERVER_PORT", cast=int))
+    uvicorn.run(api_app, port=PYTHON_SERVER_TEST_PORT)
 
 
 @pytest.fixture
@@ -38,24 +42,60 @@ def server():
 
     from multiprocessing import Process
 
+    # TODO I think we should think about the forking method here; may need to reinitialize within the subprocess
     proc = Process(target=run_server, args=(), daemon=True)
     proc.start()
-    wait_for_port(config("PYTHON_TEST_SERVER_PORT", cast=int))
+
+    # since the server is run a daemon in another process, we need to wait until the port is ready
+    wait_for_port(PYTHON_SERVER_TEST_PORT)
+
     yield
+
     proc.kill()
 
+    # TODO should we install a signal trap to ensure the server is killed?
 
-def test_example(server, page: Page) -> None:
-    breakpoint()
-    page.goto("https://web.localhost/")
+
+def home_url():
+    return f"https://{config("PYTHON_TEST_SERVER_HOST")}"
+
+
+def test_signin(server, page: Page) -> None:
+    page.goto(home_url())
+
+    page.get_by_role("button", name="Sign in").click()
+    page.get_by_label("Email address").fill("mike+clerk_test@example.com")
+    page.get_by_role("button", name="Continue", exact=True).click()
+
+    page.get_by_label("Password", exact=True).fill("python-starter-template-123")
+    page.get_by_role("button", name="Continue").click()
+
+    expect(page.locator("body")).to_contain_text("View your profile here")
+
+
+def test_signup(server, page: Page) -> None:
+    unix_timestamp = int(time.time())
+
+    page.goto(home_url())
 
     page.get_by_role("button", name="Sign up").click()
     page.get_by_label("Email address").click()
-    page.get_by_label("Email address").fill("mike+clerk_test@example.com")
-    page.get_by_label("Email address").press("Tab")
+    page.get_by_label("Email address").fill(
+        f"mike-{unix_timestamp}+clerk_test@example.com"
+    )
     page.get_by_label("Password", exact=True).fill("python-starter-template-123")
     page.get_by_role("button", name="Continue", exact=True).click()
 
-    page.goto("https://web.localhost/")
-    page.get_by_text("View your profile here").click()
-    page.goto("https://web.localhost/home")
+    page.get_by_label("Enter verification code. Digit").fill("4")
+    page.get_by_label("Digit 2").fill("2")
+    page.get_by_label("Digit 3").fill("4")
+    page.get_by_label("Digit 4").fill("2")
+    page.get_by_label("Digit 5").fill("4")
+    page.get_by_label("Digit 6").fill("2")
+
+    # at this point the page will automatically redirect
+    page.wait_for_load_state()
+    expect(page.locator("body")).to_contain_text("View your profile here")
+
+    page.get_by_role("button", name="Sign out").click()
+    expect(page.locator("body")).to_contain_text("You are signed out")
