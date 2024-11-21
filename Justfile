@@ -371,7 +371,7 @@ db_lint:
 # open the database in the default macos GUI
 [macos]
 db_open:
-  open $DATABASE_URL
+	open $DATABASE_URL
 
 # nice tui to interact with the database
 [macos]
@@ -435,14 +435,15 @@ secrets_ci_grant-github-actions:
 # dump direnv configuration into a special file to be accessible to all CI actions
 secrets_ci_configure:
 	direnv allow . && direnv export gha >> "$GITHUB_ENV"
-	source "$GITHUB_ENV"
-	just secrets_ci_mask
+	# you cannot source GITHUB_ENV, it uses a syntax which is *just* different enough from the shell that it fails
+	direnv export json | just secrets_ci_mask
 
 # cannot be run at the same time as configuration
 secrets_ci_mask:
 	#!/usr/bin/env python
-	import os
+	import json
 	import re
+	import sys
 
 	# Define the patterns to match specific types of values
 	patterns = [
@@ -458,21 +459,24 @@ secrets_ci_mask:
 	def add_mask(value):
 			print(f'::add-mask::{value}')
 
-	# Iterate over all environment variables
-	for key, value in os.environ.items():
+	# Read JSON from stdin
+	env_vars = json.load(sys.stdin)
+
+	# Iterate over all variables from JSON input
+	for key, value in env_vars.items():
 			# Check if the value matches any of the defined patterns
-			if any(pattern.match(value) for pattern in patterns):
-					add_mask(value)
+			if any(pattern.match(str(value)) for pattern in patterns):
+					add_mask(str(value))
 					continue
 
 			# Check if the key ends with any of the defined suffixes
 			if any(key.endswith(suffix) for suffix in key_suffixes):
-					add_mask(value)
+					add_mask(str(value))
 					continue
 
 			# Check if the key starts with OP_ or DIRENV_
 			if key.startswith('OP_') or key.startswith('DIRENV_'):
-					add_mask(value)
+					add_mask(str(value))
 
 # manage the service account from the web ui
 [macos]
