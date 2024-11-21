@@ -28,10 +28,10 @@
         ]
       }
     },
-    "/": {
+    "/hello": {
       "get": {
         "summary": "Index",
-        "operationId": "index__get",
+        "operationId": "index_hello_get",
         "responses": {
           "200": {
             "description": "Successful Response",

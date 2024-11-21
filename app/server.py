@@ -26,6 +26,7 @@ if is_production():
 # set `version:` as GIT sha? Set `title:`? https://github.com/fastapiutils/fastapi-utils/blob/e9e7e2c834d703503a3bf5d5605db6232dd853b9/fastapi_utils/api_settings.py#L43
 
 # TODO unclear how to type this correctly
+# NOTE `api_app` and not `app` is used intentionally here to make imports more specific
 api_app = FastAPI(**fast_api_args)  # type: ignore
 
 mount_public_directory(api_app)
@@ -51,3 +52,10 @@ async def healthcheck():
 @api_app.get("/items/{item_id}")
 async def read_item(item_id: int, q: str | None = None):
     return {"item_id": item_id, "q": q}
+
+
+# output openapi spec when run as a module
+if __name__ == "__main__":
+    import json
+
+    print(json.dumps(api_app.openapi()))

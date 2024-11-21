@@ -6,6 +6,8 @@
 # * No complicated scripts in CI. Include scripts here, run them on GH actions.
 # * No hidden magical scripts on developers machines without a place to go
 # * All ENV variables should be handled via direnv and not configured here
+# * Any python code which is not completely independent of the project, should be in app/ so
+#   refactoring tools can rename all symbols automatically.
 #
 #######################
 
@@ -210,9 +212,8 @@ js_generate-openapi *flag:
 	fi
 
 _js_generate-openapi:
-	# jq is used to pretty print the output
-	LOG_LEVEL=ERROR uv run python -c "from app.server import app; import json; print(json.dumps(app.openapi()))" | \
-		jq -r . > "$OPENAPI_JSON_PATH"
+	# jq is here to pretty print the output
+	LOG_LEVEL=error uv run python -m app.server | jq -r . > "$OPENAPI_JSON_PATH"
 
 	# generate the js client
 	{{_pnpm}} openapi

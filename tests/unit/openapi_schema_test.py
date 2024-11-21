@@ -16,4 +16,4 @@ def test_openapi_schema_matches_generated_file():
 
     assert (
         current_schema == generated_schema
-    ), "OpenAPI schema from FastAPI doesn't match the generated file"
+    ), "OpenAPI schema from FastAPI doesn't match the generated file. Run:\njust js_generate-openapi"
