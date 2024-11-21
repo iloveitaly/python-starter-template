@@ -10,7 +10,7 @@ def test_unauthorized_no_credentials(client: TestClient):
     assert response.status_code == status.HTTP_403_FORBIDDEN
 
 
-def test_unauthorized_bad_credentials(client: TestClient):
+def test_authorized_bad_credentials(client: TestClient):
     response = client.get(
         "/internal/v1/", headers={"Authorization": "Bearer BAD_CREDS"}
     )
@@ -18,7 +18,7 @@ def test_unauthorized_bad_credentials(client: TestClient):
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
-def test_unauthorized_good_credentials(client: TestClient):
+def test_authorized_good_credentials(client: TestClient):
     testing_tokens = clerk.testing_tokens.create()
     assert testing_tokens
 
@@ -26,4 +26,5 @@ def test_unauthorized_good_credentials(client: TestClient):
         "/internal/v1/", headers={"Authorization": f"Bearer {testing_tokens.token}"}
     )
 
+    # TODO this is failing
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
