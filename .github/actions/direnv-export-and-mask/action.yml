@@ -20,7 +20,7 @@ runs:
     # # TODO should detect if qemu is needed based on current vs target platform
     # - uses: docker/setup-qemu-action@v3
     #   if: inputs.platforms != ''
-    - run: direnv allow . && direnv export gha
+    - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
       shell: bash
 
     - run: "$GITHUB_ACTION_PATH/entrypoint.sh"
