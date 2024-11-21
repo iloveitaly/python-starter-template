@@ -1,0 +1,30 @@
+name: 'Load Direnv Environment and Mask Secrets'
+description: "Load Direnv Environment and Mask Secrets conforming to commonly used secret formats"
+author: 'Michael Bianco'
+branding:
+  icon: 'box'
+  color: 'green'
+
+# inputs:
+#   tags:
+#     description: "List of tags to apply to the built image"
+#     required: false
+#   push:
+#     description: "Boolean to determine if the built image should be pushed"
+#     required: false
+#     default: 'false'
+
+runs:
+  using: 'composite'
+  steps:
+    # # TODO should detect if qemu is needed based on current vs target platform
+    # - uses: docker/setup-qemu-action@v3
+    #   if: inputs.platforms != ''
+    - run: direnv allow . && direnv export gha
+      shell: bash
+
+    - run: entrypoint.sh
+      shell: bash
+
+    - run: entrypoint.sh
+      shell: python

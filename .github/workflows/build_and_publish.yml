@@ -44,6 +44,8 @@ jobs:
         run: cat ./local-alias-install.sh | sh -s -- --yes && sudo localias start
       # without any additional options, this simply installs the latest version of the cli
       - uses: 1password/load-secrets-action@v2
+      - name: Test custom action
+        uses: ./.github/actions/direnv-export-and-mask
       - run: just secrets_ci_configure
       - run: just py_setup
       - run: just py_lint
