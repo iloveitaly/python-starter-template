@@ -2,7 +2,7 @@ import json
 
 from decouple import config
 
-from app.server import app
+from app.server import api_app
 
 
 def test_openapi_schema_matches_generated_file():
@@ -12,7 +12,7 @@ def test_openapi_schema_matches_generated_file():
     with open(generated_schema_path) as f:
         generated_schema = json.load(f)
 
-    current_schema = app.openapi()
+    current_schema = api_app.openapi()
 
     assert (
         current_schema == generated_schema

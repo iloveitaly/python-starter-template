@@ -1,7 +1,7 @@
 from decouple import config
 from fastapi.testclient import TestClient
 
-from app.server import app
+from app.server import api_app
 
 
 def test_https_redirection():
@@ -9,7 +9,7 @@ def test_https_redirection():
 
     # convert protocol to http
     base_url = original_base_url.replace("https://", "http://")
-    client = TestClient(app, base_url=base_url, follow_redirects=False)
+    client = TestClient(api_app, base_url=base_url, follow_redirects=False)
 
     response = client.get("/")
 

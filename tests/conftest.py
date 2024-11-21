@@ -7,12 +7,15 @@ from sqlmodel import SQLModel
 from fastapi.testclient import TestClient
 
 from app.configuration.database import get_engine
-from app.server import app
+from app.server import api_app
+from structlog import get_logger
+
+log = get_logger(test=True)
 
 
 @pytest.fixture
 def client():
-    return TestClient(app, base_url=config("VITE_PYTHON_URL", cast=str))
+    return TestClient(api_app, base_url=config("VITE_PYTHON_URL", cast=str))
 
 
 def truncate_db():

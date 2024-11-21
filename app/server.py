@@ -8,7 +8,7 @@ JavaScript client which will use these methods.
 from fastapi import FastAPI
 
 from .environments import is_production
-from .routes.internal import app as internal_app
+from .routes.internal import internal_api_app
 from .routes.middleware import add_middleware
 from .routes.static import mount_public_directory
 from .templates import render_template
@@ -26,28 +26,28 @@ if is_production():
 # set `version:` as GIT sha? Set `title:`? https://github.com/fastapiutils/fastapi-utils/blob/e9e7e2c834d703503a3bf5d5605db6232dd853b9/fastapi_utils/api_settings.py#L43
 
 # TODO unclear how to type this correctly
-app = FastAPI(**fast_api_args)  # type: ignore
+api_app = FastAPI(**fast_api_args)  # type: ignore
 
-mount_public_directory(app)
+mount_public_directory(api_app)
 
 # TODO simplify openapi structure for better client generation
-app.include_router(internal_app)
+api_app.include_router(internal_api_app)
 
-add_middleware(app)
+add_middleware(api_app)
 
 
-@app.get("/")
+@api_app.get("/hello")
 async def index():
     from datetime import datetime
 
     return render_template("routes/index.html", {"date": datetime.now()})
 
 
-@app.get("/healthcheck")
+@api_app.get("/healthcheck")
 async def healthcheck():
     return {"status": "ok"}
 
 
-@app.get("/items/{item_id}")
+@api_app.get("/items/{item_id}")
 async def read_item(item_id: int, q: str | None = None):
     return {"item_id": item_id, "q": q}

@@ -276,8 +276,7 @@ py_upgrade:
 
 # open up a development server
 py_dev:
-	# TODO feels like port should be able to be defined via ENV
-	fastapi dev --port 8200
+	fastapi dev --port $PYTHON_SERVER_PORT
 
 # TODO should have additional tool for workers and all server processes
 
