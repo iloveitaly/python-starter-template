@@ -118,15 +118,16 @@ _mise_upgrade:
 	done
 
 	mise install
+	git add .tool-versions
 
 # upgrade mise, language versions, and essential packages
 [macos]
 tooling_upgrade: && _mise_upgrade js_sync-engine-versions
 	mise self-update
-	brew upgrade {{BREW_PACKAGES}}
+	HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade {{BREW_PACKAGES}}
 	gem install foreman
 
-# upgrade all packages, tooling, etc
+# upgrade everything: all packages on all languages, tooling, etc
 [macos]
 upgrade: tooling_upgrade js_upgrade py_upgrade
 

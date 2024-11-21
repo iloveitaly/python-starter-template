@@ -7,8 +7,8 @@ resolution-markers = [
 
 [[package]]
 name = "activemodel"
-version = "0.2.0"
-source = { git = "https://github.com/iloveitaly/activemodel.git#b11fb09eb95e338de7358ba070fac0e75eda9909" }
+version = "0.3.0"
+source = { git = "https://github.com/iloveitaly/activemodel.git#b96afc82c3722a17460a2e10d43d67b2a11c632f" }
 dependencies = [
     { name = "pydash" },
     { name = "sqlmodel" },
@@ -408,15 +408,15 @@ wheels = [
 
 [[package]]
 name = "debugpy"
-version = "1.8.8"
+version = "1.8.9"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/e4/5e/7667b95c9d7ddb25c047143a3a47685f9be2a5d3d177a85a730b22dc6e5c/debugpy-1.8.8.zip", hash = "sha256:e6355385db85cbd666be703a96ab7351bc9e6c61d694893206f8001e22aee091", size = 4928684 }
+sdist = { url = "https://files.pythonhosted.org/packages/88/92/15b454c516c4c53cc8c03967e4be12b65a1ea36db3bb4513a7453f75c8d8/debugpy-1.8.9.zip", hash = "sha256:1339e14c7d980407248f09824d1b25ff5c5616651689f1e0f0e51bdead3ea13e", size = 4921695 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/90/45/6745f342bbf41bde7eb5dbf5567b794a4a5498a7a729146cb3101b875b30/debugpy-1.8.8-cp313-cp313-macosx_14_0_universal2.whl", hash = "sha256:705cd123a773d184860ed8dae99becd879dfec361098edbefb5fc0d3683eb804", size = 2499523 },
-    { url = "https://files.pythonhosted.org/packages/5c/39/0374610062a384648db9b7b315d0c906facf23613bfd19527135a7c0a420/debugpy-1.8.8-cp313-cp313-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:890fd16803f50aa9cb1a9b9b25b5ec321656dd6b78157c74283de241993d086f", size = 4218219 },
-    { url = "https://files.pythonhosted.org/packages/cc/19/5b8a68eb9bbafd6bfd27ba0ed93d411f3fd50935ecdd2df242de2110a7c9/debugpy-1.8.8-cp313-cp313-win32.whl", hash = "sha256:90244598214bbe704aa47556ec591d2f9869ff9e042e301a2859c57106649add", size = 5171845 },
-    { url = "https://files.pythonhosted.org/packages/cd/04/7381dab68e40ca877d5beffc25ad1a0d3d2557cf7465405435fac9e27ef5/debugpy-1.8.8-cp313-cp313-win_amd64.whl", hash = "sha256:4b93e4832fd4a759a0c465c967214ed0c8a6e8914bced63a28ddb0dd8c5f078b", size = 5206890 },
-    { url = "https://files.pythonhosted.org/packages/03/99/ec2190d03df5dbd610418919bd1c3d8e6f61d0a97894e11ade6d3260cfb8/debugpy-1.8.8-py2.py3-none-any.whl", hash = "sha256:ec684553aba5b4066d4de510859922419febc710df7bba04fe9e7ef3de15d34f", size = 5157124 },
+    { url = "https://files.pythonhosted.org/packages/cc/8d/eb12dcb977a2d166aac6614e60daddd1eef72881a0343717d7deb0d4868c/debugpy-1.8.9-cp313-cp313-macosx_14_0_universal2.whl", hash = "sha256:957ecffff80d47cafa9b6545de9e016ae8c9547c98a538ee96ab5947115fb3dd", size = 2489077 },
+    { url = "https://files.pythonhosted.org/packages/87/2b/3b7a00d8d2bb891cfa33240575c2d5fc3fa6e0bc75567f4ece59b9d3d6ea/debugpy-1.8.9-cp313-cp313-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1efbb3ff61487e2c16b3e033bc8595aea578222c08aaf3c4bf0f93fadbd662ee", size = 4219198 },
+    { url = "https://files.pythonhosted.org/packages/5f/a1/f489026a65fabfff8c73bd51b880c130d636e02b1847564141fe3957d94f/debugpy-1.8.9-cp313-cp313-win32.whl", hash = "sha256:7c4d65d03bee875bcb211c76c1d8f10f600c305dbd734beaed4077e902606fee", size = 5163014 },
+    { url = "https://files.pythonhosted.org/packages/e6/84/6070908dd163121358eb9d76fcc94f05bc99d2f89a85fe1b86167bc34ec6/debugpy-1.8.9-cp313-cp313-win_amd64.whl", hash = "sha256:e46b420dc1bea64e5bbedd678148be512442bc589b0111bd799367cde051e71a", size = 5203529 },
+    { url = "https://files.pythonhosted.org/packages/2d/23/3f5804202da11c950dc0caae4a62d0c9aadabdb2daeb5f7aa09838647b5d/debugpy-1.8.9-py2.py3-none-any.whl", hash = "sha256:cc37a6c9987ad743d9c3a14fa1b1a14b7e4e6041f9dd0c8abf8895fe7a97b899", size = 5166094 },
 ]
 
 [[package]]
@@ -1762,15 +1762,15 @@ wheels = [
 
 [[package]]
 name = "sentry-sdk"
-version = "2.18.0"
+version = "2.19.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "certifi" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/24/cc/0d87cc8246f52d92228aa6718a24e1988a2893f4abe2f64ec5a8bcba4185/sentry_sdk-2.18.0.tar.gz", hash = "sha256:0dc21febd1ab35c648391c664df96f5f79fb0d92d7d4225cd9832e53a617cafd", size = 293615 }
+sdist = { url = "https://files.pythonhosted.org/packages/a2/0e/cc0e60f0e0cfd5a9e42622ff5a227301c6475a56bcfa82e8e893bc209f20/sentry_sdk-2.19.0.tar.gz", hash = "sha256:ee4a4d2ae8bfe3cac012dcf3e4607975904c137e1738116549fc3dbbb6ff0e36", size = 298045 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/76/9b/2d512efdb0de203d1f0312fae53433c3009ba70b0078421d25baaedc960a/sentry_sdk-2.18.0-py2.py3-none-any.whl", hash = "sha256:ee70e27d1bbe4cd52a38e1bd28a5fadb9b17bc29d91b5f2b97ae29c0a7610442", size = 317514 },
+    { url = "https://files.pythonhosted.org/packages/c6/6b/191ca63f05d3ecc7600b5b3abd493a4c1b8468289c9737a7735ade1fedca/sentry_sdk-2.19.0-py2.py3-none-any.whl", hash = "sha256:7b0b3b709dee051337244a09a30dbf6e95afe0d34a1f8b430d45e0982a7c125b", size = 322158 },
 ]
 
 [package.optional-dependencies]

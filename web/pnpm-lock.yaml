@@ -9,14 +9,14 @@ importers:
   .:
     dependencies:
       '@clerk/clerk-js':
-        specifier: ^5.34.3
-        version: 5.34.3(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.34.5
+        version: 5.34.5(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@clerk/clerk-react':
-        specifier: ^5.16.0
-        version: 5.16.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.16.1
+        version: 5.16.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@clerk/remix':
-        specifier: ^4.2.53
-        version: 4.2.53(@remix-run/react@2.14.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.3))(@remix-run/server-runtime@2.14.0(typescript@5.6.3))(react-dom@18.3.1(react@18.3.1))(react-router@7.0.0-pre.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        specifier: ^4.2.54
+        version: 4.2.54(@remix-run/react@2.14.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.3))(@remix-run/server-runtime@2.14.0(typescript@5.6.3))(react-dom@18.3.1(react@18.3.1))(react-router@7.0.0-pre.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@epic-web/invariant':
         specifier: ^1.0.0
         version: 1.0.0
@@ -379,30 +379,30 @@ packages:
       react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
       react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
 
-  '@clerk/backend@1.17.0':
-    resolution: {integrity: sha512-rqeyF217p4GiUKmi+9/wIlWcW2ybaskcwohtSHuuuMmH+kW46ITGSymjka+1bcni/2mHNqxl6RmpQEGK2ncmtQ==}
+  '@clerk/backend@1.17.1':
+    resolution: {integrity: sha512-gfjdLILCVdt0wOuFlv0QwYcdNR1dR7VkwhzZV8y4zhcF95AalzIQaBH3vUsOzlOxieBsuuB+dS1ZauHAwGFdgg==}
     engines: {node: '>=18.17.0'}
 
-  '@clerk/clerk-js@5.34.3':
-    resolution: {integrity: sha512-YksHsDauIKH74BiZAX/WbztX24ICttga9jKKQUzNe+bL8Wc2wueYKPDLD3q7Boi4D/lBR23g89Es4PdmrsPRcA==}
+  '@clerk/clerk-js@5.34.5':
+    resolution: {integrity: sha512-1y9miFHt99XcoM4cB+T2uixGWOdhU6klur1EANxXzijNPIIKTN4b/gAZ/CZHK9X9cTFIn5S2lF+0+e+IfRl60g==}
     engines: {node: '>=18.17.0'}
     peerDependencies:
       react: '>=18'
       react-dom: '>=18'
 
-  '@clerk/clerk-react@5.16.0':
-    resolution: {integrity: sha512-u2RocKKBDjygFv0v/qo8JMEsINKpHoDa1cA9ldAnXJHNlQFO66hH0Ax1gPKtafttthzVug237jiX7lGKifMoDw==}
+  '@clerk/clerk-react@5.16.1':
+    resolution: {integrity: sha512-CTXn4RlNLxZxrohtbmkpsZFwmE51J10ErcLXCnwNjyN0gBz0xX9fJapysGhSR3osrZASaIzmrP8/bCTnNvs7Sg==}
     engines: {node: '>=18.17.0'}
     peerDependencies:
       react: ^18 || ^19.0.0-0
       react-dom: ^18 || ^19.0.0-0
 
-  '@clerk/localizations@3.6.4':
-    resolution: {integrity: sha512-mQCtStwNrs3HVVrmhu2qFqvtjKP4mYGKs0bUgzJE3dlO52XAMAJL4nYqlq6egVYKLa84TZHPQABodIXyUt1KMw==}
+  '@clerk/localizations@3.6.5':
+    resolution: {integrity: sha512-8EKgl3s68uOqmBvuIqhBdfxMmmu9iG1LBZFx6n0ShOz+6Zvr/MtWZgiB20bhan9R8FEeayG0wbcMbaXM7f9UlQ==}
     engines: {node: '>=18.17.0'}
 
-  '@clerk/remix@4.2.53':
-    resolution: {integrity: sha512-xymZV6CWpd7GzI56mnoCq0G9jdHG+Co/cq52PKxU10sEOPObjZpnX1iezlP7mzcuSfgXnACdBpmka5DxNGwU+g==}
+  '@clerk/remix@4.2.54':
+    resolution: {integrity: sha512-RkyF0mGrZG7ZR4+A5PkMM5TuF9oSqn3XLyXdXuWn3gV2LrSb263dgSNxvkoOzCpb6iTnEtsq1nS4FCyo++VyNg==}
     engines: {node: '>=18.17.0'}
     peerDependencies:
       '@remix-run/react': ^2.0.0
@@ -411,8 +411,8 @@ packages:
       react-dom: '>=18'
       react-router: ^6.0.0
 
-  '@clerk/shared@2.15.0':
-    resolution: {integrity: sha512-aO1l9mYiz9ZVU8hOJKg5fTeyVVm2NLdGlwSROhOgWVzJ/0FcfmQfuMkiMC7ZwRUQb9jqdGj5Kdb4QxUFJNCkyA==}
+  '@clerk/shared@2.16.0':
+    resolution: {integrity: sha512-JM5GZcrnvppV+06v5ebsjTI5vGQFGI6TlrLiAHAfcOo/numCDR3EN5MWQW27kD09bsrRtgBNsPiejTpMqXGWjA==}
     engines: {node: '>=18.17.0'}
     peerDependencies:
       react: ^18 || ^19.0.0-0
@@ -423,8 +423,8 @@ packages:
       react-dom:
         optional: true
 
-  '@clerk/types@4.34.0':
-    resolution: {integrity: sha512-4ghDvf80/sFlpx5HnmIl3vW7SOqEaTDwyKAw64H/E2ahgGUMk+qLVpxnBumTpowq+bGjfMVwbneDQOhtmYidoQ==}
+  '@clerk/types@4.34.1':
+    resolution: {integrity: sha512-FaeHmmoZkIrPrU6AOJ8FUke+LM8ZH072w0Aog6kbQGL3bCBZgUGFy7faTzozxbd+TWTbzVDoTAbDeZCq21UOFg==}
     engines: {node: '>=18.17.0'}
 
   '@coinbase/wallet-sdk@4.0.4':
@@ -4757,10 +4757,10 @@ snapshots:
       react-lifecycles-compat: 3.0.4
       warning: 3.0.0
 
-  '@clerk/backend@1.17.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@clerk/backend@1.17.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@clerk/shared': 2.15.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@clerk/types': 4.34.0
+      '@clerk/shared': 2.16.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@clerk/types': 4.34.1
       cookie: 0.7.0
       snakecase-keys: 5.4.4
       tslib: 2.4.1
@@ -4768,11 +4768,11 @@ snapshots:
       - react
       - react-dom
 
-  '@clerk/clerk-js@5.34.3(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@clerk/clerk-js@5.34.5(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@clerk/localizations': 3.6.4
-      '@clerk/shared': 2.15.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@clerk/types': 4.34.0
+      '@clerk/localizations': 3.6.5
+      '@clerk/shared': 2.16.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@clerk/types': 4.34.1
       '@coinbase/wallet-sdk': 4.0.4
       '@emotion/cache': 11.11.0
       '@emotion/react': 11.11.1(@types/react@18.3.12)(react@18.3.1)
@@ -4795,24 +4795,24 @@ snapshots:
       - '@types/react'
       - supports-color
 
-  '@clerk/clerk-react@5.16.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@clerk/clerk-react@5.16.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@clerk/shared': 2.15.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@clerk/types': 4.34.0
+      '@clerk/shared': 2.16.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@clerk/types': 4.34.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       tslib: 2.4.1
 
-  '@clerk/localizations@3.6.4':
+  '@clerk/localizations@3.6.5':
     dependencies:
-      '@clerk/types': 4.34.0
+      '@clerk/types': 4.34.1
 
-  '@clerk/remix@4.2.53(@remix-run/react@2.14.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.3))(@remix-run/server-runtime@2.14.0(typescript@5.6.3))(react-dom@18.3.1(react@18.3.1))(react-router@7.0.0-pre.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+  '@clerk/remix@4.2.54(@remix-run/react@2.14.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.3))(@remix-run/server-runtime@2.14.0(typescript@5.6.3))(react-dom@18.3.1(react@18.3.1))(react-router@7.0.0-pre.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@clerk/backend': 1.17.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@clerk/clerk-react': 5.16.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@clerk/shared': 2.15.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@clerk/types': 4.34.0
+      '@clerk/backend': 1.17.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@clerk/clerk-react': 5.16.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@clerk/shared': 2.16.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@clerk/types': 4.34.1
       '@remix-run/react': 2.14.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.3)
       '@remix-run/server-runtime': 2.14.0(typescript@5.6.3)
       cookie: 0.7.0
@@ -4821,9 +4821,9 @@ snapshots:
       react-router: 7.0.0-pre.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tslib: 2.4.1
 
-  '@clerk/shared@2.15.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@clerk/shared@2.16.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@clerk/types': 4.34.0
+      '@clerk/types': 4.34.1
       dequal: 2.0.3
       glob-to-regexp: 0.4.1
       js-cookie: 3.0.5
@@ -4833,7 +4833,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@clerk/types@4.34.0':
+  '@clerk/types@4.34.1':
     dependencies:
       csstype: 3.1.1
 
