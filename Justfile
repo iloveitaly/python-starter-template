@@ -256,6 +256,8 @@ py_setup:
 		uv sync; \
 	fi
 
+	uv run playwright install chromium
+
 # clean entire py project without rebuilding
 py_clean:
 	rm -rf .pytest_cache .ruff_cache .venv
@@ -334,8 +336,6 @@ py_lint_fix:
 # record playwright interactions for integration tests
 py_playwright:
 	mkdir -p tmp/playwright
-
-	uv run playwright install
 	uv run playwright codegen --target python-pytest --output tmp/playwright/$(date +%m-%d-%s).py
 
 #######################
