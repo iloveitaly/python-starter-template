@@ -33,7 +33,7 @@ jobs:
       # mise can rarely get stuck installing. It normally takes < 10s to install, so this should never be more than a minute
       - uses: jdx/mise-action@v2
         timeout-minutes: 1
-
+        with: { version: 2024.11.23 }
       # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
       - uses: tecolicom/actions-use-apt-tools@v1
         with:
@@ -67,6 +67,7 @@ jobs:
       # mise can rarely get stuck installing. It normally takes < 10s to install, so this should never be more than a minute
       - uses: jdx/mise-action@v2
         timeout-minutes: 1
+        with: { version: 2024.11.23 }
       # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
       - uses: tecolicom/actions-use-apt-tools@v1
         with:
@@ -87,8 +88,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
+        timeout-minutes: 1
+        with: { version: 2024.11.23 }
       - uses: tecolicom/actions-use-apt-tools@v1
         with:
-          tools: zsh
+          tools: zsh libnss3-tools
+      # without any additional options, this simply installs the latest version of the cli
+      - uses: 1password/load-secrets-action@v2
       - run: just secrets_ci_configure
       - run: just build
