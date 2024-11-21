@@ -65,7 +65,12 @@ dev-dependencies = [
 ]
 
 [tool.ruff]
-extend-exclude = ["playground", "migrations/env.py", "migrations/versions/*.py"]
+extend-exclude = [
+    "playground",
+    "playground.py",
+    "migrations/env.py",
+    "migrations/versions/*.py",
+]
 force-exclude = true
 
 [tool.pyright]
@@ -77,6 +82,7 @@ exclude = [
     "web/node_modules",
     # migrations are autogen'd
     "migrations/versions",
+    "playground.py",
     # don't make playing less fun and force types
     "playground",
 ]
@@ -86,6 +92,8 @@ extend-select = ["I"]
 
 [tool.pytest.ini_options]
 addopts = "--pdbcls=pdbr:RichPdb"
+asyncio_default_fixture_loop_scope = "function"
+asyncio_mode = "auto"
 
 [tool.uv.sources.activemodel]
 git = "https://github.com/iloveitaly/activemodel.git"

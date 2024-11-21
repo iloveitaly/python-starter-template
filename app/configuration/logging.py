@@ -74,7 +74,10 @@ def redirect_stdlib_loggers():
     # Use ProcessorFormatter to format log records using structlog processors
     formatter = ProcessorFormatter(
         processor=RENDERER,
-        foreign_pre_chain=PROCESSORS[:-1],  # Exclude the renderer from the pre-chain
+        foreign_pre_chain=[
+            structlog.stdlib.add_logger_name,
+            *PROCESSORS[:-1],  # Exclude the renderer from the pre-chain
+        ],
     )
     handler.setFormatter(formatter)
 

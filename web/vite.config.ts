@@ -78,7 +78,7 @@ function getModePlugins(mode: string) {
   ]
 }
 
-function getBuildConfig(mode: string) {
+function getBuildConfig(_mode: string) {
   return {
     // TODO maybe use envDir to point to a fake directory
     // base url where JS assets are served out of
