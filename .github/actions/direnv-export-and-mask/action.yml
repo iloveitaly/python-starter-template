@@ -26,5 +26,5 @@ runs:
     - run: "$GITHUB_ACTION_PATH/entrypoint.sh"
       shell: bash
 
-    - run: "$GITHUB_ACTION_PATH/entrypoint.sh"
-      shell: python
+    # - run: "$GITHUB_ACTION_PATH/entrypoint.sh"
+    #   shell: python
