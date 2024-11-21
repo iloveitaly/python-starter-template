@@ -907,6 +907,18 @@ wheels = [
 ]
 
 [[package]]
+name = "mailers"
+version = "3.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f8/1d/0e847ddd05c806ddb3cbff721b386cd6b0358a59be27d9068c2156a1277f/mailers-3.1.0.tar.gz", hash = "sha256:efc7715207e36cdb8bcd56fd97f1e6ee5e9547cd9b52463814e760f889478cf3", size = 16217 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/84/2d/da6c93aad23b1f112f5ed8838dadb5ff747a36b8447e8a6c7989e8409d8d/mailers-3.1.0-py3-none-any.whl", hash = "sha256:a66c2ddc4e02ae759332c649386bd2a62d12e04417e371187599e07cc0775504", size = 18729 },
+]
+
+[[package]]
 name = "mako"
 version = "1.3.6"
 source = { registry = "https://pypi.org/simple" }
@@ -1518,6 +1530,7 @@ dependencies = [
     { name = "funcy-pipe" },
     { name = "ipython" },
     { name = "jinja2" },
+    { name = "mailers" },
     { name = "openai" },
     { name = "orjson" },
     { name = "posthog" },
@@ -1576,6 +1589,7 @@ requires-dist = [
     { name = "funcy-pipe", specifier = ">=0.11.1" },
     { name = "ipython", specifier = ">=8.28.0" },
     { name = "jinja2", specifier = ">=3.1.4" },
+    { name = "mailers", specifier = ">=3.1.0" },
     { name = "openai", specifier = ">=1.52.2" },
     { name = "orjson", specifier = ">=3.10.11" },
     { name = "posthog", specifier = ">=3.7.0" },

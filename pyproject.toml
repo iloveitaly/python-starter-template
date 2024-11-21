@@ -16,6 +16,7 @@ dependencies = [
     "funcy-pipe>=0.11.1",
     "ipython>=8.28.0",
     "jinja2>=3.1.4",
+    "mailers>=3.1.0",
     "openai>=1.52.2",
     "orjson>=3.10.11",
     "posthog>=3.7.0",
@@ -45,9 +46,6 @@ debugging-extras = [
     "pyfzf>=0.3.1",
     "sqlparse>=0.5.2",
 ]
-
-[project.scripts]
-app_name = "app.cli:main"
 
 [tool.uv]
 dev-dependencies = [
