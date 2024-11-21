@@ -342,17 +342,15 @@ py_playwright:
 # Dev Container Management
 #######################
 
-up: db_up
-	# db scripts have a dependency on DB status, so we have a separate task for that
+up:
 	docker compose up -d --wait
 
 down: db_down
 	docker compose down
 
+# separate task for the db to support db_reset
 db_up:
 	docker compose up -d --wait postgres
-	# dev database is created automatically, but test database is not
-	psql $DATABASE_URL -c "CREATE DATABASE ${TEST_DATABASE_NAME};"
 
 # turn off the database *and* completely remove the data
 db_down:
@@ -382,6 +380,9 @@ db_cli:
 
 [script]
 db_migrate:
+	# dev database is created automatically, but test database is not
+	psql $DATABASE_URL -c "CREATE DATABASE ${TEST_DATABASE_NAME};"
+
 	uv run alembic upgrade head
 	[ -n "${CI:-}" ] || PYTHON_ENV=test uv run alembic upgrade head
 
