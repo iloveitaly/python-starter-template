@@ -383,11 +383,11 @@ db_cli:
 [script]
 db_migrate:
 	uv run alembic upgrade head
-	[ -n "$CI" ] || PYTHON_ENV=test uv run alembic upgrade head
+	[ -n "${CI:-}" ] || PYTHON_ENV=test uv run alembic upgrade head
 
 db_seed: db_migrate
 	uv run python migrations/seed.py
-	[ -n "$CI" ] || PYTHON_ENV=test uv run python migrations/seed.py
+	[ -n "${CI:-}" ] || PYTHON_ENV=test uv run python migrations/seed.py
 
 # generate migration based on the current state of the database
 [script]
@@ -435,6 +435,8 @@ secrets_ci_grant-github-actions:
 # dump direnv configuration into a special file to be accessible to all CI actions
 secrets_ci_configure:
 	direnv allow . && direnv export gha >> "$GITHUB_ENV"
+	source "$GITHUB_ENV"
+	just secrets_ci_mask
 
 # cannot be run at the same time as configuration
 secrets_ci_mask:
