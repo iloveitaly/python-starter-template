@@ -41,7 +41,10 @@ jobs:
           tools: zsh libnss3-tools
 
       - name: Install localias
-        run: cat ./local-alias-install.sh | sh -s -- --yes && sudo localias start
+        run: |
+          cat ./local-alias-install.sh | sh -s -- --yes
+          sudo localias start
+          cat "$(localias debug cert)" | sudo tee -a /etc/ssl/certs/ca-certificates.crt
       # without any additional options, this simply installs the latest version of the cli
       - uses: 1password/load-secrets-action@v2
       - name: Test custom action
