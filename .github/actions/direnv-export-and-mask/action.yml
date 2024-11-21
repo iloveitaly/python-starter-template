@@ -23,8 +23,8 @@ runs:
     - run: direnv allow . && direnv export gha
       shell: bash
 
-    - run: entrypoint.sh
+    - run: $GITHUB_ACTION_PATH/entrypoint.sh
       shell: bash
 
-    - run: entrypoint.sh
+    - run: $GITHUB_ACTION_PATH/entrypoint.sh
       shell: python
