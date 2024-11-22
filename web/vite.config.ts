@@ -44,15 +44,22 @@ function getModePlugins(mode: string) {
   if (mode === "production") {
     const authToken = process.env.SENTRY_AUTH_TOKEN
 
-    // fine to occur under a CI build being used for integration testing
+    // fine for sentry to have auth under a CI build being used for integration testing
     if (!authToken) {
-      console.warn("Missing SENTRY_AUTH_TOKEN. Sentry will not be enabled.")
-    }
+      const VITE_BUILD_COMMIT = process.env.VITE_BUILD_COMMIT
+      const CI = process.env.CI
 
-    // if build is dirty, then we aren't building for prod
-    // ensuring dirty builds are not deployed is checked upstream
-    if (!authToken && !process.env.VITE_BUILD_COMMIT.endsWith("-dirty")) {
-      throw new Error("Missing SENTRY_AUTH_TOKEN during production build")
+      // if build is dirty, then we aren't building for prod (probably local)
+      // ensuring dirty builds are not deployed is checked upstream
+      // if we are in CI, then it's fine not to have a sentry token
+      // remember, although production builds are created in CI, they are done within
+      // a docker container and do not inherit CI and other ENV vars
+
+      if (!CI && !VITE_BUILD_COMMIT.endsWith("-dirty")) {
+        throw new Error("Missing SENTRY_AUTH_TOKEN. Include to fix build.")
+      }
+
+      console.warn("Missing SENTRY_AUTH_TOKEN. Sentry will not be enabled.")
     }
 
     return [
