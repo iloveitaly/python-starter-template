@@ -23,8 +23,8 @@ runs:
     - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
       shell: bash
 
-    - run: "$GITHUB_ACTION_PATH/entrypoint.py"
-      shell: python
+    - run: python ${{ github.action_path }}/entrypoint.py
+      shell: bash
 
     # - run: "$GITHUB_ACTION_PATH/entrypoint.sh"
     #   shell: python
