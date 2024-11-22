@@ -17,17 +17,40 @@ branding:
 runs:
   using: 'composite'
   steps:
-    # # TODO should detect if qemu is needed based on current vs target platform
-    # - uses: docker/setup-qemu-action@v3
-    #   if: inputs.platforms != ''
 
-    - name: "Mask Secrets"
+    - name: "Check direnv installation"
+      shell: bash
+      run: |
+        if command -v direnv &> /dev/null; then
+          echo "direnv_exists=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "direnv_exists=false" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: "Install direnv"
+      if: steps.check-direnv.outputs.direnv_exists == 'false'
+      shell: bash
+      run: curl -sfL https://direnv.net/install.sh | bash
+
+    - name: "Check python installation"
+      shell: bash
+      run: |
+        if command -v python3 &> /dev/null; then
+          echo "python_exists=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "python_exists=false" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: "Install python"
+      if: steps.check-python.outputs.python_exists == 'false'
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: "Evaluate Direnv & Mask Secrets"
       shell: bash
       run: |
         direnv allow . && direnv export gha >> "$GITHUB_ENV"
 
         # you cannot source GITHUB_ENV, it uses a syntax which is *just* different enough from the shell that it fails
         direnv export json | python ${{ github.action_path }}/entrypoint.py
-
-    # - run: "$GITHUB_ACTION_PATH/entrypoint.sh"
-    #   shell: python
