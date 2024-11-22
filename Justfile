@@ -120,6 +120,10 @@ _mise_upgrade:
 	mise install
 	git add .tool-versions
 
+	# TODO https://github.com/jtcontreras90/yaml-path-extractor/issues/11
+	# now, sync the new mise version to .github actions
+	# mise --version | awk '{print $1}'
+
 # upgrade mise, language versions, and essential packages
 [macos]
 tooling_upgrade: && _mise_upgrade js_sync-engine-versions
@@ -149,6 +153,8 @@ clean: js_clean py_clean build_clean
 	rm -rf tmp/* || true
 	rm -rf .git/hooks/* || true
 
+nuke: js_nuke py_nuke
+
 #######################
 # Javascript
 #######################
@@ -163,6 +169,8 @@ js_setup:
 
 js_clean:
 	rm -rf {{WEB_DIR}}/build {{WEB_DIR}}/client {{WEB_DIR}}/node_modules {{WEB_DIR}}/.react-router || true
+
+js_nuke: js_clean js_setup
 
 # TODO support GITHUB_ACTIONS/CI formatting
 js_lint +FILES=".":
@@ -252,7 +260,7 @@ py_setup:
 	[ -d ".venv" ] || uv venv
 
 	# don't include debugging-extras on CI
-	if [ -z "$CI" ]; then \
+	if [ -z "${CI:-}" ]; then \
 		uv sync --group=debugging-extras; \
 	else \
 		uv sync; \
@@ -263,9 +271,11 @@ py_setup:
 	# if this turns out not to be true, we should implement: https://github.com/hirasso/thumbhash-custom-element/blob/main/.github/workflows/tests.yml
 	uv run playwright install chromium
 
+	just _py_playwright_version > .chrome-version
+
 # clean entire py project without rebuilding
 py_clean:
-	rm -rf .pytest_cache .ruff_cache .venv
+	rm -rf .pytest_cache .ruff_cache .venv celerybeat-schedule
 
 	# pycache should never appear because of PYTHON* vars
 	# TODO I wonder if this is happening because of djlint
@@ -292,8 +302,10 @@ py_dev:
 # run all linting operations and fail if any fail
 [script]
 py_lint +FILES=".":
+	# TODO document the + syntax here, I think it's for the default?
 	# NOTE this is important: we want all operations to run instead of fail fast
-	set -x
+	export SHELL_TRACE_PREFIX='+ '
+	set -x +o verbose
 
 	# poetry run autoflake --exclude=migrations --imports=decouple,rich -i -r .
 	if [ -n "${CI:-}" ]; then
@@ -337,6 +349,14 @@ py_test:
 py_lint_fix:
 	# TODO anything we can do here with pyright?
 	uv tool run ruff check . --fix
+
+_py_playwright_version:
+	#!/usr/bin/env python
+	from playwright.sync_api import sync_playwright
+
+	with sync_playwright() as p:
+		browser = p.chromium.launch()
+		print(browser.version)
 
 # record playwright interactions for integration tests and dump them to a file
 [macos]
