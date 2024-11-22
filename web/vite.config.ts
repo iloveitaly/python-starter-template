@@ -49,7 +49,9 @@ function getModePlugins(mode: string) {
       console.warn("Missing SENTRY_AUTH_TOKEN. Sentry will not be enabled.")
     }
 
-    if (!authToken && !process.env.CI) {
+    // if build is dirty, then we aren't building for prod
+    // ensuring dirty builds are not deployed is checked upstream
+    if (!authToken && !process.env.VITE_BUILD_COMMIT.endsWith("-dirty")) {
       throw new Error("Missing SENTRY_AUTH_TOKEN during production build")
     }
 
