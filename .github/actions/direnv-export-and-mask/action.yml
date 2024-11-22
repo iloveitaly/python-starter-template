@@ -20,12 +20,12 @@ runs:
     # # TODO should detect if qemu is needed based on current vs target platform
     # - uses: docker/setup-qemu-action@v3
     #   if: inputs.platforms != ''
-    - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
-      shell: bash
 
     - name: "Mask Secrets"
       shell: bash
       run: |
+        direnv allow . && direnv export gha >> "$GITHUB_ENV"
+
         # you cannot source GITHUB_ENV, it uses a syntax which is *just* different enough from the shell that it fails
         direnv export json | python ${{ github.action_path }}/entrypoint.py
 
