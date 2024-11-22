@@ -39,7 +39,7 @@ jobs:
         with:
           # localias requires libnss3-tools for cert generation
           tools: zsh libnss3-tools
-
+      - uses: mxschmitt/action-tmate@v3
       - name: Install localias
         run: |
           cat ./local-alias-install.sh | sh -s -- --yes
