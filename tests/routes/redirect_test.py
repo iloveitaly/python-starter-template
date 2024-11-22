@@ -1,17 +1,15 @@
-from decouple import config
 from fastapi.testclient import TestClient
 
 from app.server import api_app
+from tests.conftest import base_server_url
 
 
 def test_https_redirection():
-    original_base_url = config("VITE_PYTHON_URL", cast=str)
+    client = TestClient(
+        api_app, base_url=base_server_url("http"), follow_redirects=False
+    )
 
-    # convert protocol to http
-    base_url = original_base_url.replace("https://", "http://")
-    client = TestClient(api_app, base_url=base_url, follow_redirects=False)
-
-    response = client.get("/")
+    response = client.get(api_app.url_path_for("javascript_index"))
 
     assert response.status_code == 307
-    assert response.headers["Location"] == original_base_url
+    assert response.headers["Location"] == base_server_url("https")

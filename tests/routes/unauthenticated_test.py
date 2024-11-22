@@ -1,19 +1,22 @@
 from typing import AsyncGenerator
 
 import pytest
-from decouple import config
 from fastapi import status
 from httpx import ASGITransport, AsyncClient
 
 from app.server import api_app
+from tests.conftest import base_server_url
 
-
+# TODO move to conftest once we understand this further
+# justification is async DB connections will cause event loop issues, but that doesn't seem right
 # https://github.com/zhanymkanov/fastapi-best-practices?tab=readme-ov-file#set-tests-client-async-from-day-0
+
+
 @pytest.fixture
 async def aclient() -> AsyncGenerator[AsyncClient, None]:
     async with AsyncClient(
         transport=ASGITransport(app=api_app),
-        base_url=config("VITE_PYTHON_URL", cast=str),
+        base_url=base_server_url(),
     ) as client:
         yield client
 

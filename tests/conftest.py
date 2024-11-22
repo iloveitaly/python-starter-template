@@ -1,21 +1,39 @@
-# isort: off
+import typing as t
 
-
-from decouple import config
 import pytest
-from sqlmodel import SQLModel
+from decouple import config
 from fastapi.testclient import TestClient
+from sqlmodel import SQLModel
+from structlog import get_logger
 
 from app.configuration.database import get_engine
 from app.server import api_app
-from structlog import get_logger
 
 log = get_logger(test=True)
 
 
+def base_server_url(protocol: t.Literal["http", "https"] = "http"):
+    """
+    VITE_PYTHON_URL is defined as the protocol + host, but the user shouldn't have to worry
+    about trailing slash, etc so we normalize it here.
+    """
+
+    url = config("VITE_PYTHON_URL", cast=str).strip()
+
+    # Remove any existing protocol
+    if url.startswith(("http://", "https://")):
+        url = url.split("://")[1]
+
+    # Remove any trailing slashes
+    url = url.rstrip("/")
+
+    # Add protocol and trailing slash
+    return f"{protocol}://{url}/"
+
+
 @pytest.fixture
 def client():
-    return TestClient(api_app, base_url=config("VITE_PYTHON_URL", cast=str))
+    return TestClient(api_app, base_url=base_server_url())
 
 
 def truncate_db():
