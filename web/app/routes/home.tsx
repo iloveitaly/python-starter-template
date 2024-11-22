@@ -3,9 +3,9 @@
 import { type MetaFunction } from "react-router"
 
 import { getClient } from "~/configuration/clerk"
+import { readRootInternalV1Get } from "~/configuration/client"
 
 import type { Route } from "./+types.home"
-import { readRootInternalV1Get } from "client/services.gen"
 
 export const meta: MetaFunction = () => {
   return [
