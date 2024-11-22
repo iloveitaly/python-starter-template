@@ -42,8 +42,7 @@ jobs:
       - uses: ./.github/actions/localias
       # without any additional options, this simply installs the latest version of the cli
       - uses: 1password/load-secrets-action@v2
-      - name: Test custom action
-        uses: ./.github/actions/direnv-export-and-mask
+      - uses: ./.github/actions/direnv-export-and-mask
       # - run: just secrets_ci_configure
       - run: just py_setup
       - run: just py_lint
@@ -75,7 +74,7 @@ jobs:
       - uses: ./.github/actions/localias
       # without any additional options, this simply installs the latest version of the cli
       - uses: 1password/load-secrets-action@v2
-      - run: just secrets_ci_configure
+      - uses: ./.github/actions/direnv-export-and-mask
       - run: just js_setup
       - run: just js_lint
       - run: just js_test
@@ -95,5 +94,5 @@ jobs:
           tools: zsh libnss3-tools
       # without any additional options, this simply installs the latest version of the cli
       - uses: 1password/load-secrets-action@v2
-      - run: just secrets_ci_configure
+      - uses: ./.github/actions/direnv-export-and-mask
       - run: just build
