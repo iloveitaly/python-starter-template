@@ -23,8 +23,11 @@ runs:
     - run: direnv allow . && direnv export gha >> "$GITHUB_ENV"
       shell: bash
 
-    - run: python ${{ github.action_path }}/entrypoint.py
+    - name: "Mask Secrets"
       shell: bash
+      run: |
+        # you cannot source GITHUB_ENV, it uses a syntax which is *just* different enough from the shell that it fails
+        direnv export json | python ${{ github.action_path }}/entrypoint.py
 
     # - run: "$GITHUB_ACTION_PATH/entrypoint.sh"
     #   shell: python
