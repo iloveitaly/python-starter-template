@@ -351,7 +351,7 @@ py_lint_fix:
 	uv tool run ruff check . --fix
 
 _py_playwright_version:
-	#!/usr/bin/env python
+	#!/usr/bin/env -S uv run
 	from playwright.sync_api import sync_playwright
 
 	with sync_playwright() as p:
