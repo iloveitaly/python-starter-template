@@ -39,7 +39,6 @@ jobs:
         with:
           # localias requires libnss3-tools for cert generation
           tools: zsh libnss3-tools
-      - uses: mxschmitt/action-tmate@v3
       - uses: ./.github/actions/localias
       # without any additional options, this simply installs the latest version of the cli
       - uses: 1password/load-secrets-action@v2

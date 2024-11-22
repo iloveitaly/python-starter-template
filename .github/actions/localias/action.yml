@@ -1,18 +1,9 @@
-name: 'Install Local Alias'
-description: "Install and run localias as a daemon"
+name: 'Install Localias'
+description: "Install and run localias as a daemon, enabling https domains to be used for CI tests"
 author: 'Michael Bianco'
 branding:
   icon: 'box'
   color: 'green'
-
-# inputs:
-#   tags:
-#     description: "List of tags to apply to the built image"
-#     required: false
-#   push:
-#     description: "Boolean to determine if the built image should be pushed"
-#     required: false
-#     default: 'false'
 
 runs:
   using: 'composite'
@@ -27,7 +18,7 @@ runs:
 
         sudo localias start
 
-        # certs are *not* installed in the right location by default by Caddy
+        # certs are *not* installed by Caddy in the right location by default
         sudo localias debug cert --print | sudo tee -a /etc/ssl/certs/ca-certificates.crt
 
         # TODO should we set this here? makes httpie work?
