@@ -25,6 +25,7 @@ runs:
 
         # TODO should we set this here? makes httpie work?
         # REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+        # export NODE_EXTRA_CA_CERTS="/path/to/cert.pem"
 
         # TODO should pick a domain from the environment and test it
         # curl --silent --head https://api-test.localhost
