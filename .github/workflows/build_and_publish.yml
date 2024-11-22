@@ -45,7 +45,7 @@ jobs:
           cat ./local-alias-install.sh | sh -s -- --yes
           sudo localias start
           localias debug cert --print
-          localias debug cert --print | sudo tee -a /etc/ssl/certs/ca-certificates.crt
+          # localias debug cert --print | sudo tee -a /etc/ssl/certs/ca-certificates.crt
       # without any additional options, this simply installs the latest version of the cli
       - uses: 1password/load-secrets-action@v2
       - name: Test custom action
