@@ -1,0 +1,36 @@
+name: 'Install Local Alias'
+description: "Install and run localias as a daemon"
+author: 'Michael Bianco'
+branding:
+  icon: 'box'
+  color: 'green'
+
+# inputs:
+#   tags:
+#     description: "List of tags to apply to the built image"
+#     required: false
+#   push:
+#     description: "Boolean to determine if the built image should be pushed"
+#     required: false
+#     default: 'false'
+
+runs:
+  using: 'composite'
+  steps:
+
+    - name: "Install & Run Localias"
+      shell: bash
+      run: |
+        if ! command -v localias &> /dev/null; then
+          cat ${{ github.action_path }}/install.sh | sh -s -- --yes
+        fi
+
+        sudo localias start
+
+        # certs are *not* installed in the right location by default by Caddy
+        sudo localias debug cert --print | sudo tee -a /etc/ssl/certs/ca-certificates.crt
+
+        # TODO should we set this here? makes httpie work?
+        # REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+
+

@@ -40,12 +40,7 @@ jobs:
           # localias requires libnss3-tools for cert generation
           tools: zsh libnss3-tools
       - uses: mxschmitt/action-tmate@v3
-      - name: Install localias
-        run: |
-          cat ./local-alias-install.sh | sh -s -- --yes
-          sudo localias start
-          localias debug cert --print
-          # localias debug cert --print | sudo tee -a /etc/ssl/certs/ca-certificates.crt
+      - uses: ./.github/actions/localias
       # without any additional options, this simply installs the latest version of the cli
       - uses: 1password/load-secrets-action@v2
       - name: Test custom action
@@ -78,7 +73,7 @@ jobs:
       - uses: tecolicom/actions-use-apt-tools@v1
         with:
           tools: zsh libnss3-tools
-      - run: cat ./local-alias-install.sh | sh -s -- --yes && sudo localias start
+      - uses: ./.github/actions/localias
       # without any additional options, this simply installs the latest version of the cli
       - uses: 1password/load-secrets-action@v2
       - run: just secrets_ci_configure
