@@ -21,7 +21,12 @@ runs:
         # certs are *not* installed by Caddy in the right location by default
         sudo localias debug cert --print | sudo tee -a /etc/ssl/certs/ca-certificates.crt
 
+        sudo update-ca-certificates
+
         # TODO should we set this here? makes httpie work?
         # REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+
+        # TODO should pick a domain from the environment and test it
+        # curl --silent --head https://api-test.localhost
 
 
