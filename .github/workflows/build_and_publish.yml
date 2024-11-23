@@ -2,6 +2,13 @@ name: Build & Deploy
 
 on:
   workflow_dispatch:
+    # allow ssh access to be enabled via the GH actions UI
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
+        required: false
+        default: false
   push:
     branches: [main, master]
   pull_request: {}
@@ -41,6 +48,8 @@ jobs:
           tools: zsh libnss3-tools
       - uses: ./.github/actions/localias
       - uses: mxschmitt/action-tmate@v3
+        # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+        with: { detached: true }
       # without any additional options, this simply installs the latest version of the cli
       - uses: 1password/load-secrets-action@v2
       - uses: ./.github/actions/direnv-export-and-mask
