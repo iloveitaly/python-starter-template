@@ -23,6 +23,9 @@ runs:
 
         sudo update-ca-certificates
 
+        # https://chromium.googlesource.com/chromium/src/+/master/docs/linux/cert_management.md
+        # sudo certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localias-cert -i $(sudo localias debug cert)
+
         # TODO should we set this here? makes httpie work?
         # REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
         # export NODE_EXTRA_CA_CERTS="/path/to/cert.pem"

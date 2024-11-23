@@ -47,9 +47,11 @@ jobs:
           # localias requires libnss3-tools for cert generation
           tools: zsh libnss3-tools
       - uses: ./.github/actions/localias
+      # NOTE one important problem with `detached` is if something fails, the github environment does seem to get wiped
+      # for instance GITHUB_ENV, seems to be cleared out.
       - uses: mxschmitt/action-tmate@v3
         # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
-        with: { detached: true }
+        # with: { detached: true }
       # without any additional options, this simply installs the latest version of the cli
       - uses: 1password/load-secrets-action@v2
       - uses: ./.github/actions/direnv-export-and-mask
