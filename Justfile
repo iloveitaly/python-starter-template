@@ -8,6 +8,8 @@
 # * All ENV variables should be handled via direnv and not configured here
 # * Any python code which is not completely independent of the project, should be in app/ so
 #   refactoring tools can rename all symbols automatically.
+# * Make CI more portable. By including as much logic as possible within the Justfile you can
+#   easily move to a different CI system if you need to.
 #
 #######################
 
@@ -271,7 +273,10 @@ py_setup:
 	# if this turns out not to be true, we should implement: https://github.com/hirasso/thumbhash-custom-element/blob/main/.github/workflows/tests.yml
 	uv run playwright install chromium
 
-	just _py_playwright_version > .chrome-version
+	# when running locally, update the chrome version file
+	if [ -z "${CI:-}" ]; \
+		just py_playwright_version > .chrome-version; \
+	fi
 
 # clean entire py project without rebuilding
 py_clean:
@@ -338,6 +343,8 @@ py_test:
 	# to do this, we build the app and serve it like it will be served in production
 	just js_build
 
+	echo "Chromium version: $(just py_playwright_version)"
+
 	# TODO what about code coverage? --cov?
 	if [[ -n "${CI:-}" ]]; then
 		uv run pytest
@@ -350,7 +357,14 @@ py_lint_fix:
 	# TODO anything we can do here with pyright?
 	uv tool run ruff check . --fix
 
-_py_playwright_version:
+# TODO should add a chromium cli script
+
+# Chromium browser versions can silently change on you when you reinstall this can cause strange to detect issues
+# with integration tests. To help debug this, we dump the chromium version that is installed into the git repo so we can
+# track version changes over time and rule out version changes and differences when debugging tests.
+# Additionally, we need to run this in the uv context so it has access to all playwright packages.
+
+py_playwright_version:
 	#!/usr/bin/env -S uv run -s
 	from playwright.sync_api import sync_playwright
 
@@ -374,8 +388,10 @@ py_playwright:
 # Dev Container Management
 #######################
 
-up:
-	docker compose up -d --wait
+# Use --fast to avoid waiting until the containers are healthy, useful for CI runs
+[doc("Optional flag: --fast")]
+up *flag:
+	docker compose up -d {{ if flag == "--fast" { "" } else { "--wait" } }}
 
 down: db_down
 	docker compose down
