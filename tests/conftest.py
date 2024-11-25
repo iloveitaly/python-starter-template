@@ -11,10 +11,10 @@ import typing as t
 import pytest
 from decouple import config
 from fastapi.testclient import TestClient
-from sqlmodel import SQLModel
 from structlog import get_logger
 
-from app.configuration.database import get_engine
+# important to ensure model metadata is added to the application
+import app.models  # noqa: F401
 
 log = get_logger(test=True)
 
@@ -57,25 +57,13 @@ def client():
     return TestClient(api_app, base_url=base_server_url())
 
 
-def truncate_db():
-    # TODO Problem with truncation is you can't run multiple tests in parallel without separate containers
+from activemodel.pytest import truncate_db
 
-    print("Truncating database")
-
-    exception_tables = ["alembic_version", "zip_code", "random_address"]
-
-    with get_engine().connect() as connection:
-        for table in reversed(SQLModel.metadata.sorted_tables):
-            transaction = connection.begin()
-
-            if table.name not in exception_tables:
-                print("Truncating", table.name)
-                connection.execute(table.delete())
-
-            transaction.commit()
+print("huh?")
 
 
-# truncate_db()
+def pytest_configure(config):
+    truncate_db()
 
 
 # CLEANER_STRATEGY: t.Literal["truncate", "session"] = "truncate"
