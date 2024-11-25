@@ -26,6 +26,8 @@ def wait_for_port(port: int, timeout: int = 30) -> bool:
         except ConnectionRefusedError:
             log.info("Waiting for port %s to be available", port)
             time.sleep(0.5)
+
+    log.error("Timed out waiting for port %s to be available", port)
     return False
 
 
