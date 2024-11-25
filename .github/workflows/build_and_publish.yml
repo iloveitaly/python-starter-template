@@ -36,23 +36,10 @@ jobs:
     name: Backend
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      # mise can rarely get stuck installing. It normally takes < 10s to install, so this should never be more than a minute
-      - uses: jdx/mise-action@v2
-        timeout-minutes: 1
-        with: { version: 2024.11.23 }
-      # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
-      - uses: tecolicom/actions-use-apt-tools@v1
-        with:
-          # localias requires libnss3-tools for cert generation
-          tools: zsh libnss3-tools
+      - uses: ./.github/actions/common-setup
       - uses: ./.github/actions/localias
       # NOTE one important problem with `detached` is if something fails, the github environment does seem to get wiped
       # for instance GITHUB_ENV, seems to be cleared out.
-      # without any additional options, this simply installs the latest version of the cli
-      - uses: 1password/load-secrets-action@v2
-      - uses: ./.github/actions/direnv-export-and-mask
-      # - run: just secrets_ci_configure
       - run: just up --fast
       - run: just py_setup
       - run: just py_lint
@@ -74,19 +61,7 @@ jobs:
     name: Frontend
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      # mise can rarely get stuck installing. It normally takes < 10s to install, so this should never be more than a minute
-      - uses: jdx/mise-action@v2
-        timeout-minutes: 1
-        with: { version: 2024.11.23 }
-      # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
-      - uses: tecolicom/actions-use-apt-tools@v1
-        with:
-          tools: zsh libnss3-tools
-      - uses: ./.github/actions/localias
-      # without any additional options, this simply installs the latest version of the cli
-      - uses: 1password/load-secrets-action@v2
-      - uses: ./.github/actions/direnv-export-and-mask
+      - uses: ./.github/actions/common-setup
       - run: just js_setup
       - run: just js_lint
       - run: just js_test
@@ -97,14 +72,5 @@ jobs:
     needs: [web, app]
     if: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main') && github.event_name == 'push' }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: jdx/mise-action@v2
-        timeout-minutes: 1
-        with: { version: 2024.11.23 }
-      - uses: tecolicom/actions-use-apt-tools@v1
-        with:
-          tools: zsh libnss3-tools
-      # without any additional options, this simply installs the latest version of the cli
-      - uses: 1password/load-secrets-action@v2
-      - uses: ./.github/actions/direnv-export-and-mask
+      - uses: ./.github/actions/common-setup
       - run: just build

@@ -121,10 +121,14 @@ _mise_upgrade:
 
 	mise install
 	git add .tool-versions
+	just _mise_version_sync
 
+
+# sync the new mise version to github actions
+_mise_version_sync:
 	# TODO https://github.com/jtcontreras90/yaml-path-extractor/issues/11
-	# now, sync the new mise version to .github actions
-	# mise --version | awk '{print $1}'
+	mise_version=$(mise --version | awk '{print $1}') && \
+		yq e '.runs.steps.1.with.version = "'$mise_version'"' .github/actions/common-setup/actions.yml -i
 
 # upgrade mise, language versions, and essential packages
 [macos]
