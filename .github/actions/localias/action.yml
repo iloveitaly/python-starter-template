@@ -34,6 +34,7 @@ runs:
         # export NODE_EXTRA_CA_CERTS="/path/to/cert.pem"
 
         # TODO should pick a domain from the environment and test it
-        # curl --silent --head https://api-test.localhost
+        echo "Checking HTTPs via curl..."
+        curl --silent --head https://api-test.localhost
 
 
