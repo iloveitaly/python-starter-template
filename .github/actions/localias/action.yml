@@ -31,11 +31,11 @@ runs:
         echo "Installing locally signed cert"
         sudo localias debug cert --print | sudo tee -a /etc/ssl/certs/ca-certificates.crt
 
-        sudo update-ca-certificates --fresh
-
         # https://chromium.googlesource.com/chromium/src/+/master/docs/linux/cert_management.md
         sudo certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localias-cert -i $(sudo localias debug cert)
         # sudo certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localias-intermediate-cert -i /root/.local/state/localias/caddy/pki/authorities/local/intermediate.crt
+
+        sudo update-ca-certificates --fresh
 
         # https://stackoverflow.com/a/75352343/129415
         # TODO should we set this here? makes httpie work?

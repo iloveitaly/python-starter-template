@@ -51,11 +51,13 @@ jobs:
       #   # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
       #   # with: { detached: true }
       - run: just py_test
+      # traces and pngs allow us to debug e2e test failures
       - name: Upload test artifacts
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
           name: playwright-traces
+          # TODO we should figure out what is causing this folder to be chosen
           path: test-results
 
       # TODO coverage data is not outputting properly right now
