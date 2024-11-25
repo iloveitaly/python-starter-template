@@ -38,17 +38,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/common-setup
+        timeout-minutes: 1
       - uses: ./.github/actions/localias
-      # NOTE one important problem with `detached` is if something fails, the github environment does seem to get wiped
-      # for instance GITHUB_ENV, seems to be cleared out.
       - run: just up --fast
       - run: just py_setup
       - run: just py_lint
       - run: just db_migrate
       - run: just db_lint
-      # - uses: mxschmitt/action-tmate@v3
-      #   # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
-      #   # with: { detached: true }
+      # NOTE one important problem with `detached` is if something fails, the github environment does seem to get wiped
+      # for instance GITHUB_ENV, seems to be cleared out.
+      - uses: mxschmitt/action-tmate@v3
+        # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+        # with: { detached: true }
       - run: just py_test
 
       # TODO coverage data is not outputting properly right now
@@ -64,6 +65,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/common-setup
+        timeout-minutes: 1
       - run: just js_setup
       - run: just js_lint
       - run: just js_test
@@ -76,4 +78,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/common-setup
+        timeout-minutes: 1
       - run: just build

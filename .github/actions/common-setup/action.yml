@@ -5,13 +5,13 @@ branding:
   icon: 'box'
   color: 'green'
 
+# NOTE timeout-minutes *cannot* bet set within a action and must be set at the root level
 runs:
   using: 'composite'
   steps:
     # NOTE cannot run checkout in this local action, must be run by the parent action
     # mise can rarely get stuck installing. It normally takes < 10s to install, so this should never be more than a minute
     - uses: jdx/mise-action@v2
-      # timeout-minutes: 1
       with:
         version: 2024.11.29
     # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
