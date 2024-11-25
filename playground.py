@@ -1,4 +1,5 @@
-#!/usr/bin/env -S ipython -i
+#!/usr/bin/env -S uv run ipython -i
+
 # isort: off
 
 async def playwright_page():
@@ -15,7 +16,7 @@ async def playwright_page():
 	return page
 
 
-def delete_all_users():
-	clerk.users.list()
-		| fp.pluck_attr("id")
-		| fp.lmap(lambda uid: clerk.users.delete(user_id=uid))
+# def delete_all_users():
+# 	clerk.users.list()
+# 		| fp.pluck_attr("id")
+# 		| fp.lmap(lambda uid: clerk.users.delete(user_id=uid))
