@@ -90,11 +90,14 @@ def test_signup(server, page: Page) -> None:
     page.get_by_role("button", name="Continue", exact=True).click()
 
     page.get_by_label("Enter verification code. Digit").fill("4")
+    page.wait_for_timeout(0.1)
     page.get_by_label("Digit 2").fill("2")
+    page.wait_for_timeout(0.1)
     page.get_by_label("Digit 3").fill("4")
+    page.wait_for_timeout(0.1)
     page.get_by_label("Digit 4").fill("2")
+    page.wait_for_timeout(0.1)
     page.get_by_label("Digit 5").fill("4")
-    page.get_by_label("Digit 6").fill("2")
 
     # at this point the page will automatically redirect
     page.wait_for_load_state()
