@@ -22,7 +22,7 @@ runs:
         sudo localias run &
 
         # certs are *not* installed by Caddy in the right location by default
-        # sudo localias debug cert --print | sudo tee -a /etc/ssl/certs/ca-certificates.crt
+        sudo localias debug cert --print | sudo tee -a /etc/ssl/certs/ca-certificates.crt
 
         sudo update-ca-certificates
 
