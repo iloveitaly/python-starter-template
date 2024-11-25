@@ -311,7 +311,6 @@ py_dev:
 py_lint +FILES=".":
 	# TODO document the + syntax here, I think it's for the default?
 	# NOTE this is important: we want all operations to run instead of fail fast
-	export SHELL_TRACE_PREFIX='+ '
 	set -x +o verbose
 
 	# poetry run autoflake --exclude=migrations --imports=decouple,rich -i -r .
@@ -344,8 +343,6 @@ py_test:
 	# integration tests should mimic production as closely as possible
 	# to do this, we build the app and serve it like it will be served in production
 	just js_build
-
-	echo "Chromium version: $(just py_playwright_version)"
 
 	# TODO what about code coverage? --cov?
 	if [[ -n "${CI:-}" ]]; then
@@ -551,6 +548,9 @@ _production_build_assertions:
 			echo "Git workspace is dirty! This should never happen on prod" >&2; \
 			exit 1; \
 	fi
+
+	# TODO should check the chromium version against stored version
+	# echo "Chromium version: $(just py_playwright_version)"
 
 # build the javascript assets by creating an image, building assets inside the container, and then copying them to the host
 build_js-assets: _production_build_assertions

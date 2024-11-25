@@ -12,6 +12,7 @@ runs:
     - name: "Install & Run Localias"
       shell: bash
       run: |
+        # when this directory is properly configured, you should see the following files: cert9.db  key4.db  pkcs11.txt
         [ ! -d "$HOME/.pki/nssdb" ] && mkdir -p "$HOME/.pki/nssdb" && certutil -d sql:$HOME/.pki/nssdb -N --empty-password
 
         if ! command -v localias &> /dev/null; then
@@ -21,6 +22,8 @@ runs:
         # don't run as daemon so we can see the logs
         sudo localias run &
 
+        # leave enough time for localias to initialize and generate certificates
+        # TODO there's got to be a more deterministic way to handle this
         sleep 5
 
         # certs are *not* installed by Caddy in the right location by default
