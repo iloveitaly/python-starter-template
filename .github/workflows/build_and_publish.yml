@@ -36,6 +36,7 @@ jobs:
     name: Backend
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/common-setup
       - uses: ./.github/actions/localias
       # NOTE one important problem with `detached` is if something fails, the github environment does seem to get wiped
@@ -61,6 +62,7 @@ jobs:
     name: Frontend
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/common-setup
       - run: just js_setup
       - run: just js_lint
@@ -72,5 +74,6 @@ jobs:
     needs: [web, app]
     if: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main') && github.event_name == 'push' }}
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/common-setup
       - run: just build

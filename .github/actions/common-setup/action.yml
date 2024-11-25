@@ -8,7 +8,7 @@ branding:
 runs:
   using: 'composite'
   steps:
-    - uses: actions/checkout@v4
+    # NOTE cannot run checkout in this local action, must be run by the parent action
     # mise can rarely get stuck installing. It normally takes < 10s to install, so this should never be more than a minute
     - uses: jdx/mise-action@v2
       # timeout-minutes: 1
