@@ -35,6 +35,6 @@ runs:
 
         # TODO should pick a domain from the environment and test it
         echo "Checking HTTPs via curl..."
-        curl --silent --head https://api-test.localhost
+        curl -vvv --head https://api-test.localhost
 
 
