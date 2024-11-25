@@ -15,16 +15,28 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from app.environments import is_production, is_staging, python_environment
-from app.setup import get_root_path
+from app import log, root
+from app.environments import (
+    is_development,
+    is_production,
+    is_staging,
+    python_environment,
+)
 
 
 def mount_public_directory(app: FastAPI):
     # TODO should be extracted into another env var
     if is_production() or is_staging():
-        public_path = get_root_path() / "public"
+        public_path = root / "public"
     else:
-        public_path = get_root_path() / "web/build" / python_environment() / "client"
+        public_path = root / "web/build" / python_environment() / "client"
+
+    # in development, a separate py & js server will be used, if the development build DNE that's fine
+    if not public_path.exists() and is_development():
+        log.warning(
+            "The development build does not exist. Static files will not be served"
+        )
+        return app
 
     app.mount(
         "/assets",
