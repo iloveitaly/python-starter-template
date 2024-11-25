@@ -17,6 +17,8 @@ class LLMResponse(BaseModel, table=True):
     model: str
     response: str
     prompt: str
-    prompt_hash: str
+    prompt_hash: str | None = Field(default=None, nullable=False)
     category: str
-    question_id: int | None
+
+    def before_save(self):
+        self.prompt_hash = hash_prompt(self.prompt)
