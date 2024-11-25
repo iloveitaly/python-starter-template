@@ -274,7 +274,7 @@ py_setup:
 	uv run playwright install chromium
 
 	# when running locally, update the chrome version file
-	[ -z "${CI:-}" ] && just py_playwright_version > .chrome-version
+	# [ -z "${CI:-}" ] && just py_playwright_version > .chrome-version
 
 # clean entire py project without rebuilding
 py_clean:
