@@ -58,9 +58,9 @@ jobs:
       - run: just up
       - run: just db_migrate
       - run: just db_lint
-      - uses: mxschmitt/action-tmate@v3
-        # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
-        # with: { detached: true }
+      # - uses: mxschmitt/action-tmate@v3
+      #   # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+      #   # with: { detached: true }
       - run: just py_test
 
       # TODO coverage data is not outputting properly right now

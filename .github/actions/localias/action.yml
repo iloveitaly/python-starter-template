@@ -12,6 +12,8 @@ runs:
     - name: "Install & Run Localias"
       shell: bash
       run: |
+        [ ! -d "$HOME/.pki/nssdb" ] && mkdir -p "$HOME/.pki/nssdb" && certutil -d sql:$HOME/.pki/nssdb -N --empty-password
+
         if ! command -v localias &> /dev/null; then
           cat ${{ github.action_path }}/install.sh | sh -s -- --yes
         fi
@@ -19,7 +21,7 @@ runs:
         sudo localias start
 
         # certs are *not* installed by Caddy in the right location by default
-        sudo localias debug cert --print | sudo tee -a /etc/ssl/certs/ca-certificates.crt
+        # sudo localias debug cert --print | sudo tee -a /etc/ssl/certs/ca-certificates.crt
 
         sudo update-ca-certificates
 
