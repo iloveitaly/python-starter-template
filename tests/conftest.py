@@ -1,3 +1,4 @@
+import os
 import typing as t
 
 import pytest
@@ -9,6 +10,10 @@ from structlog import get_logger
 from app.configuration.database import get_engine
 
 log = get_logger(test=True)
+
+if os.environ["PYTHON_ENV"] != "test":
+    log.error("PYTHON_ENV is not set to test, forcing")
+    os.environ["PYTHON_ENV"] = "test"
 
 
 # TODO this doesn't seem to fix the issue

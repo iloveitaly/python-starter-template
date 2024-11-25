@@ -22,12 +22,13 @@ def wait_for_port(port: int, timeout: int = 30) -> bool:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
                 # localhost allows for ipv4 and ipv6 loopback
                 sock.connect(("localhost", port))
+                log.info("server is up")
                 return True
         except ConnectionRefusedError:
-            log.info("Waiting for port %s to be available", port)
+            log.info("waiting for port")
             time.sleep(0.5)
 
-    log.error("Timed out waiting for port %s to be available", port)
+    log.error("Timed out waiting for port")
     return False
 
 

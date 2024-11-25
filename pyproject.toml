@@ -91,7 +91,7 @@ exclude = [
 extend-select = ["I"]
 
 [tool.pytest.ini_options]
-addopts = "--pdbcls=pdbr:RichPdb --disable-warnings --screenshot=only-on-failure"
+addopts = "--pdbcls=pdbr:RichPdb --disable-warnings --screenshot=only-on-failure --tracing=retain-on-failure"
 asyncio_default_fixture_loop_scope = "function"
 asyncio_mode = "auto"
 
