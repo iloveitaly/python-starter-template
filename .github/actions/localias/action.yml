@@ -21,7 +21,11 @@ runs:
         # don't run as daemon so we can see the logs
         sudo localias run &
 
+        sleep 5
+
         # certs are *not* installed by Caddy in the right location by default
+        # specifically, we know this fixes `curl` so it respects our self-signed SSL certificates
+        echo "Installing locally signed cert"
         sudo localias debug cert --print | sudo tee -a /etc/ssl/certs/ca-certificates.crt
 
         sudo update-ca-certificates
