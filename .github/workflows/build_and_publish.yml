@@ -47,10 +47,16 @@ jobs:
       - run: just db_lint
       # NOTE one important problem with `detached` is if something fails, the github environment does seem to get wiped
       # for instance GITHUB_ENV, seems to be cleared out.
-      - uses: mxschmitt/action-tmate@v3
-        # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
-        # with: { detached: true }
+      # - uses: mxschmitt/action-tmate@v3
+      #   # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+      #   # with: { detached: true }
       - run: just py_test
+      - name: Upload test artifacts
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: test-results
 
       # TODO coverage data is not outputting properly right now
       # - name: Add Coverage Comment to PR

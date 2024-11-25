@@ -283,6 +283,7 @@ py_setup:
 # clean entire py project without rebuilding
 py_clean:
 	rm -rf .pytest_cache .ruff_cache .venv celerybeat-schedule
+	# rm -rf $PLAYWRIGHT_BROWSERS_PATH
 
 	# pycache should never appear because of PYTHON* vars
 	# TODO I wonder if this is happening because of djlint

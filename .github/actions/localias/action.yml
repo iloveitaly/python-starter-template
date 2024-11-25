@@ -31,13 +31,16 @@ runs:
         echo "Installing locally signed cert"
         sudo localias debug cert --print | sudo tee -a /etc/ssl/certs/ca-certificates.crt
 
-        sudo update-ca-certificates
+        sudo update-ca-certificates --fresh
 
         # https://chromium.googlesource.com/chromium/src/+/master/docs/linux/cert_management.md
         sudo certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localias-cert -i $(sudo localias debug cert)
+        sudo certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localias-intermediate-cert -i /root/.local/state/localias/caddy/pki/authorities/local/intermediate.crt
 
+        # https://stackoverflow.com/a/75352343/129415
         # TODO should we set this here? makes httpie work?
         # REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+        export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
         # export NODE_EXTRA_CA_CERTS="/path/to/cert.pem"
 
         # TODO should pick a domain from the environment and test it
