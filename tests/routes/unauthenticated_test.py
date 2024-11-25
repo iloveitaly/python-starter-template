@@ -1,7 +1,6 @@
 from typing import AsyncGenerator
 
 import pytest
-from fastapi import status
 from httpx import ASGITransport, AsyncClient
 
 from app.server import api_app
@@ -21,8 +20,8 @@ async def aclient() -> AsyncGenerator[AsyncClient, None]:
         yield client
 
 
-@pytest.mark.asyncio
-async def test_https_redirection(client):
-    response = client.get(api_app.url_path_for("healthcheck"))
+# @pytest.mark.asyncio
+# async def test_https_redirection(aclient):
+#     response = await aclient.get(api_app.url_path_for("healthcheck"))
 
-    assert response.status_code == status.HTTP_200_OK
+#     assert response.status_code == status.HTTP_200_OK

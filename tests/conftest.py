@@ -7,9 +7,20 @@ from sqlmodel import SQLModel
 from structlog import get_logger
 
 from app.configuration.database import get_engine
-from app.server import api_app
 
 log = get_logger(test=True)
+
+
+# TODO this doesn't seem to fix the issue
+# https://github.com/microsoft/playwright-pytest/issues/167#issuecomment-1546854047
+# def pytest_configure():
+#     log.info("pytest_configure: nesting asyncio loop")
+#     nest_asyncio.apply()
+
+# TODO we should look into uvloop if we end up doing async tests
+# @pytest.fixture(scope="session")
+# def event_loop_policy():
+#     return uvloop.EventLoopPolicy()
 
 
 def base_server_url(protocol: t.Literal["http", "https"] = "http"):
@@ -33,6 +44,8 @@ def base_server_url(protocol: t.Literal["http", "https"] = "http"):
 
 @pytest.fixture
 def client():
+    from app.server import api_app
+
     return TestClient(api_app, base_url=base_server_url())
 
 
