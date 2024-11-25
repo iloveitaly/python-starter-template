@@ -18,7 +18,8 @@ runs:
           cat ${{ github.action_path }}/install.sh | sh -s -- --yes
         fi
 
-        sudo localias start
+        # don't run as daemon so we can see the logs
+        sudo localias run &
 
         # certs are *not* installed by Caddy in the right location by default
         # sudo localias debug cert --print | sudo tee -a /etc/ssl/certs/ca-certificates.crt
