@@ -7,12 +7,23 @@ resolution-markers = [
 
 [[package]]
 name = "activemodel"
-version = "0.3.0"
-source = { git = "https://github.com/iloveitaly/activemodel.git#b96afc82c3722a17460a2e10d43d67b2a11c632f" }
+version = "0.2.0"
+source = { editable = "pypi/activemodel" }
 dependencies = [
     { name = "pydash" },
+    { name = "python-decouple-typed" },
     { name = "sqlmodel" },
 ]
+
+[package.metadata]
+requires-dist = [
+    { name = "pydash", specifier = ">=8.0.4" },
+    { name = "python-decouple-typed", specifier = ">=3.11.0" },
+    { name = "sqlmodel", specifier = ">=0.0.22" },
+]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = ">=8.3.3" }]
 
 [[package]]
 name = "alabaster"
@@ -1543,6 +1554,7 @@ dependencies = [
     { name = "sqlalchemy" },
     { name = "sqlmodel" },
     { name = "structlog" },
+    { name = "typeid-python" },
     { name = "uvicorn" },
     { name = "watchfiles" },
 ]
@@ -1581,7 +1593,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "activemodel", git = "https://github.com/iloveitaly/activemodel.git" },
+    { name = "activemodel", editable = "pypi/activemodel" },
     { name = "alembic", specifier = ">=1.14.0" },
     { name = "backoff", specifier = ">=2.2.1" },
     { name = "celery", extras = ["redis"], specifier = ">=5.4.0" },
@@ -1603,6 +1615,7 @@ requires-dist = [
     { name = "sqlalchemy", specifier = ">=2.0.36" },
     { name = "sqlmodel", specifier = ">=0.0.22" },
     { name = "structlog", specifier = ">=24.4.0" },
+    { name = "typeid-python", specifier = ">=0.3.1" },
     { name = "uvicorn", specifier = ">=0.32.0" },
     { name = "watchfiles", specifier = "==0.24.0" },
 ]
@@ -2025,6 +2038,18 @@ wheels = [
 ]
 
 [[package]]
+name = "typeid-python"
+version = "0.3.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "uuid6" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/25/c3/4d4cfcdc4a568e50b0f4702fafac66e01934ded5efc4f822ed4d38d29780/typeid_python-0.3.1.tar.gz", hash = "sha256:f96a78c5dc6d8df1d058b72598bcc2c1c5bb8d8343f53f910e074dae01458417", size = 5861 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f4/a6/3929b4574b02541a07b3fd61f6d2757eb263dcf606ecfb71b63d504cfd08/typeid_python-0.3.1-py3-none-any.whl", hash = "sha256:62a6747933b3323d65f0bf91c8e8c7768b0292eaf9c176fb0c934ff3a61acce5", size = 7013 },
+]
+
+[[package]]
 name = "typer"
 version = "0.13.1"
 source = { registry = "https://pypi.org/simple" }
@@ -2086,6 +2111,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz", hash = "sha256:e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9", size = 300677 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ce/d9/5f4c13cecde62396b0d3fe530a50ccea91e7dfc1ccf0e09c228841bb5ba8/urllib3-2.2.3-py3-none-any.whl", hash = "sha256:ca899ca043dcb1bafa3e262d73aa25c465bfb49e0bd9dd5d59f1d0acba2f8fac", size = 126338 },
+]
+
+[[package]]
+name = "uuid6"
+version = "2024.7.10"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/2c/56/2560a9f1ccab9e12b1b3478a3c870796cf4d8ee5652bb19b61751cced14a/uuid6-2024.7.10.tar.gz", hash = "sha256:2d29d7f63f593caaeea0e0d0dd0ad8129c9c663b29e19bdf882e864bedf18fb0", size = 8705 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d3/3e/4ae6af487ce5781ed71d5fe10aca72e7cbc4d4f45afc31b120287082a8dd/uuid6-2024.7.10-py3-none-any.whl", hash = "sha256:93432c00ba403751f722829ad21759ff9db051dea140bf81493271e8e4dd18b7", size = 6376 },
 ]
 
 [[package]]
