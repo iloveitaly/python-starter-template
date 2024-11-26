@@ -11,11 +11,26 @@ def test_basic_llm_response():
     # ensure that database cleaning is working
     assert LLMResponse.count() == 0
 
-    response = LLMResponse(
+    llm_response = LLMResponse(
         model="gpt-4", response="bar", prompt="foo", category="test"
     ).save()
 
     # ensure that basic DB operation is working
-    assert response.id
-    assert str(response.id).startswith("user_")
-    assert response.prompt_hash
+    assert llm_response.id
+    assert llm_response.response == "bar"
+    assert str(llm_response.id).startswith("user_")
+    assert llm_response.prompt_hash
+
+    llm_response.response = "bar2"
+    llm_response.save()
+
+    fresh_llm_response = LLMResponse.get(llm_response.id)
+    assert fresh_llm_response.response == "bar2"
+
+
+def test_avoid_prompt_mutation():
+    assert LLMResponse.count() == 0
+
+    llm_response = LLMResponse(
+        model="gpt-4", response="bar", prompt="foo", category="test"
+    ).save()
