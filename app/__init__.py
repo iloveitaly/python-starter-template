@@ -6,6 +6,7 @@ from pathlib import Path
 
 import structlog
 
+from .configuration.database import configure_database
 from .configuration.debugging import configure_debugging
 from .configuration.logging import configure_logger
 from .configuration.sentry import configure_sentry
@@ -28,6 +29,7 @@ def setup():
     root = get_root_path()
     log = configure_logger()
 
+    configure_database()
     configure_openai()
     configure_sentry()
     configure_debugging()

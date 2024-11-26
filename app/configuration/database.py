@@ -1,8 +1,8 @@
+import activemodel
 from decouple import config
-from sqlalchemy import create_engine
-from sqlmodel import Session, SQLModel, text
+from sqlmodel import text
 
-from ..environments import is_development, is_production, is_testing
+from ..environments import is_production, is_testing
 
 
 def database_url():
@@ -16,63 +16,67 @@ def database_url():
         return config("DATABASE_URL", cast=str)
 
 
-_engine = None
-_connection = None
+def configure_database():
+    activemodel.init(database_url())
 
 
-def get_engine():
-    global _engine
-
-    if not _engine:
-        _engine = create_engine(
-            database_url(),
-            echo=config("LOG_SQL", cast=bool, default=False),
-        )
-
-    return _engine
+# _engine = None
+# _connection = None
 
 
-def clear_engine():
-    global _engine, _connection
+# def get_engine():
+#     global _engine
 
-    if _engine:
-        _engine.dispose()
-        _engine = None
-        _connection = None
+#     if not _engine:
+#         _engine = create_engine(
+#             database_url(),
+#             echo=config("ACTIVEMODEL_LOG_SQL", cast=bool, default=False),
+#         )
 
-
-# TODO not using this yet, but maybe this is better to avoid expiring sessions?
-def get_connection():
-    global _connection
-
-    if not _connection:
-        _connection = get_engine().connect()
-
-    return _connection
+#     return _engine
 
 
-def create_db_and_tables():
-    """
-    Do not use when using alembic migrations, helpful for syncing the db during dev
-    """
+# def clear_engine():
+#     global _engine, _connection
 
-    assert is_testing() or is_development()
-    assert len(SQLModel.metadata.tables.items()) > 0, "No tables found"
-
-    SQLModel.metadata.create_all(get_engine())
+#     if _engine:
+#         _engine.dispose()
+#         _engine = None
+#         _connection = None
 
 
-def _get_session():
-    """
-    Why this private method?
+# # TODO not using this yet, but maybe this is better to avoid expiring sessions?
+# def get_connection():
+#     global _connection
 
-    So we can monkey patch effectively
-    """
-    return Session(get_engine())
+#     if not _connection:
+#         _connection = get_engine().connect()
+
+#     return _connection
 
 
-def get_session():
-    return _get_session()
+# def create_db_and_tables():
+#     """
+#     Do not use when using alembic migrations, helpful for syncing the db during dev
+#     """
+
+#     assert is_testing() or is_development()
+#     assert len(SQLModel.metadata.tables.items()) > 0, "No tables found"
+
+#     SQLModel.metadata.create_all(get_engine())
+
+
+# def _get_session():
+#     """
+#     Why this private method?
+
+#     So we can monkey patch effectively
+#     """
+#     return Session(get_engine())
+
+
+# def get_session():
+#     return _get_session()
 
 
 def raw_sql_exec(raw_query: str):
