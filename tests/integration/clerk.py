@@ -17,7 +17,7 @@ class SetupClerkTestingTokenOptions:
     frontend_api_url: Optional[str] = None
 
 
-TESTING_TOKEN_PARAM = "_clerk_testing_token"
+TESTING_TOKEN_PARAM = "__clerk_testing_token"
 
 PUBLISHABLE_KEY_LIVE_PREFIX = "pk_live_"
 PUBLISHABLE_KEY_TEST_PREFIX = "pk_test_"
@@ -95,9 +95,7 @@ def setup_clerk_testing_token(page: Page, frontend_api_url: str | None = None):
             frontend_api_url = parsed_publishable_key.frontend_api
 
     if not frontend_api_url:
-        raise ValueError(
-            "Frontend API URL is required. Set CLERK_FAPI env var or pass frontendApiUrl option."
-        )
+        raise ValueError("Frontend API URL or valid publishable key is required")
 
     if not (testing_token := os.environ.get("CLERK_TESTING_TOKEN")):
         if clerk_private_key := os.environ.get("CLERK_PRIVATE_KEY"):
@@ -114,7 +112,7 @@ def setup_clerk_testing_token(page: Page, frontend_api_url: str | None = None):
                 "CLERK_TESTING_TOKEN or CLERK_PRIVATE_KEY is required to generate a test token"
             )
 
-    api_url = f"https://{frontend_api_url}/v1/*"
+    api_url = f"https://{frontend_api_url}/v1/**"
 
     logger.debug(f"Adding clerk testing token to URL url={api_url}")
 
@@ -133,6 +131,8 @@ def setup_clerk_testing_token(page: Page, frontend_api_url: str | None = None):
 
         new_query = urlencode(params, doseq=True)
         new_url = parsed_url._replace(query=new_query).geturl()
+
+        logger.debug("rewriting URL old=%s new=%s", url, new_url)
 
         route.continue_(url=new_url)
 

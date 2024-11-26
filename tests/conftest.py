@@ -66,4 +66,6 @@ def client():
     return TestClient(api_app, base_url=base_server_url())
 
 
-pytest.fixture(scope="function", autouse=True)(database_reset_transaction)
+database_reset_transaction = pytest.fixture(scope="function", autouse=True)(
+    database_reset_transaction
+)
