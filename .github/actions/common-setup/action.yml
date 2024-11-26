@@ -4,7 +4,6 @@ author: 'Michael Bianco'
 branding:
   icon: 'box'
   color: 'green'
-
 # NOTE timeout-minutes *cannot* bet set within a action and must be set at the root level
 runs:
   using: 'composite'
@@ -18,6 +17,7 @@ runs:
     - uses: tecolicom/actions-use-apt-tools@v1
       with:
         tools: zsh libnss3-tools
+        version: 2024.11.30
     # without any additional options, this simply installs the latest version of the cli
     - uses: 1password/load-secrets-action@v2
     - uses: ./.github/actions/direnv-export-and-mask
