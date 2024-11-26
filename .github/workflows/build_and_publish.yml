@@ -28,6 +28,12 @@ permissions:
 env:
   OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
+  # a important design goal is to avoid custom configuration in CI. This enables tests to be run in a CI-like environment
+  # locally, making it easy to replicate CI issues. This is one of the few CI-specific configuration changes since
+  # the host where services are located is truly unique to the CI environment.
+  DATABASE_HOST: localhost
+  REDIS_HOST: localhost
+
 jobs:
   # TODO consider adding a hard timeout for the tail cases
   # timeout-minutes: 10
