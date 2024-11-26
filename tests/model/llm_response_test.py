@@ -27,6 +27,7 @@ def test_basic_llm_response():
     llm_response.save()
 
     fresh_llm_response = LLMResponse.get(llm_response.id)
+    assert fresh_llm_response
     assert fresh_llm_response.response == "bar2"
 
 
