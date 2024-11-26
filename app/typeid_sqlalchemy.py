@@ -26,9 +26,8 @@ class TypeIDType(types.TypeDecorator):
     """
 
     impl = types.Uuid
-
+    # impl = uuid.UUID
     cache_ok = True
-
     prefix: Optional[str] = None
 
     def __init__(self, prefix: Optional[str], *args, **kwargs):
@@ -44,13 +43,13 @@ class TypeIDType(types.TypeDecorator):
             to_inspect=TypeID(self.prefix),
         )
 
-    def process_bind_param(self, value: TypeID, dialect):
+    def process_bind_param(self, value, dialect):
         if self.prefix is None:
             assert value.prefix is None
         else:
             assert value.prefix == self.prefix
 
-        return value.uuid
+        return str(value)
 
     def process_result_value(self, value, dialect):
-        return TypeID.from_uuid(value, self.prefix)
+        return TypeID.from_uuid(value)
