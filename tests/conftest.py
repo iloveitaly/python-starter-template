@@ -9,6 +9,7 @@ if os.environ["PYTHON_ENV"] != "test":
 import typing as t
 
 import pytest
+from activemodel import SessionManager
 from decouple import config
 from fastapi.testclient import TestClient
 from structlog import get_logger
@@ -84,30 +85,29 @@ def pytest_configure(config):
 
 # if CLEANER_STRATEGY == "session":
 
-#     @pytest.fixture(scope="session", autouse=True)
-#     def reset_db():
-#         """
-#         https://stackoverflow.com/questions/62433018/how-to-make-sqlalchemy-transaction-rollback-drop-tables-it-created
-#         https://aalvarez.me/posts/setting-up-a-sqlalchemy-and-pytest-based-test-suite/
-#         https://github.com/nickjj/docker-flask-example/blob/93af9f4fbf185098ffb1d120ee0693abcd77a38b/test/conftest.py#L77
-#         https://github.com/caiola/vinhos.com/blob/c47d0a5d7a4bf290c1b726561d1e8f5d2ac29bc8/backend/test/conftest.py#L46
-#         """
 
-#         engine = get_engine()
+@pytest.fixture(scope="function", autouse=True)
+def reset_db():
+    """
+    https://stackoverflow.com/questions/62433018/how-to-make-sqlalchemy-transaction-rollback-drop-tables-it-created
+    https://aalvarez.me/posts/setting-up-a-sqlalchemy-and-pytest-based-test-suite/
+    https://github.com/nickjj/docker-flask-example/blob/93af9f4fbf185098ffb1d120ee0693abcd77a38b/test/conftest.py#L77
+    https://github.com/caiola/vinhos.com/blob/c47d0a5d7a4bf290c1b726561d1e8f5d2ac29bc8/backend/test/conftest.py#L46
+    """
 
-#         with engine.begin() as connection:
-#             transaction = connection.begin_nested()
-#             session = Session(bind=connection)
+    engine = SessionManager.get_instance().get_engine()
 
-#             # oh baby, we like dangerous, don't we?
-#             # app.database.get_session = lambda: session
-#             # monkeypatch.setattr(app.database, "get_session", lambda: session)
-#             with patch.object(app.database, "_get_session", return_value=session):
-#                 try:
-#                     yield
-#                 finally:
-#                     transaction.rollback()
-#                     session.close()
+    with engine.begin() as connection:
+        transaction = connection.begin_nested()
+
+        SessionManager.get_instance().session_connection = connection
+
+        try:
+            yield
+        finally:
+            transaction.rollback()
+            connection.close()
+
 
 #     print("reset_db complete")
 
