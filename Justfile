@@ -392,15 +392,15 @@ _gha_last_failed_run_id:
 [macos]
 [script]
 py_playwright_trace remote="":
-    if [ "{{remote}}" = "--remote" ]; then
-        failed_run_id=$(gh run list --status=failure --workflow=build_and_publish.yml --json databaseId --jq '.[0].databaseId') && \
-        cd $PLAYWRIGHT_RESULT_DIRECTORY && \
-        gh run download $failed_run_id
-    fi
+		if [ "{{remote}}" = "--remote" ]; then
+				failed_run_id=$(gh run list --status=failure --workflow=build_and_publish.yml --json databaseId --jq '.[0].databaseId') && \
+				cd $PLAYWRIGHT_RESULT_DIRECTORY && \
+				gh run download $failed_run_id
+		fi
 
 		# NOTE it's insane, but fd does not have a "find last modified file"
 		# https://github.com/sharkdp/fd/issues/196
-    uv run playwright show-trace $(fd --no-ignore-vcs  . tmp/ -e zip -t f --exec-batch stat -f '%m %N' | sort -n | tail -1 | cut -f2- -d" ")
+		uv run playwright show-trace $(fd --no-ignore-vcs  . tmp/ -e zip -t f --exec-batch stat -f '%m %N' | sort -n | tail -1 | cut -f2- -d" ")
 
 # record playwright interactions for integration tests and dump them to a file
 [macos]
