@@ -2,14 +2,10 @@
 Mirrors this model: https://clerk.com/docs/reference/backend-api/tag/Users#operation/GetUser
 """
 
-import uuid
 
 from activemodel import BaseModel
 from activemodel.mixins import TimestampsMixin, TypeIDMixin
-from activemodel.types.typeid import TypeIDType
 from pydantic import field_validator
-from sqlmodel import Column, Field
-from typeid import TypeID
 
 
 class User(BaseModel, TimestampsMixin, TypeIDMixin("user"), table=True):

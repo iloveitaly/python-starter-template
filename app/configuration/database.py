@@ -1,9 +1,9 @@
 import activemodel
 from activemodel.session_manager import get_engine
 from decouple import config
-from sqlmodel import SQLModel, text
+from sqlmodel import SQLModel
 
-from ..environments import is_development, is_production, is_testing
+from ..environments import is_development, is_testing
 
 
 def database_url():
