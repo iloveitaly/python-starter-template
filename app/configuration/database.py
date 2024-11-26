@@ -1,8 +1,9 @@
 import activemodel
+from activemodel.session_manager import get_engine
 from decouple import config
-from sqlmodel import text
+from sqlmodel import SQLModel, text
 
-from ..environments import is_production, is_testing
+from ..environments import is_development, is_production, is_testing
 
 
 def database_url():
@@ -17,70 +18,20 @@ def database_url():
 
 
 def configure_database():
+    """
+    The only configuration passed to active model, for now this project is tightly coupled
+    so the defaults are exactly what we want.
+    """
+
     activemodel.init(database_url())
 
 
-# _engine = None
-# _connection = None
+def create_db_and_tables():
+    """
+    Do not use when using alembic migrations, helpful for syncing the db during dev
+    """
 
+    assert is_testing() or is_development()
+    assert len(SQLModel.metadata.tables.items()) > 0, "No tables found"
 
-# def get_engine():
-#     global _engine
-
-#     if not _engine:
-#         _engine = create_engine(
-#             database_url(),
-#             echo=config("ACTIVEMODEL_LOG_SQL", cast=bool, default=False),
-#         )
-
-#     return _engine
-
-
-# def clear_engine():
-#     global _engine, _connection
-
-#     if _engine:
-#         _engine.dispose()
-#         _engine = None
-#         _connection = None
-
-
-# # TODO not using this yet, but maybe this is better to avoid expiring sessions?
-# def get_connection():
-#     global _connection
-
-#     if not _connection:
-#         _connection = get_engine().connect()
-
-#     return _connection
-
-
-# def create_db_and_tables():
-#     """
-#     Do not use when using alembic migrations, helpful for syncing the db during dev
-#     """
-
-#     assert is_testing() or is_development()
-#     assert len(SQLModel.metadata.tables.items()) > 0, "No tables found"
-
-#     SQLModel.metadata.create_all(get_engine())
-
-
-# def _get_session():
-#     """
-#     Why this private method?
-
-#     So we can monkey patch effectively
-#     """
-#     return Session(get_engine())
-
-
-# def get_session():
-#     return _get_session()
-
-
-def raw_sql_exec(raw_query: str):
-    assert not is_production()
-
-    with get_session() as session:
-        session.execute(text(raw_query))
+    SQLModel.metadata.create_all(get_engine())
