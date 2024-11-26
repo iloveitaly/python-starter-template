@@ -90,6 +90,12 @@ def redirect_stdlib_loggers():
     root_logger.propagate = True
 
 
+def silence_loud_loggers():
+    # unless we are explicitly debugging asyncio, I don't want to hear from it
+    if not config("PYTHONASYNCIODEBUG", cast=bool, default=False):
+        logging.getLogger("asyncio").setLevel(logging.WARNING)
+
+
 def configure_logger():
     """
     Create a struct logger with some special additions:
@@ -103,6 +109,7 @@ def configure_logger():
     """
 
     redirect_stdlib_loggers()
+    silence_loud_loggers()
 
     log = structlog.get_logger()
 
