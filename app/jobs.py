@@ -3,7 +3,6 @@ from datetime import timedelta
 
 from celery import Celery
 from celery.schedules import crontab
-from celery.signals import task_prerun
 from celery_once import QueueOnce
 
 from app import log
