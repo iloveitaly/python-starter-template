@@ -7,7 +7,6 @@ from celery.signals import task_prerun
 from celery_once import QueueOnce
 
 from app import log
-from app.configuration.database import clear_engine
 from app.configuration.redis import redis_url
 
 celery = Celery(
@@ -45,19 +44,20 @@ celery.conf.beat_schedule = {
 celery.conf.task_time_limit = 60 * 35
 
 
-@task_prerun.connect
-def on_task_init(*args, **kwargs):
-    """
-    Without this, the database connection becomes corrupted and causes SSL-related failures:
+# from app.configuration.database import clear_engine
+# @task_prerun.connect
+# def on_task_init(*args, **kwargs):
+#     """
+#     Without this, the database connection becomes corrupted and causes SSL-related failures:
 
-    https://github.com/celery/celery/issues/1564
-    https://github.com/celery/celery/issues/3238
-    https://stackoverflow.com/questions/45215596/flask-and-celery-on-heroku-sqlalchemy-exc-databaseerror-psycopg2-databaseerro
-    """
+#     https://github.com/celery/celery/issues/1564
+#     https://github.com/celery/celery/issues/3238
+#     https://stackoverflow.com/questions/45215596/flask-and-celery-on-heroku-sqlalchemy-exc-databaseerror-psycopg2-databaseerro
+#     """
 
-    log.info("task init, clearing database engine")
+#     log.info("task init, clearing database engine")
 
-    clear_engine()
+#     clear_engine()
 
 
 @celery.task()
