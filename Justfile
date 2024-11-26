@@ -28,6 +28,8 @@ set script-interpreter := ["zsh", "-euBh"]
 # used for image name, op vault access, etc
 PROJECT_NAME := `basename $(pwd)`
 
+EXECUTE_IN_TEST := "CI=true direnv exec ."
+
 default:
 	just --list
 
@@ -198,7 +200,7 @@ js_test:
 	if [[ -n "${CI:-}" ]]; then
 		{{_pnpm}} vitest run
 	else
-		cd {{WEB_DIR}} && CI=true direnv exec . pnpm vitest run
+		cd {{WEB_DIR}} && {{EXECUTE_IN_TEST}} pnpm vitest run
 	fi
 
 js_dev:
@@ -304,13 +306,16 @@ py_upgrade:
 py_dev:
 	fastapi dev --port $PYTHON_SERVER_PORT
 
+py_play:
+	./playground.py
+
 # TODO should have additional tool for workers and all server processes
 
-# TODO add djlint for jinja templates
 # run all linting operations and fail if any fail
 [script]
 py_lint +FILES=".":
-	# TODO document the + syntax here, I think it's for the default?
+	# + indicates one more arguments being required
+
 	# NOTE this is important: we want all operations to run instead of fail fast
 	set -x +o verbose
 
@@ -328,6 +333,9 @@ py_lint +FILES=".":
 		uv tool run ruff check {{FILES}} || exit_code=$?
 		uv run pyright {{FILES}} || exit_code=$?
 	fi
+
+	# TODO add djlint for jinja templates
+	uv run djlint {{FILES}} --profile=jinja
 
 	# TODO https://github.com/fpgmaas/deptry/issues/610#issue-2190147786
 	# TODO https://github.com/fpgmaas/deptry/issues/740
@@ -349,7 +357,7 @@ py_test:
 	if [[ -n "${CI:-}" ]]; then
 		uv run pytest
 	else
-		CI=true direnv exec . uv run pytest
+		{{EXECUTE_IN_TEST}} uv run pytest
 	fi
 
 # automatically fix linting errors
@@ -371,6 +379,28 @@ py_playwright_version:
 	with sync_playwright() as p:
 		browser = p.chromium.launch()
 		print(browser.version)
+
+ci_view-last-failed:
+	gh run view --web $(just _gha_last_failed_run_id)
+
+_gha_last_failed_run_id:
+	gh run list --status=failure --workflow=build_and_publish.yml --json databaseId --jq '.[0].databaseId'
+
+# gh run view --web 12017441624
+
+# open playwright trace viewer on last trace zip, or download one remotely
+[macos]
+[script]
+py_playwright_trace remote="":
+    if [ "{{remote}}" = "--remote" ]; then
+        failed_run_id=$(gh run list --status=failure --workflow=build_and_publish.yml --json databaseId --jq '.[0].databaseId') && \
+        cd $PLAYWRIGHT_RESULT_DIRECTORY && \
+        gh run download $failed_run_id
+    fi
+
+		# NOTE it's insane, but fd does not have a "find last modified file"
+		# https://github.com/sharkdp/fd/issues/196
+    uv run playwright show-trace $(fd --no-ignore-vcs  . tmp/ -e zip -t f --exec-batch stat -f '%m %N' | sort -n | tail -1 | cut -f2- -d" ")
 
 # record playwright interactions for integration tests and dump them to a file
 [macos]
@@ -421,26 +451,28 @@ db_open:
 
 # nice tui to interact with the database
 [macos]
-db_cli:
+db_play:
 	uv tool run pgcli $DATABASE_URL
 
-# TODO should I use CI=true with direnv instead of PYTHON_ENV=test?
-
-[script]
 db_migrate:
 	# dev database is created automatically, but test database is not
 	psql $DATABASE_URL -c "CREATE DATABASE ${TEST_DATABASE_NAME};"
 
 	uv run alembic upgrade head
-	[ -n "${CI:-}" ] || PYTHON_ENV=test uv run alembic upgrade head
+
+	[ -n "${CI:-}" ] || {{EXECUTE_IN_TEST}} uv run alembic upgrade head
 
 db_seed: db_migrate
 	uv run python migrations/seed.py
-	[ -n "${CI:-}" ] || PYTHON_ENV=test uv run python migrations/seed.py
+	[ -n "${CI:-}" ] || {{EXECUTE_IN_TEST}} uv run python migrations/seed.py
 
 # generate migration based on the current state of the database
 [script]
 db_generate_migration migration_name="":
+	# nice and simple command tracing
+	set -v
+	PS1=$'\033[32m+\033[0m '
+
 	if [ -z "{{migration_name}}" ]; then
 		echo "Enter the migration name: "
 		read name
@@ -460,8 +492,10 @@ db_nuke: db_reset && db_migrate db_seed
 	rm -rf migrations/versions/* || true
 	just db_generate_migration "initial_commit"
 
-	# PYTHON_ENV=test just db_migrate
-	# PYTHON_ENV=test just db_seed
+# enable SQL debugging on the postgres database
+db_debug:
+	docker compose exec postgres \
+		psql -U username -c "ALTER SYSTEM SET log_statement = 'all'; SELECT pg_reload_conf();"
 
 #######################
 # Secrets

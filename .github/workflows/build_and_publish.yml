@@ -63,8 +63,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-traces
-          # TODO we should figure out what is causing this folder to be chosen
-          path: test-results
+          path: ${{ env.PLAYWRIGHT_RESULT_DIRECTORY }}
 
       # TODO coverage data is not outputting properly right now
       # - name: Add Coverage Comment to PR
