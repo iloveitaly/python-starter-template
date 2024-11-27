@@ -32,7 +32,7 @@ runs:
 
         # leave enough time for localias to initialize and generate certificates
         # TODO there's got to be a more deterministic way to handle this
-        sleep 5
+        sleep 10
 
         # certs are *not* installed by Caddy in the right location by default
         # specifically, we know this fixes `curl` so it respects our self-signed SSL certificates
