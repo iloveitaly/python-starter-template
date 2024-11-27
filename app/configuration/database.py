@@ -12,9 +12,14 @@ def database_url():
     """
 
     if is_testing():
-        return config("TEST_DATABASE_URL", cast=str)
+        url = config("TEST_DATABASE_URL", cast=str)
     else:
-        return config("DATABASE_URL", cast=str)
+        url = config("DATABASE_URL", cast=str)
+
+    # sqlalchemy does *not* allow to specify the dialect of the DB outside of the url protocol
+    # https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls
+    # without this, psycopg2 would be used
+    return url.replace("postgresql://", "postgresql+psycopg://")
 
 
 def configure_database():
