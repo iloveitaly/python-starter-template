@@ -1,12 +1,18 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from pydantic import BaseModel
 
 from ..configuration.clerk import CLERK_PRIVATE_KEY
 from .dependencies.clerk import AuthenticateRequest
+from .dependencies.user import inject_user_record
 
 internal_api_app = APIRouter(
     prefix="/internal/v1",
-    dependencies=[Depends(AuthenticateRequest(CLERK_PRIVATE_KEY))],
+    # TODO unclear what the tags are used for...
+    tags=["private"],
+    dependencies=[
+        Depends(AuthenticateRequest(CLERK_PRIVATE_KEY)),
+        Depends(inject_user_record),
+    ],
 )
 
 

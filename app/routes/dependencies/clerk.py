@@ -22,12 +22,13 @@ class AuthenticateRequest:
 
     def __init__(self, clerk_secret_key: str):
         self.clerk_secret_key = clerk_secret_key
+        # self.sdk.sdk_configuration contains most of the core configuration
         self.sdk = Clerk(bearer_auth=clerk_secret_key)
 
     async def __call__(
         self,
         request: Request,
-        credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer()),
+        credentials: HTTPAuthorizationCredentials | None = Depends(HTTPBearer()),
     ) -> RequestState:
         if not credentials:
             raise HTTPException(status_code=401, detail="Not authenticated")

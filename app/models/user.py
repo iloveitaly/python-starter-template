@@ -2,23 +2,29 @@
 Mirrors this model: https://clerk.com/docs/reference/backend-api/tag/Users#operation/GetUser
 """
 
+from datetime import datetime
 
 from activemodel import BaseModel
 from activemodel.mixins import TimestampsMixin, TypeIDMixin
-from pydantic import field_validator
+from sqlmodel import Field
+
+CLERK_OBJECT_PREFIX = "user_"
 
 
-class User(BaseModel, TimestampsMixin, TypeIDMixin("user"), table=True):
-    # id: uuid.UUID = Field(
-    #     sa_column=Column(TypeIDType("user"), primary_key=True),
-    #     default_factory=lambda: TypeID("user"),
-    # )
-
+# usr vs user is intentionally used to differentiate from the clerk model, which also uses a prefix ID
+class User(BaseModel, TimestampsMixin, TypeIDMixin("usr"), table=True):
     clerk_id: str
 
-    @field_validator("clerk_id")
-    @classmethod
-    def clerk_id_must_match_format(cls, v: str) -> str:
-        if not v.startswith("user_"):
-            raise ValueError("Clerk ID does not look valid")
-        return v.title()
+    # TODO can we implement a deleted_at mixin with a decorator to handle deleted_at?
+    deleted: bool = Field(default=False, nullable=False)
+    deleted_at: datetime
+
+    # organization_id: str
+
+    def before_save(self):
+        if not self.clerk_id.startswith(CLERK_OBJECT_PREFIX):
+            raise ValueError(
+                f"clerk_id must start with {CLERK_OBJECT_PREFIX}, got {self.clerk_id}"
+            )
+
+    # TODO should also check to ensure the value does not change, I think sqlalchemy stores this state somewhere?
