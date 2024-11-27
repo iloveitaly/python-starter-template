@@ -7,6 +7,9 @@
   "paths": {
     "/internal/v1/": {
       "get": {
+        "tags": [
+          "private"
+        ],
         "summary": "Read Root",
         "operationId": "read_root_internal_v1__get",
         "responses": {

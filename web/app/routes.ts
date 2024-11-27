@@ -6,5 +6,5 @@ import { index, layout, route } from "@react-router/dev/routes"
 
 export default [
   index("routes/login.tsx"),
-  layout("layouts/authenticated.tsx", [route("/home", "routes/home.tsx")]),
+  route("/home", "routes/home.tsx"),
 ] satisfies RouteConfig

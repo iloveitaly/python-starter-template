@@ -1,4 +1,19 @@
+import { Link, Navigate } from "react-router"
+
+import { Button } from "@/components/ui/button"
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  ClerkProvider,
+  RedirectToSignIn,
+  SignIn,
   SignInButton,
   SignOutButton,
   SignUpButton,
@@ -9,9 +24,10 @@ import {
 
 export default function Index() {
   return (
-    <div>
-      <h1>Index Route</h1>
+    <div className="flex h-screen w-full items-center justify-center px-4">
       <SignedIn>
+        <Navigate to="/home" />
+        {/* <Link to="/home">Hi</Link> */}
         <p>You are signed in!</p>
         <div>
           <p>View your profile here</p>
@@ -22,13 +38,7 @@ export default function Index() {
         </div>
       </SignedIn>
       <SignedOut>
-        <p>You are signed out</p>
-        <div>
-          <SignInButton />
-        </div>
-        <div>
-          <SignUpButton />
-        </div>
+        <SignIn />
       </SignedOut>
     </div>
   )

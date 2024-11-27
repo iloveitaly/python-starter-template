@@ -1,4 +1,5 @@
 // the autogen'd client from the python's openapi.json is configured here
+import { Clerk } from "@clerk/clerk-js"
 import { client } from "client/sdk.gen"
 import { requireEnv } from "utils/environment"
 
@@ -9,3 +10,19 @@ export * from "client/sdk.gen"
 client.setConfig({
   baseUrl: requireEnv("VITE_PYTHON_URL"),
 })
+
+export async function setToken(clerkClient: Clerk) {
+  const bearerToken = await clerkClient.session?.getToken()
+
+  client.setConfig({
+    baseUrl: requireEnv("VITE_PYTHON_URL"),
+    headers: {
+      Authorization: `Bearer ${bearerToken}`,
+    },
+  })
+
+  //   client.interceptors.request.use((request, options) => {
+  //     request.headers.set("Authorization", `Bearer ${bearerToken}`)
+  //     return request
+  //   })
+}

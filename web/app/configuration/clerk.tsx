@@ -17,8 +17,8 @@ export default function withClerkProvider(Component: React.ComponentType) {
   return (props: React.ComponentProps<typeof Component>) => (
     <ClerkProvider
       publishableKey={CLERK_PUBLIC_KEY}
-      signInFallbackRedirectUrl="/"
-      signUpFallbackRedirectUrl="/"
+      signInFallbackRedirectUrl="/home"
+      signUpFallbackRedirectUrl="/home"
     >
       <Component {...props} />
     </ClerkProvider>
