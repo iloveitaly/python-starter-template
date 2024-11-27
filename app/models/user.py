@@ -17,7 +17,7 @@ class User(BaseModel, TimestampsMixin, TypeIDMixin("usr"), table=True):
 
     # TODO can we implement a deleted_at mixin with a decorator to handle deleted_at?
     deleted: bool = Field(default=False, nullable=False)
-    deleted_at: datetime
+    deleted_at: datetime = Field(default=None, nullable=True)
 
     # organization_id: str
 

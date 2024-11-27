@@ -5,8 +5,8 @@ from app.models.user import User
 
 
 def inject_user_record(request: Request):
-    clerk_user_id = request.state.auth_state.payload["sub"]
-    user = User.find_or_create_by(clerk_user_id=clerk_user_id)
+    clerk_id = request.state.auth_state.payload["sub"]
+    user = User.find_or_create_by(clerk_id=clerk_id)
 
     if user.deleted:
         raise HTTPException(
