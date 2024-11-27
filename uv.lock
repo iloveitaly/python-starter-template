@@ -8,12 +8,24 @@ resolution-markers = [
 [[package]]
 name = "activemodel"
 version = "0.3.0"
-source = { git = "https://github.com/iloveitaly/activemodel.git#7e6018e41bf59550eb8bb0b1f8d5882a4ee3112f" }
+source = { editable = "pypi/activemodel" }
 dependencies = [
     { name = "pydash" },
     { name = "python-decouple-typed" },
     { name = "sqlmodel" },
+    { name = "typeid-python" },
 ]
+
+[package.metadata]
+requires-dist = [
+    { name = "pydash", specifier = ">=8.0.4" },
+    { name = "python-decouple-typed", specifier = ">=3.11.0" },
+    { name = "sqlmodel", specifier = ">=0.0.22" },
+    { name = "typeid-python", specifier = ">=0.3.1" },
+]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = ">=8.3.3" }]
 
 [[package]]
 name = "alabaster"
@@ -232,8 +244,8 @@ wheels = [
 
 [[package]]
 name = "clerk-backend-api"
-version = "1.3.1"
-source = { registry = "https://pypi.org/simple" }
+version = "1.4.0"
+source = { editable = "pypi/clerk-backend-api" }
 dependencies = [
     { name = "cryptography" },
     { name = "eval-type-backport" },
@@ -244,9 +256,17 @@ dependencies = [
     { name = "python-dateutil" },
     { name = "typing-inspect" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/48/6e/8add34ae738252365fdda431a9e4fec523434294d9221bf2930e60bfb77f/clerk_backend_api-1.3.1.tar.gz", hash = "sha256:d71bc236f65cce51a114fc2e3f889cf21527dde3f648c43bdd4fd2f351da10ce", size = 131999 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/02/fd/e454935a4478d3c3d16fea8e587165828822274e4639adfbe0a9060c8b78/clerk_backend_api-1.3.1-py3-none-any.whl", hash = "sha256:d704d96eb1c11e5556e2375a466beb5e03dc392fb0f45a82614848011ba8871f", size = 270407 },
+
+[package.metadata]
+requires-dist = [
+    { name = "cryptography", specifier = ">=43.0.1,<44.0.0" },
+    { name = "eval-type-backport", specifier = ">=0.2.0,<0.3.0" },
+    { name = "httpx", specifier = ">=0.27.0,<0.28.0" },
+    { name = "jsonpath-python", specifier = ">=1.0.6,<2.0.0" },
+    { name = "pydantic", specifier = ">=2.9.2,<2.10.0" },
+    { name = "pyjwt", specifier = ">=2.9.0,<3.0.0" },
+    { name = "python-dateutil", specifier = ">=2.8.2,<3.0.0" },
+    { name = "typing-inspect", specifier = ">=0.9.0,<0.10.0" },
 ]
 
 [[package]]
@@ -1023,7 +1043,7 @@ wheels = [
 
 [[package]]
 name = "openai"
-version = "1.55.1"
+version = "1.55.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
@@ -1035,9 +1055,9 @@ dependencies = [
     { name = "tqdm" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c2/5c/8c126c0c4ceddf63964acd224c3cf5a37c2e845bb8ff12db6acc96d335c5/openai-1.55.1.tar.gz", hash = "sha256:471324321e7739214f16a544e801947a046d3c5d516fae8719a317234e4968d3", size = 314276 }
+sdist = { url = "https://files.pythonhosted.org/packages/e2/ae/ef32e19631f752d3b10bbfa0bda2b3f63865438635bee7356d4b3c8a6bf6/openai-1.55.2.tar.gz", hash = "sha256:5cc0b1162b65dcdf670b4b41448f18dd470d2724ca04821ab1e86b6b4e88650b", size = 314465 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/24/cf/1fbe3eaf1d90796722c3dcd268e103a6a0918f25ec51138c7d27aec7f001/openai-1.55.1-py3-none-any.whl", hash = "sha256:d10d96a4f9dc5f05d38dea389119ec8dcd24bc9698293c8357253c601b4a77a5", size = 389536 },
+    { url = "https://files.pythonhosted.org/packages/cb/d7/6ae403b1fd5667621f8a4b6d2eec954da7ab7efd2ba1b0b41c6c791af67a/openai-1.55.2-py3-none-any.whl", hash = "sha256:3027c7fa4a33ed759f4a3d076093fcfa1c55658660c889bec33f651e2dc77922", size = 389537 },
 ]
 
 [[package]]
@@ -1488,14 +1508,14 @@ wheels = [
 
 [[package]]
 name = "python-dateutil"
-version = "2.8.2"
+version = "2.9.0.post0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "six" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86", size = 357324 }
+sdist = { url = "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz", hash = "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3", size = 342432 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/36/7a/87837f39d0296e723bb9b62bbb257d0355c7f6128853c78955f57342a56d/python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9", size = 247702 },
+    { url = "https://files.pythonhosted.org/packages/ec/57/56b9bcc3c9c6a792fcbaf139543cee77261f3651ca9da0c93f5c1221264b/python_dateutil-2.9.0.post0-py2.py3-none-any.whl", hash = "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427", size = 229892 },
 ]
 
 [[package]]
@@ -1602,12 +1622,12 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "activemodel", git = "https://github.com/iloveitaly/activemodel.git" },
+    { name = "activemodel", editable = "pypi/activemodel" },
     { name = "alembic", specifier = ">=1.14.0" },
     { name = "backoff", specifier = ">=2.2.1" },
     { name = "celery", extras = ["redis"], specifier = ">=5.4.0" },
     { name = "celery-once", specifier = ">=3.0.1" },
-    { name = "clerk-backend-api", specifier = ">=1.3.1" },
+    { name = "clerk-backend-api", editable = "pypi/clerk-backend-api" },
     { name = "click", specifier = ">=8.1.7" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.3" },
     { name = "funcy-pipe", specifier = ">=0.11.1" },

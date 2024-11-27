@@ -105,9 +105,16 @@ extend-select = ["I"]
 addopts = "--pdbcls=pdbr:RichPdb --disable-warnings --screenshot=only-on-failure --tracing=retain-on-failure"
 asyncio_default_fixture_loop_scope = "function"
 asyncio_mode = "auto"
+# avoid depreciation warnings causing spammy logs
+filterwarnings = ["ignore::DeprecationWarning"]
+# by default, pytest seems to hijack many logs and output them to the terminal
+# this is nice if you don't have a custom login like we do
+log_cli = false
+
 
 [tool.uv.sources.activemodel]
-git = "https://github.com/iloveitaly/activemodel.git"
+path = "pypi/activemodel"
+editable = true
 
 [tool.uv.sources.ipython-autoimport]
 git = "https://github.com/anntzer/ipython-autoimport.git"
@@ -115,3 +122,7 @@ git = "https://github.com/anntzer/ipython-autoimport.git"
 [tool.uv.sources.ipython-suggestions]
 git = "https://github.com/iloveitaly/ipython-suggestions.git"
 rev = "py-13"
+
+[tool.uv.sources.clerk-backend-api]
+path = "pypi/clerk-backend-api"
+editable = true
