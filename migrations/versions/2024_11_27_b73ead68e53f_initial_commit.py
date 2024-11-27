@@ -1,8 +1,8 @@
 """initial_commit
 
-Revision ID: bb721c611ba5
+Revision ID: b73ead68e53f
 Revises: 
-Create Date: 2024-11-26 17:03:58.633417
+Create Date: 2024-11-27 10:14:01.840575
 
 """
 from typing import Sequence, Union
@@ -14,7 +14,7 @@ import activemodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'bb721c611ba5'
+revision: str = 'b73ead68e53f'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -34,10 +34,12 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user',
-    sa.Column('id', activemodel.types.typeid.TypeIDType(prefix='user'), nullable=False),
+    sa.Column('id', activemodel.types.typeid.TypeIDType(prefix='usr'), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.Column('clerk_id', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('deleted', sa.Boolean(), nullable=False),
+    sa.Column('deleted_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
