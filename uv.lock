@@ -7,25 +7,14 @@ resolution-markers = [
 
 [[package]]
 name = "activemodel"
-version = "0.3.0"
-source = { editable = "pypi/activemodel" }
+version = "0.4.0"
+source = { git = "https://github.com/iloveitaly/activemodel.git#f1fd2f2d65f182631b5df6a1ab20bf2f9a269607" }
 dependencies = [
     { name = "pydash" },
     { name = "python-decouple-typed" },
     { name = "sqlmodel" },
     { name = "typeid-python" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "pydash", specifier = ">=8.0.4" },
-    { name = "python-decouple-typed", specifier = ">=3.11.0" },
-    { name = "sqlmodel", specifier = ">=0.0.22" },
-    { name = "typeid-python", specifier = ">=0.3.1" },
-]
-
-[package.metadata.requires-dev]
-dev = [{ name = "pytest", specifier = ">=8.3.3" }]
 
 [[package]]
 name = "alabaster"
@@ -1172,7 +1161,7 @@ wheels = [
 
 [[package]]
 name = "posthog"
-version = "3.7.3"
+version = "3.7.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "backoff" },
@@ -1181,9 +1170,9 @@ dependencies = [
     { name = "requests" },
     { name = "six" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/cb/c1/da287d484959dc4480117e48ad22808a23fc2b59d769a0026ef186569827/posthog-3.7.3.tar.gz", hash = "sha256:f6af935f1be5c5fb80351e71e0406af04bdc7da8e1b239ec630d7b60b0bdc4b7", size = 50179 }
+sdist = { url = "https://files.pythonhosted.org/packages/77/a0/7607d4fd7c52b086671d8618e76cb5b9a642311fd6f352ebd7eb035319f2/posthog-3.7.4.tar.gz", hash = "sha256:19384bd09d330f9787a7e2446aba14c8057ece56144970ea2791072d4e40cd36", size = 50174 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/70/66/38f217a96cc9d6f540aedcc147067b073302e14b6ce5def07590ae428982/posthog-3.7.3-py2.py3-none-any.whl", hash = "sha256:35e18cdde870f54eb5973b809c29960b8e9f77b7d1a18ffc992972ab742bb106", size = 54776 },
+    { url = "https://files.pythonhosted.org/packages/d3/f2/5ee24cd69e2120bf87356c02ace0438b4e4fb78229fddcbf6f1c6be377d5/posthog-3.7.4-py2.py3-none-any.whl", hash = "sha256:21c18c6bf43b2de303ea4cd6e95804cc0f24c20cb2a96a8fd09da2ed50b62faa", size = 54777 },
 ]
 
 [[package]]
@@ -1622,7 +1611,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "activemodel", editable = "pypi/activemodel" },
+    { name = "activemodel", git = "https://github.com/iloveitaly/activemodel.git" },
     { name = "alembic", specifier = ">=1.14.0" },
     { name = "backoff", specifier = ">=2.2.1" },
     { name = "celery", extras = ["redis"], specifier = ">=5.4.0" },
