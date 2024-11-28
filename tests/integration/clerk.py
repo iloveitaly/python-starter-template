@@ -1,5 +1,12 @@
 """
-https://github.com/clerk/javascript/blob/main/packages/testing/src/playwright/setupClerkTestingToken.ts
+Adapted from: https://github.com/clerk/javascript/blob/main/packages/testing/src/playwright/setupClerkTestingToken.ts
+
+Usage:
+
+>>> def test_signup(server, page: Page) -> None:
+>>>    setup_clerk_testing_token(page)
+
+Attempting to upstream at: https://github.com/clerk/clerk-sdk-python/pull/65/files
 """
 
 import logging

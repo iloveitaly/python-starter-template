@@ -32,6 +32,8 @@ def get_valid_token():
         }
     )
 
+    assert user
+
     # now that we have a user, we need to create a session
     session_response = requests.post(
         "https://api.clerk.com/v1/sessions",
