@@ -34,6 +34,9 @@ env:
   DATABASE_HOST: localhost
   REDIS_HOST: localhost
 
+  # https://github.com/Textualize/rich/issues/2769
+  COLUMNS: 120
+
 jobs:
   # TODO consider adding a hard timeout for the tail cases
   # timeout-minutes: 10
