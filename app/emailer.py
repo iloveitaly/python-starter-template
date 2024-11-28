@@ -9,16 +9,68 @@ Simple email interface:
 """
 
 import re
-from typing import TypedDict
+from email.message import EmailMessage, MIMEPart
+from typing import Callable, TypedDict
 
 import markdown2
 from decouple import config
 from mailers import Email, Mailer
+from mailers.preprocessors.cssliner import css_inliner
 
 from .templates import render_template
 
+
+def remove_html_comments_from_mail(message: EmailMessage) -> EmailMessage:
+    def remove_html_comments_from_html(html):
+        from bs4 import BeautifulSoup, Comment
+
+        soup = BeautifulSoup(html, "html.parser")
+
+        # Find all comments
+        comments = soup.find_all(string=lambda text: isinstance(text, Comment))
+
+        # Remove each comment
+        for comment in comments:
+            comment.extract()
+
+        # Return the modified HTML as a string
+        return str(soup)
+
+    def update_part_inline(part: MIMEPart, callback: Callable) -> MIMEPart:
+        content = part.get_content()
+        updated_content = callback(content)
+
+        # set_content requires a byte literal, not a string
+        if isinstance(updated_content, str):
+            updated_content = updated_content.encode("utf-8")
+        elif not isinstance(updated_content, bytes):
+            raise TypeError(f"Expected str or bytes, got {type(updated_content)}")
+
+        part.set_content(
+            updated_content,
+            maintype="text",
+            subtype="html",
+        )
+        return part
+
+    if message.get_content_type() == "text/html":
+        if not message["content-disposition"]:
+            update_part_inline(message, remove_html_comments_from_html)
+
+    if message.get_content_type() in [
+        "multipart/alternative",
+        "multipart/mixed",
+        "multipart/related",
+    ]:
+        for part in message.get_payload():
+            # recurse!
+            remove_html_comments_from_mail(part)
+
+    return message
+
+
 SMTP_URL = config("SMTP_URL", cast=str)
-mailer = Mailer(SMTP_URL)
+mailer = Mailer(SMTP_URL, preprocessors=[css_inliner, remove_html_comments_from_mail])
 
 EMAIL_FROM_ADDRESS = config("EMAIL_FROM_ADDRESS", cast=str)
 
@@ -36,14 +88,14 @@ def render_email(template_path: str, context: dict) -> tuple[str, str]:
     html_content = markdown2.markdown(markdown_content)
 
     # https://stackoverflow.com/questions/28208186/how-to-remove-html-comments-using-regex-in-python
-    html_content_comments_removed = re.sub(
-        "(<!--.*?-->)", "", html_content, flags=re.DOTALL
-    )
+    # html_content_comments_removed = re.sub(
+    #     "(<!--.*?-->)", "", html_content, flags=re.DOTALL
+    # )
 
     # Use the raw markdown as plaintext version
     plaintext_content = markdown_content
 
-    return html_content_comments_removed, plaintext_content
+    return html_content, plaintext_content
 
 
 class TemplateParams(TypedDict, total=False):
