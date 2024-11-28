@@ -22,13 +22,16 @@ set ignore-comments := true
 # for [script] support
 set unstable := true
 
-# determines what shell to use for [script]
+# TODO v by default? created weird terminal clearing behavior
 # set script-interpreter := ["zsh", "-euvBh"]
+
+# determines what shell to use for [script]
 set script-interpreter := ["zsh", "-euBh"]
 
 # used for image name, op vault access, etc
 PROJECT_NAME := `basename $(pwd)`
 
+# execute a command in the (nearly) exact same environment as CI
 EXECUTE_IN_TEST := "CI=true direnv exec ."
 
 default:
@@ -39,7 +42,7 @@ default:
 #######################
 
 # TODO should cask install 1password-cli
-BREW_PACKAGES := "lefthook jq fd localias nixpacks"
+BREW_PACKAGES := "lefthook jq fd localias nixpacks entr"
 
 [macos]
 [script]
@@ -279,6 +282,9 @@ js_sync-engine-versions:
 # Python
 #######################
 
+# this is used for jinja + HTML linting, if you put templates elsewhere, you'll need to update this
+JINJA_TEMPLATE_DIR = "app/templates"
+
 # create venv and install packages
 py_setup:
 	[ -d ".venv" ] || uv venv
@@ -341,20 +347,29 @@ py_lint +FILES=".":
 	if [ -n "${CI:-}" ]; then
 		# TODO I'm surprised that ruff doesn't auto detect github...
 		uv tool run ruff check --output-format=github {{FILES}} || exit_code=$?
+
 		uv run pyright {{FILES}} --outputjson > pyright_report.json || exit_code=$?
 		# TODO this is a neat trick, we should use it in other places too + document
 		# https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/workflow-commands-for-github-actions#setting-a-warning-message
 		# https://github.com/jakebailey/pyright-action/blob/b7d7f8e5e5f195796c6f3f0b471a761a115d3b2c/src/main.ts#L62
 		jq -r '.generalDiagnostics[] | "::\(.severity) file=\(.file),line=\(.range.start.line),endLine=\(.range.end.line),col=\(.range.start.character),endColumn=\(.range.end.character)::\(.message)"' < pyright_report.json
 		rm pyright_report.json
+
+		# check jinja2 template language
+		j2lint --extension j2,html {{JINJA_TEMPLATE_DIR}} --json > j2link_report.json || exit_code=$?
+		jq -r '(.ERRORS[] | "::\(if .severity == "HIGH" then "error" else "warning" end) file=\(.filename),line=\(.line_number),title=\(.id)::\(.message)"), (.WARNINGS[] | "::warning file=\(.filename),line=\(.line_number),title=\(.id)::\(.message)")' < j2link_report.json
+		j2link_report.json
 	else
 		uv tool run ruff check {{FILES}} || exit_code=$?
 		uv run pyright {{FILES}} || exit_code=$?
+		j2lint --extension j2,html {{JINJA_TEMPLATE_DIR}}
 	fi
 
-	# TODO add djlint for jinja templates, need to handle git hooks as well
-	# uv run djlint {{FILES}} --profile=jinja
+	# TODO should only run if {{FILES}} contains a template
+	# NOTE djlint does *not* check jinja syntax, only HTML. GH friendly output is automatically enabled.
+	uv run djlint {{JINJA_TEMPLATE_DIR}} --profile=jinja
 
+	# TODO right now, this tool doesn't work with manual maps :/
 	# TODO https://github.com/fpgmaas/deptry/issues/610#issue-2190147786
 	# TODO https://github.com/fpgmaas/deptry/issues/740
 	# uv tool run deptry --experimental-namespace-package . || exit_code=$?

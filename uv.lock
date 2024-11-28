@@ -461,8 +461,8 @@ wheels = [
 
 [[package]]
 name = "djlint"
-version = "1.36.1"
-source = { registry = "https://pypi.org/simple" }
+version = "1.36.2"
+source = { editable = "pypi/djlint" }
 dependencies = [
     { name = "click" },
     { name = "colorama" },
@@ -474,13 +474,34 @@ dependencies = [
     { name = "regex" },
     { name = "tqdm" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/eb/ff/c3a7ee0c22703c03132737d1021b3c75fe1a8cfc852ce03fe74842c12966/djlint-1.36.1.tar.gz", hash = "sha256:f7260637ed72c270fa6dd4a87628e1a21c49b24a46df52e4e26f44d4934fb97c", size = 47660 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/62/51/af84a647c47437ed81a14f1f549db978e4ed79552d67153467119010850d/djlint-1.36.1-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:7f31646435385eec1d4b03dad7bebb5e4078d9893c60d490a685535bd6303c83", size = 353871 },
-    { url = "https://files.pythonhosted.org/packages/ba/00/04f1c3a618d8fe4651da2e18376e0e473867344833747d54b14be1a614de/djlint-1.36.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:4399477ac51f9c8147eedbef70aa8465eccba6759d875d1feec6782744aa168a", size = 322175 },
-    { url = "https://files.pythonhosted.org/packages/76/16/76de5e6228153dd58b8b16bb4435611a3eb86da22d1fffbc39b95b10b4d7/djlint-1.36.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:f08c217b17d3ae3c0e3b5fff57fb708029cceda6e232f5a54ff1b3aeb43a7540", size = 408158 },
-    { url = "https://files.pythonhosted.org/packages/7b/2f/9354408753840f2b81736bd4733aedc731e6e763eb93a50231f958eeb70f/djlint-1.36.1-cp313-cp313-win_amd64.whl", hash = "sha256:1577490802ca4697af3488ed13066c9214ef0f625a96aa20d4f297e37aa19303", size = 361072 },
-    { url = "https://files.pythonhosted.org/packages/27/a1/4cfdd378ebe31a8897d3a052ae7127b93eb36b5d314ca6a5639ab0c25c56/djlint-1.36.1-py3-none-any.whl", hash = "sha256:950782b396dd82b74622c09d7e4c52328e56a3b03c8ac790c319708e5caa0686", size = 52118 },
+
+[package.metadata]
+requires-dist = [
+    { name = "click", specifier = ">=8.0.1" },
+    { name = "colorama", specifier = ">=0.4.4" },
+    { name = "cssbeautifier", specifier = ">=1.14.4" },
+    { name = "jsbeautifier", specifier = ">=1.14.4" },
+    { name = "json5", specifier = ">=0.9.11" },
+    { name = "pathspec", specifier = ">=0.12" },
+    { name = "pyyaml", specifier = ">=6" },
+    { name = "regex", specifier = ">=2023" },
+    { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.0.1" },
+    { name = "tqdm", specifier = ">=4.62.2" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "mypy", extras = ["faster-cache"], specifier = "==1.13" },
+    { name = "pytest", specifier = "==8.3.3" },
+    { name = "pytest-cov", specifier = "==6" },
+    { name = "pytest-xdist", specifier = "==3.6.1" },
+    { name = "ruff", specifier = "==0.8.0" },
+    { name = "tomli", specifier = "==2.2.1" },
+    { name = "types-colorama", specifier = "==0.4.15.20240311" },
+    { name = "types-pyyaml", specifier = "==6.0.12.20240917" },
+    { name = "types-regex", specifier = "==2024.11.6.20241108" },
+    { name = "types-tqdm", specifier = "==4.67.0.20241119" },
+    { name = "typing-extensions", specifier = "==4.12.2" },
 ]
 
 [[package]]
@@ -823,6 +844,15 @@ wheels = [
 ]
 
 [[package]]
+name = "j2lint"
+version = "1.1.0"
+source = { git = "https://github.com/aristanetworks/j2lint.git#a203db3a4c869285752a724d806735b89832fc7f" }
+dependencies = [
+    { name = "jinja2" },
+    { name = "rich" },
+]
+
+[[package]]
 name = "jedi"
 version = "0.19.2"
 source = { registry = "https://pypi.org/simple" }
@@ -913,13 +943,18 @@ wheels = [
 [[package]]
 name = "mailers"
 version = "3.1.0"
-source = { registry = "https://pypi.org/simple" }
+source = { editable = "pypi/mailers" }
 dependencies = [
     { name = "anyio" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f8/1d/0e847ddd05c806ddb3cbff721b386cd6b0358a59be27d9068c2156a1277f/mailers-3.1.0.tar.gz", hash = "sha256:efc7715207e36cdb8bcd56fd97f1e6ee5e9547cd9b52463814e760f889478cf3", size = 16217 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/84/2d/da6c93aad23b1f112f5ed8838dadb5ff747a36b8447e8a6c7989e8409d8d/mailers-3.1.0-py3-none-any.whl", hash = "sha256:a66c2ddc4e02ae759332c649386bd2a62d12e04417e371187599e07cc0775504", size = 18729 },
+
+[package.metadata]
+requires-dist = [
+    { name = "aiosmtplib", marker = "extra == 'smtp'", specifier = ">=3.0,<4.0" },
+    { name = "anyio", specifier = ">=3.7.1,<5" },
+    { name = "css-inline", marker = "extra == 'css-inline'", specifier = ">=0.14" },
+    { name = "dkimpy", marker = "extra == 'dkim'", specifier = ">=1.0,<2.0" },
+    { name = "jinja2", marker = "extra == 'jinja2'", specifier = ">=3.0,<4.0" },
 ]
 
 [[package]]
@@ -1354,11 +1389,11 @@ wheels = [
 
 [[package]]
 name = "pyjwt"
-version = "2.10.0"
+version = "2.10.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/b5/05/324952ded002de746f87b21066b9373080bb5058f64cf01c4d62784b8186/pyjwt-2.10.0.tar.gz", hash = "sha256:7628a7eb7938959ac1b26e819a1df0fd3259505627b575e4bad6d08f76db695c", size = 87687 }
+sdist = { url = "https://files.pythonhosted.org/packages/e7/46/bd74733ff231675599650d3e47f361794b22ef3e3770998dda30d3b63726/pyjwt-2.10.1.tar.gz", hash = "sha256:3cc5772eb20009233caf06e9d8a0577824723b44e6648ee0a2aedb6cf9381953", size = 87785 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6f/1d/ef9b066e7ef60494c94173dc9f0b9adf5d9ec5f888109f5c669f53d4144b/PyJWT-2.10.0-py3-none-any.whl", hash = "sha256:543b77207db656de204372350926bed5a86201c4cbff159f623f79c7bb487a15", size = 23002 },
+    { url = "https://files.pythonhosted.org/packages/61/ad/689f02752eeec26aed679477e80e632ef1b682313be70793d798c1d5fc8f/PyJWT-2.10.1-py3-none-any.whl", hash = "sha256:dcdd193e30abefd5debf142f9adfcdd2b58004e644f25406ffaebd50bd98dacb", size = 22997 },
 ]
 
 [[package]]
@@ -1488,6 +1523,20 @@ wheels = [
 ]
 
 [[package]]
+name = "pytest-sugar"
+version = "1.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "packaging" },
+    { name = "pytest" },
+    { name = "termcolor" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f5/ac/5754f5edd6d508bc6493bc37d74b928f102a5fff82d9a80347e180998f08/pytest-sugar-1.0.0.tar.gz", hash = "sha256:6422e83258f5b0c04ce7c632176c7732cab5fdb909cb39cca5c9139f81276c0a", size = 14992 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/92/fb/889f1b69da2f13691de09a111c16c4766a433382d44aa0ecf221deded44a/pytest_sugar-1.0.0-py3-none-any.whl", hash = "sha256:70ebcd8fc5795dc457ff8b69d266a4e2e8a74ae0c3edc749381c64b5246c8dfd", size = 10171 },
+]
+
+[[package]]
 name = "python-dateutil"
 version = "2.9.0.post0"
 source = { registry = "https://pypi.org/simple" }
@@ -1591,6 +1640,7 @@ dev = [
     { name = "deptry" },
     { name = "djlint" },
     { name = "ipython" },
+    { name = "j2lint" },
     { name = "pretty-traceback" },
     { name = "pyright" },
     { name = "pytest" },
@@ -1598,6 +1648,7 @@ dev = [
     { name = "pytest-celery" },
     { name = "pytest-github-actions-annotate-failures" },
     { name = "pytest-playwright" },
+    { name = "pytest-sugar" },
     { name = "ruff" },
 ]
 
@@ -1614,7 +1665,7 @@ requires-dist = [
     { name = "funcy-pipe", specifier = ">=0.11.1" },
     { name = "ipython", specifier = ">=8.28.0" },
     { name = "jinja2", specifier = ">=3.1.4" },
-    { name = "mailers", specifier = ">=3.1.0" },
+    { name = "mailers", editable = "pypi/mailers" },
     { name = "openai", specifier = ">=1.52.2" },
     { name = "orjson", specifier = ">=3.10.11" },
     { name = "posthog", specifier = ">=3.7.0" },
@@ -1650,8 +1701,9 @@ dev = [
     { name = "covdefaults", specifier = ">=2.3.0" },
     { name = "coverage", specifier = ">=7.6.7" },
     { name = "deptry", specifier = ">=0.20.0" },
-    { name = "djlint", specifier = ">=1.36.1" },
+    { name = "djlint", editable = "pypi/djlint" },
     { name = "ipython", specifier = ">=8.28.0" },
+    { name = "j2lint", git = "https://github.com/aristanetworks/j2lint.git" },
     { name = "pretty-traceback", specifier = ">=2024.1021" },
     { name = "pyright", specifier = ">=1.1.386" },
     { name = "pytest", specifier = ">=8.3.3" },
@@ -1659,6 +1711,7 @@ dev = [
     { name = "pytest-celery", specifier = ">=1.1.3" },
     { name = "pytest-github-actions-annotate-failures", specifier = ">=0.2.0" },
     { name = "pytest-playwright", specifier = ">=0.5.2" },
+    { name = "pytest-sugar", specifier = ">=1.0.0" },
     { name = "ruff", specifier = ">=0.7.1" },
 ]
 
@@ -2015,6 +2068,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/cd/94/91fccdb4b8110642462e653d5dcb27e7b674742ad68efd146367da7bdb10/tenacity-9.0.0.tar.gz", hash = "sha256:807f37ca97d62aa361264d497b0e31e92b8027044942bfa756160d908320d73b", size = 47421 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl", hash = "sha256:93de0c98785b27fcf659856aa9f54bfbd399e29969b0621bc7f762bd441b4539", size = 28169 },
+]
+
+[[package]]
+name = "termcolor"
+version = "2.5.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/37/72/88311445fd44c455c7d553e61f95412cf89054308a1aa2434ab835075fc5/termcolor-2.5.0.tar.gz", hash = "sha256:998d8d27da6d48442e8e1f016119076b690d962507531df4890fcd2db2ef8a6f", size = 13057 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7f/be/df630c387a0a054815d60be6a97eb4e8f17385d5d6fe660e1c02750062b4/termcolor-2.5.0-py3-none-any.whl", hash = "sha256:37b17b5fc1e604945c2642c872a3764b5d547a48009871aea3edd3afa180afb8", size = 7755 },
 ]
 
 [[package]]

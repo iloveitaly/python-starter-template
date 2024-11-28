@@ -65,9 +65,14 @@ dev-dependencies = [
     "ruff>=0.7.1",
     "pytest-playwright>=0.5.2",
     "djlint>=1.36.1",
+    "pytest-sugar>=1.0.0",
+    "j2lint>=1.1.0",
 ]
 # https://github.com/astral-sh/uv/issues/3898
 config-settings = { editable_mode = "compat" }
+
+[tool.uv.sources]
+j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
 
 # TODO https://github.com/astral-sh/uv/issues/9258
 # https://docs.astral.sh/uv/reference/settings/#override-dependencies
@@ -75,6 +80,9 @@ config-settings = { editable_mode = "compat" }
 #     "-e activemodel @ file:///Users/mike/Projects/python/python-starter-template/pypi/activemodel#egg=activemodel[dev]",
 # ]
 
+[tool.uv.sources.djlint]
+path = "pypi/djlint"
+editable = true
 [tool.ruff]
 extend-exclude = [
     "playground",
@@ -121,3 +129,7 @@ git = "https://github.com/anntzer/ipython-autoimport.git"
 [tool.uv.sources.ipython-suggestions]
 git = "https://github.com/iloveitaly/ipython-suggestions.git"
 rev = "py-13"
+
+[tool.uv.sources.mailers]
+path = "pypi/mailers"
+editable = true
