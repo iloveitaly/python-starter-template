@@ -26,7 +26,7 @@ def get_route_name(app: FastAPI, scope: Scope, prefix: str = "") -> str:
     )
 
     if hasattr(route, "endpoint") and hasattr(route, "name"):
-        return f"{prefix}{route.endpoint.__module__}.{route.name}"
+        return f"{prefix}{route.endpoint.__module__}.{route.name}"  # type: ignore
     elif isinstance(route, Mount):
         return f"{type(route.app).__name__}<{route.name!r}>"
     else:
