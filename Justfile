@@ -23,6 +23,7 @@ set ignore-comments := true
 set unstable := true
 
 # determines what shell to use for [script]
+# set script-interpreter := ["zsh", "-euvBh"]
 set script-interpreter := ["zsh", "-euBh"]
 
 # used for image name, op vault access, etc
@@ -58,6 +59,11 @@ requirements *flags:
 		exit 1; \
 	fi
 
+	@if ! which docker > /dev/null; then \
+		echo "docker is not installed. Please install."; \
+		exit 1; \
+	fi
+
 	# for procfile management
 	# TODO maybe use? https://github.com/yukihirop/ultraman?tab=readme-ov-file
 	@if ! gem list -i foreman >/dev/null 2>&1; then \
@@ -87,10 +93,16 @@ requirements *flags:
 
 # setup everything you need for local development
 [macos]
-setup: requirements && py_setup js_setup db_reset local-alias
-	@if [ ! -f .env.local ]; then \
-		cp .env.local-example .env.local; \
-		echo "Please edit .env.local to your liking."; \
+setup: requirements && py_setup js_build db_up db_seed local-alias
+	# NOTE this task should be non-destructive
+
+	# some reasoning behind the logic here:
+	#
+	# 	- js_build is required for running e2e tests on the server
+
+	@if [ ! -f .env.dev.local ]; then \
+		cp .env.dev.local-example .env.dev.local; \
+		echo "Please edit .env.dev.local to your liking."; \
 	fi
 
 	# direnv will setup a venv & install packages
@@ -130,7 +142,7 @@ _mise_upgrade:
 _mise_version_sync:
 	# TODO https://github.com/jtcontreras90/yaml-path-extractor/issues/11
 	mise_version=$(mise --version | awk '{print $1}') && \
-		yq e '.runs.steps.1.with.version = "'$mise_version'"' .github/actions/common-setup/actions.yml -i
+		yq e '.runs.steps.0.with.version = "'$mise_version'"' .github/actions/common-setup/action.yml -i
 
 # upgrade mise, language versions, and essential packages
 [macos]
@@ -178,6 +190,7 @@ js_setup:
 js_clean:
 	rm -rf {{WEB_DIR}}/build {{WEB_DIR}}/client {{WEB_DIR}}/node_modules {{WEB_DIR}}/.react-router || true
 
+# clean and rebuild
 js_nuke: js_clean js_setup
 
 # TODO support GITHUB_ACTIONS/CI formatting
@@ -235,6 +248,9 @@ _js_generate-openapi:
 
 	# generate the js client
 	{{_pnpm}} openapi
+
+js_shadcn *arguments:
+	{{_pnpm}} dlx shadcn@latest {{arguments}}
 
 JAVASCRIPT_PACKAGE_JSON := WEB_DIR / "package.json"
 
@@ -314,10 +330,11 @@ py_play:
 # run all linting operations and fail if any fail
 [script]
 py_lint +FILES=".":
-	# + indicates one more arguments being required
+	# + indicates one more arguments being required in Justfile syntax
 
 	# NOTE this is important: we want all operations to run instead of fail fast
-	set -x +o verbose
+	set +o verbose
+	# set -v
 
 	# poetry run autoflake --exclude=migrations --imports=decouple,rich -i -r .
 	if [ -n "${CI:-}" ]; then
@@ -334,8 +351,8 @@ py_lint +FILES=".":
 		uv run pyright {{FILES}} || exit_code=$?
 	fi
 
-	# TODO add djlint for jinja templates
-	uv run djlint {{FILES}} --profile=jinja
+	# TODO add djlint for jinja templates, need to handle git hooks as well
+	# uv run djlint {{FILES}} --profile=jinja
 
 	# TODO https://github.com/fpgmaas/deptry/issues/610#issue-2190147786
 	# TODO https://github.com/fpgmaas/deptry/issues/740
@@ -372,14 +389,11 @@ py_lint_fix:
 # track version changes over time and rule out version changes and differences when debugging tests.
 # Additionally, we need to run this in the uv context so it has access to all playwright packages.
 
-py_playwright_version:
-	#!/usr/bin/env -S uv run -s
-	from playwright.sync_api import sync_playwright
+# output chrome version current installed
+py_playwright_chrome-version:
+	python -c "from tests.utils import chrome_version; print(chrome_version())"
 
-	with sync_playwright() as p:
-		browser = p.chromium.launch()
-		print(browser.version)
-
+# view the last failed gha in the browser
 ci_view-last-failed:
 	gh run view --web $(just _gha_last_failed_run_id)
 
@@ -454,9 +468,10 @@ db_open:
 db_play:
 	uv tool run pgcli $DATABASE_URL
 
+# migrations on and dev
 db_migrate:
-	# dev database is created automatically, but test database is not
-	psql $DATABASE_URL -c "CREATE DATABASE ${TEST_DATABASE_NAME};"
+	# dev database is created automatically, but test database is not. We need to fail gracefully when the database already exists.
+	psql $DATABASE_URL -c "CREATE DATABASE ${TEST_DATABASE_NAME};" || true
 
 	uv run alembic upgrade head
 
@@ -469,9 +484,7 @@ db_seed: db_migrate
 # generate migration based on the current state of the database
 [script]
 db_generate_migration migration_name="":
-	# nice and simple command tracing
-	set -v
-	PS1=$'\033[32m+\033[0m '
+	# PS1=$'\033[32m+\033[0m '
 
 	if [ -z "{{migration_name}}" ]; then
 		echo "Enter the migration name: "
