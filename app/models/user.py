@@ -2,6 +2,9 @@
 Mirrors this model: https://clerk.com/docs/reference/backend-api/tag/Users#operation/GetUser
 """
 
+# TODO should we create an organization?
+# https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/GetOrganization
+
 from datetime import datetime
 
 from activemodel import BaseModel

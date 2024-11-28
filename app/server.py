@@ -51,6 +51,7 @@ async def healthcheck():
 # important that this is done after all routes are added
 simplify_operation_ids(api_app)
 
+# TODO should move to CLI
 # output openapi spec when run as a module
 if __name__ == "__main__":
     import json
