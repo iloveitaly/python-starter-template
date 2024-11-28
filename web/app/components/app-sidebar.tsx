@@ -1,4 +1,5 @@
 import * as React from "react"
+
 import { ArchiveX, Command, File, Inbox, Send, Trash2 } from "lucide-react"
 
 import { NavUser } from "~/components/nav-user"
@@ -17,6 +18,8 @@ import {
   useSidebar,
 } from "~/components/ui/sidebar"
 import { Switch } from "~/components/ui/switch"
+
+import { UserButton } from "@clerk/clerk-react"
 
 // This is sample data
 const data = {
@@ -166,7 +169,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuItem>
               <SidebarMenuButton size="lg" asChild className="md:h-8 md:p-0">
                 <a href="#">
-                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                  <div className="size-8 flex aspect-square items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                     <Command className="size-4" />
                   </div>
                   <div className="grid flex-1 text-left text-sm leading-tight">
@@ -195,8 +198,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         setMails(
                           mail.slice(
                             0,
-                            Math.max(5, Math.floor(Math.random() * 10) + 1)
-                          )
+                            Math.max(5, Math.floor(Math.random() * 10) + 1),
+                          ),
                         )
                         setOpen(true)
                       }}
@@ -213,7 +216,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroup>
         </SidebarContent>
         <SidebarFooter>
-          <NavUser user={data.user} />
+          {/* <NavUser user={data.user} /> */}
+          <UserButton />
         </SidebarFooter>
       </Sidebar>
 

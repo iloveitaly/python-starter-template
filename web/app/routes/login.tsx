@@ -1,22 +1,8 @@
-import { Link, Navigate } from "react-router"
+import { Link } from "react-router"
 
-import { Button } from "@/components/ui/button"
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
-  ClerkProvider,
-  RedirectToSignIn,
   SignIn,
-  SignInButton,
   SignOutButton,
-  SignUpButton,
   SignedIn,
   SignedOut,
   UserButton,
@@ -26,8 +12,10 @@ export default function Index() {
   return (
     <div className="flex h-screen w-full items-center justify-center px-4">
       <SignedIn>
-        <Navigate to="/home" />
-        {/* <Link to="/home">Hi</Link> */}
+        {/* <Navigate to="/home" /> https://discord.com/channels/856971667393609759/1311386772520960182 */}
+        <p>
+          <Link to="/home">Go Home</Link>
+        </p>
         <p>You are signed in!</p>
         <div>
           <p>View your profile here</p>

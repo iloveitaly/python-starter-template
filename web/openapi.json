@@ -10,8 +10,8 @@
         "tags": [
           "private"
         ],
-        "summary": "Read Root",
-        "operationId": "read_root_internal_v1__get",
+        "summary": "Application Data",
+        "operationId": "application_data",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -34,7 +34,7 @@
     "/hello": {
       "get": {
         "summary": "Index",
-        "operationId": "index_hello_get",
+        "operationId": "index",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -50,66 +50,13 @@
     "/healthcheck": {
       "get": {
         "summary": "Healthcheck",
-        "operationId": "healthcheck_healthcheck_get",
+        "operationId": "healthcheck",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/items/{item_id}": {
-      "get": {
-        "summary": "Read Item",
-        "operationId": "read_item_items__item_id__get",
-        "parameters": [
-          {
-            "name": "item_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Item Id"
-            }
-          },
-          {
-            "name": "q",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Q"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
               }
             }
           }
@@ -130,52 +77,6 @@
         "additionalProperties": false,
         "type": "object",
         "title": "AppData"
-      },
-      "HTTPValidationError": {
-        "properties": {
-          "detail": {
-            "items": {
-              "$ref": "#/components/schemas/ValidationError"
-            },
-            "type": "array",
-            "title": "Detail"
-          }
-        },
-        "type": "object",
-        "title": "HTTPValidationError"
-      },
-      "ValidationError": {
-        "properties": {
-          "loc": {
-            "items": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "type": "array",
-            "title": "Location"
-          },
-          "msg": {
-            "type": "string",
-            "title": "Message"
-          },
-          "type": {
-            "type": "string",
-            "title": "Error Type"
-          }
-        },
-        "type": "object",
-        "required": [
-          "loc",
-          "msg",
-          "type"
-        ],
-        "title": "ValidationError"
       }
     },
     "securitySchemes": {

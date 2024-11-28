@@ -18,7 +18,7 @@ import {
   SidebarTrigger,
 } from "~/components/ui/sidebar"
 import { getClient } from "~/configuration/clerk"
-import { readRootInternalV1Get, setToken } from "~/configuration/client"
+import { applicationData, setToken } from "~/configuration/client"
 
 import type { Route } from "./+types.home"
 
@@ -43,7 +43,7 @@ export async function clientLoader(_loader_args: Route.ClientLoaderArgs) {
   await setToken(clerkClient)
 
   // this route is authenticated
-  const { data } = await readRootInternalV1Get()
+  const { data } = await applicationData()
 
   // TODO need idiomatic error handling here
   if (data === undefined) {
@@ -53,7 +53,7 @@ export async function clientLoader(_loader_args: Route.ClientLoaderArgs) {
   return data
 }
 
-export default function Page() {
+export default function Page({ loaderData }: Route.ComponentProps) {
   return (
     <SidebarProvider
       style={
@@ -80,6 +80,7 @@ export default function Page() {
           </Breadcrumb>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
+          {loaderData && loaderData.message}
           {Array.from({ length: 24 }).map((_, index) => (
             <div
               key={index}
