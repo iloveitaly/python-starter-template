@@ -446,6 +446,9 @@ py_playwright:
 	echo $recorded_interaction
 	pbcopy < $recorded_interaction
 
+py_mailpit_open:
+	open "https://$(echo $SMTP_URL | cut -d'/' -f3 | cut -d':' -f1)"
+
 #######################
 # Dev Container Management
 #######################

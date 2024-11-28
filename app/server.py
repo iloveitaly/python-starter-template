@@ -27,7 +27,7 @@ if is_production():
 
 # set `version:` as GIT sha? Set `title:`? https://github.com/fastapiutils/fastapi-utils/blob/e9e7e2c834d703503a3bf5d5605db6232dd853b9/fastapi_utils/api_settings.py#L43
 
-# TODO unclear how to type this correctly
+# TODO not possible to type this properly :/ https://github.com/python/typing/discussions/1501
 # NOTE `api_app` and not `app` is used intentionally here to make imports more specific
 api_app = FastAPI(**fast_api_args)  # type: ignore
 

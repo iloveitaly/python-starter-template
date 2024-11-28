@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "activemodel>=0.2.0",
+    "aiosmtplib>=3.0.2",
     "alembic>=1.14.0",
     "backoff>=2.2.1",
     "celery-once>=3.0.1",
@@ -17,6 +18,7 @@ dependencies = [
     "ipython>=8.28.0",
     "jinja2>=3.1.4",
     "mailers>=3.1.0",
+    "markdown2>=2.5.1",
     "openai>=1.52.2",
     "orjson>=3.10.11",
     "posthog>=3.7.0",
@@ -81,8 +83,9 @@ j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
 # ]
 
 [tool.uv.sources.djlint]
-path = "pypi/djlint"
-editable = true
+git = "https://github.com/iloveitaly/djLint.git"
+rev = "github-output"
+
 [tool.ruff]
 extend-exclude = [
     "playground",
@@ -117,9 +120,10 @@ asyncio_mode = "auto"
 filterwarnings = ["ignore::DeprecationWarning"]
 # by default, pytest seems to hijack many logs and output them to the terminal
 # this is nice if you don't have a custom login like we do
+testpaths = "tests"
+norecursedirs = ["pypi"]
+
 log_cli = false
-
-
 [tool.uv.sources.activemodel]
 git = "https://github.com/iloveitaly/activemodel.git"
 
