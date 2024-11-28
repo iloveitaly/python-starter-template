@@ -143,9 +143,10 @@ _mise_upgrade:
 
 # sync the new mise version to github actions
 _mise_version_sync:
-	# TODO https://github.com/jtcontreras90/yaml-path-extractor/issues/11
 	mise_version=$(mise --version | awk '{print $1}') && \
 		yq e '.runs.steps.0.with.version = "'$mise_version'"' .github/actions/common-setup/action.yml -i
+
+	git add .github/actions/common-setup/action.yml
 
 # upgrade mise, language versions, and essential packages
 [macos]
@@ -283,7 +284,7 @@ js_sync-engine-versions:
 #######################
 
 # this is used for jinja + HTML linting, if you put templates elsewhere, you'll need to update this
-JINJA_TEMPLATE_DIR = "app/templates"
+JINJA_TEMPLATE_DIR := "app/templates"
 
 # create venv and install packages
 py_setup:
