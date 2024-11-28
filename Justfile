@@ -284,10 +284,11 @@ py_setup:
 	[ -d ".venv" ] || uv venv
 
 	# don't include debugging-extras on CI
+	# --no-sources to allow local dev packages to be used: https://github.com/astral-sh/uv/issues/9258#issuecomment-2499541207
 	if [ -z "${CI:-}" ]; then \
 		uv sync --group=debugging-extras; \
 	else \
-		uv sync; \
+		uv sync --no-sources; \
 	fi
 
 	# important for CI to install browsers for playwright
@@ -363,13 +364,14 @@ py_lint +FILES=".":
 		exit 1
 	fi
 
-# run tests with the exact same environment that will be used on CI
-[script]
-py_test:
+py_js-build:
 	# integration tests should mimic production as closely as possible
 	# to do this, we build the app and serve it like it will be served in production
-	just js_build
+	{{EXECUTE_IN_TEST}} just js_build
 
+# run tests with the exact same environment that will be used on CI
+[script]
+py_test: py_js-build
 	# TODO what about code coverage? --cov?
 	if [[ -n "${CI:-}" ]]; then
 		uv run pytest
