@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 
 from ..configuration.clerk import CLERK_PRIVATE_KEY
@@ -21,5 +21,5 @@ class AppData(BaseModel, extra="forbid"):
 
 
 @internal_api_app.get("/")
-def read_root() -> AppData:
+def application_data() -> AppData:
     return AppData()

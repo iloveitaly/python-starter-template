@@ -1,10 +1,14 @@
+"""
+Attempting to upstream at: https://github.com/clerk/clerk-sdk-python/pull/65/files
+"""
+
 import httpx
 from clerk_backend_api import Clerk
 from clerk_backend_api.jwks_helpers.authenticaterequest import (
     AuthenticateRequestOptions,
     RequestState,
 )
-from fastapi import Depends, HTTPException, Request
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 
@@ -31,7 +35,9 @@ class AuthenticateRequest:
         credentials: HTTPAuthorizationCredentials | None = Depends(HTTPBearer()),
     ) -> RequestState:
         if not credentials:
-            raise HTTPException(status_code=401, detail="Not authenticated")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Not Authenticated"
+            )
 
         # Convert FastAPI request headers to httpx format
         httpx_request = httpx.Request(
@@ -47,7 +53,9 @@ class AuthenticateRequest:
         )
 
         if not auth_state.is_signed_in:
-            raise HTTPException(status_code=401, detail=auth_state.message)
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail=auth_state.message
+            )
 
         # Attach the auth state to the request
         request.state.auth_state = auth_state

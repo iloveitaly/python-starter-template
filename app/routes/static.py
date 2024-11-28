@@ -20,6 +20,7 @@ from app.environments import (
     is_development,
     is_production,
     is_staging,
+    is_testing,
     python_environment,
 )
 
@@ -31,12 +32,18 @@ def mount_public_directory(app: FastAPI):
     else:
         public_path = root / "web/build" / python_environment() / "client"
 
+    if not public_path.exists() and is_testing():
+        public_path = root / "web/build" / "development" / "client"
+
     # in development, a separate py & js server will be used, if the development build DNE that's fine
     if not public_path.exists() and is_development():
         log.warning(
             "The development build does not exist. Static files will not be served"
         )
         return app
+
+    if not public_path.exists():
+        raise Exception("Client assets do not exist. Please run `just js_build`")
 
     app.mount(
         "/assets",

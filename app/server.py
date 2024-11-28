@@ -7,6 +7,8 @@ JavaScript client which will use these methods.
 
 from fastapi import FastAPI
 
+from app.routes.utils.openapi import simplify_operation_ids
+
 from .environments import is_production
 from .routes.internal import internal_api_app
 from .routes.middleware import add_middleware
@@ -30,10 +32,7 @@ if is_production():
 api_app = FastAPI(**fast_api_args)  # type: ignore
 
 mount_public_directory(api_app)
-
-# TODO simplify openapi structure for better client generation
 api_app.include_router(internal_api_app)
-
 add_middleware(api_app)
 
 
@@ -49,10 +48,8 @@ async def healthcheck():
     return {"status": "ok"}
 
 
-@api_app.get("/items/{item_id}")
-async def read_item(item_id: int, q: str | None = None):
-    return {"item_id": item_id, "q": q}
-
+# important that this is done after all routes are added
+simplify_operation_ids(api_app)
 
 # output openapi spec when run as a module
 if __name__ == "__main__":
