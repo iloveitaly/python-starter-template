@@ -34,6 +34,22 @@ It's all about tradeoffs. For modern web development, there are the options as I
 
 #3 is what is implemented here.
 
+## Getting Started
+
+There are a couple of dependencies which are not managed by the project:
+
+* [just](https://just.systems)
+* [mise](https://mise.jdx.dev)
+* docker (or [OrbStack](https://orbstack.dev))
+
+Once you have them installed
+
+```shell
+just setup
+```
+
+Should do the rest. Note that you'll probably want to install the shell hooks for just, mise, and direnv which you will need to do manually.
+
 ## Usage
 
 ### Integration Tests
@@ -48,6 +64,10 @@ Note that `--headed` *does* change a lot of underlying Chrome parameters which c
 with the web page.
 
 If a test fails, a screenshot *and* trace is generated that you can use to replay the session and quickly visually inspect what went wrong.
+
+```
+page.pause()
+```
 
 ## Architecture Notes
 
