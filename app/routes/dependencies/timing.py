@@ -1,11 +1,10 @@
 """
-FastAPI middleware for timing request handling at the endpoint level.
-For more detailed performance investigations during development,
-consider using the coroutine-aware profiling library `yappi`.
+Simple FastAPI middleware for timing request handling at the endpoint level.
+
+Adapted from: https://github.com/fastapiutils/fastapi-utils/blob/master/fastapi_utils/timing.py
 """
 
 from time import perf_counter
-from typing import Callable
 
 from fastapi import FastAPI
 from starlette.middleware.base import RequestResponseEndpoint
