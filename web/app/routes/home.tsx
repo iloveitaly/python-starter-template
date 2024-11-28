@@ -18,9 +18,10 @@ import {
   SidebarTrigger,
 } from "~/components/ui/sidebar"
 import { getClient } from "~/configuration/clerk"
-import { applicationData, setToken } from "~/configuration/client"
+import { applicationData } from "~/configuration/client"
 
 import type { Route } from "./+types.home"
+import { invariant } from "@epic-web/invariant"
 
 export const meta: MetaFunction = () => {
   return [
@@ -30,17 +31,8 @@ export const meta: MetaFunction = () => {
 }
 
 export async function clientLoader(_loader_args: Route.ClientLoaderArgs) {
-  // TODO what's terrible about this is I believe the ClerkProvider will hit the clerk API yet again
-  // https://discord.com/channels/856971667393609759/1306770317624086649
   const clerkClient = await getClient()
-
-  // only goal here is protecting this page from hitting the internal API
-  if (!clerkClient.user) {
-    await clerkClient.redirectToSignIn()
-    return
-  }
-
-  await setToken(clerkClient)
+  invariant(clerkClient, "clerk client should always exist or redirect")
 
   // this route is authenticated
   const { data } = await applicationData()
