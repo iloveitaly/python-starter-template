@@ -37,8 +37,8 @@ runs:
         # certs are *not* installed by Caddy in the right location by default
         # specifically, we know this fixes `curl` so it respects our self-signed SSL certificates
         echo "Installing locally signed cert"
-        sudo localias debug cert --print >> /etc/ssl/certs/ca-certificates.crt
 
+        echo "$(sudo localias debug cert --print)" | sudo tee -a /etc/ssl/certs/ca-certificates.crt
         # https://chromium.googlesource.com/chromium/src/+/master/docs/linux/cert_management.md
         sudo certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localias-cert -i $(sudo localias debug cert)
         # sudo certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localias-intermediate-cert -i /root/.local/state/localias/caddy/pki/authorities/local/intermediate.crt
