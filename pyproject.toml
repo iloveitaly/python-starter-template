@@ -89,7 +89,7 @@ git = "https://github.com/iloveitaly/djLint.git"
 rev = "github-output"
 
 [tool.djlint]
-ignore = "H030"
+ignore = "H030,H031"
 
 [tool.ruff]
 extend-exclude = [
