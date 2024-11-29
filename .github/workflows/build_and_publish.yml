@@ -1,4 +1,4 @@
-name: Build & Deploy
+name: Build & Publish
 
 on:
   workflow_dispatch:
@@ -13,10 +13,6 @@ on:
     branches: [main, master]
   pull_request: {}
 
-# TODO need to understand what is going on here more, make sure we don't need this
-#     - name: 🛑 Cancel Previous Runs
-#       uses: styfle/cancel-workflow-action@0.11.0
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -26,6 +22,7 @@ permissions:
   contents: read
 
 env:
+  # checkout `just secrets_ci_grant-github-actions`
   OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
   # a important design goal is to avoid custom configuration in CI. This enables tests to be run in a CI-like environment
@@ -39,7 +36,7 @@ env:
 
 jobs:
   # TODO consider adding a hard timeout for the tail cases
-  # timeout-minutes: 10
+  # timeout-minutes: 20
 
   web:
     name: Backend
@@ -56,10 +53,11 @@ jobs:
       - run: just db_lint
       # NOTE one important problem with `detached` is if something fails, the github environment does seem to get wiped
       # for instance GITHUB_ENV, seems to be cleared out.
-      # - uses: mxschmitt/action-tmate@v3
-      #   # if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
-      #   # with: { detached: true }
+      - uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+        with: { detached: true }
       - run: just py_test
+
       # traces and pngs allow us to debug e2e test failures
       - name: Upload test artifacts
         if: ${{ failure() }}
