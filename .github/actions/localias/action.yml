@@ -38,7 +38,8 @@ runs:
         # specifically, we know this fixes `curl` so it respects our self-signed SSL certificates
         echo "Installing locally signed cert"
 
-        echo "$(sudo localias debug cert --print)" | sudo tee -a /etc/ssl/certs/ca-certificates.crt
+        sudo localias debug cert --print | sudo tee -a /etc/ssl/certs/ca-certificates.crt
+
         # https://chromium.googlesource.com/chromium/src/+/master/docs/linux/cert_management.md
         sudo certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localias-cert -i $(sudo localias debug cert)
 
