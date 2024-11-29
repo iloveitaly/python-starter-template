@@ -8,9 +8,7 @@ Simple email interface:
 
 """
 
-import re
-from email.message import EmailMessage, MIMEPart
-from typing import Callable, TypedDict
+from typing import TypedDict
 
 import markdown2
 from decouple import config
