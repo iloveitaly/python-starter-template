@@ -125,6 +125,7 @@ filterwarnings = ["ignore::DeprecationWarning"]
 # this is nice if you don't have a custom login like we do
 testpaths = "tests"
 norecursedirs = ["pypi"]
+debug_file = "tmp/pytestdebug.log"
 
 log_cli = false
 [tool.uv.sources.activemodel]
