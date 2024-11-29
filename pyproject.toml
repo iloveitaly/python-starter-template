@@ -88,6 +88,9 @@ j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
 git = "https://github.com/iloveitaly/djLint.git"
 rev = "github-output"
 
+[tool.djlint]
+ignore = "H030"
+
 [tool.ruff]
 extend-exclude = [
     "playground",
