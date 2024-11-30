@@ -26,6 +26,8 @@ runs:
         banner_echo "Checking for NSS DB..."
         ls -l $HOME/.pki/nssdb
 
+        sudo update-ca-certificates --fresh
+
         banner_echo "Installed certificates:"
         certutil -L -d sql:${HOME}/.pki/nssdb
 
@@ -63,7 +65,7 @@ runs:
         certutil -L -d sql:${HOME}/.pki/nssdb
 
         # TODO should pick a domain from the environment and test it
-        echo "Checking HTTPs via curl..."
+        banner_echo "Checking HTTPs via curl..."
         curl -vvv --head https://api-test.localhost
 
 
