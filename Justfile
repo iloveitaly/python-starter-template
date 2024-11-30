@@ -359,7 +359,7 @@ py_lint +FILES=".":
 		# check jinja2 template language
 		uv run j2lint --extension j2,html {{JINJA_TEMPLATE_DIR}} --json > j2link_report.json || exit_code=$?
 		jq -r '(.ERRORS[] | "::\(if .severity == "HIGH" then "error" else "warning" end) file=\(.filename),line=\(.line_number),title=\(.id)::\(.message)"), (.WARNINGS[] | "::warning file=\(.filename),line=\(.line_number),title=\(.id)::\(.message)")' < j2link_report.json
-		j2link_report.json
+		rm j2link_report.json
 	else
 		uv tool run ruff check {{FILES}} || exit_code=$?
 		uv run pyright {{FILES}} || exit_code=$?
