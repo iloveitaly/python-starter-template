@@ -20,14 +20,14 @@ runs:
           echo -e "\n\033[0;36m   $1   \033[0m\n"
         }
 
-        banner_echo "Checking nss-config..."
-        nss-config version
-
         # when this directory is properly configured, you should see the following files: cert9.db  key4.db  pkcs11.txt
         [ ! -d "$HOME/.pki/nssdb" ] && mkdir -p "$HOME/.pki/nssdb" && certutil -d sql:$HOME/.pki/nssdb -N --empty-password
 
         banner_echo "Checking for NSS DB..."
-        ls $HOME/.pki/nssdb
+        ls -l $HOME/.pki/nssdb
+
+        banner_echo "Installed certificates:"
+        certutil -L -d sql:${HOME}/.pki/nssdb
 
         if ! command -v localias &> /dev/null; then
           banner_echo "Installing localias"
