@@ -22,6 +22,9 @@ runs:
           echo -e "\n\033[0;36m   $1   \033[0m\n"
         }
 
+        banner_echo "where is the cert"
+        sudo localias debug cert
+
         # when this directory is properly configured, you should see the following files: cert9.db  key4.db  pkcs11.txt
         # [ ! -d "$HOME/.pki/nssdb" ] && mkdir -p "$HOME/.pki/nssdb" && certutil -d sql:$HOME/.pki/nssdb -N --empty-password
 
@@ -41,6 +44,9 @@ runs:
         banner_echo "Starting localias..."
         # don't run as daemon so we can see the logs
         sudo localias start
+
+        # when the daemon has finished initializing
+        inotifywait -e close_write "/etc/ssl/certs/ca-certificates.crt"
 
         # leave enough time for localias to initialize and generate certificates
         # TODO there's got to be a more deterministic way to handle this
@@ -65,7 +71,7 @@ runs:
 
         # TODO should pick a domain from the environment and test it
         banner_echo "Checking HTTPs via curl..."
-        # curl -vvv --head https://api-test.localhost
+        curl -vvv --head https://api-test.localhost
 
         banner_echo "Installed certificates:"
         # certutil -L -d sql:${HOME}/.pki/nssdb
