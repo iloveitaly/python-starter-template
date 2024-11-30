@@ -78,6 +78,9 @@ for i in {1..5}; do
 done
 $curl_success || exit 1
 
+banner_echo "Datetime config..."
+timedatectl
+
 banner_echo "Creating shared NSS DB..."
 # when this directory is properly configured, you should see the following files: cert9.db  key4.db  pkcs11.txt
 [ ! -d "$HOME/.pki/nssdb" ] && mkdir -p "$HOME/.pki/nssdb" && certutil -d sql:$HOME/.pki/nssdb -N --empty-password
