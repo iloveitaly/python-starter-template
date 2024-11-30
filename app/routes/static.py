@@ -25,7 +25,7 @@ from app.environments import (
 
 
 def mount_public_directory(app: FastAPI):
-    # TODO should be extracted into another env var
+    # TODO should be extracted into another env var so it can be shared with JS
     if is_production() or is_staging():
         public_path = root / "public"
     else:
@@ -50,5 +50,14 @@ def mount_public_directory(app: FastAPI):
     @app.get("/", include_in_schema=False)
     async def javascript_index():
         return FileResponse(public_path / "index.html")
+
+    # https://gist.github.com/ultrafunkamsterdam/b1655b3f04893447c3802453e05ecb5e
+    @app.get("/{path:path}")
+    async def frontend_handler(path: str):
+        fp = public_path / path
+
+        if not fp.exists():
+            fp = public_path / "index.html"
+        return FileResponse(fp)
 
     return app
