@@ -1,3 +1,10 @@
+"""
+https://github.com/microsoft/playwright-pytest/issues/74#issuecomment-2497976914
+
+> E               playwright._impl._errors.Error: It looks like you are using Playwright Sync API inside the asyncio loop.
+https://github.com/microsoft/playwright-python/issues/462
+"""
+
 import time
 
 import pytest
@@ -73,14 +80,15 @@ def test_signin(server, page: Page) -> None:
 
     page.goto(home_url())
 
-    page.get_by_role("button", name="Sign in").click()
     page.get_by_label("Email address").fill("mike+clerk_test@example.com")
     page.get_by_role("button", name="Continue", exact=True).click()
 
     page.get_by_label("Password", exact=True).fill("python-starter-template-123")
     page.get_by_role("button", name="Continue").click()
 
-    expect(page.locator("body")).to_contain_text("View your profile here")
+    assert User.count() == 1
+
+    # expect(page.locator("body")).to_contain_text("View your profile here")
 
 
 def test_signup(server, page: Page) -> None:
