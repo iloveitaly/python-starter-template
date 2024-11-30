@@ -1,9 +1,9 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 set -v
 
 banner_echo() {
-  echo -e "\n\033[0;36m$1   \033[0m\n"
+  printf "\n\033[0;36m%s   \033[0m\n" "$1"
 }
 
 # when this directory is properly configured, you should see the following files: cert9.db  key4.db  pkcs11.txt
@@ -37,9 +37,8 @@ daemon_success=false
 for i in $(seq 1 5); do
   banner_echo "Checking for self-signed cert: $cert_location..."
 
-  if [ -f "$cert_location" ]; then
-    daemon_success=true
-  else
+  if sudo [ -f "$cert_location" ]; then
+    daemon_success=true else
     sleep 2
   fi
 
