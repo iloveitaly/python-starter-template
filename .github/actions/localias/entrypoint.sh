@@ -12,8 +12,6 @@ banner_echo() {
 banner_echo "Checking for NSS DB..."
 # ls -l $HOME/.pki/nssdb
 
-# sudo update-ca-certificates --fresh
-
 # banner_echo "Installed certificates:"
 # certutil -L -d sql:${HOME}/.pki/nssdb
 
@@ -38,6 +36,8 @@ for i in {1..5}; do
   [ -f "/root/.local/state/localias/caddy/pki/authorities/local/root.crt" ] && success=true && break || sleep 1
 done
 $daemon_success || exit 1
+
+sudo update-ca-certificates --fresh
 
 # leave enough time for localias to initialize and generate certificates
 # TODO there's got to be a more deterministic way to handle this
