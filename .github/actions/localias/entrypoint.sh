@@ -15,10 +15,7 @@ banner_echo "Checking for NSS DB..."
 # banner_echo "Installed certificates:"
 # certutil -L -d sql:${HOME}/.pki/nssdb
 
-if
-  ! command -v localias &
-  >/dev/null
-then
+if ! command -v localias >/dev/null & then
   banner_echo "Installing localias"
   cat "$GITHUB_ACTION_PATH/install.sh" | sh -s -- --yes
 fi
@@ -76,15 +73,12 @@ export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 # export NODE_EXTRA_CA_CERTS="/path/to/cert.pem"
 
 # TODO should pick a domain from the environment and test it
-banner_echo "Checking HTTPs via curl..."
-curl -vvv --head https://api-test.localhost
-
 curl_success=false
-
 for i in {1..5}; do
+  banner_echo "Checking HTTPs via curl..."
   curl -vvv --head https://api-test.localhost && curl_success=true && break || sleep 1
 done
 $curl_success || exit 1
 
-banner_echo "Installed certificates:"
-# certutil -L -d sql:${HOME}/.pki/nssdb
+banner_echo "Installing certificates for Chrome and others using shared NSS DB..."
+certutil -L -d sql:${HOME}/.pki/nssdb
