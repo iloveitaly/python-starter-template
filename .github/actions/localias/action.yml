@@ -40,7 +40,7 @@ runs:
 
         banner_echo "Starting localias..."
         # don't run as daemon so we can see the logs
-        sudo localias run &
+        sudo localias start
 
         # leave enough time for localias to initialize and generate certificates
         # TODO there's got to be a more deterministic way to handle this
