@@ -6,7 +6,7 @@ on:
     inputs:
       debug_enabled:
         type: boolean
-        description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
+        description: "Run with tmate enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
         required: false
         default: false
   push:
@@ -38,7 +38,7 @@ jobs:
   # TODO consider adding a hard timeout for the tail cases
   # timeout-minutes: 20
 
-  web:
+  app:
     name: Backend
     runs-on: ubuntu-latest
     steps:
@@ -74,7 +74,7 @@ jobs:
       #   with:
       #     GITHUB_TOKEN: ${{ github.token }}
 
-  app:
+  web:
     name: Frontend
     runs-on: ubuntu-latest
     steps:
