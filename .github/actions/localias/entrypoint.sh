@@ -35,7 +35,9 @@ cert_location=$(sudo localias debug cert)
 daemon_success=false
 
 for i in {1..5}; do
-  [ -f "$cert_location" ] && daemon_success=true && break || sleep 2
+  banner_echo "Checking for self-signed cert: $cert_location..."
+  ([ -f "$cert_location" ] && daemon_success=true) || sleep 2
+  if [ $daemon_success ]; then break; fi
 done
 $daemon_success || exit 1
 
