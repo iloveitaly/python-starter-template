@@ -6,9 +6,6 @@ banner_echo() {
   echo -e "\n\033[0;36m   $1   \033[0m\n"
 }
 
-banner_echo "where is the cert"
-sudo localias debug cert
-
 # when this directory is properly configured, you should see the following files: cert9.db  key4.db  pkcs11.txt
 # [ ! -d "$HOME/.pki/nssdb" ] && mkdir -p "$HOME/.pki/nssdb" && certutil -d sql:$HOME/.pki/nssdb -N --empty-password
 
@@ -27,6 +24,9 @@ then
   banner_echo "Installing localias"
   cat "$GITHUB_ACTION_PATH/install.sh" | sh -s -- --yes
 fi
+
+banner_echo "where is the cert"
+sudo localias debug cert
 
 banner_echo "Starting localias..."
 # don't run as daemon so we can see the logs
