@@ -11,6 +11,7 @@ from app import root
 
 
 def test_chrome_version_matches_persisted_version(page: Page):
-    assert (
-        root / ".chrome-version"
-    ).read_text().strip() == page.context.browser.version.strip()
+    browser = page.context.browser
+    assert browser
+
+    assert (root / ".chrome-version").read_text().strip() == browser.version.strip()

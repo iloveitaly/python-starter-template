@@ -118,7 +118,9 @@ exclude = [
 extend-select = ["I"]
 
 [tool.pytest.ini_options]
-addopts = "--pdbcls=pdbr:RichPdb --disable-warnings --screenshot=only-on-failure --tracing=retain-on-failure"
+# TODO huh, maybe we should use anyio instead?
+# aynio is installed by some other packages and it's plugin is discovered automatically, we disable it in favor of asyncio
+addopts = "--pdbcls=pdbr:RichPdb --disable-warnings --screenshot=only-on-failure --tracing=retain-on-failure -p no:anyio"
 # must be session to align with playwright expectations
 asyncio_default_fixture_loop_scope = "session"
 asyncio_mode = "auto"
