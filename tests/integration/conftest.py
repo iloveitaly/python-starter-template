@@ -11,7 +11,10 @@ def report_localias_status():
     log.debug("localias Status", output=result.stdout)
 
     if "daemon running" not in result.stdout:
-        log.error("localias daemon is not running. Integration tests may fail.")
+        log.error(
+            "localias daemon is not running. Integration tests may fail.",
+            output=result.stdout,
+        )
 
 
 def pytest_configure(config):

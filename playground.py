@@ -39,8 +39,9 @@ patch_reload()
 
 async def playwright_page():
 	"""
-	response = await page.goto("https://www.google.com")
-	response.status
+	>>> page = await playwright_page()
+	>>> response = await page.goto("https://www.google.com")
+	>>> response.status
 	"""
 
 	from playwright.async_api import async_playwright
