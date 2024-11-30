@@ -16,17 +16,21 @@ runs:
     - name: "Install & Run Localias"
       shell: bash
       run: |
+        banner_echo() {
+          echo -e "\n\033[0;36m   $1   \033[0m\n"
+        }
+
         # when this directory is properly configured, you should see the following files: cert9.db  key4.db  pkcs11.txt
         [ ! -d "$HOME/.pki/nssdb" ] && mkdir -p "$HOME/.pki/nssdb" && certutil -d sql:$HOME/.pki/nssdb -N --empty-password
 
         sudo ls $HOME/.pki/nssdb
 
         if ! command -v localias &> /dev/null; then
-          echo "Installing localias"
+          banner_echo "Installing localias"
           cat ${{ github.action_path }}/install.sh | sh -s -- --yes
         fi
 
-        echo "Starting localias..."
+        banner_echo "Starting localias..."
         # don't run as daemon so we can see the logs
         sudo localias run &
 
@@ -36,7 +40,7 @@ runs:
 
         # certs are *not* installed by Caddy in the right location by default
         # specifically, we know this fixes `curl` so it respects our self-signed SSL certificates
-        echo "Installing locally signed cert"
+        banner_echo "Installing locally signed cert"
 
         sudo localias debug cert --print | sudo tee -a /etc/ssl/certs/ca-certificates.crt
 
@@ -50,6 +54,9 @@ runs:
         # REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
         export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
         # export NODE_EXTRA_CA_CERTS="/path/to/cert.pem"
+
+        banner_echo "Installed certificates:"
+        certutil -L -d sql:${HOME}/.pki/nssdb
 
         # TODO should pick a domain from the environment and test it
         echo "Checking HTTPs via curl..."
