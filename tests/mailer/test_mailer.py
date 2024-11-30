@@ -1,7 +1,7 @@
 from app.emailer import mail
 
 
-async def test_mailer():
+def test_mailer():
     _result = mail(
         template_path="mail/notification.md",
         context={
