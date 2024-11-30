@@ -36,9 +36,18 @@ daemon_success=false
 
 for i in {1..5}; do
   banner_echo "Checking for self-signed cert: $cert_location..."
-  ([ -f "$cert_location" ] && daemon_success=true) || sleep 2
-  if [ $daemon_success ]; then break; fi
+
+  if [ -f "$cert_location" ]; then
+    daemon_success=true
+  else
+    sleep 2
+  fi
+
+  if $daemon_success; then
+    break
+  fi
 done
+
 $daemon_success || exit 1
 
 # localias (caddy) appends the self-signed certificate to /etc/ssl/certs/ca-certificates.crt
