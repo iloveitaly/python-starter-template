@@ -301,7 +301,12 @@ py_setup:
 	# important for CI to install browsers for playwright
 	# the installation process is fast enough (<10s) to eliminate the need for attempting to cache via GHA
 	# if this turns out not to be true, we should implement: https://github.com/hirasso/thumbhash-custom-element/blob/main/.github/workflows/tests.yml
-	uv run playwright install chromium
+
+	if [ -n "$CI" ]; then \
+		uv run playwright install chromium-headless-shell; \
+	else \
+		uv run playwright install chromium; \
+	fi
 
 	# when running locally, update the chrome version file
 	# [ -z "${CI:-}" ] && just py_playwright_version > .chrome-version
