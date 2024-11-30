@@ -4,6 +4,7 @@ services:
   # port 5432
   postgres:
     image: postgres:latest
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -21,7 +22,7 @@ services:
   # port 6379
   redis:
     image: redis:latest
-    restart: always
+    restart: unless-stopped
     ports:
       - ${CI:+6379}:6379
     healthcheck:
@@ -36,6 +37,8 @@ services:
   mailpit:
     image: axllent/mailpit
     restart: unless-stopped
+    ports:
+      - ${CI:+1025}:1025
     volumes:
       - mailpit_data:/data
     environment:
