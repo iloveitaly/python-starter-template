@@ -33,7 +33,11 @@ banner_echo "Starting localias..."
 sudo localias start
 
 # when the daemon has finished initializing
-inotifywait -e close_write "/etc/ssl/certs/ca-certificates.crt"
+daemon_success=false
+for i in {1..5}; do
+  [ -f "/root/.local/state/localias/caddy/pki/authorities/local/root.crt" ] && success=true && break || sleep 1
+done
+$daemon_success || exit 1
 
 # leave enough time for localias to initialize and generate certificates
 # TODO there's got to be a more deterministic way to handle this
@@ -59,10 +63,12 @@ export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 # TODO should pick a domain from the environment and test it
 banner_echo "Checking HTTPs via curl..."
 curl -vvv --head https://api-test.localhost
+
+curl_success=false
 for i in {1..5}; do
-  curl -vvv --head https://api-test.localhost && exit 0 || sleep 1
+  curl -vvv --head https://api-test.localhost && success=true && break || sleep 1
 done
-exit 1
+$success || exit 1
 
 banner_echo "Installed certificates:"
 # certutil -L -d sql:${HOME}/.pki/nssdb
