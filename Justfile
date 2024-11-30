@@ -346,8 +346,8 @@ py_lint +FILES=".":
 	# + indicates one more arguments being required in Justfile syntax
 
 	# NOTE this is important: we want all operations to run instead of fail fast
-	set +o verbose
-	# set -v
+	# set +o verbose
+	set -v
 
 	# poetry run autoflake --exclude=migrations --imports=decouple,rich -i -r .
 	if [ -n "${CI:-}" ]; then
@@ -393,6 +393,8 @@ py_js-build:
 # run tests with the exact same environment that will be used on CI
 [script]
 py_test: py_js-build
+	set -v
+
 	# TODO what about code coverage? --cov?
 	if [[ -n "${CI:-}" ]]; then
 		uv run pytest . --ignore tests/integration
