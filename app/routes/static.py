@@ -51,13 +51,20 @@ def mount_public_directory(app: FastAPI):
     async def javascript_index():
         return FileResponse(public_path / "index.html")
 
-    # https://gist.github.com/ultrafunkamsterdam/b1655b3f04893447c3802453e05ecb5e
     @app.get("/{path:path}")
     async def frontend_handler(path: str):
+        """
+        This is a very dangerous piece of code: if this is not last it will override other routes in the application
+
+        Without this, non-index RR routes will not work.
+
+        https://gist.github.com/ultrafunkamsterdam/b1655b3f04893447c3802453e05ecb5e
+        """
         fp = public_path / path
 
         if not fp.exists():
             fp = public_path / "index.html"
+
         return FileResponse(fp)
 
     return app

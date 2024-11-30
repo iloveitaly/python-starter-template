@@ -31,7 +31,6 @@ if is_production():
 # NOTE `api_app` and not `app` is used intentionally here to make imports more specific
 api_app = FastAPI(**fast_api_args)  # type: ignore
 
-mount_public_directory(api_app)
 api_app.include_router(internal_api_app)
 add_middleware(api_app)
 
@@ -50,6 +49,9 @@ async def healthcheck():
 
 # important that this is done after all routes are added
 simplify_operation_ids(api_app)
+
+# NOTE VERY IMPORTANT that this is done after all routes are added!!
+mount_public_directory(api_app)
 
 # TODO should move to CLI
 # output openapi spec when run as a module

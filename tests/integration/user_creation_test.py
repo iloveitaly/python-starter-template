@@ -86,11 +86,9 @@ def test_signin(server, page: Page) -> None:
     page.get_by_label("Password", exact=True).fill("python-starter-template-123")
     page.get_by_role("button", name="Continue").click()
 
-    page.wait_for_timeout(1_000)
+    expect(page.locator("body")).to_contain_text("Hello From Internal Python")
 
     assert User.count() == 1
-
-    # expect(page.locator("body")).to_contain_text("View your profile here")
 
 
 def test_signup(server, page: Page) -> None:
