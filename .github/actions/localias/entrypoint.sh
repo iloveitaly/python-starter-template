@@ -70,6 +70,9 @@ export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 # export NODE_EXTRA_CA_CERTS="/path/to/cert.pem"
 
+banner_echo "Datetime config..."
+timedatectl
+
 # TODO should pick a domain from the environment and test it
 curl_success=false
 for i in {1..5}; do
@@ -77,9 +80,6 @@ for i in {1..5}; do
   curl -vvv --head https://api-test.localhost && curl_success=true && break || sleep 1
 done
 $curl_success || exit 1
-
-banner_echo "Datetime config..."
-timedatectl
 
 banner_echo "Creating shared NSS DB..."
 # when this directory is properly configured, you should see the following files: cert9.db  key4.db  pkcs11.txt
