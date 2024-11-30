@@ -7,7 +7,7 @@ banner_echo() {
 }
 
 # when this directory is properly configured, you should see the following files: cert9.db  key4.db  pkcs11.txt
-# [ ! -d "$HOME/.pki/nssdb" ] && mkdir -p "$HOME/.pki/nssdb" && certutil -d sql:$HOME/.pki/nssdb -N --empty-password
+[ ! -d "$HOME/.pki/nssdb" ] && mkdir -p "$HOME/.pki/nssdb" && certutil -d sql:$HOME/.pki/nssdb -N --empty-password
 
 banner_echo "Checking for NSS DB..."
 # ls -l $HOME/.pki/nssdb
@@ -49,6 +49,7 @@ $daemon_success || exit 1
 
 # localias (caddy) appends the self-signed certificate to /etc/ssl/certs/ca-certificates.crt
 # but the system is not refreshed, which causes curl and various other systems to *not* pick up on the new certificate
+banner_echo "Refreshing system CA certs..."
 sudo update-ca-certificates --fresh
 
 # leave enough time for localias to initialize and generate certificates
@@ -79,6 +80,10 @@ for i in {1..5}; do
   curl -vvv --head https://api-test.localhost && curl_success=true && break || sleep 1
 done
 $curl_success || exit 1
+
+banner_echo "Creating shared NSS DB..."
+# when this directory is properly configured, you should see the following files: cert9.db  key4.db  pkcs11.txt
+[ ! -d "$HOME/.pki/nssdb" ] && mkdir -p "$HOME/.pki/nssdb" && certutil -d sql:$HOME/.pki/nssdb -N --empty-password
 
 banner_echo "Installing certificates for Chrome and others using shared NSS DB..."
 certutil -L -d sql:${HOME}/.pki/nssdb
