@@ -35,10 +35,12 @@ cert_location=$(sudo localias debug cert)
 daemon_success=false
 
 for i in {1..5}; do
-  [ -f "$cert_location" ] && daemon_success=true && break || sleep 1
+  [ -f "$cert_location" ] && daemon_success=true && break || sleep 2
 done
 $daemon_success || exit 1
 
+# localias (caddy) appends the self-signed certificate to /etc/ssl/certs/ca-certificates.crt
+# but the system is not refreshed, which causes curl and various other systems to *not* pick up on the new certificate
 sudo update-ca-certificates --fresh
 
 # leave enough time for localias to initialize and generate certificates
