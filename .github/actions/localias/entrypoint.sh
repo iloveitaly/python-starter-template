@@ -52,8 +52,6 @@ sudo update-ca-certificates --fresh
 # banner_echo "Installing locally signed cert"
 # sudo localias debug cert --print | sudo tee -a /etc/ssl/certs/ca-certificates.crt
 
-# sudo update-ca-certificates --fresh
-
 # https://stackoverflow.com/a/75352343/129415
 # TODO should we set this here? makes httpie work?
 # REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
