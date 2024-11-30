@@ -31,9 +31,11 @@ banner_echo "Starting localias..."
 sudo localias start
 
 # when the daemon has finished initializing
+cert_location=$(sudo localias debug cert)
 daemon_success=false
+
 for i in {1..5}; do
-  [ -f "/root/.local/state/localias/caddy/pki/authorities/local/root.crt" ] && success=true && break || sleep 1
+  [ -f "$cert_location" ] && daemon_success=true && break || sleep 1
 done
 $daemon_success || exit 1
 
