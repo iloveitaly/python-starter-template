@@ -141,6 +141,9 @@ def setup_clerk_testing_token(page: Page, frontend_api_url: str | None = None):
 
         logger.debug("rewriting URL old=%s new=%s", url, new_url)
 
+        # unfortunately, this logic makes it hard to use breakpoint debugging
+        # it creates some sort of event loop for handling the routes which in turn prevents us from interactively
+        # navigating in the browser.
         route.continue_(url=new_url)
 
     page.route(api_url, handle_route)

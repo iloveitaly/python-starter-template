@@ -5,9 +5,12 @@ Why? Chrome version changes often break integration tests in unpredictable ways,
 drift intentional.
 """
 
+from playwright.sync_api import Page
+
 from app import root
-from tests.utils import chrome_version
 
 
-def test_chrome_version_matches_persisted_version():
-    assert (root / ".chrome-version").read_text().strip() == chrome_version().strip()
+def test_chrome_version_matches_persisted_version(page: Page):
+    assert (
+        root / ".chrome-version"
+    ).read_text().strip() == page.context.browser.version.strip()
