@@ -7,9 +7,9 @@ banner_echo() {
 }
 
 # when this directory is properly configured, you should see the following files: cert9.db  key4.db  pkcs11.txt
-[ ! -d "$HOME/.pki/nssdb" ] && mkdir -p "$HOME/.pki/nssdb" && certutil -d sql:$HOME/.pki/nssdb -N --empty-password
+# [ ! -d "$HOME/.pki/nssdb" ] && mkdir -p "$HOME/.pki/nssdb" && certutil -d sql:$HOME/.pki/nssdb -N --empty-password
 
-banner_echo "Checking for NSS DB..."
+# banner_echo "Checking for NSS DB..."
 # ls -l $HOME/.pki/nssdb
 
 # banner_echo "Installed certificates:"
@@ -25,7 +25,7 @@ sudo localias debug cert
 
 banner_echo "Starting localias..."
 # don't run as daemon so we can see the logs
-sudo localias start
+sudo -E localias start
 
 # when the daemon has finished initializing
 cert_location=$(sudo localias debug cert)
