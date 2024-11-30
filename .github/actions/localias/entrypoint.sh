@@ -61,9 +61,6 @@ sudo update-ca-certificates --fresh
 banner_echo "Installing locally signed cert"
 # sudo localias debug cert --print | sudo tee -a /etc/ssl/certs/ca-certificates.crt
 
-# https://chromium.googlesource.com/chromium/src/+/master/docs/linux/cert_management.md
-# sudo certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localias-cert -i $(sudo localias debug cert)
-
 # sudo update-ca-certificates --fresh
 
 # https://stackoverflow.com/a/75352343/129415
@@ -85,5 +82,9 @@ banner_echo "Creating shared NSS DB..."
 # when this directory is properly configured, you should see the following files: cert9.db  key4.db  pkcs11.txt
 [ ! -d "$HOME/.pki/nssdb" ] && mkdir -p "$HOME/.pki/nssdb" && certutil -d sql:$HOME/.pki/nssdb -N --empty-password
 
+# https://chromium.googlesource.com/chromium/src/+/master/docs/linux/cert_management.md
 banner_echo "Installing certificates for Chrome and others using shared NSS DB..."
+sudo certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n localias-cert -i $(sudo localias debug cert)
+
+banner_echo "Installed certificates:"
 certutil -L -d sql:${HOME}/.pki/nssdb
