@@ -395,7 +395,7 @@ py_js-build:
 py_test: py_js-build
 	# TODO what about code coverage? --cov?
 	if [[ -n "${CI:-}" ]]; then
-		uv run pytest
+		uv run pytest tests/integration
 	else
 		{{EXECUTE_IN_TEST}} uv run pytest
 	fi
@@ -420,24 +420,26 @@ py_playwright_chrome-version:
 ci_view-last-failed:
 	gh run view --web $(just _gha_last_failed_run_id)
 
+# get the last failed run ID
 _gha_last_failed_run_id:
+	# NOTE this is tied to the name of the yml!
 	gh run list --status=failure --workflow=build_and_publish.yml --json databaseId --jq '.[0].databaseId'
 
 # gh run view --web 12017441624
 
-# open playwright trace viewer on last trace zip, or download one remotely
+# open playwright trace viewer on last trace zip. --remote to download last failed remote trace
 [macos]
-[script]
 py_playwright_trace remote="":
-		if [ "{{remote}}" = "--remote" ]; then
+		# helpful to download to unique folder for two reasons: (a) easier to match up to web GHA view and (b) eliminates risk of gh-cli erroring out bc the directory already exists
+		if [ "{{remote}}" = "--remote" ]; then \
 				failed_run_id=$(gh run list --status=failure --workflow=build_and_publish.yml --json databaseId --jq '.[0].databaseId') && \
-				cd $PLAYWRIGHT_RESULT_DIRECTORY && \
-				gh run download $failed_run_id
+				mkdir -p ${PLAYWRIGHT_RESULT_DIRECTORY}-${failed_run_id} && \
+				gh run --dir ${PLAYWRIGHT_RESULT_DIRECTORY}-${failed_run_id} download $failed_run_id; \
 		fi
 
 		# NOTE it's insane, but fd does not have a "find last modified file"
 		# https://github.com/sharkdp/fd/issues/196
-		uv run playwright show-trace $(fd --no-ignore-vcs  . tmp/ -e zip -t f --exec-batch stat -f '%m %N' | sort -n | tail -1 | cut -f2- -d" ")
+		uv run playwright show-trace $(fd --no-ignore-vcs  . $PLAYWRIGHT_RESULT_DIRECTORY -e zip -t f --exec-batch stat -f '%m %N' | sort -n | tail -1 | cut -f2- -d" ")
 
 # record playwright interactions for integration tests and dump them to a file
 [macos]
