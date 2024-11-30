@@ -34,11 +34,12 @@ sudo localias start
 cert_location=$(sudo localias debug cert)
 daemon_success=false
 
-for i in $(seq 1 5); do
+for i in {1..5}; do
   banner_echo "Checking for self-signed cert: $cert_location..."
 
   if sudo [ -f "$cert_location" ]; then
-    daemon_success=true else
+    daemon_success=true
+  else
     sleep 2
   fi
 
@@ -79,10 +80,11 @@ banner_echo "Checking HTTPs via curl..."
 curl -vvv --head https://api-test.localhost
 
 curl_success=false
+
 for i in {1..5}; do
-  curl -vvv --head https://api-test.localhost && success=true && break || sleep 1
+  curl -vvv --head https://api-test.localhost && curl_success=true && break || sleep 1
 done
-$success || exit 1
+$curl_success || exit 1
 
 banner_echo "Installed certificates:"
 # certutil -L -d sql:${HOME}/.pki/nssdb
