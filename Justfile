@@ -395,9 +395,11 @@ py_js-build:
 py_test: py_js-build
 	# TODO what about code coverage? --cov?
 	if [[ -n "${CI:-}" ]]; then
+		uv run pytest . --ignore tests/integration
 		uv run pytest tests/integration
 	else
-		{{EXECUTE_IN_TEST}} uv run pytest
+		{{EXECUTE_IN_TEST}} uv run pytest . --ignore tests/integration
+		{{EXECUTE_IN_TEST}} uv run pytest tests/integration
 	fi
 
 # automatically fix linting errors
