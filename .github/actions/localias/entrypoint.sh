@@ -3,7 +3,7 @@
 set -v
 
 banner_echo() {
-  echo -e "\n\033[0;36m   $1   \033[0m\n"
+  echo -e "\n\033[0;36m$1   \033[0m\n"
 }
 
 # when this directory is properly configured, you should see the following files: cert9.db  key4.db  pkcs11.txt
@@ -34,7 +34,7 @@ sudo localias start
 cert_location=$(sudo localias debug cert)
 daemon_success=false
 
-for i in {1..5}; do
+for i in $(seq 1 5); do
   banner_echo "Checking for self-signed cert: $cert_location..."
 
   if [ -f "$cert_location" ]; then
