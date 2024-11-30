@@ -1,6 +1,15 @@
 # Python & React Router Project Template
 
-This is an extremely opinionated template for a Python and React project. Here's the stack:
+This is an extremely opinionated web application template.
+
+1. Full-stack integration tests. This includes HTTPS and production-build JS on CI.
+2. Consistent secret and environment management across environments.
+3. Containerized builds.
+4. Full-stack typing.
+5. Consistent developer environments.
+6. Use boring technology. No fancy databases, no novel languages, no obscure frameworks.
+
+Here's the stack:
 
 * Justfile + Direnv + Mise + Lefthook + Localias + 1Password for local development & secret configuration
 * Python + FastAPI + ActiveModel + SQLModel + SQLAlchemy + Alembic + Celery
@@ -52,7 +61,13 @@ Should do the rest. Note that you'll probably want to install the shell hooks fo
 
 ## Usage
 
-### Integration Tests
+### Remix Integration Tests
+
+```
+screen.debug() // Logs the DOM structure
+```
+
+### Pytest Integration Tests
 
 To debug integration tests, you'll want to see what's happening. Use `--headed` to do this:
 
@@ -79,6 +94,8 @@ react-router seems to wrap `vite preview`
 direnv allow config
 
 ### TypeID by Default
+
+From my time at Stripe, I became a big fan of IDs with metadata about the object they represent. There's a great project, TypeID, which has implemented this across a bunch of languages. I've adopted it here.
 
 <!--
 
@@ -116,7 +133,9 @@ Here are the devprod principles this project adheres to:
 * Ability to build production-identical containers locally for debugging
 * Container building and registry storage should be handled on CI. This reduces vendor lock in.
 
-## Other Project Templates
+## Related
+
+### Other Templates
 
 * https://github.com/peterdresslar/fastapi-sqlmodel-alembic-pg
 * https://github.com/fastapi/full-stack-fastapi-template/
@@ -124,10 +143,11 @@ Here are the devprod principles this project adheres to:
 * https://github.com/tierrun/tier-vercel-openai
 * https://github.com/shadcn-ui/next-template
 
-## Great Open Source Projects
+### Great Open Source Projects
 
 * https://github.com/danswer-ai/danswer
 * https://github.com/developaul/translate-app
 * https://github.com/Skyvern-AI/skyvern
 * https://github.com/vercel/ai-chatbot
 * https://github.com/zhanymkanov/fastapi-best-practices
+* https://github.com/bartfeenstra/betty

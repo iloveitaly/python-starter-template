@@ -3,31 +3,28 @@ celery types
 https://github.com/0xthiagomartins/sqlmodel-controller/blob/main/.coveragerc - automatic coverage
 timeout issue https://github.com/celery/celery/issues/3430 and https://github.com/celery/celery/discussions/8692
 maybe use griptape? do they have an llm cache?
-clerk middleware https://github.com/clerk/clerk-sdk-python/issues/49
-  post clerk middleware
 flower job management, serve through fastapi / uvicorn
-maybe simplify openapi names? https://github.com/fastapiutils/fastapi-utils/blob/master/fastapi_utils/openapi.py#L7C5-L7C27
-maybe timing? https://github.com/fastapiutils/fastapi-utils/blob/master/fastapi_utils/timing.py
 understand this https://wiki.postgresql.org/wiki/Don%27t_Do_This#Don.27t_use_upper_case_table_or_column_names
-test user in development? https://discord.com/channels/856971667393609759/1308625944235216916
 ruff doesn't do everything that pylint does, but it's trying! https://github.com/astral-sh/ruff/issues/970
-mailer configuration, with premailer and SMTP integration, need to submit some PRs for this
 breakpoint() is not protected against by push? is this coming in ruff?
 use BaseSettings in pydantic instead of decouple?
+fastapi websocket with remix connection
+do we need this https://github.com/fastapiutils/fastapi-utils/blob/master/fastapi_utils/guid_type.py?
+logging can sometimes get a little crazy, we should come up with better defaults for child loggers
+generate plain text from md without template being used
+understand pytest and how files are collected, any extensions that allow for more clear configuration
 
 ## js
 sentry config, not yet ready for v7 https://docs.sentry.io/platforms/javascript/guides/react/features/react-router/
 posthog config, fix when v7 is released
 add posthog usage example
 logging config fine on the client side?
-tests from template, https://johnsmilga.com/articles/2024/10/15
 add middleware to client to catch authorization errors, create non-clerk-provider layout on the frontend
 think through authenticated pattern, create a clientLoader action
-
-## ui
-better login page
+fix clerk redirect issue
 
 ## deployment
+grafana timing integration
 https://grafana.com for observability
   log ingestion service, need to investigate
 can kamal work with a registry with container?
@@ -38,7 +35,7 @@ fastapi dev conflicts with pdbr interactions, should allow fastapi logs to be fu
 should we use sops? Probably can just use 1p, think about mutation risks here https://github.com/getsops/sops?tab=readme-ov-file#yaml-json-env-and-ini-type-extensions
 `uv pip install --config-setting editable_mode=compat --reinstall -e ./pypi/activemodel` and https://github.com/astral-sh/uv/issues/7028 and https://github.com/dagster-io/dagster/commit/9b3bf2dda8a44168326bb38f75bdd47493ee6da7#diff-85c2bb6d4721ed0a146ea51e2bd615dbdf2249ad3714adc1cacc1877707cadeeR161
 https://github.com/astral-sh/uv/issues/9258#issuecomment-2488597047 - looks like local dev dependencies are supported?
-autogen'd localalias based on ENV port config
+autogen'd localalias based on ENV port config, use local
 
 ## commitlint
 removing unused import, should catch this specifically
@@ -49,13 +46,30 @@ should we add justfile to run production scripts? Probably not. Should document.
 ## template
 https://github.com/fastapi/full-stack-fastapi-template/blob/master/copier.yml - looks like there is some copy tool I can use? to make this template easy to copy.
 
-## Emailer
-https://github.com/Miksus/red-mail/issues/92 - no async support, no update in a year
-https://github.com/alex-oleshkevich/mailers - async support
-support pre-mailer + support markdown: https://github.com/alex-oleshkevich/mailers
-
 ## py test
 timeout default for playwright to avoid hanging
 
 ## aicommit
 include multiple large changes with comma
+
+## open source
+direnv action w/masking
+localias upstream
+localias no caching
+
+## ci
+can we use a op service account locally?
+https://github.com/samuelcolvin/pytest-pretty
+pull mailpit screenshots
+visual diff via comment on playwright
+
+```
+# TODO need to understand what is going on here more, make sure we don't need this
+#     - name: 🛑 Cancel Previous Runs
+#       uses: styfle/cancel-workflow-action@0.11.0
+```
+
+--cache-from to speed up builds
+
+## act compat
+https://github.com/catthehacker/docker_images/issues/138i
