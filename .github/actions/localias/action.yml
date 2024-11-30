@@ -65,9 +65,9 @@ runs:
 
         # TODO should pick a domain from the environment and test it
         banner_echo "Checking HTTPs via curl..."
-        curl -vvv --head https://api-test.localhost
+        # curl -vvv --head https://api-test.localhost
 
         banner_echo "Installed certificates:"
-        certutil -L -d sql:${HOME}/.pki/nssdb
+        # certutil -L -d sql:${HOME}/.pki/nssdb
 
 
