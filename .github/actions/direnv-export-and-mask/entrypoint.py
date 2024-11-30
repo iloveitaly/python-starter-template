@@ -1,4 +1,5 @@
 import json
+import logging
 import re
 import sys
 
@@ -26,6 +27,11 @@ env_vars = json.load(sys.stdin)
 
 # Iterate over all variables from JSON input
 for key, value in env_vars.items():
+    # Skip empty values with warning
+    if not str(value).strip():
+        logging.warning(f"Skipping masking for empty value in key: {key}")
+        continue
+
     if any(pattern.match(str(value)) for pattern in patterns) or any(
         key.endswith(suffix) for suffix in key_suffixes
     ):
