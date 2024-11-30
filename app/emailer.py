@@ -8,6 +8,7 @@ Simple email interface:
 
 """
 
+import asyncio
 from typing import TypedDict
 
 import markdown2
@@ -79,7 +80,6 @@ def mail(
         html=html_content,
     )
 
-    # TODO https://github.com/alex-oleshkevich/mailers/issues/14
-    import asyncio
-
-    return asyncio.run(mailer.send(message))
+    # Get current event loop if one exists, otherwise create new one
+    loop = asyncio.get_event_loop()
+    return loop.run_until_complete(mailer.send(message))
