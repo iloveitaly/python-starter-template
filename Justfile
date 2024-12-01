@@ -518,7 +518,7 @@ db_lint:
 	if [ -n "${CI:-}" ]; then \
 		LOG_LEVEL=error uv run alembic upgrade head --sql | \
 			uv run squawk --reporter=json | \
-			jq -r '.[] | "::warning file=\(.file),line=\(.line),col=\(.column),title=\(.rule_name)::\(.messages[0].Note)"'; \
+			jq -r '.[] | "::\(if .level == "Error" then "error" else "warning" end) file=\(.file),line=\(.line),col=\(.column),title=\(.rule_name)::\(.messages[0].Note)"'
 	else \
 		LOG_LEVEL=error uv run alembic upgrade head --sql | uv run squawk; \
 	fi
