@@ -10,19 +10,24 @@
 #   refactoring tools can rename all symbols automatically.
 # * Make CI more portable. By including as much logic as possible within the Justfile you can
 #   easily move to a different CI system if you need to.
+# * Be greedy about new scripts that help optimize the devloop environment. Just autocomplete + fzf makes it easy to
+#   and sort through really long lists of recipes.
 #
 #######################
 
 # _ is currently being used a recipe namespace char, use `-` to separate words
 # TODO this will be improved later on: https://github.com/casey/just/issues/2442
 
+# zsh is the default shell under macos, let's mirror it
 set shell := ["zsh", "-cu"]
+
+# avoid seeing comments in the output
 set ignore-comments := true
 
 # for [script] support
 set unstable := true
 
-# TODO v by default? created weird terminal clearing behavior
+# TODO v (cmd tracing) by default for [script]? created weird terminal clearing behavior
 # set script-interpreter := ["zsh", "-euvBh"]
 
 # determines what shell to use for [script]
@@ -42,7 +47,8 @@ default:
 #######################
 
 # TODO should cask install 1password-cli
-BREW_PACKAGES := "lefthook jq fd localias nixpacks entr act"
+# NOTE nixpacks is installed during the deployment step and not as a development prerequisite
+BREW_PACKAGES := "lefthook jq fd localias entr"
 
 [macos]
 [script]
@@ -111,6 +117,7 @@ setup: requirements && py_setup js_build db_up db_seed local-alias
 	# direnv will setup a venv & install packages
 	direnv allow .
 
+# TODO extract to my personal dotfiles as well
 # TODO should change the CURRENT_BASE for py and other x.x.y upgrades
 [script]
 [macos]
@@ -141,7 +148,7 @@ _mise_upgrade:
 	just _mise_version_sync
 
 
-# sync the new mise version to github actions
+# sync the mise version to github actions
 _mise_version_sync:
 	mise_version=$(mise --version | awk '{print $1}') && \
 		yq e '.runs.steps.0.with.version = "'$mise_version'"' .github/actions/common-setup/action.yml -i
@@ -150,7 +157,7 @@ _mise_version_sync:
 
 # upgrade mise, language versions, and essential packages
 [macos]
-tooling_upgrade: && _mise_upgrade js_sync-engine-versions
+tooling_upgrade: && _mise_upgrade _js_sync-engine-versions
 	mise self-update
 	HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade {{BREW_PACKAGES}}
 	gem install foreman
@@ -159,7 +166,7 @@ tooling_upgrade: && _mise_upgrade js_sync-engine-versions
 [macos]
 upgrade: tooling_upgrade js_upgrade py_upgrade
 
-# run daemon to setup local development aliases
+# run (or reload) daemon to setup local development aliases
 [macos]
 [script]
 local-alias:
@@ -177,7 +184,8 @@ clean: js_clean py_clean build_clean
 	rm -rf tmp/* || true
 	rm -rf .git/hooks/* || true
 
-nuke: js_nuke py_nuke
+# destroy and rebuild py, js, db, etc
+nuke: js_nuke py_nuke db_nuke
 
 #######################
 # Javascript
@@ -197,39 +205,42 @@ js_clean:
 # clean and rebuild
 js_nuke: js_clean js_setup
 
-# TODO support GITHUB_ACTIONS/CI formatting
 js_lint +FILES=".":
+	# TODO support GITHUB_ACTIONS/CI formatting
 	{{_pnpm}} prettier --check {{FILES}}
 	{{_pnpm}} eslint --cache --cache-location ./node_modules/.cache/eslint {{FILES}}
 
 	# TODO reenable once we have the ui side of things working
 	# {{_pnpm}} depcheck --ignore-bin-package
 
+# automatically fix linting errors
 js_lint-fix:
 	{{_pnpm}} prettier --write .
 	{{_pnpm}} eslint --cache --cache-location ./node_modules/.cache/eslint . --fix
 
 # run tests in the exact same environment that will be used on CI
-[script]
 js_test:
 	# NOTE vitest automatically will detect GITHUB_ACTIONS and change the output format
-	# CI=true *will* impact how various JS tooling is run
-	if [[ -n "${CI:-}" ]]; then
-		{{_pnpm}} vitest run
-	else
-		cd {{WEB_DIR}} && {{EXECUTE_IN_TEST}} pnpm vitest run
+	# CI=true impacts how various JS tooling run
+	if [[ -n "${CI:-}" ]]; then \
+		{{_pnpm}} vitest run; \
+	else \
+		cd {{WEB_DIR}} && {{EXECUTE_IN_TEST}} pnpm vitest run; \
 	fi
 
+# run a development server
 js_dev:
 	[[ -d {{WEB_DIR}}/node_modules ]] || just js_setup
 	{{_pnpm}} run dev
 
+# build a production javascript bundle, helpful for running e2e python tests
 js_build: js_setup
-	# as you'd expect, the `web/build` directory is wiped on each run
+	# as you'd expect, the `web/build` directory is wiped on each run, so we don't need to clear it manually
 	export VITE_BUILD_COMMIT="{{GIT_SHA}}" && {{_pnpm}} run build
 
 # interactive repl for testing ts
-js_playground:
+js_play:
+	# TODO this needs some work
 	{{_pnpm}} dlx tsx ./playground.ts
 
 # interactively upgrade all js packages
@@ -250,9 +261,10 @@ _js_generate-openapi:
 	# jq is here to pretty print the output
 	LOG_LEVEL=error uv run python -m app.server | jq -r . > "$OPENAPI_JSON_PATH"
 
-	# generate the js client
+	# generate the js client with the latest openapi spec
 	{{_pnpm}} openapi
 
+# run shadcn commands with the latest library version
 js_shadcn *arguments:
 	{{_pnpm}} dlx shadcn@latest {{arguments}}
 
@@ -261,7 +273,7 @@ JAVASCRIPT_PACKAGE_JSON := WEB_DIR / "package.json"
 # update package.json engines to match the current versions in .tool-versions
 [macos]
 [script]
-js_sync-engine-versions:
+_js_sync-engine-versions:
 	NODE_VERSION=$(mise list --current --json | jq -r ".node[0].version")
 	PNPM_VERSION=$(pnpm -v)
 
@@ -349,7 +361,6 @@ py_lint +FILES=".":
 	# set +o verbose
 	set -v
 
-	# poetry run autoflake --exclude=migrations --imports=decouple,rich -i -r .
 	if [ -n "${CI:-}" ]; then
 		# TODO I'm surprised that ruff doesn't auto detect github...
 		uv tool run ruff check --output-format=github {{FILES}} || exit_code=$?
@@ -385,6 +396,14 @@ py_lint +FILES=".":
 		exit 1
 	fi
 
+# automatically fix linting errors
+py_lint_fix:
+	uv tool run ruff check . --fix
+	uv run djlint --profile=jinja --reformat {{JINJA_TEMPLATE_DIR}}
+
+	# NOTE pyright and other linters do not have an automatic fix flow
+
+# build js for py e2e tests
 py_js-build:
 	# integration tests should mimic production as closely as possible
 	# to do this, we build the app and serve it like it will be served in production
@@ -396,6 +415,7 @@ py_test: py_js-build
 	set -v
 
 	# TODO what about code coverage? --cov?
+
 	if [[ -n "${CI:-}" ]]; then
 		uv run pytest . --ignore tests/integration
 		uv run pytest tests/integration
@@ -404,10 +424,6 @@ py_test: py_js-build
 		{{EXECUTE_IN_TEST}} uv run pytest tests/integration
 	fi
 
-# automatically fix linting errors
-py_lint_fix:
-	# TODO anything we can do here with pyright?
-	uv tool run ruff check . --fix
 
 # TODO should add a chromium cli script
 
@@ -457,6 +473,7 @@ py_playwright:
 	echo $recorded_interaction
 	pbcopy < $recorded_interaction
 
+# open mailpit web ui, helpful for inspecting emails
 py_mailpit_open:
 	open "https://$(echo $SMTP_URL | cut -d'/' -f3 | cut -d':' -f1)"
 
@@ -490,17 +507,29 @@ db_reset: db_down db_up
 db_lint:
 	uv run alembic check
 
+	# TODO there's also a more advanced github integration, but seems a bit cleaner:
+	# https://squawkhq.com/docs/github_app
+
+	if [ -n "${CI:-}" ]; then \
+		LOG_LEVEL=error alembic upgrade head --sql | \
+			squawk --reporter=json | \
+			jq -r '.[] | "::warning file=\(.file),line=\(.line),col=\(.column),title=\(.rule_name)::\(.messages[0].Note)"'; \
+	else \
+		LOG_LEVEL=error alembic upgrade head --sql | squawk; \
+	fi
+
 # open the database in the default macos GUI
 [macos]
 db_open:
+	# TablePlus via Setapp is a great option here
 	open $DATABASE_URL
 
-# nice tui to interact with the database
+# tui to interact with the database
 [macos]
 db_play:
 	uv tool run pgcli $DATABASE_URL
 
-# migrations on and dev
+# migrations on dev and test
 db_migrate:
 	# dev database is created automatically, but test database is not. We need to fail gracefully when the database already exists.
 	psql $DATABASE_URL -c "CREATE DATABASE ${TEST_DATABASE_NAME};" || true
@@ -509,6 +538,7 @@ db_migrate:
 
 	[ -n "${CI:-}" ] || {{EXECUTE_IN_TEST}} uv run alembic upgrade head
 
+# add seed data to dev and test
 db_seed: db_migrate
 	uv run python migrations/seed.py
 	[ -n "${CI:-}" ] || {{EXECUTE_IN_TEST}} uv run python migrations/seed.py
@@ -532,15 +562,21 @@ db_destroy: db_reset db_migrate db_seed
 
 # destroy all migrations and rebuild everything: only for use in early development
 db_nuke: db_reset && db_migrate db_seed
-	# destroy existing migrations, this is a terrible idea except when you are hacking :)
-	# I personally hate having a nearly greenfield project with a thousand migrations when you're iterating on the database schema.
+	# I personally hate having a nearly-greenfield project with a bunch of migrations from DB schema iteration
+	# this should only be used *before* you've launched and prod and don't need properly migration support
 	rm -rf migrations/versions/* || true
 	just db_generate_migration "initial_commit"
 
 # enable SQL debugging on the postgres database
+[macos]
 db_debug:
 	docker compose exec postgres \
-		psql -U username -c "ALTER SYSTEM SET log_statement = 'all'; SELECT pg_reload_conf();"
+		psql -U $POSTGRES_USER -c "ALTER SYSTEM SET log_statement = 'all'; SELECT pg_reload_conf();"
+
+[macos]
+db_debug_off:
+	docker compose exec postgres \
+		psql -U $POSTGRES_USER -c "ALTER SYSTEM SET log_statement = 'none'; SELECT pg_reload_conf();"
 
 #######################
 # Secrets
@@ -560,7 +596,7 @@ secrets_ci_grant-github-actions:
 
 	gh secret set OP_SERVICE_ACCOUNT_TOKEN --app actions --body "$service_account_token"
 
-# manage the service account from the web ui
+# manage the op service account from the web ui
 [macos]
 secrets_ci_manage:
 	# you cannot revoke/delete a service account with the cli, you must login and delete it from the web ui
@@ -580,7 +616,7 @@ deploy:
 
 	# TODO can we push from the registry image?
 
-# TODO fly deployment
+# TODO fly deployment and other options, this needs some work
 
 #######################
 # Production Build
@@ -627,6 +663,11 @@ _production_build_assertions:
 	if [ ! -z "{{GIT_DIRTY}}" ]; then \
 			echo "Git workspace is dirty! This should never happen on prod" >&2; \
 			exit 1; \
+	fi
+
+	if [ ! -d "{{JINJA_TEMPLATE_DIR}}" ]; then \
+		echo "Jinja template directory does not exist! This should never happen on prod" >&2; \
+		exit 1; \
 	fi
 
 	# TODO should check the chromium version against stored version
