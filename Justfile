@@ -18,6 +18,10 @@
 # _ is currently being used a recipe namespace char, use `-` to separate words
 # TODO this will be improved later on: https://github.com/casey/just/issues/2442
 
+# `pipefail` is important: without this option, a shell script can easily hide an error in a way that is hard to debug
+# this will cause some extra frustration when developing scripts initially, but will make working with them more
+# intuitive and less error prone over time.
+
 # zsh is the default shell under macos, let's mirror it
 set shell := ["zsh", "-cu", "-o", "pipefail"]
 
@@ -512,11 +516,11 @@ db_lint:
 	# https://squawkhq.com/docs/github_app
 
 	if [ -n "${CI:-}" ]; then \
-		LOG_LEVEL=error alembic upgrade head --sql | \
-			squawk --reporter=json | \
+		LOG_LEVEL=error uv run alembic upgrade head --sql | \
+			uv run squawk --reporter=json | \
 			jq -r '.[] | "::warning file=\(.file),line=\(.line),col=\(.column),title=\(.rule_name)::\(.messages[0].Note)"'; \
 	else \
-		LOG_LEVEL=error alembic upgrade head --sql | squawk; \
+		LOG_LEVEL=error uv run alembic upgrade head --sql | uv run squawk; \
 	fi
 
 # open the database in the default macos GUI
