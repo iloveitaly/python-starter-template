@@ -19,7 +19,7 @@
 # TODO this will be improved later on: https://github.com/casey/just/issues/2442
 
 # zsh is the default shell under macos, let's mirror it
-set shell := ["zsh", "-cu"]
+set shell := ["zsh", "-cu", "-o pipefail"]
 
 # avoid seeing comments in the output
 set ignore-comments := true
@@ -31,7 +31,7 @@ set unstable := true
 # set script-interpreter := ["zsh", "-euvBh"]
 
 # determines what shell to use for [script]
-set script-interpreter := ["zsh", "-euBh"]
+set script-interpreter := ["zsh", "-euBh", "-o pipefail"]
 
 # used for image name, op vault access, etc
 PROJECT_NAME := `basename $(pwd)`
