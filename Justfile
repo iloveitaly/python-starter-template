@@ -516,9 +516,8 @@ db_lint:
 	# https://squawkhq.com/docs/github_app
 
 	if [ -n "${CI:-}" ]; then \
-		sql_dump=$(mktemp) && \
-		LOG_LEVEL=error uv run alembic upgrade head --sql > "$sql_dump" && \
-			uv run squawk --reporter=json "$sql_dump" | \
+		LOG_LEVEL=error uv run alembic upgrade head --sql | \
+			uv run squawk --reporter=json | \
 			jq -r '.[] | "::warning file=\(.file),line=\(.line),col=\(.column),title=\(.rule_name)::\(.messages[0].Note)"'; \
 	else \
 		LOG_LEVEL=error uv run alembic upgrade head --sql | uv run squawk; \
