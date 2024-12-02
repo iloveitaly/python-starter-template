@@ -515,14 +515,15 @@ db_lint:
 	# TODO there's also a more advanced github integration, but seems a bit cleaner:
 	# https://squawkhq.com/docs/github_app
 
-	# TODO https://github.com/sbdchd/squawk/issues/348
-	# TODO should submit upstream for the jq transformations
+	# TODO don't fail on warnings https://github.com/sbdchd/squawk/issues/348
+	# TODO remove rule exclusion when https://github.com/sbdchd/squawk/issues/392 is fixed
+	# TODO should submit upstream for the jq transformations so others can copy, add to docs
 	if [ -n "${CI:-}" ]; then \
 		LOG_LEVEL=error uv run alembic upgrade head --sql | \
-			uv run squawk --reporter=json | \
+			uv run squawk --reporter=json --exclude=prefer-text-field | \
 			jq -r '.[] | "::\(if .level == "Error" then "error" else "warning" end) file=\(.file),line=\(.line),col=\(.column),title=\(.rule_name)::\(.messages[0].Note)"'
 	else \
-		LOG_LEVEL=error uv run alembic upgrade head --sql | uv run squawk; \
+		LOG_LEVEL=error uv run alembic upgrade head --sql | uv run squawk --exclude=prefer-text-field; \
 	fi
 
 # open the database in the default macos GUI
