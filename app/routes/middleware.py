@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 from starlette.middleware.cors import CORSMiddleware
 
 from app.routes.dependencies.timing import add_timing_middleware
