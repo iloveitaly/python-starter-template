@@ -1,5 +1,4 @@
 import inspect
-from pathlib import Path
 
 from app import root
 

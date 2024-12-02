@@ -1,7 +1,6 @@
 import json
 
 import typer
-from sqlalchemy.testing.config import ident
 
 from app.configuration.versions import (
     VERSIONS_FILE,

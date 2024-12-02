@@ -7,7 +7,6 @@ drift intentional. we need to run this in a separate test file to avoid async lo
 
 import json
 
-from app import root
 from app.configuration.versions import VERSIONS_FILE, chrome_version
 
 

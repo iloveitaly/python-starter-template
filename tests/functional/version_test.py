@@ -4,7 +4,6 @@ Test redis and postgres versions, must be done separately from chrome because of
 
 import json
 
-from app import root
 from app.configuration.versions import (
     VERSIONS_FILE,
     postgres_version,
