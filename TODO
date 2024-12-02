@@ -70,6 +70,18 @@ visual diff via comment on playwright
 ```
 
 --cache-from to speed up builds
+have nixpacks just build the whole container
+maybe screenshot comments? https://github.com/ActivityWatch/aw-webui/blob/291da6f2c5e7a6b896f23a4eec5ffed9874321ba/.github/workflows/comment.yml#L69
+visual review of email screenshots
+
+```
+      # TODO coverage data is not outputting properly right now
+      # - name: Add Coverage Comment to PR
+      #   id: coverage_comment
+      #   uses: py-cov-action/python-coverage-comment-action@v3
+      #   with:
+      #     GITHUB_TOKEN: ${{ github.token }}
+```
 
 ## act compat
-https://github.com/catthehacker/docker_images/issues/138i
+https://github.com/catthehacker/docker_images/issues/138 - apt tool

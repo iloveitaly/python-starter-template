@@ -67,13 +67,6 @@ jobs:
           name: playwright-traces
           path: ${{ env.PLAYWRIGHT_RESULT_DIRECTORY }}
 
-      # TODO coverage data is not outputting properly right now
-      # - name: Add Coverage Comment to PR
-      #   id: coverage_comment
-      #   uses: py-cov-action/python-coverage-comment-action@v3
-      #   with:
-      #     GITHUB_TOKEN: ${{ github.token }}
-
   web:
     name: Frontend
     runs-on: ubuntu-latest
