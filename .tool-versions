@@ -1,12 +1,14 @@
-# TODO maybe allow larger dependency sprawl since nixpacks will only pick the system versions it cares about
-# TODO maybe automated version upgrades? https://mise.jdx.dev/cli/upgrade.html#mise-upgrade
+# tools shared between dev and ci should be specified here. This makes it easy to specify exact versions.
+# if tools are dev only, they should be installed via brew or some other method.
 
-# template is assumed to be tool-agnostic: mise-specific tooling is not used so it's asdf compatible
-# limit to requirements shared by development AND production
+# this *should* be compatible with mise and asdf, but I'm only testing with mise
+
 python 3.13.0
 uv 0.5.5
 node 22.11.0
 pnpm 9.14.4
 just 1.37.0
 direnv 2.35.0
+
+# GHA has a random version of jq installed
 jq 1.7.1

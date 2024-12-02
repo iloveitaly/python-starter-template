@@ -319,15 +319,15 @@ py_setup:
 	# the installation process is fast enough (<10s) to eliminate the need for attempting to cache via GHA
 	# if this turns out not to be true, we should implement: https://github.com/hirasso/thumbhash-custom-element/blob/main/.github/workflows/tests.yml
 
-	if [ -n "$CI" ]; then \
-		uv run playwright install chromium-headless-shell; \
-	else \
+	if [ -z "$CI" ]; then \
 		uv run playwright install chromium; \
+	else \
+		uv run playwright install chromium-headless-shell; \
 	fi
 
 	# TODO once we figure out the right pattern for CLI tooling, we can simplify this
 	# when running locally, update the chrome version file
-	[ -z "${CI:-}" ] && uv run python -m app.cli write-versions
+	[ ! -z "${CI:-}" ] || uv run python -m app.cli write-versions
 
 # clean entire py project without rebuilding
 py_clean:
