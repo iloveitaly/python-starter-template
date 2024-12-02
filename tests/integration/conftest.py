@@ -5,9 +5,14 @@ def report_localias_status():
     """
     For integration tests, we require localalias to be running in the background.
     """
+    import os
     import subprocess
 
-    result = subprocess.run(["localias", "status"], capture_output=True, text=True)
+    command = ["localias", "status"]
+    if os.getenv("CI"):
+        command.insert(0, "sudo")
+
+    result = subprocess.run(command, capture_output=True, text=True)
     log.debug("localias Status", output=result.stdout)
 
     if "daemon running" not in result.stdout:
