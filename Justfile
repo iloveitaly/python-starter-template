@@ -515,6 +515,8 @@ db_lint:
 	# TODO there's also a more advanced github integration, but seems a bit cleaner:
 	# https://squawkhq.com/docs/github_app
 
+	# TODO https://github.com/sbdchd/squawk/issues/348
+	# TODO should submit upstream for the jq transformations
 	if [ -n "${CI:-}" ]; then \
 		LOG_LEVEL=error uv run alembic upgrade head --sql | \
 			uv run squawk --reporter=json | \
