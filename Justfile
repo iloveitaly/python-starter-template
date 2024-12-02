@@ -236,9 +236,9 @@ js_test:
 	# NOTE vitest automatically will detect GITHUB_ACTIONS and change the output format
 	# CI=true impacts how various JS tooling run
 	if [[ -n "${CI:-}" ]]; then \
-		{{_pnpm}} vitest run; \
+		{{_pnpm}} run test; \
 	else \
-		cd {{WEB_DIR}} && {{EXECUTE_IN_TEST}} pnpm vitest run; \
+		cd {{WEB_DIR}} && {{EXECUTE_IN_TEST}} pnpm run test; \
 	fi
 
 # run a development server
