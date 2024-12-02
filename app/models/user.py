@@ -9,8 +9,9 @@ from datetime import datetime
 
 from activemodel import BaseModel
 from activemodel.mixins import TimestampsMixin, TypeIDMixin
-from sqlmodel import Field
+from sqlmodel import DateTime, Field
 
+# NOTE we use usr_ for our prefix to avoid confusion
 CLERK_OBJECT_PREFIX = "user_"
 
 
@@ -19,8 +20,14 @@ class User(BaseModel, TimestampsMixin, TypeIDMixin("usr"), table=True):
     clerk_id: str
 
     # TODO can we implement a deleted_at mixin with a decorator to handle deleted_at?
+    # TODO can we implement a constraint check deleted && deleted_at
     deleted: bool = Field(default=False, nullable=False)
-    deleted_at: datetime = Field(default=None, nullable=True)
+    deleted_at: datetime = Field(
+        default=None,
+        nullable=True,
+        # TODO https://github.com/fastapi/sqlmodel/discussions/1228
+        sa_type=DateTime(timezone=True),  # type: ignore
+    )
 
     # organization_id: str
 
