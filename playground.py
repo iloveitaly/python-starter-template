@@ -65,6 +65,23 @@ import os
 
 engine = create_engine(database_url(), echo=True)
 
+from redis import Redis
+
+def get_db_version() -> tuple[str, str]:
+	with engine.connect() as conn:
+		pg_version = conn.execute(sa.text("SHOW server_version")).scalar()
+		# Extract major.minor version from full version string
+		pg_version = pg_version.split()[0]
+
+	return pg_version
+
+def get_redis_version(redis_url: str):
+	# Get Redis version
+	redis_client = Redis.from_url(redis_url)
+	redis_version = redis_client.info()['redis_version']
+
+	return redis_version
+
 # with Session(get_engine()) as session:
 # 	user = User(clerk_id="hi")
 # 	llm_response = LLMResponse(
