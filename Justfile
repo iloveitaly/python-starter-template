@@ -47,13 +47,25 @@ EXECUTE_IN_TEST := "CI=true direnv exec ."
 default:
 	just --list
 
+# start all of the services you need for development in a single terminal
+[macos]
+[script]
+dev: local-alias setup
+	cat << 'EOF' > tmp/Procfile.dev
+	py_dev: just py_dev
+	js_dev: just js_dev
+	js_generate_openapi: just js_generate-openapi --watch
+	EOF
+
+	foreman start --procfile=tmp/Procfile.dev
+
 #######################
 # Setup
 #######################
 
 # TODO should cask install 1password-cli
 # NOTE nixpacks is installed during the deployment step and not as a development prerequisite
-BREW_PACKAGES := "lefthook fd localias entr"
+BREW_PACKAGES := "lefthook fd localias entr foreman"
 
 [macos]
 [script]
@@ -76,13 +88,6 @@ requirements *flags:
 	@if ! which docker > /dev/null; then \
 		echo "docker is not installed. Please install."; \
 		exit 1; \
-	fi
-
-	# for procfile management
-	# TODO maybe use? https://github.com/yukihirop/ultraman?tab=readme-ov-file
-	@if ! gem list -i foreman >/dev/null 2>&1; then \
-		echo "Installing foreman"; \
-		gem install foreman; \
 	fi
 
 	@for brew_package in {{BREW_PACKAGES}}; do \
@@ -257,7 +262,7 @@ js_upgrade:
 [doc("Optional flag: --watch")]
 js_generate-openapi *flag:
 	if {{ if flag == "--watch" { "true" } else { "false" } }}; then; \
-		fd --extension=py . | entr -c just _js_generate-openapi; \
+		fd --extension=py . | entr just _js_generate-openapi; \
 	else; \
 		just _js_generate-openapi; \
 	fi
@@ -319,7 +324,7 @@ py_setup:
 	# the installation process is fast enough (<10s) to eliminate the need for attempting to cache via GHA
 	# if this turns out not to be true, we should implement: https://github.com/hirasso/thumbhash-custom-element/blob/main/.github/workflows/tests.yml
 
-	if [ -z "$CI" ]; then \
+	if [ -z "${CI:-}" ]; then \
 		uv run playwright install chromium; \
 	else \
 		uv run playwright install chromium-headless-shell; \

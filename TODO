@@ -11,7 +11,7 @@ use BaseSettings in pydantic instead of decouple?
 fastapi websocket with remix connection
 do we need this https://github.com/fastapiutils/fastapi-utils/blob/master/fastapi_utils/guid_type.py?
 logging can sometimes get a little crazy, we should come up with better defaults for child loggers
-generate plain text from md without template being used
+generate plain text from md without template being used for email
 understand pytest and how files are collected, any extensions that allow for more clear configuration
 
 ## js
@@ -21,7 +21,7 @@ add posthog usage example
 logging config fine on the client side?
 add middleware to client to catch authorization errors, create non-clerk-provider layout on the frontend
 think through authenticated pattern, create a clientLoader action
-fix clerk redirect issue
+fix clerk redirect issue https://discord.com/channels/856971667393609759/1311386772520960182
 
 ## deployment
 grafana timing integration
@@ -36,6 +36,7 @@ should we use sops? Probably can just use 1p, think about mutation risks here ht
 `uv pip install --config-setting editable_mode=compat --reinstall -e ./pypi/activemodel` and https://github.com/astral-sh/uv/issues/7028 and https://github.com/dagster-io/dagster/commit/9b3bf2dda8a44168326bb38f75bdd47493ee6da7#diff-85c2bb6d4721ed0a146ea51e2bd615dbdf2249ad3714adc1cacc1877707cadeeR161
 https://github.com/astral-sh/uv/issues/9258#issuecomment-2488597047 - looks like local dev dependencies are supported?
 autogen'd localalias based on ENV port config, use local
+switch to binstall and see if this becomes a binary distribution https://github.com/yukihirop/ultraman/issues/58
 
 ## commitlint
 removing unused import, should catch this specifically
