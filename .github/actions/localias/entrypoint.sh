@@ -67,7 +67,7 @@ timedatectl
 curl_success=false
 for i in {1..5}; do
   banner_echo "Checking HTTPs via curl..."
-  curl -vvv --head https://api-test.localhost && curl_success=true && break || sleep 1
+  curl -vvv --head https://api-test.localhost && curl_success=true && break || sleep 2
 done
 $curl_success || exit 1
 
