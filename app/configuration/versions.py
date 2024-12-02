@@ -1,3 +1,4 @@
+import inspect
 from pathlib import Path
 
 from app import root
@@ -12,6 +13,7 @@ def postgres_version() -> str:
 
     with get_engine().connect() as conn:
         pg_version = conn.execute(sa.text("SHOW server_version")).scalar()
+        assert pg_version
         # Extract major.minor version from full version string
         pg_version = pg_version.split()[0]
 
@@ -21,7 +23,9 @@ def postgres_version() -> str:
 def redis_version() -> str:
     from app.configuration.redis import get_redis
 
-    redis_version = get_redis().info()["redis_version"]
+    redis_info = get_redis().info()
+    assert not inspect.isawaitable(redis_info), "Redis info should not be awaitable"
+    redis_version = redis_info["redis_version"]
 
     return redis_version
 
