@@ -4,7 +4,6 @@ import requests
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from app.configuration.clerk import clerk
 from tests.util import get_clerk_dev_user
 
 
