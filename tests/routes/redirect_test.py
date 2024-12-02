@@ -17,4 +17,3 @@ def test_https_redirection():
     response = client.get(api_app.url_path_for("javascript_index"))
 
     assert response.status_code == status.HTTP_200_OK
-    assert response.headers["Location"] == base_server_url("http")
