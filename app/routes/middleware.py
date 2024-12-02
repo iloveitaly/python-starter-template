@@ -15,7 +15,8 @@ def add_middleware(app: FastAPI):
         allow_headers=["*"],
     )
 
-    app.add_middleware(HTTPSRedirectMiddleware)
+    # NOTE we are intentionally not requiring HTTPS here since it is assumed we'll be behind a proxy server
+    # TODO TrustedHostMiddleware?
 
     add_timing_middleware(app)
 

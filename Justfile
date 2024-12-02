@@ -438,23 +438,6 @@ py_test: py_js-build
 		{{EXECUTE_IN_TEST}} uv run pytest tests/integration
 	fi
 
-
-# TODO should add a chromium cli script
-
-# Chromium browser versions can silently change on you when you reinstall this can cause strange to detect issues
-# with integration tests. To help debug this, we dump the chromium version that is installed into the git repo so we can
-# track version changes over time and rule out version changes and differences when debugging tests.
-# Additionally, we need to run this in the uv context so it has access to all playwright packages.
-
-# view the last failed gha in the browser
-ci_view-last-failed:
-	gh run view --web $(just _gha_last_failed_run_id)
-
-# get the last failed run ID
-_gha_last_failed_run_id:
-	# NOTE this is tied to the name of the yml!
-	gh run list --status=failure --workflow=build_and_publish.yml --json databaseId --jq '.[0].databaseId'
-
 # gh run view --web 12017441624
 
 # open playwright trace viewer on last trace zip. --remote to download last failed remote trace
@@ -486,6 +469,19 @@ py_playwright:
 # open mailpit web ui, helpful for inspecting emails
 py_mailpit_open:
 	open "https://$(echo $SMTP_URL | cut -d'/' -f3 | cut -d':' -f1)"
+
+#######################
+# CI Management
+#######################
+
+# view the last failed gha in the browser
+ci_view-last-failed:
+	gh run view --web $(just _gha_last_failed_run_id)
+
+# get the last failed run ID
+_gha_last_failed_run_id:
+	# NOTE this is tied to the name of the yml!
+	gh run list --status=failure --workflow=build_and_publish.yml --json databaseId --jq '.[0].databaseId'
 
 #######################
 # Dev Container Management
@@ -723,10 +719,12 @@ _build_requirements:
 		echo "$GITHUB_RUN_ID"; \
 	fi
 
-# build the docker container using nixpacks
-build: _build_requirements _production_build_assertions build_js-assets
+# echo build command so we can reuse when dumping
+[script]
+_build:
 	# NOTE production secrets are *not* included in the image, they are set on deploy
-	nixpacks build .\
+	cat <<'EOF'
+	nixpacks build . \
 		--name {{IMAGE_NAME}} \
 		{{NIXPACKS_BUILD_METADATA}} \
 		$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params) \
@@ -734,6 +732,11 @@ build: _build_requirements _production_build_assertions build_js-assets
 		--label org.opencontainers.image.created="{{BUILD_CREATED_AT}}" \
 		--label org.opencontainers.image.source="$(just _repo_url)" \
 		--label "build.run_id=$(just _build_id)"
+	EOF
+
+# build the docker container using nixpacks
+build: _build_requirements _production_build_assertions build_js-assets
+	eval "$(just _build)"
 
 # dump json output of the built image, ex: j build_inspect '.Config.Env'
 build_inspect *flags:
@@ -746,8 +749,9 @@ build_dive: (_brew_check_and_install "dive")
 
 # dump nixpacks-generated Dockerfile for manual build and production debugging
 build_dump:
-	# {{PYTHON_BUILD_CMD}} --out .
+	eval "$(just _build) --out ."
 
+# clear out nixpacks and other artifacts specific to production containers
 build_clean:
 	rm -rf .nixpacks web/.nixpacks || true
 
@@ -775,13 +779,13 @@ build_shell-exec:
 	docker exec -it $(docker ps -q --filter "ancestor={{IMAGE_TAG}}") bash -l
 
 # run the container locally, as if it were in production (against production DB, resources, etc)
+[script]
 build_run-as-production procname="":
-	# TODO I don't think we want ulimit here, that's just for core dumps, which doesn't seem to work
-	# TODO memory limits
-	docker run -p ${PYTHON_SERVER_PORT} \
+	# NOTE that resources are limited to a production-like environment, change if your production requirements are different
+	docker run -p 8202:80 \
+		--memory=1g --cpus=2 \
 		$(just direnv_export_docker "" --params) \
-		--ulimit core=-1 \
-		{{IMAGE_TAG}} \
+		"{{IMAGE_TAG}}" \
 		"$(just extract_proc "{{procname}}")"
 
 # extract worker start command from Procfile
