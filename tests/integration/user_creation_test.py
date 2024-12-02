@@ -15,6 +15,7 @@ from playwright.sync_api import Page, expect
 from app.models.user import User
 from app.server import api_app
 from tests.integration.clerk import setup_clerk_testing_token
+from tests.util import get_clerk_dev_user
 
 PYTHON_SERVER_TEST_PORT = config("PYTHON_TEST_SERVER_PORT", cast=int)
 
@@ -73,6 +74,8 @@ def home_url():
 
 
 def test_signin(server, page: Page) -> None:
+    username, password, user = get_clerk_dev_user()
+
     # paranoid testing to ensure database cleaning is working
     assert User.count() == 0
 
@@ -80,10 +83,10 @@ def test_signin(server, page: Page) -> None:
 
     page.goto(home_url())
 
-    page.get_by_label("Email address").fill("mike+clerk_test@example.com")
+    page.get_by_label("Email address").fill(username)
     page.get_by_role("button", name="Continue", exact=True).click()
 
-    page.get_by_label("Password", exact=True).fill("python-starter-template-123")
+    page.get_by_label("Password", exact=True).fill(password)
     page.get_by_role("button", name="Continue").click()
 
     expect(page.locator("body")).to_contain_text("Hello From Internal Python")
