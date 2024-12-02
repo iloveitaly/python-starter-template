@@ -325,8 +325,9 @@ py_setup:
 		uv run playwright install chromium; \
 	fi
 
+	# TODO once we figure out the right pattern for CLI tooling, we can simplify this
 	# when running locally, update the chrome version file
-	# [ -z "${CI:-}" ] && just py_playwright_version > .chrome-version
+	[ -z "${CI:-}" ] && uv run python -m app.cli write-versions
 
 # clean entire py project without rebuilding
 py_clean:
@@ -436,10 +437,6 @@ py_test: py_js-build
 # with integration tests. To help debug this, we dump the chromium version that is installed into the git repo so we can
 # track version changes over time and rule out version changes and differences when debugging tests.
 # Additionally, we need to run this in the uv context so it has access to all playwright packages.
-
-# output chrome version current installed
-py_playwright_chrome-version:
-	python -c "from tests.utils import chrome_version; print(chrome_version())"
 
 # view the last failed gha in the browser
 ci_view-last-failed:
@@ -677,9 +674,6 @@ _production_build_assertions:
 		echo "Jinja template directory does not exist! This should never happen on prod" >&2; \
 		exit 1; \
 	fi
-
-	# TODO should check the chromium version against stored version
-	# echo "Chromium version: $(just py_playwright_version)"
 
 # build the javascript assets by creating an image, building assets inside the container, and then copying them to the host
 build_js-assets: _production_build_assertions

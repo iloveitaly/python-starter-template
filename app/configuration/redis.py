@@ -14,7 +14,7 @@ def redis_url():
 REDIS = None
 
 
-def application_redis_connection():
+def get_redis():
     global REDIS  # pylint: disable=global-statement
 
     if REDIS is None:
