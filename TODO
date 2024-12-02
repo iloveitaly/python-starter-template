@@ -60,8 +60,8 @@ localias no caching
 
 ## ci
 can we use a op service account locally?
-https://github.com/samuelcolvin/pytest-pretty
-pull mailpit screenshots
+https://github.com/samuelcolvin/pytest-pretty why isn't this being picked up?
+pull mailpit contents (we can't pull screeshots)
 visual diff via comment on playwright
 
 ```
@@ -70,10 +70,7 @@ visual diff via comment on playwright
 #       uses: styfle/cancel-workflow-action@0.11.0
 ```
 
---cache-from to speed up builds
-have nixpacks just build the whole container
 maybe screenshot comments? https://github.com/ActivityWatch/aw-webui/blob/291da6f2c5e7a6b896f23a4eec5ffed9874321ba/.github/workflows/comment.yml#L69
-visual review of email screenshots
 
 ```
       # TODO coverage data is not outputting properly right now
@@ -83,6 +80,13 @@ visual review of email screenshots
       #   with:
       #     GITHUB_TOKEN: ${{ github.token }}
 ```
+
+## build
+add nixpacks cache, waiting on comment from author
+build assets within container instead of extracting them
+push to registry
+--cache-from to speed up builds
+have nixpacks just build the whole container
 
 ## act compat
 https://github.com/catthehacker/docker_images/issues/138 - apt tool

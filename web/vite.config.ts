@@ -55,6 +55,10 @@ function getModePlugins(mode: string) {
       // remember, although production builds are created in CI, they are done within
       // a docker container and do not inherit CI and other ENV vars
 
+      if (!VITE_BUILD_COMMIT) {
+        throw new Error("Missing VITE_BUILD_COMMIT. Include to fix build.")
+      }
+
       if (!CI && !VITE_BUILD_COMMIT.endsWith("-dirty")) {
         throw new Error("Missing SENTRY_AUTH_TOKEN. Include to fix build.")
       }
@@ -68,11 +72,13 @@ function getModePlugins(mode: string) {
         sentryVitePlugin({
           // real component names in errors
           reactComponentAnnotation: { enabled: true },
-          //    org: process.env.SENTRY_ORG,
-          // project: process.env.SENTRY_PROJECT,
 
-          // Auth tokens can be obtained from https://sentry.io/orgredirect/organizations/:orgslug/settings/auth-tokens/
-          // authToken: process.env.SENTRY_AUTH_TOKEN,
+          // TODO unsure if this is required
+          org: process.env.SENTRY_ORG,
+          project: process.env.SENTRY_PROJECT,
+
+          // Auth tokens can be obtained from https://ORG_NAME.sentry.io/settings/auth-tokens/new-token/
+          authToken: process.env.SENTRY_AUTH_TOKEN,
         }),
       // only check env vars when building for production
       // some ENV is only available in prod

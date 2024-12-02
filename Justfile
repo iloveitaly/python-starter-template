@@ -51,11 +51,14 @@ default:
 [macos]
 [script]
 dev: local-alias setup
+	# create a tmp Procfile with all of the dev services we need running
 	cat << 'EOF' > tmp/Procfile.dev
 	py_dev: just py_dev
 	js_dev: just js_dev
 	js_generate_openapi: just js_generate-openapi --watch
 	EOF
+
+	# TODO should we add a watcher for JS and rebuild the static JS build for e2e py tests?
 
 	foreman start --procfile=tmp/Procfile.dev
 
@@ -65,12 +68,12 @@ dev: local-alias setup
 
 # TODO should cask install 1password-cli
 # NOTE nixpacks is installed during the deployment step and not as a development prerequisite
-BREW_PACKAGES := "lefthook fd localias entr foreman"
+BREW_PACKAGES := "lefthook fd localias entr foreman 1password-cli"
 
 [macos]
 [script]
 _brew_check_and_install brew_target:
-	if ! which {{brew_target}} > /dev/null; then
+	if ! brew list {{brew_target}} > /dev/null; then
 		echo "{{brew_target}} is not installed. Installing..."
 		brew install {{brew_target}}
 	fi
@@ -206,7 +209,7 @@ _pnpm := "cd " + WEB_DIR + " && pnpm"
 
 js_setup:
 	{{_pnpm}} install
-	{{_pnpm}} run openapi
+	# TODO do we actually need this? Or will RR do this for us when building a preview + build?
 	{{_pnpm}} react-router typegen
 
 js_clean:
@@ -656,12 +659,9 @@ PYTHON_PRODUCTION_ENV_FILE := ".env.production.backend"
 
 JAVASCRIPT_SECRETS_FILE := ".env.production.frontend"
 JAVASCRIPT_IMAGE_TAG := IMAGE_NAME + "-javascript:" + GIT_SHA
-JAVASCRIPT_CONTAINER_BUILD_DIR := "/app/build/client"
-JAVASCRIPT_PRODUCTION_BUILD_DIR := absolute_path("public")
 
 IMAGE_NAME := PROJECT_NAME
 IMAGE_TAG := IMAGE_NAME + ":latest"
-PYTHON_BUILD_CMD := "nixpacks build . --name " + IMAGE_NAME + " " + NIXPACKS_BUILD_METADATA
 
 [script]
 _production_build_assertions:
@@ -670,6 +670,7 @@ _production_build_assertions:
 	# only run this on CI
 	[ ! -z "${CI:-}" ] || exit 0
 
+	# if the workspace is dirty, some configuration is not correct: we want a completely clean build environment
 	if [ ! -z "{{GIT_DIRTY}}" ]; then \
 			echo "Git workspace is dirty! This should never happen on prod" >&2; \
 			exit 1; \
@@ -680,33 +681,28 @@ _production_build_assertions:
 		exit 1; \
 	fi
 
+JAVASCRIPT_CONTAINER_BUILD_DIR := "/app/build/client"
+JAVASCRIPT_PRODUCTION_BUILD_DIR := "public"
+
 # build the javascript assets by creating an image, building assets inside the container, and then copying them to the host
 build_js-assets: _production_build_assertions
 	@echo "Building javascript assets..."
 	rm -rf "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}"
 
-	# production assets bundle public "secrets" which are extracted from the environment
-	# for this reason, we need to emulate the production environment, then build the assets statically
-	nixpacks build {{WEB_DIR}} --name "{{JAVASCRIPT_IMAGE_TAG}}" \
+	# Production assets bundle public "secrets" (safe to expose publicly) which are extracted from the environment
+	# for this reason, we need to emulate the production environment, then build the assets statically.
+	# Also, we can't just mount /app/build/server with -v since the build process removes the entire /app/build directory
+	nixpacks build {{WEB_DIR}} \
+		--name "{{JAVASCRIPT_IMAGE_TAG}}" \
 		 {{NIXPACKS_BUILD_METADATA}} \
 		--env VITE_BUILD_COMMIT="{{GIT_SHA}}" \
-		--build-cmd='pnpm openapi' \
-		--start-cmd='pnpm build'
-
-	# we can't just mount /app/build/server with -v since the build process removes the entire /app/build directory
-	docker run \
 		$(just direnv_export_docker '{{JAVASCRIPT_SECRETS_FILE}}' --params) \
-		$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params) \
-		{{JAVASCRIPT_IMAGE_TAG}}
+		$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params)
 
-	# container count check is paranioa around https://github.com/orbstack/orbstack/issues/1568. This could cause issues
-	# when testing this functionality out locally
-
-	# NOTE watch out for the escaped 'json .' here!
-	container_id=$(docker ps --no-trunc -a --format "{{ '{{ json . }}' }}" | jq -r 'select(.Image == "{{JAVASCRIPT_IMAGE_TAG}}") | .ID') && \
-		[ "$(echo "$container_id" | wc -l)" -eq 1 ] || (echo "Expected exactly one container, got $container_id" && exit 1) && \
-		docker cp $container_id:{{JAVASCRIPT_CONTAINER_BUILD_DIR}} "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}" && \
-		docker rm $container_id
+	# you cannot extract files out of a image, only a container
+	docker rm tmp-js-container || true
+	docker create --name tmp-js-container {{JAVASCRIPT_IMAGE_TAG}}
+	docker cp tmp-js-container:/app/build/production/client "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}"
 
 # support non-macos installations for github actions
 _build_requirements:
@@ -729,10 +725,11 @@ _build_requirements:
 
 # build the docker container using nixpacks
 build: _build_requirements _production_build_assertions build_js-assets
-	@echo "Building python application..."
-	{{PYTHON_BUILD_CMD}} \
+	# NOTE production secrets are *not* included in the image, they are set on deploy
+	nixpacks build .\
+		--name {{IMAGE_NAME}} \
+		{{NIXPACKS_BUILD_METADATA}} \
 		$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params) \
-		$(just direnv_export_docker '{{PYTHON_PRODUCTION_ENV_FILE}}' --params) \
 		--label org.opencontainers.image.revision={{GIT_SHA}} \
 		--label org.opencontainers.image.created="{{BUILD_CREATED_AT}}" \
 		--label org.opencontainers.image.source="$(just _repo_url)" \
@@ -749,7 +746,7 @@ build_dive: (_brew_check_and_install "dive")
 
 # dump nixpacks-generated Dockerfile for manual build and production debugging
 build_dump:
-	{{PYTHON_BUILD_CMD}} --out .
+	# {{PYTHON_BUILD_CMD}} --out .
 
 build_clean:
 	rm -rf .nixpacks web/.nixpacks || true
@@ -781,7 +778,11 @@ build_shell-exec:
 build_run-as-production procname="":
 	# TODO I don't think we want ulimit here, that's just for core dumps, which doesn't seem to work
 	# TODO memory limits
-	docker run -p 8000 $(just direnv_export_docker "" --params) --ulimit core=-1 {{IMAGE_TAG}} "$(just extract_proc "{{procname}}")"
+	docker run -p ${PYTHON_SERVER_PORT} \
+		$(just direnv_export_docker "" --params) \
+		--ulimit core=-1 \
+		{{IMAGE_TAG}} \
+		"$(just extract_proc "{{procname}}")"
 
 # extract worker start command from Procfile
 [script]
@@ -818,7 +819,7 @@ with_entries(
 	[ "{{target}}" != ".envrc" ] || (echo "You cannot use .envrc as a target"; exit 1)
 
 	# without clearing the env, any variables that you have set in your shell (via ~/.exports or similar) will *not*
-	# be included in the export. This was occuring on my machine since I set PYTHON* vars globally. To work around this
+	# be included in the export. This was occurring on my machine since I set PYTHON* vars globally. To work around this
 	# we clear the environment, outside of the PATH + HOME required for direnv configuration.
 	env -i HOME="$HOME" PATH="$PATH" \
 		RENDER_DIRENV="{{target}}" direnv export json 2>/dev/null | jq -r '{{jq_script}}'

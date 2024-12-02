@@ -9,8 +9,9 @@ patterns = [
     re.compile(
         r"https://\S+@o\d+\.ingest\.us\.sentry\.io/\S+"
     ),  # Matches the Sentry DSN pattern
-    re.compile(r"sk_\S+"),  # Matches sk_* values
-    re.compile(r"phc_\S+"),  # Matches phc-* values
+    re.compile(r"sk_\S+"),  # Stripe & other keys
+    re.compile(r"phc_\S+"),  # PostHog token
+    re.compile(r"sntrys_\S+"),  # Sentry auth token
 ]
 
 # Define suffixes to detect keys to mask
