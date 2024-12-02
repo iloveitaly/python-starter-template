@@ -53,7 +53,7 @@ default:
 
 # TODO should cask install 1password-cli
 # NOTE nixpacks is installed during the deployment step and not as a development prerequisite
-BREW_PACKAGES := "lefthook jq fd localias entr"
+BREW_PACKAGES := "lefthook fd localias entr"
 
 [macos]
 [script]
@@ -518,7 +518,7 @@ db_lint:
 	if [ -n "${CI:-}" ]; then \
 		LOG_LEVEL=error uv run alembic upgrade head --sql | \
 			uv run squawk --reporter=json --exclude=prefer-text-field | \
-			jq -r '.[] | "::\(if .level == "Error" then "error" else "warning" end) file=\(.file),line=\(.line),col=\(.column),title=\(.rule_name)::\(.messages[0].Note)"'
+			jq -r '.[] | "::\(if .level == "Error" then "error" else "warning" end) file=\(.file),line=\(.line),col=\(.column),title=\(.rule_name)::\(.messages[0].Note)"'; \
 	else \
 		LOG_LEVEL=error uv run alembic upgrade head --sql | uv run squawk --exclude=prefer-text-field; \
 	fi
