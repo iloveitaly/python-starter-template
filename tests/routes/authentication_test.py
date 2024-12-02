@@ -22,17 +22,29 @@ def test_authorized_bad_credentials(client: TestClient):
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
-def get_valid_token():
-    timestamp = int(time.time())
+def get_clerk_dev_user():
+    dev_user_email = "user+clerk_test@example.com"
+    user_list = clerk.users.list(email_address=[dev_user_email])
 
-    user = clerk.users.create(
-        request={
-            "email_address": [f"user-{timestamp}+clerk_test@example.com"],
-            "password": "clerk-development-123",
-        }
-    )
+    assert user_list
+
+    if len(user_list) == 1:
+        user = user_list[0]
+    else:
+        user = clerk.users.create(
+            request={
+                "email_address": [dev_user_email],
+                "password": "clerk-development-123",
+            }
+        )
 
     assert user
+
+    return user
+
+
+def get_valid_token():
+    user = get_clerk_dev_user()
 
     # now that we have a user, we need to create a session
     session_response = requests.post(

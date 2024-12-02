@@ -54,10 +54,9 @@ async def playwright_page():
 def create_user():
 	clerk.users.create({"email_address": "test@test.com"})
 
-# def delete_all_users():
-# 	clerk.users.list()
-# 		| fp.pluck_attr("id")
-# 		| fp.lmap(lambda uid: clerk.users.delete(user_id=uid))
+import funcy_pipe as fp
+def delete_all_users():
+	clerk.users.list() | fp.pluck_attr("id") | fp.lmap(lambda uid: clerk.users.delete(user_id=uid))
 
 
 from sqlmodel import create_engine
