@@ -68,9 +68,11 @@ def is_safe_value(value):
         "username",
         "password",
         ".",
+        "true",
+        "false",
     ]
 
-    if any(word in value.lower() for word in common_words):
+    if any(word == value.lower() for word in common_words):
         return False
 
     # is this a 4 digit number or less? This generally represents a port
@@ -100,7 +102,7 @@ for key, value in env_vars.items():
         continue
 
     if args.all:
-        if is_safe_value(value):
+        if is_safe_value(str(value)):
             print("Key value is safe, not masking.", key)
         else:
             print("Key not masked by default, masking because of --all.", key)
