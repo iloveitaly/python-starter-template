@@ -2,6 +2,8 @@
 
 This action loads environment variables from direnv and automatically masks sensitive values in GitHub Actions logs. The environment is loaded into `$GITHUB_ENV` so it's available in future action steps.
 
+The primary downside of using direnv to manage secrets is they are *not* masked by default. This action attempts to mask secrets in the environment with a `mask_all` in case you want all secrets hidden by default.
+
 ## Features
 
 - Automatically loads `.envrc` files using direnv

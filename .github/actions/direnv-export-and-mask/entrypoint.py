@@ -54,6 +54,32 @@ def add_mask(key, value):
     print(f"::add-mask::{value}")
 
 
+def is_safe_value(value):
+    common_words = [
+        "test",
+        "production",
+        "staging",
+        "dev",
+        "test",
+        "local",
+        "localhost",
+        "example.com",
+        "postgres",
+        "username",
+        "password",
+        ".",
+    ]
+
+    if any(word in value.lower() for word in common_words):
+        return False
+
+    # is this a 4 digit number or less? This generally represents a port
+    if str(value).isdigit() and len(value) <= 4:
+        return False
+
+    return True
+
+
 # Read JSON from stdin
 env_vars = json.load(sys.stdin)
 
@@ -74,5 +100,8 @@ for key, value in env_vars.items():
         continue
 
     if args.all:
-        print("Key not masked by default, masking because of --all. %s", key)
-        add_mask(key, str(value))
+        if is_safe_value(value):
+            print("Key value is safe, not masking.", key))
+        else:
+            print("Key not masked by default, masking because of --all. %s", key)
+            add_mask(key, str(value))
