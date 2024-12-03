@@ -37,7 +37,6 @@ set ignore-comments := true
 # for [script] support
 set unstable := true
 
-
 # used for image name, op vault access, etc
 PROJECT_NAME := `basename $(pwd)`
 
@@ -105,6 +104,7 @@ requirements *flags:
 	fi
 
 	if [[ "{{flags}}" =~ "--extras" ]]; then \
+		echo "Adding aiautocommit..."; \
 		uv tool add aiautocommit; \
 	fi
 
@@ -127,7 +127,7 @@ setup: requirements && py_setup js_build db_up db_seed local-alias
 		echo "Please edit .env.dev.local to your liking."; \
 	fi
 
-	# direnv will setup a venv & install packages
+	# direnv will setup a venv (assuming `layout uv` is supported) & install packages
 	direnv allow .
 
 # TODO extract to my personal dotfiles as well
@@ -173,7 +173,6 @@ _mise_version_sync:
 tooling_upgrade: && _mise_upgrade _js_sync-engine-versions
 	mise self-update
 	HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade {{BREW_PACKAGES}}
-	gem install foreman
 
 # upgrade everything: all packages on all languages, tooling, etc
 [macos]
