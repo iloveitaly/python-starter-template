@@ -73,13 +73,13 @@ def is_safe_value(value):
     ]
 
     if any(word == value.lower() for word in common_words):
-        return False
+        return True
 
     # is this a 4 digit number or less? This generally represents a port
     if str(value).isdigit() and len(value) <= 4:
-        return False
+        return True
 
-    return True
+    return False
 
 
 # Read JSON from stdin
