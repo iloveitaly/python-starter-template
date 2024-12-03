@@ -1,13 +1,10 @@
 name: 'Install Localias'
 description: "Install and run localias as a daemon, enabling https domains to be used for CI tests"
 author: 'Michael Bianco'
+
 branding:
   icon: 'box'
   color: 'green'
-
-# https://ray.run/questions/how-do-i-fix-ssl-errors-when-using-playwright-and-google-chrome-to-access-a-site-on-localhost-3000
-# https://medium.com/@mudit94/configuring-https-certificates-in-playwright-932ca3fc9f06
-# https://superuser.com/questions/1083766/how-do-i-deal-with-neterr-cert-authority-invalid-in-chrome
 
 runs:
   using: 'composite'

@@ -60,14 +60,18 @@ sudo update-ca-certificates --fresh
 banner_echo "Datetime config..."
 timedatectl
 
-test_domain=$(localias debug config --print | grep -v '^#' | grep -v '^$' | cut -d: -f1 | sort -R | head -n 1 | tr -d ' ')
+# each individual test domain should be tested/warmed up, otherwise downstream services may get an SSL error
+test_domains=$(localias debug config --print | grep -v '^#' | grep -v '^$' | cut -d: -f1 | tr -d ' ')
 
-curl_success=false
-for i in {1..5}; do
-  banner_echo "Checking HTTPs via curl..."
-  curl -vvv --head "$test_domain" && curl_success=true && break || sleep 2
+for test_domain in $test_domains; do
+  banner_echo "Testing $test_domain..."
+  curl_success=false
+  for i in {1..5}; do
+    banner_echo "Checking HTTPs via curl..."
+    curl -vvv --head "$test_domain" && curl_success=true && break || sleep 2
+  done
+  $curl_success || exit 1
 done
-$curl_success || exit 1
 
 banner_echo "Creating shared NSS DB..."
 # when this directory is properly configured, you should see the following files: cert9.db  key4.db  pkcs11.txt
