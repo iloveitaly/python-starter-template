@@ -32,10 +32,6 @@ key_suffixes = [
     "_SECRET",
     "_PASSWORD",
     "_DSN",
-    "_API_KEY",
-    "_PRIVATE_KEY",
-    "_SIGNING_KEY",
-    "_ACCESS_KEY",
 ]
 
 

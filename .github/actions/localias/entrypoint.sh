@@ -12,9 +12,6 @@ if ! command -v localias >/dev/null & then
   cat "$GITHUB_ACTION_PATH/install.sh" | sh -s -- --yes
 fi
 
-banner_echo "where is the cert"
-sudo localias debug cert
-
 # to view logs, run detached `sudo localaias run &`
 banner_echo "Starting localias..."
 sudo localias start

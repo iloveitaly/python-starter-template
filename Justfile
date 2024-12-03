@@ -220,10 +220,10 @@ js_nuke: js_clean js_setup
 js_lint +FILES=".":
 	# TODO support GITHUB_ACTIONS/CI formatting
 	{{_pnpm}} prettier --check {{FILES}}
+	# `eslint-config-typescript` seems dead
 	{{_pnpm}} eslint --cache --cache-location ./node_modules/.cache/eslint {{FILES}}
 
-	# TODO reenable once we have the ui side of things working
-	# {{_pnpm}} depcheck --ignore-bin-package
+	{{_pnpm}} depcheck
 
 # automatically fix linting errors
 js_lint-fix:
