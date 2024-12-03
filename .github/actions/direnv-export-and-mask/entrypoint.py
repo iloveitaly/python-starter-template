@@ -60,16 +60,20 @@ def is_safe_value(value):
         "production",
         "staging",
         "dev",
+        "development",
+        "testing",
         "test",
         "local",
         "localhost",
         "example.com",
         "postgres",
+        "root",
         "username",
         "password",
         ".",
         "true",
         "false",
+        "random",
     ]
 
     if any(word == value.lower() for word in common_words):
