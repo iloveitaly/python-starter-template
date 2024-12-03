@@ -6,24 +6,29 @@
     "Trapfether.tailwind-raw-reorder",
     // python
     "ms-python.python",
-    "monosans.djlint",
-    "dbaeumer.vscode-eslint",
-    "GitHub.vscode-pull-request-github",
-    "Gruntfuggly.todo-tree",
+    "monosans.djlint", // for jinja2
     "meganrogge.template-string-converter",
     "formulahendry.auto-rename-tag",
     "mikoz.autoflake-extension",
     "samuelcolvin.jinjahtml",
     "charliermarsh.ruff",
     "esbenp.prettier-vscode",
+    // typescript
+    "dbaeumer.vscode-eslint",
+    // TODO does not seem to play well with subfolders, but I did get it working by adding the subfolder as a multi-root workspace :/
+    "kimuson.ts-type-expand",
     // other
+    "GitHub.vscode-pull-request-github",
+    "Gruntfuggly.todo-tree",
     "ms-azuretools.vscode-docker",
     "tamasfe.even-better-toml",
     "nefrob.vscode-just-syntax"
   ],
   "unwantedRecommendations": [
     "firsttris.vscode-jest-runner",
+    // ruff replaces all of these py linting tools
     "ms-python.isort",
-    "ms-python.flake8"
+    "ms-python.flake8",
+    "mikoz.autoflake-extension"
   ]
 }
