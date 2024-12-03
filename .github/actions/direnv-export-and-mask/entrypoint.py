@@ -5,7 +5,12 @@ import re
 import sys
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--all", action="store_true", help="Mask all environment variables")
+parser.add_argument(
+    "--all",
+    type=lambda x: x.lower() == "true",
+    default=False,
+    help="Mask all environment variables",
+)
 args = parser.parse_args()
 
 # Define the patterns to match specific types of values
@@ -30,6 +35,8 @@ patterns = [
     re.compile(r"key-[0-9a-zA-Z]{32,}"),
 ]
 
+# prefixes & suffixes are case insensitive
+
 # Define suffixes to detect keys to mask
 key_suffixes = [
     "_KEY",
@@ -38,6 +45,9 @@ key_suffixes = [
     "_PASSWORD",
     "_DSN",
 ]
+
+# Define prefixes to detect keys to mask
+key_prefixes = ["OP_", "DIRENV_", "key-", "api-", "token-", "secret-", "private-"]
 
 
 def add_mask(key, value):
@@ -53,15 +63,16 @@ for key, value in env_vars.items():
     # empty values are intentionally not skipped and will result in a mask warning
     # empty ENV values should be rare and should be loud if they are
 
-    if any(pattern.match(str(value)) for pattern in patterns) or any(
-        key.endswith(suffix) for suffix in key_suffixes
+    # Convert key to uppercase for comparison
+    key_upper = key.upper()
+
+    if (
+        any(pattern.match(str(value)) for pattern in patterns)
+        or any(key_upper.endswith(suffix.upper()) for suffix in key_suffixes)
+        or any(key_upper.startswith(prefix.upper()) for prefix in key_prefixes)
     ):
         add_mask(key, str(value))
         continue
-
-    # Check if the key starts with OP_ or DIRENV_
-    if key.startswith("OP_") or key.startswith("DIRENV_"):
-        add_mask(key, str(value))
 
     if args.all:
         logging.info(
