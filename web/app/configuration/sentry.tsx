@@ -1,11 +1,12 @@
-import * as Sentry from "@sentry/react"
 import {
   environmentName,
   isDevelopment,
   isProduction,
   isTesting,
   requireEnv,
-} from "utils/environment"
+} from "~/utils/environment"
+
+import * as Sentry from "@sentry/react"
 
 // TODO fix up react router when rr7 is supported https://docs.sentry.io/platforms/javascript/guides/react/features/react-router/
 

@@ -1,7 +1,8 @@
 // the autogen'd client from the python's openapi.json is configured here
+import { requireEnv } from "~/utils/environment"
+
 import { Clerk } from "@clerk/clerk-js"
 import { client } from "client/sdk.gen"
-import { requireEnv } from "utils/environment"
 
 // goal here is to avoid having any application code rely on this directly
 // so we only have a single file to change if the API changes on us

@@ -1,14 +1,22 @@
-# yml so we can use comments
+# NOTE yml config so we can use comments
 
 ignores:
-  - eslint
   - typesync
   - "@trivago/prettier-plugin-sort-imports"
   - prettier
+  - postcss
+  - autoprefixer
+  - isbot
+  - "@vitest/coverage-v8"
+  - react-router-devtools
+  - react-icons
+  # referenced in eslint.config.js
+  - "@typescript-eslint/eslint-plugin"
   # not an explicit dependency of the client
   # TODO we should upstream a change for this.
   - "@hey-api/client-fetch"
 ignorePatterns:
-  - bin/*
-skipMissing:
-  - cypress/*
+  - playground.ts
+specials:
+  - eslint
+  - prettier

@@ -2,7 +2,7 @@
 Weird import structure is in place because of the following error. Most likely it's a RR7 issue that will be resolved:
 
 - https://github.com/PostHog/posthog-js/pull/1293
-- https://github.com/PostHog/posthog-js/pull/1293
+- https://github.com/PostHog/posthog.com/pull/9830
 
 ---
 
@@ -25,7 +25,7 @@ const { PostHogProvider } = pkg;
 import { posthog } from "posthog-js"
 import pkg from "posthog-js/react/dist/umd/index.js"
 
-import { isProduction, requireEnv } from "utils/environment"
+import { isProduction, requireEnv } from "~/utils/environment"
 
 const { PostHogProvider } = pkg
 
