@@ -1,6 +1,5 @@
 import argparse
 import json
-import logging
 import re
 import sys
 
@@ -75,8 +74,6 @@ for key, value in env_vars.items():
         continue
 
     if args.all:
-        logging.info(
-            "Environment not masked by default, masking because of --all. %s", key
-        )
+        print("Environment not masked by default, masking because of --all. %s", key)
         add_mask(key, str(value))
         continue
