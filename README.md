@@ -12,15 +12,16 @@ This is an extremely opinionated web application template.
 Here's the stack:
 
 * Justfile + Direnv + Mise + Lefthook + Localias + 1Password for local development & secret configuration
-* Python + FastAPI + ActiveModel + SQLModel + SQLAlchemy + Alembic + Celery + TypeId + Playwright
+* Uv + Ruff + Python + FastAPI + ActiveModel + SQLModel + SQLAlchemy + Alembic + Celery + TypeId + Playwright
 * Pnpm + TypeScript + React + Vite + Vitest + React Router (in SPA mode) + ShadCN + Tailwind + ESLint + Prettier + HeyAPI (for OpenAPI)
 * Postgres + Redis + Mailpit
   * Docker Compose for running locally
   * Mailpit for local email testing
   * OrbStack is recommended for local docker development for nice automatic domains
 * Sentry + Clerk (user manager) + PostHog
-* Docker (via nixpacks) for containerization
+* Docker + nixpacks for containerization
 * GitHub Actions for CI/CD
+* Deployment is not implemented
 
 ## Cost of Complexity
 
@@ -52,15 +53,41 @@ There are a couple of dependencies which are not managed by the project:
 * [mise](https://mise.jdx.dev)
 * docker (or [OrbStack](https://orbstack.dev))
 
-Once you have them installed
+Once you have them installed:
 
 ```shell
 just setup
 ```
 
-Should do the rest. Note that you'll probably want to install the shell hooks for just, mise, and direnv which you will need to do manually.
+Should do the rest. Note that you'll probably want to install the shell hooks for a couple tools which you will need to do manually.
+
+If you use 1p for secrets, you'll need to set up the 1Password CLI.
+
+### Shell Completions
+
+Here are a couple additions to your shell environment that you'll probably want to make:
+
+* [direnv](https://direnv.net/docs/hook.html)
+* [mise](https://mise.jdx.dev/cli/completion.html)
+* [just](https://just.systems/man/en/shell-completion-scripts.html)
+* [fzf tab completion](https://github.com/Aloxaf/fzf-tab)
 
 ## Usage
+
+### Environment Lifecycle
+
+Across `py`, `js`, and `db` the following subcommands are supported:
+
+* clean. Wipe all temporary files related to the environment.
+* setup. Set up the environment.
+* nuke. Clean & setup.
+* play. Interactive playground.
+* lint. Run linting.
+* lint-fix. Run linting and fix all errors.
+* test. Run tests.
+* dev. Run the development server.
+
+There are top-level commands for many of these (`clean`, `setup`, `dev`, etc) which run actions for all environments.
 
 ### Remix Integration Tests
 
@@ -110,6 +137,19 @@ I wouldn't call myself an expert, but I do have opinions on best practices ![:sl
 Going back to the `id`/`ext_id` approach, the `ext_id` was actually more similar to a youtube video ID, something very compact. So even that came down to the ergonomics. Not sure what exactly you're building, but I'd say 90% of use cases can use ULID TypeIDs on postgres without thinking twice.
 
 -->
+
+### Secrets
+
+The secret management is more complex that it seems like it should be. The primary reason behind this is to avoid secret
+drift at all costs. Here's why:
+
+* Different developers have *slightly* different secrets that create a "works on my machine" problem.
+* New secrets are not automatically integrated into local (or CI) environments causing the project to break when a new
+  environment variable is introduced.
+* Cumbersome and undocumented CI & production secret management. I want a single command to set secrets on CI & prod
+  without any thinking or manual intervention.
+
+Solving these problems adds more complexity to the developer experience. We'll see if it's worth it.
 
 ### Dependencies
 

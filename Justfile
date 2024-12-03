@@ -428,6 +428,8 @@ py_test: py_js-build
 
 	# TODO what about code coverage? --cov?
 
+	# TODO unfortunately, because of the asyncio loop + playwright, we need to run the playright integration tests separately
+
 	if [[ -n "${CI:-}" ]]; then
 		uv run pytest . --ignore tests/integration
 		uv run pytest tests/integration
@@ -444,13 +446,13 @@ py_playwright_trace remote="":
 		# helpful to download to unique folder for two reasons: (a) easier to match up to web GHA view and (b) eliminates risk of gh-cli erroring out bc the directory already exists
 		if [ "{{remote}}" = "--remote" ]; then \
 				failed_run_id=$(gh run list --status=failure --workflow=build_and_publish.yml --json databaseId --jq '.[0].databaseId') && \
-				mkdir -p ${PLAYWRIGHT_RESULT_DIRECTORY}-${failed_run_id} && \
-				gh run --dir ${PLAYWRIGHT_RESULT_DIRECTORY}-${failed_run_id} download $failed_run_id; \
+				mkdir -p ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id} && \
+				gh run --dir ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id} download $failed_run_id; \
 		fi
 
 		# NOTE it's insane, but fd does not have a "find last modified file"
 		# https://github.com/sharkdp/fd/issues/196
-		uv run playwright show-trace $(fd --no-ignore-vcs  . $PLAYWRIGHT_RESULT_DIRECTORY -e zip -t f --exec-batch stat -f '%m %N' | sort -n | tail -1 | cut -f2- -d" ")
+		uv run playwright show-trace $(fd --no-ignore-vcs  . ${PLAYWRIGHT_RESULT_DIRECTORY} -e zip -t f --exec-batch stat -f '%m %N' | sort -n | tail -1 | cut -f2- -d" ")
 
 # record playwright interactions for integration tests and dump them to a file
 [macos]
