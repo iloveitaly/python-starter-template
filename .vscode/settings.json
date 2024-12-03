@@ -5,6 +5,12 @@
   // typescript / web projects
   "typescript.tsdk": "web/node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
+  // TODO is this picking the exact right typescript version from the repo?
+  "typescript.preferGoToSourceDefinition": true,
+  "typescript.experimental.updateImportsOnPaste": true,
+
+  // TODO unsure if this really works: https://stackoverflow.com/questions/53113031/how-to-see-a-fully-expanded-typescript-type-without-n-more-and
+  "typescript.experimental.expandableHover": true,
 
   "prettier.prettierPath": "web/node_modules/prettier",
   "[typescript][typescriptreact][javascript][javascriptreact]": {
@@ -21,6 +27,9 @@
     },
     "editor.tabSize": 4
   },
+  // don't remove unused imports on save, this can be done later
+  "ruff.lint.args": ["--ignore=F401"],
+
   "[toml]": {
     "editor.formatOnSave": true,
     "editor.tabSize": 4
@@ -37,19 +46,18 @@
   // ],
 
   "python.analysis.diagnosticMode": "workspace",
-  "python.analysis.autoSearchPaths": true,
   "python.analysis.packageIndexDepths": [
     {
       "name": "",
-      "depth": 3,
-      "includeAllSymbols": true
-    },
-    // TODO packages are not being indexed, can't find fastapi symbols in the symbol search but can in the import analysis...
-    {
-      "name": "fastapi",
-      "depth": 3,
+      "depth": 5,
       "includeAllSymbols": true
     }
+    // TODO packages are not being indexed, can't find fastapi symbols in the symbol search but can in the import analysis...
+    // {
+    //   "name": "fastapi",
+    //   "depth": 3,
+    //   "includeAllSymbols": true
+    // }
 
     //   {"name":"pdf2image", "depth":3, "includeAllSymbols": true},
     // {"name":"decouple", "depth":3, "includeAllSymbols": true},
@@ -77,9 +85,26 @@
     "aiautocommit",
     "uvicorn",
     "commitlint",
-    "lefthook"
+    "lefthook",
+    "healthcheck",
+    "redoc",
+    "localias",
+    "vite",
+    "activemodel",
+    "nixpacks",
+    "pytest",
+    "pyright",
+    "justfile",
+    "entr",
+    "djlint",
+    "outputjson",
+    "autoflake",
+    "deptry",
+    "pyproject",
+    "venv",
+    "depcheck"
   ],
-  "cSpell.enableFiletypes": ["jinja-html"],
+  "cSpell.enabledFileTypes": { "jinja-html": true },
 
   // in web, prettier is used by default, but we want it to be used outside that directly
   "[json][jsonc]": {
@@ -91,14 +116,23 @@
     // Procfile's don't have a default file association, but are essentially yaml files
     "Procfile*": "yaml",
     ".tool-versions": "shellscript",
-    "TODO*": "markdown"
+    ".env*": "shellscript",
+    "TODO*": "markdown",
+    "app/templates/**/*.md": "jinja-md",
+    "app/templates/**/*.html": "jinja-html"
   },
 
   "files.exclude": {
     "web/node_modules": true,
     ".ruff_cache": true,
     ".pytest_cache": true,
-    ".venv": true
+    ".venv": true,
+    "!pypi/**/*.py": false,
+    // TODO I don't think this works
+    "*env*": false
+  },
+  "search.exclude": {
+    "pypi/**/*.py": false
   },
 
   "[justfile]": {
