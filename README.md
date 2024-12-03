@@ -12,8 +12,8 @@ This is an extremely opinionated web application template.
 Here's the stack:
 
 * Justfile + Direnv + Mise + Lefthook + Localias + 1Password for local development & secret configuration
-* Python + FastAPI + ActiveModel + SQLModel + SQLAlchemy + Alembic + Celery
-* TypeScript + React + Vite + React Router (in SPA mode) + ShadCN + Tailwind + ESLint + Prettier + HeyAPI (for OpenAPI)
+* Python + FastAPI + ActiveModel + SQLModel + SQLAlchemy + Alembic + Celery + TypeId + Playwright
+* Pnpm + TypeScript + React + Vite + Vitest + React Router (in SPA mode) + ShadCN + Tailwind + ESLint + Prettier + HeyAPI (for OpenAPI)
 * Postgres + Redis + Mailpit
   * Docker Compose for running locally
   * Mailpit for local email testing

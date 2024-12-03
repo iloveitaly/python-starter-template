@@ -12,10 +12,31 @@ patterns = [
     re.compile(r"sk_\S+"),  # Stripe & other keys
     re.compile(r"phc_\S+"),  # PostHog token
     re.compile(r"sntrys_\S+"),  # Sentry auth token
+    # Base64-like strings of significant length
+    re.compile(r"^[A-Za-z0-9+/]{32,}={0,2}$"),
+    # UUID-like strings
+    re.compile(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"),
+    # Common secret prefixes
+    re.compile(r"^(key-|api-|token-|secret-|private-).*"),
+    # High entropy strings
+    re.compile(r"[A-Za-z0-9+/]{40,}"),
+    # Common API key formats
+    re.compile(r"api_[A-Za-z0-9]{32,}"),
+    re.compile(r"key-[0-9a-zA-Z]{32,}"),
 ]
 
 # Define suffixes to detect keys to mask
-key_suffixes = ["_KEY", "_TOKEN", "_SECRET", "_PASSWORD", "_DSN"]
+key_suffixes = [
+    "_KEY",
+    "_TOKEN",
+    "_SECRET",
+    "_PASSWORD",
+    "_DSN",
+    "_API_KEY",
+    "_PRIVATE_KEY",
+    "_SIGNING_KEY",
+    "_ACCESS_KEY",
+]
 
 
 def add_mask(key, value):

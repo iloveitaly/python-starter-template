@@ -355,7 +355,6 @@ py_upgrade:
 	uv tool upgrade --all
 	git add pyproject.toml uv.lock
 
-
 # open up a development server
 py_dev:
 	fastapi dev --port $PYTHON_SERVER_PORT
@@ -554,8 +553,6 @@ db_seed: db_migrate
 # generate migration based on the current state of the database
 [script]
 db_generate_migration migration_name="":
-	# PS1=$'\033[32m+\033[0m '
-
 	if [ -z "{{migration_name}}" ]; then
 		echo "Enter the migration name: "
 		read name
@@ -609,7 +606,6 @@ secrets_ci_grant-github-actions:
 secrets_ci_manage:
 	# you cannot revoke/delete a service account with the cli, you must login and delete it from the web ui
 	open https://$OP_ACCOUNT/developer-tools/directory
-
 
 #######################
 # Deployment
