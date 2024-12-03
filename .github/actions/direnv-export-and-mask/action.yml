@@ -7,14 +7,11 @@ branding:
 
 # https://stackoverflow.com/questions/70558558/how-to-mask-environment-variables-created-in-github-when-running-a-workflow
 
-# inputs:
-#   tags:
-#     description: "List of tags to apply to the built image"
-#     required: false
-#   push:
-#     description: "Boolean to determine if the built image should be pushed"
-#     required: false
-#     default: 'false'
+inputs:
+  mask_all:
+    description: "Should all environment variables be masked by default"
+    required: false
+    default: 'true'
 
 runs:
   using: 'composite'
@@ -55,4 +52,4 @@ runs:
         direnv allow . && direnv export gha >> "$GITHUB_ENV"
 
         # you cannot source GITHUB_ENV, it uses a syntax which is *just* different enough from the shell that it fails
-        direnv export json | python ${{ github.action_path }}/entrypoint.py
+        direnv export json | python ${{ github.action_path }}/entrypoint.py --all=${{ inputs.mask_all }}

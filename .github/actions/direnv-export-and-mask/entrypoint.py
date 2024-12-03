@@ -1,7 +1,12 @@
+import argparse
 import json
 import logging
 import re
 import sys
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--all", action="store_true", help="Mask all environment variables")
+args = parser.parse_args()
 
 # Define the patterns to match specific types of values
 patterns = [
@@ -45,10 +50,8 @@ env_vars = json.load(sys.stdin)
 
 # Iterate over all variables from JSON input
 for key, value in env_vars.items():
-    # Skip empty values with warning
-    if not str(value).strip():
-        logging.warning(f"Skipping masking for empty value in key: {key}")
-        continue
+    # empty values are intentionally not skipped and will result in a mask warning
+    # empty ENV values should be rare and should be loud if they are
 
     if any(pattern.match(str(value)) for pattern in patterns) or any(
         key.endswith(suffix) for suffix in key_suffixes
@@ -59,3 +62,10 @@ for key, value in env_vars.items():
     # Check if the key starts with OP_ or DIRENV_
     if key.startswith("OP_") or key.startswith("DIRENV_"):
         add_mask(key, str(value))
+
+    if args.all:
+        logging.info(
+            "Environment not masked by default, masking because of --all. %s", key
+        )
+        add_mask(key, str(value))
+        continue
