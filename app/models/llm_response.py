@@ -31,34 +31,3 @@ class LLMResponse(BaseModel, TimestampsMixin, TypeIDMixin("llr"), table=True):
         self.prompt_hash = new_hash
 
     # TODO https://github.com/fastapi/sqlmodel/discussions/805
-
-    # @model_validator(mode="before")
-    # @classmethod
-    # def check_card_number_omitted(cls, data: t.Any) -> t.Any:
-    #     breakpoint()
-    #     if isinstance(data, dict):
-    #         assert "card_number" not in data, "card_number should not be included"
-    #     return data
-
-    # @field_validator("prompt_hash")
-    # @classmethod
-    # def prevent_explicit_hash(cls, v):
-    #     if v is not None:
-    #         raise ValueError("prompt_hash cannot be set explicitly")
-    #     return v
-
-
-# @listens_for(LLMResponse, "before_update")
-# def receive_before_commit(mapper: Mapper, connection: Connection, target: LLMResponse):
-#     breakpoint()
-
-
-# @listens_for(LLMResponse, "before_insert")
-# def receive_before_insert(mapper: Mapper, connection: Connection, target: LLMResponse):
-#     target.prompt_hash = hash_prompt(target.prompt)
-#     # breakpoint()
-
-# @field_validator("prompt", mode="before")
-# def set_prompt_hash(cls, v, values):
-#     values["prompt_hash"] = hash_prompt(v)
-#     return v
