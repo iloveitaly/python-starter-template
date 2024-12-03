@@ -19,4 +19,4 @@ runs:
         tools: zsh libnss3-tools
     # without any additional options, this simply installs the latest version of the cli
     - uses: 1password/load-secrets-action@v2
-    - uses: ./.github/actions/direnv-export-and-mask
+    - uses: iloveitaly/github-action-direnv-load-and-mask@master

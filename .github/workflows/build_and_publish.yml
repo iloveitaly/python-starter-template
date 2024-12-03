@@ -41,7 +41,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/common-setup
         timeout-minutes: 1
-      - uses: ./.github/actions/localias
+      - uses: iloveitaly/github-action-localias@master
       - run: just up --fast
       - run: just py_setup
       - run: just py_lint
