@@ -60,11 +60,12 @@ sudo update-ca-certificates --fresh
 banner_echo "Datetime config..."
 timedatectl
 
-# TODO should pick a domain from the environment and test it
+test_domain=$(localias debug config --print | grep -v '^#' | grep -v '^$' | cut -d: -f1 | sort -R | head -n 1 | tr -d ' ')
+
 curl_success=false
 for i in {1..5}; do
   banner_echo "Checking HTTPs via curl..."
-  curl -vvv --head https://api-test.localhost && curl_success=true && break || sleep 2
+  curl -vvv --head "$test_domain" && curl_success=true && break || sleep 2
 done
 $curl_success || exit 1
 
