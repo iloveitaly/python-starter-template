@@ -223,7 +223,7 @@ js_lint +FILES=".":
 	# `eslint-config-typescript` seems dead
 	{{_pnpm}} eslint --cache --cache-location ./node_modules/.cache/eslint {{FILES}}
 
-	{{_pnpm}} depcheck
+	{{_pnpm}} dlx depcheck
 
 # automatically fix linting errors
 js_lint-fix:
