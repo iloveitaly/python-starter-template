@@ -101,7 +101,7 @@ for key, value in env_vars.items():
 
     if args.all:
         if is_safe_value(value):
-            print("Key value is safe, not masking.", key))
+            print("Key value is safe, not masking.", key)
         else:
-            print("Key not masked by default, masking because of --all. %s", key)
+            print("Key not masked by default, masking because of --all.", key)
             add_mask(key, str(value))
