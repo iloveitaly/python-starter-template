@@ -74,6 +74,5 @@ for key, value in env_vars.items():
         continue
 
     if args.all:
-        print("Environment not masked by default, masking because of --all. %s", key)
+        print("Key not masked by default, masking because of --all. %s", key)
         add_mask(key, str(value))
-        continue
