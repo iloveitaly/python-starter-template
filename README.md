@@ -28,18 +28,19 @@ There are many things I don't like about this setup. There's a complexity cost t
 
 It's all about tradeoffs. For modern web development, there are the options as I see them:
 
-1. Use Rails and HotWire.
-   1. You lose React, all of the amazing ui libraries that come with it, the massive JS + Py labor market, great tooling, typing, and finely-tuned LLMs on massive training data.
-   2. You get a beautifully crafted battery-included framework.
-2. Use full stack javascript.
-   1. You have to work with Javascript everyday. I've given up on backend JavaScript. The whole ecosystem is a mess and I don't enjoy working in it. Non-starter for me.
+1. Use Rails, HotWire, etc.
+   1. You lose React, all of the amazing ui libraries that come with it, the massive JS + Py labor market, great tooling, typing, 1st class SDKs, and finely-tuned LLMs on massive training data.
+   2. You get a battle-tested (Shopify! GitHub!) beautifully crafted batteries-included framework.
+2. Use full stack JavaScript/TypeScript.
+   1. You have to work with JavaScript everyday. I've given up on backend JavaScript. The whole ecosystem is a mess and I don't enjoy working in it. Non-starter for me. A personal preference and hill I'll die on.
    2. You get access to a massive labor market, great tooling, typing, and finely-tuned LLMs on massive training data.
 3. Use React & Python.
    1. You lose simplicity. You have to deal with two languages, which means more complex build systems.
-   2. You get full-stack typing (if you do it right).
-   3. You get access to the great tooling (static analysis and improved LLM performance) on both Python and JavaScript.
-   4. You can move fast with React and all of the amazing UI libraries built on top of it, without having to deal with full stack JavaScript.
-   5. You get access to massive JS + Py labor markets.
+   2. You lose a single beautifully crafted stack and instead have to stitch together a bunch of different tools (even if they are well-designed independently).
+   3. You get full-stack typing (if you do it right).
+   4. You get access to the great tooling (static analysis and improved LLM performance) on both Python and JavaScript.
+   5. You can move fast with React and all of the amazing UI libraries built on top of it, without having to deal with full stack JavaScript.
+   6. You get access to massive JS + Py labor markets.
 
 #3 is what is implemented here.
 
