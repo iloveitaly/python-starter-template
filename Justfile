@@ -531,6 +531,7 @@ db_lint:
 [macos]
 db_open:
 	# TablePlus via Setapp is a great option here
+	# https://github.com/TablePlus/TablePlus/issues/3407
 	open $DATABASE_URL
 
 # tui to interact with the database
