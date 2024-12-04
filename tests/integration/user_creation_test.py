@@ -43,7 +43,6 @@ def wait_for_port(port: int, timeout: int = 30) -> bool:
 
 
 def run_server():
-    # breakpoint()
     uvicorn.run(api_app, port=PYTHON_SERVER_TEST_PORT)
 
 

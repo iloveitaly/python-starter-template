@@ -8,7 +8,6 @@ import structlog
 
 from .configuration.database import configure_database
 from .configuration.debugging import configure_debugging
-from .configuration.lang import configure_python
 from .configuration.logging import configure_logger
 from .configuration.sentry import configure_sentry
 from .configuration.versions import check_service_versions
@@ -25,8 +24,6 @@ log: structlog.stdlib.BoundLogger
 def setup():
     if hasattr(setup, "complete") and getattr(setup, "complete", False):
         return
-
-    configure_python()
 
     global root, log
 

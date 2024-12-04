@@ -3,14 +3,16 @@
 import multiprocessing
 import os
 
-from tests.utils import delete_all_users
-
 # when running locally, switching to the full-blown CI environment is a pain
 # to make it quick & easy to run tests, we force the environment to test
 # this will not be the same as CI, but it's closer and faster for devprod
 if os.environ["PYTHON_ENV"] != "test":
     print("\033[91mPYTHON_ENV is not set to test, forcing\033[0m")
     os.environ["PYTHON_ENV"] = "test"
+
+# this is not the default as of py 3.13 on all platforms, but `fork` is deprecated
+# if this is set multiple times, it throws an exception
+multiprocessing.set_start_method("spawn")
 
 import typing as t
 
@@ -23,6 +25,7 @@ from structlog import get_logger
 
 # important to ensure model metadata is added to the application
 import app.models  # noqa: F401
+from tests.utils import delete_all_users
 
 # TODO set logger name, not context
 log = get_logger(test=True)
