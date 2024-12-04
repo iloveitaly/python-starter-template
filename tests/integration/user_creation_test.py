@@ -43,6 +43,7 @@ def wait_for_port(port: int, timeout: int = 30) -> bool:
 
 
 def run_server():
+    # breakpoint()
     uvicorn.run(api_app, port=PYTHON_SERVER_TEST_PORT)
 
 
@@ -62,9 +63,10 @@ def server():
     # since the server is run a daemon in another process, we need to wait until the port is ready
     wait_for_port(PYTHON_SERVER_TEST_PORT)
 
-    yield
-
-    proc.kill()
+    try:
+        yield
+    finally:
+        proc.kill()
 
     # TODO should we install a signal trap to ensure the server is killed?
 
@@ -73,7 +75,22 @@ def home_url():
     return f"https://{config("PYTHON_TEST_SERVER_HOST")}"
 
 
-def test_signin(server, page: Page) -> None:
+def wait_for_loading(page: Page):
+    """
+    Defensively wait for everything on the page to finish loading.
+
+    Helpful when generating screenshots for visual comparison.
+    """
+
+    # https://stackoverflow.com/questions/71937343/playwright-how-to-wait-until-there-is-no-animation-on-the-page
+    page.wait_for_load_state("domcontentloaded")
+    page.wait_for_load_state("networkidle")
+
+    # some animations can still run and cause diffs
+    page.wait_for_timeout(2_000)
+
+
+def test_signin(server, page: Page, assert_snapshot) -> None:
     username, password, user = get_clerk_dev_user()
 
     # paranoid testing to ensure database cleaning is working
@@ -91,10 +108,12 @@ def test_signin(server, page: Page) -> None:
 
     expect(page.locator("body")).to_contain_text("Hello From Internal Python")
 
+    assert_snapshot(page.screenshot())
+
     assert User.count() == 1
 
 
-def test_signup(server, page: Page) -> None:
+def test_signup(server, page: Page, assert_snapshot) -> None:
     # paranoid testing to ensure database cleaning is working
     assert User.count() == 0
 
@@ -127,8 +146,7 @@ def test_signup(server, page: Page) -> None:
     page.wait_for_timeout(100)
     page.get_by_label("Digit 6").fill("2")
 
-    # https://stackoverflow.com/questions/71937343/playwright-how-to-wait-until-there-is-no-animation-on-the-page
-    page.wait_for_load_state("domcontentloaded")
+    wait_for_loading(page)
 
     # page.unroute("https://resolved-emu-53.clerk.accounts.dev/v1/**")
 
@@ -136,7 +154,15 @@ def test_signup(server, page: Page) -> None:
     expect(page.locator("body")).to_contain_text("View your profile here")
     page.get_by_role("link", name="Go Home").click()
 
+    wait_for_loading(page)
+
+    assert_snapshot(page.screenshot(animations="disabled"))
+
     expect(page.locator("body")).to_contain_text("Hello From Internal Python")
+
+    wait_for_loading(page)
+
+    assert_snapshot(page)
 
     # user should be created at this point!
     assert User.count() == 1
