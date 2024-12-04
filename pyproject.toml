@@ -96,8 +96,8 @@ git = "https://github.com/iloveitaly/djLint.git"
 rev = "github-output"
 
 [tool.uv.sources.pytest-playwright-visual]
-path = "pypi/pytest-playwright-visual"
-editable = true
+git = "https://github.com/iloveitaly/pytest-playwright-visual.git"
+rev = "global-defaults"
 [tool.djlint]
 ignore = "H030,H031"
 
