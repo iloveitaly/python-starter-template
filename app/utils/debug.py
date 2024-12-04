@@ -10,6 +10,8 @@ import traceback
 from contextlib import contextmanager
 from logging import Logger
 
+from app import log
+
 
 def install_coroutine_trap():
     """
@@ -148,3 +150,172 @@ def memray_profile(log: Logger | None = None, live: bool = False):
         print("memory tracing complete", file=sys.stderr)
         print("memory tracing complete", file=sys.stderr)
         print("memory tracing complete", file=sys.stderr)
+
+
+def log_system_options():
+    log.info("system options", **dump_system_options())
+
+
+def dump_system_options():
+    options = {}
+
+    # 1. Threading Stack Size
+    import threading
+
+    options["threading_stack_size"] = threading.stack_size()
+
+    # 2. Garbage Collection Settings
+    import gc
+
+    options["gc_enabled"] = gc.isenabled()
+    options["gc_thresholds"] = gc.get_threshold()
+    options["gc_debug_flags"] = gc.get_debug()
+
+    # 3. Recursion Limit
+    import sys
+
+    options["recursion_limit"] = sys.getrecursionlimit()
+
+    # 4. Interpreter Optimization Flags
+    options["optimization_flags"] = sys.flags.optimize
+
+    # 5. Signal Handling
+    import signal
+
+    options["signal_handlers"] = {
+        sig: signal.getsignal(getattr(signal, sig))
+        for sig in dir(signal)
+        if sig.startswith("SIG") and "_" not in sig
+    }
+
+    # 6. Environment Variables
+    import os
+
+    options["environment_variables"] = dict(os.environ)
+
+    # 7. Locale Settings
+    import locale
+
+    options["locale"] = locale.getlocale()
+
+    # 8. Asyncio Event Loop Policy
+    try:
+        import asyncio
+
+        policy = asyncio.get_event_loop_policy()
+        options["asyncio_event_loop_policy"] = type(policy).__name__
+        loop = asyncio.get_event_loop()
+        options["asyncio_debug"] = loop.get_debug()
+    except ImportError:
+        options["asyncio_event_loop_policy"] = None
+        options["asyncio_debug"] = None
+
+    # 9. Default Encoding
+    options["default_encoding"] = sys.getdefaultencoding()
+
+    # 10. Logging Configuration
+    import logging
+
+    logger = logging.getLogger()
+    options["logging_level"] = logging.getLevelName(logger.getEffectiveLevel())
+
+    # 11. Decimal Context
+    import decimal
+
+    context = decimal.getcontext()
+    options["decimal_context"] = {
+        "prec": context.prec,
+        "rounding": context.rounding,
+        "Emin": context.Emin,
+        "Emax": context.Emax,
+        "capitals": context.capitals,
+        "flags": dict(context.flags),
+        "traps": dict(context.traps),
+    }
+
+    # 12. Resource Limits (Unix only)
+    try:
+        import resource
+
+        limits = {}
+        for limit in dir(resource):
+            if limit.startswith("RLIMIT"):
+                soft, hard = resource.getrlimit(getattr(resource, limit))
+                limits[limit] = {"soft": soft, "hard": hard}
+        options["resource_limits"] = limits
+    except (ImportError, AttributeError):
+        options["resource_limits"] = None
+
+    # 13. Global Exception Handling
+    options["excepthook"] = sys.excepthook
+
+    # 14. Thread Switch Interval
+    options["thread_switch_interval"] = sys.getswitchinterval()
+
+    # 15. Warnings Filter
+    import warnings
+
+    options["warnings_filters"] = warnings.filters.copy()
+
+    # Additional Options:
+
+    # 16. Faulthandler Status
+    import faulthandler
+
+    options["faulthandler_enabled"] = faulthandler.is_enabled()
+
+    # 17. Tracemalloc Status
+    import tracemalloc
+
+    options["tracemalloc_tracing"] = tracemalloc.is_tracing()
+
+    # 18. Coroutine Origin Tracking Depth
+    options["coroutine_origin_tracking_depth"] = (
+        sys.get_coroutine_origin_tracking_depth()
+    )
+
+    # 19. Async Generator Hooks
+    options["asyncgen_hooks"] = sys.get_asyncgen_hooks()
+
+    # 20. Audit Hooks
+    options["audit_hooks"] = "Cannot retrieve audit hooks directly"
+
+    # 21. Unraisable Exception Hook
+    options["unraisablehook"] = sys.unraisablehook
+
+    # 22. Dynamic Loading Flags
+    if hasattr(sys, "getdlopenflags"):
+        options["dlopen_flags"] = sys.getdlopenflags()
+    else:
+        options["dlopen_flags"] = None
+
+    # 23. Hash Randomization Seed
+    options["hash_randomization"] = sys.flags.hash_randomization
+
+    # 24. Threading Exception Hook
+    options["threading_excepthook"] = threading.excepthook
+
+    # 25. Integer String Conversion Limits
+    if hasattr(sys, "get_int_max_str_digits"):
+        options["int_max_str_digits"] = sys.get_int_max_str_digits()
+    else:
+        options["int_max_str_digits"] = None
+
+    # 26. Bytecode Generation Control
+    options["dont_write_bytecode"] = sys.dont_write_bytecode
+
+    # 27. Trace Function
+    options["trace_function"] = sys.gettrace()
+
+    # 28. Context Variables
+    import contextvars
+
+    options["contextvars"] = contextvars.copy_context()
+
+    # 29. GC Debug Flags
+    options["gc_debug_flags"] = gc.get_debug()
+
+    # 30. PYTHONWARNINGS Environment Variable
+    options["PYTHONWARNINGS"] = os.environ.get("PYTHONWARNINGS", None)
+
+    return options
