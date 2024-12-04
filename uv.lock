@@ -1582,19 +1582,12 @@ wheels = [
 
 [[package]]
 name = "pytest-playwright-visual"
-version = "2.1.3.dev2+g9086fc6.d20241204"
-source = { editable = "pypi/pytest-playwright-visual" }
+version = "2.1.3.dev2+g9086fc6"
+source = { git = "https://github.com/iloveitaly/pytest-playwright-visual.git?rev=global-defaults#9086fc6a9753205ba1d175245dd99648f79303ab" }
 dependencies = [
     { name = "pillow" },
     { name = "pixelmatch" },
     { name = "pytest-playwright" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "pillow", specifier = ">=8.2.0" },
-    { name = "pixelmatch", specifier = ">=0.3.0" },
-    { name = "pytest-playwright", specifier = ">=0.1.2" },
 ]
 
 [[package]]
@@ -1798,7 +1791,7 @@ dev = [
     { name = "pytest-cov", specifier = ">=6.0.0" },
     { name = "pytest-github-actions-annotate-failures", specifier = ">=0.2.0" },
     { name = "pytest-playwright", specifier = ">=0.6.2" },
-    { name = "pytest-playwright-visual", editable = "pypi/pytest-playwright-visual" },
+    { name = "pytest-playwright-visual", git = "https://github.com/iloveitaly/pytest-playwright-visual.git?rev=global-defaults" },
     { name = "pytest-sugar", specifier = ">=1.0.0" },
     { name = "ruff", specifier = ">=0.7.1" },
     { name = "squawk-cli", specifier = ">=1.4.0" },
