@@ -33,7 +33,7 @@ dependencies = [
     "typeid-python>=0.3.1",
     "typer>=0.14.0",
     "uvicorn>=0.32.0",
-    # TODO remove once other packages are updated
+    # TODO 1.x is breaking fastapi right now
     "watchfiles==0.24.0",
 ]
 
@@ -72,6 +72,8 @@ dev-dependencies = [
     "j2lint>=1.1.0",
     "pytest-playwright>=0.6.2",
     "squawk-cli>=1.4.0",
+    "pytest-playwright-visual>=2.1.2",
+    "pytest-cov>=6.0.0",
 ]
 # https://github.com/astral-sh/uv/issues/3898
 config-settings = { editable_mode = "compat" }
@@ -93,6 +95,9 @@ j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
 git = "https://github.com/iloveitaly/djLint.git"
 rev = "github-output"
 
+[tool.uv.sources.pytest-playwright-visual]
+path = "pypi/pytest-playwright-visual"
+editable = true
 [tool.djlint]
 ignore = "H030,H031"
 
@@ -136,6 +141,7 @@ filterwarnings = ["ignore::DeprecationWarning"]
 testpaths = "tests"
 norecursedirs = ["pypi"]
 debug_file = "tmp/pytestdebug.log"
+playwright_visual_snapshot_threshold = 0.2
 
 log_cli = false
 [tool.uv.sources.activemodel]
