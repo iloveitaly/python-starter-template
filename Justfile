@@ -375,8 +375,12 @@ py_lint +FILES=".":
 	# + indicates one more arguments being required in Justfile syntax
 
 	# NOTE this is important: we want all operations to run instead of fail fast
-	# set +o verbose
-	set -v
+	set +e
+
+	# Define a more detailed colored PS4 without current directory so -x output is easier to read
+	setopt prompt_subst
+	export PS4='%F{green}+%f '
+	set -x
 
 	if [ -n "${CI:-}" ]; then
 		# TODO I'm surprised that ruff doesn't auto detect github...
@@ -428,16 +432,16 @@ py_js-build:
 
 # run tests with the exact same environment that will be used on CI
 [script]
-py_test:
-	set -v
+py_test: py_js-build
+	# Define a more detailed colored PS4 without current directory so -x output is easier to read
+	setopt prompt_subst
+	export PS4='%F{green}+%f '
+	set -x
 
-	# we don't need to see all of the details for this part of the build, since we are primarily testing javascript
-	PNPM_LOGLEVEL=silent just py_js-build
-
+	# TODO we don't need to see all of the details for this part of the build, since we are primarily testing javascript
 	# TODO what about code coverage? --cov?
 
-	# TODO unfortunately, because of the asyncio loop + playwright, we need to run the playright integration tests separately
-
+	# NOTE unfortunately, because of the asyncio loop + playwright, we need to run the playwright integration tests separately
 	if [[ -n "${CI:-}" ]]; then
 		uv run pytest . --ignore tests/integration
 		uv run pytest tests/integration
@@ -445,8 +449,6 @@ py_test:
 		{{EXECUTE_IN_TEST}} uv run pytest . --ignore tests/integration
 		{{EXECUTE_IN_TEST}} uv run pytest tests/integration
 	fi
-
-# gh run view --web 12017441624
 
 # open playwright trace viewer on last trace zip. --remote to download last failed remote trace
 [macos]
@@ -573,7 +575,7 @@ db_generate_migration migration_name="":
 
 	uv run alembic revision --autogenerate -m "$name"
 
-# destroy and rebuild the database from the ground up
+# destroy and rebuild the database from the ground up, without mutating migrations
 db_destroy: db_reset db_migrate db_seed
 
 # destroy all migrations and rebuild everything: only for use in early development
