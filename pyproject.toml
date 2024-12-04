@@ -96,8 +96,8 @@ git = "https://github.com/iloveitaly/djLint.git"
 rev = "github-output"
 
 [tool.uv.sources.pytest-playwright-visual]
-git = "https://github.com/iloveitaly/pytest-playwright-visual.git"
-rev = "global-defaults"
+path = "pypi/pytest-playwright-visual"
+editable = true
 [tool.djlint]
 ignore = "H030,H031"
 
@@ -145,7 +145,8 @@ playwright_visual_snapshot_threshold = 0.2
 
 log_cli = false
 [tool.uv.sources.activemodel]
-git = "https://github.com/iloveitaly/activemodel.git"
+path = "pypi/activemodel"
+editable = true
 
 [tool.uv.sources.ipython-autoimport]
 git = "https://github.com/anntzer/ipython-autoimport.git"
