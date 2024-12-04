@@ -39,7 +39,7 @@ def mount_public_directory(app: FastAPI):
         return app
 
     if not public_path.exists():
-        raise Exception("Client assets do not exist. Please run `just js_build`")
+        raise Exception("Client assets do not exist. Please run `just py_js-build`")
 
     app.mount(
         "/assets",

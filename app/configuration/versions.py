@@ -1,8 +1,43 @@
+"""
+Inspect versions of services used by the application that cannot be versioned directly. Version drift is a common cause
+of extremely hard-to-debug issues, so we capture & check versions on test & in prod.
+"""
+
 import inspect
+import json
 
-from app import root
+from app.setup import get_root_path
 
-VERSIONS_FILE = root / ".service-versions"
+VERSIONS_FILE = get_root_path() / ".service-versions"
+
+
+def check_service_versions():
+    """
+    Production check & logging of versions.
+
+    Chrome is excluded since it's not used in production
+    """
+
+    # import during execution to avoid circular imports
+    from app import log
+
+    persisted_versions = json.loads(VERSIONS_FILE.read_bytes())
+
+    current_redis = redis_version()
+    if current_redis != persisted_versions["redis"]:
+        log.warning(
+            "Redis version mismatch",
+            expected=persisted_versions["redis"],
+            got=current_redis,
+        )
+
+    current_postgres = postgres_version()
+    if current_postgres != persisted_versions["postgres"]:
+        log.warning(
+            "Postgres version mismatch",
+            expected=persisted_versions["postgres"],
+            got=current_postgres,
+        )
 
 
 def postgres_version() -> str:

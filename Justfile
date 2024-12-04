@@ -12,6 +12,8 @@
 #   easily move to a different CI system if you need to.
 # * Be greedy about new scripts that help optimize the devloop environment. Just autocomplete + fzf makes it easy to
 #   and sort through really long lists of recipes.
+# * Scripts marked as `[macos]` should only run on dev machines. By default, this setup does not support non-macos
+#   dev machines.
 #
 #######################
 
@@ -65,9 +67,8 @@ dev: local-alias setup
 # Setup
 #######################
 
-# TODO should cask install 1password-cli
 # NOTE nixpacks is installed during the deployment step and not as a development prerequisite
-BREW_PACKAGES := "lefthook fd localias entr foreman 1password-cli"
+BREW_PACKAGES := "lefthook fd localias entr foreman 1password-cli yq"
 
 [macos]
 [script]
@@ -108,6 +109,7 @@ requirements *flags:
 		uv tool add aiautocommit; \
 	fi
 
+	# install git hooks
 	lefthook install
 
 	# sample scripts make the hooks dir look pretty messy
@@ -157,11 +159,12 @@ _mise_upgrade:
 	done
 
 	mise install
-	git add .tool-versions
 	just _mise_version_sync
+	git add .tool-versions
 
 
-# sync the mise version to github actions
+# sync the mise version to github actions yaml
+[macos]
 _mise_version_sync:
 	mise_version=$(mise --version | awk '{print $1}') && \
 		yq e '.runs.steps.0.with.version = "'$mise_version'"' .github/actions/common-setup/action.yml -i
@@ -338,11 +341,12 @@ py_setup:
 
 # clean entire py project without rebuilding
 py_clean:
+	# pycache should never appear because of PYTHON* vars
+
 	rm -rf .pytest_cache .ruff_cache .venv celerybeat-schedule
+	rm -rf tests/**/snapshot_tests_failures
 	# rm -rf $PLAYWRIGHT_BROWSERS_PATH
 
-	# pycache should never appear because of PYTHON* vars
-	# TODO I wonder if this is happening because of djlint
 
 # rebuild the venv from scratch
 py_nuke: py_clean && py_setup

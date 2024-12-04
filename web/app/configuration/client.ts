@@ -22,6 +22,10 @@ export async function setToken(clerkClient: Clerk) {
     },
   })
 
+  // client.interceptors.response.use((response) => {
+  //   return response
+  // })
+
   //   client.interceptors.request.use((request, options) => {
   //     request.headers.set("Authorization", `Bearer ${bearerToken}`)
   //     return request
