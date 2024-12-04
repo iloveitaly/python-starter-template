@@ -9,5 +9,6 @@ import multiprocessing
 
 
 def configure_python():
-    # this is not the default as of py 3.13 on all platforms, but `fork` is deprecated
-    multiprocessing.set_start_method("spawn")
+    if multiprocessing.get_start_method() != "spawn":
+        # this is not the default as of py 3.13 on all platforms, but `fork` is deprecated
+        multiprocessing.set_start_method("spawn")
