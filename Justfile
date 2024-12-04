@@ -432,7 +432,7 @@ py_test:
 	set -v
 
 	# we don't need to see all of the details for this part of the build, since we are primarily testing javascript
-	export PNPM_LOGLEVEL=silent just py_js-build
+	PNPM_LOGLEVEL=silent just py_js-build
 
 	# TODO what about code coverage? --cov?
 
