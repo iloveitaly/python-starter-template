@@ -43,8 +43,10 @@ set unstable := true
 PROJECT_NAME := `basename $(pwd)`
 
 # execute a command in the (nearly) exact same environment as CI
+EXECUTE_IN_TEST := "CI=true direnv exec ."
+
 # the `exec` magic is to ensure `sys.stdout.isatty()` reports as false, which can change pytest plugin functionality
-EXECUTE_IN_TEST := "exec 1> >(cat) && CI=true direnv exec ."
+# exec 1> >(cat)
 
 default:
 	just --list
