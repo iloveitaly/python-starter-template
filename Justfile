@@ -500,6 +500,15 @@ ci_tail-last-failed:
 ci_watch-running:
 	gh run watch $(just _gha_running_run_id)
 
+# very destructive action: deletes all workflow run logs
+ci_wipe_run_logs:
+	REPO=$(gh repo view --json name --jq '.name') && \
+	OWNER=$(gh repo view --json owner --jq '.owner.login') && \
+		echo "Deleting workflow runs for $OWNER/$REPO in 5 seconds..." && sleep 5 && \
+		gh api repos/$OWNER/$REPO/actions/workflows --paginate --jq '.workflows[] | .id' | \
+		xargs -I{} gh api repos/$OWNER/$REPO/actions/workflows/{}/runs --paginate --jq '.workflow_runs[].id' | \
+			xargs -I{} gh api -X DELETE /repos/$OWNER/$REPO/actions/runs/{}
+
 # get the last failed run ID
 _gha_last_failed_run_id:
 	# NOTE this is tied to the name of the yml!
