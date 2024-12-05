@@ -12,6 +12,7 @@ from pathlib import Path
 import typing as t
 
 import pytest
+from pytest import Config
 from activemodel.pytest import database_reset_transaction, database_reset_truncate
 from decouple import config as decouple_config
 from fastapi.testclient import TestClient
@@ -32,7 +33,7 @@ log = get_logger(test=True)
 log.info("multiprocess start method", start_method=multiprocessing.get_start_method())
 
 # NOTE this runs on any pytest invocation, even if no tests are run
-def pytest_configure(config):
+def pytest_configure(config: Config):
     config.option.pdbcls = "pdbr:RichPdb"
     config.option.disable_warnings = True
 
@@ -53,9 +54,8 @@ def pytest_configure(config):
     config.option.log_cli_level = "INFO"
 
     # lower debug level for file debugging, so we can download this artifact and view detailed debugging
-    config.config.log_file = str(TEST_RESULTS_DIRECTORY / "pytest.log")
-    config.config.log_file_level = "DEBUG"
-
+    config.option.log_file = str(TEST_RESULTS_DIRECTORY / "pytest.log")
+    config.option.log_file_level = "DEBUG"
 
 
 # NOTE only executes if a test is run
