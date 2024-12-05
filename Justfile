@@ -103,7 +103,7 @@ requirements *flags:
 			echo "cargo binstall not available, skipping commitlint installation"; \
 		else \
 			cargo binstall -y commitlint-rs; \
-		fi \
+		fi; \
 	fi
 
 	if [[ "{{flags}}" =~ "--extras" ]]; then \
