@@ -7,9 +7,10 @@ def report_localias_status():
     """
     import os
     import subprocess
+    import sys
 
     command = ["localias", "status"]
-    if os.getenv("CI"):
+    if os.getenv("CI") or sys.platform == "darwin":
         command.insert(0, "sudo")
 
     result = subprocess.run(command, capture_output=True, text=True)
