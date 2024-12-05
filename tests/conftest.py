@@ -8,12 +8,6 @@ if os.environ["PYTHON_ENV"] != "test":
     print("\033[91mPYTHON_ENV is not set to test, forcing\033[0m")
     os.environ["PYTHON_ENV"] = "test"
 
-# this is not the default as of py 3.13 on all platforms, but `fork` is deprecated
-# if this is set multiple times, it throws an exception
-# if multiprocessing.get_start_method() != "spawn":
-    # if this is set multiple times, it throws an exception
-multiprocessing.set_start_method("spawn")
-
 import typing as t
 
 import pytest

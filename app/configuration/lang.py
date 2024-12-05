@@ -9,6 +9,15 @@ import multiprocessing
 
 
 def configure_python():
-    if multiprocessing.get_start_method() != "spawn":
+    from app import log
+
+    try:
         # this is not the default as of py 3.13 on all platforms, but `fork` is deprecated
-        multiprocessing.set_start_method("spawn")
+        if multiprocessing.get_start_method() != "spawn":
+            # if this is set multiple times, it throws an exception
+            multiprocessing.set_start_method("spawn")
+            log.info("multiprocessing start method set")
+        else:
+            log.info("multiprocessing already spawn")
+    except RuntimeError:
+        log.warning("multiprocessing start method failed to set")
