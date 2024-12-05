@@ -84,16 +84,6 @@ config-settings = { editable_mode = "compat" }
 # [project.scripts]
 # app = "app.cli"
 
-[tool.uv.sources]
-j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
-
-# TODO https://github.com/astral-sh/uv/issues/9258
-# https://docs.astral.sh/uv/reference/settings/#override-dependencies
-[tool.uv.sources.pytest-github-actions-annotate-failures]
-path = "pypi/pytest-github-actions-annotate-failures"
-editable = true
-rev = "global-defaults"
-
 [tool.ruff]
 extend-exclude = [
     "playground",
@@ -144,6 +134,12 @@ debug_file = "tmp/pytestdebug.log"
 # playwright_visual_snapshot_threshold = 0.2
 # log_cli = false
 
+[tool.uv.sources]
+j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
+
+# TODO https://github.com/astral-sh/uv/issues/9258
+# https://docs.astral.sh/uv/reference/settings/#override-dependencies
+
 [tool.uv.sources.activemodel]
 git = "https://github.com/iloveitaly/activemodel.git"
 
@@ -161,6 +157,7 @@ rev = "github-output"
 [tool.uv.sources.pytest-playwright-visual]
 git = "https://github.com/iloveitaly/pytest-playwright-visual.git"
 rev = "global-defaults"
+
 [tool.uv.sources.mailers]
 git = "https://github.com/iloveitaly/mailers.git"
 rev = "custom"
