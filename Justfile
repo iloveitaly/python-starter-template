@@ -261,9 +261,9 @@ js_play:
 
 # interactively upgrade all js packages
 js_upgrade:
-	{{_pnpm}} dlx npm-check-updates --interactive && \
-		{{_pnpm}} install && \
-		git add package.json pnpm-lock.yaml
+	{{_pnpm}} dlx npm-check-updates --interactive
+	{{_pnpm}} install
+	cd {{WEB_DIR}} && git add package.json pnpm-lock.yaml
 
 # generate a typescript client from the openapi spec
 [doc("Optional flag: --watch")]
