@@ -30,23 +30,23 @@ import { isProduction, requireEnv } from "~/utils/environment"
 const { PostHogProvider } = pkg
 
 if (isProduction()) {
-    posthog.init(requireEnv("VITE_POSTHOG_KEY"), {
-        api_host: requireEnv("VITE_POSTHOG_HOST"),
-        person_profiles: "identified_only",
+  posthog.init(requireEnv("VITE_POSTHOG_KEY"), {
+    api_host: requireEnv("VITE_POSTHOG_HOST"),
+    person_profiles: "identified_only",
 
-        // required for react-router
-        capture_pageview: false,
-    })
+    // required for react-router
+    capture_pageview: false,
+  })
 }
 
 export default function withPostHogProvider(Component: React.ComponentType) {
-    return function WithPostHogProviderWrapper(
-        props: React.ComponentProps<typeof Component>,
-    ) {
-        return (
-            <PostHogProvider client={posthog}>
-                <Component {...props} />
-            </PostHogProvider>
-        )
-    }
+  return function WithPostHogProviderWrapper(
+    props: React.ComponentProps<typeof Component>,
+  ) {
+    return (
+      <PostHogProvider client={posthog}>
+        <Component {...props} />
+      </PostHogProvider>
+    )
+  }
 }
