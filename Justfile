@@ -69,7 +69,7 @@ dev: local-alias setup
 #######################
 
 # NOTE nixpacks is installed during the deployment step and not as a development prerequisite
-BREW_PACKAGES := "lefthook fd peterldowns/tap/localias entr foreman 1password-cli yq"
+BREW_PACKAGES := "lefthook fd peterldowns/tap/localias entr foreman 1password-cli yq jq"
 
 [macos]
 [script]
@@ -119,7 +119,7 @@ requirements *flags:
 
 # setup everything you need for local development
 [macos]
-setup: requirements && py_setup js_build db_up db_seed local-alias
+setup: requirements && up py_setup db_seed js_build local-alias
 	# NOTE this task should be non-destructive
 
 	# some reasoning behind the logic here:

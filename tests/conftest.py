@@ -8,28 +8,54 @@ if os.environ["PYTHON_ENV"] != "test":
     print("\033[91mPYTHON_ENV is not set to test, forcing\033[0m")
     os.environ["PYTHON_ENV"] = "test"
 
+from pathlib import Path
 import typing as t
 
 import pytest
 from activemodel.pytest import database_reset_transaction, database_reset_truncate
-from decouple import config
+from decouple import config as decouple_config
 from fastapi.testclient import TestClient
 from httpx import ASGITransport, AsyncClient
 from structlog import get_logger
 
 # important to ensure model metadata is added to the application
 import app.models  # noqa: F401
+
 from tests.utils import delete_all_users
+
+# this file is uploaded as an artifact
+TEST_RESULTS_DIRECTORY = Path(decouple_config("TEST_RESULTS_DIRECTORY", cast=str))
 
 # TODO set logger name, not context
 log = get_logger(test=True)
 
 log.info("multiprocess start method", start_method=multiprocessing.get_start_method())
 
-
 # NOTE this runs on any pytest invocation, even if no tests are run
 def pytest_configure(config):
-    pass
+    config.option.pdbcls = "pdbr:RichPdb"
+    config.option.disable_warnings = True
+
+    # playwright config
+    config.option.screenshot = "only-on-failure"
+    config.option.tracing = "retain-on-failure"
+    # TODO although output is a generic CLI option, it's specific to playwright
+    config.option.output = decouple_config("PLAYWRIGHT_RESULT_DIRECTORY", cast=str)
+
+    config.option.asyncio_mode = "auto"
+    config.option.asyncio_default_fixture_loop_scope = "session"
+
+    # visual testing config
+    config.option.playwright_visual_snapshot_threshold = 0.2
+
+    # without this, if the test succeeds, no output is provided
+    # this is a good default, but makes it much harder to debug what is going on
+    config.option.log_cli_level = "INFO"
+
+    # lower debug level for file debugging, so we can download this artifact and view detailed debugging
+    config.config.log_file = str(TEST_RESULTS_DIRECTORY / "pytest.log")
+    config.option.log_file_level = "DEBUG"
+
 
 
 # NOTE only executes if a test is run
@@ -44,7 +70,7 @@ def base_server_url(protocol: t.Literal["http", "https"] = "http"):
     about trailing slash, etc so we normalize it here.
     """
 
-    url = config("VITE_PYTHON_URL", cast=str).strip()
+    url = decouple_config("VITE_PYTHON_URL", cast=str).strip()
 
     # Remove any existing protocol
     if url.startswith(("http://", "https://")):
