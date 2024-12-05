@@ -31,12 +31,12 @@ env:
   COLUMNS: 120
 
 jobs:
-  # TODO consider adding a hard timeout for the tail cases
-  # timeout-minutes: 20
+  # NOTE there is no global timeout minutes, so we need to set it on each job :/
 
   app:
     name: Backend
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/common-setup
@@ -66,6 +66,7 @@ jobs:
   web:
     name: Frontend
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/common-setup
@@ -77,6 +78,7 @@ jobs:
   deploy:
     name: 🚀 Deploy
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: [web, app]
     if: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main') && github.event_name == 'push' }}
     steps:
