@@ -76,6 +76,7 @@ dev-dependencies = [
     "squawk-cli>=1.4.0",
     "pytest-playwright-visual>=2.1.2",
     "pytest-cov>=6.0.0",
+    "pytest-timer[termcolor]>=1.0.0",
 ]
 # https://github.com/astral-sh/uv/issues/3898
 config-settings = { editable_mode = "compat" }
@@ -117,13 +118,6 @@ extend-select = ["I"]
 
 # NOTE prefer conftest.py over toml configuration for pytest
 [tool.pytest.ini_options]
-# TODO huh, maybe we should use anyio instead?
-# aynio is installed by some other packages and it's plugin is discovered automatically, we disable it in favor of asyncio
-# addopts = "--pdbcls=pdbr:RichPdb --disable-warnings --screenshot=only-on-failure --tracing=retain-on-failure -p no:anyio"
-addopts = "--pdbcls=pdbr:RichPdb -p no:anyio"
-# must be session to align with playwright expectations
-asyncio_default_fixture_loop_scope = "session"
-# asyncio_mode = "auto"
 # avoid depreciation warnings causing spammy logs
 filterwarnings = ["ignore::DeprecationWarning"]
 # by default, pytest seems to hijack many logs and output them to the terminal
@@ -131,8 +125,6 @@ filterwarnings = ["ignore::DeprecationWarning"]
 testpaths = "tests"
 norecursedirs = ["pypi"]
 debug_file = "tmp/pytestdebug.log"
-# playwright_visual_snapshot_threshold = 0.2
-# log_cli = false
 
 [tool.uv.sources]
 j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }

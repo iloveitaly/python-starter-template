@@ -1598,6 +1598,23 @@ wheels = [
 ]
 
 [[package]]
+name = "pytest-timer"
+version = "1.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b1/f7/bc223798d5cccf2f03ed224a6fdceae005d06ae33fbd302741da9eb9e95a/pytest-timer-1.0.0.tar.gz", hash = "sha256:c65a36970e4425c0fd43bdf63b60359b353382632b08418c7c25918ec18a3829", size = 5812 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/91/48/486b6ff8b910852affeab5b628910f8faa861450a37c21c19902b798ebda/pytest_timer-1.0.0-py3-none-any.whl", hash = "sha256:60f16a6d98dd5e8ce3e57ece829592f6e081e18be9f1b20e5bc93e5e7196b065", size = 5331 },
+]
+
+[package.optional-dependencies]
+termcolor = [
+    { name = "termcolor" },
+]
+
+[[package]]
 name = "python-dateutil"
 version = "2.9.0.post0"
 source = { registry = "https://pypi.org/simple" }
@@ -1718,6 +1735,7 @@ dev = [
     { name = "pytest-playwright" },
     { name = "pytest-playwright-visual" },
     { name = "pytest-sugar" },
+    { name = "pytest-timer", extra = ["termcolor"] },
     { name = "ruff" },
     { name = "squawk-cli" },
 ]
@@ -1790,6 +1808,7 @@ dev = [
     { name = "pytest-playwright", specifier = ">=0.6.2" },
     { name = "pytest-playwright-visual", git = "https://github.com/iloveitaly/pytest-playwright-visual.git?rev=global-defaults" },
     { name = "pytest-sugar", specifier = ">=1.0.0" },
+    { name = "pytest-timer", extras = ["termcolor"], specifier = ">=1.0.0" },
     { name = "ruff", specifier = ">=0.7.1" },
     { name = "squawk-cli", specifier = ">=1.4.0" },
 ]
