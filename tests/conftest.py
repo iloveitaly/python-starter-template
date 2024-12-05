@@ -54,7 +54,7 @@ def pytest_configure(config):
 
     # lower debug level for file debugging, so we can download this artifact and view detailed debugging
     config.config.log_file = str(TEST_RESULTS_DIRECTORY / "pytest.log")
-    config.option.log_file_level = "DEBUG"
+    config.config.log_file_level = "DEBUG"
 
 
 
