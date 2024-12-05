@@ -34,6 +34,10 @@ log.info("multiprocess start method", start_method=multiprocessing.get_start_met
 
 # NOTE this runs on any pytest invocation, even if no tests are run
 def pytest_configure(config: Config):
+    # TODO huh, maybe we should use anyio instead?
+    # anyio is installed by some other packages and it's plugin is discovered automatically, we disable it in favor of asyncio
+    config.option.plugins = ["no:anyio"]
+
     config.option.pdbcls = "pdbr:RichPdb"
     config.option.disable_warnings = True
 
@@ -43,6 +47,7 @@ def pytest_configure(config: Config):
     # TODO although output is a generic CLI option, it's specific to playwright
     config.option.output = decouple_config("PLAYWRIGHT_RESULT_DIRECTORY", cast=str)
 
+    # must be session to align with playwright expectations
     config.option.asyncio_mode = "auto"
     config.option.asyncio_default_fixture_loop_scope = "session"
 
@@ -51,6 +56,7 @@ def pytest_configure(config: Config):
 
     # without this, if the test succeeds, no output is provided
     # this is a good default, but makes it much harder to debug what is going on
+    config.option.log_cli = True
     config.option.log_cli_level = "INFO"
 
     # lower debug level for file debugging, so we can download this artifact and view detailed debugging
@@ -66,7 +72,7 @@ def pytest_sessionstart(session):
 
 def base_server_url(protocol: t.Literal["http", "https"] = "http"):
     """
-    VITE_PYTHON_URL is defined as the protocol + host, but the user shouldn't have to worry
+    VITE_PYTHON_URL is defined as the protocol + host, but the user/dev shouldn't have to worry
     about trailing slash, etc so we normalize it here.
     """
 
