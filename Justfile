@@ -43,7 +43,8 @@ set unstable := true
 PROJECT_NAME := `basename $(pwd)`
 
 # execute a command in the (nearly) exact same environment as CI
-EXECUTE_IN_TEST := "CI=true direnv exec ."
+# the `exec` magic is to ensure `sys.stdout.isatty()` reports as false, which can change pytest plugin functionality
+EXECUTE_IN_TEST := "exec 1> >(cat) && CI=true direnv exec ."
 
 default:
 	just --list
@@ -207,7 +208,7 @@ nuke: js_nuke py_nuke db_nuke
 #######################
 
 WEB_DIR := "web"
-_pnpm := "cd " + WEB_DIR + " && pnpm"
+_pnpm := "cd " + WEB_DIR + " && pnpm ${PNPM_GLOBAL_FLAGS:-}"
 
 js_setup:
 	{{_pnpm}} install
@@ -261,7 +262,7 @@ js_play:
 # interactively upgrade all js packages
 js_upgrade:
 	{{_pnpm}} dlx npm-check-updates --interactive && \
-		pnpm install && \
+		{{_pnpm}} install && \
 		git add package.json pnpm-lock.yaml
 
 # generate a typescript client from the openapi spec
@@ -278,7 +279,7 @@ _js_generate-openapi:
 	LOG_LEVEL=error uv run python -m app.server | jq -r . > "$OPENAPI_JSON_PATH"
 
 	# generate the js client with the latest openapi spec
-	{{_pnpm}} openapi
+	{{_pnpm}} run openapi
 
 # run shadcn commands with the latest library version
 js_shadcn *arguments:
@@ -428,7 +429,7 @@ py_lint_fix:
 py_js-build:
 	# integration tests should mimic production as closely as possible
 	# to do this, we build the app and serve it like it will be served in production
-	{{EXECUTE_IN_TEST}} just js_build
+	export PNPM_GLOBAL_FLAGS="--silent" && {{EXECUTE_IN_TEST}} just js_build
 
 # run tests with the exact same environment that will be used on CI
 [script]
@@ -455,7 +456,7 @@ py_test: py_js-build
 py_playwright_trace remote="":
 		# helpful to download to unique folder for two reasons: (a) easier to match up to web GHA view and (b) eliminates risk of gh-cli erroring out bc the directory already exists
 		if [ "{{remote}}" = "--remote" ]; then \
-				failed_run_id=$(gh run list --status=failure --workflow=build_and_publish.yml --json databaseId --jq '.[0].databaseId') && \
+				failed_run_id=$(just _gha_last_failed_run_id) && \
 				mkdir -p ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id} && \
 				gh run --dir ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id} download $failed_run_id; \
 		fi
