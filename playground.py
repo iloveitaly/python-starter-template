@@ -16,6 +16,32 @@ from app.models.llm_response import LLMResponse
 from app.models.user import User
 from activemodel.session_manager import get_engine
 
+def inspect_environment():
+    """Display relevant custom functions and variables, excluding IPython additions"""
+    import inspect
+
+    current_module = inspect.currentframe().f_globals
+    builtin_modules = {'os', 'sys', 'json', 'tempfile', 'subprocess', 'importlib', 'pkgutil'}
+    ipy_modules = {'IPython', 'ipykernel'}
+
+    print("Custom Functions:")
+    for name, obj in current_module.items():
+        if (inspect.isfunction(obj) and
+            not name.startswith('_') and
+            obj.__module__ == '__main__' and
+            not any(m in str(obj) for m in ipy_modules)):
+            print(f"- {name}{inspect.signature(obj)}")
+
+    print("\nRelevant Variables:")
+    for name, obj in current_module.items():
+        if (not inspect.isfunction(obj) and
+            not name.startswith('_') and
+            name not in builtin_modules and
+            not name.startswith('get_ipython') and
+            not any(m in str(type(obj)) for m in ipy_modules)):
+            print(f"- {name}: {type(obj).__name__}")
+
+
 # TODO not sure if this works
 def patch_reload():
 	# Store the original reload function
@@ -139,3 +165,6 @@ def get_redis_version(redis_url: str):
 #         return v
 
 # # TestValidationModel(prompt="foo", prompt_hash="bar")
+
+# Call it whenever needed
+inspect_environment()
