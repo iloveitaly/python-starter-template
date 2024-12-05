@@ -484,14 +484,28 @@ py_mailpit_open:
 # CI Management
 #######################
 
+GHA_YML_NAME := "build_and_publish.yml"
+
 # view the last failed gha in the browser
 ci_view-last-failed:
 	gh run view --web $(just _gha_last_failed_run_id)
 
+# TODO output here is still messy, may be able to customize with --template
+# tail failed logs right in your terminal
+ci_tail-last-failed:
+	gh run view --log-failed $(just _gha_last_failed_run_id)
+
+# live tail currently running ci job
+ci_watch-running:
+	gh run watch $(just _gha_running_run_id)
+
 # get the last failed run ID
 _gha_last_failed_run_id:
 	# NOTE this is tied to the name of the yml!
-	gh run list --status=failure --workflow=build_and_publish.yml --json databaseId --jq '.[0].databaseId'
+	gh run list --status=failure --workflow={{GHA_YML_NAME}} --json databaseId --jq '.[0].databaseId'
+
+_gha_running_run_id:
+	gh run list --status=in_progress --workflow={{GHA_YML_NAME}} --json databaseId --jq '.[0].databaseId'
 
 #######################
 # Dev Container Management
