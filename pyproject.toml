@@ -125,6 +125,8 @@ filterwarnings = ["ignore::DeprecationWarning"]
 testpaths = "tests"
 norecursedirs = ["pypi"]
 debug_file = "tmp/pytestdebug.log"
+# TODO right now this option does not enable us to get it directly
+asyncio_default_fixture_loop_scope = "session"
 
 [tool.uv.sources]
 j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }

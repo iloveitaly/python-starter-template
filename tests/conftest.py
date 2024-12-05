@@ -49,7 +49,8 @@ def pytest_configure(config: Config):
 
     # must be session to align with playwright expectations
     config.option.asyncio_mode = "auto"
-    config.option.asyncio_default_fixture_loop_scope = "session"
+    # TODO right now this option DNE!
+    # config.option.asyncio_default_fixture_loop_scope = "session"
 
     # visual testing config
     config.option.playwright_visual_snapshot_threshold = 0.2
@@ -57,7 +58,7 @@ def pytest_configure(config: Config):
     # without this, if the test succeeds, no output is provided
     # this is a good default, but makes it much harder to debug what is going on
     config.option.log_cli = True
-    config.option.log_cli_level = "INFO"
+    config.option.log_cli_level = "DEBUG"
 
     # lower debug level for file debugging, so we can download this artifact and view detailed debugging
     config.option.log_file = str(TEST_RESULTS_DIRECTORY / "pytest.log")
