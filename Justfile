@@ -755,7 +755,6 @@ _build_requirements:
 	fi
 
 # echo build command so we can reuse when dumping
-[script]
 _build:
 	# NOTE production secrets are *not* included in the image, they are set on deploy
 	cat <<'EOF'
