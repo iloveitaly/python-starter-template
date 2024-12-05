@@ -89,7 +89,30 @@ Across `py`, `js`, and `db` the following subcommands are supported:
 
 There are top-level commands for many of these (`clean`, `setup`, `dev`, etc) which run actions for all environments.
 
-### Remix Integration Tests
+### Linting
+
+More linting tools are better, as long as they are well maintained. This project implements many linting tools (including DB SQL linting!). This could cause developer friction at some point, but we'll see how this scales as the codebase complexity grows.
+
+### Database Cleaning
+
+Implemented by `activemodel` which is a package created specifically for this project.
+
+Two methods are needed:
+
+* Transaction. Used whenever possible. If you create customize secondary engines outside the context of `activemodel` this will break.
+* Truncation. Transaction-based cleaning does not work is database mutations occur in a separate process.
+  * This gets tricky because of platform differences between macOS and Linux, but the tldr is although it's possible to share a DB session handle between the test process *and* the uvicorn server running during integration tests, it's a bad idea with lots of footguns, so we opt for truncation.
+
+### Testing Architecture
+
+Here's how this project thinks about tests:
+
+* The test environment should mirror production as closely as possible and for higher level tests (integration or smoke tests) we should put in extra engineering effort to get there. Accept additional complexity in integration tests to mirror the production environment more closely.
+* All core application workflows should be covered with an integration test. I think of an integration test as a browser-based test using production-built javascript/HTML.
+* Most common flows should be covered by a functional test. I think of a functional test as e2e tests on specific API routes or jobs. Primarily testing backend logic and not interaction with the UI.
+* Unit tests should be used for tricky code or to validate regressions.
+
+### JavaScript/UI/Remix Tests
 
 ```
 screen.debug() // Logs the DOM structure
@@ -112,6 +135,7 @@ If a test fails, a screenshot *and* trace is generated that you can use to repla
 page.pause()
 ```
 
+<!--
 ## Architecture Notes
 
 notes:
@@ -120,6 +144,7 @@ ipython in prod for console exploration
 typing from python to typescript via pyright + openapi + typescript library gen
 react-router seems to wrap `vite preview`
 direnv allow config
+-->
 
 ### TypeID by Default
 
@@ -183,12 +208,20 @@ Here are the devprod principles this project adheres to:
 * https://github.com/epicweb-dev/epic-stack/blob/main/docs/examples.md
 * https://github.com/tierrun/tier-vercel-openai
 * https://github.com/shadcn-ui/next-template
+* https://github.com/albertomh/pycliche
 
 ### Great Open Source Projects
+
+Great for grepping and investigating patterns.
+
+#### Python
 
 * https://github.com/danswer-ai/danswer
 * https://github.com/developaul/translate-app
 * https://github.com/Skyvern-AI/skyvern
-* https://github.com/vercel/ai-chatbot
 * https://github.com/zhanymkanov/fastapi-best-practices
 * https://github.com/bartfeenstra/betty
+
+#### Javascript/Remix/React Router
+
+* https://github.com/vercel/ai-chatbot

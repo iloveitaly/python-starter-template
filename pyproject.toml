@@ -89,19 +89,10 @@ j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
 
 # TODO https://github.com/astral-sh/uv/issues/9258
 # https://docs.astral.sh/uv/reference/settings/#override-dependencies
-# override-dependencies = [
-#     "-e activemodel @ file:///Users/mike/Projects/python/python-starter-template/pypi/activemodel#egg=activemodel[dev]",
-# ]
-
-[tool.uv.sources.djlint]
-git = "https://github.com/iloveitaly/djLint.git"
-rev = "github-output"
-
-[tool.uv.sources.pytest-playwright-visual]
-git = "https://github.com/iloveitaly/pytest-playwright-visual.git"
+[tool.uv.sources.pytest-github-actions-annotate-failures]
+path = "pypi/pytest-github-actions-annotate-failures"
+editable = true
 rev = "global-defaults"
-[tool.djlint]
-ignore = "H030,H031"
 
 [tool.ruff]
 extend-exclude = [
@@ -123,20 +114,26 @@ exclude = [
     # migrations are autogen'd
     "migrations/versions",
     "playground.py",
+
     # don't make playing less fun and force types
     "playground",
 ]
 
+[tool.djlint]
+ignore = "H030,H031"
+
 [tool.ruff.lint]
 extend-select = ["I"]
 
+# NOTE prefer conftest.py over toml configuration for pytest
 [tool.pytest.ini_options]
 # TODO huh, maybe we should use anyio instead?
 # aynio is installed by some other packages and it's plugin is discovered automatically, we disable it in favor of asyncio
-addopts = "--pdbcls=pdbr:RichPdb --disable-warnings --screenshot=only-on-failure --tracing=retain-on-failure -p no:anyio"
+# addopts = "--pdbcls=pdbr:RichPdb --disable-warnings --screenshot=only-on-failure --tracing=retain-on-failure -p no:anyio"
+addopts = "--pdbcls=pdbr:RichPdb -p no:anyio"
 # must be session to align with playwright expectations
 asyncio_default_fixture_loop_scope = "session"
-asyncio_mode = "auto"
+# asyncio_mode = "auto"
 # avoid depreciation warnings causing spammy logs
 filterwarnings = ["ignore::DeprecationWarning"]
 # by default, pytest seems to hijack many logs and output them to the terminal
@@ -144,9 +141,9 @@ filterwarnings = ["ignore::DeprecationWarning"]
 testpaths = "tests"
 norecursedirs = ["pypi"]
 debug_file = "tmp/pytestdebug.log"
-playwright_visual_snapshot_threshold = 0.2
+# playwright_visual_snapshot_threshold = 0.2
+# log_cli = false
 
-log_cli = false
 [tool.uv.sources.activemodel]
 git = "https://github.com/iloveitaly/activemodel.git"
 
@@ -157,6 +154,13 @@ git = "https://github.com/anntzer/ipython-autoimport.git"
 git = "https://github.com/iloveitaly/ipython-suggestions.git"
 rev = "py-13"
 
+[tool.uv.sources.djlint]
+git = "https://github.com/iloveitaly/djLint.git"
+rev = "github-output"
+
+[tool.uv.sources.pytest-playwright-visual]
+git = "https://github.com/iloveitaly/pytest-playwright-visual.git"
+rev = "global-defaults"
 [tool.uv.sources.mailers]
 git = "https://github.com/iloveitaly/mailers.git"
 rev = "custom"

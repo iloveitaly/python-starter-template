@@ -61,7 +61,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-traces
-          path: ${{ env.PLAYWRIGHT_RESULT_DIRECTORY }}
+          path: ${{ env.TEST_RESULTS_DIRECTORY }}
 
   web:
     name: Frontend

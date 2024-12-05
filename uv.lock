@@ -1572,13 +1572,15 @@ wheels = [
 [[package]]
 name = "pytest-github-actions-annotate-failures"
 version = "0.2.0"
-source = { registry = "https://pypi.org/simple" }
+source = { editable = "pypi/pytest-github-actions-annotate-failures" }
 dependencies = [
     { name = "pytest" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a8/d6/76d074e1e4d78c5144397e6061af29bcc218dbf19bb64b39e5c296bf42f1/pytest-github-actions-annotate-failures-0.2.0.tar.gz", hash = "sha256:844ab626d389496e44f960b42f0a72cce29ae06d363426d17ea9ae1b4bef2288", size = 9450 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/eb/86/9ffd9f10a7ba7387ce4ef4362505d739a48dd988051b41d255eb7f102c17/pytest_github_actions_annotate_failures-0.2.0-py3-none-any.whl", hash = "sha256:8bcef65fed503faaa0524b59cfeccc8995130972dd7b008d64193cc41b9cde85", size = 5496 },
+
+[package.metadata]
+requires-dist = [
+    { name = "packaging", marker = "extra == 'test'" },
+    { name = "pytest", specifier = ">=6.0.0" },
 ]
 
 [[package]]
@@ -1809,7 +1811,7 @@ dev = [
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
     { name = "pytest-celery", specifier = ">=1.1.3" },
     { name = "pytest-cov", specifier = ">=6.0.0" },
-    { name = "pytest-github-actions-annotate-failures", specifier = ">=0.2.0" },
+    { name = "pytest-github-actions-annotate-failures", editable = "pypi/pytest-github-actions-annotate-failures" },
     { name = "pytest-playwright", specifier = ">=0.6.2" },
     { name = "pytest-playwright-visual", git = "https://github.com/iloveitaly/pytest-playwright-visual.git?rev=global-defaults" },
     { name = "pytest-sugar", specifier = ">=1.0.0" },
