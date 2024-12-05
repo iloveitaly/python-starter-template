@@ -69,7 +69,7 @@ dev: local-alias setup
 #######################
 
 # NOTE nixpacks is installed during the deployment step and not as a development prerequisite
-BREW_PACKAGES := "lefthook fd localias entr foreman 1password-cli yq"
+BREW_PACKAGES := "lefthook fd peterldowns/tap/localias entr foreman 1password-cli yq"
 
 [macos]
 [script]
@@ -101,8 +101,9 @@ requirements *flags:
 	@if ! which commitlint > /dev/null; then \
 		if ! cargo --list | grep -q binstall; then \
 			echo "cargo binstall not available, skipping commitlint installation"; \
-		fi && \
-		cargo binstall -y commitlint-rs; \
+		else \
+			cargo binstall -y commitlint-rs; \
+		fi \
 	fi
 
 	if [[ "{{flags}}" =~ "--extras" ]]; then \
