@@ -16,11 +16,15 @@ def configure_python():
 
     try:
         # this is not the default as of py 3.13 on all platforms, but `fork` is deprecated
-        if multiprocessing.get_start_method() != "spawn":
+        if (existing_start_method := multiprocessing.get_start_method()) != "spawn":
             # if this is set multiple times, it throws an exception
-            multiprocessing.set_start_method("spawn")
-            log.info("multiprocessing start method set")
+            # I could not determine what is setting the start method before me here
+            multiprocessing.set_start_method("spawn", force=True)
+
+            log.info(
+                "multiprocessing set to spawn", existing_method=existing_start_method
+            )
         else:
-            log.info("multiprocessing already spawn")
+            log.info("multiprocessing already set to spawn")
     except RuntimeError as e:
         log.warning(f"multiprocessing start method failed to set: {e}")
