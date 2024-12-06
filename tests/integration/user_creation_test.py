@@ -6,7 +6,6 @@ https://github.com/microsoft/playwright-python/issues/462
 """
 
 import os
-import signal
 import time
 
 import psutil
@@ -15,7 +14,6 @@ import uvicorn
 from decouple import config
 from playwright.sync_api import Page, expect
 
-from app import log
 from app.models.user import User
 from app.server import api_app
 from tests.integration.clerk import setup_clerk_testing_token
