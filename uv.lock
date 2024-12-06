@@ -1479,19 +1479,14 @@ wheels = [
 
 [[package]]
 name = "pytest-asyncio"
-version = "0.24.1.dev90+g3f0fdfb"
-source = { editable = "pypi/pytest-asyncio" }
+version = "0.24.0"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pytest" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "coverage", marker = "extra == 'testing'", specifier = ">=6.2" },
-    { name = "hypothesis", marker = "extra == 'testing'", specifier = ">=5.7.1" },
-    { name = "pytest", specifier = ">=8.2,<9" },
-    { name = "sphinx", marker = "extra == 'docs'", specifier = ">=5.3" },
-    { name = "sphinx-rtd-theme", marker = "extra == 'docs'", specifier = ">=1" },
+sdist = { url = "https://files.pythonhosted.org/packages/52/6d/c6cf50ce320cf8611df7a1254d86233b3df7cc07f9b5f5cbcb82e08aa534/pytest_asyncio-0.24.0.tar.gz", hash = "sha256:d081d828e576d85f875399194281e92bf8a68d60d72d1a2faf2feddb6c46b276", size = 49855 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/96/31/6607dab48616902f76885dfcf62c08d929796fc3b2d2318faf9fd54dbed9/pytest_asyncio-0.24.0-py3-none-any.whl", hash = "sha256:a811296ed596b69bf0b6f3dc40f83bcaf341b155a269052d82efa2b25ac7037b", size = 18024 },
 ]
 
 [[package]]
@@ -1806,7 +1801,7 @@ dev = [
     { name = "pretty-traceback", specifier = ">=2024.1021" },
     { name = "pyright", specifier = ">=1.1.386" },
     { name = "pytest", specifier = ">=8.3.3" },
-    { name = "pytest-asyncio", editable = "pypi/pytest-asyncio" },
+    { name = "pytest-asyncio", specifier = ">=0.24.0" },
     { name = "pytest-celery", specifier = ">=1.1.3" },
     { name = "pytest-cov", specifier = ">=6.0.0" },
     { name = "pytest-github-actions-annotate-failures", specifier = ">=0.2.0" },
