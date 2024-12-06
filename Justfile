@@ -720,6 +720,8 @@ build_js-assets: _production_build_assertions
 	@echo "Building javascript assets..."
 	rm -rf "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}"
 
+	$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params)
+
 	# Production assets bundle public "secrets" (safe to expose publicly) which are extracted from the environment
 	# for this reason, we need to emulate the production environment, then build the assets statically.
 	# Also, we can't just mount /app/build/server with -v since the build process removes the entire /app/build directory
