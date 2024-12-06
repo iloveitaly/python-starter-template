@@ -118,6 +118,7 @@ extend-select = ["I"]
 
 # NOTE prefer conftest.py over toml configuration for pytest
 [tool.pytest.ini_options]
+# Not sure entirely why, but without tee-sys, the builtin fd-based log capture breaks on CI (but not locally)
 addopts = "--capture=tee-sys"
 # avoid depreciation warnings causing spammy logs
 filterwarnings = ["ignore::DeprecationWarning"]
@@ -156,3 +157,7 @@ rev = "global-defaults"
 [tool.uv.sources.mailers]
 git = "https://github.com/iloveitaly/mailers.git"
 rev = "custom"
+
+[tool.uv.sources.pytest-asyncio]
+path = "pypi/pytest-asyncio"
+editable = true

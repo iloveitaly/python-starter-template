@@ -9,17 +9,17 @@ importers:
   .:
     dependencies:
       '@clerk/clerk-js':
-        specifier: ^5.39.0
-        version: 5.39.0(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.40.0
+        version: 5.40.0(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@clerk/clerk-react':
-        specifier: ^5.18.2
-        version: 5.18.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^5.19.0
+        version: 5.19.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@epic-web/invariant':
         specifier: ^1.0.0
         version: 1.0.0
       '@hey-api/client-fetch':
-        specifier: ^0.5.1
-        version: 0.5.1
+        specifier: ^0.5.2
+        version: 0.5.2
       '@radix-ui/react-avatar':
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.1)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -78,8 +78,8 @@ importers:
         specifier: ^0.468.0
         version: 0.468.0(react@18.3.1)
       posthog-js:
-        specifier: ^1.194.4
-        version: 1.194.4
+        specifier: ^1.194.5
+        version: 1.194.5
       ramda:
         specifier: ^0.30.1
         version: 0.30.1
@@ -118,8 +118,8 @@ importers:
         specifier: ^6.6.3
         version: 6.6.3
       '@testing-library/react':
-        specifier: ^16.0.1
-        version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.1)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^16.1.0
+        version: 16.1.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.1)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^4.3.0
         version: 4.3.0(@vue/compiler-sfc@3.5.12)(prettier@3.4.2)
@@ -178,8 +178,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0(rollup@4.24.3)(vite@6.0.3(jiti@2.4.0)(yaml@2.6.0))
       vite-tsconfig-paths:
-        specifier: ^5.1.3
-        version: 5.1.3(typescript@5.7.2)(vite@6.0.3(jiti@2.4.0)(yaml@2.6.0))
+        specifier: ^5.1.4
+        version: 5.1.4(typescript@5.7.2)(vite@6.0.3(jiti@2.4.0)(yaml@2.6.0))
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(happy-dom@15.11.7)(jsdom@25.0.1)
@@ -394,26 +394,26 @@ packages:
       react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
       react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
 
-  '@clerk/clerk-js@5.39.0':
-    resolution: {integrity: sha512-2++D5ImurpzLAaDHSLQ0omBnyFzPX6uGjJ3SWYKz15ehmzNotUbD3YcU/lV1EIF1SNUC9dJqT2zG66knVvIrFQ==}
+  '@clerk/clerk-js@5.40.0':
+    resolution: {integrity: sha512-sfEEJKXRmtfT5tjI7eFHX1Shr+yWxduJYFfBKAvUM+NbzOm7r/2jlPpsP8MCwdSVV0wqRHaM0oeCUrTv/eyzcg==}
     engines: {node: '>=18.17.0'}
     peerDependencies:
       react: '>=18'
       react-dom: '>=18'
 
-  '@clerk/clerk-react@5.18.2':
-    resolution: {integrity: sha512-BMn1BsludrpvM9CgAl5pAeTgtIrUCuKmI7LDwZJKW5XNFoy6Fd9hKXJ+7YNWglfkboTu3kL569H1de8lA4iUvA==}
+  '@clerk/clerk-react@5.19.0':
+    resolution: {integrity: sha512-h2nVLvc8PYnxfH+sq+75Ispmu4M/hf142+tpxKSPD0AtKDEm3DHH+rP5B1kRwyT+F/2wn4M4oBpQC+fm95+nDg==}
     engines: {node: '>=18.17.0'}
     peerDependencies:
       react: ^18 || ^19.0.0-0
       react-dom: ^18 || ^19.0.0-0
 
-  '@clerk/localizations@3.7.4':
-    resolution: {integrity: sha512-hK8h5CTfm6WPM01BDWjX2A7zsc4wrSHU+ecp4Qh4WsgGHGFqwFS8sqkCsoU6YhDP6mRTyeHkbC0+ZUcEE6UgLQ==}
+  '@clerk/localizations@3.8.0':
+    resolution: {integrity: sha512-PgOuyvMZfd2jKy6Lod3jIhsSIWiAg0IC5+jP9abApaz0HONVHcsoLcoB87QowOUiwefB1G4IYgLhEOf0FBx64w==}
     engines: {node: '>=18.17.0'}
 
-  '@clerk/shared@2.19.0':
-    resolution: {integrity: sha512-CKe526lx3KdI/J+gDVUiB5Mx9/7fRqbUeLiXG3kTy4QeULzbroCvmkQdVjHJhWAq2+Nolwh6eCDjN9IZ6Tshfg==}
+  '@clerk/shared@2.19.1':
+    resolution: {integrity: sha512-ewTEIK91TEsQIQLsSFofAaCD8ZPYMy+1UgBB/k4Q8mese9A7mtE696FENaMXwu0YDyOg6yqgoHMOxOIYs8batQ==}
     engines: {node: '>=18.17.0'}
     peerDependencies:
       react: ^18 || ^19.0.0-0
@@ -424,8 +424,8 @@ packages:
       react-dom:
         optional: true
 
-  '@clerk/types@4.38.0':
-    resolution: {integrity: sha512-806lLBal6MVChTVWnzCWZAQdZ2miLJHkVJ+JUX2XX8D1DDPonw2y5tVk9BGWZfKq/rtUP2Jg6HdZOnA5ZbU0Ow==}
+  '@clerk/types@4.39.0':
+    resolution: {integrity: sha512-WWEoXmcob6X80cZZZGobN8aKjHAjAoL0cgVyLX8UeQ+JW4kl1IfUmZQgDBFOafGEm2yUoKlKAP22bWPDqmbTJw==}
     engines: {node: '>=18.17.0'}
 
   '@coinbase/wallet-sdk@4.0.4':
@@ -830,8 +830,8 @@ packages:
   '@formkit/auto-animate@0.8.2':
     resolution: {integrity: sha512-SwPWfeRa5veb1hOIBMdzI+73te5puUBHmqqaF1Bu7FjvxlYSz/kJcZKSa9Cg60zL0uRNeJL2SbRxV6Jp6Q1nFQ==}
 
-  '@hey-api/client-fetch@0.5.1':
-    resolution: {integrity: sha512-GG5pew+lRz2TT5ZNwIyJAzfzIjrj4BAYq6d0bE4KhGryL+eswsXrmPM6I7jiqRNhHGsLabuhltAVYdhc5lD6oA==}
+  '@hey-api/client-fetch@0.5.2':
+    resolution: {integrity: sha512-ix8MuuLTME5BWMQ8iCALqWflHtDyuoEwX0b77TQL+VgEXL89cYtjoHxE2bm2DYQQm8qDJXvTS6ju/D6wB6l6Hg==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -1804,15 +1804,15 @@ packages:
     resolution: {integrity: sha512-IteBhl4XqYNkM54f4ejhLRJiZNqcSCoXUOG2CPK7qbD322KjQozM4kHQOfkG2oln9b9HTYqs+Sae8vBATubxxA==}
     engines: {node: '>=14', npm: '>=6', yarn: '>=1'}
 
-  '@testing-library/react@16.0.1':
-    resolution: {integrity: sha512-dSmwJVtJXmku+iocRhWOUFbrERC76TX2Mnf0ATODz8brzAZrMBbzLwQixlBSanZxR6LddK3eiwpSFZgDET1URg==}
+  '@testing-library/react@16.1.0':
+    resolution: {integrity: sha512-Q2ToPvg0KsVL0ohND9A3zLJWcOXXcO8IDu3fj11KhNt0UlCWyFyvnCIBkd12tidB2lkiVRG8VFqdhcqhqnAQtg==}
     engines: {node: '>=18'}
     peerDependencies:
       '@testing-library/dom': ^10.0.0
-      '@types/react': ^18.0.0
-      '@types/react-dom': ^18.0.0
-      react: ^18.0.0
-      react-dom: ^18.0.0
+      '@types/react': ^18.0.0 || ^19.0.0
+      '@types/react-dom': ^18.0.0 || ^19.0.0
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
     peerDependenciesMeta:
       '@types/react':
         optional: true
@@ -3612,8 +3612,8 @@ packages:
     resolution: {integrity: sha512-OCVPnIObs4N29kxTjzLfUryOkvZEq+pf8jTF0lg8E7uETuWHA+v7j3c/xJmiqpX450191LlmZfUKkXxkTry7nA==}
     engines: {node: ^10 || ^12 || >=14}
 
-  posthog-js@1.194.4:
-    resolution: {integrity: sha512-w42HfzQktNj51jb4lPf45qykPG0RSpl2WZmr1kAaPTVF9LKUwRJHA854GN0R0bx1hap2fnao/yQBktFLlg4vxQ==}
+  posthog-js@1.194.5:
+    resolution: {integrity: sha512-bYa20TkwzkDsr2y3iCiJNto/bthkYkmHZopIOXzFEw7KeB581Y1WueaOry5MFHEwnpZuomqEmcMQGBAoWvv8VA==}
 
   preact@10.24.3:
     resolution: {integrity: sha512-Z2dPnBnMUfyQfSQ+GBdsGa16hz35YmLmtTLhM169uW944hYL6xzTYkJjC07j+Wosz733pMWx0fgON3JNw1jJQA==}
@@ -4351,8 +4351,8 @@ packages:
     peerDependencies:
       vite: ^2.0.0||^3.0.0||^4.0.0||^5.0.0
 
-  vite-tsconfig-paths@5.1.3:
-    resolution: {integrity: sha512-0bz+PDlLpGfP2CigeSKL9NFTF1KtXkeHGZSSaGQSuPZH77GhoiQaA8IjYgOaynSuwlDTolSUEU0ErVvju3NURg==}
+  vite-tsconfig-paths@5.1.4:
+    resolution: {integrity: sha512-cYj0LRuLV2c2sMqhqhGpaO3LretdtMn/BVX4cPLanIZuwwrkVl+lK84E/miEXkCHWXuq65rhNN4rXsBcOB3S4w==}
     peerDependencies:
       vite: '*'
     peerDependenciesMeta:
@@ -4872,11 +4872,11 @@ snapshots:
       react-lifecycles-compat: 3.0.4
       warning: 3.0.0
 
-  '@clerk/clerk-js@5.39.0(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@clerk/clerk-js@5.40.0(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@clerk/localizations': 3.7.4
-      '@clerk/shared': 2.19.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@clerk/types': 4.38.0
+      '@clerk/localizations': 3.8.0
+      '@clerk/shared': 2.19.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@clerk/types': 4.39.0
       '@coinbase/wallet-sdk': 4.0.4
       '@emotion/cache': 11.11.0
       '@emotion/react': 11.11.1(@types/react@18.3.13)(react@18.3.1)
@@ -4899,21 +4899,21 @@ snapshots:
       - '@types/react'
       - supports-color
 
-  '@clerk/clerk-react@5.18.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@clerk/clerk-react@5.19.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@clerk/shared': 2.19.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@clerk/types': 4.38.0
+      '@clerk/shared': 2.19.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@clerk/types': 4.39.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       tslib: 2.4.1
 
-  '@clerk/localizations@3.7.4':
+  '@clerk/localizations@3.8.0':
     dependencies:
-      '@clerk/types': 4.38.0
+      '@clerk/types': 4.39.0
 
-  '@clerk/shared@2.19.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@clerk/shared@2.19.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@clerk/types': 4.38.0
+      '@clerk/types': 4.39.0
       dequal: 2.0.3
       glob-to-regexp: 0.4.1
       js-cookie: 3.0.5
@@ -4923,7 +4923,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@clerk/types@4.38.0':
+  '@clerk/types@4.39.0':
     dependencies:
       csstype: 3.1.1
 
@@ -5233,7 +5233,7 @@ snapshots:
 
   '@formkit/auto-animate@0.8.2': {}
 
-  '@hey-api/client-fetch@0.5.1': {}
+  '@hey-api/client-fetch@0.5.2': {}
 
   '@humanfs/core@0.19.1': {}
 
@@ -6211,7 +6211,7 @@ snapshots:
       lodash: 4.17.21
       redent: 3.0.0
 
-  '@testing-library/react@16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@18.3.1)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@testing-library/react@16.1.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.1)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.26.0
       '@testing-library/dom': 10.4.0
@@ -8239,7 +8239,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  posthog-js@1.194.4:
+  posthog-js@1.194.5:
     dependencies:
       core-js: 3.39.0
       fflate: 0.4.8
@@ -9107,7 +9107,7 @@ snapshots:
       - rollup
       - supports-color
 
-  vite-tsconfig-paths@5.1.3(typescript@5.7.2)(vite@6.0.3(jiti@2.4.0)(yaml@2.6.0)):
+  vite-tsconfig-paths@5.1.4(typescript@5.7.2)(vite@6.0.3(jiti@2.4.0)(yaml@2.6.0)):
     dependencies:
       debug: 4.3.7
       globrex: 0.1.2
