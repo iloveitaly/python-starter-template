@@ -9,6 +9,9 @@ import multiprocessing
 
 
 def configure_python():
+    """
+    Linux vs macOS changes the default spawn method, which heavily impacts how the multiprocess module operates
+    """
     from app import log
 
     try:
@@ -19,5 +22,5 @@ def configure_python():
             log.info("multiprocessing start method set")
         else:
             log.info("multiprocessing already spawn")
-    except RuntimeError:
-        log.warning("multiprocessing start method failed to set")
+    except RuntimeError as e:
+        log.warning("multiprocessing start method failed to set:", str(e))
