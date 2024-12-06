@@ -1,3 +1,4 @@
+from app import log
 from app.configuration.clerk import clerk
 
 
@@ -5,6 +6,8 @@ def delete_all_users():
     import funcy_pipe as fp
 
     from app.configuration.clerk import clerk
+
+    log.info("deleting all clerk users")
 
     _deleted_users = (
         clerk.users.list()
