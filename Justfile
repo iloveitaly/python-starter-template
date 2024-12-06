@@ -720,7 +720,8 @@ build_js-assets: _production_build_assertions
 	@echo "Building javascript assets..."
 	rm -rf "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}"
 
-	$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params)
+	echo $(just direnv_export_docker '{{JAVASCRIPT_SECRETS_FILE}}' --params)
+	echo $(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params)
 
 	# Production assets bundle public "secrets" (safe to expose publicly) which are extracted from the environment
 	# for this reason, we need to emulate the production environment, then build the assets statically.
