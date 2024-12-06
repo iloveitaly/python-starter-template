@@ -23,4 +23,4 @@ def configure_python():
         else:
             log.info("multiprocessing already spawn")
     except RuntimeError as e:
-        log.warning("multiprocessing start method failed to set:", str(e))
+        log.warning(f"multiprocessing start method failed to set: {e}")
