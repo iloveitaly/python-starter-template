@@ -62,6 +62,9 @@ def server():
 
     from multiprocessing import Process
 
+    if wait_for_port(PYTHON_SERVER_TEST_PORT, 1):
+        raise Exception("server is already running, should be closed!")
+
     # TODO I think we should think about the forking method here; may need to reinitialize within the subprocess
     proc = Process(target=run_server, args=(), daemon=True)
     proc.start()
