@@ -118,6 +118,7 @@ extend-select = ["I"]
 
 # NOTE prefer conftest.py over toml configuration for pytest
 [tool.pytest.ini_options]
+addopts = "--capture=tee-sys"
 # avoid depreciation warnings causing spammy logs
 filterwarnings = ["ignore::DeprecationWarning"]
 # by default, pytest seems to hijack many logs and output them to the terminal

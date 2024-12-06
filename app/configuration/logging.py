@@ -2,7 +2,7 @@
 Logging is really important:
 
 * High performance JSON logging in production
-* All loggers should route through the same formatter
+* All loggers, even plugin or system loggers, should route through the same formatter
 * Structured logging everywhere
 * Ability to easily set thread-local log context
 """

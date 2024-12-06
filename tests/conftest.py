@@ -49,7 +49,7 @@ def pytest_configure(config: Config):
 
     # must be session to align with playwright expectations
     config.option.asyncio_mode = "auto"
-    # TODO right now this option DNE!
+    # TODO right now this option can only be set on ini, which is strange
     # config.option.asyncio_default_fixture_loop_scope = "session"
 
     # visual testing config
