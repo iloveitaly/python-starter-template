@@ -10,14 +10,16 @@ import multiprocessing
 
 def configure_python():
     """
-    Linux vs macOS changes the default spawn method, which heavily impacts how the multiprocess module operates
+    Linux vs macOS changes the default spawn method, which heavily impacts how the multiprocess module operates.
+
+    Specifically, this impacts our integration tests. They succeed on linux (fork) and not on macos (spawn)
     """
     from app import log
 
     try:
         # this is not the default as of py 3.13 on all platforms, but `fork` is deprecated
         if (existing_start_method := multiprocessing.get_start_method()) != "spawn":
-            # if this is set multiple times, it throws an exception
+            # if this is set multiple times, it throws an exception without force=True
             # I could not determine what is setting the start method before me here
             multiprocessing.set_start_method("spawn", force=True)
 
