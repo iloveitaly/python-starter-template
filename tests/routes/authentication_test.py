@@ -4,7 +4,7 @@ import requests
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from tests.util import get_clerk_dev_user
+from tests.utils import get_clerk_dev_user
 
 
 def test_unauthorized_no_credentials(client: TestClient):

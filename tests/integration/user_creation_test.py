@@ -15,7 +15,7 @@ from playwright.sync_api import Page, expect
 from app.models.user import User
 from app.server import api_app
 from tests.integration.clerk import setup_clerk_testing_token
-from tests.util import get_clerk_dev_user
+from tests.utils import get_clerk_dev_user
 
 PYTHON_SERVER_TEST_PORT = config("PYTHON_TEST_SERVER_PORT", cast=int)
 
