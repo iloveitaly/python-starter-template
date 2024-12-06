@@ -12,6 +12,7 @@ import uvicorn
 from decouple import config
 from playwright.sync_api import Page, expect
 
+from app import log
 from app.models.user import User
 from app.server import api_app
 from tests.integration.clerk import setup_clerk_testing_token
@@ -75,7 +76,8 @@ def server():
     try:
         yield
     finally:
-        proc.kill()
+        proc.terminate()
+        log.info("terminated server")
 
     # TODO should we install a signal trap to ensure the server is killed?
 
