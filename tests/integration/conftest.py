@@ -1,6 +1,5 @@
 import pytest
 from activemodel.pytest.truncate import database_reset_truncate
-
 from app import log
 
 

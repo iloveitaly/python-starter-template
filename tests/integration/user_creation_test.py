@@ -5,8 +5,11 @@ https://github.com/microsoft/playwright-pytest/issues/74#issuecomment-2497976914
 https://github.com/microsoft/playwright-python/issues/462
 """
 
+import os
+import signal
 import time
 
+import psutil
 import pytest
 import uvicorn
 from decouple import config
@@ -21,6 +24,24 @@ from tests.utils import get_clerk_dev_user
 PYTHON_SERVER_TEST_PORT = config("PYTHON_TEST_SERVER_PORT", cast=int)
 
 
+def wait_for_termination(pid, timeout=5):
+    process = psutil.Process(pid)
+    process.terminate()  # Send SIGTERM
+
+    try:
+        process.wait(timeout=timeout)  # Wait for graceful shutdown
+    except psutil.TimeoutExpired:
+        process.kill()  # Force SIGKILL if still running
+        process.wait()  # Wait for kill to complete
+
+    # Double verify termination
+    try:
+        os.kill(pid, 0)  # Check if process exists
+        return False
+    except OSError:
+        return True  # Process is confirmed dead
+
+
 def wait_for_port(port: int, timeout: int = 30) -> bool:
     import socket
     import time
@@ -33,10 +54,9 @@ def wait_for_port(port: int, timeout: int = 30) -> bool:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
                 # localhost allows for ipv4 and ipv6 loopback
                 sock.connect(("localhost", port))
-                log.info("server is up")
                 return True
         except ConnectionRefusedError:
-            log.info("waiting for port")
+            log.debug("waiting for port")
             time.sleep(0.5)
 
     log.error("Timed out waiting for port")
@@ -57,12 +77,17 @@ def run_server():
 @pytest.fixture
 def server():
     """
+    Spinning up the entire application for EACH TEST is extremely slow.
+
+    However, it closely mirrors production *and* we should not have more than a few dozen integration tests. It's fine
+    for these integration tests to move slowly and very closely mirror a production environment.
+
     https://stackoverflow.com/questions/57412825/how-to-start-a-uvicorn-fastapi-in-background-when-testing-with-pytest
     """
-    # TODO this has got to be really slow :/
 
     from multiprocessing import Process
 
+    # defensively code against multiprocessing coding errors
     if wait_for_port(PYTHON_SERVER_TEST_PORT, 1):
         raise Exception("server is already running, should be closed!")
 
@@ -76,8 +101,7 @@ def server():
     try:
         yield
     finally:
-        proc.terminate()
-        log.info("terminated server")
+        wait_for_termination(proc.pid)
 
     # TODO should we install a signal trap to ensure the server is killed?
 
