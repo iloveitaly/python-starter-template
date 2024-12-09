@@ -26,6 +26,7 @@ runs:
         echo '[global]
         disable_stdin = true
         strict_env = true
+        hide_env_diff = true
         warn_timeout = "20s"
         ' > ~/.config/direnv/direnv.toml
 
