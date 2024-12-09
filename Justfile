@@ -451,8 +451,7 @@ py_test: py_js-build
 		uv run pytest tests/integration
 	else
 		{{EXECUTE_IN_TEST}} uv run pytest . --ignore tests/integration
-		{{EXECUTE_IN_TEST}} uv run pytest tests/integration -k signin
-		{{EXECUTE_IN_TEST}} uv run pytest tests/integration -k signup
+		{{EXECUTE_IN_TEST}} uv run pytest tests/integration
 	fi
 
 # open playwright trace viewer on last trace zip. --remote to download last failed remote trace
@@ -730,9 +729,6 @@ build_js-assets: _production_build_assertions
 	@echo "Building javascript assets..."
 	rm -rf "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}"
 
-	just direnv_export_docker '{{SHARED_ENV_FILE}}' --params
-	just direnv_export_docker '{{JAVASCRIPT_SECRETS_FILE}}' --params
-
 	# Production assets bundle public "secrets" (safe to expose publicly) which are extracted from the environment
 	# for this reason, we need to emulate the production environment, then build the assets statically.
 	# Also, we can't just mount /app/build/server with -v since the build process removes the entire /app/build directory
@@ -865,7 +861,7 @@ with_entries(
 
 # TODO report this upstream to direnv, this is an insane workaround :/
 # target a specific .env file (supports direnv features!) for export as a JSON blob
-@direnv_export target="":
+direnv_export target="":
 	([ ! -n "{{target}}" ] || [ -f "{{target}}" ]) || (echo "{{target}} does not exist"; exit 1)
 	[ "{{target}}" != ".envrc" ] || (echo "You cannot use .envrc as a target"; exit 1)
 
@@ -878,7 +874,7 @@ with_entries(
 
 # export env variables for a particular file in a format docker can consume
 [doc("Export as docker '-e' params: --params")]
-@direnv_export_docker target *flag:
+direnv_export_docker target *flag:
 	# clear all contents of the tmp dir
 
 	if {{ if flag == "--params" { "true" } else { "false" } }}; then; \

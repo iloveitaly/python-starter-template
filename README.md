@@ -25,7 +25,7 @@ Here's the stack:
 
 ## Cost of Complexity
 
-There are many things I don't like about this setup. There's a complexity cost to going this route and I'm not sure if it's worth it.
+There are many things I don't like about this setup. There's a complexity cost to going this route and I'm not sure if it's worth it. It's definitely not for the faint of heart and solves very specific problems I've experienced as codebases and teams grow.
 
 It's all about tradeoffs. For modern web development, there are the options as I see them:
 
@@ -37,7 +37,7 @@ It's all about tradeoffs. For modern web development, there are the options as I
    2. You get access to a massive labor market, great tooling, typing, and finely-tuned LLMs on massive training data.
 3. Use React & Python.
    1. You lose simplicity. You have to deal with two languages, which means more complex build systems.
-   2. You lose a single beautifully crafted stack and instead have to stitch together a bunch of different tools (even if they are well-designed independently).
+   2. You lose a single beautifully crafted stack and instead have to stitch together a bunch of different tools (even if they are well-designed independently).`
    3. You get full-stack typing (if you do it right).
    4. You get access to the great tooling (static analysis and improved LLM performance) on both Python and JavaScript.
    5. You can move fast with React and all of the amazing UI libraries built on top of it, without having to deal with full stack JavaScript.
@@ -49,9 +49,9 @@ It's all about tradeoffs. For modern web development, there are the options as I
 
 There are a couple of dependencies which are not managed by the project:
 
-* [just](https://just.systems)
+* zsh. The stack has not been tested on bash.
 * [mise](https://mise.jdx.dev)
-* docker (or [OrbStack](https://orbstack.dev))
+* docker (or preferably [OrbStack](https://orbstack.dev))
 
 Once you have them installed:
 
@@ -62,6 +62,12 @@ just setup
 Should do the rest. Note that you'll probably want to install the shell hooks for a couple tools which you will need to do manually.
 
 If you use 1p for secrets, you'll need to set up the 1Password CLI.
+
+### Golden Path
+
+* Latest macOS
+* VS Code
+* zsh
 
 ### Shell Completions
 
