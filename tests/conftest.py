@@ -58,7 +58,7 @@ def pytest_configure(config: Config):
     # without this, if the test succeeds, no output is provided
     # this is a good default, but makes it much harder to debug what is going on
     config.option.log_cli = True
-    config.option.log_cli_level = "DEBUG"
+    config.option.log_cli_level = "INFO"
 
     # lower debug level for file debugging, so we can download this artifact and view detailed debugging
     config.option.log_file = str(TEST_RESULTS_DIRECTORY / "pytest.log")
