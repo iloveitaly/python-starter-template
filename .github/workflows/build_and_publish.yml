@@ -72,6 +72,7 @@ jobs:
       - uses: ./.github/actions/common-setup
         timeout-minutes: 1
       - run: just direnv_export_docker '.env' --params
+      - run: env -i HOME="$HOME" PATH="$PATH" RENDER_DIRENV=".env.production.frontend" direnv export json
       - run: just direnv_export_docker '.env.production.frontend' --params
       - run: just js_setup
       - run: just js_lint
