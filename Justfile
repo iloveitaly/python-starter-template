@@ -451,7 +451,8 @@ py_test: py_js-build
 		uv run pytest tests/integration
 	else
 		{{EXECUTE_IN_TEST}} uv run pytest . --ignore tests/integration
-		{{EXECUTE_IN_TEST}} uv run pytest tests/integration
+		{{EXECUTE_IN_TEST}} uv run pytest tests/integration -k signin
+		{{EXECUTE_IN_TEST}} uv run pytest tests/integration -k signup
 	fi
 
 # open playwright trace viewer on last trace zip. --remote to download last failed remote trace
@@ -466,7 +467,7 @@ py_playwright_trace remote="":
 
 		# NOTE it's insane, but fd does not have a "find last modified file"
 		# https://github.com/sharkdp/fd/issues/196
-		uv run playwright show-trace $(fd --no-ignore-vcs  . ${PLAYWRIGHT_RESULT_DIRECTORY} -e zip -t f --exec-batch stat -f '%m %N' | sort -n | tail -1 | cut -f2- -d" ")
+		uv run playwright show-trace $(fd --no-ignore-vcs . ${PLAYWRIGHT_RESULT_DIRECTORY} -e zip -t f --exec-batch stat -f '%m %N' | sort -n | tail -1 | cut -f2- -d" ")
 
 # record playwright interactions for integration tests and dump them to a file
 [macos]
@@ -489,6 +490,11 @@ py_mailpit_open:
 #######################
 
 GHA_YML_NAME := "build_and_publish.yml"
+
+# TODO should scope to the current users runs
+# rerun last failed CI run
+ci_rerun:
+	gh run rerun $(just _gha_last_failed_run_id)
 
 # view the last failed gha in the browser
 ci_view-last-failed:
@@ -863,8 +869,8 @@ with_entries(
 	# be included in the export. This was occurring on my machine since I set PYTHON* vars globally. To work around this
 	# we clear the environment, outside of the PATH + HOME required for direnv configuration.
 	env -i HOME="$HOME" PATH="$PATH" \
-		RENDER_DIRENV="{{target}}" direnv export json 2>/dev/null | jq -r '{{jq_script}}'
-
+		RENDER_DIRENV="{{target}}" \
+		direnv export json 2>/dev/null | jq -r '{{jq_script}}'
 
 # export env variables for a particular file in a format docker can consume
 [doc("Export as docker '-e' params: --params")]
