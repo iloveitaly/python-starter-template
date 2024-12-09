@@ -13,9 +13,15 @@ _exclude:
   - .github/workflows/repo-sync.yml
   - TODO
   - README.md
+  # - .git
 
 _answers_file: .copier/.copier-answers.yml
 
+# _tasks:
+#   # - ["{{ _copier_python }}", .copier/bootstrap.sh]
+#   - [.copier/bootstrap.sh]
+
 _tasks:
-  # - ["{{ _copier_python }}", .copier/bootstrap.sh]
-  - [.copier/bootstrap.sh]
+  - git init
+  - git add .
+  - git commit -m "🎉 Initial commit"
