@@ -27,7 +27,7 @@ runs:
         disable_stdin = true
         strict_env = true
         hide_env_diff = true
-        warn_timeout = "20s"
+        warn_timeout = 0
         ' > ~/.config/direnv/direnv.toml
 
 
