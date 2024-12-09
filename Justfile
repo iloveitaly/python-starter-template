@@ -765,24 +765,21 @@ _build_requirements:
 		echo "$GITHUB_RUN_ID"; \
 	fi
 
-# echo build command so we can reuse when dumping
-[script]
-_build:
-	# NOTE production secrets are *not* included in the image, they are set on deploy
-	cat <<'EOF'
-	nixpacks build . \
-		--name {{IMAGE_NAME}} \
-		{{NIXPACKS_BUILD_METADATA}} \
-		$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params) \
-		--label org.opencontainers.image.revision={{GIT_SHA}} \
-		--label org.opencontainers.image.created="{{BUILD_CREATED_AT}}" \
-		--label org.opencontainers.image.source="$(just _repo_url)" \
-		--label "build.run_id=$(just _build_id)" \
-	EOF
+# NOTE production secrets are *not* included in the image, they are set on deploy
+PYTHON_NIXPACKS_BUILD_CMD := """
+nixpacks build . \
+	--name {{IMAGE_NAME}} \
+	{{NIXPACKS_BUILD_METADATA}} \
+	$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params) \
+	--label org.opencontainers.image.revision={{GIT_SHA}} \
+	--label org.opencontainers.image.created="{{BUILD_CREATED_AT}}" \
+	--label org.opencontainers.image.source="$(just _repo_url)" \
+	--label "build.run_id=$(just _build_id)" \
+"""
 
 # build the docker container using nixpacks
 build: _build_requirements _production_build_assertions build_js-assets
-	eval "$(just _build)"
+	{{PYTHON_NIXPACKS_BUILD_CMD}}
 
 # dump json output of the built image, ex: j build_inspect '.Config.Env'
 build_inspect *flags:
@@ -795,7 +792,7 @@ build_dive: (_brew_check_and_install "dive")
 
 # dump nixpacks-generated Dockerfile for manual build and production debugging
 build_dump:
-	eval "$(just _build) --out ."
+	{{PYTHON_NIXPACKS_BUILD_CMD}} --out .
 
 # clear out nixpacks and other artifacts specific to production containers
 build_clean:
