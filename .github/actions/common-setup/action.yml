@@ -25,6 +25,8 @@ runs:
         mkdir -p ~/.config/direnv
         echo '[global]
         disable_stdin = true
-        strict_env = true' > ~/.config/direnv/direnv.toml
+        strict_env = true
+        warn_timeout = "20s"
+        ' > ~/.config/direnv/direnv.toml
 
 
