@@ -22,7 +22,14 @@ from tests.utils import get_clerk_dev_user
 PYTHON_SERVER_TEST_PORT = config("PYTHON_TEST_SERVER_PORT", cast=int)
 
 
-def wait_for_termination(pid, timeout=5):
+def wait_for_termination(pid, timeout=10):
+    """
+    Py's multiprocessing module does not have a way to wait until a process has terminated.
+
+    This mess is to get us that guarantee so we can terminate the server and then start another one, knowing that
+    only a single dev server is running at a time.
+    """
+
     process = psutil.Process(pid)
     process.terminate()  # Send SIGTERM
 
@@ -57,7 +64,6 @@ def wait_for_port(port: int, timeout: int = 30) -> bool:
             log.debug("waiting for port")
             time.sleep(0.5)
 
-    log.error("Timed out waiting for port")
     return False
 
 
@@ -89,12 +95,17 @@ def server():
     if wait_for_port(PYTHON_SERVER_TEST_PORT, 1):
         raise Exception("server is already running, should be closed!")
 
-    # TODO I think we should think about the forking method here; may need to reinitialize within the subprocess
+    # NOTE this is a very important line! It forks an *entirely new* python process and does not inherit
+    #      any state from the pytest setup. This means database sessions, redis connections, etc are entirely
+    #      different in the subprocess. Do not try to inherit state from the pytest process as fork-based
+    #      multiprocessing is not the default across all platforms and can introduce subtle bugs.
+
     proc = Process(target=run_server, args=(), daemon=True)
     proc.start()
 
     # since the server is run a daemon in another process, we need to wait until the port is ready
-    wait_for_port(PYTHON_SERVER_TEST_PORT)
+    if not wait_for_port(PYTHON_SERVER_TEST_PORT):
+        raise Exception("server failed to start")
 
     try:
         yield
@@ -105,6 +116,7 @@ def server():
 
 
 def home_url():
+    # TODO should we just use `base_server_url` instead?
     return f"https://{config("PYTHON_TEST_SERVER_HOST")}"
 
 
@@ -149,7 +161,7 @@ def test_signin(server, page: Page, assert_snapshot) -> None:
 
     expect(page.locator("body")).to_contain_text("Hello From Internal Python")
 
-    # assert_snapshot(page)
+    assert_snapshot(page)
 
     assert User.count() == 1
 
