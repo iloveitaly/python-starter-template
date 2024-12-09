@@ -869,12 +869,14 @@ with_entries(
 	# in `direnv export`. I originally discovered this because PYTHON* vars were not being exported because they were set
 	# globally. To work around this we clear the environment, outside of the PATH + HOME required for direnv configuration.
 	# OP_SERVICE_ACCOUNT_TOKEN is also included since on CI this is effectively global state that enables 1p access.
-	# Locally 1p global state may be persisted elsewhere.
+	# When run on your local machine, 1p global state may be persisted elsewhere, so this would be a noop.
+	env -i HOME="$HOME" PATH="$PATH" OP_SERVICE_ACCOUNT_TOKEN="$OP_SERVICE_ACCOUNT_TOKEN" op daemon -d
 	env -i HOME="$HOME" PATH="$PATH" OP_SERVICE_ACCOUNT_TOKEN="$OP_SERVICE_ACCOUNT_TOKEN" \
 		RENDER_DIRENV="{{target}}" \
-		DIRENV_DEBUG=1 \
-		op daemon -d && \
 		direnv export json | jq -r '{{jq_script}}'
+
+	# TODO the `op daemon -d` hack above is to workaround a op bug:
+	# https://1password-devs.slack.com/archives/C03NJV34SSC/p1733771530356779
 
 # export env variables for a particular file in a format docker can consume
 [doc("Export as docker '-e' params: --params")]
