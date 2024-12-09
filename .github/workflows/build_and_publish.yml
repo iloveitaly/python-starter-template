@@ -56,7 +56,6 @@ jobs:
         with: { detached: true }
 
       # traces and pngs allow us to debug e2e test failures
-      # coverage reports and all log files are uploaded to this directory as well
       - name: Upload test artifacts
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
@@ -72,7 +71,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/common-setup
         timeout-minutes: 1
-      - uses: mxschmitt/action-tmate@v3
+      - run: zsh -c "just direnv_export_docker '.env.production.frontend' --params"
       - run: just js_setup
       - run: just js_lint
       - run: just js_test
