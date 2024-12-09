@@ -21,6 +21,9 @@ env:
   # run `just secrets_ci_grant-github-actions` to set
   OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
+  # for the gh-cli
+  GH_TOKEN: ${{ github.token }}
+
   # a important design goal is to avoid custom configuration in CI. This enables tests to be run in a CI-like environment
   # locally, making it easy to replicate CI issues. This is one of the few CI-specific configuration changes since
   # the host where services are located is truly unique to the CI environment.

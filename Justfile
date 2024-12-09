@@ -766,6 +766,7 @@ _build_requirements:
 	fi
 
 # echo build command so we can reuse when dumping
+[script]
 _build:
 	# NOTE production secrets are *not* included in the image, they are set on deploy
 	cat <<'EOF'
@@ -776,7 +777,7 @@ _build:
 		--label org.opencontainers.image.revision={{GIT_SHA}} \
 		--label org.opencontainers.image.created="{{BUILD_CREATED_AT}}" \
 		--label org.opencontainers.image.source="$(just _repo_url)" \
-		--label "build.run_id=$(just _build_id)"
+		--label "build.run_id=$(just _build_id)" \
 	EOF
 
 # build the docker container using nixpacks
@@ -872,8 +873,8 @@ with_entries(
 	# globally. To work around this we clear the environment, outside of the PATH + HOME required for direnv configuration.
 	# OP_SERVICE_ACCOUNT_TOKEN is also included since on CI this is effectively global state that enables 1p access.
 	# When run on your local machine, 1p global state may be persisted elsewhere, so this would be a noop.
-	env -i HOME="$HOME" PATH="$PATH" OP_SERVICE_ACCOUNT_TOKEN="$OP_SERVICE_ACCOUNT_TOKEN" op daemon -d
-	env -i HOME="$HOME" PATH="$PATH" OP_SERVICE_ACCOUNT_TOKEN="$OP_SERVICE_ACCOUNT_TOKEN" \
+	env -i HOME="$HOME" PATH="$PATH" OP_SERVICE_ACCOUNT_TOKEN="${OP_SERVICE_ACCOUNT_TOKEN:-}" op daemon -d
+	env -i HOME="$HOME" PATH="$PATH" OP_SERVICE_ACCOUNT_TOKEN="${OP_SERVICE_ACCOUNT_TOKEN:-}" \
 		RENDER_DIRENV="{{target}}" \
 		direnv export json | jq -r '{{jq_script}}'
 
