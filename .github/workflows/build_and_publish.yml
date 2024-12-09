@@ -72,8 +72,6 @@ jobs:
       - uses: ./.github/actions/common-setup
         timeout-minutes: 1
       - uses: mxschmitt/action-tmate@v3
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
-        with: { detached: true }
       - run: zsh -c "just direnv_export_docker '.env.production.frontend' --params"
       - run: just js_setup
       - run: just js_lint
