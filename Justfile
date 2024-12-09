@@ -873,6 +873,7 @@ with_entries(
 	env -i HOME="$HOME" PATH="$PATH" OP_SERVICE_ACCOUNT_TOKEN="$OP_SERVICE_ACCOUNT_TOKEN" \
 		RENDER_DIRENV="{{target}}" \
 		DIRENV_DEBUG=1 \
+		op daemon -d && \
 		direnv export json | jq -r '{{jq_script}}'
 
 # export env variables for a particular file in a format docker can consume
