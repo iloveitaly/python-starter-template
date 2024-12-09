@@ -700,10 +700,13 @@ SHARED_ENV_FILE := ".env"
 PYTHON_PRODUCTION_ENV_FILE := ".env.production.backend"
 
 JAVASCRIPT_SECRETS_FILE := ".env.production.frontend"
-JAVASCRIPT_IMAGE_TAG := IMAGE_NAME + "-javascript:" + GIT_SHA
+JAVASCRIPT_IMAGE_NAME := IMAGE_NAME + "-javascript"
+JAVASCRIPT_IMAGE_TAG := JAVASCRIPT_IMAGE_NAME + ":" + GIT_SHA
+JAVASCRIPT_IMAGE_TAG_LATEST := JAVASCRIPT_IMAGE_NAME + ":" + GIT_SHA
 
 IMAGE_NAME := PROJECT_NAME
-IMAGE_TAG := IMAGE_NAME + ":latest"
+IMAGE_TAG := IMAGE_NAME + ":" + GIT_SHA
+IMAGE_TAG_LATEST := IMAGE_NAME + ":latest"
 
 [script]
 _production_build_assertions:
@@ -738,6 +741,7 @@ build_js-assets: _production_build_assertions
 		--name "{{JAVASCRIPT_IMAGE_TAG}}" \
 		 {{NIXPACKS_BUILD_METADATA}} \
 		--env VITE_BUILD_COMMIT="{{GIT_SHA}}" \
+		--cache-from "{{JAVASCRIPT_IMAGE_TAG_LATEST}}" --inline-cache \
 		$(just direnv_export_docker '{{JAVASCRIPT_SECRETS_FILE}}' --params) \
 		$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params)
 
@@ -768,7 +772,8 @@ _build_requirements:
 # NOTE production secrets are *not* included in the image, they are set on deploy
 PYTHON_NIXPACKS_BUILD_CMD := """
 nixpacks build . \
-	--name {{IMAGE_NAME}} \
+	--name {{IMAGE_TAG}} \
+	--name {{IMAGE_TAG_LATEST}} \
 	{{NIXPACKS_BUILD_METADATA}} \
 	$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params) \
 	--label org.opencontainers.image.revision={{GIT_SHA}} \
