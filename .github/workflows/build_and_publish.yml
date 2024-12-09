@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # checkout `just secrets_ci_grant-github-actions`
+  # run `just secrets_ci_grant-github-actions` to set
   OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
   # a important design goal is to avoid custom configuration in CI. This enables tests to be run in a CI-like environment
