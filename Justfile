@@ -445,13 +445,16 @@ py_test: py_js-build
 	# TODO we don't need to see all of the details for this part of the build, since we are primarily testing javascript
 	# TODO what about code coverage? --cov?
 
+	# TODO I wonder if I could make EXECUTE_IN_TEST blank if in the test environment...
+	# TODO DRY up the --cov commands?
 	# NOTE unfortunately, because of the asyncio loop + playwright, we need to run the playwright integration tests separately
 	if [[ -n "${CI:-}" ]]; then
-		uv run pytest . --ignore tests/integration
-		uv run pytest tests/integration
+		uv run pytest . --ignore tests/integration --cov --cov-report=html:tmp/test-results/htmlcov --cov-report=term
+		uv run pytest tests/integration --cov --cov-append --cov-report=html:tmp/test-results/htmlcov --cov-report=term
+		cp -R tests/integration/snapshot_tests_failures $TEST_RESULTS_DIRECTORY
 	else
-		{{EXECUTE_IN_TEST}} uv run pytest . --ignore tests/integration
-		{{EXECUTE_IN_TEST}} uv run pytest tests/integration
+		{{EXECUTE_IN_TEST}} uv run pytest . --ignore tests/integration --cov --cov-report=html:tmp/test-results/htmlcov --cov-report=term
+		{{EXECUTE_IN_TEST}} uv run pytest tests/integration --cov --cov-append --cov-report=html:tmp/test-results/htmlcov --cov-report=term
 	fi
 
 # open playwright trace viewer on last trace zip. --remote to download last failed remote trace
