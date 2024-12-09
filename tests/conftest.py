@@ -54,7 +54,7 @@ def pytest_configure(config: Config):
 
     # visual testing config
     config.option.playwright_visual_snapshot_threshold = 0.2
-    config.option.playwright_visual_failure_directory = decouple_config("PLAYWRIGHT_RESULT_DIRECTORY", cast=str)
+    config.option.playwright_visual_failure_directory = TEST_RESULTS_DIRECTORY
 
     # without this, if the test succeeds, no output is provided
     # this is a good default, but makes it much harder to debug what is going on
