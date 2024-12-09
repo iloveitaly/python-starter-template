@@ -861,20 +861,22 @@ with_entries(
 
 # TODO report this upstream to direnv, this is an insane workaround :/
 # target a specific .env file (supports direnv features!) for export as a JSON blob
-direnv_export target="":
+@direnv_export target="":
 	([ ! -n "{{target}}" ] || [ -f "{{target}}" ]) || (echo "{{target}} does not exist"; exit 1)
 	[ "{{target}}" != ".envrc" ] || (echo "You cannot use .envrc as a target"; exit 1)
 
-	# without clearing the env, any variables that you have set in your shell (via ~/.exports or similar) will *not*
-	# be included in the export. This was occurring on my machine since I set PYTHON* vars globally. To work around this
-	# we clear the environment, outside of the PATH + HOME required for direnv configuration.
+	# without a clear env (env -i), any variables set in your shell (via ~/.exports or similar) will *not* be included
+	# in `direnv export`. I originally discovered this because PYTHON* vars were not being exported because they were set
+	# globally. To work around this we clear the environment, outside of the PATH + HOME required for direnv configuration.
+	# OP_SERVICE_ACCOUNT_TOKEN is also included since on CI this is effectively global state that enables 1p access.
+	# Locally 1p global state may be persisted elsewhere.
 	env -i HOME="$HOME" PATH="$PATH" OP_SERVICE_ACCOUNT_TOKEN="$OP_SERVICE_ACCOUNT_TOKEN" \
 		RENDER_DIRENV="{{target}}" \
 		direnv export json | jq -r '{{jq_script}}'
 
 # export env variables for a particular file in a format docker can consume
 [doc("Export as docker '-e' params: --params")]
-direnv_export_docker target *flag:
+@direnv_export_docker target *flag:
 	# clear all contents of the tmp dir
 
 	if {{ if flag == "--params" { "true" } else { "false" } }}; then; \
