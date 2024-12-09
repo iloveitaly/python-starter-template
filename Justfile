@@ -870,7 +870,7 @@ direnv_export target="":
 	# we clear the environment, outside of the PATH + HOME required for direnv configuration.
 	env -i HOME="$HOME" PATH="$PATH" \
 		RENDER_DIRENV="{{target}}" \
-		direnv export json 2>/dev/null | jq -r '{{jq_script}}'
+		direnv export json | jq -r '{{jq_script}}'
 
 # export env variables for a particular file in a format docker can consume
 [doc("Export as docker '-e' params: --params")]
