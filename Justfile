@@ -506,8 +506,12 @@ ci_tail-last-failed:
 	gh run view --log-failed $(just _gha_last_failed_run_id)
 
 # live tail currently running ci job
-ci_watch-running:
-	gh run watch $(just _gha_running_run_id)
+ci_watch-running *flag:
+	if {{ if flag == "--web" { "true" } else { "false" } }}; then \
+		gh run view --web $(just _gha_running_run_id); \
+	else \
+		gh run watch $(just _gha_running_run_id); \
+	fi
 
 # very destructive action: deletes all workflow run logs
 ci_wipe_run_logs:
@@ -726,8 +730,8 @@ build_js-assets: _production_build_assertions
 	@echo "Building javascript assets..."
 	rm -rf "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}"
 
-	just direnv_export_docker '{{JAVASCRIPT_SECRETS_FILE}}' --params
 	just direnv_export_docker '{{SHARED_ENV_FILE}}' --params
+	just direnv_export_docker '{{JAVASCRIPT_SECRETS_FILE}}' --params
 
 	# Production assets bundle public "secrets" (safe to expose publicly) which are extracted from the environment
 	# for this reason, we need to emulate the production environment, then build the assets statically.
