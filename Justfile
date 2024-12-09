@@ -451,7 +451,6 @@ py_test: py_js-build
 	if [[ -n "${CI:-}" ]]; then
 		uv run pytest . --ignore tests/integration --cov --cov-report=html:tmp/test-results/htmlcov --cov-report=term
 		uv run pytest tests/integration --cov --cov-append --cov-report=html:tmp/test-results/htmlcov --cov-report=term
-		cp -R tests/integration/snapshot_tests_failures $TEST_RESULTS_DIRECTORY
 	else
 		{{EXECUTE_IN_TEST}} uv run pytest . --ignore tests/integration --cov --cov-report=html:tmp/test-results/htmlcov --cov-report=term
 		{{EXECUTE_IN_TEST}} uv run pytest tests/integration --cov --cov-append --cov-report=html:tmp/test-results/htmlcov --cov-report=term
