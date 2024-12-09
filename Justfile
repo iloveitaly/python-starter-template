@@ -868,7 +868,7 @@ direnv_export target="":
 	# without clearing the env, any variables that you have set in your shell (via ~/.exports or similar) will *not*
 	# be included in the export. This was occurring on my machine since I set PYTHON* vars globally. To work around this
 	# we clear the environment, outside of the PATH + HOME required for direnv configuration.
-	env -i HOME="$HOME" PATH="$PATH" \
+	env -i HOME="$HOME" PATH="$PATH" OP_SERVICE_ACCOUNT_TOKEN="$OP_SERVICE_ACCOUNT_TOKEN" \
 		RENDER_DIRENV="{{target}}" \
 		direnv export json | jq -r '{{jq_script}}'
 
