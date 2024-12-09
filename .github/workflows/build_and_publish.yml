@@ -71,8 +71,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/common-setup
         timeout-minutes: 1
-      - run: zsh -c "just direnv_export_docker '.env.production.frontend' --params"
-      - uses: mxschmitt/action-tmate@v3
+      - run: just direnv_export_docker '.env.production.frontend' --params
+      # - uses: mxschmitt/action-tmate@v3
       - run: just js_setup
       - run: just js_lint
       - run: just js_test
