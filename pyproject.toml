@@ -1,7 +1,7 @@
 [project]
 name = "python-starter-template"
 version = "0.1.0"
-description = "Add your description here"
+description = ""
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -126,9 +126,14 @@ filterwarnings = ["ignore::DeprecationWarning"]
 # this is nice if you don't have a custom login like we do
 testpaths = "tests"
 norecursedirs = ["pypi"]
+# TODO would love if we could move this to conftest.py and put in the artifact folder
 debug_file = "tmp/pytestdebug.log"
 # TODO right now this option does not enable us to get it directly
 asyncio_default_fixture_loop_scope = "session"
+
+# https://coverage.readthedocs.io/en/latest/config.html#run-data-file
+[tool.coverage.run]
+# data_file = "tmp/test-results/.coverage"
 
 [tool.uv.sources]
 j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
