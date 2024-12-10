@@ -770,9 +770,9 @@ _build_requirements:
 	fi
 
 # NOTE production secrets are *not* included in the image, they are set on deploy
+# " --name " + IMAGE_TAG_LATEST + " " + \
 PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
 	" --name " + IMAGE_TAG + \
-	" --name " + IMAGE_TAG_LATEST + " " + \
 	NIXPACKS_BUILD_METADATA + \
 	" $(just direnv_export_docker '" + SHARED_ENV_FILE +"' --params)" + \
 	" --label org.opencontainers.image.revision='" + GIT_SHA + "'" + \
