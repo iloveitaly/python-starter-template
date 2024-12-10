@@ -787,6 +787,7 @@ build: _build_requirements _production_build_assertions build_js-assets
 PYTHON_PRODUCTION_IMAGE_NAME := "ghcr.io/iloveitaly/python-starter-template"
 
 build_push:
+	docker push {{JAVASCRIPT_IMAGE_TAG_LATEST}} {{PYTHON_PRODUCTION_IMAGE_NAME}}-javascript:latest
 	docker push {{IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:{{GIT_SHA}}
 	docker push {{IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:latest
 
