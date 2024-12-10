@@ -771,14 +771,14 @@ _build_requirements:
 
 # NOTE production secrets are *not* included in the image, they are set on deploy
 PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
-	"--name " + IMAGE_TAG + \
-	"--name " + IMAGE_TAG_LATEST + \
+	" --name " + IMAGE_TAG + \
+	" --name " + IMAGE_TAG_LATEST + " " + \
 	NIXPACKS_BUILD_METADATA + \
-	"$(just direnv_export_docker '" + SHARED_ENV_FILE +"' --params)" + \
-	"--label org.opencontainers.image.revision='" + GIT_SHA + "'" + \
-	"--label org.opencontainers.image.created='" + BUILD_CREATED_AT + "'" + \
-	'--label org.opencontainers.image.source="$(just _repo_url)"' + \
-	'--label "build.run_id=$(just _build_id)"'
+	" $(just direnv_export_docker '" + SHARED_ENV_FILE +"' --params)" + \
+	" --label org.opencontainers.image.revision='" + GIT_SHA + "'" + \
+	" --label org.opencontainers.image.created='" + BUILD_CREATED_AT + "'" + \
+	' --label org.opencontainers.image.source="$(just _repo_url)"' + \
+	' --label "build.run_id=$(just _build_id)"'
 
 # build the docker container using nixpacks
 build: _build_requirements _production_build_assertions build_js-assets
