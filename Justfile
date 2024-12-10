@@ -719,7 +719,8 @@ _production_build_assertions:
 
 	# if the workspace is dirty, some configuration is not correct: we want a completely clean build environment
 	if [ ! -z "{{GIT_DIRTY}}" ]; then \
-			echo "Git workspace is dirty! This should never happen on prod" >&2; \
+			echo "Git workspace is dirty! This should never happen on prod!" >&2; \
+			git status; \
 			exit 1; \
 	fi
 
@@ -789,7 +790,7 @@ build: _build_requirements _production_build_assertions build_js-assets
 PYTHON_PRODUCTION_IMAGE_NAME := "ghcr.io/iloveitaly/python-starter-template"
 JAVASCRIPT_PRODUCTION_IMAGE_NAME := PYTHON_PRODUCTION_IMAGE_NAME + "-javascript:latest"
 
-build_push:
+build_push: _production_build_assertions
 	# JS image is not used in prod, but is used for nixpacks caching
 	docker tag {{JAVASCRIPT_IMAGE_TAG_LATEST}} {{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}
 	docker push {{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}
