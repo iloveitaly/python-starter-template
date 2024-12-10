@@ -770,7 +770,6 @@ _build_requirements:
 	fi
 
 # NOTE production secrets are *not* included in the image, they are set on deploy
-# " --name " + IMAGE_TAG_LATEST + " " + \
 PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
 	" --name " + IMAGE_TAG + \
 	" " + NIXPACKS_BUILD_METADATA + \
@@ -783,6 +782,12 @@ PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
 # build the docker container using nixpacks
 build: _build_requirements _production_build_assertions build_js-assets
 	{{PYTHON_NIXPACKS_BUILD_CMD}}
+
+PYTHON_PRODUCTION_IMAGE_NAME := "ghcr.io/iloveitaly/python-starter-template"
+
+build_push:
+	docker push {{IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:{{GIT_SHA}}
+	docker push {{IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:latest
 
 # dump json output of the built image, ex: j build_inspect '.Config.Env'
 build_inspect *flags:
