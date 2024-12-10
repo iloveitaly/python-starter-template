@@ -17,11 +17,10 @@ _exclude:
 
 _answers_file: .copier/.copier-answers.yml
 
-# _tasks:
-#   # - ["{{ _copier_python }}", .copier/bootstrap.sh]
-#   - [.copier/bootstrap.sh]
-
 _tasks:
   - git init
   - git add .
   - git commit -m "🎉 Initial commit"
+  - .copier/bootstrap.sh
+
+# - ["{{ _copier_python }}", .copier/bootstrap.sh]
