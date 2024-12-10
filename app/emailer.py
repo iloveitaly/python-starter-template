@@ -32,7 +32,9 @@ mailer = Mailer(
 )
 
 
-def render_email(template_path: str, context: dict) -> tuple[str, str]:
+def render_email(
+    template_path: str, context: dict, layout_path: str = "mail/layout.html"
+) -> tuple[str, str]:
     """
     Renders an email template into HTML and plaintext versions
     Returns tuple of (html_content, plaintext_content)
@@ -41,11 +43,14 @@ def render_email(template_path: str, context: dict) -> tuple[str, str]:
     # First render the markdown template with variables
     markdown_content = render_template(template_path, context)
 
+    # Use the raw markdown as plaintext version
+    plaintext_content = markdown_content
+
     # Convert markdown to HTML for rich email clients
     html_content = markdown2.markdown(markdown_content)
 
-    # Use the raw markdown as plaintext version
-    plaintext_content = markdown_content
+    # Now render the entire html layout
+    html_content = render_template(layout_path, context | {"content": html_content})
 
     return html_content, plaintext_content
 
