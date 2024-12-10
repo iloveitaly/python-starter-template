@@ -40,7 +40,7 @@ set ignore-comments := true
 set unstable := true
 
 # used for image name, op vault access, etc
-PROJECT_NAME := `basename $(pwd)`
+PROJECT_NAME := "python-starter-template"
 
 # execute a command in the (nearly) exact same environment as CI
 EXECUTE_IN_TEST := "CI=true direnv exec ."
@@ -515,7 +515,7 @@ ci_watch-running *flag:
 	fi
 
 # very destructive action: deletes all workflow run logs
-[confirm('Are you usre you want to delete all workflow logs?')]
+[confirm('Are you sure you want to delete all workflow logs?')]
 ci_wipe_run_logs:
 	REPO=$(gh repo view --json name --jq '.name') && \
 	OWNER=$(gh repo view --json owner --jq '.owner.login') && \
@@ -699,7 +699,9 @@ SHARED_ENV_FILE := ".env"
 # .env file with production variables, no secrets, for python
 PYTHON_PRODUCTION_ENV_FILE := ".env.production.backend"
 
+# .env file with production variables that are safe to share publicly (frontend)
 JAVASCRIPT_SECRETS_FILE := ".env.production.frontend"
+
 JAVASCRIPT_IMAGE_NAME := IMAGE_NAME + "-javascript"
 JAVASCRIPT_IMAGE_TAG := JAVASCRIPT_IMAGE_NAME + ":" + GIT_SHA
 JAVASCRIPT_IMAGE_TAG_LATEST := JAVASCRIPT_IMAGE_NAME + ":" + GIT_SHA
@@ -785,11 +787,18 @@ build: _build_requirements _production_build_assertions build_js-assets
 	{{PYTHON_NIXPACKS_BUILD_CMD}}
 
 PYTHON_PRODUCTION_IMAGE_NAME := "ghcr.io/iloveitaly/python-starter-template"
+JAVASCRIPT_PRODUCTION_IMAGE_NAME := PYTHON_PRODUCTION_IMAGE_NAME + "-javascript:latest"
 
 build_push:
-	docker push {{JAVASCRIPT_IMAGE_TAG_LATEST}} {{PYTHON_PRODUCTION_IMAGE_NAME}}-javascript:latest
-	docker push {{IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:{{GIT_SHA}}
-	docker push {{IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:latest
+	# JS image is not used in prod, but is used for nixpacks caching
+	docker tag {{JAVASCRIPT_IMAGE_TAG_LATEST}} {{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}
+	docker push {{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}
+
+	docker tag {{IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:{{GIT_SHA}}
+	docker push {{PYTHON_PRODUCTION_IMAGE_NAME}}:{{GIT_SHA}}
+
+	docker tag {{IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:latest
+	docker push {{PYTHON_PRODUCTION_IMAGE_NAME}}:latest
 
 # dump json output of the built image, ex: j build_inspect '.Config.Env'
 build_inspect *flags:
