@@ -450,7 +450,7 @@ py_test: py_js-build
 	# NOTE unfortunately, because of the asyncio loop + playwright, we need to run the playwright integration tests separately
 	if [[ -n "${CI:-}" ]]; then
 		uv run pytest . --ignore tests/integration --cov --cov-report=html:tmp/test-results/htmlcov --cov-report=term
-		uv run pytest tests/integration --cov --cov-append --cov-report=html:tmp/test-results/htmlcov --cov-report=term
+		DEBUG="pw:api" uv run pytest tests/integration --cov --cov-append --cov-report=html:tmp/test-results/htmlcov --cov-report=term
 	else
 		{{EXECUTE_IN_TEST}} uv run pytest . --ignore tests/integration --cov --cov-report=html:tmp/test-results/htmlcov --cov-report=term
 		{{EXECUTE_IN_TEST}} uv run pytest tests/integration --cov --cov-append --cov-report=html:tmp/test-results/htmlcov --cov-report=term
