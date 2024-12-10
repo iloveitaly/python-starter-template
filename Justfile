@@ -773,7 +773,7 @@ _build_requirements:
 # " --name " + IMAGE_TAG_LATEST + " " + \
 PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
 	" --name " + IMAGE_TAG + \
-	NIXPACKS_BUILD_METADATA + \
+	" " + NIXPACKS_BUILD_METADATA + \
 	" $(just direnv_export_docker '" + SHARED_ENV_FILE +"' --params)" + \
 	" --label org.opencontainers.image.revision='" + GIT_SHA + "'" + \
 	" --label org.opencontainers.image.created='" + BUILD_CREATED_AT + "'" + \
