@@ -515,10 +515,10 @@ ci_watch-running *flag:
 	fi
 
 # very destructive action: deletes all workflow run logs
+[confirm('Are you usre you want to delete all workflow logs?')]
 ci_wipe_run_logs:
 	REPO=$(gh repo view --json name --jq '.name') && \
 	OWNER=$(gh repo view --json owner --jq '.owner.login') && \
-		echo "Deleting workflow runs for $OWNER/$REPO in 5 seconds..." && sleep 5 && \
 		gh api repos/$OWNER/$REPO/actions/workflows --paginate --jq '.workflows[] | .id' | \
 		xargs -I{} gh api repos/$OWNER/$REPO/actions/workflows/{}/runs --paginate --jq '.workflow_runs[].id' | \
 			xargs -I{} gh api -X DELETE /repos/$OWNER/$REPO/actions/runs/{}
@@ -770,17 +770,15 @@ _build_requirements:
 	fi
 
 # NOTE production secrets are *not* included in the image, they are set on deploy
-PYTHON_NIXPACKS_BUILD_CMD := """
-nixpacks build . \
-	--name {{IMAGE_TAG}} \
-	--name {{IMAGE_TAG_LATEST}} \
-	{{NIXPACKS_BUILD_METADATA}} \
-	$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params) \
-	--label org.opencontainers.image.revision={{GIT_SHA}} \
-	--label org.opencontainers.image.created="{{BUILD_CREATED_AT}}" \
-	--label org.opencontainers.image.source="$(just _repo_url)" \
-	--label "build.run_id=$(just _build_id)" \
-"""
+PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
+	"--name " + IMAGE_TAG + \
+	"--name " + IMAGE_TAG_LATEST + \
+	NIXPACKS_BUILD_METADATA + \
+	"$(just direnv_export_docker '" + SHARED_ENV_FILE +"' --params)" + \
+	"--label org.opencontainers.image.revision='" + GIT_SHA + "'" + \
+	"--label org.opencontainers.image.created='" + BUILD_CREATED_AT + "'" + \
+	'--label org.opencontainers.image.source="$(just _repo_url)"' + \
+	'--label "build.run_id=$(just _build_id)"'
 
 # build the docker container using nixpacks
 build: _build_requirements _production_build_assertions build_js-assets
