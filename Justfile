@@ -774,7 +774,7 @@ PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
 	" --name " + IMAGE_TAG + \
 	" " + NIXPACKS_BUILD_METADATA + \
 	" $(just direnv_export_docker '" + SHARED_ENV_FILE +"' --params)" + \
-	" --inline-cache --cache-from " + PYTHON_PRODUCTION_IMAGE_NAME ":latest" + \
+	" --inline-cache --cache-from " + PYTHON_PRODUCTION_IMAGE_NAME + ":latest" + \
 	" --label org.opencontainers.image.revision='" + GIT_SHA + "'" + \
 	" --label org.opencontainers.image.created='" + BUILD_CREATED_AT + "'" + \
 	' --label org.opencontainers.image.source="$(just _repo_url)"' + \
