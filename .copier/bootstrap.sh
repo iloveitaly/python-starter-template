@@ -3,6 +3,7 @@
 cp .copier/README.md README.md
 
 # TODO replace:
-# - from email
-# - project name
 # - OP config?
+
+# PYTHON_PRODUCTION_IMAGE_NAME
+# PROJECT_NAME

@@ -1,12 +1,20 @@
-project_name:
-  type: str
-  help: The name of the project, shown to API users (in .env)
-  default: FastAPI Project
+_jinja_extensions:
+  - jinja2_shell_extension.ShellExtension
 
-emails_from_email:
+project_slug:
   type: str
+  help: Project Slug
+  default: "{{ 'basename $PWD' | shell() }}"
+
+from_email:
+  type: str
+  default: noreply@example.com
   help: The email account to send emails from, you can set it later in .env
-  default: info@example.com
+
+registry_base:
+  type: str
+  help: Base URL of the container registry to push to
+  default: "ghcr.io/{{ \"gh api user --jq '.login'\" | shell() }}"
 
 _exclude:
   - metadata.json
@@ -22,5 +30,3 @@ _tasks:
   - git add .
   - git commit -m "🎉 Initial commit"
   - .copier/bootstrap.sh
-
-# - ["{{ _copier_python }}", .copier/bootstrap.sh]
