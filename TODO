@@ -12,11 +12,10 @@ fastapi websocket with remix connection
 do we need this https://github.com/fastapiutils/fastapi-utils/blob/master/fastapi_utils/guid_type.py?
 logging can sometimes get a little crazy, we should come up with better defaults for child loggers
 generate plain text from md without template being used for email
-understand pytest and how files are collected, any extensions that allow for more clear configuration
 gzip serve files, cache static assets as gzip; got to be someone who has done this before
 custom py reload, this is taking a ton of resources https://github.com/fastapi/fastapi/discussions/2863
-TypeID .get doesn't work with an ID string
-understand typeid string vs DB UID
+TypeID `.get` doesn't work with an ID string
+understand typeid string vs DB UID and how it's handled internally
 
 ## js
 sentry config, not yet ready for v7 https://docs.sentry.io/platforms/javascript/guides/react/features/react-router/, https://github.com/remix-run/react-router/discussions/12423
@@ -26,7 +25,7 @@ logging config fine on the client side?
 add middleware to client to catch authorization errors, create non-clerk-provider layout on the frontend
 think through authenticated pattern, create a clientLoader action
 fix clerk redirect issue https://discord.com/channels/856971667393609759/1311386772520960182
-https://github.com/hey-api/openapi-ts/pull/1378 - better log redirect
+https://github.com/hey-api/openapi-ts/pull/1378 - better log redirect, but need to handle ci and local builds
 better error page, esp when 40x error when loading the client
 
 ## deployment
@@ -43,6 +42,7 @@ should we use sops? Probably can just use 1p, think about mutation risks here ht
 https://github.com/astral-sh/uv/issues/9258#issuecomment-2488597047 - looks like local dev dependencies are supported?
 autogen'd localalias based on ENV port config, use local
 switch to binstall and see if this becomes a binary distribution https://github.com/yukihirop/ultraman/issues/58
+look into devenv, maybe a replacement for some of the setup here? https://github.com/getsentry/sentry/blob/master/devenv/sync.py
 
 ## commitlint
 removing unused import, should catch this specifically
@@ -64,19 +64,18 @@ if I remove stuff, it counts it as a feature
 localias upstream no caching
 
 ## ci
+test logs are a mess. I need to figure out what pytest is doing and make them sane.
+1p can hang CI https://1password-devs.slack.com/archives/C03NJV34SSC/p1733764637441309
 can we use a op service account locally? Probably not a great idea since no 2f is required
-https://github.com/samuelcolvin/pytest-pretty why isn't this being picked up?
 pull mailpit contents (we can't pull screeshots)
 visual diff via comment on playwright
-
-```
-# TODO need to understand what is going on here more, make sure we don't need this
-#     - name: 🛑 Cancel Previous Runs
-#       uses: styfle/cancel-workflow-action@0.11.0
-```
-
+distribute tests across databases and redis https://pytest-xdist.readthedocs.io/en/stable/distribution.html
+enable verbose debugging on tests when GHA debug is enabled
 maybe screenshot comments? https://github.com/ActivityWatch/aw-webui/blob/291da6f2c5e7a6b896f23a4eec5ffed9874321ba/.github/workflows/comment.yml#L69
+add console logs to log `page.on("console", lambda msg: print(f"Console Message: {msg.type()}: {msg.text()}"))`
 
+
+downside with this action is it requires write access to the repo and manages a separate branch. instead we should just add a coverage failure threshold.
 ```
       # TODO coverage data is not outputting properly right now
       # - name: Add Coverage Comment to PR
@@ -88,7 +87,7 @@ maybe screenshot comments? https://github.com/ActivityWatch/aw-webui/blob/291da6
 
 https://github.com/tecolicom/actions-use-apt-tools/issues/4 - `sudo apt-get update` does work.
 
-maybe use a different event loop?
+maybe use a different event loop? Faster / less issues with playwright?
 
 ```
 # TODO this doesn't seem to fix the issue
@@ -109,4 +108,7 @@ push to registry
 --cache-from to speed up builds
 
 ## act compat
-https://github.com/catthehacker/docker_images/issues/138 - apt tool
+https://github.com/catthehacker/docker_images/issues/138 - apt tool, still failing on apt-install but not because of missing packlages
+
+## vs code
+file picker search for specific files even though they are in gitignore

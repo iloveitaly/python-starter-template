@@ -337,7 +337,7 @@ py_setup:
 	if [ -z "${CI:-}" ]; then \
 		uv run playwright install chromium; \
 	else \
-		uv run playwright install chromium-headless-shell; \
+		uv run playwright install chromium --only-shell; \
 	fi
 
 	# TODO once we figure out the right pattern for CLI tooling, we can simplify this
