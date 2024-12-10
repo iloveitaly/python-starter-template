@@ -434,6 +434,8 @@ py_js-build:
 	# to do this, we build the app and serve it like it will be served in production
 	export PNPM_GLOBAL_FLAGS="--silent" && {{EXECUTE_IN_TEST}} just js_build
 
+PYTEST_COV_PARAMS := x"--cov --cov-report=html:${TEST_RESULTS_DIRECTORY}/htmlcov --cov-report=term"
+
 # run tests with the exact same environment that will be used on CI
 [script]
 py_test: py_js-build
@@ -443,17 +445,15 @@ py_test: py_js-build
 	set -x
 
 	# TODO we don't need to see all of the details for this part of the build, since we are primarily testing javascript
-	# TODO what about code coverage? --cov?
 
 	# TODO I wonder if I could make EXECUTE_IN_TEST blank if in the test environment...
-	# TODO DRY up the --cov commands?
 	# NOTE unfortunately, because of the asyncio loop + playwright, we need to run the playwright integration tests separately
 	if [[ -n "${CI:-}" ]]; then
-		uv run pytest . --ignore tests/integration --cov --cov-report=html:tmp/test-results/htmlcov --cov-report=term
-		DEBUG="pw:api" uv run pytest tests/integration --cov --cov-append --cov-report=html:tmp/test-results/htmlcov --cov-report=term
+		uv run pytest . --ignore tests/integration {{PYTEST_COV_PARAMS}}
+		uv run pytest tests/integration --cov-append {{PYTEST_COV_PARAMS}}
 	else
-		{{EXECUTE_IN_TEST}} uv run pytest . --ignore tests/integration --cov --cov-report=html:tmp/test-results/htmlcov --cov-report=term
-		{{EXECUTE_IN_TEST}} uv run pytest tests/integration --cov --cov-append --cov-report=html:tmp/test-results/htmlcov --cov-report=term
+		{{EXECUTE_IN_TEST}} uv run pytest . --ignore tests/integration {{PYTEST_COV_PARAMS}}
+		{{EXECUTE_IN_TEST}} uv run pytest tests/integration --cov-append {{PYTEST_COV_PARAMS}}
 	fi
 
 # open playwright trace viewer on last trace zip. --remote to download last failed remote trace
