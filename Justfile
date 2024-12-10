@@ -693,6 +693,17 @@ NIXPACKS_BUILD_METADATA := (
 	'-e BUILD_CREATED_AT="' + BUILD_CREATED_AT + '" '
 )
 
+# NOTE production secrets are *not* included in the image, they are set on deploy
+PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
+	" --name " + PYTHON_IMAGE_TAG + \
+	" " + NIXPACKS_BUILD_METADATA + \
+	" $(just direnv_export_docker '" + SHARED_ENV_FILE +"' --params)" + \
+	" --inline-cache --cache-from " + PYTHON_PRODUCTION_IMAGE_NAME + ":latest" + \
+	" --label org.opencontainers.image.revision='" + GIT_SHA + "'" + \
+	" --label org.opencontainers.image.created='" + BUILD_CREATED_AT + "'" + \
+	' --label org.opencontainers.image.source="$(just _repo_url)"' + \
+	' --label "build.run_id=$(just _build_id)"'
+
 # .env file without any secrets that should exist on all environments
 SHARED_ENV_FILE := ".env"
 
@@ -702,13 +713,14 @@ PYTHON_PRODUCTION_ENV_FILE := ".env.production.backend"
 # .env file with production variables that are safe to share publicly (frontend)
 JAVASCRIPT_SECRETS_FILE := ".env.production.frontend"
 
-JAVASCRIPT_IMAGE_NAME := IMAGE_NAME + "-javascript"
+JAVASCRIPT_IMAGE_NAME := PYTHON_IMAGE_NAME + "-javascript"
 JAVASCRIPT_IMAGE_TAG := JAVASCRIPT_IMAGE_NAME + ":" + GIT_SHA
-JAVASCRIPT_IMAGE_TAG_LATEST := JAVASCRIPT_IMAGE_NAME + ":" + GIT_SHA
 
-IMAGE_NAME := PROJECT_NAME
-IMAGE_TAG := IMAGE_NAME + ":" + GIT_SHA
-IMAGE_TAG_LATEST := IMAGE_NAME + ":latest"
+PYTHON_IMAGE_NAME := PROJECT_NAME
+PYTHON_IMAGE_TAG := PYTHON_IMAGE_NAME + ":" + GIT_SHA
+
+PYTHON_PRODUCTION_IMAGE_NAME := "ghcr.io/iloveitaly/python-starter-template"
+JAVASCRIPT_PRODUCTION_IMAGE_NAME := PYTHON_PRODUCTION_IMAGE_NAME + "-javascript"
 
 [script]
 _production_build_assertions:
@@ -744,7 +756,7 @@ build_js-assets: _production_build_assertions
 		--name "{{JAVASCRIPT_IMAGE_TAG}}" \
 		 {{NIXPACKS_BUILD_METADATA}} \
 		--env VITE_BUILD_COMMIT="{{GIT_SHA}}" \
-		--cache-from "{{JAVASCRIPT_IMAGE_TAG_LATEST}}" --inline-cache \
+		--cache-from "{{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}" --inline-cache \
 		$(just direnv_export_docker '{{JAVASCRIPT_SECRETS_FILE}}' --params) \
 		$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params)
 
@@ -772,43 +784,29 @@ _build_requirements:
 		echo "$GITHUB_RUN_ID"; \
 	fi
 
-# NOTE production secrets are *not* included in the image, they are set on deploy
-PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
-	" --name " + IMAGE_TAG + \
-	" " + NIXPACKS_BUILD_METADATA + \
-	" $(just direnv_export_docker '" + SHARED_ENV_FILE +"' --params)" + \
-	" --inline-cache --cache-from " + PYTHON_PRODUCTION_IMAGE_NAME + ":latest" + \
-	" --label org.opencontainers.image.revision='" + GIT_SHA + "'" + \
-	" --label org.opencontainers.image.created='" + BUILD_CREATED_AT + "'" + \
-	' --label org.opencontainers.image.source="$(just _repo_url)"' + \
-	' --label "build.run_id=$(just _build_id)"'
-
 # build the docker container using nixpacks
 build: _build_requirements _production_build_assertions build_js-assets
 	{{PYTHON_NIXPACKS_BUILD_CMD}}
 
-PYTHON_PRODUCTION_IMAGE_NAME := "ghcr.io/iloveitaly/python-starter-template"
-JAVASCRIPT_PRODUCTION_IMAGE_NAME := PYTHON_PRODUCTION_IMAGE_NAME + "-javascript:latest"
-
 build_push: _production_build_assertions
-	# JS image is not used in prod, but is used for nixpacks caching
-	docker tag {{JAVASCRIPT_IMAGE_TAG_LATEST}} {{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}
-	docker push {{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}
+	# JS image is not used in prod, but is used for nixpacks caching, so we push to the registry
+	docker tag {{JAVASCRIPT_IMAGE_TAG}} {{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}:latest
+	docker push {{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}:latest
 
-	docker tag {{IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:{{GIT_SHA}}
+	docker tag {{PYTHON_IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:{{GIT_SHA}}
 	docker push {{PYTHON_PRODUCTION_IMAGE_NAME}}:{{GIT_SHA}}
 
-	docker tag {{IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:latest
+	docker tag {{PYTHON_IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:latest
 	docker push {{PYTHON_PRODUCTION_IMAGE_NAME}}:latest
 
 # dump json output of the built image, ex: j build_inspect '.Config.Env'
 build_inspect *flags:
-	docker image inspect --format "{{ '{{ json . }}' }}" "{{IMAGE_TAG}}" | jq -r {{ flags }}
+	docker image inspect --format "{{ '{{ json . }}' }}" "{{PYTHON_IMAGE_TAG}}" | jq -r {{ flags }}
 
 # interactively inspect the layers of the built image
 [macos]
 build_dive: (_brew_check_and_install "dive")
-	dive "{{IMAGE_TAG}}"
+	dive "{{PYTHON_IMAGE_TAG}}"
 
 # dump nixpacks-generated Dockerfile for manual build and production debugging
 build_dump:
@@ -835,11 +833,11 @@ build_from-dump:
 
 # open up a bash shell in the last built container, helpful for debugging production builds
 build_shell: build
-	docker run -it {{IMAGE_TAG}} bash -l
+	docker run -it {{PYTHON_IMAGE_TAG}} bash -l
 
 # open up a *second* shell in the *same* container that's already running
 build_shell-exec:
-	docker exec -it $(docker ps -q --filter "ancestor={{IMAGE_TAG}}") bash -l
+	docker exec -it $(docker ps -q --filter "ancestor={{PYTHON_IMAGE_TAG}}") bash -l
 
 # run the container locally, as if it were in production (against production DB, resources, etc)
 [script]
@@ -848,7 +846,7 @@ build_run-as-production procname="":
 	docker run -p 8202:80 \
 		--memory=1g --cpus=2 \
 		$(just direnv_export_docker "" --params) \
-		"{{IMAGE_TAG}}" \
+		"{{PYTHON_IMAGE_TAG}}" \
 		"$(just extract_proc "{{procname}}")"
 
 # extract worker start command from Procfile
