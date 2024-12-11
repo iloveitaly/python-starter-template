@@ -703,7 +703,8 @@ PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
 	" --label org.opencontainers.image.revision='" + GIT_SHA + "'" + \
 	" --label org.opencontainers.image.created='" + BUILD_CREATED_AT + "'" + \
 	' --label org.opencontainers.image.source="$(just _repo_url)"' + \
-	' --label "build.run_id=$(just _build_id)"'
+	' --label org.opencontainers.image.description="Primary application deployment image"' + \
+	' --label build.run_id="$(just _build_id)"'
 
 # .env file without any secrets that should exist on all environments
 SHARED_ENV_FILE := ".env"
@@ -761,9 +762,10 @@ build_js-assets: _production_build_assertions
 		--name "{{JAVASCRIPT_IMAGE_TAG}}" \
 		 {{NIXPACKS_BUILD_METADATA}} \
 		--env VITE_BUILD_COMMIT="{{GIT_SHA}}" \
-		--cache-from "{{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}" --inline-cache \
+		--cache-from "{{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}:latest" --inline-cache \
 		$(just direnv_export_docker '{{JAVASCRIPT_SECRETS_FILE}}' --params) \
-		$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params)
+		$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params) \
+		--label org.opencontainers.image.description="Used for building javascript assets, not for deployment" \
 
 	# you cannot extract files out of a image, only a container
 	docker rm tmp-js-container || true
