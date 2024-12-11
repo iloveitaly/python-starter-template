@@ -124,7 +124,7 @@ requirements *flags:
 
 # setup everything you need for local development
 [macos]
-setup: requirements && up py_setup db_seed js_build
+setup: requirements && py_setup db_seed js_build
 	# NOTE this task should be non-destructive, the user should opt-in to something like `nuke`
 
 	# some reasoning behind the logic here:
@@ -135,10 +135,6 @@ setup: requirements && up py_setup db_seed js_build
 		cp .env.dev.local-example .env.dev.local; \
 		echo "Please edit .env.dev.local to your liking."; \
 	fi
-
-	# direnv will setup a venv (assuming `layout uv` is supported) & install packages
-	# however the direnv information will not persist in the user's shell
-	direnv allow .
 
 	@echo 'If you are using localais, run `just local-alias` to start the daemon'
 
@@ -368,7 +364,7 @@ py_upgrade:
 
 # open up a development server
 py_dev:
-	fastapi dev --port $PYTHON_SERVER_PORT
+	uv run fastapi dev --port $PYTHON_SERVER_PORT
 
 py_play:
 	./playground.py

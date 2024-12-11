@@ -61,7 +61,7 @@ _exclude:
   - .github/workflows/repo-sync.yml
   - TODO
   - .git
-  - migrations/versions
+  - migrations/versions/*
 
 _tasks:
   - git init
