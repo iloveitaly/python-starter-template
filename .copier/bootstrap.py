@@ -50,7 +50,15 @@ replacements = {
         (
             r"export EMAIL_FROM_ADDRESS=",
             f"export EMAIL_FROM_ADDRESS={copier_answers['from_email']}",
-        )
+        ),
+        (
+            r"export OP_ACCOUNT=",
+            f"export OP_ACCOUNT={copier_answers['one_password_account']}",
+        ),
+        (
+            r"export OP_VAULT_UID=",
+            f"export OP_VAULT_UID={copier_answers['one_password_vault']}",
+        ),
     ],
     "Justfile": [
         (r"^PROJECT_NAME :=", f"PROJECT_NAME := \"{copier_answers['project_slug']}\""),

@@ -28,6 +28,19 @@ production_image_name:
   help: The production image name, with registry base, that the build system should push to
   default: "{{ registry_base }}/{{ project_slug }}"
 
+one_password_account:
+  type: str
+  help: 'The domain of the 1password account to use. Example: "example.1password.com"'
+  default: "{{ \"op account list --format json | jq -r '.[0].url' || echo ''\" | shell() | trim }}"
+
+one_password_vault:
+  type: str
+  help: The UUID of the 1password vault to use
+  validator: >-
+    {% if not (one_password_vault | regex_search('^[a-zA-Z0-9]+$')) %}
+    one_password_vault must be a valid UUID from 1password
+    {% endif %}
+
 _exclude:
   - metadata.json
   - .github/workflows/repo-sync.yml
