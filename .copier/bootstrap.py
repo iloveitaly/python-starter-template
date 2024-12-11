@@ -31,7 +31,12 @@ def replace_lines_in_files(replacements: Dict[str, List[Tuple[str, str]]]):
         content = path.read_text()
 
         def full_line_match(existing_regex):
-            return f"{'.' if not pattern.startswith('^') else ''}{pattern}.*$"
+            if not pattern.startswith("^"):
+                existing_regex = f"^.*{existing_regex}"
+            if not pattern.endswith("$"):
+                existing_regex += ".*"
+
+            return existing_regex
 
         for pattern, replacement in patterns:
             content = re.sub(
