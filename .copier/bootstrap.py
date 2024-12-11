@@ -5,8 +5,6 @@ import shutil
 from pathlib import Path
 from typing import Dict, List, Tuple
 
-import yaml
-
 # Change to parent directory of the script
 script_dir = Path(__file__).parent
 os.chdir(str(script_dir.parent))
