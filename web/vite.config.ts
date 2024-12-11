@@ -44,9 +44,10 @@ function getModePlugins(mode: string) {
   if (mode === "production") {
     const authToken = process.env.SENTRY_AUTH_TOKEN
 
+    const VITE_BUILD_COMMIT = process.env.VITE_BUILD_COMMIT
+
     // fine for sentry to have auth under a CI build being used for integration testing
     if (!authToken) {
-      const VITE_BUILD_COMMIT = process.env.VITE_BUILD_COMMIT
       const CI = process.env.CI
 
       // if build is dirty, then we aren't building for prod (probably local)
@@ -79,6 +80,10 @@ function getModePlugins(mode: string) {
 
           // Auth tokens can be obtained from https://ORG_NAME.sentry.io/settings/auth-tokens/new-token/
           authToken: process.env.SENTRY_AUTH_TOKEN,
+
+          release: {
+            name: VITE_BUILD_COMMIT,
+          },
         }),
       // only check env vars when building for production
       // some ENV is only available in prod
