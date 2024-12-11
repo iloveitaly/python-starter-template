@@ -7,8 +7,8 @@ project_slug:
   type: str
   help: Dash separated project slug
   validator: >-
-    {% if not (project_name | regex_search('^[a-z][a-z0-9-]+$')) %}
-    project_name must start with a letter, followed one or more letters, digits or dashes all lowercase.
+    {% if not (project_slug | regex_search('^[a-z][a-z0-9-]+$')) %}
+    project_slug must start with a letter, followed one or more letters, digits or dashes all lowercase.
     {% endif %}
 
 from_email:
