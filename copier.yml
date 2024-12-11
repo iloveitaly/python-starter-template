@@ -6,7 +6,8 @@ _jinja_extensions:
 project_slug:
   type: str
   help: project slug
-  default: "{{ ('basename ' ~ dst_path | shell()) | replace('_', '-') | replace(' ', '-') }}"
+  # default: "{{ ('basename ' ~ dst_path | shell()) | replace('_', '-') | replace(' ', '-') }}"
+  default: "{{dst_path}}"
 
 from_email:
   type: str
