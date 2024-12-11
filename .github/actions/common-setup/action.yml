@@ -1,9 +1,6 @@
-name: 'Install Localias'
-description: "Install and run localias as a daemon, enabling https domains to be used for CI tests"
-author: 'Michael Bianco'
-branding:
-  icon: 'box'
-  color: 'green'
+name: 'Common Setup'
+description: "Internal action for common setup across jobs"
+
 # NOTE timeout-minutes *cannot* bet set within a action and must be set at the root level
 runs:
   using: 'composite'
@@ -20,12 +17,12 @@ runs:
     # without any additional options, this simply installs the latest version of the cli
     - uses: 1password/load-secrets-action@v2
     - uses: iloveitaly/github-action-direnv-load-and-mask@master
-    - shell: bash
-      run: |
-        mkdir -p ~/.config/direnv
-        echo '[global]
-        disable_stdin = true
-        strict_env = true
-        hide_env_diff = true
-        warn_timeout = 0
-        ' > ~/.config/direnv/direnv.toml
+    # - shell: bash
+    #   run: |
+    #     mkdir -p ~/.config/direnv
+    #     echo '[global]
+    #     disable_stdin = true
+    #     strict_env = true
+    #     hide_env_diff = true
+    #     warn_timeout = 0
+    #     ' > ~/.config/direnv/direnv.toml
