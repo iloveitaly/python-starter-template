@@ -47,10 +47,12 @@ _exclude:
   - TODO
   - .git
 
-_answers_file: .copier/.copier-answers.yml
-
 _tasks:
   - git init
+  - rm README.md
   - git add .
   - git commit -m "🎉 Initial commit"
   - ["{{ _copier_python }}", .copier/bootstrap.py]
+
+# although it's annoying to have the .copier-answers.yml file in the root, it allows `copier update`
+# to work properly
