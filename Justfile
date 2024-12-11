@@ -28,6 +28,7 @@
 set shell := ["zsh", "-cu", "-o", "pipefail"]
 
 # TODO v (cmd tracing) by default for [script]? created weird terminal clearing behavior
+# TODO can we force tracing and a custom PS4 prompt? Would be good to understand how Just handles echoing commands
 # set script-interpreter := ["zsh", "-euvBh"]
 
 # determines what shell to use for [script]
@@ -713,11 +714,13 @@ PYTHON_PRODUCTION_ENV_FILE := ".env.production.backend"
 # .env file with production variables that are safe to share publicly (frontend)
 JAVASCRIPT_SECRETS_FILE := ".env.production.frontend"
 
-JAVASCRIPT_IMAGE_NAME := PYTHON_IMAGE_NAME + "-javascript"
-JAVASCRIPT_IMAGE_TAG := JAVASCRIPT_IMAGE_NAME + ":" + GIT_SHA
-
+# by default, the py image name is pulled from the project name
 PYTHON_IMAGE_NAME := PROJECT_NAME
 PYTHON_IMAGE_TAG := PYTHON_IMAGE_NAME + ":" + GIT_SHA
+
+# the js image is not deployed and is only used during build, so we simply add a -javascript suffix
+JAVASCRIPT_IMAGE_NAME := PYTHON_IMAGE_NAME + "-javascript"
+JAVASCRIPT_IMAGE_TAG := JAVASCRIPT_IMAGE_NAME + ":" + GIT_SHA
 
 PYTHON_PRODUCTION_IMAGE_NAME := "ghcr.io/iloveitaly/python-starter-template"
 JAVASCRIPT_PRODUCTION_IMAGE_NAME := PYTHON_PRODUCTION_IMAGE_NAME + "-javascript"
@@ -741,7 +744,9 @@ _production_build_assertions:
 		exit 1; \
 	fi
 
+# within nixpacks, this is where the SPA client assets are built
 JAVASCRIPT_CONTAINER_BUILD_DIR := "/app/build/client"
+# outside of nixpacks, within the python application folder, this is where the SPA assets are stored
 JAVASCRIPT_PRODUCTION_BUILD_DIR := "public"
 
 # build the javascript assets by creating an image, building assets inside the container, and then copying them to the host
