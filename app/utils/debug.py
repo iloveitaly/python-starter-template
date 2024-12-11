@@ -319,3 +319,39 @@ def dump_system_options():
     options["PYTHONWARNINGS"] = os.environ.get("PYTHONWARNINGS", None)
 
     return options
+
+
+def build_process_tree(pid=None):
+    """
+    Builds a nested dictionary representing the process tree starting from the given PID.
+    If no PID is provided, uses the current process PID.
+
+    :param pid: Process ID of the root process. Defaults to current process PID.
+    :return: A dictionary representing the process tree.
+    """
+
+    import os
+
+    import psutil
+
+    if pid is None:
+        pid = os.getpid()
+
+    try:
+        root = psutil.Process(pid)
+    except psutil.NoSuchProcess:
+        print(f"No process found with PID: {pid}")
+        return {}
+
+    def recurse(process):
+        try:
+            children = process.children(recursive=False)
+            return {
+                "pid": process.pid,
+                "name": process.name(),
+                "children": [recurse(child) for child in children],
+            }
+        except psutil.NoSuchProcess:
+            return {"pid": process.pid, "name": process.name(), "children": []}
+
+    return recurse(root)
