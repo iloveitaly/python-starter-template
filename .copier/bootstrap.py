@@ -1,3 +1,4 @@
+import os
 import re
 import shutil
 from pathlib import Path
@@ -7,7 +8,7 @@ import yaml
 
 # Change to parent directory of the script
 script_dir = Path(__file__).parent
-Path.cwd().chdir(script_dir.parent)
+os.chdir(str(script_dir.parent))
 
 # Copy README.md from .copier to project root
 Path("README.md").unlink()
