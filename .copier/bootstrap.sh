@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cp .copier/README.md README.md
+cp ./README.md ../README.md
 
 # TODO replace:
 # - OP config?

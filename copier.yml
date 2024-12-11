@@ -3,14 +3,15 @@ _jinja_extensions:
 
 project_slug:
   type: str
-  help: Project Slug
-  default: "{{ 'basename $PWD' | shell() }}"
+  help: project slug
+  default: "{{ ('basename $PWD' | shell()) | replace('_', '-') | replace(' ', '-') }}"
 
 from_email:
   type: str
-  default: noreply@example.com
   help: The email account to send emails from, you can set it later in .env
+  default: noreply@example.com
 
+# TODO should we differentiate from the registry and the base push URL
 registry_base:
   type: str
   help: Base URL of the container registry to push to
