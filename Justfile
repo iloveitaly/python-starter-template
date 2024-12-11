@@ -747,7 +747,7 @@ JAVASCRIPT_PRODUCTION_BUILD_DIR := "public"
 # build the javascript assets by creating an image, building assets inside the container, and then copying them to the host
 build_js-assets: _production_build_assertions
 	@echo "Building javascript assets..."
-	rm -rf "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}"
+	rm -rf "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}" || true
 
 	# Production assets bundle public "secrets" (safe to expose publicly) which are extracted from the environment
 	# for this reason, we need to emulate the production environment, then build the assets statically.
