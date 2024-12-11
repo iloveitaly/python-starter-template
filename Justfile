@@ -346,10 +346,6 @@ py_setup:
 		uv run playwright install chromium --only-shell; \
 	fi
 
-	# TODO once we figure out the right pattern for CLI tooling, we can simplify this
-	# when running locally, update the chrome version file
-	[ ! -z "${CI:-}" ] || uv run python -m app.cli write-versions
-
 # clean entire py project without rebuilding
 py_clean:
 	# pycache should never appear because of PYTHON* vars

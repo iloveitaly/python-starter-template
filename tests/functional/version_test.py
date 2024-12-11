@@ -17,20 +17,24 @@ from app.configuration.versions import (
     redis_version,
 )
 
+VERSION_ERROR = "Service version mismatch for {}, run 'uv run python -m app.cli write-versions' to update"
+
 
 def test_redis_version_matches():
     persisted_chrome_version = json.loads(VERSIONS_FILE.read_bytes())["redis"]
 
-    assert persisted_chrome_version == redis_version()
+    assert persisted_chrome_version == redis_version(), VERSION_ERROR.format("redis")
 
 
 def test_postgres_version_matches():
     persisted_chrome_version = json.loads(VERSIONS_FILE.read_bytes())["postgres"]
 
-    assert persisted_chrome_version == postgres_version()
+    assert persisted_chrome_version == postgres_version(), VERSION_ERROR.format(
+        "postgres"
+    )
 
 
 def test_chrome_version_matches_persisted_version():
     persisted_chrome_version = json.loads(VERSIONS_FILE.read_bytes())["chrome"]
 
-    assert persisted_chrome_version == chrome_version()
+    assert persisted_chrome_version == chrome_version(), VERSION_ERROR.format("chrome")
