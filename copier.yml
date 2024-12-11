@@ -6,7 +6,7 @@ _jinja_extensions:
 project_slug:
   type: str
   help: project slug
-  default: "{{ ('basename $PWD' | shell()) | replace('_', '-') | replace(' ', '-') }}"
+  default: "{{ ( 'basename \"' + _copier_conf.dst_path + '\"' | shell()) | replace('_', '-') | replace(' ', '-') }}"
 
 from_email:
   type: str
@@ -23,11 +23,7 @@ _exclude:
   - metadata.json
   - .github/workflows/repo-sync.yml
   - TODO
-  - README.md
   - .git
-
-_include:
-  - .copier/README.md
 
 _answers_file: .copier/.copier-answers.yml
 

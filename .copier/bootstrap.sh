@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cp ./README.md ../README.md
+cp -f ./README.md ../README.md
 
 # TODO replace:
 # - OP config?
