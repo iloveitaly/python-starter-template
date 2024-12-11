@@ -5,9 +5,11 @@ _jinja_extensions:
 
 project_slug:
   type: str
-  help: project slug
-  # default: "{{ ('basename ' ~ dst_path | shell()) | replace('_', '-') | replace(' ', '-') }}"
-  default: "{{dst_path}}"
+  help: Dash separated project slug
+  validator: >-
+    {% if not (project_name | regex_search('^[a-z][a-z0-9-]+$')) %}
+    project_name must start with a letter, followed one or more letters, digits or dashes all lowercase.
+    {% endif %}
 
 from_email:
   type: str
