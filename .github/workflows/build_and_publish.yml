@@ -91,4 +91,9 @@ jobs:
       - uses: ./.github/actions/common-setup
         timeout-minutes: 1
       - run: just build
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - run: just build_push

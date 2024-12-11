@@ -790,14 +790,14 @@ build: _build_requirements _production_build_assertions build_js-assets
 
 build_push: _production_build_assertions
 	# JS image is not used in prod, but is used for nixpacks caching, so we push to the registry
-	docker tag {{JAVASCRIPT_IMAGE_TAG}} {{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}:latest
-	docker push {{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}:latest
-
 	docker tag {{PYTHON_IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:{{GIT_SHA}}
 	docker push {{PYTHON_PRODUCTION_IMAGE_NAME}}:{{GIT_SHA}}
 
 	docker tag {{PYTHON_IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:latest
 	docker push {{PYTHON_PRODUCTION_IMAGE_NAME}}:latest
+
+	docker tag {{JAVASCRIPT_IMAGE_TAG}} {{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}:latest
+	docker push {{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}:latest
 
 # dump json output of the built image, ex: j build_inspect '.Config.Env'
 build_inspect *flags:
