@@ -46,6 +46,7 @@ _exclude:
   - .github/workflows/repo-sync.yml
   - TODO
   - .git
+  - migrations/versions
 
 _tasks:
   - git init
@@ -53,6 +54,9 @@ _tasks:
   - git add .
   - git commit -m "🎉 Initial commit"
   - ["{{ _copier_python }}", .copier/bootstrap.py]
+  - just setup
+  - direnv exec just db_generate_migration "initial_commit"
+
 
 # although it's annoying to have the .copier-answers.yml file in the root, it allows `copier update`
 # to work properly

@@ -72,7 +72,8 @@ dev: local-alias setup
 #######################
 
 # NOTE nixpacks is installed during the deployment step and not as a development prerequisite
-BREW_PACKAGES := "lefthook fd peterldowns/tap/localias entr foreman 1password-cli yq jq"
+BREW_PACKAGES := "fd entr 1password-cli yq jq"
+EXTRA_BREW_PACKAGES := "lefthook peterldowns/tap/localias foreman"
 
 [macos]
 [script]
@@ -109,21 +110,22 @@ requirements *flags:
 		fi; \
 	fi
 
-	if [[ "{{flags}}" =~ "--extras" ]]; then \
+	@if [[ "{{flags}}" =~ "--extras" ]]; then \
 		echo "Adding aiautocommit..."; \
 		uv tool add aiautocommit; \
+		echo "Removing sample git hooks..."; \
+		rm .git/hooks/*.sample || true; \
+		echo "Installing git hooks..."; \
+		lefthook install; \
+		for brew_package in {{EXTRA_BREW_PACKAGES}}; do \
+			just _brew_check_and_install $brew_package; \
+		done; \
 	fi
-
-	# install git hooks
-	lefthook install
-
-	# sample scripts make the hooks dir look pretty messy
-	rm .git/hooks/*.sample || true
 
 # setup everything you need for local development
 [macos]
-setup: requirements && up py_setup db_seed js_build local-alias
-	# NOTE this task should be non-destructive
+setup: requirements && up py_setup db_seed js_build
+	# NOTE this task should be non-destructive, the user should opt-in to something like `nuke`
 
 	# some reasoning behind the logic here:
 	#
@@ -135,7 +137,10 @@ setup: requirements && up py_setup db_seed js_build local-alias
 	fi
 
 	# direnv will setup a venv (assuming `layout uv` is supported) & install packages
+	# however the direnv information will not persist in the user's shell
 	direnv allow .
+
+	@echo "If you are using localais, run `just local-alias` to start the daemon"
 
 # TODO extract to my personal dotfiles as well
 # TODO should change the CURRENT_BASE for py and other x.x.y upgrades
