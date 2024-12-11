@@ -6,7 +6,8 @@ _jinja_extensions:
 project_slug:
   type: str
   help: project slug
-  default: "{{ ('basename \"' ~ _copier_conf.dst_path ~ '\"' | shell()) | replace('_', '-') | replace(' ', '-') }}"
+  default: "{{ ('basename ' ~ dst_path | shell()) | replace('_', '-') | replace(' ', '-') }}"
+
 from_email:
   type: str
   help: The email account to send emails from, you can set it later in .env
