@@ -10,6 +10,15 @@ _message_before_copy: >-
 
   Install mise and docker before continuing.
 
+_message_after_copy: |
+  Next steps:
+
+    1. Configure all 1p secret references in .env.shared and friends
+    2. Run 'direnv exec . just setup' or 'direnv exec . just setup --extras'
+    3. Run 'direnv exec . just db_generate_migration "initial_commit"'
+    4. Run 'direnv exec . just py_dev' to start a dev server
+    5. Take a look at recommended shell hooks, etc
+
 
 project_slug:
   type: str
@@ -60,10 +69,6 @@ _tasks:
   - git add .
   - git commit -m "🎉 Initial commit"
   - ["{{ _copier_python }}", .copier/bootstrap.py]
-  - just requirements
-  - direnv exec . just setup
-  - direnv exec . just db_generate_migration "initial_commit"
-
 
 # although it's annoying to have the .copier-answers.yml file in the root, it allows `copier update`
 # to work properly
