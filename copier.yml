@@ -5,6 +5,9 @@ _min_copier_version: 9.4.1
 _jinja_extensions:
   - jinja2_shell_extension.ShellExtension
 
+_message_before_copy: >-
+  Install mise and docker before running continuing.
+
 project_slug:
   type: str
   help: Dash separated project slug
@@ -54,8 +57,9 @@ _tasks:
   - git add .
   - git commit -m "🎉 Initial commit"
   - ["{{ _copier_python }}", .copier/bootstrap.py]
-  - direnv exec just setup
-  - direnv exec just db_generate_migration "initial_commit"
+  - just requirements
+  - direnv exec . just setup
+  - direnv exec . just db_generate_migration "initial_commit"
 
 
 # although it's annoying to have the .copier-answers.yml file in the root, it allows `copier update`
