@@ -13,7 +13,7 @@ os.chdir(str(script_dir.parent))
 shutil.copy2(".copier/README.md", "README.md")
 
 # Load copier answers
-copier_answers = json.loads(Path(".copier/.copier-answers.yml").read_text())
+copier_answers = json.loads(Path(".copier-answers.yml").read_text())
 
 
 def replace_lines_in_files(replacements: Dict[str, List[Tuple[str, str]]]):
