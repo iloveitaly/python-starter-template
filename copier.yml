@@ -16,11 +16,15 @@ from_email:
   help: The email account to send emails from, you can set it later in .env
   default: noreply@example.com
 
-# TODO should we differentiate from the registry and the base push URL
 registry_base:
   type: str
   help: Base URL of the container registry to push to
   default: "ghcr.io/{{ \"gh api user --jq '.login'\" | shell() }}"
+
+production_image_name:
+  type: str
+  help: The production image name, with registry base, that the build system should push to
+  default: "{{ registry_base }}/{{ project_slug }}"
 
 _exclude:
   - metadata.json
@@ -34,4 +38,4 @@ _tasks:
   - git init
   - git add .
   - git commit -m "🎉 Initial commit"
-  - .copier/bootstrap.sh
+  - ["{{ _copier_python }}", .copier/bootstrap.py]
