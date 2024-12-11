@@ -10,7 +10,6 @@ script_dir = Path(__file__).parent
 os.chdir(str(script_dir.parent))
 
 # Copy README.md from .copier to project root
-Path("README.md").unlink()
 shutil.copy2(".copier/README.md", "README.md")
 
 # Load copier answers
