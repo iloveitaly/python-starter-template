@@ -54,7 +54,7 @@ _tasks:
   - git add .
   - git commit -m "🎉 Initial commit"
   - ["{{ _copier_python }}", .copier/bootstrap.py]
-  - just setup
+  - direnv exec just setup
   - direnv exec just db_generate_migration "initial_commit"
 
 
