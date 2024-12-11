@@ -19,7 +19,7 @@ from_email:
 registry_base:
   type: str
   help: Base URL of the container registry to push to
-  default: "ghcr.io/{{ \"gh api user --jq '.login'\" | shell() }}"
+  default: "ghcr.io/{{ \"gh api user --jq '.login'\" | shell() | trim }}"
 
 production_image_name:
   type: str
