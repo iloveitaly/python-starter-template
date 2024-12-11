@@ -440,7 +440,7 @@ py_js-build:
 	# to do this, we build the app and serve it like it will be served in production
 	export PNPM_GLOBAL_FLAGS="--silent" && {{EXECUTE_IN_TEST}} just js_build
 
-PYTEST_COV_PARAMS := x"--cov --cov-report=html:${TEST_RESULTS_DIRECTORY}/htmlcov --cov-report=term"
+PYTEST_COV_PARAMS := "--cov --cov-report=html:${TEST_RESULTS_DIRECTORY}/htmlcov --cov-report=term"
 
 # run tests with the exact same environment that will be used on CI
 [script]
