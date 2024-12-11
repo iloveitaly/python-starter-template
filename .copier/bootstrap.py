@@ -45,7 +45,7 @@ def replace_lines_in_files(replacements: Dict[str, List[Tuple[str, str]]]):
 
 
 replacements = {
-    "pyproject.toml": [(r"^name = \"", f"name = \"{copier_answers['project-slug']}\"")],
+    "pyproject.toml": [(r"^name = \"", f"name = \"{copier_answers['project_slug']}\"")],
     ".env.shared": [
         (
             r"export EMAIL_FROM_ADDRESS=",
