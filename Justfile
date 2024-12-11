@@ -140,7 +140,7 @@ setup: requirements && up py_setup db_seed js_build
 	# however the direnv information will not persist in the user's shell
 	direnv allow .
 
-	@echo "If you are using localais, run `just local-alias` to start the daemon"
+	@echo 'If you are using localais, run `just local-alias` to start the daemon'
 
 # TODO extract to my personal dotfiles as well
 # TODO should change the CURRENT_BASE for py and other x.x.y upgrades
