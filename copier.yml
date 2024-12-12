@@ -60,8 +60,9 @@ _exclude:
   - metadata.json
   - .github/workflows/repo-sync.yml
   - TODO
-  - .git
+  - /.git
   - migrations/versions/*
+  - /README.md
 
 _tasks:
   - git init
