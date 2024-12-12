@@ -136,6 +136,11 @@ setup: requirements && py_setup db_seed js_build
 		echo "Please edit .env.dev.local to your liking."; \
 	fi
 
+	@if [ ! -f .env.local ]; then \
+		cp .env.local-example .env.local; \
+		echo "Please edit .env.local to your liking."; \
+	fi
+
 	@echo 'If you are using localais, run `just local-alias` to start the daemon'
 
 # TODO extract to my personal dotfiles as well

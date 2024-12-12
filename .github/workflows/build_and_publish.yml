@@ -29,6 +29,7 @@ env:
   # the host where services are located is truly unique to the CI environment.
   DATABASE_HOST: localhost
   REDIS_HOST: localhost
+  SMTP_HOST: localhost
 
   # https://github.com/Textualize/rich/issues/2769
   COLUMNS: 120
