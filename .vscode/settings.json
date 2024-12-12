@@ -15,7 +15,8 @@
   "prettier.prettierPath": "web/node_modules/prettier",
   "[typescript][typescriptreact][javascript][javascriptreact]": {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnPaste": false
   },
 
   "[python]": {
