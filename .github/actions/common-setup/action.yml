@@ -16,12 +16,3 @@ runs:
     # without any additional options, this simply installs the latest version of the cli
     - uses: 1password/load-secrets-action@v2
     - uses: iloveitaly/github-action-direnv-load-and-mask@master
-  # - shell: bash
-  #   run: |
-  #     mkdir -p ~/.config/direnv
-  #     echo '[global]
-  #     disable_stdin = true
-  #     strict_env = true
-  #     hide_env_diff = true
-  #     warn_timeout = 0
-  #     ' > ~/.config/direnv/direnv.toml
