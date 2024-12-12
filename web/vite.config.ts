@@ -60,7 +60,7 @@ function getModePlugins(mode: string) {
         throw new Error("Missing VITE_BUILD_COMMIT. Include to fix build.")
       }
 
-      if (!CI && !VITE_BUILD_COMMIT.endsWith("-dirty")) {
+      if (CI && VITE_BUILD_COMMIT.endsWith("-dirty")) {
         throw new Error("Missing SENTRY_AUTH_TOKEN. Include to fix build.")
       }
 

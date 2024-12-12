@@ -561,7 +561,7 @@ db_down:
 #######################
 
 # completely destroy the dev and test databases without running migrations
-db_reset: db_down db_up
+db_reset: db_down db_up db_migrate
 
 db_lint:
 	uv run alembic check
@@ -643,19 +643,26 @@ db_debug_off:
 # Secrets
 #######################
 
+_secrets_service-token CONTEXT:
+	# if OP_SERVICE_ACCOUNT_TOKEN is set, the service-account API will not work
+	unset OP_SERVICE_ACCOUNT_TOKEN && \
+	op service-account create {{PROJECT_NAME}}-{{CONTEXT}} \
+			--expires-in '90d' \
+			--vault "${OP_VAULT_UID}:read_items" \
+			--raw
+
+# generate service account token to be used locally for a developer
+[macos]
+secrets_local-service-token user=`whoami`:
+	just _secrets_service-token {{user}} | jq -r -R '@sh "export OP_SERVICE_ACCOUNT_TOKEN=\(.)"'
+
 # grant GH actions access to the 1p vault, this needs to be done every 90d
 [macos]
-[script]
 secrets_ci_grant-github-actions:
 	# 90d is the max expiration time allowed
 	# this can be safely run multiple times, it will not regenerate the service account token
-	service_account_token=$(op service-account create {{PROJECT_NAME}}-github-actions \
-		 --expires-in '90d' \
-		 --vault "${OP_VAULT_UID}:read_items" \
-		 --raw \
-	)
-
-	gh secret set OP_SERVICE_ACCOUNT_TOKEN --app actions --body "$service_account_token"
+	service_account_token=$(just _secrets_service-token github-actions) && \
+		gh secret set OP_SERVICE_ACCOUNT_TOKEN --app actions --body "$service_account_token"
 
 # manage the op service account from the web ui
 [macos]
@@ -939,7 +946,7 @@ eval "$(just --completions $(basename $SHELL))"
 # export direnv variables as a bash script to avoid using direnv and mutating your environment configuration
 [macos]
 [script]
-bash_export:
+direnv_bash_export:
 	target_file=".env.$(whoami).local"
 
 	echo '{{BASH_EXPORT_PREAMBLE}}' > "$target_file"
