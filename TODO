@@ -11,11 +11,12 @@ use BaseSettings in pydantic instead of decouple?
 fastapi websocket with remix connection
 do we need this https://github.com/fastapiutils/fastapi-utils/blob/master/fastapi_utils/guid_type.py?
 logging can sometimes get a little crazy, we should come up with better defaults for child loggers
-generate plain text from md without template being used for email
 gzip serve files, cache static assets as gzip; got to be someone who has done this before
 custom py reload, this is taking a ton of resources https://github.com/fastapi/fastapi/discussions/2863
 TypeID `.get` doesn't work with an ID string
 understand typeid string vs DB UID and how it's handled internally
+favicon and other root handlers on the fastapi server
+prevent rich tracebacks
 
 ## js
 sentry config, not yet ready for v7 https://docs.sentry.io/platforms/javascript/guides/react/features/react-router/, https://github.com/remix-run/react-router/discussions/12423
@@ -43,6 +44,7 @@ https://github.com/astral-sh/uv/issues/9258#issuecomment-2488597047 - looks like
 autogen'd localalias based on ENV port config, use local
 switch to binstall and see if this becomes a binary distribution https://github.com/yukihirop/ultraman/issues/58
 look into devenv, maybe a replacement for some of the setup here? https://github.com/getsentry/sentry/blob/master/devenv/sync.py
+onlyu look at local .tool-versions
 
 ## commitlint
 removing unused import, should catch this specifically
@@ -53,8 +55,9 @@ should we add justfile to run production scripts? Probably not. Should document.
 ## template
 https://github.com/fastapi/full-stack-fastapi-template/blob/master/copier.yml - looks like there is some copy tool I can use? to make this template easy to copy.
 
-## py test
+## pytest
 timeout default for playwright to avoid hanging
+test logs are a mess. I need to figure out what pytest is doing and make them sane.
 
 ## aicommit
 include multiple large changes with comma
@@ -64,7 +67,7 @@ if I remove stuff, it counts it as a feature
 localias upstream no caching
 
 ## ci
-test logs are a mess. I need to figure out what pytest is doing and make them sane.
+https://github.com/tecolicom/actions-use-apt-tools/issues/5
 1p can hang CI https://1password-devs.slack.com/archives/C03NJV34SSC/p1733764637441309
 can we use a op service account locally? Probably not a great idea since no 2f is required
 pull mailpit contents (we can't pull screeshots)

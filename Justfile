@@ -164,7 +164,9 @@ _mise_upgrade:
 			fi
 	done
 
+	# TODO https://discord.com/channels/1066429325269794907/1314301006992900117/1316773799688933406
 	mise install
+
 	just _mise_version_sync
 	git add .tool-versions
 
@@ -875,7 +877,8 @@ extract_proc procname:
 jq_script := """
 with_entries(
 	select((
-		(.key | startswith("DIRENV") | not)
+		(.key | startswith("DIRENV_") | not)
+		and (.key | startswith("OP_") | not)
 		and (.key | IN("VIRTUAL_ENV", "VENV_ACTIVE", "UV_ACTIVE", "PATH") | not)
 	))
 )
@@ -901,13 +904,42 @@ with_entries(
 	# https://1password-devs.slack.com/archives/C03NJV34SSC/p1733771530356779
 
 # export env variables for a particular file in a format docker can consume
-[doc("Export as docker '-e' params: --params")]
+[doc("Export as docker '-e' params: --params\nExport as shell: --shell")]
 @direnv_export_docker target *flag:
-	# clear all contents of the tmp dir
+	# NOTE @sh below does NOT handle newlines, tabs, etc in ANSI-C format like direnv does
+	#      https://github.com/iloveitaly/direnv/blob/1a39d968c165fddff3b9a4c5538025d71f73ee43/internal/cmd/shell_bash.go#L97
+	#      this could cause issues for us, although it seems as though @sh just includes the literal newline or tab char
+	# 		 instead of the escaped version, which is most likely fine.
 
 	if {{ if flag == "--params" { "true" } else { "false" } }}; then; \
 		just direnv_export "{{target}}" | jq -r 'to_entries | map("-e \(.key)=\(.value)") | join(" ")'; \
+	elif {{ if flag == "--shell" { "true" } else { "false" } }}; then; \
+	  just direnv_export "{{target}}" | jq -r 'to_entries[] | "export \(.key)=\(.value | @sh)"'; \
 	else; \
 		just direnv_export "{{target}}" | jq -r 'to_entries[] | "\(.key)=\(.value)"'; \
 	fi
 
+	# last case is exporting as a docker file (i.e. no export)
+	# TODO note this is not currently in use, so we'll probably have to tweak it in the future
+
+BASH_EXPORT_PREAMBLE := """
+export PATH="$HOME/.local/bin:$PATH"
+
+eval "$(mise activate)"
+eval "$(just --completions $(basename $SHELL))"
+
+## BEGIN DIRENV EXPORT
+"""
+
+# export direnv variables as a bash script to avoid using direnv and mutating your environment configuration
+[macos]
+[script]
+bash_export:
+	target_file=".env.$(whoami).local"
+
+	echo '{{BASH_EXPORT_PREAMBLE}}' > "$target_file"
+	just direnv_export_docker "" --shell >> "$target_file"
+
+	echo $'\n'
+	echo "File generated: $target_file"
+	echo "Source using 'source $target_file'"
