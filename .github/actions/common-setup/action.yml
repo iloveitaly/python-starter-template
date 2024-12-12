@@ -1,6 +1,5 @@
 name: 'Common Setup'
 description: "Internal action for common setup across jobs"
-
 # NOTE timeout-minutes *cannot* bet set within a action and must be set at the root level
 runs:
   using: 'composite'
@@ -9,7 +8,7 @@ runs:
     # mise can rarely get stuck installing. It normally takes < 10s to install, so this should never be more than a minute
     - uses: jdx/mise-action@v2
       with:
-        version: 2024.12.5
+        version: 2024.12.7
     # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
     - uses: tecolicom/actions-use-apt-tools@v1
       with:
@@ -17,12 +16,12 @@ runs:
     # without any additional options, this simply installs the latest version of the cli
     - uses: 1password/load-secrets-action@v2
     - uses: iloveitaly/github-action-direnv-load-and-mask@master
-    # - shell: bash
-    #   run: |
-    #     mkdir -p ~/.config/direnv
-    #     echo '[global]
-    #     disable_stdin = true
-    #     strict_env = true
-    #     hide_env_diff = true
-    #     warn_timeout = 0
-    #     ' > ~/.config/direnv/direnv.toml
+  # - shell: bash
+  #   run: |
+  #     mkdir -p ~/.config/direnv
+  #     echo '[global]
+  #     disable_stdin = true
+  #     strict_env = true
+  #     hide_env_diff = true
+  #     warn_timeout = 0
+  #     ' > ~/.config/direnv/direnv.toml

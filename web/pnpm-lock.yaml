@@ -18,8 +18,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       '@hey-api/client-fetch':
-        specifier: ^0.5.2
-        version: 0.5.2
+        specifier: ^0.5.3
+        version: 0.5.3
       '@radix-ui/react-avatar':
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.1)(@types/react@18.3.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -78,8 +78,8 @@ importers:
         specifier: ^0.468.0
         version: 0.468.0(react@18.3.1)
       posthog-js:
-        specifier: ^1.195.0
-        version: 1.195.0
+        specifier: ^1.198.0
+        version: 1.198.0
       ramda:
         specifier: ^0.30.1
         version: 0.30.1
@@ -793,8 +793,8 @@ packages:
   '@formkit/auto-animate@0.8.2':
     resolution: {integrity: sha512-SwPWfeRa5veb1hOIBMdzI+73te5puUBHmqqaF1Bu7FjvxlYSz/kJcZKSa9Cg60zL0uRNeJL2SbRxV6Jp6Q1nFQ==}
 
-  '@hey-api/client-fetch@0.5.2':
-    resolution: {integrity: sha512-ix8MuuLTME5BWMQ8iCALqWflHtDyuoEwX0b77TQL+VgEXL89cYtjoHxE2bm2DYQQm8qDJXvTS6ju/D6wB6l6Hg==}
+  '@hey-api/client-fetch@0.5.3':
+    resolution: {integrity: sha512-qdevpLv6uv5zIoZc2IBxWy3AkTupnzi46fIpQf851EfROsKcVzWwO/iEHAgtNoUhbAbPYdGJdQ2tC3ZltM7C2A==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -3562,8 +3562,8 @@ packages:
     resolution: {integrity: sha512-OCVPnIObs4N29kxTjzLfUryOkvZEq+pf8jTF0lg8E7uETuWHA+v7j3c/xJmiqpX450191LlmZfUKkXxkTry7nA==}
     engines: {node: ^10 || ^12 || >=14}
 
-  posthog-js@1.195.0:
-    resolution: {integrity: sha512-ja+d/uogH9IPPnnM512uL5a9Igzz4K1OvBJNybCSbt6hqjSC+c5XaY3XH8t4D3RFz7aU5Di3trsrh/YNkSbF6A==}
+  posthog-js@1.198.0:
+    resolution: {integrity: sha512-QvXaLW9OTIWoXzFf9lAeVVN7q1exBjVi8Piygz771AvpnySloFrfHntFgnU0eMYSM199psANOtNlmqckG8YdfQ==}
 
   preact@10.24.3:
     resolution: {integrity: sha512-Z2dPnBnMUfyQfSQ+GBdsGa16hz35YmLmtTLhM169uW944hYL6xzTYkJjC07j+Wosz733pMWx0fgON3JNw1jJQA==}
@@ -5121,7 +5121,7 @@ snapshots:
 
   '@formkit/auto-animate@0.8.2': {}
 
-  '@hey-api/client-fetch@0.5.2': {}
+  '@hey-api/client-fetch@0.5.3': {}
 
   '@humanfs/core@0.19.1': {}
 
@@ -8120,7 +8120,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  posthog-js@1.195.0:
+  posthog-js@1.198.0:
     dependencies:
       core-js: 3.39.0
       fflate: 0.4.8

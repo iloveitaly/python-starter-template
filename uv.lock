@@ -447,9 +447,16 @@ wheels = [
 
 [[package]]
 name = "debugpy"
-version = "1.8.10"
+version = "1.8.9"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/2e/3c/ef563dec9f7ea4c29bd26ed3c5eba5038f8d9d46ac41aacfc99dc77f0885/debugpy-1.8.10.tar.gz", hash = "sha256:ee4ed903cbeb14ee1839549f953af519ffa512598ec987b2051f9c868e2249a8", size = 1644028 }
+sdist = { url = "https://files.pythonhosted.org/packages/88/92/15b454c516c4c53cc8c03967e4be12b65a1ea36db3bb4513a7453f75c8d8/debugpy-1.8.9.zip", hash = "sha256:1339e14c7d980407248f09824d1b25ff5c5616651689f1e0f0e51bdead3ea13e", size = 4921695 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/cc/8d/eb12dcb977a2d166aac6614e60daddd1eef72881a0343717d7deb0d4868c/debugpy-1.8.9-cp313-cp313-macosx_14_0_universal2.whl", hash = "sha256:957ecffff80d47cafa9b6545de9e016ae8c9547c98a538ee96ab5947115fb3dd", size = 2489077 },
+    { url = "https://files.pythonhosted.org/packages/87/2b/3b7a00d8d2bb891cfa33240575c2d5fc3fa6e0bc75567f4ece59b9d3d6ea/debugpy-1.8.9-cp313-cp313-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1efbb3ff61487e2c16b3e033bc8595aea578222c08aaf3c4bf0f93fadbd662ee", size = 4219198 },
+    { url = "https://files.pythonhosted.org/packages/5f/a1/f489026a65fabfff8c73bd51b880c130d636e02b1847564141fe3957d94f/debugpy-1.8.9-cp313-cp313-win32.whl", hash = "sha256:7c4d65d03bee875bcb211c76c1d8f10f600c305dbd734beaed4077e902606fee", size = 5163014 },
+    { url = "https://files.pythonhosted.org/packages/e6/84/6070908dd163121358eb9d76fcc94f05bc99d2f89a85fe1b86167bc34ec6/debugpy-1.8.9-cp313-cp313-win_amd64.whl", hash = "sha256:e46b420dc1bea64e5bbedd678148be512442bc589b0111bd799367cde051e71a", size = 5203529 },
+    { url = "https://files.pythonhosted.org/packages/2d/23/3f5804202da11c950dc0caae4a62d0c9aadabdb2daeb5f7aa09838647b5d/debugpy-1.8.9-py2.py3-none-any.whl", hash = "sha256:cc37a6c9987ad743d9c3a14fa1b1a14b7e4e6041f9dd0c8abf8895fe7a97b899", size = 5166094 },
+]
 
 [[package]]
 name = "decorator"
@@ -848,7 +855,7 @@ wheels = [
 [[package]]
 name = "j2lint"
 version = "1.1.0"
-source = { git = "https://github.com/aristanetworks/j2lint.git#7ea38d039ab0681dd0436e85d4fc3f2cd0fbb81f" }
+source = { git = "https://github.com/aristanetworks/j2lint.git#f3bfae56b0ed21b66afa41a44d94100de5ed0686" }
 dependencies = [
     { name = "jinja2" },
     { name = "rich" },
@@ -977,11 +984,11 @@ wheels = [
 
 [[package]]
 name = "markdown2"
-version = "2.5.1"
+version = "2.5.2"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/05/92/22e3645e352562ea9bfc89aeaeb9a76feb79e20907b18bc25d5ca340b50f/markdown2-2.5.1.tar.gz", hash = "sha256:12fc04ea5a87f7bb4b65acf5bf3af1183b20838cc7d543b74c92ec7eea4bbc74", size = 140957 }
+sdist = { url = "https://files.pythonhosted.org/packages/a0/61/d3c0c21280ba1fc348822a4410847cf78f99bba8625755a5062a44d2e228/markdown2-2.5.2.tar.gz", hash = "sha256:3ac02226a901c4b2f6fc21dbd17c26d118d2c25bcbb28cee093a1f8b5c46f3f1", size = 141583 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/30/2b/8653ae6d18e20183fc6051fd2e10cd0c46e16a6b71eb34edef8d465dc969/markdown2-2.5.1-py2.py3-none-any.whl", hash = "sha256:190ae60a4bd0425c60c863bede18a9f3d45b1cbf3fbc9f40b4fac336ff2c520b", size = 48363 },
+    { url = "https://files.pythonhosted.org/packages/68/53/baf1f8bd93a9cd5a1b6116041f17dba742bef57cbddb0484f792753c3a2e/markdown2-2.5.2-py3-none-any.whl", hash = "sha256:bed80d301a33845be633acde47a67cf265c57ddf9cbe3cb11c49c18016c2f581", size = 48517 },
 ]
 
 [[package]]
