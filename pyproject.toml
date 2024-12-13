@@ -33,8 +33,6 @@ dependencies = [
     "typeid-python>=0.3.1",
     "typer>=0.14.0",
     "uvicorn>=0.32.0",
-    # TODO 1.x is breaking fastapi right now
-    "watchfiles==1.0.0",
 ]
 
 [dependency-groups]
@@ -135,11 +133,11 @@ asyncio_default_fixture_loop_scope = "session"
 [tool.coverage.run]
 # data_file = "tmp/test-results/.coverage"
 
-[tool.uv.sources]
-j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
-
 # TODO https://github.com/astral-sh/uv/issues/9258
 # https://docs.astral.sh/uv/reference/settings/#override-dependencies
+
+[tool.uv.sources]
+j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
 
 [tool.uv.sources.activemodel]
 git = "https://github.com/iloveitaly/activemodel.git"
@@ -158,7 +156,3 @@ rev = "github-output"
 [tool.uv.sources.pytest-playwright-visual]
 git = "https://github.com/iloveitaly/pytest-playwright-visual.git"
 rev = "global-defaults"
-
-[tool.uv.sources.mailers]
-git = "https://github.com/iloveitaly/mailers.git"
-rev = "custom"
