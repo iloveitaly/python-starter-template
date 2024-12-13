@@ -9,7 +9,6 @@ Simple email interface:
 """
 
 import asyncio
-from typing import TypedDict
 
 import markdown2
 from decouple import config
@@ -17,19 +16,25 @@ from mailers import Email, Mailer
 from mailers.preprocessors.cssliner import css_inliner
 from mailers.preprocessors.remove_html_comments import remove_html_comments
 
-from .templates import render_template
+from ..templates import render_template
 
-SMTP_URL = config("SMTP_URL", cast=str)
-EMAIL_FROM_ADDRESS = config("EMAIL_FROM_ADDRESS", cast=str)
+_mailer: Mailer | None = None
 
-mailer = Mailer(
-    SMTP_URL,
-    from_address=EMAIL_FROM_ADDRESS,
-    preprocessors=[
-        css_inliner,
-        remove_html_comments,
-    ],
-)
+
+def configure_mailer():
+    SMTP_URL = config("SMTP_URL", cast=str)
+    EMAIL_FROM_ADDRESS = config("EMAIL_FROM_ADDRESS", cast=str)
+
+    global _mailer
+
+    _mailer = Mailer(
+        SMTP_URL,
+        from_address=EMAIL_FROM_ADDRESS,
+        preprocessors=[
+            css_inliner,
+            remove_html_comments,
+        ],
+    )
 
 
 def render_email(
@@ -49,16 +54,10 @@ def render_email(
     # Convert markdown to HTML for rich email clients
     html_content = markdown2.markdown(markdown_content)
 
-    # Now render the entire html layout
+    # Now render the entire html layout, with the markdown => html content inserted
     html_content = render_template(layout_path, context | {"content": html_content})
 
     return html_content, plaintext_content
-
-
-class TemplateParams(TypedDict, total=False):
-    premailer: str | None
-    content: str | None
-    subject: str | None
 
 
 def mail(
@@ -70,6 +69,8 @@ def mail(
     cc: list[str] | None = None,
     bcc: list[str] | None = None,
 ):
+    assert _mailer
+
     if "subject" not in context:
         context["subject"] = subject
 
@@ -86,5 +87,6 @@ def mail(
     )
 
     # Get current event loop if one exists, otherwise create new one
+    # TODO https://github.com/alex-oleshkevich/mailers/issues/14
     loop = asyncio.get_event_loop()
-    return loop.run_until_complete(mailer.send(message))
+    return loop.run_until_complete(_mailer.send(message))

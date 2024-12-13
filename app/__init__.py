@@ -8,6 +8,7 @@ import structlog
 
 from .configuration.database import configure_database
 from .configuration.debugging import configure_debugging
+from .configuration.emailer import configure_mailer
 from .configuration.lang import configure_python
 from .configuration.logging import configure_logger
 from .configuration.sentry import configure_sentry
@@ -36,6 +37,7 @@ def setup():
     configure_openai()
     configure_sentry()
     configure_debugging()
+    configure_mailer()
     check_service_versions()
 
     log.info("application setup", environment=python_environment())

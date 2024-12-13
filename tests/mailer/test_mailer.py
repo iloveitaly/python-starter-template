@@ -1,4 +1,4 @@
-from app.emailer import mail
+from app.configuration.emailer import mail
 
 
 def test_mailer():
