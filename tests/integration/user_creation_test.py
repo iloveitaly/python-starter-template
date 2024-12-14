@@ -5,7 +5,8 @@ from playwright.sync_api import Page, expect
 from app.models.user import User
 
 from tests.integration.clerk import setup_clerk_testing_token
-from tests.integration.server import home_url, server, wait_for_loading
+from tests.integration.conftest import server as server_fixture
+from tests.integration.server import home_url, wait_for_loading
 from tests.utils import get_clerk_dev_user
 
 
