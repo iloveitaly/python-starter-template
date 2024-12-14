@@ -1,5 +1,3 @@
-// TODO why do I need ../? I couldn't get .react-router to play well
-// import * as Route from "/.react-router/types/app/+types.root"
 import { type MetaFunction } from "react-router"
 
 import type { Route } from "./+types.home"
