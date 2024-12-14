@@ -41,9 +41,9 @@ def check_service_versions():
 
 
 def postgres_version() -> str:
-    import sqlalchemy as sa
-
     from app.configuration.database import get_engine
+
+    import sqlalchemy as sa
 
     with get_engine().connect() as conn:
         pg_version = conn.execute(sa.text("SHOW server_version")).scalar()

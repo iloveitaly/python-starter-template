@@ -2,6 +2,7 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from app.server import api_app
+
 from tests.conftest import base_server_url
 
 

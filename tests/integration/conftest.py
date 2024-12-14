@@ -1,7 +1,8 @@
 import pytest
-from activemodel.pytest.truncate import database_reset_truncate
 
 from app import log
+
+from activemodel.pytest.truncate import database_reset_truncate
 
 
 def report_localias_status():

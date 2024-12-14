@@ -1,6 +1,7 @@
+from decouple import config
+
 import activemodel
 from activemodel.session_manager import get_engine
-from decouple import config
 from sqlmodel import SQLModel
 
 from ..environments import is_development, is_testing
