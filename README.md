@@ -68,6 +68,18 @@ mkdir your-project
 uv tool run --with jinja2_shell_extension copier copy https://github.com/iloveitaly/python-starter-template . --trust
 ```
 
+The neat thing about copier is you pull updates from this template later on if you'd like:
+
+```shell
+uv tool run --with jinja2_shell_extension copier update --trust --skip-tasks --skip-answered
+```
+
+If you want to skip updates in a particular directory:
+
+```shell
+uv tool run --with jinja2_shell_extension copier update --trust --skip-tasks --skip-answered --exclude web
+```
+
 Once you've copied the template and have the above dependencies installed, you can run:
 
 ```shell
@@ -75,9 +87,39 @@ mise install
 just setup
 ```
 
-That should do the rest. Note that you'll probably want to manually install the shell hooks for a couple tools which you will need to do manually.
+That should do most of what you need. Here are some bits you'll need to handle manually:
 
-If you use 1p for secrets, you'll need to set up the 1Password CLI.
+* Note that you'll probably want to manually install the shell hooks for a couple tools which you will need to do manually.
+* If you use 1p for secrets, you'll need to set up the 1Password CLI.
+
+### Simple Mode
+
+If you despise dev productivity tooling (no judgement!) you can:
+
+* Avoid using direnv.
+* Avoid tying into your local 1password.
+
+Ask a friend who has the system fully configured to run:
+
+```shell
+just direnv_bash_export
+```
+
+You can simply source the resulting file when you create a new shell session.
+
+The primary downside to this approach is:
+
+* Any mutated API keys from 1Password will not be automatically updated
+* Updated ENV configuration will not be automatically used
+* You cannot easily
+
+### Advanced Mode
+
+There are some extra goodies available if you are adventurous:
+
+```shell
+just requirements --extras
+```
 
 ### Shell Completions
 
@@ -89,6 +131,16 @@ Here are a couple additions to your shell environment that you'll probably want 
 * [fzf tab completion](https://github.com/Aloxaf/fzf-tab)
 
 ## Usage
+
+### Pytest
+
+* All fixtures should go in `conftest.py`. Importing fixtures externally [could break in future versions.](https://docs.pytest.org/en/7.4.x/how-to/fixtures.html#using-fixtures-from-other-projects)
+
+### Migrations
+
+1. SQLModel provides a way to push a model definition into the DB. However, once columns and not tables are mutated you must drop the table and recreate it otherwise changes will not take effect. If you develop in this way, you'll need to be extra careful.
+2. If you've been playing with a model locally, you'll want to `just db_reset` and then generate a new migration with `just db_generate_migration`. If you don't do this, your migration may work off of some of the development state.
+3. The database must be fully migrated before generating a new migration `just db_migrate` otherwise you will get an error.
 
 ### Environment Lifecycle
 
