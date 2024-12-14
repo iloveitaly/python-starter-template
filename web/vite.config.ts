@@ -50,17 +50,19 @@ function getModePlugins(mode: string) {
     if (!authToken) {
       const CI = process.env.CI
 
-      // if build is dirty, then we aren't building for prod (probably local)
-      // ensuring dirty builds are not deployed is checked upstream
-      // if we are in CI, then it's fine not to have a sentry token
-      // remember, although production builds are created in CI, they are done within
-      // a docker container and do not inherit CI and other ENV vars
-
       if (!VITE_BUILD_COMMIT) {
         throw new Error("Missing VITE_BUILD_COMMIT. Include to fix build.")
       }
 
-      if (CI && VITE_BUILD_COMMIT.endsWith("-dirty")) {
+      // If build is dirty, then we aren't building for prod (probably local)
+      // ensuring dirty builds are not deployed is checked upstream, so we can rely on this.
+      //
+      // If we are in CI, then it's fine not to have a sentry token
+      //
+      // Remember, although production builds are created in CI, they are done within
+      // a docker container and do not inherit CI and other ENV vars
+
+      if (!CI && !VITE_BUILD_COMMIT.endsWith("-dirty")) {
         throw new Error("Missing SENTRY_AUTH_TOKEN. Include to fix build.")
       }
 

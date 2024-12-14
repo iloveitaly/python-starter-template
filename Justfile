@@ -584,7 +584,6 @@ db_lint:
 [macos]
 db_open:
 	# TablePlus via Setapp is a great option here
-	# https://github.com/TablePlus/TablePlus/issues/3407
 	open $DATABASE_URL
 
 # tui to interact with the database
@@ -610,11 +609,14 @@ db_seed: db_migrate
 [script]
 db_generate_migration migration_name="":
 	if [ -z "{{migration_name}}" ]; then
-		echo "Enter the migration name: "
+		echo "Enter the migration name (use add/remove/update prefix): "
 		read name
 	else
 		name={{migration_name}}
 	fi
+
+	# underscores & alpha chars only
+	name=$(echo "$name" | tr ' ' '_' | tr '-' '_' | tr -cd '[:alnum:]_')
 
 	uv run alembic revision --autogenerate -m "$name"
 

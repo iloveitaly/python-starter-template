@@ -44,7 +44,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/common-setup
-        timeout-minutes: 1
+        timeout-minutes: 2
       - uses: iloveitaly/github-action-localias@master
         with:
           chrome: true
@@ -76,7 +76,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/common-setup
-        timeout-minutes: 1
+        timeout-minutes: 2
       - run: just js_setup
       - run: just js_lint
       - run: just js_test

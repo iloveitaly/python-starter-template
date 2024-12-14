@@ -28,6 +28,7 @@ think through authenticated pattern, create a clientLoader action
 fix clerk redirect issue https://discord.com/channels/856971667393609759/1311386772520960182
 https://github.com/hey-api/openapi-ts/pull/1378 - better log redirect, but need to handle ci and local builds
 better error page, esp when 40x error when loading the client
+https://simondosda.github.io/posts/2021-05-10-eslint-imports.html auto fix unused imports
 
 ## deployment
 grafana timing integration
@@ -37,6 +38,9 @@ can kamal work with a registry with container?
 flightcontrol on AWS or something like that on azure
 
 ## dev
+https://github.com/TablePlus/TablePlus/issues/3407 orb stack connections sometimes break
+extract playground logic into ipython extension
+extract toggle logic into pypi package
 fastapi dev conflicts with pdbr interactions, should allow fastapi logs to be funneled elsewhere; maybe we can detect breakpoint usage and do this automatically
 should we use sops? Probably can just use 1p, think about mutation risks here https://github.com/getsops/sops?tab=readme-ov-file#yaml-json-env-and-ini-type-extensions
 `uv pip install --config-setting editable_mode=compat --reinstall -e ./pypi/activemodel` and https://github.com/astral-sh/uv/issues/7028 and https://github.com/dagster-io/dagster/commit/9b3bf2dda8a44168326bb38f75bdd47493ee6da7#diff-85c2bb6d4721ed0a146ea51e2bd615dbdf2249ad3714adc1cacc1877707cadeeR161

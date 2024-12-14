@@ -3,7 +3,7 @@
 services:
   # port 5432
   postgres:
-    image: postgres:latest
+    image: postgres:16
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -21,7 +21,7 @@ services:
 
   # port 6379
   redis:
-    image: redis:latest
+    image: redis:6
     restart: unless-stopped
     ports:
       - ${CI:+6379}:6379
