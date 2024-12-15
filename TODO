@@ -21,6 +21,7 @@ expanded sort categories, can we do this with ruff?
 fix html formatting, use a single formatter type
 
 ## js
+typed routes https://github.com/fenok/react-router-typesafe-routes
 sentry config, not yet ready for v7 https://docs.sentry.io/platforms/javascript/guides/react/features/react-router/, https://github.com/remix-run/react-router/discussions/12423
 posthog config, fix when v7 is released
 add posthog usage example
@@ -40,6 +41,7 @@ can kamal work with a registry with container?
 flightcontrol on AWS or something like that on azure
 
 ## dev
+add custom cspell dictionary instead of settings.json
 https://github.com/TablePlus/TablePlus/issues/3407 orb stack connections sometimes break
 extract playground logic into ipython extension
 extract toggle logic into pypi package
@@ -50,7 +52,10 @@ https://github.com/astral-sh/uv/issues/9258#issuecomment-2488597047 - looks like
 autogen'd localalias based on ENV port config, use local
 switch to binstall and see if this becomes a binary distribution https://github.com/yukihirop/ultraman/issues/58
 look into devenv, maybe a replacement for some of the setup here? https://github.com/getsentry/sentry/blob/master/devenv/sync.py
-onlyu look at local .tool-versions
+only look at local .tool-versions
+
+## css
+tailwind sorting
 
 ## commitlint
 removing unused import, should catch this specifically
@@ -64,8 +69,9 @@ https://github.com/fastapi/full-stack-fastapi-template/blob/master/copier.yml - 
 ## pytest
 timeout default for playwright to avoid hanging
 test logs are a mess. I need to figure out what pytest is doing and make them sane.
+--debug seems to generate a different test log
 
-## aicommit
+## aiautocommit
 include multiple large changes with comma
 if I remove stuff, it counts it as a feature
 
@@ -117,7 +123,7 @@ push to registry
 --cache-from to speed up builds
 
 ## act compat
-https://github.com/catthehacker/docker_images/issues/138 - apt tool, still failing on apt-install but not because of missing packlages
+https://github.com/catthehacker/docker_images/issues/138 - apt tool, still failing on apt-install but not because of missing packages
 
 ## vs code
 file picker search for specific files even though they are in gitignore

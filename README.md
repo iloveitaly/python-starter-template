@@ -223,7 +223,7 @@ From my time at Stripe, I became a big fan of IDs with metadata about the object
 I wouldn't call myself an expert, but I do have opinions on best practices ![:slightly_smiling_face:](https://a.slack-edge.com/production-standard-emoji-assets/14.0/apple-medium/1f642@2x.png) First, yes, I've seen schemas which have an `id` and `ext_id` column for an external ID. But realistically, when stored with postgres's UUID column, it's stored as a 128-bit integer, only twice as big as the usual index column type, and with ULIDs (used by TypeID), the index/locality issue goes away. The biggest issue IMO is the ergonomics of a large, hard-to-memorize ID vs a smaller one. In my assessment, this issue is offset by:
 
 1.  TypeIDs tell you what kind of ID they are
-2.  Never getting a bad join (if you join the wrong table, there will be no results, because ulids never collide)
+2.  Never getting a bad join (if you join the wrong table, there will be no results, because uuids never collide)
 3.  Ability to pregenerate IDs clientside
 4.  Eventually sequential IDs get big enough anyways.
 
