@@ -1,5 +1,7 @@
 """
-Utilities for helping build and tare down servers for full-stack integration tests
+Utilities for helping build and tare down servers for full-stack integration tests. Some tips:
+
+- page.pause() for a breakpoint
 
 TODO figure out a better solution for async loops
 https://github.com/microsoft/playwright-pytest/issues/74#issuecomment-2497976914
