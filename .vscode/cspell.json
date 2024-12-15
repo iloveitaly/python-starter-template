@@ -1,0 +1,70 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  "language": "en-us",
+  "languageId": "*",
+  "dictionaries": [
+    "bash",
+    "css",
+    "cpp",
+    "django",
+    "filetypes",
+    "fonts",
+    "fullstack",
+    "html",
+    "latex",
+    "lorem-ipsum",
+    "markdown",
+    "node",
+    "npm",
+    "python",
+    "softwareTerms",
+    "svelte",
+    "typescript",
+    "project-words",
+    "missing-words"
+  ],
+  "ignorePaths": [
+    ".vscode/cspell.json",
+    ".vscode/extensions.json",
+    "**/*.ogg",
+    "**/*.mp3",
+    "**/*.mp4"
+  ],
+  "ignoreRegExpList": [
+    "#[\\w-]*",
+    "aria-activedescendant=\"(?:[^\\\"]+|\\.)*\"",
+    "aria-controls=\"(?:[^\\\"]+|\\.)*\"",
+    "aria-describedby=\"(?:[^\\\"]+|\\.)*\"",
+    "aria-details=\"(?:[^\\\"]+|\\.)*\"",
+    "aria-errormessage=\"(?:[^\\\"]+|\\.)*\"",
+    "aria-flowto=\"(?:[^\\\"]+|\\.)*\"",
+    "aria-labelledby=\"(?:[^\\\"]+|\\.)*\"",
+    "aria-owns=\"(?:[^\\\"]+|\\.)*\"",
+    "Base64",
+    "class=\"(?:[^\\\"]+|\\.)*\"",
+    "data-test-id=\"(?:[^\\\"]+|\\.)*\"",
+    "EscapeCharacters",
+    "for=\"(?:[^\\\"]+|\\.)*\"",
+    "HexValues",
+    "href=\"(?:[^\\\"]+|\\.)*\"",
+    "id=\"(?:[^\\\"]+|\\.)*\"",
+    "lang=\".*\">.*</",
+    "src=\"(?:[^\\\"]+|\\.)*\"",
+    "url\\(\"data\\:image/svg\\+xml.*\"\\)[,;]",
+    "Urls"
+  ],
+  "allowCompoundWords": true,
+  "dictionaryDefinitions": [
+    {
+      "name": "project-words",
+      "path": "./project-words.txt",
+      "addWords": true
+    },
+    {
+      "name": "missing-words",
+      "path": "./missing-words.txt",
+      "addWords": true
+    }
+  ]
+}
