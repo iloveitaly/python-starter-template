@@ -1,8 +1,10 @@
+// adapted from: https://github.com/mdn/learning-area/blob/af5a4cf5428ac1a8b5cfdb6a8d211e3571b9c518/.vscode/cspell.json
 {
   "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
   "version": "0.2",
   "language": "en-us",
   "languageId": "*",
+  // https://github.com/streetsidesoftware/cspell-dicts/tree/main
   "dictionaries": [
     "bash",
     "css",
@@ -21,6 +23,7 @@
     "softwareTerms",
     "svelte",
     "typescript",
+    // custom
     "project-words",
     "missing-words"
   ],
@@ -29,10 +32,11 @@
     ".vscode/extensions.json",
     "**/*.ogg",
     "**/*.mp3",
-    "**/*.mp4"
+    "**/*.mp4",
+    "pypi/"
   ],
   "ignoreRegExpList": [
-    "#[\\w-]*",
+    // "#[\\w-]*",
     "aria-activedescendant=\"(?:[^\\\"]+|\\.)*\"",
     "aria-controls=\"(?:[^\\\"]+|\\.)*\"",
     "aria-describedby=\"(?:[^\\\"]+|\\.)*\"",
@@ -42,7 +46,7 @@
     "aria-labelledby=\"(?:[^\\\"]+|\\.)*\"",
     "aria-owns=\"(?:[^\\\"]+|\\.)*\"",
     "Base64",
-    "class=\"(?:[^\\\"]+|\\.)*\"",
+    // "class=\"(?:[^\\\"]+|\\.)*\"",
     "data-test-id=\"(?:[^\\\"]+|\\.)*\"",
     "EscapeCharacters",
     "for=\"(?:[^\\\"]+|\\.)*\"",
@@ -55,6 +59,7 @@
     "Urls"
   ],
   "allowCompoundWords": true,
+  "enabledFileTypes": { "jinja-html": true },
   "dictionaryDefinitions": [
     {
       "name": "project-words",
