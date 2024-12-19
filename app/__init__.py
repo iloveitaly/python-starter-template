@@ -1,5 +1,6 @@
 """
-This file should be imported first in any application entrypoint.
+- This file is automatically imported when any module is imported
+- It should run all configuration which requires any state (services, ENV, etc) so we get an immediate failure on startup
 """
 
 from pathlib import Path
@@ -30,6 +31,8 @@ def setup():
     global root, log
 
     root = get_root_path()
+
+    # log configuration should go first, so any logging is properly outputted downstream
     log = configure_logger()
 
     configure_python()

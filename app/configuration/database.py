@@ -17,9 +17,11 @@ def database_url():
     else:
         url = config("DATABASE_URL", cast=str)
 
+    assert url.startswith("postgresql")
+
     # sqlalchemy does *not* allow to specify the dialect of the DB outside of the url protocol
     # https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls
-    # without this, psycopg2 would be used
+    # without this, psycopg2 would be used, which is not intended!
     return url.replace("postgresql://", "postgresql+psycopg://")
 
 

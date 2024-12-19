@@ -20,7 +20,8 @@ export async function setToken(clerkClient: Clerk) {
   // without this, you'll get a CORS error. Easy for this to happen during development.
   if (
     !VITE_PYTHON_URL.startsWith("http://") &&
-    !VITE_PYTHON_URL.startsWith("https://")
+    !VITE_PYTHON_URL.startsWith("https://") &&
+    VITE_PYTHON_URL != "/"
   ) {
     throw new Error("VITE_PYTHON_URL must start with http:// or https://")
   }

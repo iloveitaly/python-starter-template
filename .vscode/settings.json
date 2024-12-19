@@ -1,4 +1,7 @@
 {
+  // gen imports by default, new feature
+  "editor.pasteAs.preferences": ["text.updateImports"],
+
   // css
   "tailwind-raw-reorder.tailwindConfigPath": "./web/tailwind.config.ts",
 
@@ -46,13 +49,15 @@
   //   "~/Projects/python"
   // ],
 
+  // new feature, should be the default in the future
+  "python.analysis.languageServerMode": "full",
   "python.analysis.diagnosticMode": "workspace",
   "python.analysis.packageIndexDepths": [
     {
       "name": "",
       "depth": 5,
       "includeAllSymbols": true
-    }
+    },
     // TODO packages are not being indexed, can't find fastapi symbols in the symbol search but can in the import analysis...
     // {
     //   "name": "fastapi",
@@ -62,6 +67,7 @@
 
     //   {"name":"pdf2image", "depth":3, "includeAllSymbols": true},
     // {"name":"decouple", "depth":3, "includeAllSymbols": true},
+    {"name":"pydantic", "depth":3, "includeAllSymbols": true},
   ],
 
   // in web, prettier is used by default, but we want it to be used outside that directly

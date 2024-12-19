@@ -52,10 +52,12 @@ EXECUTE_IN_TEST := "CI=true direnv exec ."
 default:
 	just --list
 
+lint: js_lint py_lint db_lint
+
 # start all of the services you need for development in a single terminal
 [macos]
 [script]
-dev: local-alias setup
+dev: local-alias
 	# create a tmp Procfile with all of the dev services we need running
 	cat << 'EOF' > tmp/Procfile.dev
 	py_dev: just py_dev
@@ -464,6 +466,8 @@ py_test: py_js-build
 # open playwright trace viewer on last trace zip. --remote to download last failed remote trace
 [macos]
 py_playwright_trace remote="":
+		mkdir -p ${PLAYWRIGHT_RESULT_DIRECTORY}
+
 		# helpful to download to unique folder for two reasons: (a) easier to match up to web GHA view and (b) eliminates risk of gh-cli erroring out bc the directory already exists
 		if [ "{{remote}}" = "--remote" ]; then \
 				failed_run_id=$(just _gha_last_failed_run_id) && \
@@ -478,7 +482,7 @@ py_playwright_trace remote="":
 # record playwright interactions for integration tests and dump them to a file
 [macos]
 [script]
-py_playwright:
+py_playwright-record:
 	mkdir -p tmp/playwright
 	recorded_interaction=tmp/playwright/$(date +%m-%d-%s).py
 
@@ -552,6 +556,8 @@ down: db_down
 db_up:
 	docker compose up -d --wait postgres
 
+# TODO may need to run `docker rm $(docker ps -aq)` as well
+# TODO docker down does not exit 1 if it partially failed
 # turn off the database *and* completely remove the data
 db_down:
 	docker compose down --volumes postgres
@@ -593,6 +599,9 @@ db_play:
 
 # migrations on dev and test
 db_migrate:
+	# if this folder is wiped, you'll get a strange error from alembic
+	mkdir -p migrations/versions
+
 	# dev database is created automatically, but test database is not. We need to fail gracefully when the database already exists.
 	psql $DATABASE_URL -c "CREATE DATABASE ${TEST_DATABASE_NAME};" || true
 
@@ -624,10 +633,14 @@ db_generate_migration migration_name="":
 db_destroy: db_reset db_migrate db_seed
 
 # destroy all migrations and rebuild everything: only for use in early development
-db_nuke: db_reset && db_migrate db_seed
+db_nuke: && db_migrate db_seed
 	# I personally hate having a nearly-greenfield project with a bunch of migrations from DB schema iteration
 	# this should only be used *before* you've launched and prod and don't need properly migration support
+
+	# first, wipe all of the existing migrations
 	rm -rf migrations/versions/* || true
+
+	just db_reset
 	just db_generate_migration "initial_commit"
 
 # enable SQL debugging on the postgres database
@@ -645,13 +658,20 @@ db_debug_off:
 # Secrets
 #######################
 
-_secrets_service-token CONTEXT:
+_secrets_service-token CONTEXT WRITE_PERMISSION="false":
 	# if OP_SERVICE_ACCOUNT_TOKEN is set, the service-account API will not work
 	unset OP_SERVICE_ACCOUNT_TOKEN && \
+	write_permission=$([[ "{{WRITE_PERMISSION}}" == "true" ]] && echo ",write_items" || echo "") && \
 	op service-account create {{PROJECT_NAME}}-{{CONTEXT}} \
 			--expires-in '90d' \
-			--vault "${OP_VAULT_UID}:read_items" \
+			--vault "${OP_VAULT_UID}:read_items${write_permission}" \
 			--raw
+
+
+# for terraform and other tools which can create entries
+[macos]
+secrets_write-service-token:
+	just _secrets_service-token write true | jq -r -R '@sh "export OP_SERVICE_ACCOUNT_TOKEN=\(.)"'
 
 # generate service account token to be used locally for a developer
 [macos]
@@ -711,6 +731,8 @@ NIXPACKS_BUILD_METADATA := (
 PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
 	" --name " + PYTHON_IMAGE_TAG + \
 	" " + NIXPACKS_BUILD_METADATA + \
+	" --env PYTHON_ENV=production" + \
+	" --platform=linux/amd64" + \
 	" $(just direnv_export_docker '" + SHARED_ENV_FILE +"' --params)" + \
 	" --inline-cache --cache-from " + PYTHON_PRODUCTION_IMAGE_NAME + ":latest" + \
 	" --label org.opencontainers.image.revision='" + GIT_SHA + "'" + \
@@ -774,6 +796,7 @@ build_js-assets: _production_build_assertions
 	nixpacks build {{WEB_DIR}} \
 		--name "{{JAVASCRIPT_IMAGE_TAG}}" \
 		 {{NIXPACKS_BUILD_METADATA}} \
+		--platform=linux/amd64 \
 		--env VITE_BUILD_COMMIT="{{GIT_SHA}}" \
 		--cache-from "{{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}:latest" --inline-cache \
 		$(just direnv_export_docker '{{JAVASCRIPT_SECRETS_FILE}}' --params) \
@@ -781,9 +804,11 @@ build_js-assets: _production_build_assertions
 		--label org.opencontainers.image.description="Used for building javascript assets, not for deployment" \
 
 	# you cannot extract files out of a image, only a container
+	# extract out the production-built javascript from the container
 	docker rm tmp-js-container || true
 	docker create --name tmp-js-container {{JAVASCRIPT_IMAGE_TAG}}
 	docker cp tmp-js-container:/app/build/production/client "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}"
+	tree "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}"
 
 # support non-macos installations for github actions
 _build_requirements:
@@ -859,14 +884,15 @@ build_shell: build
 build_shell-exec:
 	docker exec -it $(docker ps -q --filter "ancestor={{PYTHON_IMAGE_TAG}}") bash -l
 
+# TODO https://discord.com/channels/1106380155536035840/1318603119990538340/1318603119990538340
 # run the container locally, as if it were in production (against production DB, resources, etc)
-[script]
-build_run-as-production procname="":
+build_run-as-production procname="api" image_name=PYTHON_IMAGE_TAG:
 	# NOTE that resources are limited to a production-like environment, change if your production requirements are different
 	docker run -p 8202:80 \
 		--memory=1g --cpus=2 \
-		$(just direnv_export_docker "" --params) \
-		"{{PYTHON_IMAGE_TAG}}" \
+		$(just direnv_export_docker ".env.production.backend" --params) \
+		--platform linux/amd64 \
+		"{{image_name}}" \
 		"$(just extract_proc "{{procname}}")"
 
 # extract worker start command from Procfile
@@ -892,8 +918,7 @@ jq_script := """
 with_entries(
 	select((
 		(.key | startswith("DIRENV_") | not)
-		and (.key | startswith("OP_") | not)
-		and (.key | IN("VIRTUAL_ENV", "VENV_ACTIVE", "UV_ACTIVE", "PATH") | not)
+		and (.key | IN("VIRTUAL_ENV", "VENV_ACTIVE", "UV_ACTIVE", "PATH", "OP_SERVICE_ACCOUNT_TOKEN") | not)
 	))
 )
 """
@@ -916,6 +941,7 @@ with_entries(
 
 	# TODO the `op daemon -d` hack above is to workaround a op bug:
 	# https://1password-devs.slack.com/archives/C03NJV34SSC/p1733771530356779
+	# https://github.com/direnv/direnv/issues/662
 
 # export env variables for a particular file in a format docker can consume
 [doc("Export as docker '-e' params: --params\nExport as shell: --shell")]

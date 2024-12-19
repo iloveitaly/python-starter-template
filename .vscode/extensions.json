@@ -31,6 +31,8 @@
     // ruff replaces all of these py linting tools
     "ms-python.isort",
     "ms-python.flake8",
-    "mikoz.autoflake-extension"
+    "mikoz.autoflake-extension",
+    // seems to conflict with prettier
+    "formulahendry.auto-rename-tag"
   ]
 }
