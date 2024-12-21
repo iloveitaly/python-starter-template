@@ -39,7 +39,7 @@ jobs:
 
   app:
     name: Backend
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -71,7 +71,7 @@ jobs:
 
   web:
     name: Frontend
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -83,7 +83,7 @@ jobs:
 
   deploy:
     name: 🚀 Deploy
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: [web, app]
     if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
