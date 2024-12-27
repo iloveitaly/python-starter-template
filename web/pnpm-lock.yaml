@@ -81,8 +81,8 @@ importers:
         specifier: ^0.469.0
         version: 0.469.0(react@19.0.0)
       posthog-js:
-        specifier: ^1.203.1
-        version: 1.203.1
+        specifier: ^1.203.2
+        version: 1.203.2
       ramda:
         specifier: ^0.30.1
         version: 0.30.1
@@ -143,7 +143,7 @@ importers:
         version: 4.3.4(vite@6.0.6(jiti@2.4.0)(yaml@2.6.0))
       '@vitest/coverage-v8':
         specifier: ^2.1.8
-        version: 2.1.8(vitest@2.1.8(happy-dom@15.11.7)(jsdom@25.0.1))
+        version: 2.1.8(vitest@2.1.8(happy-dom@16.0.1)(jsdom@25.0.1))
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)
@@ -157,8 +157,8 @@ importers:
         specifier: ^15.14.0
         version: 15.14.0
       happy-dom:
-        specifier: ^15.11.7
-        version: 15.11.7
+        specifier: ^16.0.1
+        version: 16.0.1
       postcss:
         specifier: ^8.4.49
         version: 8.4.49
@@ -185,7 +185,7 @@ importers:
         version: 5.1.4(typescript@5.7.2)(vite@6.0.6(jiti@2.4.0)(yaml@2.6.0))
       vitest:
         specifier: ^2.1.8
-        version: 2.1.8(happy-dom@15.11.7)(jsdom@25.0.1)
+        version: 2.1.8(happy-dom@16.0.1)(jsdom@25.0.1)
 
 packages:
 
@@ -2996,8 +2996,8 @@ packages:
     resolution: {integrity: sha512-4haO1M4mLO91PW57BMsDFf75UmwoRX0GkdD+Faw+Lr+r/OZrOCS0pIBwOL1xCKQqnQzbNFGgK2V2CpBUPeFNTw==}
     hasBin: true
 
-  happy-dom@15.11.7:
-    resolution: {integrity: sha512-KyrFvnl+J9US63TEzwoiJOQzZBJY7KgBushJA8X61DMbNsH+2ONkDuLDnCnwUiPTF42tLoEmrPyoqbenVA5zrg==}
+  happy-dom@16.0.1:
+    resolution: {integrity: sha512-cqbqvutE6XAIMe4nM93TkbW5SDFtLkU/6nsQfJBJ2KSlaT+My2kmnYsCFXrvEzvmP7s1xGJ6Xt4D9LNJIJHMbA==}
     engines: {node: '>=18.0.0'}
 
   has-bigints@1.0.2:
@@ -3817,8 +3817,8 @@ packages:
     resolution: {integrity: sha512-OCVPnIObs4N29kxTjzLfUryOkvZEq+pf8jTF0lg8E7uETuWHA+v7j3c/xJmiqpX450191LlmZfUKkXxkTry7nA==}
     engines: {node: ^10 || ^12 || >=14}
 
-  posthog-js@1.203.1:
-    resolution: {integrity: sha512-r/WiSyz6VNbIKEV/30+aD5gdrYkFtmZwvqNa6h9frl8hG638v098FrXaq3EYzMcCdkQf3phaZTDIAFKegpiTjw==}
+  posthog-js@1.203.2:
+    resolution: {integrity: sha512-3aLpEhM4i9sQQtobRmDttJ3rTW1+gwQ9HL7QiOeDueE2T7CguYibYS7weY1UhXMerx5lh1A7+szlOJTTibifLQ==}
 
   preact@10.24.3:
     resolution: {integrity: sha512-Z2dPnBnMUfyQfSQ+GBdsGa16hz35YmLmtTLhM169uW944hYL6xzTYkJjC07j+Wosz733pMWx0fgON3JNw1jJQA==}
@@ -6711,7 +6711,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/coverage-v8@2.1.8(vitest@2.1.8(happy-dom@15.11.7)(jsdom@25.0.1))':
+  '@vitest/coverage-v8@2.1.8(vitest@2.1.8(happy-dom@16.0.1)(jsdom@25.0.1))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 0.2.3
@@ -6725,7 +6725,7 @@ snapshots:
       std-env: 3.8.0
       test-exclude: 7.0.1
       tinyrainbow: 1.2.0
-      vitest: 2.1.8(happy-dom@15.11.7)(jsdom@25.0.1)
+      vitest: 2.1.8(happy-dom@16.0.1)(jsdom@25.0.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -7450,7 +7450,8 @@ snapshots:
     dependencies:
       once: 1.4.0
 
-  entities@4.5.0: {}
+  entities@4.5.0:
+    optional: true
 
   err-code@2.0.3: {}
 
@@ -8025,9 +8026,8 @@ snapshots:
       pumpify: 1.5.1
       through2: 2.0.5
 
-  happy-dom@15.11.7:
+  happy-dom@16.0.1:
     dependencies:
-      entities: 4.5.0
       webidl-conversions: 7.0.0
       whatwg-mimetype: 3.0.0
 
@@ -8826,7 +8826,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  posthog-js@1.203.1:
+  posthog-js@1.203.2:
     dependencies:
       core-js: 3.39.0
       fflate: 0.4.8
@@ -9865,7 +9865,7 @@ snapshots:
       jiti: 2.4.0
       yaml: 2.6.0
 
-  vitest@2.1.8(happy-dom@15.11.7)(jsdom@25.0.1):
+  vitest@2.1.8(happy-dom@16.0.1)(jsdom@25.0.1):
     dependencies:
       '@vitest/expect': 2.1.8
       '@vitest/mocker': 2.1.8(vite@5.4.11)
@@ -9888,7 +9888,7 @@ snapshots:
       vite-node: 2.1.8
       why-is-node-running: 2.3.0
     optionalDependencies:
-      happy-dom: 15.11.7
+      happy-dom: 16.0.1
       jsdom: 25.0.1
     transitivePeerDependencies:
       - less

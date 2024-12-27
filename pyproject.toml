@@ -158,8 +158,7 @@ asyncio_default_fixture_loop_scope = "session"
 j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
 
 [tool.uv.sources.activemodel]
-path = "pypi/activemodel"
-editable = true
+git = "https://github.com/iloveitaly/activemodel.git"
 
 [tool.uv.sources.ipython-autoimport]
 git = "https://github.com/anntzer/ipython-autoimport.git"

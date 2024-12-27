@@ -8,28 +8,12 @@ resolution-markers = [
 [[package]]
 name = "activemodel"
 version = "0.5.0"
-source = { editable = "pypi/activemodel" }
+source = { git = "https://github.com/iloveitaly/activemodel.git#78af75806c7f9d59eef53aeb1a707339627fa31f" }
 dependencies = [
     { name = "pydash" },
     { name = "python-decouple-typed" },
     { name = "sqlmodel" },
     { name = "typeid-python" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "pydash", specifier = ">=8.0.4" },
-    { name = "python-decouple-typed", specifier = ">=3.11.0" },
-    { name = "sqlmodel", specifier = ">=0.0.22" },
-    { name = "typeid-python", specifier = ">=0.3.1" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "ipdb", specifier = ">=0.13.13" },
-    { name = "pdbr", specifier = ">=0.8.9" },
-    { name = "psycopg", extras = ["binary"], specifier = ">=3.2.3" },
-    { name = "pytest", specifier = ">=8.3.3" },
 ]
 
 [[package]]
@@ -411,21 +395,21 @@ wheels = [
 
 [[package]]
 name = "css-inline"
-version = "0.14.3"
+version = "0.14.6"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/2a/18/75d6ec563fa7a82e6979075bce6efe64e50e7a8c02c823e0623db10411d0/css_inline-0.14.3.tar.gz", hash = "sha256:6cc37e956d6c44ad2e0c230d0d111c7f61a47117bab179f6ab59f23bf33b1caa", size = 60476 }
+sdist = { url = "https://files.pythonhosted.org/packages/7c/2f/4558f2e6a2f1e60fb066c2415189f18d5191f00eeacb82168203565f284a/css_inline-0.14.6.tar.gz", hash = "sha256:a6ac1411bc9524cab0de59fe87bf1779c822fd6f38d789a037879ebcbcc3e14b", size = 60589 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0c/ab/3b2df2f99e4ec92260de7e19e67fec871b2643fcbf4f3d93fa0132037b4e/css_inline-0.14.3-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl", hash = "sha256:591cb22a453815552bae0fb5f78d324e0b8dd0303987b3941e41922b7ba7cd7f", size = 3493165 },
-    { url = "https://files.pythonhosted.org/packages/4c/bf/3e751d9ca6f1fdce8de7802e0719031916cf6113821fcb1d488d4354e385/css_inline-0.14.3-cp37-abi3-macosx_10_12_x86_64.whl", hash = "sha256:1e567cdc3f0f9aba8117323b24ac4e122d311f0ef02a1138f478fd274f41e690", size = 1798027 },
-    { url = "https://files.pythonhosted.org/packages/a6/9c/942866479e26f500cc5b483ac5570b24a1c990e4141c40c747657e320025/css_inline-0.14.3-cp37-abi3-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:8a9a677817f4a4ec121df3ded7f85fb3af3102e7cde8e4875822090fc575113f", size = 1784947 },
-    { url = "https://files.pythonhosted.org/packages/61/8c/f60167d72c9a40d49e2ca82f65fd19e0b3d0aa3fe1fd92477f396f2eb48c/css_inline-0.14.3-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:064afe93854e95636adf1e91483b82da6a9544d1ec1a6fe29694c718f755923a", size = 1931573 },
-    { url = "https://files.pythonhosted.org/packages/07/98/17af0c3f94366c6184295292d3683d9f776aa0f56a2016bc487034c40a1f/css_inline-0.14.3-cp37-abi3-manylinux_2_24_aarch64.whl", hash = "sha256:d255a4d4c3948e22ec741af88707e1371b54b63993cd52da54296a383373c60b", size = 1878790 },
-    { url = "https://files.pythonhosted.org/packages/38/41/07b4e200a3d418a81d9d3610e2fd7f84954ae964191807ae49ea4ff3c7a0/css_inline-0.14.3-cp37-abi3-manylinux_2_24_armv7l.whl", hash = "sha256:8f65695b5efac1089bacca252e975829939aa0e074ee4847d4dfe3f85add5d77", size = 1782357 },
-    { url = "https://files.pythonhosted.org/packages/81/86/230ac6c423158204c62625f30bf076aacd3a63ae38927843f460edaa5379/css_inline-0.14.3-cp37-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:d6895b673439e0e40181ebd05cfce52ca3650f8aa56d0d378b169c1c1639407d", size = 2145062 },
-    { url = "https://files.pythonhosted.org/packages/a3/cf/66facc1eeeea8b873563492905fc3cab5e6e5bc62550c49b7b4d91a91430/css_inline-0.14.3-cp37-abi3-musllinux_1_2_armv7l.whl", hash = "sha256:ac5ff1a5d24213ef4f6a008452fd6965d68147ebd6081ca64929ea22e5a81e7f", size = 2009558 },
-    { url = "https://files.pythonhosted.org/packages/17/5f/9a9ea23f75b1c937c1bca75b686ae2e76ba8fa7ddf3fbcf4c471fd596546/css_inline-0.14.3-cp37-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:7300cccd424dd7fcffadc5c104d1ccb257e00e7086c64b7472663c4f9e67d504", size = 2093046 },
-    { url = "https://files.pythonhosted.org/packages/ca/35/958b013b4e943c9e7fdf106312912ac23cc80b20c777118c28dffd29ee84/css_inline-0.14.3-cp37-abi3-win32.whl", hash = "sha256:05e0f299c9f7d5b2821363bcb196de4d7adf5c71c42a98eb102660a0f8f483ea", size = 1440970 },
-    { url = "https://files.pythonhosted.org/packages/de/ee/6998fe263633c044843b925d941ae31e45a8ecdc0457df87633e476ceda3/css_inline-0.14.3-cp37-abi3-win_amd64.whl", hash = "sha256:7e3722d259e0b54bce323f4c7a73226237a3c067760b02d09ca5a25a7af1d678", size = 1708078 },
+    { url = "https://files.pythonhosted.org/packages/9c/49/39397ea390c7c53dff88b4fd5929a032414d3baf14f7a96aadffc24e7617/css_inline-0.14.6-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl", hash = "sha256:cefbf6320b27f8c0dddb753fcf9c3babdf29f3cbbcc9b7b6175dd065017b9716", size = 3483480 },
+    { url = "https://files.pythonhosted.org/packages/55/a2/daa8af141f62fec88846fbb79b9c642a8d8aca03b701538313b50c622261/css_inline-0.14.6-cp37-abi3-macosx_10_12_x86_64.whl", hash = "sha256:8480013f5e4d089cf9339822520fb4dfe7855975739134608477c906eb94c511", size = 1789400 },
+    { url = "https://files.pythonhosted.org/packages/e7/4b/cd8e6c951622e4f3a812531d8c7822da54295fdd1006a0ba4ae81aa4066c/css_inline-0.14.6-cp37-abi3-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:22afe654a2fcaccfccaf49cae561c7e09711051e60150aa7fcab87fdee80c72e", size = 1782893 },
+    { url = "https://files.pythonhosted.org/packages/bf/92/392fa9709a3382168e852252ce480bb3c2df38f6439e73ee117987009042/css_inline-0.14.6-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:fa62ff057edbc9f6fe05871f0ec8abbc13aa344ccfefefca1f252efca816e242", size = 1929307 },
+    { url = "https://files.pythonhosted.org/packages/d0/46/0d051197a5339f65581964b8b04d05185933e81dc580bfea34b4b8849cfd/css_inline-0.14.6-cp37-abi3-manylinux_2_24_aarch64.whl", hash = "sha256:e6f081528993f5f518bb5f2fe0bdaac8aa4ab704bebb41e02fb89866fd7d1c82", size = 1878021 },
+    { url = "https://files.pythonhosted.org/packages/0b/3f/000aa14d338bec4df2f16948a514c01d5fe76d2ba32b87f88d10f63c837d/css_inline-0.14.6-cp37-abi3-manylinux_2_24_armv7l.whl", hash = "sha256:e4660adaef5cd0d3c44adcb2f48f46643b66ae69251b1f073b0d923827b9f113", size = 1780786 },
+    { url = "https://files.pythonhosted.org/packages/e4/32/425ed49ffdb7fd937f035e1f72fbe03ec2e894a4a9434d0b573b8c5116c3/css_inline-0.14.6-cp37-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:f5195b19c6376a23fc6de6f70689c632cdc4fc185e6807822409dc884922d0e1", size = 2061416 },
+    { url = "https://files.pythonhosted.org/packages/63/6d/74bf0e8ae6f579005b1535b1b673e59b857d6f29688632ec8a8eb3b1da6f/css_inline-0.14.6-cp37-abi3-musllinux_1_2_armv7l.whl", hash = "sha256:eb55fa5069d50e2b63a63a2d4e223965dd5f032544dc1d47bfad6e5c2bef71dc", size = 1999739 },
+    { url = "https://files.pythonhosted.org/packages/bc/05/26269c38e0045321c8c81e12749ca7c0ff791ded5681a958c05494c8f937/css_inline-0.14.6-cp37-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:d0012aa2b61e0ac6667b64dbd45df35edab8db86c623dd20c746344f5e3bceec", size = 2102975 },
+    { url = "https://files.pythonhosted.org/packages/be/9b/0ce3b4bde725f3e5905163bdeb2cee1317e04219ebfa384e5013e1733108/css_inline-0.14.6-cp37-abi3-win32.whl", hash = "sha256:0633c5bce98e36f90f3377d146640c3738826d465681373ce8368e9a6dad563e", size = 1442891 },
+    { url = "https://files.pythonhosted.org/packages/86/de/044c637f505dd0f6c5eda4e296bf4fdcf1c042b2ec095e11339e2aaaf155/css_inline-0.14.6-cp37-abi3-win_amd64.whl", hash = "sha256:c32f07918dbfb21ed935d2187d1c8e086db06da7c33d91db2e33591c78a501b8", size = 1708394 },
 ]
 
 [[package]]
@@ -1803,7 +1787,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "activemodel", editable = "pypi/activemodel" },
+    { name = "activemodel", git = "https://github.com/iloveitaly/activemodel.git" },
     { name = "aiosmtplib", specifier = ">=3.0.2" },
     { name = "alembic", specifier = ">=1.14.0" },
     { name = "backoff", specifier = ">=2.2.1" },
