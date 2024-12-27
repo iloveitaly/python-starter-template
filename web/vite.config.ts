@@ -100,18 +100,9 @@ function getModePlugins(mode: string) {
   ]
 }
 
-function getBuildConfig(_mode: string) {
-  return {
-    // TODO maybe use envDir to point to a fake directory
-    // base url where JS assets are served out of
-    // base: mode === "development" ? "/" : "/assets/",
-  }
-}
-
 // test configuration is done via vitest.config.ts, this is only for the build system
 export default defineConfig(({ mode }) => ({
   // TODO need to disable .env file loading https://discord.com/channels/804011606160703521/1307442221288656906
-  ...getBuildConfig(mode),
   // build.outDir is ignored and buildDirectory in react-router.config.ts is used instead
   server: {
     // by default, vite will only listen on ipv6 loopback!

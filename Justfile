@@ -792,7 +792,8 @@ build_js-assets: _production_build_assertions
 
 	# Production assets bundle public "secrets" (safe to expose publicly) which are extracted from the environment
 	# for this reason, we need to emulate the production environment, then build the assets statically.
-	# Also, we can't just mount /app/build/server with -v since the build process removes the entire /app/build directory
+	# Also, we can't just mount /app/build/server with -v since the build process removes the entire /app/build directory.
+	# Some ENV var are set for us, like NODE_ENV: https://nixpacks.com/docs/providers/node#environment-variables
 	nixpacks build {{WEB_DIR}} \
 		--name "{{JAVASCRIPT_IMAGE_TAG}}" \
 		 {{NIXPACKS_BUILD_METADATA}} \

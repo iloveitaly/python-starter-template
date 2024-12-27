@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "react-router dev",
-    "build": "pnpm run openapi && NODE_ENV=production react-router build",
+    "build": "pnpm run openapi && react-router build",
     "test": "pnpm run openapi && vitest run",
     "start": "react-router-serve ./build/server/index.js",
     "openapi": "pnpm dlx @hey-api/openapi-ts -i $OPENAPI_JSON_PATH -c @hey-api/client-fetch -o client -l $TEST_RESULTS_DIRECTORY",
