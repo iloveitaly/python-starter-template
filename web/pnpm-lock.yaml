@@ -14,9 +14,6 @@ importers:
       '@clerk/clerk-react':
         specifier: ^5.21.0
         version: 5.21.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@clerk/react-router':
-        specifier: ^0.1.5
-        version: 0.1.5(react-dom@19.0.0(react@19.0.0))(react-router@7.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
       '@epic-web/invariant':
         specifier: ^1.0.0
         version: 1.0.0
@@ -360,10 +357,6 @@ packages:
       react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
       react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
 
-  '@clerk/backend@1.21.4':
-    resolution: {integrity: sha512-PHJzBJrTxBAvHwscXwUwpippT7nHhphgycVcFb3655Dq6q0nRdKfo5GlkDHscEKxLOdmppB/168nXsVwSWf86w==}
-    engines: {node: '>=18.17.0'}
-
   '@clerk/clerk-js@5.43.4':
     resolution: {integrity: sha512-AlRqZtFucs0sfCQZdjqde/orglgzMoPGG0a2P+RQkOir46is2e6CaR4X30bCipH42xVbtYEAYFuJizAQlGVg9A==}
     engines: {node: '>=18.17.0'}
@@ -381,14 +374,6 @@ packages:
   '@clerk/localizations@3.9.5':
     resolution: {integrity: sha512-b0/NEVbk6AT6XMgIJYszuvx7kH+7jk+wnzcD4WD85CMvpTJdSeYUPV3uqw0HGr3O4wPeDz8NbRWnX/Esydo6yA==}
     engines: {node: '>=18.17.0'}
-
-  '@clerk/react-router@0.1.5':
-    resolution: {integrity: sha512-kD7Ssmri0wbzYCMPZPv4pWhx+4+ZsovqxWwXmngoZ45qvHLGSllExhkNheCjSiyTxellqj4RSlwakvSEHhz9hw==}
-    engines: {node: '>=20.0.0'}
-    peerDependencies:
-      react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
-      react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
-      react-router: ^7.0.2
 
   '@clerk/shared@2.20.4':
     resolution: {integrity: sha512-1ndGEO+NejIMFkl47DCeSpVv3nmKh9BHD6wt2Sl3X1wv7sj3eWzSVC14Exkag7D8Og2VcN4LXOFLErsCXHS+YQ==}
@@ -2375,10 +2360,6 @@ packages:
   cookie-signature@1.0.6:
     resolution: {integrity: sha512-QADzlaHc8icV8I7vbaJXJwod9HWYp8uCqf1xa4OfNu1T7JVxQIrUgOWtHdNDtPiywmFbiS12VjotIXLrKM3orQ==}
 
-  cookie@0.7.0:
-    resolution: {integrity: sha512-qCf+V4dtlNhSRXGAZatc1TasyFO6GjohcOul807YOb5ik3+kQSnb4d7iajeCL8QHaJ4uZEjCgiCJerKXwdRVlQ==}
-    engines: {node: '>= 0.6'}
-
   cookie@0.7.1:
     resolution: {integrity: sha512-6DnInpx7SJ2AK3+CTUE/ZM0vWTUboZCegxhC2xiIydHR9jNuTAASBrfEpHhiGOZw/nX51bHt6YQl8jsGo4y/0w==}
     engines: {node: '>= 0.6'}
@@ -2603,9 +2584,6 @@ packages:
 
   dom-helpers@3.4.0:
     resolution: {integrity: sha512-LnuPJ+dwqKDIyotW1VzmOZ5TONUN7CwkCR5hrgawTUbkBGYdeoNLZo6nNfGkCrjtE1nXXaj7iMMpDa8/d9WoIA==}
-
-  dot-case@3.0.4:
-    resolution: {integrity: sha512-Kv5nKlh6yRrdrGvxeJ2e5y2eRUpkUosIW4A2AS38zwSz27zu7ufDwQPi5Jhs3XAlGNetl3bmnGhQsMtkKJnj3w==}
 
   dotenv@16.4.5:
     resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
@@ -3436,9 +3414,6 @@ packages:
   loupe@3.1.2:
     resolution: {integrity: sha512-23I4pFZHmAemUnz8WZXbYRSKYj801VDaNv9ETuMh7IrMc7VuVVSo+Z9iLE3ni30+U48iDWfi30d3twAXBYmnCg==}
 
-  lower-case@2.0.2:
-    resolution: {integrity: sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==}
-
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
 
@@ -3471,10 +3446,6 @@ packages:
   make-dir@4.0.0:
     resolution: {integrity: sha512-hXdUTZYIVOt1Ex//jAQi+wTZZpUpwBj/0QsOzqegb3rGMMeJiSEu5xLHnYfBrRV4RH2+OCSOO95Is/7x1WJ4bw==}
     engines: {node: '>=10'}
-
-  map-obj@4.3.0:
-    resolution: {integrity: sha512-hdN1wVrZbb29eBGiGjJbeP8JbKjq1urkHJ/LIP/NY48MZ1QVXUsQBV1G1zvYFHn1XE06cwjBsOI2K3Ulnj1YXQ==}
-    engines: {node: '>=8'}
 
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
@@ -3574,9 +3545,6 @@ packages:
   negotiator@0.6.3:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
     engines: {node: '>= 0.6'}
-
-  no-case@3.0.4:
-    resolution: {integrity: sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==}
 
   node-addon-api@2.0.2:
     resolution: {integrity: sha512-Ntyt4AIXyaLIuMHF6IOoTakB3K+RWxwtsHNRxllEoA6vPwP9o4866g6YWDLUdnucilZhmkxiHwHr11gAENw+QA==}
@@ -4226,13 +4194,6 @@ packages:
     resolution: {integrity: sha512-94Bdh3cC2PKrbgSOUqTiGPWVZeSiXfKOVZNJniWoqrWrRkB1CJzBU3NEbiTsPcYy1lDsANA/THzS+9WBiy5nfQ==}
     engines: {node: '>= 10'}
 
-  snake-case@3.0.4:
-    resolution: {integrity: sha512-LAOh4z89bGQvl9pFfNF8V146i7o7/CqFPbqzYgP+yYzDIDeS9HaNFtXABamRW+AQzEVODcvE79ljJ+8a9YSdMg==}
-
-  snakecase-keys@5.4.4:
-    resolution: {integrity: sha512-YTywJG93yxwHLgrYLZjlC75moVEX04LZM4FHfihjHe1FCXm+QaLOFfSf535aXOAd0ArVQMWUAe8ZPm4VtWyXaA==}
-    engines: {node: '>=12'}
-
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
@@ -4472,10 +4433,6 @@ packages:
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
-
-  type-fest@2.19.0:
-    resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
-    engines: {node: '>=12.20'}
 
   type-is@1.6.18:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==}
@@ -5124,17 +5081,6 @@ snapshots:
       react-lifecycles-compat: 3.0.4
       warning: 3.0.0
 
-  '@clerk/backend@1.21.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
-    dependencies:
-      '@clerk/shared': 2.20.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@clerk/types': 4.40.0
-      cookie: 0.7.0
-      snakecase-keys: 5.4.4
-      tslib: 2.4.1
-    transitivePeerDependencies:
-      - react
-      - react-dom
-
   '@clerk/clerk-js@5.43.4(@types/react@19.0.2)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
       '@clerk/localizations': 3.9.5
@@ -5173,18 +5119,6 @@ snapshots:
   '@clerk/localizations@3.9.5':
     dependencies:
       '@clerk/types': 4.40.0
-
-  '@clerk/react-router@0.1.5(react-dom@19.0.0(react@19.0.0))(react-router@7.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)':
-    dependencies:
-      '@clerk/backend': 1.21.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@clerk/clerk-react': 5.21.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@clerk/shared': 2.20.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@clerk/types': 4.40.0
-      cookie: 0.7.0
-      react: 19.0.0
-      react-dom: 19.0.0(react@19.0.0)
-      react-router: 7.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      tslib: 2.4.1
 
   '@clerk/shared@2.20.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
@@ -7201,8 +7135,6 @@ snapshots:
 
   cookie-signature@1.0.6: {}
 
-  cookie@0.7.0: {}
-
   cookie@0.7.1: {}
 
   cookie@1.0.1: {}
@@ -7399,11 +7331,6 @@ snapshots:
   dom-helpers@3.4.0:
     dependencies:
       '@babel/runtime': 7.26.0
-
-  dot-case@3.0.4:
-    dependencies:
-      no-case: 3.0.4
-      tslib: 2.8.1
 
   dotenv@16.4.5: {}
 
@@ -8483,10 +8410,6 @@ snapshots:
 
   loupe@3.1.2: {}
 
-  lower-case@2.0.2:
-    dependencies:
-      tslib: 2.8.1
-
   lru-cache@10.4.3: {}
 
   lru-cache@5.1.1:
@@ -8518,8 +8441,6 @@ snapshots:
   make-dir@4.0.0:
     dependencies:
       semver: 7.6.3
-
-  map-obj@4.3.0: {}
 
   math-intrinsics@1.1.0: {}
 
@@ -8597,11 +8518,6 @@ snapshots:
   natural-compare@1.4.0: {}
 
   negotiator@0.6.3: {}
-
-  no-case@3.0.4:
-    dependencies:
-      lower-case: 2.0.2
-      tslib: 2.8.1
 
   node-addon-api@2.0.2: {}
 
@@ -9333,17 +9249,6 @@ snapshots:
       mrmime: 2.0.0
       totalist: 3.0.1
 
-  snake-case@3.0.4:
-    dependencies:
-      dot-case: 3.0.4
-      tslib: 2.8.1
-
-  snakecase-keys@5.4.4:
-    dependencies:
-      map-obj: 4.3.0
-      snake-case: 3.0.4
-      type-fest: 2.19.0
-
   source-map-js@1.2.1: {}
 
   source-map-support@0.5.21:
@@ -9610,8 +9515,6 @@ snapshots:
   type-check@0.4.0:
     dependencies:
       prelude-ls: 1.2.1
-
-  type-fest@2.19.0: {}
 
   type-is@1.6.18:
     dependencies:
