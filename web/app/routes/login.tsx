@@ -6,7 +6,7 @@ import {
   SignedIn,
   SignedOut,
   UserButton,
-} from "@clerk/react-router"
+} from "@clerk/clerk-react"
 
 export default function Index() {
   return (
