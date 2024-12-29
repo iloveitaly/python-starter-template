@@ -18,3 +18,11 @@ runs:
     - uses: iloveitaly/github-action-direnv-load-and-mask@master
       with:
         environment_allowlist: PYTHON_TEST_SERVER_HOST,JAVASCRIPT_SERVER_HOST,VITE_PYTHON_URL
+
+    # cache node_modules
+    - uses: actions/cache@v4
+      with:
+        path: web/node_modules
+        key: ${{ runner.os }}-node-modules-${{ hashFiles('web/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-node-modules
