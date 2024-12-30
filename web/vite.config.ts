@@ -51,7 +51,9 @@ function getModePlugins(mode: string) {
       const CI = process.env.CI
 
       if (!VITE_BUILD_COMMIT) {
-        throw new Error("Missing VITE_BUILD_COMMIT. Include to fix build.")
+        throw new Error(
+          "Missing VITE_BUILD_COMMIT environment variable. Include to run build.",
+        )
       }
 
       // If build is dirty, then we aren't building for prod (probably local)
