@@ -785,9 +785,17 @@ JAVASCRIPT_CONTAINER_BUILD_DIR := "/app/build/client"
 # outside of nixpacks, within the python application folder, this is where the SPA assets are stored
 JAVASCRIPT_PRODUCTION_BUILD_DIR := "public"
 
+_banner_echo BANNER:
+	# TODO use style tags from justfile
+	# two spaces added because of the '# ' prefix on the banner message
+	banner_length=$(echo -n "{{BANNER}}  " | wc -c) && \
+	printf "\n\033[0;36m%${banner_length}s\033[0m\n" | tr " " "#" && \
+	printf "\033[0;36m# %s   \033[0m\n" "{{BANNER}}" && \
+	printf "\033[0;36m%${banner_length}s\033[0m\n\n" | tr " " "#"
+
 # build the javascript assets by creating an image, building assets inside the container, and then copying them to the host
 build_js-assets: _production_build_assertions
-	@echo "Building javascript assets..."
+	@just _banner_echo "Building javascript assets..."
 	rm -rf "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}" || true
 
 	# Production assets bundle public "secrets" (safe to expose publicly) which are extracted from the environment
@@ -799,17 +807,17 @@ build_js-assets: _production_build_assertions
 		 {{NIXPACKS_BUILD_METADATA}} \
 		--platform=linux/amd64 \
 		--env VITE_BUILD_COMMIT="{{GIT_SHA}}" \
-		--cache-from "{{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}:latest" --inline-cache \
 		$(just direnv_export_docker '{{JAVASCRIPT_SECRETS_FILE}}' --params) \
 		$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params) \
-		--label org.opencontainers.image.description="Used for building javascript assets, not for deployment" \
+		--label org.opencontainers.image.description="Used for building javascript assets, not for deployment"
+
+	@just _banner_echo "Extracting javascript assets..."
 
 	# you cannot extract files out of a image, only a container
 	# extract out the production-built javascript from the container
 	docker rm tmp-js-container || true
 	docker create --name tmp-js-container {{JAVASCRIPT_IMAGE_TAG}}
 	docker cp tmp-js-container:/app/build/production/client "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}"
-	tree "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}"
 
 # support non-macos installations for github actions
 _build_requirements:
