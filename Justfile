@@ -79,7 +79,7 @@ dev: local-alias
 	# TODO use style tags from justfile
 	# two spaces added because of the '# ' prefix on the banner message
 	banner_length=$(echo -n "{{BANNER}}  " | wc -c) && \
-	printf "\n\n\033[0;36m%${banner_length}s\033[0m\n" | tr " " "#" && \
+	printf "\n\033[0;36m%${banner_length}s\033[0m\n" | tr " " "#" && \
 	printf "\033[0;36m# %s   \033[0m\n" "{{BANNER}}" && \
 	printf "\033[0;36m%${banner_length}s\033[0m\n\n" | tr " " "#"
 
@@ -209,6 +209,7 @@ tooling_upgrade: && _mise_upgrade _js_sync-engine-versions
 # upgrade everything: all packages on all languages, tooling, etc
 [macos]
 upgrade: tooling_upgrade js_upgrade py_upgrade
+# TODO update versions: uv run python -m app.cli write-versions
 
 # run (or reload) daemon to setup local development aliases
 [macos]
@@ -574,13 +575,17 @@ _gha_last_failed_run_id:
 _gha_running_run_id:
 	gh run list --status=in_progress --workflow={{GHA_YML_NAME}} --json databaseId --jq '.[0].databaseId'
 
-#######################
+##########################
 # Dev Container Management
-#######################
+##########################
 
 # Use --fast to avoid waiting until the containers are healthy, useful for CI runs
 [doc("Optional flag: --fast")]
 up *flag:
+	# if images have already been pulled, this ensures the latest versions are pulled so they match with
+	# CI or other environments that are pulling fresh versions of the images
+	docker compose pull
+
 	docker compose up -d {{ if flag == "--fast" { "" } else { "--wait" } }}
 
 down: db_down
@@ -779,12 +784,12 @@ PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
 # for this reason, we need to emulate the production environment, then build the assets statically.
 # Also, we can't just mount /app/build/server with -v since the build process removes the entire /app/build directory.
 # Some ENV var are set for us, like NODE_ENV: https://nixpacks.com/docs/providers/node#environment-variables
-# TODO --cache-from "{{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}:latest" --inline-cache \
 JAVASCRIPT_NIXPACKS_BUILD_CMD := "nixpacks build " + WEB_DIR + " " + \
 	" --name " + JAVASCRIPT_IMAGE_TAG + " " + \
 	" " + NIXPACKS_BUILD_METADATA + \
 	" --platform=linux/amd64 " + \
 	" --env VITE_BUILD_COMMIT=" + GIT_SHA + " " + \
+	" --cache-from " + JAVASCRIPT_PRODUCTION_IMAGE_NAME + ":latest --inline-cache" + \
 	" $(just direnv_export_docker '" + JAVASCRIPT_SECRETS_FILE + "' --params) " + \
 	" $(just direnv_export_docker '" + SHARED_ENV_FILE + "' --params) " + \
 	" --label org.opencontainers.image.description=\"Used for building javascript assets, not for deployment\""
