@@ -130,7 +130,19 @@ Here are a couple additions to your shell environment that you'll probably want 
 * [just](https://just.systems/man/en/shell-completion-scripts.html)
 * [fzf tab completion](https://github.com/Aloxaf/fzf-tab)
 
+## Production
+
+### Frontend
+
+* `window.SENTRY_RELEASE` has the commit sha of the build.
+* `devDependencies` should only contain dependencies that are required for local development. All dependencies required
+  for building the frontend should be in `dependencies`.
+
 ## Usage
+
+### Naming Recommendations
+
+* All lowercase GitHub organizations and names. Some systems are case sensitive and some are not.
 
 ### Pytest
 

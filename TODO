@@ -19,8 +19,12 @@ favicon and other root handlers on the fastapi server
 prevent rich tracebacks
 expanded sort categories, can we do this with ruff?
 fix html formatting, use a single formatter type
+https://gist.github.com/nymous/f138c7f06062b7c43c060bf03759c29e structured logging for fastapi
+pull commands structure over
+https://salabim.org/peek/#copying-to-the-clipboard
 
 ## js
+just py_js-build --watch implementation
 typed routes https://github.com/fenok/react-router-typesafe-routes
 sentry config, not yet ready for v7 https://docs.sentry.io/platforms/javascript/guides/react/features/react-router/, https://github.com/remix-run/react-router/discussions/12423
 posthog config, fix when v7 is released
@@ -32,6 +36,7 @@ fix clerk redirect issue https://discord.com/channels/856971667393609759/1311386
 https://github.com/hey-api/openapi-ts/pull/1378 - better log redirect, but need to handle ci and local builds
 better error page, esp when 40x error when loading the client
 https://simondosda.github.io/posts/2021-05-10-eslint-imports.html auto fix unused imports
+js test build should not include valid sentry token, can we use a console DSN?
 
 ## deployment
 grafana timing integration
@@ -41,6 +46,8 @@ can kamal work with a registry with container?
 flightcontrol on AWS or something like that on azure
 
 ## dev
+forklift for s3 and remote storage
+%load_ext pgcli.magic for ipython
 add custom cspell dictionary instead of settings.json
 https://github.com/TablePlus/TablePlus/issues/3407 orb stack connections sometimes break
 extract playground logic into ipython extension
@@ -52,7 +59,9 @@ https://github.com/astral-sh/uv/issues/9258#issuecomment-2488597047 - looks like
 autogen'd localalias based on ENV port config, use local
 switch to binstall and see if this becomes a binary distribution https://github.com/yukihirop/ultraman/issues/58
 look into devenv, maybe a replacement for some of the setup here? https://github.com/getsentry/sentry/blob/master/devenv/sync.py
-only look at local .tool-versions
+only look at local .tool-versions instead of the entire system
+mermaid postgres integrated into readme https://github.com/bastiensun/pg-mermaid
+add some mermaid diagrams to the readme https://raw.githubusercontent.com/devrishik/medical-record-copilot/bc450aa523ba65e3b5a254f422696725512f8c30/README.md
 
 ## css
 tailwind sorting
@@ -62,6 +71,7 @@ removing unused import, should catch this specifically
 
 ## production
 should we add justfile to run production scripts? Probably not. Should document.
+`{"TimeStamp": "2024-12-17T22:05:33.8744132+00:00", "Log": "INFO   100.100.0.180:49730 - \"GET /favicon.ico HTTP/1.1\" 200"}` need to improve fastapi structured logging
 
 ## template
 https://github.com/fastapi/full-stack-fastapi-template/blob/master/copier.yml - looks like there is some copy tool I can use? to make this template easy to copy.
@@ -70,6 +80,7 @@ https://github.com/fastapi/full-stack-fastapi-template/blob/master/copier.yml - 
 timeout default for playwright to avoid hanging
 test logs are a mess. I need to figure out what pytest is doing and make them sane.
 --debug seems to generate a different test log
+https://github.com/darrenburns/pytest-clarity
 
 ## aiautocommit
 include multiple large changes with comma
@@ -79,6 +90,8 @@ if I remove stuff, it counts it as a feature
 localias upstream no caching
 
 ## ci
+cache py dependencies https://github.com/astral-sh/setup-uv/blob/d837751086f305827240e5292bdf208a757ceef1/src/utils/inputs.ts#L59
+https://graphite.dev/guides/github-actions-caching - cache docker build and postgres images? https://lipanski.com/posts/speed-up-your-docker-builds-with-cache-from
 https://github.com/tecolicom/actions-use-apt-tools/issues/5
 1p can hang CI https://1password-devs.slack.com/archives/C03NJV34SSC/p1733764637441309
 can we use a op service account locally? Probably not a great idea since no 2f is required
@@ -124,6 +137,21 @@ push to registry
 
 ## act compat
 https://github.com/catthehacker/docker_images/issues/138 - apt tool, still failing on apt-install but not because of missing packages
+act --container-architecture linux/amd64 --job web
+act --container-architecture linux/amd64 --env OP_SERVICE_ACCOUNT_TOKEN="$OP_SERVICE_ACCOUNT_TOKEN"
 
 ## vs code
 file picker search for specific files even though they are in gitignore
+
+binding for paste as plain text
+```
+{
+    "key": "ctrl+shift+v",
+    "command": "editor.action.pasteAs",
+    "args": {
+        "preferences": [
+            "text.plain"
+        ]
+    }
+}
+```
