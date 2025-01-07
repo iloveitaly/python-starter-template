@@ -70,6 +70,20 @@ dev: local-alias
 	foreman start --procfile=tmp/Procfile.dev
 
 #######################
+# Utilities
+#######################
+
+# build commands generate a lot of output and when `[script]` is used no commands are echo'd, this lets us make build
+# output easier to read in CI.
+@_banner_echo BANNER:
+	# TODO use style tags from justfile
+	# two spaces added because of the '# ' prefix on the banner message
+	banner_length=$(echo -n "{{BANNER}}  " | wc -c) && \
+	printf "\n\n\033[0;36m%${banner_length}s\033[0m\n" | tr " " "#" && \
+	printf "\033[0;36m# %s   \033[0m\n" "{{BANNER}}" && \
+	printf "\033[0;36m%${banner_length}s\033[0m\n\n" | tr " " "#"
+
+#######################
 # Setup
 #######################
 
@@ -225,7 +239,8 @@ WEB_DIR := "web"
 _pnpm := "cd " + WEB_DIR + " && pnpm ${PNPM_GLOBAL_FLAGS:-}"
 
 js_setup:
-	{{_pnpm}} install
+	# frozen-lockfile is used on CI and when building for production, so we default so that mode
+	{{_pnpm}} install --frozen-lockfile
 	# TODO do we actually need this? Or will RR do this for us when building a preview + build?
 	{{_pnpm}} react-router typegen
 
@@ -265,6 +280,11 @@ js_dev:
 
 # build a production javascript bundle, helpful for running e2e python tests
 js_build: js_setup
+	# NOTE this is *slightly* different than the production build: NODE_ENV != production and the ENV variables are different
+	#      this can cause build errors to occur via nixpacks, but not here. Run `just js_clean && export NODE_ENV=production && just js_build`
+	#      to test building in an environment much closer to production. Node and pnpm versions can still be *slightly* different
+	#      than your local environment since `mise` is not used within nixpacks.
+
 	# as you'd expect, the `web/build` directory is wiped on each run, so we don't need to clear it manually
 	export VITE_BUILD_COMMIT="{{GIT_SHA}}" && {{_pnpm}} run build
 
@@ -276,7 +296,10 @@ js_play:
 # interactively upgrade all js packages
 js_upgrade:
 	{{_pnpm}} dlx npm-check-updates --interactive
+
+	# intentionally without lockfile so it's updated
 	{{_pnpm}} install
+
 	cd {{WEB_DIR}} && git add package.json pnpm-lock.yaml
 
 # generate a typescript client from the openapi spec
@@ -312,11 +335,15 @@ _js_sync-engine-versions:
 	# https://stackoverflow.com/questions/36565295/jq-to-replace-text-directly-on-file-like-sed-i
 	tmp_package=$(mktemp)
 
+	# >= vs ^ or ~ can cause weird compatibility issues such as:
+	#   https://community.render.com/t/issue-with-deploy/26570/7
+	# Always take a conservative approach with javascript system versions.
+
 	jq "
 		. + {
 			engines: {
-				node: \">=$NODE_VERSION\",
-				pnpm: \">=$PNPM_VERSION\"
+				node: \"^$NODE_VERSION\",
+				pnpm: \"^$PNPM_VERSION\"
 			}
 	}" "{{JAVASCRIPT_PACKAGE_JSON}}" > "$tmp_package"
 
@@ -355,9 +382,12 @@ py_setup:
 py_clean:
 	# pycache should never appear because of PYTHON* vars
 
-	rm -rf .pytest_cache .ruff_cache .venv celerybeat-schedule
-	rm -rf tests/**/snapshot_tests_failures
+	rm -rf .pytest_cache .ruff_cache .venv celerybeat-schedule || true
+	rm -rf tests/**/snapshot_tests_failures || true
+
 	# rm -rf $PLAYWRIGHT_BROWSERS_PATH
+	# TODO should remove pnpm global cache:   pnpm store path
+	# rm -rf $(pnpm store path)
 
 
 # rebuild the venv from scratch
@@ -388,14 +418,16 @@ py_lint +FILES=".":
 	# NOTE this is important: we want all operations to run instead of fail fast
 	set +e
 
+	# TODO we should either abstract this out or remove it...
 	# Define a more detailed colored PS4 without current directory so -x output is easier to read
 	setopt prompt_subst
 	export PS4='%F{green}+%f '
 	set -x
 
 	if [ -n "${CI:-}" ]; then
-		# TODO I'm surprised that ruff doesn't auto detect github...
+		# TODO I'm surprised that ruff doesn't auto detect github... need to double check on this
 		uv tool run ruff check --output-format=github {{FILES}} || exit_code=$?
+		uv tool run ruff format --check {{FILES}} || exit_code=$?
 
 		uv run pyright {{FILES}} --outputjson > pyright_report.json || exit_code=$?
 		# TODO this is a neat trick, we should use it in other places too + document
@@ -431,6 +463,8 @@ py_lint +FILES=".":
 # automatically fix linting errors
 py_lint_fix:
 	uv tool run ruff check . --fix
+	uv tool run ruff format
+
 	uv run djlint --profile=jinja --reformat {{JINJA_TEMPLATE_DIR}}
 
 	# NOTE pyright and other linters do not have an automatic fix flow
@@ -741,6 +775,20 @@ PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
 	' --label org.opencontainers.image.description="Primary application deployment image"' + \
 	' --label build.run_id="$(just _build_id)"'
 
+# Production assets bundle public "secrets" (safe to expose publicly) which are extracted from the environment
+# for this reason, we need to emulate the production environment, then build the assets statically.
+# Also, we can't just mount /app/build/server with -v since the build process removes the entire /app/build directory.
+# Some ENV var are set for us, like NODE_ENV: https://nixpacks.com/docs/providers/node#environment-variables
+# TODO --cache-from "{{JAVASCRIPT_PRODUCTION_IMAGE_NAME}}:latest" --inline-cache \
+JAVASCRIPT_NIXPACKS_BUILD_CMD := "nixpacks build " + WEB_DIR + " " + \
+	" --name " + JAVASCRIPT_IMAGE_TAG + " " + \
+	" " + NIXPACKS_BUILD_METADATA + \
+	" --platform=linux/amd64 " + \
+	" --env VITE_BUILD_COMMIT=" + GIT_SHA + " " + \
+	" $(just direnv_export_docker '" + JAVASCRIPT_SECRETS_FILE + "' --params) " + \
+	" $(just direnv_export_docker '" + SHARED_ENV_FILE + "' --params) " + \
+	" --label org.opencontainers.image.description=\"Used for building javascript assets, not for deployment\""
+
 # .env file without any secrets that should exist on all environments
 SHARED_ENV_FILE := ".env"
 
@@ -785,39 +833,24 @@ JAVASCRIPT_CONTAINER_BUILD_DIR := "/app/build/client"
 # outside of nixpacks, within the python application folder, this is where the SPA assets are stored
 JAVASCRIPT_PRODUCTION_BUILD_DIR := "public"
 
-_banner_echo BANNER:
-	# TODO use style tags from justfile
-	# two spaces added because of the '# ' prefix on the banner message
-	banner_length=$(echo -n "{{BANNER}}  " | wc -c) && \
-	printf "\n\033[0;36m%${banner_length}s\033[0m\n" | tr " " "#" && \
-	printf "\033[0;36m# %s   \033[0m\n" "{{BANNER}}" && \
-	printf "\033[0;36m%${banner_length}s\033[0m\n\n" | tr " " "#"
-
 # build the javascript assets by creating an image, building assets inside the container, and then copying them to the host
 build_js-assets: _production_build_assertions
-	@just _banner_echo "Building javascript assets..."
+	@just _banner_echo "Building JavaScript Assets in Container..."
 	rm -rf "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}" || true
 
-	# Production assets bundle public "secrets" (safe to expose publicly) which are extracted from the environment
-	# for this reason, we need to emulate the production environment, then build the assets statically.
-	# Also, we can't just mount /app/build/server with -v since the build process removes the entire /app/build directory.
-	# Some ENV var are set for us, like NODE_ENV: https://nixpacks.com/docs/providers/node#environment-variables
-	nixpacks build {{WEB_DIR}} \
-		--name "{{JAVASCRIPT_IMAGE_TAG}}" \
-		 {{NIXPACKS_BUILD_METADATA}} \
-		--platform=linux/amd64 \
-		--env VITE_BUILD_COMMIT="{{GIT_SHA}}" \
-		$(just direnv_export_docker '{{JAVASCRIPT_SECRETS_FILE}}' --params) \
-		$(just direnv_export_docker '{{SHARED_ENV_FILE}}' --params) \
-		--label org.opencontainers.image.description="Used for building javascript assets, not for deployment"
+	{{JAVASCRIPT_NIXPACKS_BUILD_CMD}}
 
-	@just _banner_echo "Extracting javascript assets..."
+	@just _banner_echo "Extracting JavaScript Assets from Container..."
 
 	# you cannot extract files out of a image, only a container
 	# extract out the production-built javascript from the container
 	docker rm tmp-js-container || true
 	docker create --name tmp-js-container {{JAVASCRIPT_IMAGE_TAG}}
 	docker cp tmp-js-container:/app/build/production/client "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}"
+
+# dump nixpacks-generated Dockerfile for manual build and production debugging
+build_javascript_dump:
+	{{JAVASCRIPT_NIXPACKS_BUILD_CMD}} --out web
 
 # support non-macos installations for github actions
 _build_requirements:
@@ -963,7 +996,7 @@ with_entries(
 	if {{ if flag == "--params" { "true" } else { "false" } }}; then; \
 		just direnv_export "{{target}}" | jq -r 'to_entries | map("-e \(.key)=\(.value)") | join(" ")'; \
 	elif {{ if flag == "--shell" { "true" } else { "false" } }}; then; \
-	  just direnv_export "{{target}}" | jq -r 'to_entries[] | "export \(.key)=\(.value | @sh)"'; \
+		just direnv_export "{{target}}" | jq -r 'to_entries[] | "export \(.key)=\(.value | @sh)"'; \
 	else; \
 		just direnv_export "{{target}}" | jq -r 'to_entries[] | "\(.key)=\(.value)"'; \
 	fi
