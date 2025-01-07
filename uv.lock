@@ -718,6 +718,15 @@ wheels = [
 ]
 
 [[package]]
+name = "httpdbg"
+version = "0.31.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/67/9b/151af4b0d9a3a59b20864f91e273552b3009e7676696c9e830382262b84a/httpdbg-0.31.1.tar.gz", hash = "sha256:0458f571772618ab36567248f6e467a04ed1c1e5d3fc656b9f04b0a0b81b150f", size = 62814 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/21/d5/1ecdfb80cfa9aa3a1dd1cfa1d30a9bba13c49757e0bb628c9d66bd483fc1/httpdbg-0.31.1-py3-none-any.whl", hash = "sha256:bebbfec35344e948b4ad8587e0dba67fad8c141e5d225340541f529bb3a9a819", size = 68215 },
+]
+
+[[package]]
 name = "httptools"
 version = "0.6.4"
 source = { registry = "https://pypi.org/simple" }
@@ -1750,6 +1759,7 @@ debugging-extras = [
     { name = "datamodel-code-generator" },
     { name = "debugpy" },
     { name = "docrepr" },
+    { name = "httpdbg" },
     { name = "ipdb" },
     { name = "ipython-autoimport" },
     { name = "ipython-ctrlr-fzf" },
@@ -1823,6 +1833,7 @@ debugging-extras = [
     { name = "datamodel-code-generator", specifier = ">=0.26.3" },
     { name = "debugpy", specifier = ">=1.8.8" },
     { name = "docrepr", specifier = ">=0.2.0" },
+    { name = "httpdbg", specifier = ">=0.31.1" },
     { name = "ipdb", specifier = ">=0.13.13" },
     { name = "ipython-autoimport", git = "https://github.com/anntzer/ipython-autoimport.git" },
     { name = "ipython-ctrlr-fzf", specifier = ">=0.2.1" },
