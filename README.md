@@ -74,7 +74,7 @@ The neat thing about copier is you pull updates from this template later on if y
 uv tool run --with jinja2_shell_extension copier update --trust --skip-tasks --skip-answered
 ```
 
-If you want to skip updates in a particular directory:
+If you want to skip updates in a particular directory ('web' in this case):
 
 ```shell
 uv tool run --with jinja2_shell_extension copier update --trust --skip-tasks --skip-answered --exclude web
@@ -142,7 +142,11 @@ Here are a couple additions to your shell environment that you'll probably want 
 
 ### Naming Recommendations
 
+General recommendations for naming things throughout the system:
+
+* Longer names are better than shorter names.
 * All lowercase GitHub organizations and names. Some systems are case sensitive and some are not.
+* All 1password fields should be hyphen-separated and not use spaces.
 
 ### Pytest
 
