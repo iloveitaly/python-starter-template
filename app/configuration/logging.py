@@ -20,7 +20,11 @@ from ..environments import is_production
 if is_production():
     RENDERER = structlog.processors.JSONRenderer(serializer=orjson.dumps)
 else:
-    RENDERER = structlog.dev.ConsoleRenderer()
+    RENDERER = structlog.dev.ConsoleRenderer(
+        # supports NO_COLOR standard: https://no-color.org/
+        colors=not config("NO_COLOR", cast=bool, default=False)
+    )
+
 
 PROCESSORS = [
     structlog.contextvars.merge_contextvars,

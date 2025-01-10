@@ -79,9 +79,9 @@ dev: local-alias
 	# TODO use style tags from justfile
 	# two spaces added because of the '# ' prefix on the banner message
 	banner_length=$(echo -n "{{BANNER}}  " | wc -c) && \
-	printf "\n\033[0;36m%${banner_length}s\033[0m\n" | tr " " "#" && \
+	printf "\n\033[0;36m%${banner_length}s#\033[0m\n" | tr " " "#" && \
 	printf "\033[0;36m# %s   \033[0m\n" "{{BANNER}}" && \
-	printf "\033[0;36m%${banner_length}s\033[0m\n\n" | tr " " "#"
+	printf "\033[0;36m%${banner_length}s#\033[0m\n\n" | tr " " "#"
 
 #######################
 # Setup
@@ -216,12 +216,14 @@ upgrade: tooling_upgrade js_upgrade py_upgrade
 [script]
 local-alias:
 	if [[ "$(localias status)" == "daemon running with pid "* ]]; then
-		echo "Daemon already running"
+		just _banner_echo "Daemon already running, reloading"
 		localias reload
 		exit 0
 	fi
 
 	localias start
+
+	just _banner_echo "Local Alias Configuration"
 
 	localias debug config --print
 
@@ -318,6 +320,9 @@ _js_generate-openapi:
 
 	# generate the js client with the latest openapi spec
 	{{_pnpm}} run openapi
+
+	# generated route types can dependend on the openapi spec, so we need to regenerate it
+	{{_pnpm}} exec react-router typegen
 
 # run shadcn commands with the latest library version
 js_shadcn *arguments:
@@ -1010,9 +1015,16 @@ with_entries(
 	# TODO note this is not currently in use, so we'll probably have to tweak it in the future
 
 BASH_EXPORT_PREAMBLE := """
+# Description: easy source-able bash script in case a user doesn't want to bother with direnv and friends
+
+# `mise` is installed in ~/.local/bin by default, we assume the user is not using mise across their installation
+# so we force the path to be added.
+
 export PATH="$HOME/.local/bin:$PATH"
 
 eval "$(mise activate)"
+
+# just runner completions make life a *lot* better
 eval "$(just --completions $(basename $SHELL))"
 
 ## BEGIN DIRENV EXPORT
@@ -1026,6 +1038,7 @@ direnv_bash_export:
 
 	echo '{{BASH_EXPORT_PREAMBLE}}' > "$target_file"
 	just direnv_export_docker "" --shell >> "$target_file"
+	echo $'\n\n## END DIRENV EXPORT' >> "$target_file"
 
 	echo $'\n'
 	echo "File generated: $target_file"
