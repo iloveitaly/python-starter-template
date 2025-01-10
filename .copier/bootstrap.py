@@ -49,7 +49,7 @@ def replace_lines_in_files(replacements: Dict[str, List[Tuple[str, str]]]):
 
 
 replacements = {
-    "pyproject.toml": [(r"^name = \"", f"name = \"{copier_answers['project_slug']}\"")],
+    "pyproject.toml": [(r"^name = \"", f'name = "{copier_answers["project_slug"]}"')],
     ".env.shared": [
         (
             r"export EMAIL_FROM_ADDRESS=",
@@ -65,10 +65,10 @@ replacements = {
         ),
     ],
     "Justfile": [
-        (r"^PROJECT_NAME :=", f"PROJECT_NAME := \"{copier_answers['project_slug']}\""),
+        (r"^PROJECT_NAME :=", f'PROJECT_NAME := "{copier_answers["project_slug"]}"'),
         (
             r"^PYTHON_PRODUCTION_IMAGE_NAME :=",
-            f"PYTHON_PRODUCTION_IMAGE_NAME := \"{copier_answers['production_image_name']}\"",
+            f'PYTHON_PRODUCTION_IMAGE_NAME := "{copier_answers["production_image_name"]}"',
         ),
     ],
 }

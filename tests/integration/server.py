@@ -119,7 +119,7 @@ def server():
 
 def home_url():
     # TODO should we just use `base_server_url` instead?
-    return f"https://{config("PYTHON_TEST_SERVER_HOST")}"
+    return f"https://{config('PYTHON_TEST_SERVER_HOST')}"
 
 
 def wait_for_loading(page: Page):
