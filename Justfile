@@ -168,16 +168,25 @@ _mise_upgrade:
 	TOOLS=("${(@f)$(mise list --current --json | jq -r --arg PWD "$PWD" 'to_entries | map(select(.value[0].source.path == $PWD + "/.tool-versions")) | from_entries | keys[]')}")
 
 	for TOOL in $TOOLS; do
-			# Get current version
+	    # Get current version
 			CURRENT=$(mise list --current --json | jq -r --arg TOOL "$TOOL" --arg PWD "$PWD" 'to_entries | map(select(.value[0].source.path == $PWD + "/.tool-versions")) | from_entries | .[$TOOL][0].version')
 			echo "Current version of $TOOL: $CURRENT"
 
-			# Extract major version
-			CURRENT_BASE=$(echo $CURRENT | cut -d. -f1)
-			echo "Current base version of $TOOL: $CURRENT_BASE"
+			if [[ "$TOOL" == "node" || "$TOOL" == "python" ]]; then
+					# Extract major.minor version
+					CURRENT_BASE=$(echo "$CURRENT" | cut -d. -f1,2)
+					echo "Current base version of $TOOL: $CURRENT_BASE"
 
-			# Get latest version matching current major.minor
-			LATEST=$(mise ls-remote "$TOOL" | grep -E "^${CURRENT_BASE}\.[0-9.]+$" | sort -V | tail -n1)
+					# Get latest version matching current major.minor
+					LATEST=$(mise ls-remote "$TOOL" | grep -E "^${CURRENT_BASE}\.[0-9]+$" | sort -V | tail -n1)
+			else
+					# Extract major version
+					CURRENT_BASE=$(echo "$CURRENT" | cut -d. -f1)
+					echo "Current base version of $TOOL: $CURRENT_BASE"
+
+					# Get latest version matching current major version
+					LATEST=$(mise ls-remote "$TOOL" | grep -E "^${CURRENT_BASE}\.[0-9.]+$" | sort -V | tail -n1)
+			fi
 
 			if [[ -n $LATEST && $CURRENT != $LATEST ]]; then
 					sed -i '' "s/^$TOOL .*/$TOOL $LATEST/" .tool-versions
