@@ -3,21 +3,20 @@
 This is an extremely opinionated web application template:
 
 1. Full-stack integration tests. This includes HTTPS and production-build JS on CI.
-2. Consistent secret and environment management across environments.
+2. Eliminate magic commands. Env vars, developer environments, infra, etc should all be documented in code.
 3. Containerized builds.
 4. Full-stack typing.
-5. Consistent developer environments.
-6. Use boring core technology. No fancy databases, no novel languages, no obscure frameworks.
+5. Use boring core technology. No fancy databases, no novel languages, no obscure frameworks.
 
 ## Tech Stack
 
 Here's the stack:
 
 * **Development lifecycle.** Justfile + Direnv + Mise + Lefthook + Localias + 1Password for local development & secret configuration
-* **Backend.** Uv + Ruff + Python + FastAPI + ActiveModel + SQLModel + SQLAlchemy + Alembic + Celery + TypeId + Playwright
-* **Frontend.** Pnpm + TypeScript + React + Vite + Vitest + React Router (in SPA mode) + ShadCN + Tailwind + ESLint + Prettier + HeyAPI (for OpenAPI)
+* **Backend.** Uv + Ruff + Python + FastAPI + [ActiveModel](https://github.com/iloveitaly/activemodel) + SQLModel + SQLAlchemy + Alembic + Celery + TypeId + Playwright + [Mailers](https://github.com/alex-oleshkevich/mailers)
+* **Frontend.** Pnpm + TypeScript + React + Vite + Vitest + React Router (in SPA mode) + ShadCN + Tailwind + ESLint + Prettier + [HeyAPI](https://heyapi.dev)
 * **Services.** Postgres + Redis + Mailpit
-  * Docker Compose for running locally
+  * Docker Compose for running locally and on CI
   * Mailpit for local email testing
   * OrbStack is recommended for local docker development for nice automatic domains
 * **Observability.** Sentry + Clerk (user management) + PostHog
@@ -27,24 +26,25 @@ Here's the stack:
 
 ## Cost of Complexity
 
-Yes, this is not a simple application template.
+This is not a simple application template.
 
-There are many things I don't like about this setup. There's a complexity cost to going this route and I'm not sure if it's worth it. It's definitely not for the faint of heart and solves very specific problems I've experienced as codebases and teams grow.
+There are many things I don't like about this setup. There's a complexity cost and I'm not sure if it's worth it. It's definitely not for the faint of heart and solves very specific problems I've experienced as codebases and teams grow.
 
-It's all about tradeoffs. For modern web development, there are the options as I see them:
+Modern web development is all about tradeoffs. Here are the options as I see them:
 
 1. Use Rails, HotWire, etc.
-   1. You lose React, all of the amazing ui libraries that come with it, the massive JS + Py labor market, great tooling (formatting, linting, etc), typing (Sorbet is not great), 1st class SDKs for many APIs (playwright, for example), and finely-tuned LLMs on massive training data.
+   1. You lose React, all of the amazing ui libraries that come with it, the massive JS + Py labor market, great tooling (formatting, linting, etc), typing (Sorbet is not great), 1st class SDKs for many APIs (playwright, for example), and better trained LLMs.
    2. You get a battle-tested (Shopify! GitHub!) beautifully crafted batteries-included framework.
+   3. You get a really beautiful language (I think Ruby is nicer than Python).
 2. Use full stack JavaScript/TypeScript.
    1. You have to work with JavaScript everyday. I've given up on backend JavaScript. The whole ecosystem is a mess and I don't enjoy working in it. Non-starter for me. A personal preference and hill I'll die on.
-   2. You get access to a massive labor market, great tooling, typing, and finely-tuned LLMs on massive training data.
+   2. You get access to a massive labor market, great tooling, typing, and well-trained LLMs.
 3. Use Python & React.
    1. You lose simplicity. You have to deal with two languages, which means more complex build systems and additional cognitive load.
-   2. You lose a single beautifully crafted stack and instead have to stitch together a bunch of different tools (even if they are well-designed independently).
+   2. You lose a single beautifully crafted stack and instead have to stitch together a bunch of different tools (even if they are well-designed independently). Python's ecosystem is mature but not cohesive like Rails (no, Django is not even close).
    3. You get full-stack typing (if you do it right).
-   4. You get access to the great tooling (static analysis and improved LLM performance) on both Python and JavaScript.
-   5. You can move fast with React and all of the amazing UI libraries built on top of it, without having to deal with full stack JavaScript.
+   4. You get access to the great tooling ([static analysis](https://astral.sh) and improved LLM performance) on both Python and JavaScript.
+   5. You can move fast with React and all of the [amazing](https://ui.shadcn.com) [UI](https://www.chakra-ui.com) libraries built on top of it, without having to deal with full stack JavaScript.
    6. You get access to massive JS + Py labor markets.
 
 This template uses #3.
