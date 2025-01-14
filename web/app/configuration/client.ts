@@ -1,12 +1,13 @@
 // the autogen'd client from the python's openapi.json is configured here
 import { requireEnv } from "~/utils/environment"
 
-import { Clerk } from "@clerk/clerk-js"
+import type { Clerk } from "@clerk/clerk-js"
 import { client } from "client/sdk.gen"
 
 // goal here is to avoid having any application code rely on this directly
 // so we only have a single file to change if the API changes on us
 export * from "client/sdk.gen"
+export type * from "client/types.gen"
 
 client.setConfig({
   baseUrl: requireEnv("VITE_PYTHON_URL"),
@@ -26,8 +27,8 @@ export async function setToken(clerkClient: Clerk) {
     throw new Error("VITE_PYTHON_URL must start with http:// or https://")
   }
 
+  // TODO we should prevent this config from being set again if it's already set
   client.setConfig({
-    baseUrl: requireEnv("VITE_PYTHON_URL"),
     headers: {
       Authorization: `Bearer ${bearerToken}`,
     },
