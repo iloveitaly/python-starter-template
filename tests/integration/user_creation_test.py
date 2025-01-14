@@ -69,12 +69,6 @@ def test_signup(server, page: Page, assert_snapshot) -> None:
 
     # page.unroute("https://resolved-emu-53.clerk.accounts.dev/v1/**")
 
-    # at this point the page will automatically redirect
-    expect(page.locator("body")).to_contain_text("View your profile here")
-    page.get_by_role("link", name="Go Home").click()
-
-    wait_for_loading(page)
-
     # assert_snapshot(page)
 
     expect(page.locator("body")).to_contain_text("Hello From Internal Python")

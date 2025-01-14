@@ -8,7 +8,7 @@ export default function LoginRedirect() {
     <>
       <SignedIn>
         {/* TODO used typed routes */}
-        <Navigate to="/notes" />
+        <Navigate to="/home" />
       </SignedIn>
       <SignedOut>
         <SignIn />
