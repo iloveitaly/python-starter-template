@@ -198,8 +198,52 @@ Here's how this project thinks about tests:
 
 ### JavaScript/UI/Remix Tests
 
-```
+```javascript
 screen.debug() // Logs the DOM structure
+```
+
+### React Router Routes
+
+Here's a more complex example of how to define nested routes + layouts in react router 7.
+
+The `routes.ts` is meant to be a simple way to define routes configuration at a high level.
+Unlike previous react router versions, loaders and other options are not available
+
+```typescript
+import type { RouteConfig } from "@react-router/dev/routes"
+import { index, layout, prefix, route } from "@react-router/dev/routes"
+
+export default [
+  index("routes/index.tsx"),
+  layout("layouts/authenticated.tsx", [
+    ...prefix("intake", [
+      layout("layouts/intake.tsx", [
+        index("routes/intake/index.tsx"),
+        route("/:id", "routes/intake/detail.tsx"),
+      ]),
+    ]),
+    ...prefix("notes", [
+      layout("layouts/notes.tsx", [
+        index("routes/notes/index.tsx"),
+        route(":id", "routes/notes/detail.tsx"),
+      ]),
+    ]),
+    route("/settings", "routes/settings.tsx"),
+  ]),
+] satisfies RouteConfig
+```
+
+[We have a special handler in fastapi](app/routes/static.py) to serve the JS files when any route not defined explicitly
+by FastAPI is requested. A "better" (and more complex) way to handle this is to deploy JS assets to a CDN and use a
+separate subdomain for the API server. Keeping everything in a single docker container and application is easier
+on deployment.
+
+### Debugging Javascript Vite Build
+
+Here's how to use `debugger` statements within vite code:
+
+```shell
+VITE_BUILD_COMMIT=-dirty node inspect web/node_modules/@react-router/dev/bin.js build
 ```
 
 ### Pytest Integration Tests

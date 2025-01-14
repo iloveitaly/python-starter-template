@@ -1,4 +1,5 @@
 ## python
+https://github.com/astral-sh/ruff/issues/6514 - float to top DNE
 celery types
 https://github.com/0xthiagomartins/sqlmodel-controller/blob/main/.coveragerc - automatic coverage
 timeout issue https://github.com/celery/celery/issues/3430 and https://github.com/celery/celery/discussions/8692
@@ -24,6 +25,10 @@ pull commands structure over
 https://salabim.org/peek/#copying-to-the-clipboard
 
 ## js
+https://github.com/remix-run/react-router/discussions/12427 - all clientLoaders are rerun, including allk ested layouts
+https://discord.com/channels/770287896669978684/1326588296025083944 - vite html transformation plugin https://github.com/remix-run/react-router/issues/12736
+https://github.com/josh-hemphill/vite-plugin-favicon - favicon generator
+https://github.com/hey-api/openapi-ts/commit/b3c23ba99c361bdca3ab9c44017b6e5c044f40a7 use this for bearer auth https://github.com/hey-api/openapi-ts/releases/tag/%40hey-api%2Fclient-fetch%400.6.0
 just py_js-build --watch implementation
 typed routes https://github.com/fenok/react-router-typesafe-routes
 sentry config, not yet ready for v7 https://docs.sentry.io/platforms/javascript/guides/react/features/react-router/, https://github.com/remix-run/react-router/discussions/12423
@@ -142,7 +147,7 @@ act --container-architecture linux/amd64 --env OP_SERVICE_ACCOUNT_TOKEN="$OP_SER
 
 ## vs code
 file picker search for specific files even though they are in gitignore
-
+https://marketplace.visualstudio.com/items?itemName=lolacod.exclude-format-on-save ignore ui components
 binding for paste as plain text
 ```
 {
