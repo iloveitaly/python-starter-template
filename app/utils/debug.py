@@ -6,8 +6,10 @@ Should not be used in production. Helpful debugging tools for async code and oth
 Types are ignored since not all of the packages are included as dependencies
 """
 
+import pdb
 import traceback
-from contextlib import contextmanager
+from contextlib import ContextDecorator, contextmanager
+from functools import wraps
 from logging import Logger
 
 from app import log
@@ -355,3 +357,37 @@ def build_process_tree(pid=None):
             return {"pid": process.pid, "name": process.name(), "children": []}
 
     return recurse(root)
+
+
+from starlette.middleware.errors import ServerErrorMiddleware
+
+
+class PdbMiddleware(ServerErrorMiddleware):
+    async def __call__(self, scope, receive, send) -> None:
+        async with apdb_context(suppress_exc=False, debug=self.debug):
+            await super().__call__(scope, receive, send)
+
+
+class AsyncContextDecorator(ContextDecorator):
+    def __call__(self, func):
+        @wraps(func)
+        async def inner(*args, **kwds):
+            async with self._recreate_cm():
+                return await func(*args, **kwds)
+
+        return inner
+
+
+class apdb_context(AsyncContextDecorator):
+    def __init__(self, suppress_exc=True, debug=True):
+        self.suppress_exc = suppress_exc
+        self.debug = debug
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, _, exc_value, exc_traceback):
+        if exc_traceback and self.debug:
+            pdb.post_mortem(exc_traceback)
+            return self.suppress_exc
+        return False
