@@ -12,6 +12,8 @@ from contextlib import ContextDecorator, contextmanager
 from functools import wraps
 from logging import Logger
 
+from starlette.middleware.errors import ServerErrorMiddleware
+
 from app import log
 
 
@@ -357,9 +359,6 @@ def build_process_tree(pid=None):
             return {"pid": process.pid, "name": process.name(), "children": []}
 
     return recurse(root)
-
-
-from starlette.middleware.errors import ServerErrorMiddleware
 
 
 class PdbMiddleware(ServerErrorMiddleware):
