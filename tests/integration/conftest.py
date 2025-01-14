@@ -29,6 +29,6 @@ def pytest_configure(config):
 
 # transaction truncation cannot be used with integration tests since the forked server does not retain the same
 # db connection in memory and therefore the transaction rollback does not work.
-database_reset_truncate = pytest.fixture(scope="function", autouse=True)(
-    database_reset_truncate
-)
+@pytest.fixture(scope="function", autouse=True)
+def truncate_database_for_integration(request):
+    database_reset_truncate()

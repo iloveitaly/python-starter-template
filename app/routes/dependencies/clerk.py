@@ -12,7 +12,7 @@ from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 
-class AuthenticateRequest:
+class AuthenticateClerkRequest:
     """
     Protect a route or specific route:
 

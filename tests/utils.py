@@ -2,7 +2,7 @@ from app import log
 from app.configuration.clerk import clerk
 
 
-def delete_all_users():
+def delete_all_clerk_users():
     import funcy_pipe as fp
 
     from app.configuration.clerk import clerk
