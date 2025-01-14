@@ -72,8 +72,9 @@ def pytest_configure(config: Config):
     config.option.log_file_level = "DEBUG"
 
 
-# NOTE only executes if a test is run
 def pytest_sessionstart(session):
+    "only executes once if a test is run, at the beginning of the test suite execution"
+
     # without this, the clerk dev instance will get cluttered and throw errors
     delete_all_clerk_users()
     # clear out any previous cruft in this DB, which is why...
@@ -102,6 +103,7 @@ def base_server_url(protocol: t.Literal["http", "https"] = "http"):
 
 @pytest.fixture
 def client():
+    "client to connect to your fastapi routes"
     from app.server import api_app
 
     return TestClient(api_app, base_url=base_server_url())
@@ -133,4 +135,4 @@ async def aclient() -> t.AsyncGenerator[AsyncClient, None]:
 
 @pytest.fixture(scope="function", autouse=True)
 def datatabase_reset_transaction_for_standard_tests(request):
-    database_reset_transaction()
+    yield from database_reset_transaction()
