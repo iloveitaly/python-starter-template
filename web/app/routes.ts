@@ -5,6 +5,6 @@ import { index, route } from "@react-router/dev/routes"
 // this is meant to be a simple way to define routes configuration at a high level
 
 export default [
-  index("routes/login.tsx"),
+  index("routes/index.tsx"),
   route("/home", "routes/home.tsx"),
 ] satisfies RouteConfig
