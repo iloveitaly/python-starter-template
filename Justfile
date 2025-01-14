@@ -325,7 +325,7 @@ js_generate-openapi *flag:
 
 _js_generate-openapi:
 	# jq is here to pretty print the output
-	LOG_LEVEL=error uv run python -m app.server | jq -r . > "$OPENAPI_JSON_PATH"
+	LOG_LEVEL=error uv run python -m app.cli dump-openapi | jq -r . > "$OPENAPI_JSON_PATH"
 
 	# generate the js client with the latest openapi spec
 	{{_pnpm}} run openapi
@@ -658,14 +658,18 @@ db_migrate:
 	# dev database is created automatically, but test database is not. We need to fail gracefully when the database already exists.
 	psql $DATABASE_URL -c "CREATE DATABASE ${TEST_DATABASE_NAME};" || true
 
+	@just _banner_echo "Migrating Database"
+
 	uv run alembic upgrade head
 
-	[ -n "${CI:-}" ] || {{EXECUTE_IN_TEST}} uv run alembic upgrade head
+	[ -n "${CI:-}" ] || (just _banner_echo "Migrating Test Database" && {{EXECUTE_IN_TEST}} uv run alembic upgrade head)
 
 # add seed data to dev and test
 db_seed: db_migrate
+	@just _banner_echo "Seeding database"
 	uv run python migrations/seed.py
-	[ -n "${CI:-}" ] || {{EXECUTE_IN_TEST}} uv run python migrations/seed.py
+
+	[ -n "${CI:-}" ] || (just _banner_echo "Seeding test database" && {{EXECUTE_IN_TEST}} uv run python migrations/seed.py)
 
 # generate migration based on the current state of the database
 [script]
