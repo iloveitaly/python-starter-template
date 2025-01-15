@@ -7,23 +7,26 @@ from activemodel.pytest.truncate import database_reset_truncate
 # server is imported to expose that fixture to the tests, but keep it all organized in the server file
 from tests.integration.server import report_localias_status, server  # noqa: F401
 
-if "CI" not in os.environ:
-    print(
-        """
-\033[91m
-!!! IMPORTANT !!!
 
-You are running an integration test outside the CI=true environment.
+def notify_js_builds():
+    if "CI" not in os.environ:
+        print(
+            """
+    \033[91m
+    !!! IMPORTANT !!!
 
-If you are iterating on the frontend as well, your build is most likely out of date. Run:
+    You are running an integration test outside the CI=true environment.
 
-just py_js-build
-\033[0m
-"""
-    )
+    If you are iterating on the frontend as well, your build is most likely out of date. Run:
+
+    just py_js-build
+    \033[0m
+    """
+        )
 
 
 def pytest_configure(config):
+    notify_js_builds()
     report_localias_status()
 
 
