@@ -9,14 +9,14 @@ importers:
   .:
     dependencies:
       '@clerk/clerk-js':
-        specifier: ^5.44.0
-        version: 5.44.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: ^5.44.1
+        version: 5.44.1(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@clerk/clerk-react':
-        specifier: ^5.21.2
-        version: 5.21.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: ^5.21.3
+        version: 5.21.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@clerk/shared':
-        specifier: ^2.20.6
-        version: 2.20.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: ^2.20.7
+        version: 2.20.7(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@epic-web/invariant':
         specifier: ^1.0.0
         version: 1.0.0
@@ -60,8 +60,8 @@ importers:
         specifier: 7.1.1
         version: 7.1.1(react-router@7.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3)
       '@sentry/react':
-        specifier: ^8.49.0
-        version: 8.49.0(react@19.0.0)
+        specifier: ^8.50.0
+        version: 8.50.0(react@19.0.0)
       '@sentry/vite-plugin':
         specifier: ^3.0.0
         version: 3.0.0(encoding@0.1.13)
@@ -139,8 +139,8 @@ importers:
         specifier: ^9.18.0
         version: 9.18.0
       '@hey-api/openapi-ts':
-        specifier: ^0.62.0
-        version: 0.62.0(magicast@0.3.5)(typescript@5.7.3)
+        specifier: ^0.62.1
+        version: 0.62.1(magicast@0.3.5)(typescript@5.7.3)
       '@testing-library/jest-dom':
         specifier: ^6.6.3
         version: 6.6.3
@@ -363,26 +363,26 @@ packages:
       react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
       react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
 
-  '@clerk/clerk-js@5.44.0':
-    resolution: {integrity: sha512-pmjx/7iWM3QYGHHj4hIkVhvmI5QiDsxXPsoXChHeJYDX6HYZNw5BoJw2rh3I8aGEWlm1C7yta32BDETzGi0Kuw==}
+  '@clerk/clerk-js@5.44.1':
+    resolution: {integrity: sha512-GPC+8m331Pj31F6cZ9GEFU0DTxW+JMjyaTDhuclWa7XpEhaagc/t87i0A9Oo4opJSCsPsRsoZBEBSUTz3Ry9JA==}
     engines: {node: '>=18.17.0'}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
       react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
 
-  '@clerk/clerk-react@5.21.2':
-    resolution: {integrity: sha512-3dscBj4uyIjlq+jOykQJ2fmjqKfhbjTrPeHxCmzmHLCLCMLOq4+rbkzKJKes35DihGQeeraBFxKQkBYH1PW/SQ==}
+  '@clerk/clerk-react@5.21.3':
+    resolution: {integrity: sha512-v94kVhvLIIAnWSBw3+klod7xbaGigGPd1JWKwCcU10a89XgftRhZyY5HO89E4rtID/lo8DyfJe0+1w3BDAUcBA==}
     engines: {node: '>=18.17.0'}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
       react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
 
-  '@clerk/localizations@3.9.7':
-    resolution: {integrity: sha512-EH5PdK9f1D8W0Vq9XPjkLt93/MvagbOXl3PajYNVZ1aYatr2Rr4rqB9Mvp5eNaP3wnP/vo5mVjzTT80trafOng==}
+  '@clerk/localizations@3.9.8':
+    resolution: {integrity: sha512-d8yHBYNfNYs7fPnWpjgs1ucCcU27ltR8S+7nc9KtRiq52COm2lpXrKoxOOKUx2TrAHYSlEw4mY0ALVNSbyHplw==}
     engines: {node: '>=18.17.0'}
 
-  '@clerk/shared@2.20.6':
-    resolution: {integrity: sha512-DnxXbPPUNQQMOlAQFEn0iAiwPtjO4yKVabSgs+qn86VsNWWHnG//uHJzB6nmDk8n5RYGe/vMum73/Lz/Pg1SgQ==}
+  '@clerk/shared@2.20.7':
+    resolution: {integrity: sha512-59EbMhqAi1331ovs5botm+OVVw3NHVLllO4X9/zBUb64PVtx1W7RSBYf+NxTFjWIalHp0kfVzpcm+jK3JkfXCw==}
     engines: {node: '>=18.17.0'}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
@@ -393,8 +393,8 @@ packages:
       react-dom:
         optional: true
 
-  '@clerk/types@4.40.2':
-    resolution: {integrity: sha512-Jkt8YiqtFSRvCsN+8/MR2V0Cl83xtuqZVuV6ygQ6VJeSbmmFP0q5CSowlJ8mon2bELrlUnWH011dhAjELmvXqg==}
+  '@clerk/types@4.40.3':
+    resolution: {integrity: sha512-gPCL9thu3haTWFGTSX0Dn4rqHPAc+v2J30JIQvHciSgCtrWbhDlYGh0yND3UqAZC0B0FsA2BpGAu7ClfvqDH/A==}
     engines: {node: '>=18.17.0'}
 
   '@coinbase/wallet-sdk@4.0.4':
@@ -812,8 +812,8 @@ packages:
     resolution: {integrity: sha512-dBt0A7op9kf4BcK++x6HBYDmvCvnJUZEGe5QytghPFHnMXPyKwDKomwL/v5e9ERk6E0e1GzL/e/y6pWUso9zrQ==}
     engines: {node: '>= 16'}
 
-  '@hey-api/openapi-ts@0.62.0':
-    resolution: {integrity: sha512-XHIr3F0EakIMIwRApNb2OQndW8KjTb5W4TRMEOo5W5y65VVtHRmOMpAIcZeN5ALVFniK3RwCYY1eyxQmz/UfRg==}
+  '@hey-api/openapi-ts@0.62.1':
+    resolution: {integrity: sha512-iCqeu3jhlMBBhAFu3ZCSww5fV4M9xhYhL06QXjwXso4CSfrCpEGw03wTXOphWI1mmZUl8/eNn3DKdP7QpewhHA==}
     engines: {node: ^18.20.5 || ^20.11.1 || >=22.11.0}
     hasBin: true
     peerDependencies:
@@ -1767,28 +1767,28 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@sentry-internal/browser-utils@8.49.0':
-    resolution: {integrity: sha512-XkPHHdFqsN7EPaB+QGUOEmpFqXiqP67t2rRZ1HG1UwJoe0PhJEKNy7b4+WRwmT7ODSt+PvFk1gNBlJBpThwH7Q==}
+  '@sentry-internal/browser-utils@8.50.0':
+    resolution: {integrity: sha512-hZm6ngWTEzZhaMHpLIKB4wWp0Od1MdCZdvR5FRdIThUMLa1P8rXeolovTRfOE81NE755EiwJHzj4O7rq3EjA+A==}
     engines: {node: '>=14.18'}
 
-  '@sentry-internal/feedback@8.49.0':
-    resolution: {integrity: sha512-v/wf7WvPxEvZUB7xrCnecI3fhevVo84hw8WlxgZIz6mLUHXEIX8xYWc9H8Yet/KKJ2uEB8GQ8aDsY6S1hVEIUA==}
+  '@sentry-internal/feedback@8.50.0':
+    resolution: {integrity: sha512-79WlvSJYCXL/D0PBC8AIT4JbyS44AE3h6lP05IESXMqzTZl3KeSqCx317rwJw1KaxzeFd/JQwkFq95jaKAcLhg==}
     engines: {node: '>=14.18'}
 
-  '@sentry-internal/replay-canvas@8.49.0':
-    resolution: {integrity: sha512-/yXxI7f+Wu24FIYoRE7A0AidNxORuhAyPzb5ey1wFqMXP72nG8dXhOpcl0w+bi554FkqkLjdeUDhSOBWYZXH9g==}
+  '@sentry-internal/replay-canvas@8.50.0':
+    resolution: {integrity: sha512-Hv1bBaPpe62xFPLpuaUxVBUHd/Ed9bnGndeqN4hueeEGDT9T6NyVokgm35O5xE9/op6Yodm/3NfUkEg8oE++Aw==}
     engines: {node: '>=14.18'}
 
-  '@sentry-internal/replay@8.49.0':
-    resolution: {integrity: sha512-BDiiCBxskkktTd6FNplBc9V8l14R4T/AwRIZj2itX4xnuHewTTDjVbeyvGol4roA4r+V0Mzoi31hLEGI6yFQ5Q==}
+  '@sentry-internal/replay@8.50.0':
+    resolution: {integrity: sha512-mhRPujzO6n+mb6ZR+wQNkSpjqIqDriR0hZEvdzHQdyXu9zVdCHUJ3sINkzpT1XwiypQVCEfxB6Oh9y/NmcQfGg==}
     engines: {node: '>=14.18'}
 
   '@sentry/babel-plugin-component-annotate@3.0.0':
     resolution: {integrity: sha512-AJEt9UtU9euB6tDLRQRpCl0EUvY5UlDQEaMSu948OHC+E2jEDoh9RzmfxtqKaDhjT/6WO6g4UoSBNOLxdZkptw==}
     engines: {node: '>= 14'}
 
-  '@sentry/browser@8.49.0':
-    resolution: {integrity: sha512-dS4Sw2h8EixHeXOIR++XEVMTen6xCGcIQ/XhJbsjqvddXeIijW0WkxSeTfPkfs0dsqFHSisWmlmo0xhHbXvEsQ==}
+  '@sentry/browser@8.50.0':
+    resolution: {integrity: sha512-aGJSpuKiHVKkLvd1VklJSZ2oCsl4wcKUVxKIa8dhJC8KjDY0vREQCywrlWuS5KYP0xFy4k28pg6PPR3HKkUlNw==}
     engines: {node: '>=14.18'}
 
   '@sentry/bundler-plugin-core@3.0.0':
@@ -1841,12 +1841,12 @@ packages:
     engines: {node: '>= 10'}
     hasBin: true
 
-  '@sentry/core@8.49.0':
-    resolution: {integrity: sha512-/OAm6LdHhh8TvfDAucWfSJV7M03IOHrJm5LVjrrKr4gwQ1HKd4CDbARsBbPwHIzSRAle0IgG3sbJxEvv52JUIw==}
+  '@sentry/core@8.50.0':
+    resolution: {integrity: sha512-q71m8Ha9YGwqn4Gd7sWvcFTRgbHXxEfU4QeIFtwMBpwHfq2Q+9koiF8DOoOHqIEOsnlvZWRQgGggIOdHzajnVw==}
     engines: {node: '>=14.18'}
 
-  '@sentry/react@8.49.0':
-    resolution: {integrity: sha512-yBMEqiUcN05Sv9CCb4YkvgyIvgLdgecBoZOazJLBiSQ6znoP4oiUfFNDi2TUk46gzqrttuOU0jfT1AVBJ2xgKQ==}
+  '@sentry/react@8.50.0':
+    resolution: {integrity: sha512-qkDW5dieROPDf0uk1usXib/SLZTEveN5jvKgBFd+HKWz5JNu+M7L53t9KdZ7ryn4T68utI/LWs4qR3QhmXzUbQ==}
     engines: {node: '>=14.18'}
     peerDependencies:
       react: ^16.14.0 || 17.x || 18.x || 19.x
@@ -5103,11 +5103,11 @@ snapshots:
       react-lifecycles-compat: 3.0.4
       warning: 3.0.0
 
-  '@clerk/clerk-js@5.44.0(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+  '@clerk/clerk-js@5.44.1(@types/react@19.0.7)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
-      '@clerk/localizations': 3.9.7
-      '@clerk/shared': 2.20.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@clerk/types': 4.40.2
+      '@clerk/localizations': 3.9.8
+      '@clerk/shared': 2.20.7(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@clerk/types': 4.40.3
       '@coinbase/wallet-sdk': 4.0.4
       '@emotion/cache': 11.11.0
       '@emotion/react': 11.11.1(@types/react@19.0.7)(react@19.0.0)
@@ -5130,21 +5130,21 @@ snapshots:
       - '@types/react'
       - supports-color
 
-  '@clerk/clerk-react@5.21.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+  '@clerk/clerk-react@5.21.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
-      '@clerk/shared': 2.20.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@clerk/types': 4.40.2
+      '@clerk/shared': 2.20.7(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@clerk/types': 4.40.3
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
       tslib: 2.4.1
 
-  '@clerk/localizations@3.9.7':
+  '@clerk/localizations@3.9.8':
     dependencies:
-      '@clerk/types': 4.40.2
+      '@clerk/types': 4.40.3
 
-  '@clerk/shared@2.20.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+  '@clerk/shared@2.20.7(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
-      '@clerk/types': 4.40.2
+      '@clerk/types': 4.40.3
       dequal: 2.0.3
       glob-to-regexp: 0.4.1
       js-cookie: 3.0.5
@@ -5154,7 +5154,7 @@ snapshots:
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
 
-  '@clerk/types@4.40.2':
+  '@clerk/types@4.40.3':
     dependencies:
       csstype: 3.1.1
 
@@ -5478,7 +5478,7 @@ snapshots:
       '@types/json-schema': 7.0.15
       js-yaml: 4.1.0
 
-  '@hey-api/openapi-ts@0.62.0(magicast@0.3.5)(typescript@5.7.3)':
+  '@hey-api/openapi-ts@0.62.1(magicast@0.3.5)(typescript@5.7.3)':
     dependencies:
       '@hey-api/json-schema-ref-parser': 1.0.1
       c12: 2.0.1(magicast@0.3.5)
@@ -6407,33 +6407,33 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.24.3':
     optional: true
 
-  '@sentry-internal/browser-utils@8.49.0':
+  '@sentry-internal/browser-utils@8.50.0':
     dependencies:
-      '@sentry/core': 8.49.0
+      '@sentry/core': 8.50.0
 
-  '@sentry-internal/feedback@8.49.0':
+  '@sentry-internal/feedback@8.50.0':
     dependencies:
-      '@sentry/core': 8.49.0
+      '@sentry/core': 8.50.0
 
-  '@sentry-internal/replay-canvas@8.49.0':
+  '@sentry-internal/replay-canvas@8.50.0':
     dependencies:
-      '@sentry-internal/replay': 8.49.0
-      '@sentry/core': 8.49.0
+      '@sentry-internal/replay': 8.50.0
+      '@sentry/core': 8.50.0
 
-  '@sentry-internal/replay@8.49.0':
+  '@sentry-internal/replay@8.50.0':
     dependencies:
-      '@sentry-internal/browser-utils': 8.49.0
-      '@sentry/core': 8.49.0
+      '@sentry-internal/browser-utils': 8.50.0
+      '@sentry/core': 8.50.0
 
   '@sentry/babel-plugin-component-annotate@3.0.0': {}
 
-  '@sentry/browser@8.49.0':
+  '@sentry/browser@8.50.0':
     dependencies:
-      '@sentry-internal/browser-utils': 8.49.0
-      '@sentry-internal/feedback': 8.49.0
-      '@sentry-internal/replay': 8.49.0
-      '@sentry-internal/replay-canvas': 8.49.0
-      '@sentry/core': 8.49.0
+      '@sentry-internal/browser-utils': 8.50.0
+      '@sentry-internal/feedback': 8.50.0
+      '@sentry-internal/replay': 8.50.0
+      '@sentry-internal/replay-canvas': 8.50.0
+      '@sentry/core': 8.50.0
 
   '@sentry/bundler-plugin-core@3.0.0(encoding@0.1.13)':
     dependencies:
@@ -6489,12 +6489,12 @@ snapshots:
       - encoding
       - supports-color
 
-  '@sentry/core@8.49.0': {}
+  '@sentry/core@8.50.0': {}
 
-  '@sentry/react@8.49.0(react@19.0.0)':
+  '@sentry/react@8.50.0(react@19.0.0)':
     dependencies:
-      '@sentry/browser': 8.49.0
-      '@sentry/core': 8.49.0
+      '@sentry/browser': 8.50.0
+      '@sentry/core': 8.50.0
       hoist-non-react-statics: 3.3.2
       react: 19.0.0
 
