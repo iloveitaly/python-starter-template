@@ -24,7 +24,6 @@ def add_middleware(app: FastAPI):
     add_timing_middleware(app)
 
     if is_development() and config("FASTAPI_DEBUG", cast=bool, default=False):
-
         from app.utils.debug import PdbMiddleware
 
         # app.add_middleware(PdbrMiddleware, debug=True)
