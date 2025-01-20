@@ -4,11 +4,13 @@ import "./client"
 import "./logging"
 import withPostHogProvider from "./posthog"
 import withSentryProvider from "./sentry"
+import withTanstackQueryProvider from "./tanstack-query"
 
 const PROVIDERS: ((app: React.ComponentType) => JSX.Element)[] = [
   withPostHogProvider,
   withClerkProvider,
   withSentryProvider,
+  withTanstackQueryProvider,
 ]
 
 // TODO(mbianco) figure out type issue here + move to config index
