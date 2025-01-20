@@ -26,6 +26,7 @@ dependencies = [
     "psycopg[binary]>=3.2.3",
     "python-decouple-typed>=3.11.0",
     "redis>=5.2.0",
+    "rq-dashboard-fast",
     "sentry-sdk[fastapi]>=2.17.0",
     "sqlalchemy>=2.0.36",
     "sqlmodel>=0.0.22",
@@ -157,6 +158,7 @@ asyncio_default_fixture_loop_scope = "session"
 
 [tool.uv.sources]
 j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
+rq-dashboard-fast = { git = "https://github.com/Hannes221/rq-dashboard-fast" }
 
 [tool.uv.sources.activemodel]
 git = "https://github.com/iloveitaly/activemodel.git"
