@@ -6,17 +6,16 @@
 .github
 .DS_Store
 .trunk
+.editorconfig
 
 .env*
 
-__pycache__
+**/__pycache__
 .ruff_cache
 .mypy_cache
 .venv
 .pytest_cache
 .ipython_history
-
-.docker-compose.yml
 
 node_modules
 
@@ -33,9 +32,19 @@ node_modules
 
 Justfile*
 Procfile
-/TODO
+/TODO*
+/README.md
+/playground*
+/tests
+
 docker-compose*.yml
-/playground.py
+lefthook.yml
+.localias.yaml
+.commitlintrc.yml
+.copier-answers.yml
+
+/copier.yml
+/.copier
 
 # web code is built and bundled into the image separately
 /web
