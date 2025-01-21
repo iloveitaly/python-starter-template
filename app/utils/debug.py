@@ -17,6 +17,17 @@ from starlette.middleware.errors import ServerErrorMiddleware
 from app import log
 
 
+def install_traps():
+    """
+    Install all debugging traps
+    """
+
+    install_coroutine_trap()
+    install_thread_trap()
+
+    log.info("installed debugging traps")
+
+
 def install_coroutine_trap():
     """
     Listen to USR1 signal to dump all coroutine state to the console.
@@ -55,7 +66,7 @@ def install_thread_trap():
 
     kill -USR2 <pid>
 
-    Helpful for debugging deadlocks
+    Helpful for debugging deadlocks.
     """
 
     import os
