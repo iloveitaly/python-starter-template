@@ -45,6 +45,7 @@ if (isProduction()) {
 export default function withSentryProvider(Component: React.ComponentType) {
   // if this is enabled in testing, it impacts the resulting debugging output provided
   // https://discord.com/channels/621778831602221064/1307425055667519578
+  // TODO should add env var for testing the sentry error reporting experience
   if (isDevelopment() || isTesting()) {
     return Component
   }
