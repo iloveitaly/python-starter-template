@@ -1,5 +1,3 @@
-import { Component } from "react"
-
 import { isDevelopment } from "~/utils/environment"
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"

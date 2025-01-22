@@ -6,7 +6,7 @@ import { invariant } from "@epic-web/invariant"
 
 // required in prod and dev
 const CLERK_PUBLIC_KEY = import.meta.env.VITE_CLERK_PUBLIC_KEY
-invariant(CLERK_PUBLIC_KEY, "Missing Clerk Key")
+invariant(CLERK_PUBLIC_KEY, "Missing Clerk Public Key")
 
 /*
 This whole situation isn't great. Here's what is happening:
@@ -22,7 +22,9 @@ This whole situation isn't great. Here's what is happening:
 - The clerk-js package is not bundled in a way that can be split, so it greatly increases bundle size when
   used directly.
 
-- This method is assumed to be called in a clientLoader.
+- This method is assumed to be called in a clientLoader, or automatically called by HeyAPI.
+
+- I've posted on Discord to see if there is a better way: https://discord.com/channels/856971667393609759/1330542079260229632
 */
 
 export async function getClient() {
