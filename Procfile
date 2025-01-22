@@ -5,4 +5,5 @@
 api: fastapi run --port 80
 worker: celery -A app.jobs worker
 scheduler: celery -A app.jobs beat
+job_monitor: celery -A app.celery flower --basic-auth=:$FLOWER_PASSWORD --port=$FLOWER_PORT
 console: bash -l

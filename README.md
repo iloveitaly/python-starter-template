@@ -327,6 +327,14 @@ Here are the devprod principles this project adheres to:
 * Ability to build production-identical containers locally for debugging
 * Container building and registry storage should be handled on CI. This reduces vendor lock in.
 
+### Python Job Queue
+
+#### RQ
+
+```
+worker: rq worker --with-scheduler -w rq.worker.SpawnWorker
+```
+
 ## Related
 
 ### Other Templates
