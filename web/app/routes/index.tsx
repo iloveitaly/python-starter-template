@@ -7,8 +7,7 @@ export default function LoginRedirect() {
   return (
     <>
       <SignedIn>
-        {/* TODO used typed routes */}
-        <Navigate to="/home" />
+        <Navigate to={$path("/home")} />
       </SignedIn>
       <SignedOut>
         <SignIn />
