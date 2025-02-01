@@ -1,4 +1,6 @@
 ## python
+https://github.com/FactoryBoy/factory_boy - testing fixtures
+https://pypi.org/project/fastapi-structlog/ - structured logging for fastapi
 https://github.com/astral-sh/ruff/issues/6514 - float to top DNE
 celery types
 https://github.com/0xthiagomartins/sqlmodel-controller/blob/main/.coveragerc - automatic coverage
@@ -23,8 +25,16 @@ fix html formatting, use a single formatter type
 https://gist.github.com/nymous/f138c7f06062b7c43c060bf03759c29e structured logging for fastapi
 pull commands structure over
 https://salabim.org/peek/#copying-to-the-clipboard
+super user pattern in clerk https://discord.com/channels/856971667393609759/1330543476433227877
+https://github.com/mher/flower/pull/1417 - flower can't retry jobs?!
+https://clerk.com/docs/users/user-impersonation - impersonation flow
 
 ## js
+https://github.com/raineorshine/npm-check-updates/issues/1366 - exact versions not respected
+https://github.com/shadcn-ui/ui/issues/5669 - can't use `    "verbatimModuleSyntax": true,`
+https://github.com/vantezzen/autoform - looks like an interesting way to autogenerate schema
+https://github.com/ferdikoomen/openapi-typescript-codegen/issues/1252#issuecomment-2593462128 - no camel case transformation on heyapi
+https://github.com/hey-api/openapi-ts/issues/1571 - naming issues
 https://github.com/remix-run/react-router/discussions/12427 - all clientLoaders are rerun, including allk ested layouts
 https://discord.com/channels/770287896669978684/1326588296025083944 - vite html transformation plugin https://github.com/remix-run/react-router/issues/12736
 https://github.com/josh-hemphill/vite-plugin-favicon - favicon generator
@@ -93,6 +103,9 @@ if I remove stuff, it counts it as a feature
 
 ## open source
 localias upstream no caching
+
+## ui
+dialog ovefflow not working https://github.com/shadcn-ui/ui/issues/16
 
 ## ci
 cache py dependencies https://github.com/astral-sh/setup-uv/blob/d837751086f305827240e5292bdf208a757ceef1/src/utils/inputs.ts#L59
