@@ -331,9 +331,28 @@ Here are the devprod principles this project adheres to:
 
 #### RQ
 
-```
+I *really* liked the idea of [RQ as a job queue](https://python-rq.org). The configuration and usage seemed much more simple.
+
+However, it didn't work for me.
+
+* [Did not work on macOS](https://github.com/rq/rq/issues/2058)
+* [Spawn workers were not supported](https://github.com/rq/rq/pull/2176) and I ran into strange issues when running subprocesses.
+* The fastapi dashboard is pretty terrible. I don't want to waste time building a dashboard.
+* There is no exponential backoff built in.
+
+At this point, I gave up trying and switched to celery. The big downside with celery is there's no way to run Flower
+inside an existing application (you can't bolt it on to a fastapi server) so you'll need an entirely separate container
+running the flower application.
+
+Here's the Procfile command that worked for RQ:
+
+```yml
 worker: rq worker --with-scheduler -w rq.worker.SpawnWorker
 ```
+
+[I've left some of the configuration around](./app/rq.py) in case you want to try it out.
+
+#### Celery
 
 ## Related
 
