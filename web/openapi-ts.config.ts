@@ -14,17 +14,16 @@ export default defineConfig({
       }
     : {},
   output: {
-    // TODO determine where these magic config options are defined...
-    // lint: "biome",
-    // format: "biome",
+    format: "prettier",
+    lint: "eslint",
     path: "client",
     // TODO https://github.com/ferdikoomen/openapi-typescript-codegen/issues/1252#issuecomment-2593462128
     // converts all openapi snake case attributes to camelCase, but does not translate the api request
     // case: "camelCase",
   },
-  client: "@hey-api/client-fetch",
   experimentalParser: true,
   plugins: [
+    "@hey-api/client-fetch",
     ...defaultPlugins,
     // https://github.com/hey-api/openapi-ts/issues/1571
     {
