@@ -1,7 +1,7 @@
 """
 RQ may be the right fit for your project, so I've left this configuration in place although it is not in use.
 
-Take a look at the the readme for more information:
+Take a look at the the readme for more information about RQ vs Celery.
 """
 
 from rq import Queue, Retry, Worker

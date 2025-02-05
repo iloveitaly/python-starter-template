@@ -6,7 +6,6 @@ celery types
 https://github.com/0xthiagomartins/sqlmodel-controller/blob/main/.coveragerc - automatic coverage
 timeout issue https://github.com/celery/celery/issues/3430 and https://github.com/celery/celery/discussions/8692
 maybe use griptape? do they have an llm cache?
-flower job management, serve through fastapi / uvicorn
 understand this https://wiki.postgresql.org/wiki/Don%27t_Do_This#Don.27t_use_upper_case_table_or_column_names
 ruff doesn't do everything that pylint does, but it's trying! https://github.com/astral-sh/ruff/issues/970
 breakpoint() is not protected against by push? is this coming in ruff?
@@ -15,11 +14,11 @@ fastapi websocket with remix connection
 do we need this https://github.com/fastapiutils/fastapi-utils/blob/master/fastapi_utils/guid_type.py?
 logging can sometimes get a little crazy, we should come up with better defaults for child loggers
 gzip serve files, cache static assets as gzip; got to be someone who has done this before
-custom py reload, this is taking a ton of resources https://github.com/fastapi/fastapi/discussions/2863
+custom py reload, this is taking a ton of resources https://github.com/fastapi/fastapi/discussions/2863c
 TypeID `.get` doesn't work with an ID string
 understand typeid string vs DB UID and how it's handled internally
 favicon and other root handlers on the fastapi server
-prevent rich tracebacks
+prevent rich tracebacks from installing
 expanded sort categories, can we do this with ruff?
 fix html formatting, use a single formatter type
 https://gist.github.com/nymous/f138c7f06062b7c43c060bf03759c29e structured logging for fastapi
@@ -31,7 +30,7 @@ https://clerk.com/docs/users/user-impersonation - impersonation flow
 
 ## js
 https://github.com/raineorshine/npm-check-updates/issues/1366 - exact versions not respected
-https://github.com/shadcn-ui/ui/issues/5669 - can't use `    "verbatimModuleSyntax": true,`
+https://github.com/shadcn-ui/ui/issues/5669 - can't use `"verbatimModuleSyntax": true,`
 https://github.com/vantezzen/autoform - looks like an interesting way to autogenerate schema
 https://github.com/ferdikoomen/openapi-typescript-codegen/issues/1252#issuecomment-2593462128 - no camel case transformation on heyapi
 https://github.com/hey-api/openapi-ts/issues/1571 - naming issues
@@ -40,14 +39,12 @@ https://discord.com/channels/770287896669978684/1326588296025083944 - vite html 
 https://github.com/josh-hemphill/vite-plugin-favicon - favicon generator
 https://github.com/hey-api/openapi-ts/commit/b3c23ba99c361bdca3ab9c44017b6e5c044f40a7 use this for bearer auth https://github.com/hey-api/openapi-ts/releases/tag/%40hey-api%2Fclient-fetch%400.6.0
 just py_js-build --watch implementation
-typed routes https://github.com/fenok/react-router-typesafe-routes
 sentry config, not yet ready for v7 https://docs.sentry.io/platforms/javascript/guides/react/features/react-router/, https://github.com/remix-run/react-router/discussions/12423
 posthog config, fix when v7 is released
 add posthog usage example
 logging config fine on the client side?
 add middleware to client to catch authorization errors, create non-clerk-provider layout on the frontend
 think through authenticated pattern, create a clientLoader action
-fix clerk redirect issue https://discord.com/channels/856971667393609759/1311386772520960182
 https://github.com/hey-api/openapi-ts/pull/1378 - better log redirect, but need to handle ci and local builds
 better error page, esp when 40x error when loading the client
 https://simondosda.github.io/posts/2021-05-10-eslint-imports.html auto fix unused imports
@@ -56,7 +53,7 @@ js test build should not include valid sentry token, can we use a console DSN?
 ## deployment
 grafana timing integration
 https://grafana.com for observability
-  log ingestion service, need to investigate
+log ingestion service, need to investigate
 can kamal work with a registry with container?
 flightcontrol on AWS or something like that on azure
 
@@ -77,9 +74,6 @@ look into devenv, maybe a replacement for some of the setup here? https://github
 only look at local .tool-versions instead of the entire system
 mermaid postgres integrated into readme https://github.com/bastiensun/pg-mermaid
 add some mermaid diagrams to the readme https://raw.githubusercontent.com/devrishik/medical-record-copilot/bc450aa523ba65e3b5a254f422696725512f8c30/README.md
-
-## css
-tailwind sorting
 
 ## commitlint
 removing unused import, should catch this specifically
@@ -151,7 +145,6 @@ maybe use a different event loop? Faster / less issues with playwright?
 ## build
 add nixpacks cache, waiting on comment from author about how to do this.
 push to registry
---cache-from to speed up builds
 
 ## act compat
 https://github.com/catthehacker/docker_images/issues/138 - apt tool, still failing on apt-install but not because of missing packages
