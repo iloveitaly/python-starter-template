@@ -1,7 +1,7 @@
 #!/usr/bin/env -S ipython -i
 # Description: production REPL, not designed to be used locally
 
-from typeid import TypeID
+from typeid import TypeID  # noqa: F401
 
 import app.jobs
 import app.models

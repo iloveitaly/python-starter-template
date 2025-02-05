@@ -1,4 +1,4 @@
-# Configuration: https://github.com/evilmartians/lefthook/blob/master/docs/configuration.md
+# https://lefthook.dev/configuration/
 # Full list of hooks: https://git-scm.com/docs/githooks
 
 prepare-commit-msg:
@@ -35,6 +35,7 @@ pre-push:
   commands:
     py_lint:
       glob: "*.py"
+      exclude: [".copier/*"]
       run: just py_lint {push_files}
     js_lint:
       # TODO because of the subdirectory, passing the file list here does not work as well :/ Need to prefix with ../ or something.
