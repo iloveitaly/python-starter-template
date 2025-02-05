@@ -3,7 +3,7 @@ import { requireEnv } from "~/utils/environment"
 
 import { getClient } from "./clerk"
 import { invariant } from "@epic-web/invariant"
-import { client } from "client/sdk.gen"
+import { client } from "client/client.gen"
 
 // goal here is to avoid having any application code rely on this directly
 // so we only have a single file to change if the API changes on us
