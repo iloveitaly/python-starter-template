@@ -1,17 +1,16 @@
-import os
-
-import requests
 from clerk_backend_api.jwks_helpers import AuthStatus
 from clerk_backend_api.jwks_helpers.authenticaterequest import RequestState
 from fastapi import Request
 
-from app.configuration.clerk import CLERK_PRIVATE_KEY, clerk
+from app.configuration.clerk import clerk
 
 from tests.utils import get_clerk_dev_user
 
 
 class MockAuthenticateRequest:
     async def __call__(self, request: Request) -> RequestState:
+        _, _, user = get_clerk_dev_user()
+
         fake_auth_state = RequestState(
             status=AuthStatus.SIGNED_IN,
             reason=None,
@@ -24,7 +23,7 @@ class MockAuthenticateRequest:
                 "iss": "https://resolved-emu-53.clerk.accounts.dev",
                 "nbf": 1736789518,
                 "sid": "sess_2raFxvjuCPNPEQqhO0vQr25gr9o",
-                "sub": "user_2raFxp3DCVRFhnzjJViH44civwu",
+                "sub": user.id,
             },
         )
         # Attach the fake auth state to the request
@@ -36,9 +35,7 @@ def get_valid_token():
     _, _, user = get_clerk_dev_user()
 
     # now that we have a user, we need to create a session
-    session = clerk.sessions.create_session(
-        request={"user_id": "user_2sdUyAq37EEgJ4GOdh4ebw6aeta"}
-    )
+    session = clerk.sessions.create_session(request={"user_id": user.id})
     assert session
 
     token = clerk.sessions.create_session_token(session_id=session.id)

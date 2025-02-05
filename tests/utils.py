@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 from app import log
 from app.configuration.clerk import clerk
 
@@ -21,6 +23,7 @@ def delete_all_clerk_users():
     )
 
 
+@lru_cache
 def get_clerk_dev_user():
     """
     Get or generate a common dev user to login via clerk
