@@ -33,8 +33,12 @@ def write_versions():
 
 
 @app.command()
-def hello():
-    typer.echo("Hello, World!")
+def dump_openapi():
+    import json
+
+    from app.server import api_app
+
+    typer.echo(json.dumps(api_app.openapi()))
 
 
 if __name__ == "__main__":
