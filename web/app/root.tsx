@@ -10,7 +10,7 @@ import type { LinksFunction } from "react-router"
 
 import { withProviders } from "~/configuration"
 
-import stylesheet from "./app.css?url"
+import "./app.css"
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -23,7 +23,6 @@ export const links: LinksFunction = () => [
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
   },
-  { rel: "stylesheet", href: stylesheet },
 ]
 
 export function Layout({ children }: { children: React.ReactNode }) {
