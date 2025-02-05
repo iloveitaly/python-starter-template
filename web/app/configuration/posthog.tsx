@@ -3,6 +3,7 @@ Weird import structure is in place because of the following error. Most likely i
 
 - https://github.com/PostHog/posthog-js/pull/1293
 - https://github.com/PostHog/posthog.com/pull/9830
+- https://github.com/PostHog/posthog-js/issues/908
 
 ---
 
@@ -22,29 +23,58 @@ CommonJS modules can always be imported via the default export, for example usin
 import pkg from 'posthog-js/react/dist/esm/index.js';
 const { PostHogProvider } = pkg;
 */
+import React, { createContext, useContext, useRef } from "react"
+
 import { posthog } from "posthog-js"
-import pkg from "posthog-js/react/dist/umd/index.js"
 
-import { isProduction, requireEnv } from "~/utils/environment"
+import { isDevelopment, isTesting, requireEnv } from "~/utils/environment"
 
-const { PostHogProvider } = pkg
+type PosthogType = typeof posthog | undefined
 
-if (isProduction()) {
-  posthog.init(requireEnv("VITE_POSTHOG_KEY"), {
-    api_host: requireEnv("VITE_POSTHOG_HOST"),
-    person_profiles: "identified_only",
+const PosthogContext = createContext<PosthogType>(undefined)
 
-    // required for react-router
-    capture_pageview: false,
-  })
+interface PosthogProviderProps {
+  children: React.ReactNode
 }
 
+export function PostHogProvider({ children }: PosthogProviderProps) {
+  const posthogInstanceRef = useRef<PosthogType>(undefined)
+
+  // https://react.dev/reference/react/useRef#avoiding-recreating-the-ref-contents
+  // Note that in StrictMode, this will run twice.
+  function getPosthogInstance() {
+    if (posthogInstanceRef.current) return posthogInstanceRef.current
+
+    posthogInstanceRef.current = posthog.init(requireEnv("VITE_POSTHOG_KEY"), {
+      api_host: requireEnv("VITE_POSTHOG_HOST"),
+      person_profiles: "identified_only",
+
+      // required for react-router
+      capture_pageview: false,
+    })
+
+    return posthogInstanceRef.current
+  }
+
+  return (
+    <PosthogContext.Provider value={getPosthogInstance()}>
+      {children}
+    </PosthogContext.Provider>
+  )
+}
+
+export const usePosthog = () => useContext(PosthogContext)
+
 export default function withPostHogProvider(Component: React.ComponentType) {
+  if (isDevelopment() || isTesting()) {
+    return Component
+  }
+
   return function WithPostHogProviderWrapper(
     props: React.ComponentProps<typeof Component>,
   ) {
     return (
-      <PostHogProvider client={posthog}>
+      <PostHogProvider>
         <Component {...props} />
       </PostHogProvider>
     )
