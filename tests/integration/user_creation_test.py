@@ -4,6 +4,7 @@ from playwright.sync_api import Page, expect
 
 from app.models.user import User
 
+from tests.constants import CLERK_DEV_USER_PASSWORD
 from tests.integration.clerk import setup_clerk_testing_token
 from tests.integration.server import home_url, wait_for_loading
 from tests.utils import get_clerk_dev_user
@@ -48,7 +49,7 @@ def test_signup(server, page: Page, assert_snapshot) -> None:
     page.get_by_label("Email address").fill(
         f"mike-{unix_timestamp}+clerk_test@example.com"
     )
-    page.get_by_label("Password", exact=True).fill("python-starter-template-123")
+    page.get_by_label("Password", exact=True).fill(CLERK_DEV_USER_PASSWORD)
     page.get_by_role("button", name="Continue", exact=True).click()
 
     # wait_for_timeout is milliseconds

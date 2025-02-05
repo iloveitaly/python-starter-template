@@ -5,6 +5,8 @@ from clerk_backend_api.jwks_helpers import AuthStatus
 from clerk_backend_api.jwks_helpers.authenticaterequest import RequestState
 from fastapi import Request
 
+from app.configuration.clerk import CLERK_PRIVATE_KEY, clerk
+
 from tests.utils import get_clerk_dev_user
 
 
@@ -34,22 +36,12 @@ def get_valid_token():
     _, _, user = get_clerk_dev_user()
 
     # now that we have a user, we need to create a session
-    session_response = requests.post(
-        "https://api.clerk.com/v1/sessions",
-        headers={"Authorization": f"Bearer {os.environ['CLERK_PRIVATE_KEY']}"},
-        json={"user_id": user.id},
+    session = clerk.sessions.create_session(
+        request={"user_id": "user_2sdUyAq37EEgJ4GOdh4ebw6aeta"}
     )
+    assert session
 
-    session_id = session_response.json()["id"]
+    token = clerk.sessions.create_session_token(session_id=session.id)
+    assert token
 
-    token_response = requests.post(
-        f"https://api.clerk.com/v1/sessions/{session_id}/tokens",
-        headers={
-            "Authorization": f"Bearer {os.environ['CLERK_PRIVATE_KEY']}",
-            "Content-Type": "application/json",
-        },
-    )
-
-    token_id = token_response.json()["jwt"]
-
-    return token_id
+    return token.jwt
