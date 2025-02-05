@@ -1,5 +1,3 @@
-import { setToken } from "~/configuration/client"
-
 import { ClerkProvider } from "@clerk/clerk-react"
 import { loadClerkJsScript } from "@clerk/shared/loadClerkJsScript"
 import { invariant } from "@epic-web/invariant"
@@ -49,9 +47,6 @@ export async function getClient() {
     await clerk.redirectToSignIn()
     return
   }
-
-  // IMPORTANT: this sets the bearer token for all requests to the internal backend API
-  await setToken(clerk)
 
   return clerk
 }
