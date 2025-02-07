@@ -1,3 +1,4 @@
+from clerk_backend_api import CreateSessionRequestBody
 from clerk_backend_api.jwks_helpers import AuthStatus
 from clerk_backend_api.jwks_helpers.authenticaterequest import RequestState
 from fastapi import Request
@@ -35,7 +36,9 @@ def get_valid_token():
     _, _, user = get_clerk_dev_user()
 
     # now that we have a user, we need to create a session
-    session = clerk.sessions.create_session(request={"user_id": user.id})
+    session = clerk.sessions.create_session(
+        request=CreateSessionRequestBody(user_id=user.id)
+    )
     assert session
 
     token = clerk.sessions.create_session_token(session_id=session.id)
