@@ -22,12 +22,12 @@ class UserRole(str, Enum):
 
 # usr vs user is intentionally used to differentiate from the clerk model, which also uses a prefix ID
 class User(
-    BaseModel, TimestampsMixin, TypeIDMixin("usr"), SoftDeletionMixin, table=True
+    BaseModel, TimestampsMixin, SoftDeletionMixin, TypeIDMixin("usr"), table=True
 ):
     clerk_id: str
     "external ID of the user in Clerk"
 
-    email: str
+    email: str = Field(nullable=True)
     "email address of the user in Clerk, makes it easy to debug and find users"
 
     role: UserRole = Field(default=UserRole.normal)

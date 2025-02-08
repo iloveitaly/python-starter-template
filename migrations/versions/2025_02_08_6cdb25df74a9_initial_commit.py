@@ -1,8 +1,8 @@
 """initial_commit
 
-Revision ID: 098ff6b3974d
+Revision ID: 6cdb25df74a9
 Revises: 
-Create Date: 2025-02-08 09:59:28.291430
+Create Date: 2025-02-08 10:06:17.831597
 
 """
 from typing import Sequence, Union
@@ -14,7 +14,7 @@ import activemodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = '098ff6b3974d'
+revision: str = '6cdb25df74a9'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
