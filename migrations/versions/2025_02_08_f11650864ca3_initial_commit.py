@@ -1,8 +1,8 @@
 """initial_commit
 
-Revision ID: 6cdb25df74a9
+Revision ID: f11650864ca3
 Revises: 
-Create Date: 2025-02-08 10:06:17.831597
+Create Date: 2025-02-08 15:49:07.596663
 
 """
 from typing import Sequence, Union
@@ -14,7 +14,7 @@ import activemodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = '6cdb25df74a9'
+revision: str = 'f11650864ca3'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -31,7 +31,7 @@ def upgrade() -> None:
     sa.Column('prompt', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('category', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('prompt_hash', sqlmodel.sql.sqltypes.AutoString(), nullable=False, comment='sha of the hash for easily retrieving the exact same prompt'),
-    sa.PrimaryKeyConstraint('id'),
+    sa.PrimaryKeyConstraint('id', name=op.f('llm_response_pkey')),
     comment='Model to cache LLM responses for caching and debugging'
     )
     op.create_table('user',
@@ -42,7 +42,7 @@ def upgrade() -> None:
     sa.Column('clerk_id', sqlmodel.sql.sqltypes.AutoString(), nullable=False, comment='external ID of the user in Clerk'),
     sa.Column('email', sqlmodel.sql.sqltypes.AutoString(), nullable=True, comment='email address of the user in Clerk, makes it easy to debug and find users'),
     sa.Column('role', sa.Enum('normal', 'admin', name='userrole'), nullable=False),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id', name=op.f('user_pkey'))
     )
     # ### end Alembic commands ###
 
