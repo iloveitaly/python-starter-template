@@ -4,6 +4,8 @@ Utilities to help with monkey patching
 
 
 def hash_function_code(func):
+    "get sha of a function to easily assert that it hasn't changed"
+
     import hashlib
     import inspect
 
