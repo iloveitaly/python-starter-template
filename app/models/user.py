@@ -6,28 +6,32 @@ Mirrors this model: https://clerk.com/docs/reference/backend-api/tag/Users#opera
 # https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/GetOrganization
 
 from datetime import datetime
+from enum import Enum
 
 from activemodel import BaseModel
-from activemodel.mixins import TimestampsMixin, TypeIDMixin
+from activemodel.mixins import SoftDeletionMixin, TimestampsMixin, TypeIDMixin
 from sqlmodel import DateTime, Field
 
 # NOTE we use usr_ for our prefix to avoid confusion
 CLERK_OBJECT_PREFIX = "user_"
 
 
-# usr vs user is intentionally used to differentiate from the clerk model, which also uses a prefix ID
-class User(BaseModel, TimestampsMixin, TypeIDMixin("usr"), table=True):
-    clerk_id: str
+class UserRole(str, Enum):
+    normal = "normal"
+    admin = "admin"
 
-    # TODO can we implement a deleted_at mixin with a decorator to handle deleted_at?
-    # TODO can we implement a constraint check deleted && deleted_at
-    deleted: bool = Field(default=False, nullable=False)
-    deleted_at: datetime = Field(
-        default=None,
-        nullable=True,
-        # TODO https://github.com/fastapi/sqlmodel/discussions/1228
-        sa_type=DateTime(timezone=True),  # type: ignore
-    )
+
+# usr vs user is intentionally used to differentiate from the clerk model, which also uses a prefix ID
+class User(
+    BaseModel, TimestampsMixin, TypeIDMixin("usr"), SoftDeletionMixin, table=True
+):
+    clerk_id: str
+    "external ID of the user in Clerk"
+
+    email: str
+    "email address of the user in Clerk, makes it easy to debug and find users"
+
+    role: UserRole = Field(default=UserRole.normal)
 
     # organization_id: str
 

@@ -14,13 +14,21 @@ def hash_prompt(prompt: str) -> str:
 
 
 class LLMResponse(BaseModel, TimestampsMixin, TypeIDMixin("llr"), table=True):
+    """
+    Model to cache LLM responses for caching and debugging
+    """
+
     model: str
+    "the AI model used to generate the response"
+
     response: str
     prompt: str
     category: str
 
+    # TODO should probably use an index on this?
     # TODO is there a way to prevent a value from being provided via teh constructor
     prompt_hash: str | None = Field(default=None, nullable=False, exclude=True)
+    "sha of the hash for easily retrieving the exact same prompt"
 
     def before_save(self):
         new_hash = hash_prompt(self.prompt)
