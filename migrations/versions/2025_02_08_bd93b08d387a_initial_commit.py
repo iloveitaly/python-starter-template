@@ -1,8 +1,8 @@
 """initial_commit
 
-Revision ID: 15a00a794f42
+Revision ID: bd93b08d387a
 Revises: 
-Create Date: 2025-02-08 08:50:59.221333
+Create Date: 2025-02-08 08:57:25.499344
 
 """
 from typing import Sequence, Union
@@ -14,7 +14,7 @@ import activemodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = '15a00a794f42'
+revision: str = 'bd93b08d387a'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -30,7 +30,7 @@ def upgrade() -> None:
     sa.Column('response', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('prompt', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
     sa.Column('category', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-    sa.Column('prompt_hash', sqlmodel.sql.sqltypes.AutoString(), nullable=False, comment='testing testing 123'),
+    sa.Column('prompt_hash', sqlmodel.sql.sqltypes.AutoString(), nullable=False, comment='sha of the hash for easily retrieving the exact same prompt'),
     sa.PrimaryKeyConstraint('id'),
     comment='Model to cache LLM responses for caching and debugging'
     )
