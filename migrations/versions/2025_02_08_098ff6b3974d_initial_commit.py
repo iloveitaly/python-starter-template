@@ -1,8 +1,8 @@
 """initial_commit
 
-Revision ID: bd93b08d387a
+Revision ID: 098ff6b3974d
 Revises: 
-Create Date: 2025-02-08 08:57:25.499344
+Create Date: 2025-02-08 09:59:28.291430
 
 """
 from typing import Sequence, Union
@@ -14,7 +14,7 @@ import activemodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'bd93b08d387a'
+revision: str = '098ff6b3974d'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -35,12 +35,12 @@ def upgrade() -> None:
     comment='Model to cache LLM responses for caching and debugging'
     )
     op.create_table('user',
-    sa.Column('deleted_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('id', activemodel.types.typeid.TypeIDType(prefix='usr'), nullable=False),
+    sa.Column('deleted_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.Column('clerk_id', sqlmodel.sql.sqltypes.AutoString(), nullable=False, comment='external ID of the user in Clerk'),
-    sa.Column('email', sqlmodel.sql.sqltypes.AutoString(), nullable=False, comment='email address of the user in Clerk, makes it easy to debug and find users'),
+    sa.Column('email', sqlmodel.sql.sqltypes.AutoString(), nullable=True, comment='email address of the user in Clerk, makes it easy to debug and find users'),
     sa.Column('role', sa.Enum('normal', 'admin', name='userrole'), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
