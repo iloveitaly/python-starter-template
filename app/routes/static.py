@@ -1,5 +1,5 @@
 """
-The react-router application is setup as an SPA. This file configures the fast API server to serve these assets.
+The react-router application is setup as a SPA. This logic configures the fast API server to serve the static SPA assets.
 
 There are some nuances we need to consider:
 
@@ -8,12 +8,24 @@ There are some nuances we need to consider:
   we need to build the assets in an environment distinct from production, with the right
   target host configured.
 
+* In development, we don't want to statically serve the assets. We want to use live reloaded react for a fast dev loop.
+  The logic here is only used in production and integration tests, which reduces the test coverage and makes this logic
+  more risky.
+
+* At-scale, it makes sense to host assets on a CDN. However, serving assets out of a single container simplifies the
+  deployment process and should be performant enough for most applications.
+
 
 """
+
+import mimetypes
+import os
 
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from starlette.datastructures import Headers
+from starlette.types import Scope
 
 from app import log, root
 from app.environments import (
@@ -22,6 +34,40 @@ from app.environments import (
     is_staging,
     python_environment,
 )
+from app.utils.patching import hash_function_code
+
+# make sure the underlying implementation here does not change significantly, since we are using undocumented APIs
+assert (
+    hash_function_code(StaticFiles.lookup_path)
+    == "84c5a0e016a4c554aebf61d092be224b5c602538e44d1688bd3951198b06fddb"
+)
+
+
+class GZipStaticFiles(StaticFiles):
+    "Check for a precompressed gz file and serve that instead. Loosely based on GZipMiddleware"
+
+    async def get_response(self, path: str, scope: Scope):
+        # GZipMiddleware checks the scope for HTTP
+        if scope["type"] == "http":
+            headers = Headers(scope=scope)
+            if "gzip" in headers.get("Accept-Encoding", ""):
+                # returns tuple where first element is a string full path on the local filesystem
+                # and second is stat information
+                full_path = self.lookup_path(path)[0]
+                gz_path = full_path + ".gz"
+
+                if os.path.exists(gz_path):
+                    content_type, _ = mimetypes.guess_type(full_path)
+                    headers = {"Content-Encoding": "gzip"}
+
+                    return FileResponse(
+                        gz_path,
+                        # FileResponse uses `guess_type` but falls back to `text/plain`
+                        media_type=(content_type or "text/plain"),
+                        headers=headers,
+                    )
+
+        return await super().get_response(path, scope)
 
 
 def mount_public_directory(app: FastAPI):
@@ -45,7 +91,7 @@ def mount_public_directory(app: FastAPI):
 
     app.mount(
         "/assets",
-        StaticFiles(directory=public_path / "assets", html=False),
+        GZipStaticFiles(directory=public_path / "assets", html=False),
         name="public",
     )
 
@@ -58,7 +104,8 @@ def mount_public_directory(app: FastAPI):
         """
         This is a very dangerous piece of code: if this is not last it will override other routes in the application
 
-        Without this, non-index RR routes will not work.
+        Without this, non-index RR routes will not work. When a path is requested that does not exist in the fastapi
+        application, it servers up the index.html file. Most likely, this path is a RR route.
 
         https://gist.github.com/ultrafunkamsterdam/b1655b3f04893447c3802453e05ecb5e
         """

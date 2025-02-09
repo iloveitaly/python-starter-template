@@ -57,10 +57,3 @@ simplify_operation_ids(api_app)
 
 # NOTE VERY IMPORTANT that this is done after all routes are added!!
 mount_public_directory(api_app)
-
-# TODO should move to CLI
-# output openapi spec when run as a module
-if __name__ == "__main__":
-    import json
-
-    print(json.dumps(api_app.openapi()))

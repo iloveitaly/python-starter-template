@@ -1,5 +1,6 @@
 import { defineConfig } from "vite"
 import { loadEnv } from "vite"
+import viteCompression from "vite-plugin-compression"
 import Terminal from "vite-plugin-terminal"
 import tsconfigPaths from "vite-tsconfig-paths"
 
@@ -94,6 +95,7 @@ function getModePlugins(mode: string) {
       // only check env vars when building for production
       // some ENV is only available in prod
       requireEnvCheckerPlugin(mode),
+      viteCompression(),
     ]
   }
 
