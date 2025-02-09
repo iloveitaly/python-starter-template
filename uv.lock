@@ -4,7 +4,7 @@ requires-python = ">=3.13"
 [[package]]
 name = "activemodel"
 version = "0.6.0"
-source = { git = "https://github.com/iloveitaly/activemodel.git#2ace7292bcc84907818f8719571a2bfcafecfd6b" }
+source = { git = "https://github.com/iloveitaly/activemodel.git#76f672349f24c34284c190368e71a5d4116c3293" }
 dependencies = [
     { name = "pydash" },
     { name = "python-decouple-typed" },
@@ -903,6 +903,15 @@ wheels = [
 ]
 
 [[package]]
+name = "itsdangerous"
+version = "2.2.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/9c/cb/8ac0172223afbccb63986cc25049b154ecfb5e85932587206f42317be31d/itsdangerous-2.2.0.tar.gz", hash = "sha256:e0050c0b7da1eea53ffaf149c0cfbb5c6e2e2b69c4bef22c81fa6eb73e5f6173", size = 54410 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/04/96/92447566d16df59b2a776c0fb82dbc4d9e07cd95062562af01e408583fc4/itsdangerous-2.2.0-py3-none-any.whl", hash = "sha256:c6242fc49e35958c8b15141343aa660db5fc54d4f13a1db01a3f5891b98700ef", size = 16234 },
+]
+
+[[package]]
 name = "j2lint"
 version = "1.1.0"
 source = { git = "https://github.com/aristanetworks/j2lint.git#7dfaf27410c657b5765174ad425a8fe044c7436f" }
@@ -1773,6 +1782,7 @@ dependencies = [
     { name = "flower" },
     { name = "funcy-pipe" },
     { name = "ipython" },
+    { name = "itsdangerous" },
     { name = "jinja2" },
     { name = "mailers" },
     { name = "markdown2" },
@@ -1848,6 +1858,7 @@ requires-dist = [
     { name = "flower", specifier = ">=2.0.1" },
     { name = "funcy-pipe", specifier = ">=0.11.1" },
     { name = "ipython", specifier = ">=8.28.0" },
+    { name = "itsdangerous", specifier = ">=2.2.0" },
     { name = "jinja2", specifier = ">=3.1.4" },
     { name = "mailers", specifier = ">=3.1.0" },
     { name = "markdown2", specifier = ">=2.5.1" },
