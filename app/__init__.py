@@ -12,10 +12,11 @@ from .configuration.debugging import configure_debugging
 from .configuration.emailer import configure_mailer
 from .configuration.lang import configure_python
 from .configuration.logging import configure_logger
+from .configuration.openai import configure_openai
 from .configuration.sentry import configure_sentry
 from .configuration.versions import check_service_versions
 from .environments import python_environment
-from .setup import configure_openai, get_root_path
+from .setup import get_root_path
 
 root: Path
 
