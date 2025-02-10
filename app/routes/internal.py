@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from pydantic import BaseModel
 
 from ..configuration.clerk import CLERK_PRIVATE_KEY
+from .admin import admin_api_app
 from .dependencies.clerk import AuthenticateClerkRequest
 from .dependencies.user import inject_user_record
 
@@ -18,6 +19,8 @@ internal_api_app = APIRouter(
         Depends(inject_user_record),
     ],
 )
+
+internal_api_app.include_router(admin_api_app)
 
 
 class AppData(BaseModel, extra="forbid"):
