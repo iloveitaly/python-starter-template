@@ -1,7 +1,12 @@
+import base64
+import json
+
+import itsdangerous
 from clerk_backend_api import CreateSessionRequestBody
 from clerk_backend_api.jwks_helpers import AuthStatus
 from clerk_backend_api.jwks_helpers.authenticaterequest import RequestState
 from fastapi import Request
+from httpx import Response
 
 from app.configuration.clerk import clerk
 
@@ -32,8 +37,9 @@ class MockAuthenticateRequest:
         return fake_auth_state
 
 
-def get_valid_token():
-    _, _, user = get_clerk_dev_user()
+def get_valid_token(user=None):
+    if not user:
+        _, _, user = get_clerk_dev_user()
 
     # now that we have a user, we need to create a session
     session = clerk.sessions.create_session(
@@ -45,3 +51,13 @@ def get_valid_token():
     assert token
 
     return token.jwt
+
+
+def decode_cookie(response: Response):
+    "decode a signed cookie into a dict for inspection and assertion"
+    from app.routes.middleware import SESSION_SECRET_KEY
+
+    signer = itsdangerous.Signer(SESSION_SECRET_KEY)
+    decoded = signer.unsign(response.cookies.get("session"))
+    session_data = json.loads(base64.b64decode(decoded))
+    return session_data
