@@ -58,9 +58,12 @@ lint: js_lint py_lint db_lint
 [macos]
 [script]
 dev: local-alias
+	# TODO we should think about the worker command a bit more...should we use the same exact command? should we generate vs hardcode?
 	# create a tmp Procfile with all of the dev services we need running
 	cat << 'EOF' > tmp/Procfile.dev
 	py_dev: just py_dev
+	py_worker: celery -A app.celery worker
+	py_scheduler: celery -A app.celery beat
 	js_dev: just js_dev
 	js_generate_openapi: just js_generate-openapi --watch
 	EOF
@@ -225,7 +228,7 @@ upgrade: tooling_upgrade js_upgrade py_upgrade
 [script]
 local-alias:
 	if [[ "$(localias status)" == "daemon running with pid "* ]]; then
-		just _banner_echo "Daemon already running, reloading"
+		just _banner_echo "Localias Daemon Already Running, Reloading"
 		localias reload
 		exit 0
 	fi
@@ -293,7 +296,9 @@ js_dev:
 # build a production javascript bundle, helpful for running e2e python tests
 js_build: js_setup
 	# NOTE this is *slightly* different than the production build: NODE_ENV != production and the ENV variables are different
-	#      this can cause build errors to occur via nixpacks, but not here. Run `just js_clean && export NODE_ENV=production && just js_build`
+	#      this can cause build errors to occur via nixpacks, but not here.
+	#
+	# 		 If you want to replicate a production environment, run: `just js_clean && export NODE_ENV=production && just js_build`
 	#      to test building in an environment much closer to production. Node and pnpm versions can still be *slightly* different
 	#      than your local environment since `mise` is not used within nixpacks.
 
@@ -332,6 +337,11 @@ _js_generate-openapi:
 
 	# generated route types can dependend on the openapi spec, so we need to regenerate it
 	{{_pnpm}} exec react-router typegen
+
+# TODO watch js files
+# react-router typegen
+# safe-routes typegen
+# full build for py e2e tests
 
 # run shadcn commands with the latest library version
 js_shadcn *arguments:
@@ -615,12 +625,20 @@ db_up:
 db_down:
 	docker compose down --volumes postgres
 
-#######################
+##############################################
 # Database Migrations
-#######################
+#
+# Goal is to have similar semantics to rails.
+##############################################
 
-# completely destroy the dev and test databases without running migrations
-db_reset: db_down db_up db_migrate
+# completely destroy the dev and test databases, destroying the containers and rebuilding them
+db_reset_hard: db_down db_up db_migrate db_seed
+
+# NOTE migration & seed are intentionally omitted so db_nuke and friends can run
+# destroys all data in the dev and test databases, leaves the containers running
+db_reset:
+	psql $DATABASE_URL -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+	psql $TEST_DATABASE_URL -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
 
 db_lint:
 	uv run alembic check
@@ -650,7 +668,7 @@ db_open:
 db_play:
 	uv tool run pgcli $DATABASE_URL
 
-# migrations on dev and test
+# run migrations on dev and test
 db_migrate:
 	# if this folder is wiped, you'll get a strange error from alembic
 	mkdir -p migrations/versions
@@ -664,13 +682,19 @@ db_migrate:
 
 	[ -n "${CI:-}" ] || (just _banner_echo "Migrating Test Database" && {{EXECUTE_IN_TEST}} uv run alembic upgrade head)
 
+# TODO should pick versions
+# alembic history | fzf
+# db_down:
+# 	uv run alembic downgrade
+
 # add seed data to dev and test
 db_seed: db_migrate
-	@just _banner_echo "Seeding database"
+	@just _banner_echo "Seeding Database"
 	uv run python migrations/seed.py
 
-	[ -n "${CI:-}" ] || (just _banner_echo "Seeding test database" && {{EXECUTE_IN_TEST}} uv run python migrations/seed.py)
+	[ -n "${CI:-}" ] || (just _banner_echo "Seeding Test Database" && {{EXECUTE_IN_TEST}} uv run python migrations/seed.py)
 
+# TODO you can't preview what the migration will look like before naming it?
 # generate migration based on the current state of the database
 [script]
 db_generate_migration migration_name="":
@@ -686,11 +710,13 @@ db_generate_migration migration_name="":
 
 	uv run alembic revision --autogenerate -m "$name"
 
+	just _banner_echo "Migration Generated. Run 'just db_migrate' to apply the migration"
+
 # destroy and rebuild the database from the ground up, without mutating migrations
 db_destroy: db_reset db_migrate db_seed
 
-# destroy all migrations and rebuild everything: only for use in early development
-db_nuke: && db_migrate db_seed
+# rm migrations and regenerate: only for use in early development
+db_nuke:
 	# I personally hate having a nearly-greenfield project with a bunch of migrations from DB schema iteration
 	# this should only be used *before* you've launched and prod and don't need properly migration support
 
@@ -857,7 +883,7 @@ JAVASCRIPT_CONTAINER_BUILD_DIR := "/app/build/client"
 JAVASCRIPT_PRODUCTION_BUILD_DIR := "public"
 
 # build the javascript assets by creating an image, building assets inside the container, and then copying them to the host
-build_js-assets: _production_build_assertions
+build_javascript: _production_build_assertions
 	@just _banner_echo "Building JavaScript Assets in Container..."
 	rm -rf "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}" || true
 
@@ -865,8 +891,7 @@ build_js-assets: _production_build_assertions
 
 	@just _banner_echo "Extracting JavaScript Assets from Container..."
 
-	# you cannot extract files out of a image, only a container
-	# extract out the production-built javascript from the container
+	# Cannot extract files out of a image, only a container. We create a tmp container to extract assets.
 	docker rm tmp-js-container || true
 	docker create --name tmp-js-container {{JAVASCRIPT_IMAGE_TAG}}
 	docker cp tmp-js-container:/app/build/production/client "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}"
@@ -895,7 +920,8 @@ _build_requirements:
 	fi
 
 # build the docker container using nixpacks
-build: _build_requirements _production_build_assertions build_js-assets
+build: _build_requirements _production_build_assertions build_javascript
+	@just _banner_echo "Building Python Image..."
 	{{PYTHON_NIXPACKS_BUILD_CMD}}
 
 build_push: _production_build_assertions
