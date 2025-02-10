@@ -1,4 +1,4 @@
-from fastapi import HTTPException, Request, status
+from fastapi import Request
 
 from app import log
 
