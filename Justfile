@@ -121,24 +121,27 @@ requirements *flags:
 		just _brew_check_and_install $brew_package; \
 	done
 
-	@if ! which commitlint > /dev/null; then \
-		if ! cargo --list | grep -q binstall; then \
-			echo "cargo binstall not available, skipping commitlint installation"; \
-		else \
-			cargo binstall -y commitlint-rs; \
-		fi; \
-	fi
-
 	@if [[ "{{flags}}" =~ "--extras" ]]; then \
 		echo "Adding aiautocommit..."; \
 		uv tool add aiautocommit; \
+		\
 		echo "Removing sample git hooks..."; \
 		rm .git/hooks/*.sample || true; \
+		\
 		echo "Installing git hooks..."; \
 		lefthook install; \
+		\
 		for brew_package in {{EXTRA_BREW_PACKAGES}}; do \
 			just _brew_check_and_install $brew_package; \
 		done; \
+		\
+		if ! which commitlint > /dev/null; then \
+			if ! cargo --list | grep -q binstall; then \
+				echo "cargo binstall not available, skipping commitlint installation"; \
+			else \
+				cargo binstall -y commitlint-rs; \
+			fi; \
+		fi; \
 	fi
 
 # setup everything you need for local development
@@ -221,7 +224,7 @@ tooling_upgrade: && _mise_upgrade _js_sync-engine-versions
 # upgrade everything: all packages on all languages, tooling, etc
 [macos]
 upgrade: tooling_upgrade js_upgrade py_upgrade
-# TODO update versions: uv run python -m app.cli write-versions
+	uv run python -m app.cli write-versions
 
 # run (or reload) daemon to setup local development aliases
 [macos]
@@ -252,6 +255,10 @@ nuke: js_nuke py_nuke db_nuke
 
 WEB_DIR := "web"
 _pnpm := "cd " + WEB_DIR + " && pnpm ${PNPM_GLOBAL_FLAGS:-}"
+
+# pnpm alias
+pnpm +PNPM_CMD:
+	{{_pnpm}} {{PNPM_CMD}}
 
 js_setup:
 	# frozen-lockfile is used on CI and when building for production, so we default so that mode
@@ -347,6 +354,9 @@ _js_generate-openapi:
 js_shadcn *arguments:
 	{{_pnpm}} dlx shadcn@latest {{arguments}}
 
+js_shadcn_upgrade:
+	just js_shadcn diff
+
 JAVASCRIPT_PACKAGE_JSON := WEB_DIR / "package.json"
 
 # update package.json engines to match the current versions in .tool-versions
@@ -428,7 +438,7 @@ py_upgrade:
 
 # open up a development server
 py_dev:
-	uv run fastapi dev --port $PYTHON_SERVER_PORT
+	uv run fastapi dev --port $PYTHON_SERVER_PORT --reload-exclude=".git/*,venv/*,node_modules/*"
 
 py_play:
 	./playground.py
