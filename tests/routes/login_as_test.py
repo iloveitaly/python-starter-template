@@ -144,4 +144,28 @@ def test_login_as_reset_credentials(client: TestClient):
     assert response.status_code == status.HTTP_200_OK
     assert decode_cookie(response)[SESSION_KEY_LOGIN_AS_USER] is None
 
+
 def test_login_as_user_route(client: TestClient):
+    _, _, clerk_admin = get_clerk_admin_user()
+    assert clerk_admin
+
+    _, _, clerk_user = get_clerk_dev_user()
+    assert clerk_user
+
+    # if the login_as user DNE it will throw an error
+    local_user = User.find_or_create_by(clerk_id=clerk_user.id)
+
+    response = client.post(
+        api_app.url_path_for("login_as_user", user_id=clerk_user.id),
+        headers=clerk_authorization(clerk_admin),
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+
+    user_response = client.get(
+        api_app.url_path_for("application_data"),
+        headers=clerk_authorization(clerk_admin),
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    assert user_response.json()["user_id"] == str(local_user.id)

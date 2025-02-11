@@ -1,7 +1,6 @@
 import base64
 import json
 import typing as t
-from functools import partial
 
 import itsdangerous
 from cachetools import LRUCache, cached

@@ -1,5 +1,8 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from pydantic import BaseModel
+from typeid import TypeID
+
+from activemodel.types import TypeIDType
 
 from ..configuration.clerk import CLERK_PRIVATE_KEY
 from .admin import admin_api_app
@@ -27,8 +30,10 @@ internal_api_app.include_router(admin_api_app)
 
 class AppData(BaseModel, extra="forbid"):
     message: str = "Hello From Internal Python"
+    # TODO we should be able to specify TypeID here, but pydantic serializers don't like it
+    user_id: str
 
 
 @internal_api_app.get("/")
-def application_data() -> AppData:
-    return AppData()
+def application_data(request: Request) -> AppData:
+    return AppData(user_id=str(request.state.user.id))

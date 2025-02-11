@@ -10,18 +10,14 @@ if os.environ["PYTHON_ENV"] != "test":
 
     assert 'app' not in sys.modules, "app modules should not be imported before environment is set"
 
-from tests.routes.utils import MockAuthenticateRequest
 import multiprocessing
 
 from pathlib import Path
-import typing as t
 
 import pytest
 from pytest import Config
 from activemodel.pytest import database_reset_transaction, database_reset_truncate
 from decouple import config as decouple_config
-from fastapi.testclient import TestClient
-from httpx import ASGITransport, AsyncClient
 from structlog import get_logger
 
 # important to ensure model metadata is added to the application
