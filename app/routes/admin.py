@@ -34,7 +34,7 @@ class UserSwitchData(BasePydanticModel):
 def user_list() -> list[UserSwitchData]:
     return list(
         User.select(User.clerk_id, User.email).where(User.role != UserRole.admin).all()
-    )
+    )  # type: ignore
 
 
 @admin_api_app.post("/login_as/{user_id}")
@@ -47,5 +47,5 @@ def login_as_user(request: Request, user_id: Annotated[str, Path()]):
         User.role != UserRole.admin, User.clerk_id == user_id
     ).one()
 
-    request.session[SESSION_KEY_LOGIN_AS_USER] = login_as_user.clerk_id
+    request.session[SESSION_KEY_LOGIN_AS_USER] = login_as_user.clerk_id  # type: ignore
     return
