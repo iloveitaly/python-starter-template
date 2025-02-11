@@ -21,3 +21,9 @@ def is_staging():
 
 def is_development():
     return python_environment() == "development"
+
+
+def is_job_monitor():
+    "is this the production flower application"
+    # TODO should use a ENV var for app name, rather than hardcoding; how we determine & store container names needs to be refactored
+    return config("CONTAINER_APP_NAME", default="", cast=str) == "prod-jmon"
