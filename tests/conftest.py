@@ -65,11 +65,11 @@ def pytest_configure(config: Config):
     # without this, if the test succeeds, no output is provided
     # this is a good default, but makes it much harder to debug what is going on
     config.option.log_cli = True
-    config.option.log_cli_level = "INFO"
+    # config.option.log_cli_level = "INFO"
 
     # lower debug level for file debugging, so we can download this artifact and view detailed debugging
     config.option.log_file = str(TEST_RESULTS_DIRECTORY / "pytest.log")
-    config.option.log_file_level = "DEBUG"
+    # config.option.log_file_level = "DEBUG"
 
 
 def pytest_sessionstart(session):
@@ -81,56 +81,6 @@ def pytest_sessionstart(session):
     database_reset_truncate()
     # we reseed the database with a base set of records
     seed_test_data()
-
-def base_server_url(protocol: t.Literal["http", "https"] = "http"):
-    """
-    VITE_PYTHON_URL is defined as the protocol + host, but the user/dev shouldn't have to worry
-    about trailing slash, etc so we normalize it here.
-    """
-
-    url = decouple_config("VITE_PYTHON_URL", cast=str).strip()
-
-    # Remove any existing protocol
-    if url.startswith(("http://", "https://")):
-        url = url.split("://")[1]
-
-    # Remove any trailing slashes
-    url = url.rstrip("/")
-
-    # Add protocol and trailing slash
-    return f"{protocol}://{url}/"
-
-
-@pytest.fixture
-def client():
-    "client to connect to your fastapi routes"
-    from app.server import api_app
-
-    return TestClient(api_app, base_url=base_server_url())
-
-@pytest.fixture
-def authenticated_client():
-    "mocks out the clerk authentication and returns a static response"
-
-    from app.server import api_app
-    from app.routes.internal import authenticate_clerk_request_middleware
-
-    api_app.dependency_overrides[authenticate_clerk_request_middleware] = MockAuthenticateRequest()
-
-    yield TestClient(api_app, base_url=base_server_url())
-
-    api_app.dependency_overrides = {}
-
-
-@pytest.fixture
-async def aclient() -> t.AsyncGenerator[AsyncClient, None]:
-    from app.server import api_app
-
-    async with AsyncClient(
-        transport=ASGITransport(app=api_app),
-        base_url=base_server_url(),
-    ) as client:
-        yield client
 
 
 @pytest.fixture(scope="function", autouse=True)

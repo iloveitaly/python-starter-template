@@ -1,19 +1,98 @@
 import base64
 import json
+import typing as t
+from functools import partial
 
 import itsdangerous
+from cachetools import LRUCache, cached
 from clerk_backend_api import CreateSessionRequestBody
+from clerk_backend_api import User as ClerkUser
 from clerk_backend_api.jwks_helpers import AuthStatus
 from clerk_backend_api.jwks_helpers.authenticaterequest import RequestState
+from decouple import config as decouple_config
 from fastapi import Request
 from httpx import Response
 
 from app.configuration.clerk import clerk
 
-from tests.utils import get_clerk_dev_user
+from app.models.user import User, UserRole
+
+from tests.constants import (
+    CLERK_DEV_ADMIN_EMAIL,
+    CLERK_DEV_USER_EMAIL,
+    CLERK_DEV_USER_PASSWORD,
+)
+
+# TODO this is a bit dangerous, let's see how it performs
+clerk_cache_instance = LRUCache(maxsize=128)
+"to cache user and session keys for all live clerk api interactions"
+
+
+def base_server_url(protocol: t.Literal["http", "https"] = "http"):
+    """
+    VITE_PYTHON_URL is defined as the protocol + host, but the user/dev shouldn't have to worry
+    about trailing slash, etc so we normalize it here.
+    """
+
+    url = decouple_config("VITE_PYTHON_URL", cast=str).strip()
+
+    # Remove any existing protocol
+    if url.startswith(("http://", "https://")):
+        url = url.split("://")[1]
+
+    # Remove any trailing slashes
+    url = url.rstrip("/")
+
+    # Add protocol and trailing slash
+    return f"{protocol}://{url}/"
+
+
+@cached(cache=clerk_cache_instance)
+def _get_or_create_clerk_user(email: str):
+    user_list = clerk.users.list(email_address=[email])
+    assert user_list is not None
+
+    if len(user_list) == 1:
+        return user_list[0]
+    elif len(user_list) == 0:
+        return clerk.users.create(
+            request={
+                "email_address": [email],
+                "password": CLERK_DEV_USER_PASSWORD,
+            }
+        )
+    else:
+        raise ValueError("more than one user found")
+
+
+def get_clerk_dev_user():
+    """
+    Get or generate a common dev user to login via clerk
+    """
+    user = _get_or_create_clerk_user(CLERK_DEV_USER_EMAIL)
+    assert user
+
+    return CLERK_DEV_USER_EMAIL, CLERK_DEV_USER_PASSWORD, user
+
+
+def get_clerk_admin_user():
+    """
+    Get or generate a common admin user to login via clerk. Creates a local user record with an admin role.
+    """
+    user = _get_or_create_clerk_user(CLERK_DEV_ADMIN_EMAIL)
+    assert user
+
+    # create the admin user locally
+    _admin = User.find_or_create_by(
+        clerk_id=user.id, email=CLERK_DEV_ADMIN_EMAIL, role=UserRole.admin
+    )
+
+    return CLERK_DEV_ADMIN_EMAIL, CLERK_DEV_USER_PASSWORD, user
 
 
 class MockAuthenticateRequest:
+    "mock out the clerk interactions, note that `authenticated_client` must be used here"
+
     async def __call__(self, request: Request) -> RequestState:
         _, _, user = get_clerk_dev_user()
 
@@ -37,7 +116,10 @@ class MockAuthenticateRequest:
         return fake_auth_state
 
 
-def get_valid_token(user=None):
+@cached(cache=clerk_cache_instance, key=lambda user: user.id)
+def get_valid_token(user: ClerkUser | None = None):
+    "get a valid clerk session for a clerk user, the local user does not need to be created"
+
     if not user:
         _, _, user = get_clerk_dev_user()
 
@@ -58,6 +140,11 @@ def decode_cookie(response: Response):
     from app.routes.middleware import SESSION_SECRET_KEY
 
     signer = itsdangerous.Signer(SESSION_SECRET_KEY)
-    decoded = signer.unsign(response.cookies.get("session"))
+    encrypted_cookie_value = response.cookies.get("session")
+
+    if not encrypted_cookie_value:
+        return {}
+
+    decoded = signer.unsign(encrypted_cookie_value)
     session_data = json.loads(base64.b64decode(decoded))
     return session_data

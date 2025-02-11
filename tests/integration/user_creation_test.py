@@ -7,7 +7,7 @@ from app.models.user import User
 from tests.constants import CLERK_DEV_USER_PASSWORD
 from tests.integration.clerk import setup_clerk_testing_token
 from tests.integration.server import home_url, wait_for_loading
-from tests.utils import get_clerk_dev_user
+from tests.routes.utils import get_clerk_dev_user
 
 
 def test_signin(server, page: Page, assert_snapshot) -> None:
