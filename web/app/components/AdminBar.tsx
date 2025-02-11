@@ -1,5 +1,14 @@
 import React, { useState } from "react"
 
+import { Button } from "@/components/ui/button"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
 const AdminBar: React.FC = () => {
   // Dummy constant for admin check
   const isAdmin = true // change for real auth check
@@ -28,41 +37,47 @@ const AdminBar: React.FC = () => {
     }
   }
 
+  const handleLogout = () => {
+    // Add logout logic here; for now we simply reload the page.
+    window.location.reload()
+  }
+
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        backgroundColor: "#f5f5f5",
-        padding: "10px",
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-        zIndex: 9999,
-      }}
-    >
-      <span>
-        User ID: {currentUser.id} | Email: {currentUser.email}
-      </span>
-      <select
-        value={selectedUser}
-        onChange={(e) => setSelectedUser(e.target.value)}
-        style={{ marginLeft: "20px" }}
-      >
-        <option value="">Select user</option>
-        {userOptions.map((user) => (
-          <option key={user.clerk_id} value={user.clerk_id}>
-            {user.email}
-          </option>
-        ))}
-      </select>
-      <button
+    <div className="fixed top-0 left-0 z-50 flex w-full items-center space-x-2 bg-white p-1 text-xs shadow">
+      <div className="whitespace-nowrap">
+        {currentUser.id} ({currentUser.email})
+      </div>
+      <Select value={selectedUser} onValueChange={setSelectedUser}>
+        <SelectTrigger className="ml-3 h-2 w-40 text-sm">
+          <SelectValue placeholder="Select user" />
+        </SelectTrigger>
+        <SelectContent>
+          {userOptions.map((user) => (
+            <SelectItem key={user.clerk_id} value={user.clerk_id}>
+              {user.email}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <Button
         onClick={handleLoginAs}
         disabled={!selectedUser}
-        style={{ marginLeft: "10px" }}
+        size="sm"
+        variant="link"
+        className="ml-2 h-2"
       >
         login_as
-      </button>
+      </Button>
+      {currentUser && (
+        <Button
+          onClick={handleLogout}
+          size="sm"
+          variant="link"
+          className="ml-2 h-2"
+        >
+          logout
+        </Button>
+      )}
     </div>
   )
 }
