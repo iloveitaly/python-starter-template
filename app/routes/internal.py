@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from ..configuration.clerk import CLERK_PRIVATE_KEY
 from .admin import admin_api_app
 from .dependencies.clerk import AuthenticateClerkRequest
+from .dependencies.login_as import login_as
 from .dependencies.user import inject_user_record
 
 # extract into variable for test import to easily override dependencies
@@ -17,6 +18,7 @@ internal_api_app = APIRouter(
     dependencies=[
         Depends(authenticate_clerk_request_middleware),
         Depends(inject_user_record),
+        Depends(login_as),
     ],
 )
 

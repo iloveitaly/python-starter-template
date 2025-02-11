@@ -18,7 +18,7 @@ SESSION_KEY_LOGIN_AS_USER = "login_as_user"
 def require_admin(request: Request):
     "Protect routes that require admin access"
 
-    if not (admin_user := request.state.user) or admin_user.role != UserRole.admin:
+    if (admin_user := request.state.user) and admin_user.role != UserRole.admin:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
 
@@ -39,6 +39,10 @@ def user_list() -> list[UserSwitchData]:
 
 @admin_api_app.post("/login_as/{user_id}")
 def login_as_user(request: Request, user_id: Annotated[str, Path()]):
+    if request.state.user.clerk_id == user_id:
+        request.session[SESSION_KEY_LOGIN_AS_USER] = None
+        return
+
     login_as_user = User.where(
         User.role != UserRole.admin, User.clerk_id == user_id
     ).one()
