@@ -31,8 +31,8 @@
     },
     "editor.tabSize": 4
   },
-  // don't remove unused imports on save, this can be done later
-  "ruff.lint.args": ["--ignore=F401"],
+  // don't remove unused imports on save, this can be done later by a linting script
+  "ruff.lint.ignore": ["F401"],
 
   "[toml]": {
     "editor.formatOnSave": true,
