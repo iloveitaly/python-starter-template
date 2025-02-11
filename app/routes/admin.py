@@ -1,7 +1,7 @@
 """
 Admin-only routes:
 
-- login_as / user impersonation
+- login_as / user impersonation, similar to https://clerk.com/docs/users/user-impersonation but without a $100/month sub
 """
 
 from typing import Annotated

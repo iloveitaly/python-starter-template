@@ -115,7 +115,7 @@ class MockAuthenticateRequest:
         return fake_auth_state
 
 
-@cached(cache=clerk_cache_instance, key=lambda user: user.id)
+@cached(cache=clerk_cache_instance, key=lambda user=None: user.id if user else None)
 def get_valid_token(user: ClerkUser | None = None):
     "get a valid clerk session for a clerk user, the local user does not need to be created"
 

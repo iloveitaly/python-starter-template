@@ -6,6 +6,7 @@ Main entrypoint to the server of the application.
 - the __name__ guard ensures that `fastapi dev` can still consume this file and `python main.py` is only executed in production
 - fastapi's cli tooling is in a separate repo. We've modeled our uvicorn invocation after theirs.
   https://github.com/fastapi/fastapi-cli/blob/9a4741816dc288bbd931e693166117d98ee14dea/src/fastapi_cli/cli.py#L162-L171
+- customizing which files are watched for autoreload is challenging (no excludes). https://github.com/fastapi/fastapi/discussions/2863
 """
 
 import os

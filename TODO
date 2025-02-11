@@ -1,8 +1,7 @@
 ## python
+remove static serving paths from fastapi openapi
 https://github.com/FactoryBoy/factory_boy - testing fixtures
-https://pypi.org/project/fastapi-structlog/ - structured logging for fastapi
 https://github.com/astral-sh/ruff/issues/6514 - float to top DNE
-celery types
 https://github.com/0xthiagomartins/sqlmodel-controller/blob/main/.coveragerc - automatic coverage
 timeout issue https://github.com/celery/celery/issues/3430 and https://github.com/celery/celery/discussions/8692
 maybe use griptape? do they have an llm cache?
@@ -13,20 +12,15 @@ use BaseSettings in pydantic instead of decouple?
 fastapi websocket with remix connection
 do we need this https://github.com/fastapiutils/fastapi-utils/blob/master/fastapi_utils/guid_type.py?
 logging can sometimes get a little crazy, we should come up with better defaults for child loggers
-gzip serve files, cache static assets as gzip; got to be someone who has done this before
-custom py reload, this is taking a ton of resources https://github.com/fastapi/fastapi/discussions/2863c
-TypeID `.get` doesn't work with an ID string
 understand typeid string vs DB UID and how it's handled internally
 favicon and other root handlers on the fastapi server
 prevent rich tracebacks from installing
 expanded sort categories, can we do this with ruff?
 fix html formatting, use a single formatter type
-https://gist.github.com/nymous/f138c7f06062b7c43c060bf03759c29e structured logging for fastapi
 pull commands structure over
 https://salabim.org/peek/#copying-to-the-clipboard
 super user pattern in clerk https://discord.com/channels/856971667393609759/1330543476433227877
 https://github.com/mher/flower/pull/1417 - flower can't retry jobs?!
-https://clerk.com/docs/users/user-impersonation - impersonation flow
 
 ## js
 https://github.com/raineorshine/npm-check-updates/issues/1366 - exact versions not respected
@@ -82,18 +76,11 @@ removing unused import, should catch this specifically
 should we add justfile to run production scripts? Probably not. Should document.
 `{"TimeStamp": "2024-12-17T22:05:33.8744132+00:00", "Log": "INFO   100.100.0.180:49730 - \"GET /favicon.ico HTTP/1.1\" 200"}` need to improve fastapi structured logging
 
-## template
-https://github.com/fastapi/full-stack-fastapi-template/blob/master/copier.yml - looks like there is some copy tool I can use? to make this template easy to copy.
-
 ## pytest
 timeout default for playwright to avoid hanging
 test logs are a mess. I need to figure out what pytest is doing and make them sane.
 --debug seems to generate a different test log
 https://github.com/darrenburns/pytest-clarity
-
-## aiautocommit
-include multiple large changes with comma
-if I remove stuff, it counts it as a feature
 
 ## open source
 localias upstream no caching
