@@ -5,6 +5,81 @@
     "version": "0.1.0"
   },
   "paths": {
+    "/internal/v1/admin/users": {
+      "get": {
+        "tags": [
+          "private"
+        ],
+        "summary": "User List",
+        "operationId": "user_list",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/UserSwitchData"
+                  },
+                  "type": "array",
+                  "title": "Response User List Internal V1 Admin Users Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/internal/v1/admin/login_as/{user_id}": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Login As User",
+        "operationId": "login_as_user",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/internal/v1/": {
       "get": {
         "tags": [
@@ -66,7 +141,7 @@
     "/{path}": {
       "get": {
         "summary": "Frontend Handler",
-        "description": "This is a very dangerous piece of code: if this is not last it will override other routes in the application\n\nWithout this, non-index RR routes will not work.\n\nhttps://gist.github.com/ultrafunkamsterdam/b1655b3f04893447c3802453e05ecb5e",
+        "description": "This is a very dangerous piece of code: if this is not last it will override other routes in the application\n\nWithout this, non-index RR routes will not work. When a path is requested that does not exist in the fastapi\napplication, it servers up the index.html file. Most likely, this path is a RR route.\n\nhttps://gist.github.com/ultrafunkamsterdam/b1655b3f04893447c3802453e05ecb5e",
         "operationId": "frontend_handler__path__get",
         "parameters": [
           {
@@ -110,10 +185,17 @@
             "type": "string",
             "title": "Message",
             "default": "Hello From Internal Python"
+          },
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
           }
         },
         "additionalProperties": false,
         "type": "object",
+        "required": [
+          "user_id"
+        ],
         "title": "AppData"
       },
       "HTTPValidationError": {
@@ -128,6 +210,24 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "UserSwitchData": {
+        "properties": {
+          "clerk_id": {
+            "type": "string",
+            "title": "Clerk Id"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          }
+        },
+        "type": "object",
+        "required": [
+          "clerk_id",
+          "email"
+        ],
+        "title": "UserSwitchData"
       },
       "ValidationError": {
         "properties": {
