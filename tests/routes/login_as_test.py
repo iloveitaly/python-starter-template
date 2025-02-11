@@ -51,11 +51,12 @@ def test_user_list(client: TestClient):
 
     assert response.status_code == status.HTTP_200_OK
 
-    user_list = response.json()
+    user_state = response.json()
 
-    assert len(user_list) == users_to_create
-    assert user_list[0]["email"] == "test0@example.com"
-    assert user_list[0]["clerk_id"] == "user_0"
+    assert "current_user" in user_state
+    assert len(user_state["users"]) == users_to_create
+    assert user_state["users"][0]["email"] == "test0@example.com"
+    assert user_state["users"][0]["clerk_id"] == "user_0"
 
 
 def test_login_as_authorized_good_credentials(client: TestClient):
@@ -169,3 +170,15 @@ def test_login_as_user_route(client: TestClient):
 
     assert response.status_code == status.HTTP_200_OK
     assert user_response.json()["user_id"] == str(local_user.id)
+
+
+def test_normal_route_as_admin(client: TestClient):
+    _, _, clerk_admin = get_clerk_admin_user()
+    assert clerk_admin
+
+    response = client.get(
+        api_app.url_path_for("application_data"),
+        headers=clerk_authorization(clerk_admin),
+    )
+
+    assert response.status_code == status.HTTP_200_OK

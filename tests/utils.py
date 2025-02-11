@@ -7,6 +7,7 @@ from app.environments import is_testing
 from tests.constants import (
     CLERK_DEV_ADMIN_EMAIL,
     CLERK_DEV_USER_EMAIL,
+    CLERK_QA_USER_EMAIL,
 )
 
 
@@ -22,7 +23,7 @@ def delete_all_clerk_users():
         clerk.users.list()
         | fp.filter(
             lambda user: user.email_addresses[0].email_address
-            not in [CLERK_DEV_USER_EMAIL, CLERK_DEV_ADMIN_EMAIL]
+            not in [CLERK_DEV_USER_EMAIL, CLERK_DEV_ADMIN_EMAIL, CLERK_QA_USER_EMAIL]
         )
         | fp.pluck_attr("id")
         | fp.lmap(lambda uid: clerk.users.delete(user_id=uid))
