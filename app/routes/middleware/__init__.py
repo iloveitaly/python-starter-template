@@ -6,7 +6,8 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from app import log
 from app.environments import is_development
-from app.routes.middleware.access_log import add_access_log_middleware
+
+from . import access_log, logging
 
 SESSION_SECRET_KEY = config("SESSION_SECRET_KEY", cast=str)
 
@@ -22,6 +23,8 @@ This is a very important configuration option:
 def allowed_hosts(with_scheme: bool = False) -> list[str]:
     """
     Returns a list of allowed hosts, with or without scheme.
+
+    Development hosts are automatically added.
     """
 
     DEVELOPMENT_HOSTS = [
@@ -53,7 +56,13 @@ def add_middleware(app: FastAPI):
     Entrypoint to add all middleware for the root router:
 
     - Not requiring HTTPS here since it is assumed we'll be behind a proxy server
+    - Looks like middleware is processed outside in, so the order here is important
     """
+
+    access_log.add_middleware(app)
+
+    # this adds `context`, which access logs require
+    logging.add_middleware(app)
 
     # CORS require that a specific scheme is used for the request
     allowed_hosts_with_schemes = allowed_hosts(True)
@@ -61,11 +70,10 @@ def add_middleware(app: FastAPI):
     log.info("allowed_origins", allowed_origins=allowed_hosts_with_schemes)
 
     # even in development, CORS is required, especially since we are using separate domains for API & frontend
-    # http OPTIONS https://web.localhost
+    # `http OPTIONS https://web.localhost` to test configuration here
     app.add_middleware(
         CORSMiddleware,
-        # allow_origins=allowed_hosts(True),
-        allow_origins=["*"],
+        allow_origins=allowed_hosts_with_schemes,
         # tells browsers to expose and include credentials (such as cookies, client-side certificates, and authorization headers) in cross-origin requests.
         allow_credentials=True,
         allow_methods=["*"],
@@ -73,7 +81,8 @@ def add_middleware(app: FastAPI):
     )
 
     # trusted hosts are not required for development, but reduces delta between prod & dev
-    # include the API host in your trusted host list, this will be used as the `Host` when HTTP/2 is used
+    # include the API host in your trusted host list, this will be used as the `Host` when HTTP/2 is used (which does
+    # not specify the `Host` header explicitly, it's inferred from `:authority` pseudo-header)
     allowed_hosts_without_scheme = allowed_hosts(False)
     app.add_middleware(
         TrustedHostMiddleware, allowed_hosts=allowed_hosts_without_scheme
@@ -90,8 +99,6 @@ def add_middleware(app: FastAPI):
         domain=cookie_domain,
         # same_site="Lax", is defined by default
     )
-
-    add_access_log_middleware(app)
 
     if is_development() and config("FASTAPI_DEBUG", cast=bool, default=False):
         from app.utils.debug import PdbMiddleware

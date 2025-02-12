@@ -5,33 +5,102 @@ Logging is really important:
 * All loggers, even plugin or system loggers, should route through the same formatter
 * Structured logging everywhere
 * Ability to easily set thread-local log context
+
+References:
+
+- https://github.com/replicate/cog/blob/2e57549e18e044982bd100e286a1929f50880383/python/cog/logging.py#L20
+- https://github.com/apache/airflow/blob/4280b83977cd5a53c2b24143f3c9a6a63e298acc/task_sdk/src/airflow/sdk/log.py#L187
+- https://github.com/kiwicom/structlog-sentry
 """
 
 import logging
+import os
 import sys
+from typing import Any, MutableMapping, TextIO
 
 import orjson
 import structlog
 import structlog.dev
 from decouple import config
+from starlette_context import context
+from structlog.processors import ExceptionRenderer
+from structlog.tracebacks import ExceptionDictTransformer
+from structlog.typing import ExcInfo
 
-from ..environments import is_production
+from app.constants import NO_COLOR
 
-if is_production():
-    RENDERER = structlog.processors.JSONRenderer(serializer=orjson.dumps)
-else:
-    RENDERER = structlog.dev.ConsoleRenderer(
-        # supports NO_COLOR standard: https://no-color.org/
-        colors=not config("NO_COLOR", cast=bool, default=False)
-    )
+from ..environments import is_production, is_staging
 
 
-PROCESSORS = [
+def pretty_traceback_exception_formatter(sio: TextIO, exc_info: ExcInfo) -> None:
+    """
+    By default, rich and then better-exceptions is used to render exceptions when a ConsoleRenderer is used.
+
+    I prefer pretty-traceback, so I've added a custom processor to use it.
+
+    https://github.com/hynek/structlog/blob/66e22d261bf493ad2084009ec97c51832fdbb0b9/src/structlog/dev.py#L412
+    """
+
+    # only available in dev
+    from pretty_traceback.formatting import exc_to_traceback_str
+
+    _, exc_value, traceback = exc_info
+    formatted_exception = exc_to_traceback_str(exc_value, traceback, color=not NO_COLOR)
+    sio.write("\n" + formatted_exception)
+
+
+def log_processors_for_environment() -> list[structlog.types.Processor]:
+    if is_production() or is_staging():
+        return [
+            # add exc_info=True to a log and get a full stack trace attached to it
+            structlog.processors.format_exc_info,
+            # simple, short exception rendering in prod since sentry is in place
+            # https://www.structlog.org/en/stable/exceptions.html this is a customized version of dict_tracebacks
+            ExceptionRenderer(
+                ExceptionDictTransformer(
+                    show_locals=False,
+                    use_rich=False,
+                    # number of frames is completely arbitrary
+                    max_frames=5,
+                    # TODO `suppress`?
+                )
+            ),
+            # in prod, we want logs to be rendered as JSON payloads
+            structlog.processors.JSONRenderer(serializer=orjson.dumps, sort_keys=True),
+        ]
+
+    return [
+        structlog.dev.ConsoleRenderer(
+            colors=not NO_COLOR,
+            exception_formatter=pretty_traceback_exception_formatter,
+        )
+    ]
+
+
+def add_fastapi_context(
+    logger: logging.Logger,
+    method_name: str,
+    event_dict: MutableMapping[str, Any],
+) -> MutableMapping[str, Any]:
+    """
+    Take all state added to starlette-context and add to the logs
+
+    https://github.com/tomwojcik/starlette-context/blob/master/example/setup_logging.py
+    """
+    if context.exists():
+        event_dict.update(context.data)
+    return event_dict
+
+
+# order here is not particularly informed
+PROCESSORS: list[structlog.types.Processor] = [
+    structlog.stdlib.add_log_level,
     structlog.contextvars.merge_contextvars,
-    structlog.processors.add_log_level,
-    structlog.processors.format_exc_info,
+    add_fastapi_context,
     structlog.processors.TimeStamper(fmt="iso", utc=True),
-    RENDERER,
+    # add `stack_info=True` to a log and get a `stack` attached to the log
+    structlog.processors.StackInfoRenderer(),
+    *log_processors_for_environment(),
 ]
 
 
@@ -48,17 +117,17 @@ def _logger_factory():
     In production, optimized for speed (https://www.structlog.org/en/stable/performance.html)
     """
 
-    if is_production():
+    if is_production() or is_staging():
         return structlog.BytesLoggerFactory()
 
-    logger_factory = structlog.PrintLoggerFactory()
-
     # allow user to specify a log in case they want to do something meaningful with the stdout
+
     if python_log_path := config("PYTHON_LOG_PATH", default=None):
         python_log = open(python_log_path, "a", encoding="utf-8")
-        logger_factory = structlog.PrintLoggerFactory(file=python_log)
+        return structlog.PrintLoggerFactory(file=python_log)
 
-    return logger_factory
+    else:
+        return structlog.PrintLoggerFactory()
 
 
 def redirect_stdlib_loggers():
@@ -75,12 +144,17 @@ def redirect_stdlib_loggers():
     handler = logging.StreamHandler(sys.stdout)
     handler.setLevel(level)
 
+    # TODO I don't understand why we can't use a processor stack as-is here. Need to investigate further.
+
     # Use ProcessorFormatter to format log records using structlog processors
     formatter = ProcessorFormatter(
-        processor=RENDERER,
+        processor=PROCESSORS[-1],
         foreign_pre_chain=[
+            # logger names are not supported when not using structlog.stdlib.LoggerFactory
+            # https://github.com/hynek/structlog/issues/254
             structlog.stdlib.add_logger_name,
-            *PROCESSORS[:-1],  # Exclude the renderer from the pre-chain
+            # Exclude the renderer from the pre-chain since this will ultimately get processed by structlog handler
+            *PROCESSORS[:-1],
         ],
     )
     handler.setFormatter(formatter)
@@ -99,6 +173,8 @@ def silence_loud_loggers():
     if not config("PYTHONASYNCIODEBUG", cast=bool, default=False):
         logging.getLogger("asyncio").setLevel(logging.WARNING)
 
+    # TODO httpcore, httpx, urlconnection, etc
+
 
 def configure_logger():
     """
@@ -115,6 +191,18 @@ def configure_logger():
     redirect_stdlib_loggers()
     silence_loud_loggers()
 
+    # PYTEST_CURRENT_TEST is set by pytest to indicate the current test being run
+    # Don't cache the loggers during tests, it make it hard to capture them
+    cache_logger_on_first_use = "PYTEST_CURRENT_TEST" not in os.environ
+
+    structlog.configure(
+        cache_logger_on_first_use=cache_logger_on_first_use,
+        wrapper_class=structlog.make_filtering_bound_logger(_get_log_level()),
+        # structlog.stdlib.LoggerFactory is the default, which supports `structlog.stdlib.add_logger_name`
+        logger_factory=_logger_factory(),
+        processors=PROCESSORS,
+    )
+
     log = structlog.get_logger()
 
     # context manager to auto-clear context
@@ -123,12 +211,5 @@ def configure_logger():
     log.local = structlog.contextvars.bind_contextvars
     # clear thread-local context
     log.clear = structlog.contextvars.clear_contextvars
-
-    structlog.configure(
-        cache_logger_on_first_use=True,
-        wrapper_class=structlog.make_filtering_bound_logger(_get_log_level()),
-        logger_factory=_logger_factory(),
-        processors=PROCESSORS,
-    )
 
     return log

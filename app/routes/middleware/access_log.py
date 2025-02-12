@@ -1,14 +1,16 @@
 """
 Structured, simple access log with request timing.
 
-Adapte from:
+Adapted from:
 
 - https://github.com/iloveitaly/fastapi-logger/blob/main/fastapi_structlog/middleware/access_log.py#L70
 - https://github.com/fastapiutils/fastapi-utils/blob/master/fastapi_utils/timing.py
 """
 
 from time import perf_counter
+from urllib.parse import quote
 
+import structlog
 from fastapi import FastAPI
 from starlette.middleware.base import RequestResponseEndpoint
 from starlette.requests import Request
@@ -16,7 +18,7 @@ from starlette.responses import Response
 from starlette.routing import Match, Mount
 from starlette.types import Scope
 
-from app import log
+log = structlog.get_logger("access_log")
 
 
 def get_route_name(app: FastAPI, scope: Scope, prefix: str = "") -> str:
@@ -36,6 +38,24 @@ def get_route_name(app: FastAPI, scope: Scope, prefix: str = "") -> str:
         return scope["path"]
 
 
+def get_path_with_query_string(scope: Scope) -> str:
+    """Get the URL with the substitution of query parameters.
+
+    Args:
+        scope (Scope): Current context.
+
+    Returns:
+        str: URL with query parameters
+    """
+    if "path" not in scope:
+        return "-"
+    path_with_query_string = quote(scope["path"])
+    if raw_query_string := scope["query_string"]:
+        query_string = raw_query_string.decode("ascii")
+        path_with_query_string = f"{path_with_query_string}?{query_string}"
+    return path_with_query_string
+
+
 def get_client_addr(scope: Scope) -> str:
     """Get the client's address.
 
@@ -52,7 +72,7 @@ def get_client_addr(scope: Scope) -> str:
     return f"{ip}:{port}"
 
 
-def add_access_log_middleware(
+def add_middleware(
     app: FastAPI,
 ) -> None:
     @app.middleware("http")
@@ -62,6 +82,7 @@ def add_access_log_middleware(
         scope = request.scope
         route_name = get_route_name(app, request.scope)
 
+        # TODO what other request types are there
         if scope["type"] != "http":
             return await call_next(request)
 
@@ -72,7 +93,7 @@ def add_access_log_middleware(
         elapsed = perf_counter() - start
 
         log.info(
-            f"{response.status_code} {scope['method']} {scope['path']}",
+            f"{response.status_code} {scope['method']} {get_path_with_query_string(scope)}",
             time=round(elapsed * 1000),
             status=response.status_code,
             method=scope["method"],
