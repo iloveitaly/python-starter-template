@@ -1,4 +1,5 @@
 ## python
+I wonder if we should use named loggers instead https://github.com/replicate/cog/blob/c95774f18b8df6f6a7b841be1900153ca04a57ad/python/cog/server/http.py#L61C7-L61C27
 remove static serving paths from fastapi openapi
 https://github.com/FactoryBoy/factory_boy - testing fixtures
 https://github.com/astral-sh/ruff/issues/6514 - float to top DNE
@@ -8,7 +9,7 @@ maybe use griptape? do they have an llm cache?
 understand this https://wiki.postgresql.org/wiki/Don%27t_Do_This#Don.27t_use_upper_case_table_or_column_names
 ruff doesn't do everything that pylint does, but it's trying! https://github.com/astral-sh/ruff/issues/970
 breakpoint() is not protected against by push? is this coming in ruff?
-use BaseSettings in pydantic instead of decouple?
+use BaseSettings in pydantic instead of decouple? https://github.com/replicate/cog/blob/c95774f18b8df6f6a7b841be1900153ca04a57ad/python/cog/config.py#L59
 fastapi websocket with remix connection
 do we need this https://github.com/fastapiutils/fastapi-utils/blob/master/fastapi_utils/guid_type.py?
 logging can sometimes get a little crazy, we should come up with better defaults for child loggers
@@ -21,6 +22,12 @@ pull commands structure over
 https://salabim.org/peek/#copying-to-the-clipboard
 super user pattern in clerk https://discord.com/channels/856971667393609759/1330543476433227877
 https://github.com/mher/flower/pull/1417 - flower can't retry jobs?!
+https://github.com/replicate/cog/blob/c95774f18b8df6f6a7b841be1900153ca04a57ad/python/cog/suppress_output.py#L7 interesting approach to surpressing output
+redirect warning logs https://github.com/apache/airflow/blob/4280b83977cd5a53c2b24143f3c9a6a63e298acc/task_sdk/src/airflow/sdk/log.py#L290
+exception group processor? https://github.com/apache/airflow/blob/4280b83977cd5a53c2b24143f3c9a6a63e298acc/task_sdk/src/airflow/sdk/log.py#L42
+
+## Observability
+https://github.com/replicate/cog/blob/c95774f18b8df6f6a7b841be1900153ca04a57ad/python/cog/server/telemetry.py#L7 looks like there is some standard around this
 
 ## js
 https://github.com/raineorshine/npm-check-updates/issues/1366 - exact versions not respected
@@ -77,6 +84,7 @@ should we add justfile to run production scripts? Probably not. Should document.
 `{"TimeStamp": "2024-12-17T22:05:33.8744132+00:00", "Log": "INFO   100.100.0.180:49730 - \"GET /favicon.ico HTTP/1.1\" 200"}` need to improve fastapi structured logging
 
 ## pytest
+interesting object matcher here https://github.com/replicate/cog/blob/c95774f18b8df6f6a7b841be1900153ca04a57ad/python/tests/conftest.py#L6-L23
 timeout default for playwright to avoid hanging
 test logs are a mess. I need to figure out what pytest is doing and make them sane.
 --debug seems to generate a different test log
