@@ -4,31 +4,12 @@ requires-python = ">=3.13"
 [[package]]
 name = "activemodel"
 version = "0.7.0"
-source = { editable = "../activemodel" }
+source = { git = "https://github.com/iloveitaly/activemodel.git#9fe4c5af619690ffb6344cf5c74a2d4b2b46ef02" }
 dependencies = [
     { name = "pydash" },
     { name = "python-decouple-typed" },
     { name = "sqlmodel" },
     { name = "typeid-python" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "pydash", specifier = ">=8.0.4" },
-    { name = "python-decouple-typed", specifier = ">=3.11.0" },
-    { name = "sqlmodel", specifier = ">=0.0.22" },
-    { name = "typeid-python", specifier = ">=0.3.1" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "alembic", specifier = ">=1.14.1" },
-    { name = "fastapi", extras = ["standard"], specifier = ">=0.115.6" },
-    { name = "ipdb", specifier = ">=0.13.13" },
-    { name = "pdbr", specifier = ">=0.8.9" },
-    { name = "psycopg", extras = ["binary"], specifier = ">=3.2.3" },
-    { name = "pydantic", specifier = ">=2.10.0" },
-    { name = "pytest", specifier = ">=8.3.3" },
 ]
 
 [[package]]
@@ -1824,6 +1805,7 @@ dependencies = [
     { name = "sentry-sdk", extra = ["celery", "fastapi", "openai", "sqlalchemy"] },
     { name = "sqlalchemy" },
     { name = "sqlmodel" },
+    { name = "starlette-context" },
     { name = "structlog" },
     { name = "typeid-python" },
     { name = "typer" },
@@ -1874,7 +1856,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "activemodel", editable = "../activemodel" },
+    { name = "activemodel", git = "https://github.com/iloveitaly/activemodel.git" },
     { name = "aiosmtplib", specifier = ">=3.0.2" },
     { name = "alembic", specifier = ">=1.14.0" },
     { name = "backoff", specifier = ">=2.2.1" },
@@ -1901,6 +1883,7 @@ requires-dist = [
     { name = "sentry-sdk", extras = ["fastapi", "celery", "openai", "sqlalchemy"], specifier = ">=2.17.0" },
     { name = "sqlalchemy", specifier = ">=2.0.36" },
     { name = "sqlmodel", specifier = ">=0.0.22" },
+    { name = "starlette-context", specifier = ">=0.3.6" },
     { name = "structlog", specifier = ">=24.4.0" },
     { name = "typeid-python", specifier = ">=0.3.1" },
     { name = "typer", specifier = ">=0.14.0" },
@@ -2341,6 +2324,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ff/fb/2984a686808b89a6781526129a4b51266f678b2d2b97ab2d325e56116df8/starlette-0.45.3.tar.gz", hash = "sha256:2cbcba2a75806f8a41c722141486f37c28e30a0921c5f6fe4346cb0dcee1302f", size = 2574076 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d9/61/f2b52e107b1fc8944b33ef56bf6ac4ebbe16d91b94d2b87ce013bf63fb84/starlette-0.45.3-py3-none-any.whl", hash = "sha256:dfb6d332576f136ec740296c7e8bb8c8a7125044e7c6da30744718880cdd059d", size = 71507 },
+]
+
+[[package]]
+name = "starlette-context"
+version = "0.3.6"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "starlette" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a8/21/aa5d3848fcb77f0e7c9f1844271826ff74d83fad9920ca7f8105e0dc02ee/starlette_context-0.3.6.tar.gz", hash = "sha256:d361a36ba2d4acca3ab680f917b25e281533d725374752d47607a859041958cb", size = 9621 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d0/56/a56af8066d9c17696207ee15bad43fd06dafc5917f6e7c7c3899427f6fc3/starlette_context-0.3.6-py3-none-any.whl", hash = "sha256:b14ce373fbb6895a2182a7104b9f63ba20c8db83444005fb9a844dd77ad9895c", size = 12386 },
 ]
 
 [[package]]
