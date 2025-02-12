@@ -6,7 +6,7 @@ from starlette.middleware.sessions import SessionMiddleware
 
 from app import log
 from app.environments import is_development
-from app.routes.dependencies.timing import add_timing_middleware
+from app.routes.middleware.access_log import add_access_log_middleware
 
 SESSION_SECRET_KEY = config("SESSION_SECRET_KEY", cast=str)
 
@@ -91,7 +91,7 @@ def add_middleware(app: FastAPI):
         # same_site="Lax", is defined by default
     )
 
-    add_timing_middleware(app)
+    add_access_log_middleware(app)
 
     if is_development() and config("FASTAPI_DEBUG", cast=bool, default=False):
         from app.utils.debug import PdbMiddleware
