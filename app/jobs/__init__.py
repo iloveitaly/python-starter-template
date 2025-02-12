@@ -1,5 +1,7 @@
 """
-For celery to properly pick up on all tasks, we auto import them here
+For celery to properly pick up on all tasks they must all be imported when celery starts.
+
+It's easier for us to auto-import all of them here, so Celery just needs to import app.jobs
 """
 
 import importlib
