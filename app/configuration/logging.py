@@ -92,6 +92,12 @@ def pretty_traceback_exception_formatter(sio: TextIO, exc_info: ExcInfo) -> None
 
 def log_processors_for_environment() -> list[structlog.types.Processor]:
     if is_production() or is_staging():
+
+        def orjson_dumps_sorted(value, *args, **kwargs):
+            "sort_keys=True is not supported, so we do it manually"
+            # kwargs includes a default fallback json formatter
+            return orjson.dumps(value, option=orjson.OPT_SORT_KEYS, **kwargs)
+
         return [
             # add exc_info=True to a log and get a full stack trace attached to it
             structlog.processors.format_exc_info,
@@ -107,7 +113,7 @@ def log_processors_for_environment() -> list[structlog.types.Processor]:
                 )
             ),
             # in prod, we want logs to be rendered as JSON payloads
-            structlog.processors.JSONRenderer(serializer=orjson.dumps, sort_keys=True),
+            structlog.processors.JSONRenderer(serializer=orjson_dumps_sorted),
         ]
 
     return [
