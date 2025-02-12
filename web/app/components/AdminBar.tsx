@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -8,53 +8,49 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { getClient } from "~/configuration/clerk"
+import { loginAsUser } from "~/configuration/client"
 
-const AdminBar: React.FC = () => {
-  // Dummy constant for admin check
-  const isAdmin = true // change for real auth check
+import { useQuery } from "@tanstack/react-query"
+import { userListOptions } from "client/@tanstack/react-query.gen"
 
-  // Dummy current user information
-  const currentUser = { id: "admin123", email: "admin@example.com" }
-
-  // Dummy dropdown user options
-  const userOptions = [
-    { clerk_id: "user1", email: "user1@example.com" },
-    { clerk_id: "user2", email: "user2@example.com" },
-    { clerk_id: "user3", email: "user3@example.com" },
-  ]
-
+function AdminBar() {
   const [selectedUser, setSelectedUser] = useState("")
+  const { data, error } = useQuery({ ...userListOptions() })
 
-  if (!isAdmin) return null
+  if (!data || error) {
+    return
+  }
 
   const handleLoginAs = async () => {
     if (!selectedUser) return
-    try {
-      // await axios.post(`/admin/login_as/${selectedUser}`)
-      window.location.reload()
-    } catch (error) {
-      console.error("login_as failed", error)
-    }
+
+    await loginAsUser({ path: { user_id: selectedUser } })
+
+    window.location.reload()
   }
 
-  const handleLogout = () => {
-    // Add logout logic here; for now we simply reload the page.
+  const handleLogout = async () => {
+    await loginAsUser({ path: { user_id: (await getClient()).user.id } })
+
     window.location.reload()
   }
 
   return (
     <div className="fixed top-0 left-0 z-50 flex w-full items-center space-x-2 bg-white p-1 text-xs shadow">
-      <div className="whitespace-nowrap">
-        {currentUser.id} ({currentUser.email})
-      </div>
+      {data.current_user && (
+        <div className="whitespace-nowrap">
+          {data.current_user.clerk_id} {data.current_user.email}
+        </div>
+      )}
       <Select value={selectedUser} onValueChange={setSelectedUser}>
         <SelectTrigger className="ml-3 h-2 w-40 text-sm">
           <SelectValue placeholder="Select user" />
         </SelectTrigger>
         <SelectContent>
-          {userOptions.map((user) => (
+          {data.users.map((user) => (
             <SelectItem key={user.clerk_id} value={user.clerk_id}>
-              {user.email}
+              {user.email} {user.clerk_id}
             </SelectItem>
           ))}
         </SelectContent>
@@ -66,16 +62,16 @@ const AdminBar: React.FC = () => {
         variant="link"
         className="ml-2 h-2"
       >
-        login_as
+        Switch User
       </Button>
-      {currentUser && (
+      {data.current_user && (
         <Button
           onClick={handleLogout}
           size="sm"
           variant="link"
           className="ml-2 h-2"
         >
-          logout
+          Logout
         </Button>
       )}
     </div>
