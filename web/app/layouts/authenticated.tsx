@@ -1,5 +1,7 @@
 import { Outlet } from "react-router"
 
+import AdminBar from "~/components/AdminBar"
+
 import { RedirectToSignIn, SignedIn, SignedOut } from "@clerk/clerk-react"
 
 // This layout assumes the user is authenticated. Any clientLoaders making authenticated
@@ -10,6 +12,7 @@ export default function AuthenticatedLayout() {
   return (
     <>
       <SignedIn>
+        <AdminBar />
         <Outlet />
       </SignedIn>
       <SignedOut>

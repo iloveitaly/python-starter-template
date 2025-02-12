@@ -1,5 +1,5 @@
 // the autogen'd client from the python's openapi.json is configured here
-import { requireEnv } from "~/utils/environment"
+import { isDevelopment, requireEnv } from "~/utils/environment"
 
 import { getClient } from "./clerk"
 import { invariant } from "@epic-web/invariant"
@@ -24,6 +24,9 @@ if (
 // TODO I don't know if the auth function will be rerun multiple times...
 client.setConfig({
   baseUrl: VITE_PYTHON_URL,
+  // same-origin is default, this is required in development since different API & FE server domains are used
+  // https://github.com/hey-api/openapi-ts/issues/769#issuecomment-2222735798
+  credentials: isDevelopment() ? "include" : "same-origin",
   // automatically set bearer auth when requested
   auth: async () => {
     const client = await getClient()
