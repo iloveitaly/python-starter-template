@@ -16,6 +16,9 @@ def login_as(request: Request):
         return
 
     if (admin_user := request.state.user) and admin_user.role == UserRole.admin:
+        if SESSION_KEY_LOGIN_AS_USER not in request.session:
+            return
+
         # if we are an admin, let's check if we are logging in as another user
         login_as_clerk_id = request.session[SESSION_KEY_LOGIN_AS_USER]
         login_as_user = User.get(clerk_id=login_as_clerk_id)
@@ -31,4 +34,5 @@ def login_as(request: Request):
         )
 
         # TODO should add admin ID for the user and update contextvars for logging
+        request.state.admin_user = admin_user
         request.state.user = login_as_user
