@@ -45,14 +45,12 @@ def user_list(request: Request) -> UserListResponse:
     # remember, these routes are protected from the login_as functionality
     login_as_user = None
 
-    log.info("session wat", session=request.session)
-
     if SESSION_KEY_LOGIN_AS_USER in request.session:
         login_as_clerk_id = request.session[SESSION_KEY_LOGIN_AS_USER]
         login_as_user = User.get(clerk_id=login_as_clerk_id)
 
     return UserListResponse(
-        current_user=login_as_user,
+        current_user=login_as_user,  # type: ignore
         users=list(
             User.select(User.clerk_id, User.email)
             .where(User.role != UserRole.admin)

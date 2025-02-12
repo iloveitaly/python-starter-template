@@ -1,4 +1,5 @@
 from fastapi import Request
+from starlette_context import context
 
 from app import log
 from app.routes.admin import SESSION_KEY_LOGIN_AS_USER
@@ -36,3 +37,6 @@ def login_as(request: Request):
         # TODO should add admin ID for the user and update contextvars for logging
         request.state.admin_user = admin_user
         request.state.user = login_as_user
+
+        context["user_id"] = str(login_as_user.id)
+        context["admin_user_id"] = str(admin_user.id)

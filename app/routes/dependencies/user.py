@@ -1,4 +1,5 @@
 from fastapi import HTTPException, Request, status
+from starlette_context import context
 
 from app.models.user import User
 
@@ -18,3 +19,4 @@ def inject_user_record(request: Request):
         )
 
     request.state.user = user
+    context["user_id"] = str(user.id)
