@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Depends, Request
 from pydantic import BaseModel
 
+from activemodel.session_manager import aglobal_session
+
 from ..configuration.clerk import CLERK_PRIVATE_KEY
 from .admin import admin_api_app
 from .dependencies.clerk import AuthenticateClerkRequest
@@ -16,8 +18,13 @@ internal_api_app = APIRouter(
     tags=["private"],
     # think of dependencies as middleware
     dependencies=[
+        # NOTE this line could not be more important, look at the underlying implementation!
+        Depends(aglobal_session),
+        # make sure the user is auth'd via clerk to this endpoint
         Depends(authenticate_clerk_request_middleware),
+        # inject a doctor record into the request state
         Depends(inject_user_record),
+        # allow admins to switch to another doctor
         Depends(login_as),
     ],
 )
