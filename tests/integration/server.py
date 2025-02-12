@@ -77,7 +77,12 @@ def run_server():
     surprising behavior (like the transaction database cleaner not working). This is why we need to run
     """
 
-    uvicorn.run(api_app, port=PYTHON_SERVER_TEST_PORT)
+    uvicorn.run(
+        api_app,
+        port=PYTHON_SERVER_TEST_PORT,
+        # NOTE important to ensure structlog controls logging in production
+        log_config=None,
+    )
 
 
 @pytest.fixture

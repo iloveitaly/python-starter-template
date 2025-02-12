@@ -438,7 +438,7 @@ py_upgrade:
 
 # open up a development server
 py_dev:
-	uv run fastapi dev --port $PYTHON_SERVER_PORT --reload-exclude=".git/*,venv/*,node_modules/*"
+	PORT=$PYTHON_SERVER_PORT uv run python main.py
 
 py_play:
 	./playground.py
