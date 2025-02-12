@@ -1,4 +1,11 @@
 {
+  "editor.renderControlCharacters": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+
+  // favor words that are close to the cursor when suggesting completions
+  "editor.suggest.localityBonus": true,
+
   // gen imports by default, new feature
   "editor.pasteAs.preferences": ["text.updateImports"],
 
@@ -67,7 +74,7 @@
 
     //   {"name":"pdf2image", "depth":3, "includeAllSymbols": true},
     // {"name":"decouple", "depth":3, "includeAllSymbols": true},
-    {"name":"pydantic", "depth":3, "includeAllSymbols": true},
+    { "name": "pydantic", "depth": 3, "includeAllSymbols": true }
   ],
 
   // in web, prettier is used by default, but we want it to be used outside that directly
