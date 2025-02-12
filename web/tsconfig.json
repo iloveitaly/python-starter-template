@@ -17,7 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"],
-      "@/*": ["./*"]
+      "@/*": ["./app/*"]
     },
     "noEmit": true,
     "rootDirs": [".", ".react-router/types/"]

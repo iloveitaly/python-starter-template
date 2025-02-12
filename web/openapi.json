@@ -18,11 +18,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/UserSwitchData"
-                  },
-                  "type": "array",
-                  "title": "Response User List Internal V1 Admin Users Get"
+                  "$ref": "#/components/schemas/UserListResponse"
                 }
               }
             }
@@ -211,6 +207,26 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
+      "UserListResponse": {
+        "properties": {
+          "current_user": {
+            "$ref": "#/components/schemas/UserSwitchData"
+          },
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/UserSwitchData"
+            },
+            "type": "array",
+            "title": "Users"
+          }
+        },
+        "type": "object",
+        "required": [
+          "current_user",
+          "users"
+        ],
+        "title": "UserListResponse"
+      },
       "UserSwitchData": {
         "properties": {
           "clerk_id": {
@@ -218,14 +234,20 @@
             "title": "Clerk Id"
           },
           "email": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Email"
           }
         },
         "type": "object",
         "required": [
-          "clerk_id",
-          "email"
+          "clerk_id"
         ],
         "title": "UserSwitchData"
       },
