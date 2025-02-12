@@ -96,7 +96,12 @@ def log_processors_for_environment() -> list[structlog.types.Processor]:
         def orjson_dumps_sorted(value, *args, **kwargs):
             "sort_keys=True is not supported, so we do it manually"
             # kwargs includes a default fallback json formatter
-            return orjson.dumps(value, option=orjson.OPT_SORT_KEYS, **kwargs)
+            return orjson.dumps(
+                # starlette-context includes non-string keys (enums)
+                value,
+                option=orjson.OPT_SORT_KEYS | orjson.OPT_NON_STR_KEYS,
+                **kwargs,
+            )
 
         return [
             # add exc_info=True to a log and get a full stack trace attached to it
@@ -195,12 +200,18 @@ def redirect_stdlib_loggers():
 
     # Use ProcessorFormatter to format log records using structlog processors
     formatter = ProcessorFormatter(
-        processor=PROCESSORS[-1],
+        processors=[
+            # required to strip extra keys that the structlog stdlib bindings add in
+            structlog.stdlib.ProcessorFormatter.remove_processors_meta,
+            # don't use ORJSON here, as the stdlib formatter chain expects a str not a bytes
+            structlog.processors.JSONRenderer(sort_keys=True),
+        ],
+        # processors unique to stdlib logging
         foreign_pre_chain=[
             # logger names are not supported when not using structlog.stdlib.LoggerFactory
             # https://github.com/hynek/structlog/issues/254
             structlog.stdlib.add_logger_name,
-            # Exclude the renderer from the pre-chain since this will ultimately get processed by structlog handler
+            # omit the renderer so we can implement our own
             *PROCESSORS[:-1],
         ],
     )
@@ -213,6 +224,11 @@ def redirect_stdlib_loggers():
 
     # Disable propagation to avoid duplicate logs
     root_logger.propagate = True
+
+    # TODO do i need to setup exception overrides as well?
+    # https://gist.github.com/nymous/f138c7f06062b7c43c060bf03759c29e#file-custom_logging-py-L114-L128
+    if sys.excepthook != sys.__excepthook__:
+        logging.getLogger(__name__).warning("sys.excepthook has been overridden.")
 
 
 def silence_loud_loggers():
