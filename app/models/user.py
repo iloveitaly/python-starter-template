@@ -24,10 +24,10 @@ class UserRole(str, Enum):
 class User(
     BaseModel, TimestampsMixin, SoftDeletionMixin, TypeIDMixin("usr"), table=True
 ):
-    clerk_id: str
+    clerk_id: str = Field(unique=True, index=True)
     "external ID of the user in Clerk"
 
-    email: str = Field(nullable=True)
+    email: str = Field(nullable=True, default=None)
     "email address of the user in Clerk, makes it easy to debug and find users"
 
     role: UserRole = Field(default=UserRole.normal)
