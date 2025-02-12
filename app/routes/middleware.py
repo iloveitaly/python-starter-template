@@ -4,12 +4,48 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
+from app import log
 from app.environments import is_development
 from app.routes.dependencies.timing import add_timing_middleware
-from app.server import is_production
 
 SESSION_SECRET_KEY = config("SESSION_SECRET_KEY", cast=str)
-ALLOWED_HOST_LIST = config("TRUSTED_HOST_LIST", cast=str)
+
+ALLOWED_HOST_LIST = config("ALLOWED_HOST_LIST", cast=str)
+"""
+This is a very important configuration option:
+
+- Used to block requests that don't have a `Host:` header that matches this list
+- Determines which hosts cookies are set for
+"""
+
+
+def allowed_hosts(with_scheme: bool = False) -> list[str]:
+    """
+    Returns a list of allowed hosts, with or without scheme.
+    """
+
+    DEVELOPMENT_HOSTS = [
+        "127.0.0.0",
+        "0.0.0.0",
+        "localhost",
+    ]
+
+    hosts = [host.strip() for host in ALLOWED_HOST_LIST.split(",")]
+    assert hosts
+
+    if with_scheme:
+        hosts = [f"https://{host}" for host in hosts]
+
+    if is_development():
+        if with_scheme:
+            # don't force https for devs who aren't using localias
+            hosts.extend(
+                [f"http://{host}" for host in DEVELOPMENT_HOSTS if host not in hosts]
+            )
+        else:
+            hosts.extend(DEVELOPMENT_HOSTS)
+
+    return hosts
 
 
 def add_middleware(app: FastAPI):
@@ -18,21 +54,41 @@ def add_middleware(app: FastAPI):
 
     - Not requiring HTTPS here since it is assumed we'll be behind a proxy server
     """
-    # even in development, some sort of CORS is required
+
+    # CORS require that a specific scheme is used for the request
+    allowed_hosts_with_schemes = allowed_hosts(True)
+
+    log.info("allowed_origins", allowed_origins=allowed_hosts_with_schemes)
+
+    # even in development, CORS is required, especially since we are using separate domains for API & frontend
+    # http OPTIONS https://web.localhost
     app.add_middleware(
         CORSMiddleware,
+        # allow_origins=allowed_hosts(True),
         allow_origins=["*"],
+        # tells browsers to expose and include credentials (such as cookies, client-side certificates, and authorization headers) in cross-origin requests.
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
 
-    # not required for development, but reduces delta between prod & dev
-    allowed_hosts = [host.strip() for host in ALLOWED_HOST_LIST.split(",")]
-    app.add_middleware(TrustedHostMiddleware, allowed_hosts=allowed_hosts)
-
+    # trusted hosts are not required for development, but reduces delta between prod & dev
+    # include the API host in your trusted host list, this will be used as the `Host` when HTTP/2 is used
+    allowed_hosts_without_scheme = allowed_hosts(False)
     app.add_middleware(
-        SessionMiddleware, secret_key=SESSION_SECRET_KEY, https_only=is_production()
+        TrustedHostMiddleware, allowed_hosts=allowed_hosts_without_scheme
+    )
+
+    cookie_domain = allowed_hosts_without_scheme[0]
+    log.info("cookie_domain", cookie_domain=cookie_domain)
+
+    # https://www.starlette.io/middleware/#sessionmiddleware
+    app.add_middleware(
+        SessionMiddleware,
+        secret_key=SESSION_SECRET_KEY,
+        https_only=True,
+        domain=cookie_domain,
+        # same_site="Lax", is defined by default
     )
 
     add_timing_middleware(app)
