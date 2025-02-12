@@ -16,6 +16,7 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
+import alembic_postgresql_enum
 from sqlmodel import SQLModel
 from app.models import *
 from app.configuration.database import database_url

@@ -45,6 +45,19 @@ wheels = [
 ]
 
 [[package]]
+name = "alembic-postgresql-enum"
+version = "1.6.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "alembic" },
+    { name = "sqlalchemy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/28/d4/cfbe2ea92268b545103b30f0c68b9156e089db70f54640a4014d67f9af35/alembic_postgresql_enum-1.6.1.tar.gz", hash = "sha256:23b1ab046f47e83b5f304b83be27eb712ace29303539a75b5227463838d1b2db", size = 15341 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/96/44/6a2fcb72fae13a4bced62a76003098082bee82f897f43ef0d2639480b27e/alembic_postgresql_enum-1.6.1-py3-none-any.whl", hash = "sha256:37f08e5721616eace2495ed6262613ae7bb37ba17512dfa377c9a279d3f15265", size = 23366 },
+]
+
+[[package]]
 name = "amqp"
 version = "5.3.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1781,6 +1794,7 @@ dependencies = [
     { name = "activemodel" },
     { name = "aiosmtplib" },
     { name = "alembic" },
+    { name = "alembic-postgresql-enum" },
     { name = "backoff" },
     { name = "beautifulsoup4" },
     { name = "cachetools" },
@@ -1859,6 +1873,7 @@ requires-dist = [
     { name = "activemodel", git = "https://github.com/iloveitaly/activemodel.git" },
     { name = "aiosmtplib", specifier = ">=3.0.2" },
     { name = "alembic", specifier = ">=1.14.0" },
+    { name = "alembic-postgresql-enum", specifier = ">=1.6.1" },
     { name = "backoff", specifier = ">=2.2.1" },
     { name = "beautifulsoup4", specifier = ">=4.12.3" },
     { name = "cachetools", specifier = ">=5.5.1" },
