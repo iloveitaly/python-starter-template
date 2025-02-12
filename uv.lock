@@ -1883,7 +1883,7 @@ requires-dist = [
     { name = "sentry-sdk", extras = ["fastapi", "celery", "openai", "sqlalchemy"], specifier = ">=2.17.0" },
     { name = "sqlalchemy", specifier = ">=2.0.36" },
     { name = "sqlmodel", specifier = ">=0.0.22" },
-    { name = "starlette-context", specifier = ">=0.3.6" },
+    { name = "starlette-context", git = "https://github.com/tomwojcik/starlette-context.git" },
     { name = "structlog", specifier = ">=24.4.0" },
     { name = "typeid-python", specifier = ">=0.3.1" },
     { name = "typer", specifier = ">=0.14.0" },
@@ -2329,13 +2329,9 @@ wheels = [
 [[package]]
 name = "starlette-context"
 version = "0.3.6"
-source = { registry = "https://pypi.org/simple" }
+source = { git = "https://github.com/tomwojcik/starlette-context.git#781d0d52e51133a701f63de0b894de1e9bf4a2f8" }
 dependencies = [
     { name = "starlette" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/a8/21/aa5d3848fcb77f0e7c9f1844271826ff74d83fad9920ca7f8105e0dc02ee/starlette_context-0.3.6.tar.gz", hash = "sha256:d361a36ba2d4acca3ab680f917b25e281533d725374752d47607a859041958cb", size = 9621 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/d0/56/a56af8066d9c17696207ee15bad43fd06dafc5917f6e7c7c3899427f6fc3/starlette_context-0.3.6-py3-none-any.whl", hash = "sha256:b14ce373fbb6895a2182a7104b9f63ba20c8db83444005fb9a844dd77ad9895c", size = 12386 },
 ]
 
 [[package]]
