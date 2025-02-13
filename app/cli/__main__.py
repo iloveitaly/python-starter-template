@@ -1,13 +1,8 @@
 import json
 
 import typer
-
-from app.configuration.versions import (
-    VERSIONS_FILE,
-    chrome_version,
-    postgres_version,
-    redis_version,
-)
+from fastapi import APIRouter
+from fastapi.routing import APIRoute
 
 app = typer.Typer()
 
@@ -19,6 +14,13 @@ def write_versions():
 
     Helpful to automatically ensuring dev, test, and prod parity
     """
+
+    from app.configuration.versions import (
+        VERSIONS_FILE,
+        chrome_version,
+        postgres_version,
+        redis_version,
+    )
 
     VERSIONS_FILE.write_text(
         json.dumps(
@@ -39,6 +41,21 @@ def dump_openapi():
     from app.server import api_app
 
     typer.echo(json.dumps(api_app.openapi()))
+
+
+@app.command()
+def routes():
+    "output list of routes available in the application"
+
+    from app.server import api_app
+
+    for route in api_app.routes:
+        if isinstance(route, APIRoute):
+            methods = sorted(route.methods)
+            method = ", ".join(methods)
+            typer.echo(f"{method}   {route.path}    {route.name}")
+        else:
+            typer.echo(f"unsupported route: {route}")
 
 
 if __name__ == "__main__":
