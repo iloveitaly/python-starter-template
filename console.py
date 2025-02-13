@@ -5,6 +5,7 @@ from typeid import TypeID  # noqa: F401
 
 import app.jobs
 import app.models
+from app.configuration.clerk import clerk  # noqa: F401
 
 from activemodel.utils import find_all_sqlmodels
 
