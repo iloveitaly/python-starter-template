@@ -210,7 +210,14 @@
       "UserListResponse": {
         "properties": {
           "current_user": {
-            "$ref": "#/components/schemas/UserSwitchData"
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UserSwitchData"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "users": {
             "items": {
@@ -247,7 +254,8 @@
         },
         "type": "object",
         "required": [
-          "clerk_id"
+          "clerk_id",
+          "email"
         ],
         "title": "UserSwitchData"
       },
