@@ -1,14 +1,15 @@
 import funcy_pipe as fp
+import structlog
 
-from app import log
 from app.configuration.clerk import clerk
 from app.environments import is_testing
 
 from tests.constants import (
-    CLERK_DEV_ADMIN_EMAIL,
-    CLERK_DEV_USER_EMAIL,
-    CLERK_QA_USER_EMAIL,
+    CLERK_ALL_USERS_TO_PRESERVE,
 )
+
+# named logger for all test-specific logic to use
+log = structlog.get_logger(logger_name="test")
 
 
 def delete_all_clerk_users():
@@ -23,7 +24,7 @@ def delete_all_clerk_users():
         clerk.users.list()
         | fp.filter(
             lambda user: user.email_addresses[0].email_address
-            not in [CLERK_DEV_USER_EMAIL, CLERK_DEV_ADMIN_EMAIL, CLERK_QA_USER_EMAIL]
+            not in CLERK_ALL_USERS_TO_PRESERVE
         )
         | fp.pluck_attr("id")
         | fp.lmap(lambda uid: clerk.users.delete(user_id=uid))

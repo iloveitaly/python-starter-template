@@ -18,6 +18,7 @@ from app.models.user import User, UserRole
 
 from tests.constants import (
     CLERK_DEV_ADMIN_EMAIL,
+    CLERK_DEV_SEED_EMAIL,
     CLERK_DEV_USER_EMAIL,
     CLERK_DEV_USER_PASSWORD,
 )
@@ -69,6 +70,18 @@ def get_clerk_dev_user():
     Get or generate a common dev user to login via clerk
     """
     user = _get_or_create_clerk_user(CLERK_DEV_USER_EMAIL)
+    assert user
+
+    return CLERK_DEV_USER_EMAIL, CLERK_DEV_USER_PASSWORD, user
+
+
+def get_clerk_seed_user():
+    """
+    Get or generate a common dev user to login via clerk. Creates a local user record with a seed role.
+
+    This user is used in both test and development environments.
+    """
+    user = _get_or_create_clerk_user(CLERK_DEV_SEED_EMAIL)
     assert user
 
     return CLERK_DEV_USER_EMAIL, CLERK_DEV_USER_PASSWORD, user
