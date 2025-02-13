@@ -5,8 +5,10 @@ Mirrors this model: https://clerk.com/docs/reference/backend-api/tag/Users#opera
 # TODO should we create an organization?
 # https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/GetOrganization
 
+from datetime import datetime
 from enum import Enum
 
+import sqlalchemy as sa
 from activemodel import BaseModel
 from activemodel.mixins import SoftDeletionMixin, TimestampsMixin, TypeIDMixin
 from sqlmodel import Field
@@ -31,6 +33,13 @@ class User(
     "email address of the user in Clerk, makes it easy to debug and find users"
 
     role: UserRole = Field(default=UserRole.normal)
+    "role of the user, primarily to support superuser switching"
+
+    last_active_at: datetime | None = Field(
+        default=None,
+        sa_type=sa.DateTime(timezone=True),  # type: ignore
+    )
+    "last time the user had an active session"
 
     # organization_id: str
 

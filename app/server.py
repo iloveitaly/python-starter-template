@@ -5,10 +5,14 @@ Route method names are important as they will be used for the openapi spec which
 JavaScript client which will use these methods.
 """
 
-from fastapi import FastAPI
+import arrow
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import ORJSONResponse
+from starlette import status
 
 from app.routes.utils.openapi import simplify_operation_ids
+
+from app.models.user import User
 
 from .environments import is_production
 from .routes.internal import internal_api_app
@@ -49,6 +53,22 @@ async def index():
 
 @api_app.get("/healthcheck")
 async def healthcheck():
+    "basic uptime check"
+    return {"status": "ok"}
+
+
+@api_app.get("/status")
+async def active_user_status():
+    "check if users have logged in within the last day"
+
+    last_24_hours = arrow.utcnow().shift(days=-1).datetime
+    active_users = User.where(User.last_active_at > last_24_hours).count()
+
+    if active_users == 0:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        )
+
     return {"status": "ok"}
 
 
