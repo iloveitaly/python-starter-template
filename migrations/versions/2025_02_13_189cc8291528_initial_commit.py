@@ -1,8 +1,8 @@
 """initial_commit
 
-Revision ID: 78de1f4da50f
+Revision ID: 189cc8291528
 Revises: 
-Create Date: 2025-02-12 15:42:41.048598
+Create Date: 2025-02-13 05:32:30.247889
 
 """
 from typing import Sequence, Union
@@ -14,7 +14,7 @@ import activemodel
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = '78de1f4da50f'
+revision: str = '189cc8291528'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -42,7 +42,8 @@ def upgrade() -> None:
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.Column('clerk_id', sqlmodel.sql.sqltypes.AutoString(), nullable=False, comment='external ID of the user in Clerk'),
     sa.Column('email', sqlmodel.sql.sqltypes.AutoString(), nullable=True, comment='email address of the user in Clerk, makes it easy to debug and find users'),
-    sa.Column('role', postgresql.ENUM('normal', 'admin', name='userrole', create_type=False), nullable=False),
+    sa.Column('role', postgresql.ENUM('normal', 'admin', name='userrole', create_type=False), nullable=False, comment='role of the user, primarily to support superuser switching'),
+    sa.Column('last_active_at', sa.DateTime(timezone=True), nullable=True, comment='last time the user had an active session'),
     sa.PrimaryKeyConstraint('id', name=op.f('user_pkey'))
     )
     op.create_index(op.f('user_clerk_id_idx'), 'user', ['clerk_id'], unique=True)
