@@ -62,7 +62,7 @@ async def active_user_status():
     "check if users have logged in within the last day"
 
     last_24_hours = arrow.utcnow().shift(days=-1).datetime
-    active_users = User.where(User.last_active_at > last_24_hours).count()
+    active_users = User.where(User.last_active_at > last_24_hours).count()  # type: ignore
 
     if active_users == 0:
         raise HTTPException(
