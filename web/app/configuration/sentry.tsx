@@ -23,6 +23,10 @@ if (isProduction()) {
       // TODO(mbianco) we should add react-router 7 integration when it's available
       // Replay is only available in the client
       Sentry.replayIntegration(),
+      Sentry.feedbackIntegration({
+        colorScheme: "system",
+        showBranding: false,
+      }),
     ],
 
     // Set tracesSampleRate to 1.0 to capture 100%
