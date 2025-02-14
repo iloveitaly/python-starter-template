@@ -36,7 +36,7 @@ dependencies = [
     "sqlmodel>=0.0.22",
     "starlette-context>=0.3.6",
     "structlog>=24.4.0",
-    "typeid-python>=0.3.1",
+    "typeid-python[cli]>=0.3.1",
     "typer>=0.14.0",
     "uvicorn>=0.32.0",
 ]

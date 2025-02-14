@@ -1915,7 +1915,7 @@ requires-dist = [
     { name = "sqlmodel", specifier = ">=0.0.22" },
     { name = "starlette-context", git = "https://github.com/tomwojcik/starlette-context.git" },
     { name = "structlog", specifier = ">=24.4.0" },
-    { name = "typeid-python", specifier = ">=0.3.1" },
+    { name = "typeid-python", extras = ["cli"], specifier = ">=0.3.1" },
     { name = "typer", specifier = ">=0.14.0" },
     { name = "uvicorn", specifier = ">=0.32.0" },
 ]
