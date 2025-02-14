@@ -1,5 +1,6 @@
 from datetime import datetime
 
+import sentry_sdk
 from fastapi import HTTPException, Request, status
 from starlette_context import context
 
@@ -24,4 +25,6 @@ def inject_user_record(request: Request):
     user.save()
 
     request.state.user = user
-    context["user_id"] = str(user.id)
+
+    context["user"] = user
+    sentry_sdk.set_user({"id": user.id, "email": user.email})

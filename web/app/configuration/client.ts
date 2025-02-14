@@ -1,6 +1,7 @@
 // the autogen'd client from the python's openapi.json is configured here
 import { isDevelopment, requireEnv } from "~/utils/environment"
 
+import * as Sentry from "@sentry/react"
 import { getClient } from "./clerk"
 import { invariant } from "@epic-web/invariant"
 import { client } from "client/client.gen"
@@ -34,6 +35,13 @@ client.setConfig({
 
     const token = await client.session.getToken()
     invariant(token, "token should exist")
+
+    // at this point, some sort of authenticated route is being called, so there is user information
+    // it is possible for other actions to occur before this, but they should be inconsequential and
+    // it would be challenging to inject `getClient` at just the right point, this is a natural place
+    // to set the user context. However, this is not a perfect solution, as it uses the frontend user
+    // authentication which can be different in the case of an admin who is logged in as a particular user.
+    Sentry.setUser({ id: client.user.id })
 
     return token
   },

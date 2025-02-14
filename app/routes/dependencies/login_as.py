@@ -1,3 +1,4 @@
+import sentry_sdk
 from fastapi import Request
 from starlette_context import context
 
@@ -34,9 +35,11 @@ def login_as(request: Request):
             admin_id=admin_user.id,
         )
 
-        # TODO should add admin ID for the user and update contextvars for logging
         request.state.admin_user = admin_user
         request.state.user = login_as_user
 
-        context["user_id"] = str(login_as_user.id)
-        context["admin_user_id"] = str(admin_user.id)
+        context["user_id"] = login_as_user.id
+        context["admin_user_id"] = admin_user.id
+
+        sentry_sdk.set_extra("admin_id", admin_user.id)
+        sentry_sdk.set_user({"id": login_as_user.id, "email": login_as_user.email})
