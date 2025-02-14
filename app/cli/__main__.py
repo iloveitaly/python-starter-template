@@ -1,7 +1,6 @@
 import json
 
 import typer
-from fastapi import APIRouter
 from fastapi.routing import APIRoute
 
 app = typer.Typer()

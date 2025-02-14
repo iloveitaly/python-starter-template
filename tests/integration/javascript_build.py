@@ -8,7 +8,6 @@ In CI, the javascript assets are built before running any tests. Locally, we ass
 and automatically kick off a build for you.
 """
 
-import os
 import subprocess
 import threading
 import time

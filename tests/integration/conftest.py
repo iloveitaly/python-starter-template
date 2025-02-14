@@ -5,7 +5,6 @@ from activemodel.pytest.truncate import database_reset_truncate
 # server is imported to expose that fixture to the tests, but keep it all organized in the server file
 from tests.integration.javascript_build import start_js_build
 from tests.integration.server import report_localias_status, server  # noqa: F401
-from tests.utils import log
 
 
 # NOTE this runs on any pytest invocation, even if no tests are run, once per pytest invocation

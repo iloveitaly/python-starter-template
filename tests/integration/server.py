@@ -179,9 +179,7 @@ def report_localias_status():
     """
     For integration tests, we require localalias to be running in the background since we use https.
     """
-    import os
     import subprocess
-    import sys
 
     command = ["localias", "status"]
 
