@@ -91,6 +91,9 @@ def add_middleware(app: FastAPI):
     cookie_domain = allowed_hosts_without_scheme[0]
     log.info("cookie_domain", cookie_domain=cookie_domain)
 
+    # note that `domain_cookie` and `https_only` will cause issues if you are not using
+    # domains + localias (for local https) for testing. If cookie-related route + integration tests
+    # fail, this code is probably to blame.
     # https://www.starlette.io/middleware/#sessionmiddleware
     app.add_middleware(
         SessionMiddleware,

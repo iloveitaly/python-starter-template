@@ -28,10 +28,16 @@ clerk_cache_instance = LRUCache(maxsize=128)
 "to cache user and session keys for all live clerk api interactions"
 
 
-def base_server_url(protocol: t.Literal["http", "https"] = "http"):
+def base_server_url(protocol: t.Literal["http", "https"] = "https"):
     """
     VITE_PYTHON_URL is defined as the protocol + host, but the user/dev shouldn't have to worry
     about trailing slash, etc so we normalize it here.
+
+    Note that the scheme is really important. The cookie middleware is setup to require
+    https in order to set receive cookies, so if `http` is used instead of `https` this will
+    break tests which require cookies.
+
+    `https` requires that localias is setup, otherwise http (or some other SSL mechanism) must be used.
     """
 
     url = decouple_config("VITE_PYTHON_URL", cast=str).strip()
