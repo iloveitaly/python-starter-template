@@ -54,6 +54,9 @@ default:
 
 lint: js_lint py_lint db_lint
 
+# watches all important python files and automatically restarts the process if anything changes
+PYTHON_WATCHMEDO := "uv run --with watchdog watchmedo auto-restart --directory=./ --pattern=*.py --recursive --"
+
 # start all of the services you need for development in a single terminal
 [macos]
 [script]
@@ -64,15 +67,16 @@ dev: local-alias dev_kill
 	# create a tmp Procfile with all of the dev services we need running
 	cat << 'EOF' > tmp/Procfile.dev
 	py_dev: just py_dev
-	py_worker: celery -A app.celery worker
-	py_scheduler: celery -A app.celery beat
+	py_worker: {{PYTHON_WATCHMEDO}} $(yq '.worker' Procfile --output-format yaml)
+	py_scheduler: {{PYTHON_WATCHMEDO}} $(yq '.scheduler' Procfile --output-format yaml)
 	js_dev: just js_dev
 	openapi: just js_generate-openapi --watch
 	EOF
 
-	# TODO should we add a watcher for JS and rebuild the static JS build for e2e py tests?
-
-	foreman start --procfile=tmp/Procfile.dev
+	# foreman is abandonded, but it still works
+	# hivemind does not ignore terminal clear control sequences
+	# ultraman looks to have some obvious bugs
+	foreman start --root . --procfile=tmp/Procfile.dev
 
 # kill all processes bound to server ports
 [macos]
