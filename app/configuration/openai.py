@@ -33,17 +33,7 @@ def openai_logging_setup():
     openai_logger.handlers = []  # Remove all handlers
     openai_logger.addHandler(openai_file_handler)
 
-    httpx_logger = logging.getLogger("httpx")
-    httpx_logger.propagate = False
-    httpx_logger.handlers = []  # Remove all handlers
-    httpx_logger.addHandler(openai_file_handler)
-
-    httpcore_logger = logging.getLogger("httpcore")
-    httpcore_logger.propagate = False
-    httpcore_logger.handlers = []
-    httpcore_logger.addHandler(openai_file_handler)
-
-    log.info("openai and http logging redirected", openai_log_path=openai_log_path)
+    log.info("openai redirected", openai_log_path=openai_log_path)
 
 
 def configure_openai():

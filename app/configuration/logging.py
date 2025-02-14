@@ -202,8 +202,7 @@ PROCESSORS: list[structlog.types.Processor] = [
 
 def _get_log_level():
     log_level = config("LOG_LEVEL", default="INFO", cast=str)
-    level = getattr(logging, log_level.upper())
-    return level
+    return logging.getLevelNamesMapping()[log_level.upper()]
 
 
 def _logger_factory():
@@ -224,6 +223,18 @@ def _logger_factory():
 
     else:
         return structlog.PrintLoggerFactory()
+
+
+def reset_stdlib_logger(
+    logger_name: str, default_structlog_handler, level_override=None
+):
+    std_logger = logging.getLogger(logger_name)
+    std_logger.propagate = False
+    std_logger.handlers = []
+    std_logger.addHandler(default_structlog_handler)
+
+    if level_override:
+        std_logger.setLevel(level_override)
 
 
 def redirect_stdlib_loggers():
@@ -270,6 +281,37 @@ def redirect_stdlib_loggers():
 
     # Disable propagation to avoid duplicate logs
     root_logger.propagate = True
+
+    # TODO there is a JSON-like format that can be used to configure loggers instead :/
+    std_logging_configuration = {
+        "httpcore": {},
+        "httpx": {
+            "levels": {
+                "INFO": "WARNING",
+            }
+        },
+        "azure.core.pipeline.policies.http_logging_policy": {
+            "levels": {
+                "INFO": "WARNING",
+            }
+        },
+    }
+    """
+    These loggers either:
+
+    1. Are way too chatty by default
+    2. Setup before our logging is initialized
+
+    This configuration allows us to easily override various loggers as we add additional complexity to the application
+    """
+
+    # now, let's handle some loggers that are probably already initialized with a handler
+    for logger_name, logger_config in std_logging_configuration.items():
+        reset_stdlib_logger(
+            logger_name,
+            handler,
+            logger_config.get("levels", {}).get(logging.getLevelName(level)),
+        )
 
     # TODO do i need to setup exception overrides as well?
     # https://gist.github.com/nymous/f138c7f06062b7c43c060bf03759c29e#file-custom_logging-py-L114-L128
