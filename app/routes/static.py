@@ -30,6 +30,7 @@ from starlette.types import Scope
 from app import log, root
 from app.environments import (
     is_development,
+    is_local_testing,
     is_production,
     is_staging,
     python_environment,
@@ -78,7 +79,7 @@ def mount_public_directory(app: FastAPI):
         public_path = root / "web/build" / python_environment() / "client"
 
     # in development, a separate py & js server will be used, if the development build DNE that's fine
-    if not public_path.exists() and is_development():
+    if not public_path.exists() and (is_development() or is_local_testing()):
         log.warning(
             "The development build does not exist. Static files will not be served"
         )

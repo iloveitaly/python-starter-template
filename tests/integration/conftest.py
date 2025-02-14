@@ -1,37 +1,24 @@
-import os
-
 import pytest
 
 from activemodel.pytest.truncate import database_reset_truncate
 
 # server is imported to expose that fixture to the tests, but keep it all organized in the server file
+from tests.integration.javascript_build import start_js_build
 from tests.integration.server import report_localias_status, server  # noqa: F401
+from tests.utils import log
 
 
-def notify_js_builds():
-    if "CI" not in os.environ:
-        print(
-            """
-    \033[91m
-    !!! IMPORTANT !!!
-
-    You are running an integration test outside the CI=true environment.
-
-    If you are iterating on the frontend as well, your build is most likely out of date. Run:
-
-    just py_js-build
-    \033[0m
-    """
-        )
-
-
+# NOTE this runs on any pytest invocation, even if no tests are run, once per pytest invocation
 def pytest_configure(config):
-    notify_js_builds()
+    # start JS build right away, since it takes some time. Separately, the test server will wait until the build
+    # is finished to start running tests against the server.
+    start_js_build()
     report_localias_status()
 
 
 # transaction truncation cannot be used with integration tests since the forked server does not retain the same
-# db connection in memory and therefore the transaction rollback does not work.
+# db connection in memory and therefore the transaction rollback does not work. To get around this, we truncate the
+# database before running any tests, although this also has the side effect of destroying any test seed data.
 @pytest.fixture(scope="function", autouse=True)
 def truncate_database_for_integration(request):
     database_reset_truncate()

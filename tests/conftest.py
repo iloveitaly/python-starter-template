@@ -10,6 +10,9 @@ if os.environ["PYTHON_ENV"] != "test":
 
     assert 'app' not in sys.modules, "app modules should not be imported before environment is set"
 
+# important to ensure model metadata is added to the application
+import app.models  # noqa: F401
+
 import multiprocessing
 
 from pathlib import Path
@@ -18,19 +21,12 @@ import pytest
 from pytest import Config
 from activemodel.pytest import database_reset_transaction, database_reset_truncate
 from decouple import config as decouple_config
-from structlog import get_logger
 
-# important to ensure model metadata is added to the application
-import app.models  # noqa: F401
-
-from tests.utils import delete_all_clerk_users
+from tests.utils import delete_all_clerk_users, log
 from tests.seeds import seed_test_data
 
 # this file is uploaded as an artifact
 TEST_RESULTS_DIRECTORY = Path(decouple_config("TEST_RESULTS_DIRECTORY", cast=str))
-
-# TODO set logger name, not context
-log = get_logger(test=True)
 
 log.info("multiprocess start method", start_method=multiprocessing.get_start_method())
 

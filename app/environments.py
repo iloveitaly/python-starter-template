@@ -11,6 +11,14 @@ def is_testing():
     return python_environment() == "test"
 
 
+def is_local_testing():
+    "for auto-building javascript assets when running tests locally"
+
+    # TODO sys.platform != "darwin"?
+
+    return is_testing() and config("CI", default=False, cast=bool) is False
+
+
 def is_production():
     return python_environment() == "production"
 

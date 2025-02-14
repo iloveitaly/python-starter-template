@@ -20,9 +20,14 @@ from decouple import config
 from playwright.sync_api import Page
 
 from app import log
+from app.environments import is_local_testing
 from app.server import api_app
 
+from tests.integration.javascript_build import wait_for_javascript_build
+
 PYTHON_SERVER_TEST_PORT = config("PYTHON_TEST_SERVER_PORT", cast=int)
+
+_server_subprocess = None
 
 
 def wait_for_termination(pid, timeout=10):
@@ -82,6 +87,8 @@ def run_server():
         port=PYTHON_SERVER_TEST_PORT,
         # NOTE important to ensure structlog controls logging in production
         log_config=None,
+        # a custom access logger is implemted which plays nicely with structlog
+        access_log=False,
     )
 
 
@@ -110,9 +117,14 @@ def server():
     proc = Process(target=run_server, args=(), daemon=True)
     proc.start()
 
+    global _server_subprocess
+    _server_subprocess = proc
+
     # since the server is run a daemon in another process, we need to wait until the port is ready
     if not wait_for_port(PYTHON_SERVER_TEST_PORT):
         raise Exception("server failed to start")
+
+    wait_for_javascript_build()
 
     try:
         yield
@@ -120,6 +132,19 @@ def server():
         wait_for_termination(proc.pid)
 
     # TODO should we install a signal trap to ensure the server is killed?
+
+
+def pytest_keyboard_interrupt(excinfo):
+    log.info("KeyboardInterrupt caught – stopping server...")
+    if _server_subprocess:
+        _server_subprocess.terminate()
+    # from _pytest.config import get_config
+
+    # config = get_config()
+    # instance = getattr(config, "my_playwright_instance", None)
+    # if instance is not None:
+    #     print("KeyboardInterrupt caught – stopping playwright...")
+    #     instance.stop()
 
 
 def home_url():
@@ -160,8 +185,8 @@ def report_localias_status():
 
     command = ["localias", "status"]
 
-    # on CI we need to run localalias on sudo
-    if os.getenv("CI") and sys.platform != "darwin":
+    # on GHA we need to run localalias on sudo
+    if not is_local_testing():
         command.insert(0, "sudo")
 
     result = subprocess.run(command, capture_output=True, text=True)
