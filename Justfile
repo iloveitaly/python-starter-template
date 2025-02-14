@@ -57,7 +57,9 @@ lint: js_lint py_lint db_lint
 # start all of the services you need for development in a single terminal
 [macos]
 [script]
-dev: local-alias
+dev: local-alias dev_kill
+	just _banner_echo "Starting dev services"
+
 	# TODO we should think about the worker command a bit more...should we use the same exact command? should we generate vs hardcode?
 	# create a tmp Procfile with all of the dev services we need running
 	cat << 'EOF' > tmp/Procfile.dev
@@ -65,12 +67,31 @@ dev: local-alias
 	py_worker: celery -A app.celery worker
 	py_scheduler: celery -A app.celery beat
 	js_dev: just js_dev
-	js_generate_openapi: just js_generate-openapi --watch
+	openapi: just js_generate-openapi --watch
 	EOF
 
 	# TODO should we add a watcher for JS and rebuild the static JS build for e2e py tests?
 
 	foreman start --procfile=tmp/Procfile.dev
+
+# kill all processes bound to server ports
+[macos]
+[script]
+dev_kill:
+	just _banner_echo "Killing all processes bound to server ports"
+
+	for port in "$JAVASCRIPT_SERVER_PORT" "$PYTHON_SERVER_PORT" "$PYTHON_TEST_SERVER_PORT"; do
+		echo "Checking for processes on port $port"
+		pids=("${(@f)$(lsof -t -i :${port} 2>/dev/null || true)}")
+		if [[ -n "$pids" ]]; then
+			for pid in $pids; do
+				kill -9 "$pid"
+				echo "Killed process $pid on port $port"
+			done
+		else
+			echo "No processes found on port $port"
+		fi
+	done
 
 #######################
 # Utilities
@@ -555,7 +576,10 @@ py_playwright-record:
 	mkdir -p tmp/playwright
 	recorded_interaction=tmp/playwright/$(date +%m-%d-%s).py
 
-	uv run playwright codegen --target python-pytest --output $recorded_interaction https://${JAVASCRIPT_SERVER_HOST}
+	uv run playwright codegen \
+		--target python-pytest \
+		--output $recorded_interaction \
+		https://${JAVASCRIPT_SERVER_HOST}
 
 	echo $recorded_interaction
 	pbcopy < $recorded_interaction

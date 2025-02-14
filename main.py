@@ -52,6 +52,7 @@ if __name__ == "__main__":
         # workers=2,
         # NOTE important to ensure structlog controls logging in production
         log_config=None,
+        # a custom access logger is implemted which plays nicely with structlog
         access_log=False,
         **additional_args,
     )
