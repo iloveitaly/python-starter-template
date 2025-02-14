@@ -10,6 +10,8 @@ import type { LinksFunction } from "react-router"
 
 import { withProviders } from "~/configuration"
 
+import { Loader2 } from "lucide-react"
+
 import "./app.css"
 
 export const links: LinksFunction = () => [
@@ -49,6 +51,16 @@ function App() {
 
 export default withProviders(App)
 
+export function HydrateFallback() {
+  return (
+    <div className="flex h-screen w-screen items-center justify-center">
+      <div className="space-y-4 text-center">
+        <Loader2 className="text-primary mx-auto h-8 w-8 animate-spin" />
+        <p className="text-muted-foreground">Loading application...</p>
+      </div>
+    </div>
+  )
+}
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = "Oops!"
   let details = "An unexpected error occurred."
