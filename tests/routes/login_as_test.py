@@ -57,8 +57,8 @@ def test_user_list(client: TestClient):
 
     # list should contain created user + 1 seed data user
     assert len(user_state["users"]) == users_to_create + 1
-    assert user_state["users"][0]["email"] == "test0@example.com"
-    assert user_state["users"][0]["clerk_id"] == "user_0"
+    assert user_state["users"][-1]["email"] == "test2@example.com"
+    assert user_state["users"][-1]["clerk_id"] == "user_2"
 
 
 def test_login_as_authorized_good_credentials(client: TestClient):
