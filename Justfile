@@ -539,18 +539,23 @@ PYTEST_COV_PARAMS := "--cov --cov-report=html:${TEST_RESULTS_DIRECTORY}/htmlcov 
 
 # run tests with the exact same environment that will be used on CI
 [script]
-py_test: py_js-build
+py_test:
 	# Define a more detailed colored PS4 without current directory so -x output is easier to read
 	setopt prompt_subst
 	export PS4='%F{green}+%f '
 	set -x
+
+	just _banner_echo "Building Javascript for Integration Tests"
+	just py_js-build
 
 	# TODO we don't need to see all of the details for this part of the build, since we are primarily testing javascript
 
 	# TODO I wonder if I could make EXECUTE_IN_TEST blank if in the test environment...
 	# NOTE unfortunately, because of the asyncio loop + playwright, we need to run the playwright integration tests separately
 	if [[ -n "${CI:-}" ]]; then
+	  just _banner_echo "Running Non-Integration Tests"
 		uv run pytest . --ignore tests/integration {{PYTEST_COV_PARAMS}}
+	  just _banner_echo "Running Integration"
 		uv run pytest tests/integration --cov-append {{PYTEST_COV_PARAMS}}
 	else
 		{{EXECUTE_IN_TEST}} uv run pytest . --ignore tests/integration {{PYTEST_COV_PARAMS}}
