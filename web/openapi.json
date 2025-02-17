@@ -137,9 +137,9 @@
     },
     "/status": {
       "get": {
-        "summary": "Status",
+        "summary": "Active User Status",
         "description": "check if users have logged in within the last day",
-        "operationId": "status",
+        "operationId": "active_user_status",
         "responses": {
           "200": {
             "description": "Successful Response",
