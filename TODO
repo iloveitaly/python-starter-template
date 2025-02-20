@@ -1,4 +1,11 @@
 ## python
+pull in celery config into this project
+pull in factory boy stuff, move to AM
+flower update, custom branch
+  - https://github.com/mher/flower/pull/1417
+  - https://github.com/mher/flower/pull/1397
+https://polyfactory.litestar.dev/latest/usage/declaring_factories.html for factories, maybe integrate with sqlmodel
+maybe treat sqlalchemy.exc.NoResultFound as 404 in fastapi?
 I wonder if we should use named loggers instead https://github.com/replicate/cog/blob/c95774f18b8df6f6a7b841be1900153ca04a57ad/python/cog/server/http.py#L61C7-L61C27
 remove static serving paths from fastapi openapi
 https://github.com/FactoryBoy/factory_boy - testing fixtures
@@ -18,13 +25,15 @@ favicon and other root handlers on the fastapi server
 prevent rich tracebacks from installing
 expanded sort categories, can we do this with ruff?
 fix html formatting, use a single formatter type
-pull commands structure over
+pull commands structure over and document
 https://salabim.org/peek/#copying-to-the-clipboard
 super user pattern in clerk https://discord.com/channels/856971667393609759/1330543476433227877
 https://github.com/mher/flower/pull/1417 - flower can't retry jobs?!
 https://github.com/replicate/cog/blob/c95774f18b8df6f6a7b841be1900153ca04a57ad/python/cog/suppress_output.py#L7 interesting approach to surpressing output
-redirect warning logs https://github.com/apache/airflow/blob/4280b83977cd5a53c2b24143f3c9a6a63e298acc/task_sdk/src/airflow/sdk/log.py#L290
 exception group processor? https://github.com/apache/airflow/blob/4280b83977cd5a53c2b24143f3c9a6a63e298acc/task_sdk/src/airflow/sdk/log.py#L42
+do we need a structlog.stdlib.ProcessorFormatter.wrap_for_formatter?
+maybe use a more custom json formatter? https://github.com/jeremyh/datacube-explorer/blob/b289b0cde0973a38a9d50233fe0fff00e8eb2c8e/cubedash/logs.py#L40C21-L40C42
+https://github.com/browser-use/browser-use/blob/76e4c2630d72c0aa313d1f34c8fb53bed86a0e15/browser_use/logging_config.py#L10 additional logging level
 
 ## Observability
 https://github.com/replicate/cog/blob/c95774f18b8df6f6a7b841be1900153ca04a57ad/python/cog/server/telemetry.py#L7 looks like there is some standard around this
@@ -161,3 +170,8 @@ binding for paste as plain text
     }
 }
 ```
+
+## open source
+
+- [ ] pull typeid + model formatting into activemodel
+- [ ] https://github.com/djlint/djLint/pull/1049#issuecomment-2656628325
