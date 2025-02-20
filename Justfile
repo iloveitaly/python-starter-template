@@ -819,19 +819,39 @@ secrets_ci_manage:
 	open https://$OP_ACCOUNT/developer-tools/directory
 
 #######################
-# Deployment
+# GitHub
 #######################
 
-deploy:
-	if ! git remote | grep -q dokku; then \
-		git remote add dokku dokku@dokku.me:app; \
-	fi
+GITHUB_RULESET := """
+{
+	"name": "Protect master from force pushes",
+	"target": "branch",
+	"enforcement": "active",
+	"conditions": {
+		"ref_name": {
+			"include": ["refs/heads/master"],
+			"exclude": []
+		}
+	},
+	"rules": [
+		{
+			"type": "non_fast_forward"
+		}
+	]
+}
+"""
 
-	git push dokku main
+_github_repo:
+	gh repo view --json nameWithOwner -q .nameWithOwner
 
-	# TODO can we push from the registry image?
+github_ruleset_delete:
+	repo=$(just _github_repo) && \
+	  ruleset_name=$(echo '{{GITHUB_RULESET}}' | jq -r .name) && \
+		ruleset_id=$(gh api repos/$repo/rulesets --jq ".[] | select(.name == \"$ruleset_name\") | .id") && \
+		(([ -n "${ruleset_id}" ] || (echo "No ruleset found" && exit 0)) || gh api --method DELETE repos/$repo/rulesets/$ruleset_id)
 
-# TODO fly deployment and other options, this needs some work
+github_ruleset: github_ruleset_delete
+	gh api --method POST repos/$(just _github_repo)/rulesets --input - <<< '{{GITHUB_RULESET}}'
 
 #######################
 # Production Build
@@ -1125,3 +1145,6 @@ direnv_bash_export:
 	echo $'\n'
 	echo "File generated: $target_file"
 	echo "Source using 'source $target_file'"
+
+# TODO imported justfiles are not namespaced by default!
+# import? 'infra/Justfile'
