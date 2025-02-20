@@ -55,7 +55,7 @@ def base_server_url(protocol: t.Literal["http", "https"] = "https"):
 
 @cached(cache=clerk_cache_instance)
 def _get_or_create_clerk_user(email: str):
-    user_list = clerk.users.list(email_address=[email])
+    user_list = clerk.users.list(request={"email_address": [email]})
     assert user_list is not None
 
     if len(user_list) == 1:
