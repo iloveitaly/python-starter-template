@@ -1,0 +1,8 @@
+# TODO WIP
+
+deploy:
+	if ! git remote | grep -q dokku; then \
+		git remote add dokku dokku@dokku.me:app; \
+	fi
+
+	git push dokku main
