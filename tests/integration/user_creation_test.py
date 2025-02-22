@@ -8,11 +8,10 @@ from tests.constants import CLERK_DEV_USER_PASSWORD
 from tests.integration.clerk import setup_clerk_testing_token
 from tests.integration.server import home_url, wait_for_loading
 from tests.integration.utils import login_as_dev_user
-from tests.routes.utils import get_clerk_dev_user
 
 
 def test_signin(server, page: Page, assert_snapshot) -> None:
-    user = login_as_dev_user(page)
+    _user = login_as_dev_user(page)
 
     expect(page.locator("body")).to_contain_text("Hello From Internal Python")
 
