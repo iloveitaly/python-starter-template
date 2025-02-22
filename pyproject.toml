@@ -83,6 +83,7 @@ dev-dependencies = [
     "pytest-playwright-visual>=2.1.2",
     "pytest-cov>=6.0.0",
     "pytest-timer[termcolor]>=1.0.0",
+    "gitignore-parser>=0.1.11",
 ]
 # https://github.com/astral-sh/uv/issues/3898
 config-settings = { editable_mode = "compat" }
