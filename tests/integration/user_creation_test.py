@@ -7,24 +7,12 @@ from app.models.user import User
 from tests.constants import CLERK_DEV_USER_PASSWORD
 from tests.integration.clerk import setup_clerk_testing_token
 from tests.integration.server import home_url, wait_for_loading
+from tests.integration.utils import login_as_dev_user
 from tests.routes.utils import get_clerk_dev_user
 
 
 def test_signin(server, page: Page, assert_snapshot) -> None:
-    username, password, user = get_clerk_dev_user()
-
-    # paranoid testing to ensure database cleaning is working
-    assert User.count() == 0
-
-    setup_clerk_testing_token(page)
-
-    page.goto(home_url())
-
-    page.get_by_label("Email address").fill(username)
-    page.get_by_role("button", name="Continue", exact=True).click()
-
-    page.get_by_label("Password", exact=True).fill(password)
-    page.get_by_role("button", name="Continue").click()
+    user = login_as_dev_user(page)
 
     expect(page.locator("body")).to_contain_text("Hello From Internal Python")
 
