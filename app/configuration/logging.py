@@ -33,6 +33,7 @@ from typeid import TypeID
 from app.constants import NO_COLOR
 
 from activemodel import BaseModel
+from sqlalchemy.orm.util import object_state
 
 from ..environments import is_production, is_staging
 
@@ -173,12 +174,28 @@ def simplify_activemodel_objects(
 
     - Convert keys ('object') whose value inherit from activemodel's BaseModel to object_id=str(object.id)
     - Convert TypeIDs to their string representation object=str(object)
+
+    What's tricky about this method, and other structlog processors, is they are run *after* a response
+    is returned to the user. So, they don't error out in tests and it doesn't impact users. They do show up in Sentry.
     """
     for key, value in list(event_dict.items()):
         if isinstance(value, BaseModel):
+
+            def get_field_no_refresh(instance, field_name):
+                """
+                This was a hard-won little bit of code: in fastapi, this action happens *after* the
+                db session dependency has finished, which means the session is closed.
+
+                If a DB operation within the session causes the model to be marked as stale, then this will trigger
+                a `sqlalchemy.orm.exc.DetachedInstanceError` error. This logic pulls the cached value from the object
+                which is better for performance *and* avoids the error.
+                """
+                return str(object_state(instance).dict.get(field_name))
+
             # TODO this will break as soon as a model doesn't have `id` as pk
-            event_dict[f"{key}_id"] = str(getattr(value, "id"))
+            event_dict[f"{key}_id"] = get_field_no_refresh(value, "id")
             del event_dict[key]
+
         elif isinstance(value, TypeID):
             event_dict[key] = str(value)
 

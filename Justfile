@@ -372,7 +372,6 @@ _js_generate-openapi:
 
 # TODO watch js files
 # react-router typegen
-# safe-routes typegen
 # full build for py e2e tests
 
 # run shadcn commands with the latest library version
