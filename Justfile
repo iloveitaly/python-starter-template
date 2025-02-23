@@ -250,6 +250,7 @@ tooling_upgrade: && _mise_upgrade _js_sync-engine-versions
 [macos]
 upgrade: tooling_upgrade js_upgrade py_upgrade
 	uv run python -m app.cli write-versions
+	git add .service-versions
 
 # run (or reload) daemon to setup local development aliases
 [macos]
