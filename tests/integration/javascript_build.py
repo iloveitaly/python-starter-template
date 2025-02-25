@@ -47,8 +47,8 @@ def get_latest_mtime(directory):
                 latest = max(latest, os.path.getmtime(file_path))
                 inspected_files.append(file_path)
 
-    log.info(
-        "inspected files",
+    log.debug(
+        "files checked for javascript build",
         inspected_files=inspected_files,
     )
     return latest
