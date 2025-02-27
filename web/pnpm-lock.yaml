@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@clerk/clerk-react':
-        specifier: ^5.23.0
-        version: 5.23.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: ^5.24.0
+        version: 5.24.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@clerk/shared':
-        specifier: ^2.22.0
-        version: 2.22.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: ^3.0.0
+        version: 3.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@epic-web/invariant':
         specifier: ^1.0.0
         version: 1.0.0
@@ -108,8 +108,8 @@ importers:
         specifier: ^8.5.3
         version: 8.5.3
       posthog-js:
-        specifier: ^1.223.4
-        version: 1.223.4(@rrweb/types@2.0.0-alpha.17)
+        specifier: ^1.224.0
+        version: 1.224.0(@rrweb/types@2.0.0-alpha.17)
       ramda:
         specifier: ^0.30.1
         version: 0.30.1
@@ -157,8 +157,8 @@ importers:
         specifier: ^9.21.0
         version: 9.21.0
       '@hey-api/openapi-ts':
-        specifier: ^0.64.5
-        version: 0.64.5(magicast@0.3.5)(typescript@5.7.3)
+        specifier: ^0.64.6
+        version: 0.64.6(magicast@0.3.5)(typescript@5.7.3)
       '@testing-library/jest-dom':
         specifier: ^6.6.3
         version: 6.6.3
@@ -406,15 +406,15 @@ packages:
       react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
       react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
 
-  '@clerk/clerk-react@5.23.0':
-    resolution: {integrity: sha512-2BMT3+KOWRJsAPDuhFoVdee2solukUcHw8BuKFfiOw6XXbU01H7WBezQCgF8gGFwrygEzZ0P5MBIz3L6MC/LYQ==}
+  '@clerk/clerk-react@5.24.0':
+    resolution: {integrity: sha512-li+I/Ca/VpJr8FSjNbvq4GSoHcAnCqo6Uw/tYYnpkSW9Zm1WcBDdKcGeKVJk+vOP5Yets0ZxGg9dPuaIVrTbCA==}
     engines: {node: '>=18.17.0'}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
       react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
 
-  '@clerk/shared@2.22.0':
-    resolution: {integrity: sha512-VWBeddOJVa3sqUPdvquaaQYw4h5hACSG3EUDOW7eSu2F6W3BXUozyLJQPBJ9C0MuoeHhOe/DeV8x2KqOgxVZaQ==}
+  '@clerk/shared@3.0.0':
+    resolution: {integrity: sha512-c5TUTMrir4yrxdQh2xiILowFvHZydBIuX1tFOKKWQZsNqlFYXbbeUHDxEIcxvb4uarGSiuEzVsx6S2hT2ZBCQQ==}
     engines: {node: '>=18.17.0'}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
@@ -425,8 +425,8 @@ packages:
       react-dom:
         optional: true
 
-  '@clerk/types@4.46.1':
-    resolution: {integrity: sha512-QwomMjG1v2GqOITU2/rQUC11LFFsqNFUA92VKDo8dS1nN9iQadT6cNk7MZWqEYTxAfAM/IgX/gB00aGsLKaV8g==}
+  '@clerk/types@4.47.0':
+    resolution: {integrity: sha512-xB/gqMq6cq6/47ymKs0WaaxKEFPzlvbSgJTLFIfnPMnFSNwYE4WVgVh6geFx6qWr3z588JDDZkJskBHZlgPmQQ==}
     engines: {node: '>=18.17.0'}
 
   '@emotion/babel-plugin@11.12.0':
@@ -668,8 +668,8 @@ packages:
     resolution: {integrity: sha512-F6LSkttZcT/XiX3ydeDqTY3uRN3BLJMwyMTk4kg/ichZlKUp3+3Odv0WokSmXGSoZGTW/N66FROMYAm5NPdJlA==}
     engines: {node: '>= 16'}
 
-  '@hey-api/openapi-ts@0.64.5':
-    resolution: {integrity: sha512-Vl6QQbkb+TXPG/ihobCPj/13KFJPfnjTVljno+T18L2ywL8cRHDFYqi5356ktBixBuwK2cSJvKzxYR6TIMq+AA==}
+  '@hey-api/openapi-ts@0.64.6':
+    resolution: {integrity: sha512-pFZoLCnoBNrCW1g4lI/cvv14EP53UmmFOdl34TlNvmI5mzHG/doI1m24M9OQwdOH5jeQUhIdaqvTXzJ0qdWLiw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=22.11.0}
     hasBin: true
     peerDependencies:
@@ -3721,9 +3721,6 @@ packages:
   pathe@1.1.2:
     resolution: {integrity: sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ==}
 
-  pathe@2.0.2:
-    resolution: {integrity: sha512-15Ztpk+nov8DR524R4BF7uEuzESgzUEAV4Ah7CUMNGXdE5ELuvxElxGXndBl32vMSsWa1jpNf22Z+Er3sKwq+w==}
-
   pathe@2.0.3:
     resolution: {integrity: sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w==}
 
@@ -3766,8 +3763,8 @@ packages:
     resolution: {integrity: sha512-dle9A3yYxlBSrt8Fu+IpjGT8SY8hN0mlaA6GY8t0P5PjIOZemULz/E2Bnm/2dcUOena75OTNkHI76uZBNUUq3A==}
     engines: {node: ^10 || ^12 || >=14}
 
-  posthog-js@1.223.4:
-    resolution: {integrity: sha512-dDyUcWJ+6gzaaVS0Ekjot30BeWb5EiWiU+RFI59/2PDoHsjcZ2RPyCb/TRh9b06WvNqJWvck7GdUJwwjhkSzRw==}
+  posthog-js@1.224.0:
+    resolution: {integrity: sha512-JT1XQQeYs0CKb4lU2vujmeLTDLWc61I5lT7d6oG/H/cnCpXAqBi5rMuCFFeotHeMy3hqJ/Tpu3eAPFE2p5ErHA==}
     peerDependencies:
       '@rrweb/types': 2.0.0-alpha.17
 
@@ -5045,17 +5042,17 @@ snapshots:
       react-lifecycles-compat: 3.0.4
       warning: 3.0.0
 
-  '@clerk/clerk-react@5.23.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+  '@clerk/clerk-react@5.24.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
-      '@clerk/shared': 2.22.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@clerk/types': 4.46.1
+      '@clerk/shared': 3.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@clerk/types': 4.47.0
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
       tslib: 2.4.1
 
-  '@clerk/shared@2.22.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+  '@clerk/shared@3.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
-      '@clerk/types': 4.46.1
+      '@clerk/types': 4.47.0
       dequal: 2.0.3
       glob-to-regexp: 0.4.1
       js-cookie: 3.0.5
@@ -5065,7 +5062,7 @@ snapshots:
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
 
-  '@clerk/types@4.46.1':
+  '@clerk/types@4.47.0':
     dependencies:
       csstype: 3.1.3
 
@@ -5267,7 +5264,7 @@ snapshots:
       '@types/json-schema': 7.0.15
       js-yaml: 4.1.0
 
-  '@hey-api/openapi-ts@0.64.5(magicast@0.3.5)(typescript@5.7.3)':
+  '@hey-api/openapi-ts@0.64.6(magicast@0.3.5)(typescript@5.7.3)':
     dependencies:
       '@hey-api/json-schema-ref-parser': 1.0.2
       c12: 2.0.1(magicast@0.3.5)
@@ -8349,7 +8346,7 @@ snapshots:
   mlly@1.7.4:
     dependencies:
       acorn: 8.14.0
-      pathe: 2.0.2
+      pathe: 2.0.3
       pkg-types: 1.3.1
       ufo: 1.5.4
 
@@ -8551,8 +8548,6 @@ snapshots:
 
   pathe@1.1.2: {}
 
-  pathe@2.0.2: {}
-
   pathe@2.0.3: {}
 
   pathval@2.0.0: {}
@@ -8575,7 +8570,7 @@ snapshots:
     dependencies:
       confbox: 0.1.8
       mlly: 1.7.4
-      pathe: 2.0.2
+      pathe: 2.0.3
 
   possible-typed-array-names@1.0.0: {}
 
@@ -8592,7 +8587,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  posthog-js@1.223.4(@rrweb/types@2.0.0-alpha.17):
+  posthog-js@1.224.0(@rrweb/types@2.0.0-alpha.17):
     dependencies:
       '@rrweb/types': 2.0.0-alpha.17
       core-js: 3.39.0
