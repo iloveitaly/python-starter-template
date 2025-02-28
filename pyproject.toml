@@ -166,6 +166,7 @@ asyncio_default_fixture_loop_scope = "session"
 
 [tool.uv.sources]
 j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
+ipython = { git = "https://github.com/iloveitaly/ipython", rev = "autoreload-fix" }
 
 [tool.uv.sources.activemodel]
 git = "https://github.com/iloveitaly/activemodel.git"

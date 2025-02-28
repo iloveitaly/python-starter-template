@@ -874,8 +874,8 @@ wheels = [
 
 [[package]]
 name = "ipython"
-version = "9.0.0"
-source = { registry = "https://pypi.org/simple" }
+version = "9.1.0.dev0"
+source = { git = "https://github.com/iloveitaly/ipython?rev=autoreload-fix#ec6f9f72bb64cb8854e5657b6b84fce85423e52f" }
 dependencies = [
     { name = "colorama", marker = "sys_platform == 'win32'" },
     { name = "decorator" },
@@ -887,10 +887,6 @@ dependencies = [
     { name = "pygments" },
     { name = "stack-data" },
     { name = "traitlets" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/de/39/264894738a202ddaf6abae39b3f84671ddee23fd292dbb3e10039e70300c/ipython-9.0.0.tar.gz", hash = "sha256:9368d65b3d4a471e9a698fed3ea486bbf6737e45111e915279c971b77f974397", size = 4364165 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/85/a1/894e4c0b6ac994045c6edeb2b6fdf69c59f20fcd2e348a42f4e40889181c/ipython-9.0.0-py3-none-any.whl", hash = "sha256:2cce23069b830a54a5b9d3d66ccd6433047c1503a7b9a3b34593c0b5c2c08477", size = 592040 },
 ]
 
 [[package]]
@@ -1912,7 +1908,7 @@ requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.3" },
     { name = "flower", specifier = ">=2.0.1" },
     { name = "funcy-pipe", specifier = ">=0.11.1" },
-    { name = "ipython", specifier = ">=8.28.0" },
+    { name = "ipython", git = "https://github.com/iloveitaly/ipython?rev=autoreload-fix" },
     { name = "itsdangerous", specifier = ">=2.2.0" },
     { name = "jinja2", specifier = ">=3.1.4" },
     { name = "mailers", specifier = ">=3.1.0" },
@@ -1959,7 +1955,7 @@ dev = [
     { name = "deptry", specifier = ">=0.20.0" },
     { name = "djlint", git = "https://github.com/iloveitaly/djLint.git?rev=github-output" },
     { name = "gitignore-parser", specifier = ">=0.1.11" },
-    { name = "ipython", specifier = ">=8.28.0" },
+    { name = "ipython", git = "https://github.com/iloveitaly/ipython?rev=autoreload-fix" },
     { name = "j2lint", git = "https://github.com/aristanetworks/j2lint.git" },
     { name = "pretty-traceback", specifier = ">=2024.1021" },
     { name = "pyright", specifier = ">=1.1.386" },
