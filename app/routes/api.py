@@ -1,4 +1,11 @@
-from fastapi import APIRouter, Depends, FastAPI, Form, HTTPException, status
+"""
+TODO
+
+- [ ] organizations? what is the clerk data model?
+- [ ] use sk_ for API key prefix
+"""
+
+from fastapi import APIRouter, Depends, Form, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from starlette.routing import Host
 
@@ -12,16 +19,6 @@ API_KEY = "0123456789abcdef0123456789abcdef01234567"  # Hardcoded API key (use s
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-# Define the Item model using SQLModel
-class Item(SQLModel):
-    id: int = Field(default=None, primary_key=True)
-    name: str
-
-
-# Mock database (replace with a real database in production)
-items = {2995104339: Item(id=2995104339, name="Sample Item")}
-
-
 # Dependency to validate the API key
 def validate_api_key(token: str = Depends(oauth2_scheme)):
     if token != API_KEY:
@@ -32,8 +29,17 @@ def validate_api_key(token: str = Depends(oauth2_scheme)):
         )
 
 
-# Create the router with a prefix
-sync_router = APIRouter(prefix="/sync/v9")
+sync_router = APIRouter(prefix="/v1")
+
+
+# Define the Item model using SQLModel
+class Item(SQLModel):
+    id: int = Field(default=None, primary_key=True)
+    name: str
+
+
+# Mock database (replace with a real database in production)
+items = {2995104339: Item(id=2995104339, name="Sample Item")}
 
 
 # Define the endpoint with API key validation
@@ -47,8 +53,5 @@ async def get_item(item_id: int = Form(...), _api: None = Depends(validate_api_k
     return item
 
 
-# Create the main FastAPI app
-app = FastAPI()
-
 # Mount the router under the specific host
-app.routes.append(Host(ALLOWED_HOST, sync_router))
+sync_router = Host(ALLOWED_HOST, sync_router)
