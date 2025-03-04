@@ -30,3 +30,12 @@ def test_authorized_clerk_credentials(client: TestClient):
     )
 
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+def test_authorized_api_credentials(client: TestClient):
+    response = client.get(
+        api_app.url_path_for("external_api_ping"),
+        headers={"Authorization": "Bearer 0123456789abcdef0123456789abcdef01234567"},
+    )
+
+    assert response.status_code == status.HTTP_200_OK

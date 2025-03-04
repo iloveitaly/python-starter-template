@@ -45,13 +45,3 @@ external_api_app = APIRouter(
 def external_api_ping():
     "basic uptime + API authentication check"
     return {"status": "ok"}
-
-
-# Define the Item model using SQLModel
-class Item(SQLModel):
-    id: int = Field(default=None, primary_key=True)
-    name: str
-
-
-# Mock database (replace with a real database in production)
-items = {2995104339: Item(id=2995104339, name="Sample Item")}
