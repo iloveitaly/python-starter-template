@@ -1,4 +1,9 @@
 """
+Logic for an API server. This is distinct from the "app" API server, which hosts static assets
+and is authenticated via a clerk token, and is meant to be consumed by an external user.
+
+
+It is locked to a specific
 TODO
 
 - [ ] organizations? what is the clerk data model?
@@ -29,7 +34,17 @@ def validate_api_key(token: str = Depends(oauth2_scheme)):
         )
 
 
-sync_router = APIRouter(prefix="/v1")
+authenticate_api_request_middleware = validate_api_key
+
+external_api_app = APIRouter(
+    prefix="/external/v1", dependencies=[Depends(authenticate_api_request_middleware)]
+)
+
+
+@external_api_app.get("/ping")
+def external_api_ping():
+    "basic uptime + API authentication check"
+    return {"status": "ok"}
 
 
 # Define the Item model using SQLModel
@@ -40,18 +55,3 @@ class Item(SQLModel):
 
 # Mock database (replace with a real database in production)
 items = {2995104339: Item(id=2995104339, name="Sample Item")}
-
-
-# Define the endpoint with API key validation
-@sync_router.post("/items/get")
-async def get_item(item_id: int = Form(...), _api: None = Depends(validate_api_key)):
-    item = items.get(item_id)
-    if item is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Item not found"
-        )
-    return item
-
-
-# Mount the router under the specific host
-sync_router = Host(ALLOWED_HOST, sync_router)

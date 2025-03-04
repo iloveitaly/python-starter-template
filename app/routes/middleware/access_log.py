@@ -82,7 +82,7 @@ def add_middleware(
         scope = request.scope
         route_name = get_route_name(app, request.scope)
 
-        # TODO what other request types are there
+        # TODO what other request types are there? why do we need this guard?
         if scope["type"] != "http":
             return await call_next(request)
 

@@ -16,7 +16,7 @@ ALLOWED_HOST_LIST = config("ALLOWED_HOST_LIST", cast=str)
 This is a very important configuration option:
 
 - Used to block requests that don't have a `Host:` header that matches this list
-- Determines which hosts cookies are set for
+- Determines which hosts cookies are set for (first one in the list!)
 """
 
 
