@@ -16,6 +16,7 @@ import app.models  # noqa: F401
 import multiprocessing
 
 from pathlib import Path
+from pretty_traceback import formatting
 
 import pytest
 from pytest import Config
@@ -29,6 +30,29 @@ from tests.seeds import seed_test_data
 TEST_RESULTS_DIRECTORY = Path(decouple_config("TEST_RESULTS_DIRECTORY", cast=str))
 
 log.info("multiprocess start method", start_method=multiprocessing.get_start_method())
+
+
+
+# TODO can we move this into pretty_traceback?
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    """
+    I hate the terrible pytest stack traces. I wanted pretty_traceback to be used instead.
+
+    This little piece of code was hard-won:
+
+    https://grok.com/share/bGVnYWN5_951be3b1-6811-4fda-b220-c1dd72dedc31
+    """
+    outcome = yield
+    report = outcome.get_result()  # Get the generated TestReport object
+
+    # Check if the report is for the 'call' phase (test execution) and if it failed
+    if report.when == "call" and report.failed:
+        value = call.excinfo.value
+        tb = call.excinfo.tb
+        formatted_traceback = formatting.exc_to_traceback_str(value, tb, color=True)
+        report.longrepr = formatted_traceback
+
 
 # NOTE this runs on any pytest invocation, even if no tests are run
 def pytest_configure(config: Config):
@@ -47,6 +71,9 @@ def pytest_configure(config: Config):
     config.option.tracing = "retain-on-failure"
     # TODO although output is a generic CLI option, it's specific to playwright
     config.option.output = decouple_config("PLAYWRIGHT_RESULT_DIRECTORY", cast=str)
+
+    # this forces pretty-traceback to be used instead of the default pytest tb, which is absolutely terrible
+    config.option.tbstyle = "native"
 
     # must be session to align with playwright expectations
     config.option.asyncio_mode = "auto"
