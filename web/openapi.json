@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "FastAPI",
+    "title": "internal api",
     "version": "0.1.0"
   },
   "paths": {
@@ -11,7 +11,7 @@
           "private"
         ],
         "summary": "User List",
-        "operationId": "user_list",
+        "operationId": "user_list_internal_v1_admin_users_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -37,7 +37,7 @@
           "private"
         ],
         "summary": "Login As User",
-        "operationId": "login_as_user",
+        "operationId": "login_as_user_internal_v1_admin_login_as__user_id__post",
         "security": [
           {
             "HTTPBearer": []
@@ -82,7 +82,7 @@
           "private"
         ],
         "summary": "Application Data",
-        "operationId": "application_data",
+        "operationId": "application_data_internal_v1__get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -100,94 +100,6 @@
             "HTTPBearer": []
           }
         ]
-      }
-    },
-    "/hello": {
-      "get": {
-        "summary": "Index",
-        "operationId": "index",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/healthcheck": {
-      "get": {
-        "summary": "Healthcheck",
-        "description": "basic uptime check",
-        "operationId": "healthcheck",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/status": {
-      "get": {
-        "summary": "Active User Status",
-        "description": "check if users have logged in within the last day",
-        "operationId": "active_user_status",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/{path}": {
-      "get": {
-        "summary": "Frontend Handler",
-        "description": "This is a very dangerous piece of code: if this is not last it will override other routes in the application\n\nWithout this, non-index RR routes will not work. When a path is requested that does not exist in the fastapi\napplication, it servers up the index.html file. Most likely, this path is a RR route.\n\nhttps://gist.github.com/ultrafunkamsterdam/b1655b3f04893447c3802453e05ecb5e",
-        "operationId": "frontend_handler__path__get",
-        "parameters": [
-          {
-            "name": "path",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Path"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
       }
     }
   },

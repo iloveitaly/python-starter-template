@@ -37,9 +37,15 @@ def write_versions():
 def dump_openapi():
     import json
 
-    from app.server import api_app
+    from fastapi.openapi.utils import get_openapi
 
-    typer.echo(json.dumps(api_app.openapi()))
+    from app.server import api_app, internal_api_app
+
+    openapi = get_openapi(
+        title="internal api", version=api_app.version, routes=internal_api_app.routes
+    )
+
+    typer.echo(json.dumps(openapi))
 
 
 @app.command()
