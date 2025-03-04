@@ -47,18 +47,24 @@ debugging-extras = [
     "datamodel-code-generator>=0.26.3",
     "debugpy>=1.8.8",
     "docrepr>=0.2.0",
+    "funcy-pipe>=0.11.1",
     "httpdbg>=0.31.1",
     "ipdb>=0.13.13",
+    "ipython>=9.1.0.dev0",
     "ipython-autoimport",
     "ipython-ctrlr-fzf>=0.2.1",
     "ipython-suggestions>=1.0.0",
     "ipythonclipboard>=1.0b2",
     "jedi>=0.19.2",
     "pdbr[ipython]>=0.8.9",
+    "pipdeptree>=2.25.0",
+    "pre-commit>=4.1.0",
     "pretty-traceback>=2024.1021",
     "psutil>=6.1.0",
     "pudb>=2024.1.3",
     "pyfzf>=0.3.1",
+    "rich>=13.9.4",
+    "rpdb>=0.2.0",
     "sqlparse>=0.5.2",
 ]
 
@@ -167,16 +173,14 @@ asyncio_default_fixture_loop_scope = "session"
 [tool.uv.sources]
 j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
 ipython = { git = "https://github.com/iloveitaly/ipython", rev = "autoreload-fix" }
+ipdb = { git = "https://github.com/iloveitaly/ipdb", rev = "support-executables" }
+ipython-suggestions = { git = "https://github.com/iloveitaly/ipython-suggestions.git", rev = "py-13" }
 
 [tool.uv.sources.activemodel]
 git = "https://github.com/iloveitaly/activemodel.git"
 
 [tool.uv.sources.ipython-autoimport]
 git = "https://github.com/anntzer/ipython-autoimport.git"
-
-[tool.uv.sources.ipython-suggestions]
-git = "https://github.com/iloveitaly/ipython-suggestions.git"
-rev = "py-13"
 
 [tool.uv.sources.djlint]
 git = "https://github.com/iloveitaly/djLint.git"
