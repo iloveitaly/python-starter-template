@@ -8,13 +8,19 @@ Mirrors this model: https://clerk.com/docs/reference/backend-api/tag/Users#opera
 from datetime import datetime
 from enum import Enum
 
+from typeid import TypeID
+
 import sqlalchemy as sa
 from activemodel import BaseModel
 from activemodel.mixins import SoftDeletionMixin, TimestampsMixin, TypeIDMixin
-from sqlmodel import Field
+from activemodel.types import TypeIDType
+from sqlmodel import Column, Field
 
 # NOTE we use usr_ for our prefix to avoid confusion
 CLERK_OBJECT_PREFIX = "user_"
+
+# let's do it Stripe style :)
+API_KEY_PREFIX = "sk_live"
 
 
 class UserRole(str, Enum):
@@ -40,6 +46,21 @@ class User(
         sa_type=sa.DateTime(timezone=True),  # type: ignore
     )
     "last time the user had an active session"
+
+    api_key: TypeIDType | None = Field(
+        sa_column=Column(
+            TypeIDType(API_KEY_PREFIX), nullable=True, unique=True, index=True
+        ),
+        default=None,
+    )
+
+    def generate_api_key(self):
+        api_key = TypeID(API_KEY_PREFIX)
+
+        self.api_key = api_key
+        self.save()
+
+        return api_key
 
     # organization_id: str
 
