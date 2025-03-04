@@ -45,3 +45,4 @@ def test_authorized_api_credentials(client: TestClient):
     )
 
     assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {"status": "ok"}
