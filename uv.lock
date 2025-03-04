@@ -33,16 +33,16 @@ wheels = [
 
 [[package]]
 name = "alembic"
-version = "1.14.1"
+version = "1.15.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "mako" },
     { name = "sqlalchemy" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/99/09/f844822e4e847a3f0bd41797f93c4674cd4d2462a3f6c459aa528cdf786e/alembic-1.14.1.tar.gz", hash = "sha256:496e888245a53adf1498fcab31713a469c65836f8de76e01399aa1c3e90dd213", size = 1918219 }
+sdist = { url = "https://files.pythonhosted.org/packages/4a/ed/901044acb892caa5604bf818d2da9ab0df94ef606c6059fdf367894ebf60/alembic-1.15.1.tar.gz", hash = "sha256:e1a1c738577bca1f27e68728c910cd389b9a92152ff91d902da649c192e30c49", size = 1924789 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/54/7e/ac0991d1745f7d755fc1cd381b3990a45b404b4d008fc75e2a983516fbfe/alembic-1.14.1-py3-none-any.whl", hash = "sha256:1acdd7a3a478e208b0503cd73614d5e4c6efafa4e73518bb60e4f2846a37b1c5", size = 233565 },
+    { url = "https://files.pythonhosted.org/packages/99/f7/d398fae160568472ddce0b3fde9c4581afc593019a6adc91006a66406991/alembic-1.15.1-py3-none-any.whl", hash = "sha256:197de710da4b3e91cf66a826a5b31b5d59a127ab41bd0fc42863e2902ce2bbbe", size = 231753 },
 ]
 
 [[package]]
@@ -972,9 +972,15 @@ wheels = [
 [[package]]
 name = "ipython-suggestions"
 version = "1.0.0"
-source = { git = "https://github.com/iloveitaly/ipython-suggestions.git?rev=py-13#56af0f9f7828c98c87439b6532aecdb1b29e327a" }
+source = { editable = "pypi/ipython-suggestions" }
 dependencies = [
     { name = "ipython" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "future", marker = "python_full_version < '3'" },
+    { name = "ipython", specifier = ">=4.0" },
 ]
 
 [[package]]
@@ -1223,7 +1229,7 @@ wheels = [
 
 [[package]]
 name = "openai"
-version = "1.65.2"
+version = "1.65.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
@@ -1235,9 +1241,9 @@ dependencies = [
     { name = "tqdm" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f6/03/0bbf201a7e44920d892db0445874c8111be4255cb9495379df18d6d36ea1/openai-1.65.2.tar.gz", hash = "sha256:729623efc3fd91c956f35dd387fa5c718edd528c4bed9f00b40ef290200fb2ce", size = 359185 }
+sdist = { url = "https://files.pythonhosted.org/packages/32/4f/b34b6fad12e1f6b3f42922214c161d5ef74a50fa97d9ae7d680db0958ff4/openai-1.65.3.tar.gz", hash = "sha256:9b7cd8f79140d03d77f4ed8aeec6009be5dcd79bbc02f03b0e8cd83356004f71", size = 358821 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2c/3b/722ed868cb56f70264190ed479b38b3e46d14daa267d559a3fe3bd9061cf/openai-1.65.2-py3-none-any.whl", hash = "sha256:27d9fe8de876e31394c2553c4e6226378b6ed85e480f586ccfe25b7193fb1750", size = 473206 },
+    { url = "https://files.pythonhosted.org/packages/86/d5/b8378be0f4cf192992aa3080eb9ddcdca3109b399be61984424aaa79f847/openai-1.65.3-py3-none-any.whl", hash = "sha256:a155fa5d60eccda516384d3d60d923e083909cc126f383fe4a350f79185c232a", size = 472758 },
 ]
 
 [[package]]
@@ -2016,7 +2022,7 @@ requires-dist = [
     { name = "sqlmodel", specifier = ">=0.0.22" },
     { name = "starlette-context", git = "https://github.com/tomwojcik/starlette-context.git" },
     { name = "structlog", specifier = ">=24.4.0" },
-    { name = "typeid-python", extras = ["cli"], specifier = ">=0.3.1" },
+    { name = "typeid-python", extras = ["cli"], git = "https://github.com/saltmade/typeid-python?rev=saltmade%2Fsubclass-error" },
     { name = "typer", specifier = ">=0.14.0" },
     { name = "uvicorn", specifier = ">=0.32.0" },
 ]
@@ -2034,7 +2040,7 @@ debugging-extras = [
     { name = "ipython", git = "https://github.com/iloveitaly/ipython?rev=autoreload-fix" },
     { name = "ipython-autoimport", git = "https://github.com/anntzer/ipython-autoimport.git" },
     { name = "ipython-ctrlr-fzf", specifier = ">=0.2.1" },
-    { name = "ipython-suggestions", git = "https://github.com/iloveitaly/ipython-suggestions.git?rev=py-13" },
+    { name = "ipython-suggestions", editable = "pypi/ipython-suggestions" },
     { name = "ipythonclipboard", specifier = ">=1.0b2" },
     { name = "jedi", specifier = ">=0.19.2" },
     { name = "pdbr", extras = ["ipython"], specifier = ">=0.8.9" },
@@ -2487,7 +2493,7 @@ wheels = [
 [[package]]
 name = "starlette-context"
 version = "0.4.0"
-source = { git = "https://github.com/tomwojcik/starlette-context.git#bf5a1cc37c16f1122284d566ba39c36543c2d02f" }
+source = { git = "https://github.com/tomwojcik/starlette-context.git#9265798eb66cde426a6e44d5e4cf9ffac3e1bc9f" }
 dependencies = [
     { name = "starlette" },
 ]
@@ -2588,13 +2594,9 @@ wheels = [
 [[package]]
 name = "typeid-python"
 version = "0.3.1"
-source = { registry = "https://pypi.org/simple" }
+source = { git = "https://github.com/saltmade/typeid-python?rev=saltmade%2Fsubclass-error#7dd240f8002c69d88e6bc794223ce7aa900c2366" }
 dependencies = [
     { name = "uuid6" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/25/c3/4d4cfcdc4a568e50b0f4702fafac66e01934ded5efc4f822ed4d38d29780/typeid_python-0.3.1.tar.gz", hash = "sha256:f96a78c5dc6d8df1d058b72598bcc2c1c5bb8d8343f53f910e074dae01458417", size = 5861 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/f4/a6/3929b4574b02541a07b3fd61f6d2757eb263dcf606ecfb71b63d504cfd08/typeid_python-0.3.1-py3-none-any.whl", hash = "sha256:62a6747933b3323d65f0bf91c8e8c7768b0292eaf9c176fb0c934ff3a61acce5", size = 7013 },
 ]
 
 [[package]]

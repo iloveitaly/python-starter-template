@@ -175,7 +175,8 @@ asyncio_default_fixture_loop_scope = "session"
 j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
 ipython = { git = "https://github.com/iloveitaly/ipython", rev = "autoreload-fix" }
 ipdb = { git = "https://github.com/iloveitaly/ipdb", rev = "support-executables" }
-ipython-suggestions = { git = "https://github.com/iloveitaly/ipython-suggestions.git", rev = "py-13" }
+ipython-suggestions = { path = "pypi/ipython-suggestions", editable = true }
+typeid-python = { git = "https://github.com/saltmade/typeid-python", rev = "saltmade/subclass-error" }
 
 [tool.uv.sources.activemodel]
 git = "https://github.com/iloveitaly/activemodel.git"
