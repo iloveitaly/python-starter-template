@@ -11,15 +11,13 @@ TODO
 """
 
 import sentry_sdk
-from fastapi import APIRouter, Depends, Form, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
-from starlette.routing import Host
 from starlette_context import context
 from typeid import TypeID
 from typeid.errors import TypeIDException
 
 from app.models.user import API_KEY_PREFIX, User
-from sqlmodel import Field, SQLModel
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
