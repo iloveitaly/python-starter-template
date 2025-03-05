@@ -57,7 +57,7 @@ class User(
     def generate_api_key(self):
         api_key = TypeID(API_KEY_PREFIX)
 
-        self.api_key = api_key
+        self.api_key = api_key  # type: ignore
         self.save()
 
         return api_key
