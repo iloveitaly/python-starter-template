@@ -6,7 +6,7 @@ from posthog.sentry.posthog_integration import PostHogIntegration
 from ..environments import is_job_monitor, is_production, python_environment
 
 
-def configure_sentry():
+def configure_sentry(integrations=[]):
     from app import log
 
     if not is_production():
@@ -43,7 +43,7 @@ def configure_sentry():
         traces_sample_rate=0.1,
         # posthog integration is not a standard integration included with Sentry
         # https://docs.sentry.io/platforms/python/integrations/
-        integrations=[PostHogIntegration()],
+        integrations=[PostHogIntegration()] + integrations,
         before_send_transaction=filter_transactions,
         _experiments={
             # Set continuous_profiling_auto_start to True

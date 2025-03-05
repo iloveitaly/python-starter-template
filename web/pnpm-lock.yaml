@@ -60,8 +60,8 @@ importers:
         specifier: 7.2.0
         version: 7.2.0(react-router@7.2.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.8.2)
       '@sentry/react':
-        specifier: ^9.3.0
-        version: 9.3.0(react@19.0.0)
+        specifier: ^9.4.0
+        version: 9.4.0(react@19.0.0)
       '@sentry/vite-plugin':
         specifier: ^3.2.2
         version: 3.2.2(encoding@0.1.13)
@@ -185,7 +185,7 @@ importers:
         version: 4.3.4(vite@6.2.0(jiti@2.4.2)(lightningcss@1.29.1)(yaml@2.6.0))
       '@vitest/coverage-v8':
         specifier: ^3.0.7
-        version: 3.0.7(vitest@3.0.7(happy-dom@17.1.9)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.1)(yaml@2.6.0))
+        version: 3.0.7(vitest@3.0.7(happy-dom@17.2.2)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.1)(yaml@2.6.0))
       eslint:
         specifier: ^9.21.0
         version: 9.21.0(jiti@2.4.2)
@@ -196,8 +196,8 @@ importers:
         specifier: ^16.0.0
         version: 16.0.0
       happy-dom:
-        specifier: ^17.1.9
-        version: 17.1.9
+        specifier: ^17.2.2
+        version: 17.2.2
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
@@ -209,7 +209,7 @@ importers:
         version: 8.26.0(eslint@9.21.0(jiti@2.4.2))(typescript@5.8.2)
       vitest:
         specifier: ^3.0.7
-        version: 3.0.7(happy-dom@17.1.9)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.1)(yaml@2.6.0)
+        version: 3.0.7(happy-dom@17.2.2)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.1)(yaml@2.6.0)
 
 packages:
 
@@ -1652,28 +1652,28 @@ packages:
   '@rrweb/types@2.0.0-alpha.17':
     resolution: {integrity: sha512-AfDTVUuCyCaIG0lTSqYtrZqJX39ZEYzs4fYKnexhQ+id+kbZIpIJtaut5cto6dWZbB3SEe4fW0o90Po3LvTmfg==}
 
-  '@sentry-internal/browser-utils@9.3.0':
-    resolution: {integrity: sha512-G3z4HCUyb5nJe03EPUhWjnaHqMDt4mOTFJDNha3DGoB51lMYojpQI1Qo1u6bY4qkWVSO1c+HqOU0RVsXoAchtQ==}
+  '@sentry-internal/browser-utils@9.4.0':
+    resolution: {integrity: sha512-huoSluJhyhN/EFXpRhUIFg0DQICrE9bCGZ4TBSG7l0zOVm3i957W5pUiE5qQkR7wmAfCuJ8Dh/tgo4ngSA21Gg==}
     engines: {node: '>=18'}
 
-  '@sentry-internal/feedback@9.3.0':
-    resolution: {integrity: sha512-LQmIbQaATlN5QEwCD2Xt+7VKfwfR5W3dbn0jdF1x4hQFE/srdnOj60xMz/mj3tP5BxV552xJniGsyZ8lXHDb2A==}
+  '@sentry-internal/feedback@9.4.0':
+    resolution: {integrity: sha512-EgytfcwvV2eoyQQv4vxXzs5cgEhwuKKQu4oN3IUk7+6fY9lKKfBvCme+477Lx7jZ/O4Xe5o3QjTbamnwtHZokg==}
     engines: {node: '>=18'}
 
-  '@sentry-internal/replay-canvas@9.3.0':
-    resolution: {integrity: sha512-MhDMJeRGa55a0D541+OzTFMWwbabthhDGbAL90/NpappfyeBbAiktmCNl0BFTZuRbCGrC2m1LLCqHegCVKW4fQ==}
+  '@sentry-internal/replay-canvas@9.4.0':
+    resolution: {integrity: sha512-qPIlEEKQSA5FCP8++NmyQXANGcXm9W+saGEdlXKY0oKwACP/9sIUidkz78IOfvKFe46g5j9EqxJV3sFhitXJ0w==}
     engines: {node: '>=18'}
 
-  '@sentry-internal/replay@9.3.0':
-    resolution: {integrity: sha512-ZkH+Gahn89JygpuiFn26ZgAqJXHtnr+HjfQ2ONOFoWQHNH6X5wk75UTma55aYk1d8VcBPFoU6WjFhZoQ55SV1g==}
+  '@sentry-internal/replay@9.4.0':
+    resolution: {integrity: sha512-eQnmbVcAJlUpEL/zYhG5cBXwqD4BdFqZcN/OGIPYdiJ6WnNhgk4oD9sSx05caq1STN8HRubw0DmBPb9XSqJi/g==}
     engines: {node: '>=18'}
 
   '@sentry/babel-plugin-component-annotate@3.2.2':
     resolution: {integrity: sha512-D+SKQ266ra/wo87s9+UI/rKQi3qhGPCR8eSCDe0VJudhjHsqyNU+JJ5lnIGCgmZaWFTXgdBP/gdr1Iz1zqGs4Q==}
     engines: {node: '>= 14'}
 
-  '@sentry/browser@9.3.0':
-    resolution: {integrity: sha512-yPwWWQo/hpN63p0NGmk/Dd1Fx5CQRWNMfuV7dtfPBtg3vRjDecA9OLyK29AqK5h3Fl8FuJOyOqB87CvtXUqh5g==}
+  '@sentry/browser@9.4.0':
+    resolution: {integrity: sha512-meMKoalrlmd5VAHAl0XVkLmt3FXxHIQxFWu0ymyPTfajK6yYs8MBjT/ZIEAXnOg0M0TlB2HNY2owMKDnwTTi/g==}
     engines: {node: '>=18'}
 
   '@sentry/bundler-plugin-core@3.2.2':
@@ -1726,12 +1726,12 @@ packages:
     engines: {node: '>= 10'}
     hasBin: true
 
-  '@sentry/core@9.3.0':
-    resolution: {integrity: sha512-SxQ4z7wTkfguvYb2ctNEMU9kVAbhl9ymfjhLnrvtygTwL5soLqAKdco/lX/4P9K9Osgb2Dl6urQWRl+AhzKVbQ==}
+  '@sentry/core@9.4.0':
+    resolution: {integrity: sha512-Edd/uWDGZ+1CMuVVWdxIOm1rBhzgpqiqz984TZu20wryoIoRsA8ZllUar6N+cWK17VusNY0OS2DozKO69y7fVQ==}
     engines: {node: '>=18'}
 
-  '@sentry/react@9.3.0':
-    resolution: {integrity: sha512-/ruDHBHLDXmZoEHNCSjdekZr9+0pbOC5+BY1oABGoDXRISGyoenOBtAsX8TsaC9oJYhr16yKDFlYxzzQRhxDyg==}
+  '@sentry/react@9.4.0':
+    resolution: {integrity: sha512-CnCCpSTr4Qr1reyjS2G5cO1Epin/eQ/X5HuGvuWv3sq5loRtkgcHQei1IhOlbNTcnY9r1PeUFgloRgASe8idzg==}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^16.14.0 || 17.x || 18.x || 19.x
@@ -2944,8 +2944,8 @@ packages:
     engines: {node: '>=0.4.7'}
     hasBin: true
 
-  happy-dom@17.1.9:
-    resolution: {integrity: sha512-HL26ajjMVe/wr3xlzjF0sCPCiAKaZJcIRFZHmG4yKHRJp4YAkHPG5X6GfWxCeDTpOmuHhNiOyNKUoZjjnm0tjw==}
+  happy-dom@17.2.2:
+    resolution: {integrity: sha512-3I1/CrNi780sdOhuhUnFtgTWhloSc3quSZwsylI41jycx8o97M6Y4aQAu0phSexGusT7+59BxATh4L4xiY0HcA==}
     engines: {node: '>=18.0.0'}
 
   has-bigints@1.0.2:
@@ -6234,33 +6234,33 @@ snapshots:
     dependencies:
       rrweb-snapshot: 2.0.0-alpha.18
 
-  '@sentry-internal/browser-utils@9.3.0':
+  '@sentry-internal/browser-utils@9.4.0':
     dependencies:
-      '@sentry/core': 9.3.0
+      '@sentry/core': 9.4.0
 
-  '@sentry-internal/feedback@9.3.0':
+  '@sentry-internal/feedback@9.4.0':
     dependencies:
-      '@sentry/core': 9.3.0
+      '@sentry/core': 9.4.0
 
-  '@sentry-internal/replay-canvas@9.3.0':
+  '@sentry-internal/replay-canvas@9.4.0':
     dependencies:
-      '@sentry-internal/replay': 9.3.0
-      '@sentry/core': 9.3.0
+      '@sentry-internal/replay': 9.4.0
+      '@sentry/core': 9.4.0
 
-  '@sentry-internal/replay@9.3.0':
+  '@sentry-internal/replay@9.4.0':
     dependencies:
-      '@sentry-internal/browser-utils': 9.3.0
-      '@sentry/core': 9.3.0
+      '@sentry-internal/browser-utils': 9.4.0
+      '@sentry/core': 9.4.0
 
   '@sentry/babel-plugin-component-annotate@3.2.2': {}
 
-  '@sentry/browser@9.3.0':
+  '@sentry/browser@9.4.0':
     dependencies:
-      '@sentry-internal/browser-utils': 9.3.0
-      '@sentry-internal/feedback': 9.3.0
-      '@sentry-internal/replay': 9.3.0
-      '@sentry-internal/replay-canvas': 9.3.0
-      '@sentry/core': 9.3.0
+      '@sentry-internal/browser-utils': 9.4.0
+      '@sentry-internal/feedback': 9.4.0
+      '@sentry-internal/replay': 9.4.0
+      '@sentry-internal/replay-canvas': 9.4.0
+      '@sentry/core': 9.4.0
 
   '@sentry/bundler-plugin-core@3.2.2(encoding@0.1.13)':
     dependencies:
@@ -6316,12 +6316,12 @@ snapshots:
       - encoding
       - supports-color
 
-  '@sentry/core@9.3.0': {}
+  '@sentry/core@9.4.0': {}
 
-  '@sentry/react@9.3.0(react@19.0.0)':
+  '@sentry/react@9.4.0(react@19.0.0)':
     dependencies:
-      '@sentry/browser': 9.3.0
-      '@sentry/core': 9.3.0
+      '@sentry/browser': 9.4.0
+      '@sentry/core': 9.4.0
       hoist-non-react-statics: 3.3.2
       react: 19.0.0
 
@@ -6604,7 +6604,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/coverage-v8@3.0.7(vitest@3.0.7(happy-dom@17.1.9)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.1)(yaml@2.6.0))':
+  '@vitest/coverage-v8@3.0.7(vitest@3.0.7(happy-dom@17.2.2)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.1)(yaml@2.6.0))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 1.0.2
@@ -6618,7 +6618,7 @@ snapshots:
       std-env: 3.8.0
       test-exclude: 7.0.1
       tinyrainbow: 2.0.0
-      vitest: 3.0.7(happy-dom@17.1.9)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.1)(yaml@2.6.0)
+      vitest: 3.0.7(happy-dom@17.2.2)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.1)(yaml@2.6.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -7813,7 +7813,7 @@ snapshots:
     optionalDependencies:
       uglify-js: 3.19.3
 
-  happy-dom@17.1.9:
+  happy-dom@17.2.2:
     dependencies:
       webidl-conversions: 7.0.0
       whatwg-mimetype: 3.0.0
@@ -9483,7 +9483,7 @@ snapshots:
       lightningcss: 1.29.1
       yaml: 2.6.0
 
-  vitest@3.0.7(happy-dom@17.1.9)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.1)(yaml@2.6.0):
+  vitest@3.0.7(happy-dom@17.2.2)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.1)(yaml@2.6.0):
     dependencies:
       '@vitest/expect': 3.0.7
       '@vitest/mocker': 3.0.7(vite@6.2.0(jiti@2.4.2)(lightningcss@1.29.1)(yaml@2.6.0))
@@ -9506,7 +9506,7 @@ snapshots:
       vite-node: 3.0.7(jiti@2.4.2)(lightningcss@1.29.1)(yaml@2.6.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      happy-dom: 17.1.9
+      happy-dom: 17.2.2
       jsdom: 25.0.1
     transitivePeerDependencies:
       - jiti
