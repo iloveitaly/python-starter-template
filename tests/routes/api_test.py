@@ -23,6 +23,15 @@ def test_authorized_bad_credentials(client: TestClient):
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
+def test_authorized_no_bearer(client: TestClient):
+    response = client.get(
+        api_app.url_path_for("external_api_ping"),
+        headers={"Authorization": "BAD_CREDS"},
+    )
+
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
 def test_authorized_clerk_credentials(client: TestClient):
     token_id = get_valid_token()
 
