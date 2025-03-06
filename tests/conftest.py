@@ -60,7 +60,10 @@ def pytest_configure(config: Config):
     # anyio is installed by some other packages and it's plugin is discovered automatically, we disable it in favor of asyncio
     config.option.plugins = ["no:anyio"]
 
-    config.option.pdbcls = "pdbr:RichPdb"
+    # when configuring in code, a tuple is used for the (mod, class) reference
+    # check out _pytest/debugging.py for implementation details
+    config.option.usepdb_cls = ('pdbr', 'RichPdb')
+
     config.option.disable_warnings = True
 
     # this forces pretty-traceback to be used instead of the default pytest tb, which is absolutely terrible
