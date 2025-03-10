@@ -363,7 +363,8 @@ js_generate-openapi *flag:
 
 _js_generate-openapi:
 	# jq is here to pretty print the output
-	LOG_LEVEL=error uv run python -m app.cli dump-openapi | jq -r . > "$OPENAPI_JSON_PATH"
+	LOG_LEVEL=error uv run python -m app.cli dump-openapi --app-target internal_api_app \
+		| jq -r . > "$OPENAPI_JSON_PATH"
 
 	# generate the js client with the latest openapi spec
 	{{_pnpm}} run openapi

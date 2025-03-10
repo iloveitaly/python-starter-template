@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "internal api",
+    "title": "internal_api_app API",
     "version": "0.1.0"
   },
   "paths": {
@@ -11,7 +11,7 @@
           "private"
         ],
         "summary": "User List",
-        "operationId": "user_list_internal_v1_admin_users_get",
+        "operationId": "user_list",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -37,7 +37,7 @@
           "private"
         ],
         "summary": "Login As User",
-        "operationId": "login_as_user_internal_v1_admin_login_as__user_id__post",
+        "operationId": "login_as_user",
         "security": [
           {
             "HTTPBearer": []
@@ -82,7 +82,7 @@
           "private"
         ],
         "summary": "Application Data",
-        "operationId": "application_data_internal_v1__get",
+        "operationId": "application_data",
         "responses": {
           "200": {
             "description": "Successful Response",
