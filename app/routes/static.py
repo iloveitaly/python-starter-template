@@ -38,9 +38,10 @@ from app.environments import (
 from app.utils.patching import hash_function_code
 
 # make sure the underlying implementation here does not change significantly, since we are using undocumented APIs
+# https://github.com/encode/starlette/commit/bc3b4002e241353d96e1ad18d8c6b5fc4f8463df
 assert (
     hash_function_code(StaticFiles.lookup_path)
-    == "84c5a0e016a4c554aebf61d092be224b5c602538e44d1688bd3951198b06fddb"
+    == "a3ebf7850a8389fc2d8328d7322745f233879bc300ab5cc1bd2a52a5e1710815"
 )
 
 
