@@ -39,7 +39,9 @@ def authenticated_client():
         MockAuthenticateRequest()
     )
 
-    yield TestClient(api_app, base_url=base_server_url())
+    with TestClient(api_app, base_url=base_server_url()) as client:
+        client.cookies.clear()
+        yield client
 
     api_app.dependency_overrides = {}
 
@@ -52,4 +54,5 @@ async def aclient() -> t.AsyncGenerator[AsyncClient, None]:
         transport=ASGITransport(app=api_app),
         base_url=base_server_url(),
     ) as client:
+        client.cookies.clear()
         yield client
