@@ -942,8 +942,8 @@ wheels = [
 
 [[package]]
 name = "ipython-autoimport"
-version = "0.5.post1+gfb83a21"
-source = { git = "https://github.com/anntzer/ipython-autoimport.git#fb83a21026abe0cfb32c7925f3c84765a8080d64" }
+version = "0.5.post2+g4f39222"
+source = { git = "https://github.com/iloveitaly/ipython-autoimport.git?rev=ipython-9.x#4f39222ad693549cdc7b7f58c4818edee84a84cf" }
 dependencies = [
     { name = "ipython" },
 ]
@@ -2034,7 +2034,7 @@ debugging-extras = [
     { name = "httpdbg", specifier = ">=0.31.1" },
     { name = "icecream", specifier = ">=2.1.4" },
     { name = "ipdb", git = "https://github.com/iloveitaly/ipdb?rev=support-executables" },
-    { name = "ipython-autoimport", git = "https://github.com/anntzer/ipython-autoimport.git" },
+    { name = "ipython-autoimport", git = "https://github.com/iloveitaly/ipython-autoimport.git?rev=ipython-9.x" },
     { name = "ipython-ctrlr-fzf", specifier = ">=0.2.1" },
     { name = "ipython-suggestions", git = "https://github.com/iloveitaly/ipython-suggestions.git?rev=ipython-9.x" },
     { name = "ipythonclipboard", specifier = ">=1.0b2" },
