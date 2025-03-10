@@ -1,18 +1,20 @@
 import json
+from pathlib import Path
 
 from decouple import config
 
-from app.server import api_app
+from app.server import internal_api_app
+from app.utils.openapi import generate_openapi_schema
 
 
 def test_openapi_schema_matches_generated_file():
     generated_schema_path = config("OPENAPI_JSON_PATH", cast=str)
     assert generated_schema_path
 
-    with open(generated_schema_path) as f:
-        generated_schema = json.load(f)
+    generated_schema = json.loads(Path(generated_schema_path).read_text())
 
-    current_schema = api_app.openapi()
+    # Use our utility function instead of direct call
+    current_schema = generate_openapi_schema(internal_api_app)
 
     assert current_schema == generated_schema, (
         "OpenAPI schema from FastAPI doesn't match the generated file. Run:\njust js_generate-openapi"

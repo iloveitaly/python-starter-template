@@ -7,13 +7,13 @@ Lifted from:
 https://github.com/fastapiutils/fastapi-utils/blob/e9e7e2c834d703503a3bf5d5605db6232dd853b9/fastapi_utils/openapi.py#L7C5-L7C27
 """
 
-from fastapi import FastAPI
+from fastapi import APIRouter, FastAPI
 from fastapi.routing import APIRoute
 
 from app import log
 
 
-def simplify_operation_ids(app: FastAPI) -> None:
+def simplify_operation_ids(app: FastAPI | APIRouter) -> None:
     """
     Simplify operation IDs so that generated clients have simpler api function names
     """

@@ -41,10 +41,8 @@ def dump_openapi(app_target: str = "api_app"):
     import importlib
     import json
 
-    from fastapi.openapi.utils import get_openapi
-
-    from app.routes.utils.openapi import simplify_operation_ids
     from app.server import api_app
+    from app.utils.openapi import generate_openapi_schema
 
     # Dynamically get the target app from app.server module
     server_module = importlib.import_module("app.server")
@@ -63,12 +61,8 @@ def dump_openapi(app_target: str = "api_app"):
 
     target_app = getattr(server_module, app_target)
 
-    simplify_operation_ids(target_app)
-
-    # Get the OpenAPI schema
-    openapi = get_openapi(
-        title=f"{app_target} API", version=api_app.version, routes=target_app.routes
-    )
+    # Use our utility function
+    openapi = generate_openapi_schema(target_app)
 
     typer.echo(json.dumps(openapi))
 
