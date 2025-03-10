@@ -41,7 +41,6 @@ def dump_openapi(app_target: str = "api_app"):
     import importlib
     import json
 
-    from app.server import api_app
     from app.utils.openapi import generate_openapi_schema
 
     # Dynamically get the target app from app.server module
