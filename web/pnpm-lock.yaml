@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@clerk/clerk-react':
-        specifier: ^5.24.1
-        version: 5.24.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: ^5.24.2
+        version: 5.24.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@clerk/shared':
-        specifier: ^3.0.0
-        version: 3.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: ^3.0.1
+        version: 3.0.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@epic-web/invariant':
         specifier: ^1.0.0
         version: 1.0.0
@@ -157,8 +157,8 @@ importers:
         specifier: ^9.22.0
         version: 9.22.0
       '@hey-api/openapi-ts':
-        specifier: ^0.64.10
-        version: 0.64.10(magicast@0.3.5)(typescript@5.8.2)
+        specifier: ^0.64.11
+        version: 0.64.11(magicast@0.3.5)(typescript@5.8.2)
       '@testing-library/jest-dom':
         specifier: ^6.6.3
         version: 6.6.3
@@ -185,7 +185,7 @@ importers:
         version: 4.3.4(vite@6.2.1(jiti@2.4.2)(lightningcss@1.29.2)(yaml@2.6.0))
       '@vitest/coverage-v8':
         specifier: ^3.0.8
-        version: 3.0.8(vitest@3.0.8(happy-dom@17.4.3)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.2)(yaml@2.6.0))
+        version: 3.0.8(vitest@3.0.8(happy-dom@17.4.4)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.2)(yaml@2.6.0))
       eslint:
         specifier: ^9.22.0
         version: 9.22.0(jiti@2.4.2)
@@ -196,8 +196,8 @@ importers:
         specifier: ^16.0.0
         version: 16.0.0
       happy-dom:
-        specifier: ^17.4.3
-        version: 17.4.3
+        specifier: ^17.4.4
+        version: 17.4.4
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
@@ -209,7 +209,7 @@ importers:
         version: 8.26.1(eslint@9.22.0(jiti@2.4.2))(typescript@5.8.2)
       vitest:
         specifier: ^3.0.8
-        version: 3.0.8(happy-dom@17.4.3)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.2)(yaml@2.6.0)
+        version: 3.0.8(happy-dom@17.4.4)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.2)(yaml@2.6.0)
 
 packages:
 
@@ -406,15 +406,15 @@ packages:
       react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
       react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
 
-  '@clerk/clerk-react@5.24.1':
-    resolution: {integrity: sha512-T7mlEXz8YsGgsDBBYKVCExQ/EfHikHcJ1i8UwYHiAGQ6gNfpBH6nkIoxmNRuD3W5ZTdjsoy/joxf5hjsnZKNmQ==}
+  '@clerk/clerk-react@5.24.2':
+    resolution: {integrity: sha512-gWYhuC8K4GOw+jtYEEs4y7ypT6W6Pk3SkxPwW8GXtrBvqGyJKapq+d2EHFYMZvQCnFKAW4hE+nsTyy7NqP9RJg==}
     engines: {node: '>=18.17.0'}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
       react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
 
-  '@clerk/shared@3.0.0':
-    resolution: {integrity: sha512-c5TUTMrir4yrxdQh2xiILowFvHZydBIuX1tFOKKWQZsNqlFYXbbeUHDxEIcxvb4uarGSiuEzVsx6S2hT2ZBCQQ==}
+  '@clerk/shared@3.0.1':
+    resolution: {integrity: sha512-WGyzVQuwAr8/P4fhMGq8G4IVKxXZtPEVe6RVE9EEMjAHtD77MF9Bu/0Dfb8jHYeyHOGsJm73I7aaDbgDZDkJzw==}
     engines: {node: '>=18.17.0'}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
@@ -425,8 +425,8 @@ packages:
       react-dom:
         optional: true
 
-  '@clerk/types@4.47.0':
-    resolution: {integrity: sha512-xB/gqMq6cq6/47ymKs0WaaxKEFPzlvbSgJTLFIfnPMnFSNwYE4WVgVh6geFx6qWr3z588JDDZkJskBHZlgPmQQ==}
+  '@clerk/types@4.48.0':
+    resolution: {integrity: sha512-zuWeEMxgtuxLKQCnzioSwuCFJVk1rVO+rXFhD8aBcyvBH6fadGp4IZzh7/Ov1HRiqpku5xPc010uubgC7jXMeQ==}
     engines: {node: '>=18.17.0'}
 
   '@emotion/babel-plugin@11.12.0':
@@ -672,8 +672,8 @@ packages:
     resolution: {integrity: sha512-F6LSkttZcT/XiX3ydeDqTY3uRN3BLJMwyMTk4kg/ichZlKUp3+3Odv0WokSmXGSoZGTW/N66FROMYAm5NPdJlA==}
     engines: {node: '>= 16'}
 
-  '@hey-api/openapi-ts@0.64.10':
-    resolution: {integrity: sha512-mTTD4DtOt68OmrZ6VXM4+sCma+JxhqDjiqdaUCpLIS8yWNWAmgBCRS5LE3i8AS8HUN1dsCetTGFAIUT2rElDVg==}
+  '@hey-api/openapi-ts@0.64.11':
+    resolution: {integrity: sha512-ehvi2P3cJY7GC5768N+OvYK8Pak0N3oSjosDmjUjc+W7C8JTbabiCLwszxLefCtqFyv2G2mLl0vqlCj6Bpy+DQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=22.10.0}
     hasBin: true
     peerDependencies:
@@ -2945,8 +2945,8 @@ packages:
     engines: {node: '>=0.4.7'}
     hasBin: true
 
-  happy-dom@17.4.3:
-    resolution: {integrity: sha512-8mDGIKxi2hAg0DkEYjBHPi5QykWiqdNNQQWrwLXLfro1eAZk8+lSnzbUrnU25bamG9PjEQGoFrA32ezQNJQdww==}
+  happy-dom@17.4.4:
+    resolution: {integrity: sha512-/Pb0ctk3HTZ5xEL3BZ0hK1AqDSAUuRQitOmROPHhfUYEWpmTImwfD8vFDGADmMAX0JYgbcgxWoLFKtsWhcpuVA==}
     engines: {node: '>=18.0.0'}
 
   has-bigints@1.0.2:
@@ -5017,17 +5017,17 @@ snapshots:
       react-lifecycles-compat: 3.0.4
       warning: 3.0.0
 
-  '@clerk/clerk-react@5.24.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+  '@clerk/clerk-react@5.24.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
-      '@clerk/shared': 3.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@clerk/types': 4.47.0
+      '@clerk/shared': 3.0.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@clerk/types': 4.48.0
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
       tslib: 2.4.1
 
-  '@clerk/shared@3.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+  '@clerk/shared@3.0.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
-      '@clerk/types': 4.47.0
+      '@clerk/types': 4.48.0
       dequal: 2.0.3
       glob-to-regexp: 0.4.1
       js-cookie: 3.0.5
@@ -5037,7 +5037,7 @@ snapshots:
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
 
-  '@clerk/types@4.47.0':
+  '@clerk/types@4.48.0':
     dependencies:
       csstype: 3.1.3
 
@@ -5241,7 +5241,7 @@ snapshots:
       '@types/json-schema': 7.0.15
       js-yaml: 4.1.0
 
-  '@hey-api/openapi-ts@0.64.10(magicast@0.3.5)(typescript@5.8.2)':
+  '@hey-api/openapi-ts@0.64.11(magicast@0.3.5)(typescript@5.8.2)':
     dependencies:
       '@hey-api/json-schema-ref-parser': 1.0.2
       c12: 2.0.1(magicast@0.3.5)
@@ -6580,7 +6580,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/coverage-v8@3.0.8(vitest@3.0.8(happy-dom@17.4.3)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.2)(yaml@2.6.0))':
+  '@vitest/coverage-v8@3.0.8(vitest@3.0.8(happy-dom@17.4.4)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.2)(yaml@2.6.0))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 1.0.2
@@ -6594,7 +6594,7 @@ snapshots:
       std-env: 3.8.0
       test-exclude: 7.0.1
       tinyrainbow: 2.0.0
-      vitest: 3.0.8(happy-dom@17.4.3)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.2)(yaml@2.6.0)
+      vitest: 3.0.8(happy-dom@17.4.4)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.2)(yaml@2.6.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -7777,7 +7777,7 @@ snapshots:
     optionalDependencies:
       uglify-js: 3.19.3
 
-  happy-dom@17.4.3:
+  happy-dom@17.4.4:
     dependencies:
       webidl-conversions: 7.0.0
       whatwg-mimetype: 3.0.0
@@ -9423,7 +9423,7 @@ snapshots:
       lightningcss: 1.29.2
       yaml: 2.6.0
 
-  vitest@3.0.8(happy-dom@17.4.3)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.2)(yaml@2.6.0):
+  vitest@3.0.8(happy-dom@17.4.4)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.29.2)(yaml@2.6.0):
     dependencies:
       '@vitest/expect': 3.0.8
       '@vitest/mocker': 3.0.8(vite@6.2.1(jiti@2.4.2)(lightningcss@1.29.2)(yaml@2.6.0))
@@ -9446,7 +9446,7 @@ snapshots:
       vite-node: 3.0.8(jiti@2.4.2)(lightningcss@1.29.2)(yaml@2.6.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      happy-dom: 17.4.3
+      happy-dom: 17.4.4
       jsdom: 25.0.1
     transitivePeerDependencies:
       - jiti
