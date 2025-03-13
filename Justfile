@@ -782,7 +782,7 @@ db_debug_off:
 		psql -U $POSTGRES_USER -c "ALTER SYSTEM SET log_statement = 'none'; SELECT pg_reload_conf();"
 
 #######################
-# Secrets
+# Secrets (via 1Password)
 #######################
 
 _secrets_service-token CONTEXT WRITE_PERMISSION="false":
@@ -794,13 +794,12 @@ _secrets_service-token CONTEXT WRITE_PERMISSION="false":
 			--vault "${OP_VAULT_UID}:read_items${write_permission}" \
 			--raw
 
-
 # for terraform and other tools which can create entries
 [macos]
 secrets_write-service-token:
 	just _secrets_service-token write true | jq -r -R '@sh "export OP_SERVICE_ACCOUNT_TOKEN=\(.)"'
 
-# generate service account token to be used locally for a developer
+# generate service account token for local development
 [macos]
 secrets_local-service-token user=`whoami`:
 	just _secrets_service-token {{user}} | jq -r -R '@sh "export OP_SERVICE_ACCOUNT_TOKEN=\(.)"'

@@ -135,10 +135,21 @@ Here are a couple additions to your shell environment that you'll probably want 
 ### Frontend
 
 * `window.SENTRY_RELEASE` has the commit sha of the build.
+* Backend uses JSON logging in production
 * `devDependencies` should only contain dependencies that are required for local development. All dependencies required
   for building the frontend should be in `dependencies`.
 
 ## Usage
+
+### GitHub Actions
+
+It's helpful, especially when you are conserving GH actions credits and tinkering with your build setup, to sometimes disable GitHub actions.
+
+The easiest way to do this is with the CLI:
+
+```shell
+gh workflow disable # and `enable` to turn it back on
+```
 
 ### Naming Recommendations
 
@@ -202,12 +213,16 @@ Here's how this project thinks about tests:
 screen.debug() // Logs the DOM structure
 ```
 
+### 'Login As'
+
+This is an important part of any production application. Being able to impersonate a user and view their application to debug issues.
+
+* The user table has a role field
+* After logging in, set the user to `admin` and you'll be able to switch users.
+
 ### React Router Routes
 
-Here's a more complex example of how to define nested routes + layouts in react router 7.
-
-The `routes.ts` is meant to be a simple way to define routes configuration at a high level.
-Unlike previous react router versions, loaders and other options are not available
+Here's a more complex example of how to define nested routes + layouts in react router 7:
 
 ```typescript
 import type { RouteConfig } from "@react-router/dev/routes"
@@ -233,6 +248,9 @@ export default [
 ] satisfies RouteConfig
 ```
 
+The `routes.ts` is meant to be a simple way to define routes configuration at a high level.
+Unlike previous react router versions, loaders and other options are not available.
+
 [We have a special handler in fastapi](app/routes/static.py) to serve the JS files when any route not defined explicitly
 by FastAPI is requested. A "better" (and more complex) way to handle this is to deploy JS assets to a CDN and use a
 separate subdomain for the API server. Keeping everything in a single docker container and application is easier
@@ -246,20 +264,34 @@ Here's how to use `debugger` statements within vite code:
 VITE_BUILD_COMMIT=-dirty node inspect web/node_modules/@react-router/dev/bin.js build
 ```
 
-### Pytest Integration Tests
+### Cookies & Sessions
+
+* The FastAPI session middleware is setup so you can use cookies/sessions in your project.
+* Subdomains are used for the API server instead of separate domains in test, so cookies can be shared between the API server and the web client.
+* `same-origin` cookies are enforced in prod, but not in dev.
+
+### Pytest Route Tests
+
+* Use `api_app.url_path_for` for all URL generation.
+
+### Pytest Integration Playwright Tests
 
 To debug integration tests, you'll want to see what's happening. Use `--headed` to do this:
 
-```
+```shell
 pytd tests/integration/user_creation_test.py -k signup --headed
 ```
+
+(find [pytd definition here](https://github.com/iloveitaly/dotfiles/blob/a4bd6c2c8f38b1f980fdb878bbf21c27918a5d05/.aliases#L98))
 
 Note that `--headed` *does* change a lot of underlying Chrome parameters which can impact how the browser interacts
 with the web page.
 
 If a test fails, a screenshot *and* trace is generated that you can use to replay the session and quickly visually inspect what went wrong.
 
-```
+Instead of `breakpoint()` use this to debug and test the page:
+
+```python
 page.pause()
 ```
 
@@ -304,6 +336,20 @@ drift at all costs. Here's why:
 
 Solving these problems adds more complexity to the developer experience. We'll see if it's worth it.
 
+Secret management is handled in a couple of different places:
+
+* `.env*` files which source secrets from 1password using `op read`
+* `just secrets_*` which generate 1password connection tokens and set them on CI
+
+Most likely, you'll need to bootstrap your secret management by manually setting your account + vault
+in order to generate a connection token:
+
+```shell
+OP_ACCOUNT=company.1password.com OP_VAULT_UID=a_uuid just secrets_local-service-token
+```
+
+And drop the resulting token in your `.env.local` file.
+
 ### Dependencies
 
 Non-language dependencies are always tricky. Here's how it's handled:
@@ -329,6 +375,10 @@ Here are the devprod principles this project adheres to:
 
 ### Python Job Queue
 
+#### Celery
+
+* Job scheduling is handled in the same process as job execution, which is a terrible idea in large-scale systems.
+
 #### RQ
 
 I *really* liked the idea of [RQ as a job queue](https://python-rq.org). The configuration and usage seemed much more simple.
@@ -352,8 +402,6 @@ worker: rq worker --with-scheduler -w rq.worker.SpawnWorker
 
 [I've left some of the configuration around](./app/rq.py) in case you want to try it out.
 
-#### Celery
-
 ## Related
 
 ### Other Templates
@@ -376,6 +424,9 @@ Great for grepping and investigating patterns.
 * https://github.com/Skyvern-AI/skyvern
 * https://github.com/zhanymkanov/fastapi-best-practices
 * https://github.com/bartfeenstra/betty
+* https://github.com/AlexanderZharyuk/billing-service
+* https://github.com/replicate/cog
+* https://github.com/Kludex/awesome-fastapi-projects
 
 #### Javascript/Remix/React Router
 
