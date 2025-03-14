@@ -171,7 +171,7 @@ requirements *flags:
 
 # setup everything you need for local development
 [macos]
-setup: requirements && py_setup db_seed js_build
+setup: requirements && py_setup up db_seed js_build
 	# NOTE this task should be non-destructive, the user should opt-in to something like `nuke`
 
 	# some reasoning behind the logic here:
@@ -1119,6 +1119,9 @@ with_entries(
 BASH_EXPORT_PREAMBLE := """
 # Description: easy source-able bash script in case a user doesn't want to bother with direnv and friends
 
+# we assume a venv is already setup using `just setup`
+source .venv/bin/activate
+
 # `mise` is installed in ~/.local/bin by default, we assume the user is not using mise across their installation
 # so we force the path to be added.
 
@@ -1136,9 +1139,13 @@ eval "$(just --completions $(basename $SHELL))"
 [macos]
 [script]
 direnv_bash_export:
+	# TODO required direnv allow otherwise it won't work
 	target_file=".env.$(whoami).local"
 
-	echo '{{BASH_EXPORT_PREAMBLE}}' > "$target_file"
+	cat << 'EOF' > "$target_file"
+	{{BASH_EXPORT_PREAMBLE}}
+	EOF
+
 	just direnv_export_docker "" --shell >> "$target_file"
 	echo $'\n\n## END DIRENV EXPORT' >> "$target_file"
 
