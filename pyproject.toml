@@ -39,6 +39,7 @@ dependencies = [
     "typeid-python[cli]>=0.3.2",
     "typer>=0.14.0",
     "uvicorn>=0.32.0",
+    "pydantic[email,timezone]",
 ]
 
 [dependency-groups]
