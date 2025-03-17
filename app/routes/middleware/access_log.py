@@ -5,6 +5,10 @@ Adapted from:
 
 - https://github.com/iloveitaly/fastapi-logger/blob/main/fastapi_structlog/middleware/access_log.py#L70
 - https://github.com/fastapiutils/fastapi-utils/blob/master/fastapi_utils/timing.py
+- https://pypi.org/project/fastapi-structlog/
+- https://pypi.org/project/asgi-correlation-id/
+- https://gist.github.com/nymous/f138c7f06062b7c43c060bf03759c29e
+- https://github.com/sharu1204/fastapi-structlog/blob/master/app/main.py
 """
 
 from time import perf_counter

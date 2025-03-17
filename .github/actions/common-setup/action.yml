@@ -17,7 +17,14 @@ runs:
     - uses: 1password/load-secrets-action@v2
     - uses: iloveitaly/github-action-direnv-load-and-mask@master
       with:
-        environment_allowlist: PYTHON_TEST_SERVER_HOST,JAVASCRIPT_SERVER_HOST,VITE_PYTHON_URL,OPENAPI_JSON_PATH,TMP_DIRECTORY
+        environment_allowlist: >
+          PYTHON_TEST_SERVER_HOST,
+          JAVASCRIPT_SERVER_HOST,
+          VITE_PYTHON_URL,
+          OPENAPI_JSON_PATH,
+          TMP_DIRECTORY,
+          PATH,
+          PLAYWRIGHT_RESULT_DIRECTORY
     # cache node_modules
     - uses: actions/cache@v4
       with:
