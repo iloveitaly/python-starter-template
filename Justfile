@@ -1100,6 +1100,10 @@ with_entries(
 	# https://1password-devs.slack.com/archives/C03NJV34SSC/p1733771530356779
 	# https://github.com/direnv/direnv/issues/662
 
+@direnv_export_ci:
+	env -i HOME="$HOME" PATH="$PATH" OP_SERVICE_ACCOUNT_TOKEN="${OP_SERVICE_ACCOUNT_TOKEN:-}" \
+		CI=true direnv export json | jq -r '{{jq_script}}'
+
 # export env variables for a particular file in a format docker can consume
 [doc("Export as docker '-e' params: --params\nExport as shell: --shell")]
 @direnv_export_docker target *flag:
