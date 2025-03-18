@@ -76,6 +76,19 @@ def get_client_addr(scope: Scope) -> str:
     return f"{ip}:{port}"
 
 
+# TODO we should look at the static asset logic and pull the prefix path from tha
+def is_static_assets_request(scope: Scope) -> bool:
+    """Check if the request is for static assets. Pretty naive check.
+
+    Args:
+        scope (Scope): Current context.
+
+    Returns:
+        bool: True if the request is for static assets, False otherwise.
+    """
+    return scope["path"].endswith(".css") or scope["path"].endswith(".js")
+
+
 def add_middleware(
     app: FastAPI,
 ) -> None:
@@ -96,7 +109,10 @@ def add_middleware(
         assert start
         elapsed = perf_counter() - start
 
-        log.info(
+        # debug log all asset requests otherwise the logs because unreadable
+        log_method = log.debug if is_static_assets_request(scope) else log.info
+
+        log_method(
             f"{response.status_code} {scope['method']} {get_path_with_query_string(scope)}",
             time=round(elapsed * 1000),
             status=response.status_code,
