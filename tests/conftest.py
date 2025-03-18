@@ -1,9 +1,9 @@
 import os
 import sys
 
-# when running locally, switching to the full-blown CI environment is a pain
-# to make it quick & easy to run tests, we force the environment to test
-# this will not be the same as CI, but it's closer and faster for devprod
+# When running locally, switching to the full-blown CI environment is a pain.
+# To make it quick & easy to run tests, we force the environment to test and load cached CI environment variables (if we can).
+# This will not be the same as CI, but it's closer and faster for devprod.
 if os.environ["PYTHON_ENV"] != "test":
     print(
         "\033[91m"
@@ -15,6 +15,9 @@ if os.environ["PYTHON_ENV"] != "test":
     os.environ["PYTHON_ENV"] = "test"
 
     assert 'app' not in sys.modules, "app modules should not be imported before environment is set"
+
+    from tests.direnv import load_ci_environment
+    load_ci_environment()
 
 # important to ensure model metadata is added to the application
 import app.models  # noqa: F401
@@ -29,11 +32,9 @@ from pytest import Config, FixtureRequest
 from activemodel.pytest import database_reset_transaction, database_reset_truncate
 from decouple import config as decouple_config
 
+from tests.constants import TEST_RESULTS_DIRECTORY
 from tests.utils import delete_all_clerk_users, log
 from tests.seeds import seed_test_data
-
-# this file is uploaded as an artifact
-TEST_RESULTS_DIRECTORY = Path(decouple_config("TEST_RESULTS_DIRECTORY", cast=str))
 
 log.info("multiprocess start method", start_method=multiprocessing.get_start_method())
 
@@ -112,6 +113,7 @@ def pytest_sessionstart(session):
     seed_test_data()
 
 
+# TODO we should really throw an exception if integration and non-integration tests are mixed, this will cause DB related issues
 def is_integration_test(request: FixtureRequest):
     integration_tests = Path(__file__).parent / "integration"
 
@@ -132,6 +134,11 @@ def is_integration_test(request: FixtureRequest):
 
 @pytest.fixture(scope="function", autouse=True)
 def datatabase_reset_transaction_for_standard_tests(request):
+    """
+    Use a single entrypoint to determine what database reset strategy to use. It's important that transaction and truncation
+    are not mixed, I saw very odd DB related errors when this happened.
+    """
+
     if is_integration_test(request):
         # transaction truncation cannot be used with integration tests since the forked server does not retain the same
         # db connection in memory and therefore the transaction rollback does not work. To get around this, we truncate the

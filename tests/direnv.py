@@ -1,3 +1,12 @@
+"""
+This is an attempt to fix a very specific problem: some tests require CI-specific environment variables.
+In order to load them, and keep the state consistent across local testing and CI, we use direnv.
+
+However, it's easier to just run `pytest` and never think about environment variables.
+
+- This logic should only be run *locally* when running tests
+"""
+
 import glob
 import hashlib
 import json
@@ -5,16 +14,23 @@ import os
 import subprocess
 import typing as t
 
-from tests.constants import TEST_RESULTS_DIRECTORY, TMP_DIRECTORY
-
+from .constants import TMP_DIRECTORY
 from .utils import log
 
 
+def is_using_direnv() -> bool:
+    """
+    We can't assume all developers will be using direnv locally, so let's check for the presence of
+    direnv-related variables in their environment.
+    """
+
+    return "DIRENV_FILE" in os.environ
+
+
 def direnv_ci_environment() -> dict[str, t.Any]:
-    # Execute command and capture output
     process_result = subprocess.run(
-        # TODO should just instead
-        "CI=true direnv exec ~ direnv export json",
+        # NOTE very important command! This should filter PATH, and some other stuff
+        "just direnv_export_ci",
         shell=True,
         capture_output=True,
         text=True,
@@ -73,6 +89,10 @@ def update_environment(env: dict[str, t.Any]) -> None:
 
 
 def load_ci_environment():
+    if not is_using_direnv():
+        log.info("Skipping direnv setup, not using direnv locally")
+        return
+
     sha = direnv_state_sha()
 
     direnv_state_file = TMP_DIRECTORY / f"direnv_state_{sha}"
@@ -85,8 +105,11 @@ def load_ci_environment():
 
     # if it doesn't exist, let's load the env state and write it to the file
     ci_environment = direnv_ci_environment()
-    direnv_state_file.write_text(json.dumps(ci_environment))
-    update_environment(ci_environment)
-    return
+    # compare with the current environment and only include the delta
+    filtered_ci_environment = {
+        k: v for k, v in ci_environment.items() if os.environ.get(k) != v
+    }
+    direnv_state_file.write_text(json.dumps(filtered_ci_environment))
+    update_environment(filtered_ci_environment)
 
-    # if it doesn't exist, let's load the env state and write it to the file
+    log.info("direnv environment loaded", direnv_state_file=direnv_state_file)
