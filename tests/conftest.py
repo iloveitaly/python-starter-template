@@ -5,7 +5,13 @@ import sys
 # to make it quick & easy to run tests, we force the environment to test
 # this will not be the same as CI, but it's closer and faster for devprod
 if os.environ["PYTHON_ENV"] != "test":
-    print("\033[91mPYTHON_ENV is not set to test, forcing\033[0m")
+    print(
+        "\033[91m"
+        "PYTHON_ENV is not set to 'test', forcing.\n\n"
+        "Additional variables may set in '.env.test' and required to run tests.\n\n"
+        "Consider using `just py_test"
+        "\033[0m"
+        )
     os.environ["PYTHON_ENV"] = "test"
 
     assert 'app' not in sys.modules, "app modules should not be imported before environment is set"
@@ -19,7 +25,7 @@ from pathlib import Path
 from pretty_traceback import formatting
 
 import pytest
-from pytest import Config
+from pytest import Config, FixtureRequest
 from activemodel.pytest import database_reset_transaction, database_reset_truncate
 from decouple import config as decouple_config
 
@@ -30,8 +36,6 @@ from tests.seeds import seed_test_data
 TEST_RESULTS_DIRECTORY = Path(decouple_config("TEST_RESULTS_DIRECTORY", cast=str))
 
 log.info("multiprocess start method", start_method=multiprocessing.get_start_method())
-
-
 
 # TODO can we move this into pretty_traceback?
 @pytest.hookimpl(hookwrapper=True)
@@ -108,6 +112,32 @@ def pytest_sessionstart(session):
     seed_test_data()
 
 
+def is_integration_test(request: FixtureRequest):
+    integration_tests = Path(__file__).parent / "integration"
+
+    # should never occur!
+    if not integration_tests.exists():
+        raise FileNotFoundError(
+            f"Integration tests directory does not exist: {integration_tests}"
+        )
+
+    current_test_path = request.node.path
+
+    # is the current test within the integration tests directory?
+    if str(current_test_path).startswith(str(integration_tests)):
+        return True
+
+    return False
+
+
 @pytest.fixture(scope="function", autouse=True)
 def datatabase_reset_transaction_for_standard_tests(request):
+    if is_integration_test(request):
+        # transaction truncation cannot be used with integration tests since the forked server does not retain the same
+        # db connection in memory and therefore the transaction rollback does not work. To get around this, we truncate the
+        # database before running any tests, although this also has the side effect of destroying any test seed data.
+        database_reset_truncate()
+        yield
+        return
+
     yield from database_reset_transaction()
