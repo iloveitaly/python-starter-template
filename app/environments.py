@@ -1,3 +1,4 @@
+import os
 import typing as t
 
 from decouple import config
@@ -35,3 +36,10 @@ def is_job_monitor():
     "is this the production flower application"
     # TODO should use a ENV var for app name, rather than hardcoding; how we determine & store container names needs to be refactored
     return config("CONTAINER_APP_NAME", default="", cast=str) == "prod-jmon"
+
+
+def is_pytest():
+    """
+    PYTEST_CURRENT_TEST is set by pytest to indicate the current test being run
+    """
+    return "PYTEST_CURRENT_TEST" in os.environ
