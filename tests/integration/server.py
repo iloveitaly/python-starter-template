@@ -1,8 +1,6 @@
 """
 Utilities for helping build and tare down servers for full-stack integration tests. Some tips:
 
-- page.pause() for a breakpoint
-
 TODO figure out a better solution for async loops
 https://github.com/microsoft/playwright-pytest/issues/74#issuecomment-2497976914
 
@@ -30,12 +28,14 @@ PYTHON_SERVER_TEST_PORT = config("PYTHON_TEST_SERVER_PORT", cast=int)
 _server_subprocess = None
 
 
-def wait_for_termination(pid, timeout=10):
+def wait_for_termination(pid, timeout=10) -> bool:
     """
     Py's multiprocessing module does not have a way to wait until a process has terminated.
 
-    This mess is to get us that guarantee so we can terminate the server and then start another one, knowing that
+    This mess is to guarantee the old server is terminated and then start another one, knowing that
     only a single dev server is running at a time.
+
+    Returns true if process was successfully killed
     """
 
     process = psutil.Process(pid)
@@ -44,12 +44,15 @@ def wait_for_termination(pid, timeout=10):
     try:
         process.wait(timeout=timeout)  # Wait for graceful shutdown
     except psutil.TimeoutExpired:
+        log.warning("process did not terminate in time, sending SIGKILL")
         process.kill()  # Force SIGKILL if still running
         process.wait()  # Wait for kill to complete
 
     # Double verify termination
     try:
-        os.kill(pid, 0)  # Check if process exists
+        # 0 is special signal which checks if process with pid exists
+        os.kill(pid, 0)
+        log.warning("after aggressive kill, process is still alive")
         return False
     except OSError:
         return True  # Process is confirmed dead
