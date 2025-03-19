@@ -113,5 +113,14 @@
     "editor.trimAutoWhitespace": true,
     // "editor.defaultFormatter": "nefrob.vscode-just-syntax",
     "editor.formatOnSave": true
-  }
+  },
+
+  // copilot config https://code.visualstudio.com/docs/copilot/copilot-customization
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      // TODO unclear if this is necessary?
+      "file": "./.github/copilot-instructions.md"
+    }
+  ]
 }
