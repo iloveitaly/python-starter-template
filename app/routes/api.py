@@ -1,13 +1,6 @@
 """
 Logic for an API server. This is distinct from the "app" API server, which hosts static assets
 and is authenticated via a clerk token, and is meant to be consumed by an external user.
-
-
-It is locked to a specific
-TODO
-
-- [ ] organizations? what is the clerk data model?
-- [ ] use sk_ for API key prefix
 """
 
 import sentry_sdk

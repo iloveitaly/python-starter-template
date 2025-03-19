@@ -23,6 +23,8 @@
   "typescript.experimental.expandableHover": true,
 
   "prettier.prettierPath": "web/node_modules/prettier",
+  "prettier.ignorePath": "web/.prettierignore",
+
   "[typescript][typescriptreact][javascript][javascriptreact]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
