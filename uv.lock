@@ -962,6 +962,18 @@ wheels = [
 ]
 
 [[package]]
+name = "ipython-playground"
+version = "0.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "rich" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f5/e6/4ffbc75407cc7aca3982924b04ab62e2171f680319a906beba32fc440545/ipython_playground-0.2.0.tar.gz", hash = "sha256:98cbaf53aa6deed7c8b251c23ffefa98e5cead2f5f07c4319b41bc57117ea570", size = 14542 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/86/20/287e1dbaf28e8682b7a182ee78963f7e4e913e9e9935a5e40de04dcae92e/ipython_playground-0.2.0-py3-none-any.whl", hash = "sha256:b055b385938ce290060d65a2ce78cbec2dfea1f7a42fd60c9665d41783dd8417", size = 5275 },
+]
+
+[[package]]
 name = "ipython-pygments-lexers"
 version = "1.1.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1959,6 +1971,7 @@ debugging-extras = [
     { name = "ipython" },
     { name = "ipython-autoimport" },
     { name = "ipython-ctrlr-fzf" },
+    { name = "ipython-playground" },
     { name = "ipython-suggestions" },
     { name = "ipythonclipboard" },
     { name = "jedi" },
@@ -2048,6 +2061,7 @@ debugging-extras = [
     { name = "ipython", specifier = ">=9.0.2" },
     { name = "ipython-autoimport", git = "https://github.com/iloveitaly/ipython-autoimport?rev=ipython-9.x" },
     { name = "ipython-ctrlr-fzf", specifier = ">=0.2.1" },
+    { name = "ipython-playground", specifier = ">=0.2.0" },
     { name = "ipython-suggestions", git = "https://github.com/iloveitaly/ipython-suggestions.git?rev=ipython-9.x" },
     { name = "ipythonclipboard", specifier = ">=1.0b2" },
     { name = "jedi", specifier = ">=0.19.2" },
