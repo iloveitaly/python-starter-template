@@ -15,7 +15,8 @@ Task.__class_getitem__ = classmethod(lambda cls, *args, **kwargs: cls)  # type: 
 celery = Celery(
     "tasks",
     broker=redis_url(),
-    result_backend=redis_url(),
+    # TODO why is this causing typing issues?
+    # result_backend=redis_url(),
 )
 
 # celery.conf.app_name = "tasks"
