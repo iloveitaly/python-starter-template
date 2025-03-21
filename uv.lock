@@ -1039,7 +1039,7 @@ wheels = [
 [[package]]
 name = "j2lint"
 version = "1.1.0"
-source = { git = "https://github.com/aristanetworks/j2lint.git#11e73c5c5742e08026daa49242817c854aa51bab" }
+source = { git = "https://github.com/aristanetworks/j2lint.git#fc5d220c31de6e07c62b087d2e2b5ea8f9fa9717" }
 dependencies = [
     { name = "jinja2" },
     { name = "rich" },
@@ -1869,8 +1869,8 @@ wheels = [
 
 [[package]]
 name = "pytest-playwright-visual"
-version = "2.1.3.dev7+ga06663e"
-source = { git = "https://github.com/iloveitaly/pytest-playwright-visual.git?rev=global-defaults#a06663eeba5820a8c7b42127964e00086400cf4c" }
+version = "2.1.3.dev8+gec2b79d"
+source = { git = "https://github.com/iloveitaly/pytest-playwright-visual.git?rev=global-defaults#ec2b79deb9bd16968e8fed47faa274e8d5baefa7" }
 dependencies = [
     { name = "pillow" },
     { name = "pixelmatch" },
@@ -2028,6 +2028,7 @@ debugging-extras = [
     { name = "rich" },
     { name = "rpdb" },
     { name = "sqlparse" },
+    { name = "uv-development-toggle" },
 ]
 dev = [
     { name = "covdefaults" },
@@ -2119,6 +2120,7 @@ debugging-extras = [
     { name = "rich", specifier = ">=13.9.4" },
     { name = "rpdb", specifier = ">=0.2.0" },
     { name = "sqlparse", specifier = ">=0.5.2" },
+    { name = "uv-development-toggle", specifier = ">=0.2.1" },
 ]
 dev = [
     { name = "covdefaults", specifier = ">=2.3.0" },
@@ -2638,6 +2640,15 @@ wheels = [
 ]
 
 [[package]]
+name = "tomlkit"
+version = "0.13.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/b1/09/a439bec5888f00a54b8b9f05fa94d7f901d6735ef4e55dcec9bc37b5d8fa/tomlkit-0.13.2.tar.gz", hash = "sha256:fff5fe59a87295b278abd31bec92c15d9bc4a06885ab12bcea52c71119392e79", size = 192885 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f9/b6/a447b5e4ec71e13871be01ba81f5dfc9d0af7e473da256ff46bc0e24026f/tomlkit-0.13.2-py3-none-any.whl", hash = "sha256:7a974427f6e119197f670fbbbeae7bef749a6c14e793db934baefc1b5f03efde", size = 37955 },
+]
+
+[[package]]
 name = "tornado"
 version = "6.4.2"
 source = { registry = "https://pypi.org/simple" }
@@ -2793,6 +2804,18 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/2c/56/2560a9f1ccab9e12b1b3478a3c870796cf4d8ee5652bb19b61751cced14a/uuid6-2024.7.10.tar.gz", hash = "sha256:2d29d7f63f593caaeea0e0d0dd0ad8129c9c663b29e19bdf882e864bedf18fb0", size = 8705 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d3/3e/4ae6af487ce5781ed71d5fe10aca72e7cbc4d4f45afc31b120287082a8dd/uuid6-2024.7.10-py3-none-any.whl", hash = "sha256:93432c00ba403751f722829ad21759ff9db051dea140bf81493271e8e4dd18b7", size = 6376 },
+]
+
+[[package]]
+name = "uv-development-toggle"
+version = "0.2.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "tomlkit" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/1a/96/628be6578a9d2fb5cad7dc219fb2fd4b0ec22130293d5f5d51e228c8dccf/uv_development_toggle-0.2.1.tar.gz", hash = "sha256:88cbcf2eb6307350235fa65ab62d73091b03d1db7ed3a3f119260c6e3b5e3717", size = 16214 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/22/d7/427977d0402ae54b7fd338a91201513af0dcbc317061a51b23084c3ca0cd/uv_development_toggle-0.2.1-py3-none-any.whl", hash = "sha256:c3ac922b024ef88956003cade09dd2e7f9a71c226e090afe65be8515087a3011", size = 4510 },
 ]
 
 [[package]]
