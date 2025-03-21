@@ -1476,13 +1476,9 @@ wheels = [
 [[package]]
 name = "pretty-traceback"
 version = "2024.1021"
-source = { registry = "https://pypi.org/simple" }
+source = { git = "https://github.com/iloveitaly/pretty-traceback.git?rev=local-traceback#dd5e2c2a894aec06c090c28dcb9793a3c2cdf0ab" }
 dependencies = [
     { name = "colorama" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/fe/1a/5238fa3aa2310d47af50069f451a314f75d3998cb99c07189bfe1ae6c54b/pretty-traceback-2024.1021.tar.gz", hash = "sha256:08c53c7737a315e5b17646340f1620c1b9c7ef3cbbc195ac05e50d0b131101f7", size = 18113 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/f3/09/336a8a63f6e85ff57d1ab87c6aa0179e2e68b34c9e113d7064e63fbbb99c/pretty_traceback-2024.1021-py2.py3-none-any.whl", hash = "sha256:c1f351b9e3fce79fb4343a6509a5f2bad16084356c63fe85d3f6bbb0486dd94a", size = 12263 },
 ]
 
 [[package]]
@@ -2083,7 +2079,7 @@ debugging-extras = [
     { name = "pdbr", extras = ["ipython"], specifier = ">=0.8.9" },
     { name = "pipdeptree", specifier = ">=2.25.0" },
     { name = "pre-commit", specifier = ">=4.1.0" },
-    { name = "pretty-traceback", specifier = ">=2024.1021" },
+    { name = "pretty-traceback", git = "https://github.com/iloveitaly/pretty-traceback.git?rev=local-traceback" },
     { name = "psutil", specifier = ">=6.1.0" },
     { name = "pudb", specifier = ">=2024.1.3" },
     { name = "pyfzf", specifier = ">=0.3.1" },
@@ -2100,7 +2096,7 @@ dev = [
     { name = "gitignore-parser", specifier = ">=0.1.11" },
     { name = "ipython", specifier = ">=8.28.0" },
     { name = "j2lint", git = "https://github.com/aristanetworks/j2lint.git" },
-    { name = "pretty-traceback", specifier = ">=2024.1021" },
+    { name = "pretty-traceback", git = "https://github.com/iloveitaly/pretty-traceback.git?rev=local-traceback" },
     { name = "pyright", specifier = ">=1.1.386" },
     { name = "pytest", specifier = ">=8.3.3" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
