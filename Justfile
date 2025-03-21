@@ -729,10 +729,10 @@ db_migrate:
 
 	[ -n "${CI:-}" ] || (just _banner_echo "Migrating Test Database" && {{EXECUTE_IN_TEST}} uv run alembic upgrade head)
 
-# TODO should pick versions
-# alembic history | fzf
-# db_down:
-# 	uv run alembic downgrade
+# pick a migration to downgrade to
+[macos]
+db_downgrade:
+	uv run alembic downgrade $(uv run alembic history | fzf --delimiter '[->\s,]+' --bind 'enter:become(echo {2})')
 
 # add seed data to dev and test
 db_seed: db_migrate
