@@ -91,7 +91,7 @@ def pretty_traceback_exception_formatter(sio: TextIO, exc_info: ExcInfo) -> None
     from pretty_traceback.formatting import exc_to_traceback_str
 
     _, exc_value, traceback = exc_info
-    formatted_exception = exc_to_traceback_str(exc_value, traceback, color=not NO_COLOR)
+    formatted_exception = exc_to_traceback_str(exc_value, traceback, color=not NO_COLOR)  # type: ignore
     sio.write("\n" + formatted_exception)
 
 
