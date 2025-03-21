@@ -15,7 +15,7 @@ def test_signin(server, page: Page, assert_snapshot) -> None:
 
     expect(page.locator("body")).to_contain_text("Hello From Internal Python")
 
-    # assert_snapshot(page)
+    assert_snapshot(page)
 
     assert User.count() == 1
 
@@ -57,13 +57,13 @@ def test_signup(server, page: Page, assert_snapshot) -> None:
 
     # page.unroute("https://resolved-emu-53.clerk.accounts.dev/v1/**")
 
-    # assert_snapshot(page)
+    assert_snapshot(page)
 
     expect(page.locator("body")).to_contain_text("Hello From Internal Python")
 
     wait_for_loading(page)
 
-    # assert_snapshot(page)
+    assert_snapshot(page)
 
     # user should be created at this point!
     assert User.count() == 1
