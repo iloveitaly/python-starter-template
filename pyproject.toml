@@ -40,6 +40,7 @@ dependencies = [
     "typer>=0.14.0",
     "uvicorn>=0.32.0",
     "pydantic[email,timezone]",
+    "celery-types>=0.23.0",
 ]
 
 [dependency-groups]
