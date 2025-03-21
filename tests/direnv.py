@@ -101,6 +101,10 @@ def load_ci_environment():
     if direnv_state_file.exists():
         ci_environment = json.loads(direnv_state_file.read_text())
         update_environment(ci_environment)
+        log.info(
+            "direnv environment loaded from cache", direnv_state_file=direnv_state_file
+        )
+
         return
 
     # if it doesn't exist, let's load the env state and write it to the file
@@ -112,4 +116,6 @@ def load_ci_environment():
     direnv_state_file.write_text(json.dumps(filtered_ci_environment))
     update_environment(filtered_ci_environment)
 
-    log.info("direnv environment loaded", direnv_state_file=direnv_state_file)
+    log.info(
+        "direnv environment loaded and cached", direnv_state_file=direnv_state_file
+    )
