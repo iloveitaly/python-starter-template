@@ -3,7 +3,7 @@ import sys
 
 # When running locally, switching to the full-blown CI environment is a pain.
 # To make it quick & easy to run tests, we force the environment to test and load cached CI environment variables (if we can).
-# This will not be the same as CI, but it's closer and faster for devprod.
+# This will not be the same as CI, but it's closer and faster for devprod. It should never run on CI!
 if os.environ["PYTHON_ENV"] != "test":
     print(
         "\033[91m"
@@ -100,6 +100,9 @@ def pytest_configure(config: Config):
     # lower debug level for file debugging, so we can download this artifact and view detailed debugging
     config.option.log_file = str(TEST_RESULTS_DIRECTORY / "pytest.log")
     # config.option.log_file_level = "DEBUG"
+
+    pytest.snapshot_failures_path = str( # type: ignore
+        TEST_RESULTS_DIRECTORY / "playwright_visual_snapshot_failures")
 
 
 def pytest_sessionstart(session):
