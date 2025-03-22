@@ -91,10 +91,10 @@ dev-dependencies = [
     "j2lint>=1.1.0",
     "pytest-playwright>=0.6.2",
     "squawk-cli>=1.4.0",
-    "pytest-playwright-visual>=2.1.2",
     "pytest-cov>=6.0.0",
     "pytest-timer[termcolor]>=1.0.0",
     "gitignore-parser>=0.1.11",
+    "pytest-playwright-visual-snapshot",
 ]
 # https://github.com/astral-sh/uv/issues/3898
 config-settings = { editable_mode = "compat" }
@@ -180,6 +180,7 @@ j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
 ipdb = { git = "https://github.com/iloveitaly/ipdb", rev = "support-executables" }
 ipython-autoimport = { git = "https://github.com/iloveitaly/ipython-autoimport", rev = "ipython-9.x" }
 ipython-suggestions = { git = "https://github.com/iloveitaly/ipython-suggestions.git", rev = "ipython-9.x" }
+pytest-playwright-visual-snapshot = { git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot" }
 
 [tool.uv.sources.activemodel]
 git = "https://github.com/iloveitaly/activemodel.git"
@@ -187,10 +188,6 @@ git = "https://github.com/iloveitaly/activemodel.git"
 [tool.uv.sources.djlint]
 git = "https://github.com/iloveitaly/djLint.git"
 rev = "github-output"
-
-[tool.uv.sources.pytest-playwright-visual]
-git = "https://github.com/iloveitaly/pytest-playwright-visual.git"
-rev = "global-defaults"
 
 [tool.uv.sources.pretty-traceback]
 git = "https://github.com/iloveitaly/pretty-traceback.git"

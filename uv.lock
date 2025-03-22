@@ -1834,9 +1834,9 @@ wheels = [
 ]
 
 [[package]]
-name = "pytest-playwright-visual"
-version = "2.1.3.dev11+gee6d92f"
-source = { git = "https://github.com/iloveitaly/pytest-playwright-visual.git?rev=global-defaults#ee6d92f33353cf3fe596b73ad1245dce6696ac03" }
+name = "pytest-playwright-visual-snapshot"
+version = "0.1.0"
+source = { git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot#f3e88da7bce9454dba7a4fe157f55eab2406b3b1" }
 dependencies = [
     { name = "pillow" },
     { name = "pixelmatch" },
@@ -2012,7 +2012,7 @@ dev = [
     { name = "pytest-cov" },
     { name = "pytest-github-actions-annotate-failures" },
     { name = "pytest-playwright" },
-    { name = "pytest-playwright-visual" },
+    { name = "pytest-playwright-visual-snapshot" },
     { name = "pytest-sugar" },
     { name = "pytest-timer", extra = ["termcolor"] },
     { name = "ruff" },
@@ -2104,7 +2104,7 @@ dev = [
     { name = "pytest-cov", specifier = ">=6.0.0" },
     { name = "pytest-github-actions-annotate-failures", specifier = ">=0.2.0" },
     { name = "pytest-playwright", specifier = ">=0.6.2" },
-    { name = "pytest-playwright-visual", git = "https://github.com/iloveitaly/pytest-playwright-visual.git?rev=global-defaults" },
+    { name = "pytest-playwright-visual-snapshot", git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot" },
     { name = "pytest-sugar", specifier = ">=1.0.0" },
     { name = "pytest-timer", extras = ["termcolor"], specifier = ">=1.0.0" },
     { name = "ruff", specifier = ">=0.7.1" },
