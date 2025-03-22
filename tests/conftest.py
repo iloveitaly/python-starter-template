@@ -106,9 +106,7 @@ def pytest_configure(config: Config):
         "PRETTY_TRACEBACK_LOCAL_ONLY", default=False, cast=bool
     )
 
-    pytest.snapshot_failures_path = str( # type: ignore
-        TEST_RESULTS_DIRECTORY / "playwright_visual_snapshot_failures")
-
+    config.option.snapshot_failures_path = TEST_RESULTS_DIRECTORY / "playwright_visual_snapshot_failures"
 
 def pytest_sessionstart(session):
     "only executes once if a test is run, at the beginning of the test suite execution"
