@@ -106,7 +106,8 @@ def pytest_configure(config: Config):
         "PRETTY_TRACEBACK_LOCAL_ONLY", default=False, cast=bool
     )
 
-    config.option.snapshot_failures_path = TEST_RESULTS_DIRECTORY / "playwright_visual_snapshot_failures"
+    config.option.playwright_visual_snapshots_path = decouple_config("PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY", cast=Path)
+    config.option.playwright_visual_snapshot_failures_path = TEST_RESULTS_DIRECTORY / "playwright_visual_snapshot_failures"
 
 def pytest_sessionstart(session):
     "only executes once if a test is run, at the beginning of the test suite execution"
