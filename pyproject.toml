@@ -180,7 +180,9 @@ j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
 ipdb = { git = "https://github.com/iloveitaly/ipdb", rev = "support-executables" }
 ipython-autoimport = { git = "https://github.com/iloveitaly/ipython-autoimport", rev = "ipython-9.x" }
 ipython-suggestions = { git = "https://github.com/iloveitaly/ipython-suggestions.git", rev = "ipython-9.x" }
-pytest-playwright-visual-snapshot = { git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot" }
+
+[tool.uv.sources.pytest-playwright-visual-snapshot]
+git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git"
 
 [tool.uv.sources.activemodel]
 git = "https://github.com/iloveitaly/activemodel.git"
