@@ -8,25 +8,15 @@ import importlib
 from pathlib import Path
 
 from app import log
+from app.setup import modules_in_folder
 
-commands_path = Path(__file__).parent
-
-for py_file in commands_path.rglob("*.py"):
-    if py_file.name in ["__init__.py", "__main__.py"]:
-        continue
-
-    rel_path = py_file.relative_to(commands_path)
-    module_parts = rel_path.with_suffix("").parts
-    module_name = f"{__package__}." + ".".join(module_parts)
-
+for module_name in modules_in_folder(Path(__file__).parent, __package__):
     log.debug("auto importing", command=module_name)
 
-    try:
-        module = importlib.import_module(module_name)
+    module = importlib.import_module(module_name)
 
-        # Validate that the module has a 'perform' method
-        if not hasattr(module, "perform") or not callable(getattr(module, "perform")):
-            log.error(f"Module {module_name} doesn't have a 'perform' method")
-
-    except Exception as e:
-        log.error(f"Error importing module {module_name}: {str(e)}")
+    # validate that the module has a 'perform' method, this is a convention in this folder
+    if not hasattr(module, "perform") or not callable(getattr(module, "perform")):
+        raise AttributeError(
+            f"Module {module_name} must have a callable 'perform' method"
+        )
