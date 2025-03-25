@@ -38,27 +38,6 @@ from tests.seeds import seed_test_data
 
 log.info("multiprocess start method", start_method=multiprocessing.get_start_method())
 
-# TODO can we move this into pretty_traceback?
-@pytest.hookimpl(hookwrapper=True)
-def pytest_runtest_makereport(item, call):
-    """
-    I hate the terrible pytest stack traces. I wanted pretty_traceback to be used instead.
-
-    This little piece of code was hard-won:
-
-    https://grok.com/share/bGVnYWN5_951be3b1-6811-4fda-b220-c1dd72dedc31
-    """
-    outcome = yield
-    report = outcome.get_result()  # Get the generated TestReport object
-
-    # Check if the report is for the 'call' phase (test execution) and if it failed
-    if report.when == "call" and report.failed:
-        value = call.excinfo.value
-        tb = call.excinfo.tb
-        formatted_traceback = formatting.exc_to_traceback_str(value, tb, color=True)
-        report.longrepr = formatted_traceback
-
-
 # NOTE this runs on any pytest invocation, even if no tests are run
 def pytest_configure(config: Config):
     # TODO huh, maybe we should use anyio instead?
@@ -88,10 +67,6 @@ def pytest_configure(config: Config):
     # TODO right now this option can only be set on ini, which is strange
     # config.option.asyncio_default_fixture_loop_scope = "session"
 
-    # visual testing config
-    config.option.playwright_visual_snapshot_threshold = 0.2
-    config.option.playwright_visual_failure_directory = TEST_RESULTS_DIRECTORY
-
     # without this, if the test succeeds, no output is provided
     # this is a good default, but makes it much harder to debug what is going on
     config.option.log_cli = True
@@ -118,6 +93,30 @@ def pytest_sessionstart(session):
     database_reset_truncate()
     # we reseed the database with a base set of records
     seed_test_data()
+
+@pytest.fixture(scope="function")
+def sync_celery():
+    "run celery tasks synchronously instead of in the background"
+
+    # TODO I have to change the name of celery app... :/
+    from app.celery import celery
+
+    # celery settings to mutate
+    settings = {
+        'task_always_eager': True,
+        'task_eager_propagates': True,
+    }
+
+    # Store original values
+    original_settings = {key: celery.conf.get(key) for key in settings}
+
+    # Set to sync mode
+    celery.conf.update(settings)
+
+    yield
+
+    # Restore original values
+    celery.conf.update(original_settings)
 
 
 # TODO we should really throw an exception if integration and non-integration tests are mixed, this will cause DB related issues
