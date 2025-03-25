@@ -26,4 +26,4 @@ CLERK_ALL_USERS_TO_PRESERVE = [
 TMP_DIRECTORY = Path(config("TMP_DIRECTORY", cast=str))
 
 # this entire folder is uploaded as an artifact
-TEST_RESULTS_DIRECTORY = Path(config("TEST_RESULTS_DIRECTORY", cast=str))
+TEST_RESULTS_DIRECTORY = config("TEST_RESULTS_DIRECTORY", cast=Path)
