@@ -23,7 +23,7 @@ CLERK_ALL_USERS_TO_PRESERVE = [
     CLERK_DEV_SEED_EMAIL,
 ]
 
-TMP_DIRECTORY = Path(config("TMP_DIRECTORY", cast=str))
+TMP_DIRECTORY = config("TMP_DIRECTORY", cast=Path)
 
 # this entire folder is uploaded as an artifact
 TEST_RESULTS_DIRECTORY = config("TEST_RESULTS_DIRECTORY", cast=Path)

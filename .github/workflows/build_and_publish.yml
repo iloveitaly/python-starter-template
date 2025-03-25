@@ -71,7 +71,7 @@ jobs:
           # NOTE if direnv sourcing fails, this var will not be set and it will fail
           path: |
             ${{ env.TEST_RESULTS_DIRECTORY }}
-            ${{ env.PLAYWRIGHT_VISUAL_TESTS}}
+            ${{ env.PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY }}
 
   web:
     name: Frontend
