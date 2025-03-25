@@ -6,11 +6,12 @@ JavaScript client which will use these methods.
 """
 
 import arrow
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import ORJSONResponse
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse, ORJSONResponse
 from starlette import status
 
 from app.routes.api import external_api_app
+from app.routes.errors import EarlyResponseException
 from app.routes.utils.openapi import simplify_operation_ids
 
 from app.models.user import User
@@ -74,6 +75,11 @@ async def active_user_status():
         )
 
     return {"status": "ok"}
+
+
+@api_app.exception_handler(EarlyResponseException)
+async def early_response_handler(request: Request, exc: EarlyResponseException):
+    return JSONResponse(status_code=exc.status, content=exc.data)
 
 
 # important that this is done after all routes are added
