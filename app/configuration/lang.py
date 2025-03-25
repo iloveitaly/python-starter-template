@@ -6,6 +6,7 @@ weird bugs between dev, prod, ci, etc.
 """
 
 import multiprocessing
+import os
 
 
 def configure_python():
@@ -15,6 +16,9 @@ def configure_python():
     Specifically, this impacts our integration tests. They succeed on linux (fork) and not on macos (spawn)
     """
     from app import log
+
+    if "TZ" not in os.environ:
+        log.warning("TZ not set, update your environment configuration")
 
     try:
         # this is not the default as of py 3.13 on all platforms, but `fork` is deprecated
