@@ -5,7 +5,7 @@ requires-python = ">=3.13"
 [[package]]
 name = "activemodel"
 version = "0.8.0"
-source = { git = "https://github.com/iloveitaly/activemodel.git#52b2514b6d30212a56e34c2fe4c849ff79e36e6a" }
+source = { git = "https://github.com/iloveitaly/activemodel.git#305990387797f4fde26c7c89a8d332b6ef7ff21f" }
 dependencies = [
     { name = "pydash" },
     { name = "python-decouple-typed" },
@@ -829,11 +829,11 @@ wheels = [
 
 [[package]]
 name = "httpdbg"
-version = "1.1.1"
+version = "1.1.2"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/57/70/02be51a384791d8dabac0fdb2682e5185899b3e9f5573e8b7607d67f1add/httpdbg-1.1.1.tar.gz", hash = "sha256:b22ff32838657367d20a512456e9e91914518c0dfeb34b5bd6855a29f888c67a", size = 71531 }
+sdist = { url = "https://files.pythonhosted.org/packages/40/85/890ed74345cd0f7922ccca4b41a039ecff6a82f6fd986eccc61fdec6f49f/httpdbg-1.1.2.tar.gz", hash = "sha256:66d96b781a3b8977475f153777377ca3acecc85feb231e2d168f57ca42cbaa75", size = 71293 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/72/95/a36624d768ddd5cabc0208590f6386df53e391f87359bd3bb31e9d17ad76/httpdbg-1.1.1-py3-none-any.whl", hash = "sha256:4e5a32fe087c4de2685778031874b3e409d3a710e685f50c030fcc5a8274e809", size = 77400 },
+    { url = "https://files.pythonhosted.org/packages/91/82/ea28778d6d491ba6e6acecc43875017a5cfd98a53067ecea0c2cbced5ec3/httpdbg-1.1.2-py3-none-any.whl", hash = "sha256:fd6b4e51ebcc455fa389d34966cee098fd19c63a134eefab29601344f2d3c520", size = 77061 },
 ]
 
 [[package]]
@@ -1052,7 +1052,7 @@ wheels = [
 [[package]]
 name = "j2lint"
 version = "1.1.0"
-source = { git = "https://github.com/aristanetworks/j2lint.git#021abdf0b22579b4659742194e384592b574b092" }
+source = { git = "https://github.com/aristanetworks/j2lint.git#cfbd2d22ffd30c0dde2cb8c391aad9d93823905f" }
 dependencies = [
     { name = "jinja2" },
     { name = "rich" },
@@ -1468,7 +1468,7 @@ wheels = [
 
 [[package]]
 name = "posthog"
-version = "3.21.0"
+version = "3.23.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "backoff" },
@@ -1478,9 +1478,9 @@ dependencies = [
     { name = "requests" },
     { name = "six" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/59/c2/6ba36b647a9dee796032503fd695dba5f12ab36d82066af29aac0ea2a02b/posthog-3.21.0.tar.gz", hash = "sha256:62e339789f6f018b6a892357f5703d1f1e63c97aee75061b3dc97c5e5c6a5304", size = 67688 }
+sdist = { url = "https://files.pythonhosted.org/packages/5a/dd/30f7d2e992f80fcaedc5b99761e006bbb0b954813243542c480b9576b4be/posthog-3.23.0.tar.gz", hash = "sha256:1ac0305ab6c54a80c4a82c137231f17616bef007bbf474d1a529cda032d808eb", size = 72077 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/82/c7/4d9bf5d8ec29f9bab4c5c5ff2570748e7db53f98264ce2710406fcc2bbbd/posthog-3.21.0-py2.py3-none-any.whl", hash = "sha256:1e07626bb5219369dd36826881fa61711713e8175d3557db4657e64ecb351467", size = 79571 },
+    { url = "https://files.pythonhosted.org/packages/17/1e/aa457f5b15c9a018434dd71567c4a8f09c1701607a1d4daf5f01d6eccb7a/posthog-3.23.0-py2.py3-none-any.whl", hash = "sha256:2b07d06670170ac2e21465dffa8d356722834cc877ab34e583da6e525c1037df", size = 84976 },
 ]
 
 [[package]]
@@ -1736,15 +1736,15 @@ wheels = [
 
 [[package]]
 name = "pyright"
-version = "1.1.397"
+version = "1.1.398"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "nodeenv" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/92/23/cefa10c9cb198e0858ed0b9233371d62bca880337f628e58f50dfdfb12f0/pyright-1.1.397.tar.gz", hash = "sha256:07530fd65a449e4b0b28dceef14be0d8e0995a7a5b1bb2f3f897c3e548451ce3", size = 3818998 }
+sdist = { url = "https://files.pythonhosted.org/packages/24/d6/48740f1d029e9fc4194880d1ad03dcf0ba3a8f802e0e166b8f63350b3584/pyright-1.1.398.tar.gz", hash = "sha256:357a13edd9be8082dc73be51190913e475fa41a6efb6ec0d4b7aab3bc11638d8", size = 3892675 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/01/b5/98ec41e1e0ad5576ecd42c90ec363560f7b389a441722ea3c7207682dec7/pyright-1.1.397-py3-none-any.whl", hash = "sha256:2e93fba776e714a82b085d68f8345b01f91ba43e1ab9d513e79b70fc85906257", size = 5693631 },
+    { url = "https://files.pythonhosted.org/packages/58/e0/5283593f61b3c525d6d7e94cfb6b3ded20b3df66e953acaf7bb4f23b3f6e/pyright-1.1.398-py3-none-any.whl", hash = "sha256:0a70bfd007d9ea7de1cf9740e1ad1a40a122592cfe22a3f6791b06162ad08753", size = 5780235 },
 ]
 
 [[package]]
@@ -2335,11 +2335,11 @@ sqlalchemy = [
 
 [[package]]
 name = "setuptools"
-version = "78.0.2"
+version = "78.1.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/4c/f4/aa8d364f0dc1f33b2718938648c31202e2db5cd6479a73f0a9ca5a88372d/setuptools-78.0.2.tar.gz", hash = "sha256:137525e6afb9022f019d6e884a319017f9bf879a0d8783985d32cbc8683cab93", size = 1367747 }
+sdist = { url = "https://files.pythonhosted.org/packages/a9/5a/0db4da3bc908df06e5efae42b44e75c81dd52716e10192ff36d0c1c8e379/setuptools-78.1.0.tar.gz", hash = "sha256:18fd474d4a82a5f83dac888df697af65afa82dec7323d09c3e37d1f14288da54", size = 1367827 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/aa/db/2fd473dfe436ad19fda190f4079162d400402aedfcc41e048d38c0a375c6/setuptools-78.0.2-py3-none-any.whl", hash = "sha256:4a612c80e1f1d71b80e4906ce730152e8dec23df439f82731d9d0b608d7b700d", size = 1255965 },
+    { url = "https://files.pythonhosted.org/packages/54/21/f43f0a1fa8b06b32812e0975981f4677d28e0f3271601dc88ac5a5b83220/setuptools-78.1.0-py3-none-any.whl", hash = "sha256:3e386e96793c8702ae83d17b853fb93d3e09ef82ec62722e61da5cd22376dcd8", size = 1256108 },
 ]
 
 [[package]]
@@ -2716,11 +2716,11 @@ wheels = [
 
 [[package]]
 name = "typing-extensions"
-version = "4.12.2"
+version = "4.13.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/df/db/f35a00659bc03fec321ba8bce9420de607a1d37f8342eee1863174c69557/typing_extensions-4.12.2.tar.gz", hash = "sha256:1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8", size = 85321 }
+sdist = { url = "https://files.pythonhosted.org/packages/0e/3e/b00a62db91a83fff600de219b6ea9908e6918664899a2d85db222f4fbf19/typing_extensions-4.13.0.tar.gz", hash = "sha256:0a4ac55a5820789d87e297727d229866c9650f6521b64206413c4fbada24d95b", size = 106520 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/26/9f/ad63fc0248c5379346306f8668cda6e2e2e9c95e01216d2b8ffd9ff037d0/typing_extensions-4.12.2-py3-none-any.whl", hash = "sha256:04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d", size = 37438 },
+    { url = "https://files.pythonhosted.org/packages/e0/86/39b65d676ec5732de17b7e3c476e45bb80ec64eb50737a8dce1a4178aba1/typing_extensions-4.13.0-py3-none-any.whl", hash = "sha256:c8dd92cc0d6425a97c18fbb9d1954e5ff92c1ca881a309c45f06ebc0b79058e5", size = 45683 },
 ]
 
 [[package]]
@@ -2787,14 +2787,15 @@ wheels = [
 
 [[package]]
 name = "uv-development-toggle"
-version = "0.2.2"
+version = "0.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
+    { name = "rich" },
     { name = "tomlkit" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/80/48/fa535a3f58822250979a4c7ece1ad1de5ce1a971a585d1df55dcaf286925/uv_development_toggle-0.2.2.tar.gz", hash = "sha256:033f5e42dd24448d9df72dec06f4a6271c25a0978b6d0a50c257a2e218d76fbd", size = 14419 }
+sdist = { url = "https://files.pythonhosted.org/packages/79/95/ed820ff0fa04cc609cb1c914575b158208aeaed5b24102990bf3978efcd6/uv_development_toggle-0.3.0.tar.gz", hash = "sha256:d69689ffc0120625816f76cda53c634ad52df2f3cecd00d95dcc745caea6e547", size = 18188 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9a/49/bb26df1a4a9f0b8e1392559299e15f0a995a41aa2da0801818dee1a70da8/uv_development_toggle-0.2.2-py3-none-any.whl", hash = "sha256:6a3d919cd3706e9d04d4809c74b559c37ef8902909384523e91ce9d3b097b18c", size = 4693 },
+    { url = "https://files.pythonhosted.org/packages/9a/74/c9be3a3dd632a1eb812cd8d3f2a4a52db96d6a0ae71eb88a3179e4f4cf6f/uv_development_toggle-0.3.0-py3-none-any.whl", hash = "sha256:664729b18f78b9c31bbf5bb00399976eba5e0e4b390f7345a88b304c42f0a588", size = 5301 },
 ]
 
 [[package]]
