@@ -15,12 +15,14 @@ import psutil
 import pytest
 import uvicorn
 from decouple import config
+from furl import furl
 from playwright.sync_api import Page
 
 from app import log
 from app.environments import is_local_testing
 from app.server import api_app
 
+from tests.constants import PYTHON_TEST_SERVER_HOST
 from tests.integration.javascript_build import wait_for_javascript_build
 
 PYTHON_SERVER_TEST_PORT = config("PYTHON_TEST_SERVER_PORT", cast=int)
@@ -152,7 +154,7 @@ def pytest_keyboard_interrupt(excinfo):
 
 def home_url():
     # TODO should we just use `base_server_url` instead?
-    return f"https://{config('PYTHON_TEST_SERVER_HOST')}"
+    return furl(scheme="https", host=PYTHON_TEST_SERVER_HOST)
 
 
 def wait_for_loading(page: Page):
@@ -175,7 +177,7 @@ def wait_for_loading(page: Page):
     # """)
 
     # some animations can still run and cause diffs
-    page.wait_for_timeout(2_000)
+    # page.wait_for_timeout(2_000)
 
 
 def report_localias_status():
