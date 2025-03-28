@@ -154,7 +154,7 @@ def pytest_keyboard_interrupt(excinfo):
 
 def home_url():
     # TODO should we just use `base_server_url` instead?
-    return furl(scheme="https", host=PYTHON_TEST_SERVER_HOST)
+    return str(furl(scheme="https", host=PYTHON_TEST_SERVER_HOST))
 
 
 def wait_for_loading(page: Page):
