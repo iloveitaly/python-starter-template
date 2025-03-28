@@ -3,7 +3,7 @@
 Helpful when writing SQL queries directly vs using sqlalchemy.
 
 Revision ID: 489aff797e2e
-Revises: 729942e5417d
+Revises: 7c1c1ea02e20
 Create Date: 2025-03-27 20:02:44.254927
 
 """
@@ -17,7 +17,7 @@ import activemodel
 
 # revision identifiers, used by Alembic.
 revision: str = '489aff797e2e'
-down_revision: Union[str, None] = '729942e5417d'
+down_revision: Union[str, None] = '7c1c1ea02e20'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -27,63 +27,65 @@ def upgrade() -> None:
 
     op.execute("""
 CREATE OR REPLACE FUNCTION typeid_parse(typeid_str text)
-        RETURNS uuid
-        AS $$
-        DECLARE
-          prefix text;
-          suffix text;
-        BEGIN
-          IF (typeid_str IS NULL) THEN
-            RETURN NULL;
-          END IF;
-          IF POSITION('_' IN typeid_str) = 0 THEN
-            RETURN base32_decode(typeid_str)::uuid;
-          END IF;
-          prefix := SPLIT_PART(typeid_str, '_', 1);
-          suffix := SPLIT_PART(typeid_str, '_', 2);
-          IF prefix IS NULL OR prefix = '' THEN
-            RAISE EXCEPTION 'typeid prefix cannot be empty with a delimiter';
-          END IF;
-          IF NOT prefix ~ '^[a-z]{1,63}$' THEN
-            RAISE EXCEPTION 'typeid prefix must match the regular expression [a-z]{1,63}';
-          END IF;
-          RETURN base32_decode(suffix)::uuid;
-        END
-        $$
-        LANGUAGE plpgsql
-        IMMUTABLE;
+RETURNS uuid
+AS $$
+DECLARE
+  prefix text;
+  suffix text;
+BEGIN
+  IF (typeid_str IS NULL) THEN
+    RETURN NULL;
+  END IF;
+  IF POSITION('_' IN typeid_str) = 0 THEN
+    RETURN base32_decode(typeid_str)::uuid;
+  END IF;
+  prefix := SPLIT_PART(typeid_str, '_', 1);
+  suffix := SPLIT_PART(typeid_str, '_', 2);
+  IF prefix IS NULL OR prefix = '' THEN
+    RAISE EXCEPTION 'typeid prefix cannot be empty with a delimiter';
+  END IF;
+  IF NOT prefix ~ '^[a-z]{1,63}$' THEN
+    RAISE EXCEPTION 'typeid prefix must match the regular expression [a-z]{1,63}';
+  END IF;
+  RETURN base32_decode(suffix)::uuid;
+END
+$$
+LANGUAGE plpgsql
+IMMUTABLE;
+""")
 
+    op.execute("""
 create or replace function base32_decode(s text)
 returns uuid as $$
 declare
-  dec bytea = '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF 00 01'::bytea ||
-              '\x02 03 04 05 06 07 08 09 FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF 0A 0B 0C'::bytea ||
-              '\x0D 0E 0F 10 11 FF 12 13 FF 14'::bytea ||
-              '\x15 FF 16 17 18 19 1A FF 1B 1C'::bytea ||
-              '\x1D 1E 1F FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
-              '\xFF FF FF FF FF FF'::bytea;
+  dec bytea = '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF 00 01'::bytea ||
+              '\\x02 03 04 05 06 07 08 09 FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF 0A 0B 0C'::bytea ||
+              '\\x0D 0E 0F 10 11 FF 12 13 FF 14'::bytea ||
+              '\\x15 FF 16 17 18 19 1A FF 1B 1C'::bytea ||
+              '\\x1D 1E 1F FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF FF FF FF FF'::bytea ||
+              '\\xFF FF FF FF FF FF'::bytea;
   v bytea = convert_to(s, 'UTF8');
-  id bytea = '\x00000000000000000000000000000000';
+  id bytea = '\\x00000000000000000000000000000000';
 begin
   if length(s) <> 26 then
     raise exception 'typeid suffix must be 26 characters';
