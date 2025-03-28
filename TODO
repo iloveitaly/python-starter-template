@@ -69,6 +69,7 @@ can kamal work with a registry with container?
 flightcontrol on AWS or something like that on azure
 
 ## dev
+if a command running inside a direnv .envrc fails, it doesn't change the exit code https://github.com/direnv/direnv/issues/893
 forklift for s3 and remote storage
 %load_ext pgcli.magic for ipython
 add custom cspell dictionary instead of settings.json
@@ -94,11 +95,14 @@ should we add justfile to run production scripts? Probably not. Should document.
 `{"TimeStamp": "2024-12-17T22:05:33.8744132+00:00", "Log": "INFO   100.100.0.180:49730 - \"GET /favicon.ico HTTP/1.1\" 200"}` need to improve fastapi structured logging
 
 ## pytest
+https://grok.com/share/bGVnYWN5_db662e27-ebb0-4157-8c26-636ca80f5bbd better default pytest configuration
+https://github.com/flexmock/flexmockc
 interesting object matcher here https://github.com/replicate/cog/blob/c95774f18b8df6f6a7b841be1900153ca04a57ad/python/tests/conftest.py#L6-L23
 timeout default for playwright to avoid hanging
 test logs are a mess. I need to figure out what pytest is doing and make them sane.
 --debug seems to generate a different test log
 https://github.com/darrenburns/pytest-clarity
+https://github.com/nicoddemus/pytest-rich/blob/main/src/pytest_rich/header.py
 
 ## open source
 localias upstream no caching
@@ -113,7 +117,6 @@ https://github.com/tecolicom/actions-use-apt-tools/issues/5
 1p can hang CI https://1password-devs.slack.com/archives/C03NJV34SSC/p1733764637441309
 can we use a op service account locally? Probably not a great idea since no 2f is required
 pull mailpit contents (we can't pull screeshots)
-visual diff via comment on playwright
 distribute tests across databases and redis https://pytest-xdist.readthedocs.io/en/stable/distribution.html
 enable verbose debugging on tests when GHA debug is enabled
 maybe screenshot comments? https://github.com/ActivityWatch/aw-webui/blob/291da6f2c5e7a6b896f23a4eec5ffed9874321ba/.github/workflows/comment.yml#L69
@@ -180,4 +183,4 @@ binding for paste as plain text
 - [ ] https://github.com/nainglinnkhant/lingua-time/pull/3
 - [ ] pull copy to clipboard into a open source component
 - [ ] pull combobox stuff into the parent repo
-- [ ]
+- [ ] create template for shadcn ui components that I can easily clone with copier and use for components

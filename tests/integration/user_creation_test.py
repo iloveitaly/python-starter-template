@@ -57,9 +57,9 @@ def test_signup(server, page: Page, assert_snapshot) -> None:
 
     # page.unroute("https://resolved-emu-53.clerk.accounts.dev/v1/**")
 
-    assert_snapshot(page)
-
     expect(page.locator("body")).to_contain_text("Hello From Internal Python")
+
+    assert_snapshot(page)
 
     wait_for_loading(page)
 
@@ -73,3 +73,5 @@ def test_signup(server, page: Page, assert_snapshot) -> None:
     page.get_by_role("menuitem", name="Sign out").click()
 
     expect(page.locator("body")).to_contain_text("Sign in")
+
+    assert_snapshot(page)
