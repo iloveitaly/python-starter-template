@@ -21,7 +21,7 @@ There are some nuances we need to consider:
 import mimetypes
 import os
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.datastructures import Headers
@@ -101,7 +101,7 @@ def mount_public_directory(app: FastAPI):
     async def javascript_index():
         return FileResponse(public_path / "index.html")
 
-    @app.get("/{path:path}")
+    @app.get("/{path:path}", include_in_schema=False)
     async def frontend_handler(path: str):
         """
         This is a very dangerous piece of code: if this is not last it will override other routes in the application
