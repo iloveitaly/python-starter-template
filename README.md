@@ -59,16 +59,20 @@ There are a couple of dependencies which are not managed by the project:
 * Latest macOS
 * VS Code
 
-You can use a different setup.
+(you __could__ use a different setup (bash, vim, etc), but this is not the golden path for this project.)
 
-[Copier](https://copier.readthedocs.io/en/stable/) is the easiest way to get started:
+[Copier](https://copier.readthedocs.io/en/stable/) is the easiest way to get started. It allows you to clone this project, automatically customize the important pieces of it, and most importantly *stay up to date* by pulling upstream changes:
 
 ```shell
 mkdir your-project
-uv tool run --with jinja2_shell_extension copier copy https://github.com/iloveitaly/python-starter-template . --trust
+
+# shell extensions help copier infer github username, etc. Not required if you want to do that yourself.
+uv tool run --with jinja2_shell_extension \
+  copier copy https://github.com/iloveitaly/python-starter-template . \
+  --trust
 ```
 
-The neat thing about copier is you pull updates from this template later on if you'd like:
+The neat thing about copier is [you can pull updates](.copier/update.sh) from this template later on:
 
 ```shell
 uv tool run --with jinja2_shell_extension copier update --trust --skip-tasks --skip-answered
@@ -89,17 +93,17 @@ just setup
 
 That should do most of what you need. Here are some bits you'll need to handle manually:
 
-* Note that you'll probably want to manually install the shell hooks for a couple tools which you will need to do manually.
-* If you use 1p for secrets, you'll need to set up the 1Password CLI.
+* [Install the shell hooks for a couple tools](#shell-completions). Direnv is especially important.
+* If you use 1password for secrets, [you'll need to set up the 1Password CLI.](https://developer.1password.com/docs/cli/)
 
 ### Simple Mode
 
 If you despise dev productivity tooling (no judgement!) you can:
 
 * Avoid using direnv.
-* Avoid tying into your local 1password.
+* Avoid using 1password.
 
-Ask a friend who has the system fully configured to run:
+If you are working on a team, ask a friend who has the system fully configured to run:
 
 ```shell
 just direnv_bash_export
@@ -112,6 +116,8 @@ The primary downside to this approach is:
 * Any mutated API keys from 1Password will not be automatically updated
 * Updated ENV configuration will not be automatically used
 * You cannot easily
+
+If you are a solo contributor to the project, you'll have to edit the `.envrc` and friends down to a single `.env` which you could manually or use traditional `dotenv` tooling in python and javascript.
 
 ### Advanced Mode
 
@@ -128,18 +134,19 @@ Here are a couple additions to your shell environment that you'll probably want 
 * [direnv](https://direnv.net/docs/hook.html)
 * [mise](https://mise.jdx.dev/cli/completion.html)
 * [just](https://just.systems/man/en/shell-completion-scripts.html)
-* [fzf tab completion](https://github.com/Aloxaf/fzf-tab)
-
-## Production
-
-### Frontend
-
-* `window.SENTRY_RELEASE` has the commit sha of the build.
-* Backend uses JSON logging in production
-* `devDependencies` should only contain dependencies that are required for local development. All dependencies required
-  for building the frontend should be in `dependencies`.
+* [fzf tab completion](https://github.com/Aloxaf/fzf-tab) (this makes working with just really nice)
 
 ## Usage
+
+### Dependencies
+
+Non-language dependencies are always tricky. Here's how it's handled:
+
+* `brew` is used to install tools required by development scripts
+* `mise` is used for runtimes, package managers (uv, pnpm), and runners (direnv + just). Mise should be used to install any tools required for running `build*` and `test*` Justfile recipes but not tools that are *very* popular (like jq, etc) which are better installed by the native os package manager.
+  * Note that `asdf` could probably be used instead of `mise`, but I haven't tested it and there's many Justfile recipes that use mise.
+* `apt` is used to install *some* of the tools required to run CI scripts (like zsh), but most are omitted since they should never run in production.
+* Direct install scripts are used to install some more obscure packages (localias, nixpacks, etc) that are not well supported by the os package manager or mise.
 
 ### GitHub Actions
 
@@ -151,6 +158,21 @@ The easiest way to do this is with the CLI:
 gh workflow disable # and `enable` to turn it back on
 ```
 
+### Python Factories
+
+I tried both [factoryboy](https://factoryboy.readthedocs.io/en/stable/index.html) and [polyfactory](https://github.com/litestar-org/polyfactory/) and landed on polyfactory for a couple reasons:
+
+- Integration with SQLAlchemy + Pydantic
+- Type inference. It looks at the types defined on the pydantic model (including sqlmodel!) and generates correct values for you. This is really nice.
+
+There are some significant gaps in functionality, but the maintainers [have been open to contributions.](https://github.com/litestar-org/polyfactory/pulls?q=is%3Apr+author%3Ailoveitaly)
+
+### Python Debugging Extras
+
+I'm a big fan of lots of installing many debugging tools locally. These should not be installed in the production build.
+
+I've included my favorites in the `debugging-extras` group. These are not required for the project to run.
+
 ### Naming Recommendations
 
 General recommendations for naming things throughout the system:
@@ -161,6 +183,8 @@ General recommendations for naming things throughout the system:
 
 ### Pytest
 
+* [pretty-traceback](https://github.com/mbarkhau/pretty-traceback/pull/17) is used to clean up the horrible-by-default pytest stack traces that make life difficult.
+* Since `tests/` is in the top-level of the project, `__init__.py` is required
 * All fixtures should go in `conftest.py`. Importing fixtures externally [could break in future versions.](https://docs.pytest.org/en/7.4.x/how-to/fixtures.html#using-fixtures-from-other-projects)
 
 ### Migrations
@@ -173,24 +197,26 @@ General recommendations for naming things throughout the system:
 
 Across `py`, `js`, and `db` the following subcommands are supported:
 
-* clean. Wipe all temporary files related to the environment.
-* setup. Set up the environment.
-* nuke. Clean & setup.
-* play. Interactive playground.
-* lint. Run linting.
-* lint-fix. Run linting and fix all errors.
-* test. Run tests.
-* dev. Run the development server.
+* `clean`. Wipe all temporary files related to the environment.
+* `setup`. Set up the environment.
+* `nuke`. Clean & setup.
+* `play`. Interactive playground.
+* `lint`. Run linting.
+* `lint`-fix. Run linting and fix all errors.
+* `test`. Run tests.
+* `dev`. Run the development server.
 
 There are top-level commands for many of these (`clean`, `setup`, `dev`, etc) which run actions for all environments.
 
 ### Linting
 
-More linting tools are better, as long as they are well maintained. This project implements many linting tools (including DB SQL linting!). This could cause developer friction at some point, but we'll see how this scales as the codebase complexity grows.
+The more linting tools are better, as long as they are well maintained, useful, and add value.
 
-### Database Cleaning
+This project implements many linting tools (including DB SQL linting!). This could cause developer friction at some point, but we'll see how this scales as the codebase complexity grows.
 
-Implemented by `activemodel` which is a package created specifically for this project.
+### Test Database Cleaning
+
+This is implemented by `activemodel` which is a package created specifically for this project.
 
 Two methods are needed:
 
@@ -198,7 +224,7 @@ Two methods are needed:
 * Truncation. Transaction-based cleaning does not work is database mutations occur in a separate process.
   * This gets tricky because of platform differences between macOS and Linux, but the tldr is although it's possible to share a DB session handle between the test process *and* the uvicorn server running during integration tests, it's a bad idea with lots of footguns, so we opt for truncation.
 
-### Testing Architecture
+### General Testing Architecture
 
 Here's how this project thinks about tests:
 
@@ -207,13 +233,30 @@ Here's how this project thinks about tests:
 * Most common flows should be covered by a functional test. I think of a functional test as e2e tests on specific API routes or jobs. Primarily testing backend logic and not interaction with the UI.
 * Unit tests should be used for tricky code or to validate regressions.
 
-### JavaScript/UI/Remix Tests
+### Integration Testing (Playwright)
 
-```javascript
-screen.debug() // Logs the DOM structure
+Everyone calls integration testing something different. To me, integration tests are:
+
+* Few in number, since they are expensive, slow, and brittle.
+* Use the production configuration as much as possible. This means production JS build, HTTPS, etc.
+* Cover the main workflows of the application to provide automated QA against the most important pieces of the application.
+* Provide self-documentation about what the system does.
+
+Here are some tips for working with the Playwright integration tests.
+
+Log the DOM structure:
+
+```python
+screen.debug()
 ```
 
-### 'Login As'
+Pause playwright execution:
+
+```python
+page.pause()
+```
+
+### 'Login As' Admin Functionality
 
 This is an important part of any production application. Being able to impersonate a user and view their application to debug issues.
 
@@ -275,6 +318,8 @@ VITE_BUILD_COMMIT=-dirty node inspect web/node_modules/@react-router/dev/bin.js 
 * Use `api_app.url_path_for` for all URL generation.
 
 ### Pytest Integration Playwright Tests
+
+<!-- TODO should merge with the section above -->
 
 To debug integration tests, you'll want to see what's happening. Use `--headed` to do this:
 
@@ -350,16 +395,6 @@ OP_ACCOUNT=company.1password.com OP_VAULT_UID=a_uuid just secrets_local-service-
 
 And drop the resulting token in your `.env.local` file.
 
-### Dependencies
-
-Non-language dependencies are always tricky. Here's how it's handled:
-
-* `brew` is used to install tools required by development scripts
-* `mise` is used for runtimes, package managers (uv, pnpm), and runners (direnv + just). Mise should be used to install any tools required for running `build*` and `test*` Justfile recipes but not tools that are *very* popular (like jq, etc) which are better installed by the native os package manager.
-  * Note that `asdf` could probably be used instead of `mise`, but I haven't tested it and there's many Justfile recipes that use mise.
-* `apt` is used to install *some* of the tools required to run CI scripts (like zsh), but most are omitted since they should never run in production.
-* Direct install scripts are used to install some more obscure packages (localias, nixpacks, etc) that are not well supported by the os package manager or mise.
-
 ### DevProd
 
 Here are the devprod principles this project adheres to:
@@ -374,6 +409,8 @@ Here are the devprod principles this project adheres to:
 * Container building and registry storage should be handled on CI. This reduces vendor lock in.
 
 ### Python Job Queue
+
+I tried both RQ and Celery, and looked at other job queue systems, before landing on Celery.
 
 #### Celery
 
@@ -402,9 +439,20 @@ worker: rq worker --with-scheduler -w rq.worker.SpawnWorker
 
 [I've left some of the configuration around](./app/rq.py) in case you want to try it out.
 
+## Production
+
+### Frontend
+
+* `window.SENTRY_RELEASE` has the commit sha of the build.
+* Backend uses JSON logging in production
+* `devDependencies` should only contain dependencies that are required for local development. All dependencies required
+  for building the frontend should be in `dependencies`.
+
 ## Related
 
 ### Other Templates
+
+Some other templates I ran across when developing this project:
 
 * https://github.com/peterdresslar/fastapi-sqlmodel-alembic-pg
 * https://github.com/fastapi/full-stack-fastapi-template/
