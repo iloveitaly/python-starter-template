@@ -182,7 +182,7 @@ asyncio_default_fixture_loop_scope = "session"
 j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
 ipython-autoimport = { git = "https://github.com/iloveitaly/ipython-autoimport", rev = "ipython-9.x" }
 ipdb = { git = "https://github.com/iloveitaly/ipdb", rev = "support-executables" }
-pretty-traceback = { git = "https://github.com/iloveitaly/pretty-traceback.git", rev = "custom" }
+pretty-traceback = { git = "https://github.com/iloveitaly/pretty-traceback.git", rev = "local-traceback" }
 ipython-suggestions = { git = "https://github.com/iloveitaly/ipython-suggestions.git", rev = "ipython-9.x" }
 
 [tool.uv.sources.pytest-playwright-visual-snapshot]
