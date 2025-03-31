@@ -21,7 +21,7 @@ There are some nuances we need to consider:
 import mimetypes
 import os
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.datastructures import Headers
