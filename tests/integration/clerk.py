@@ -10,6 +10,7 @@ Attempting to upstream at: https://github.com/clerk/clerk-sdk-python/pull/65/fil
 """
 
 import logging
+import os
 from dataclasses import dataclass
 from typing import Optional
 
@@ -89,7 +90,6 @@ def setup_clerk_testing_token(page: Page, frontend_api_url: str | None = None):
     Raises:
         ValueError: If frontend API URL is not provided
     """
-    import os
 
     if not frontend_api_url:
         frontend_api_url = os.environ.get("CLERK_FAPI_URL")
@@ -147,6 +147,21 @@ def setup_clerk_testing_token(page: Page, frontend_api_url: str | None = None):
         route.continue_(url=new_url)
 
     page.route(api_url, handle_route)
+
+
+def teardown_clerk_testing_token(
+    page: Page, frontend_api_url: str | None = None
+) -> None:
+    """
+    Remove the testing token from the Clerk API requests. Should only be used for debugging playwright.
+    """
+
+    if not frontend_api_url:
+        frontend_api_url = parse_publishable_key(
+            os.environ.get["CLERK_PUBLISHABLE_KEY"]
+        ).frontend_api_url
+
+    page.unroute(f"https://{frontend_api_url}/v1/**")
 
 
 def base64_decode(original_b64_string: str) -> str:

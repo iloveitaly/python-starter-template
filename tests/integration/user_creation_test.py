@@ -6,8 +6,8 @@ from app.models.user import User
 
 from tests.constants import CLERK_DEV_USER_PASSWORD
 from tests.integration.clerk import setup_clerk_testing_token
-from tests.integration.server import home_url, wait_for_loading
-from tests.integration.utils import login_as_dev_user
+from tests.integration.server import home_url
+from tests.integration.utils import login_as_dev_user, wait_for_loading
 
 
 def test_signin(server, page: Page, assert_snapshot) -> None:
@@ -54,8 +54,6 @@ def test_signup(server, page: Page, assert_snapshot) -> None:
     page.get_by_label("Digit 6").fill("2")
 
     wait_for_loading(page)
-
-    # page.unroute("https://resolved-emu-53.clerk.accounts.dev/v1/**")
 
     expect(page.locator("body")).to_contain_text("Hello From Internal Python")
 

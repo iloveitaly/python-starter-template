@@ -187,6 +187,18 @@ General recommendations for naming things throughout the system:
 * Since `tests/` is in the top-level of the project, `__init__.py` is required
 * All fixtures should go in `conftest.py`. Importing fixtures externally [could break in future versions.](https://docs.pytest.org/en/7.4.x/how-to/fixtures.html#using-fixtures-from-other-projects)
 
+### Pytest Formatting
+
+* https://github.com/samuelcolvin/pytest-pretty
+
+### Pytest Clerk
+
+Integration test that include auth are critical. Otherwise you aren't testing your entire app. Both integration and route tests hit the live Clerk API.
+
+However, there's some pretty intense playwright trickery to make everything work. Clerk has bot protections in place, so to avoid getting caught, you need to mutate the URLs used to include a signed key.
+
+This is done by `setup_clerk_testing_token`. If you want to remove the custom playwright routing, you can do so using `teardown_clerk_testing_token`.
+
 ### Migrations
 
 1. SQLModel provides a way to push a model definition into the DB. However, once columns and not tables are mutated you must drop the table and recreate it otherwise changes will not take effect. If you develop in this way, you'll need to be extra careful.
