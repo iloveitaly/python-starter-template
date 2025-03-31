@@ -7,6 +7,7 @@ from pathlib import Path
 
 import structlog
 
+from . import constants  # noqa: F401, import all constants to trigger build failures
 from .configuration.database import configure_database
 from .configuration.debugging import configure_debugging
 from .configuration.emailer import configure_mailer
