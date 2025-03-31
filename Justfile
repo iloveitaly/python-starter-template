@@ -120,7 +120,7 @@ dev_kill:
 
 # NOTE nixpacks is installed during the deployment step and not as a development prerequisite
 BREW_PACKAGES := "fd entr 1password-cli yq jq fzf"
-EXTRA_BREW_PACKAGES := "lefthook peterldowns/tap/localias foreman"
+EXTRA_BREW_PACKAGES := "lefthook peterldowns/tap/localias foreman pstree"
 
 [macos]
 [script]
@@ -327,6 +327,8 @@ js_test:
 # run a development server
 js_dev:
 	[[ -d {{WEB_DIR}}/node_modules ]] || just js_setup
+	# if the server doesn't quit perfectly, it can still consume the port, let's avoid having to think about that
+	kill -9 $(lsof -t -i :${JAVASCRIPT_SERVER_PORT}) 2>/dev/null || true
 	{{_pnpm}} run dev
 
 # build a production javascript bundle, helpful for running e2e python tests
@@ -465,8 +467,10 @@ py_upgrade:
 	uv tool upgrade --all
 	git add pyproject.toml uv.lock
 
-# open up a development server
+# open up a python development server
 py_dev:
+	# if the server doesn't quit perfectly, it can still consume the port, let's avoid having to think about that
+	kill -9 $(lsof -t -i :${PYTHON_SERVER_PORT}) 2>/dev/null || true
 	PORT=$PYTHON_SERVER_PORT uv run python main.py
 
 py_play:
@@ -610,6 +614,12 @@ py_playwright-record:
 # open mailpit web ui, helpful for inspecting emails
 py_mailpit_open:
 	open "https://$(echo $SMTP_URL | cut -d'/' -f3 | cut -d':' -f1)"
+
+# run py-spy on all python processes with a cwd matching the current project
+py_spy:
+	ps -eo pid,command | \
+		awk -v dir="$(pwd)" '$2 ~ /python/ && system("lsof -p " $1 " 2>/dev/null | grep -q " dir) == 0 {print $1}' | \
+		xargs -I{} sudo py-spy dump --pid {}
 
 #######################
 # CI Management
@@ -814,6 +824,8 @@ _secrets_service-token CONTEXT WRITE_PERMISSION="false":
 # for terraform and other tools which can create entries
 [macos]
 secrets_write-service-token:
+	@echo '{{ BLUE }}Update your ".env.local" with this value:{{ NORMAL }}'
+
 	just _secrets_service-token write true | jq -r -R '@sh "export OP_SERVICE_ACCOUNT_TOKEN=\(.)"'
 
 # generate service account token for local development
