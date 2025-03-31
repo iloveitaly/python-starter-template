@@ -54,5 +54,6 @@ if __name__ == "__main__":
         log_config=None,
         # a custom access logger is implemted which plays nicely with structlog
         access_log=False,
+        # loop="auto" is the default, which looks like anyio in a stacktrace, but anyio uses uvloop behind the scenes
         **additional_args,
     )

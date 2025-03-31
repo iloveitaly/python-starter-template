@@ -16,7 +16,6 @@ import pytest
 import uvicorn
 from decouple import config
 from furl import furl
-from playwright.sync_api import Page
 
 from app import log
 from app.environments import is_local_testing
@@ -28,6 +27,12 @@ from tests.integration.javascript_build import wait_for_javascript_build
 PYTHON_SERVER_TEST_PORT = config("PYTHON_TEST_SERVER_PORT", cast=int)
 
 _server_subprocess = None
+
+
+def terminate_server():
+    global _server_subprocess
+    if _server_subprocess:
+        _server_subprocess.terminate()
 
 
 def wait_for_termination(pid, timeout=10) -> bool:
@@ -87,6 +92,8 @@ def run_server():
     surprising behavior (like the transaction database cleaner not working). This is why we need to run
     """
 
+    # TODO we should be able to assert code signature on configuration in `main.py` so this alerts us when we are out of sync
+
     uvicorn.run(
         api_app,
         port=PYTHON_SERVER_TEST_PORT,
@@ -94,6 +101,8 @@ def run_server():
         log_config=None,
         # a custom access logger is implemted which plays nicely with structlog
         access_log=False,
+        # paranoid settings!
+        reload=False,
     )
 
 
@@ -134,50 +143,14 @@ def server():
     try:
         yield
     finally:
-        wait_for_termination(proc.pid)
+        assert wait_for_termination(proc.pid)
 
     # TODO should we install a signal trap to ensure the server is killed?
-
-
-def pytest_keyboard_interrupt(excinfo):
-    log.info("KeyboardInterrupt caught – stopping server...")
-    if _server_subprocess:
-        _server_subprocess.terminate()
-    # from _pytest.config import get_config
-
-    # config = get_config()
-    # instance = getattr(config, "my_playwright_instance", None)
-    # if instance is not None:
-    #     print("KeyboardInterrupt caught – stopping playwright...")
-    #     instance.stop()
 
 
 def home_url():
     # TODO should we just use `base_server_url` instead?
     return str(furl(scheme="https", host=PYTHON_TEST_SERVER_HOST))
-
-
-def wait_for_loading(page: Page):
-    """
-    Defensively wait for everything on the page to finish loading.
-
-    Helpful when generating screenshots for visual comparison.
-    """
-
-    # https://stackoverflow.com/questions/71937343/playwright-how-to-wait-until-there-is-no-animation-on-the-page
-    page.wait_for_load_state("domcontentloaded")
-    page.wait_for_load_state("load")
-    page.wait_for_load_state("networkidle")
-
-    # Wait for any CSS animations/transitions to complete
-    # page.wait_for_function("""
-    #     !Array.from(document.querySelectorAll('*')).some(
-    #         element => window.getComputedStyle(element).animationName !== 'none'
-    #     )
-    # """)
-
-    # some animations can still run and cause diffs
-    # page.wait_for_timeout(2_000)
 
 
 def report_localias_status():
