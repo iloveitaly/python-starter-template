@@ -157,9 +157,9 @@ def teardown_clerk_testing_token(
     """
 
     if not frontend_api_url:
-        frontend_api_url = parse_publishable_key(
-            os.environ.get["CLERK_PUBLISHABLE_KEY"]
-        ).frontend_api_url
+        parsed_result = parse_publishable_key(os.environ.get("CLERK_PUBLISHABLE_KEY"))
+        assert parsed_result
+        frontend_api_url = parsed_result.frontend_api
 
     page.unroute(f"https://{frontend_api_url}/v1/**")
 
