@@ -42,7 +42,7 @@ log.info("multiprocess start method", start_method=multiprocessing.get_start_met
 def pytest_configure(config: Config):
     # TODO huh, maybe we should use anyio instead?
     # anyio is installed by some other packages and it's plugin is discovered automatically, we disable it in favor of asyncio
-    config.option.plugins = ["no:anyio"]
+    config.option.plugins = ["no:anyio", "no:logging"]
 
     # when configuring in code, a tuple is used for the (mod, class) reference
     # check out _pytest/debugging.py for implementation details
