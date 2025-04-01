@@ -6,6 +6,13 @@ from tests.integration.clerk import setup_clerk_testing_token
 from tests.integration.server import home_url
 from tests.routes.utils import get_clerk_dev_user
 
+# TODO scroll to bottom?
+# page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+
+# set_timeout
+# page.set_default_timeout(120_000)
+# page.set_default_navigation_timeout(120_000)
+
 
 def wait_for_loading(page: Page, timeout: int = 30000, extreme: bool = False):
     """
