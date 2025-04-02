@@ -83,6 +83,9 @@ def pytest_configure(config: Config):
 
     config.option.playwright_visual_snapshots_path = decouple_config("PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY", cast=Path)
     config.option.playwright_visual_snapshot_failures_path = TEST_RESULTS_DIRECTORY / "playwright_visual_snapshot_failures"
+    config.option.playwright_visual_snapshot_masks = [
+        '[data-clerk-component="UserButton"]',
+    ]
 
 def pytest_sessionstart(session):
     "only executes once if a test is run, at the beginning of the test suite execution"
