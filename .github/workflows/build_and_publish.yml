@@ -24,6 +24,9 @@ env:
   # for the gh-cli
   GH_TOKEN: ${{ github.token }}
 
+  # required otherwise github api calls are rate limited
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   # a important design goal is to avoid custom configuration in CI. This enables tests to be run in a CI-like environment
   # locally, making it easy to replicate CI issues. This is one of the few CI-specific configuration changes since
   # the host where services are located is truly unique to the CI environment.
