@@ -808,6 +808,20 @@ db_debug_off:
 	docker compose exec postgres \
 		psql -U $POSTGRES_USER -c "ALTER SYSTEM SET log_statement = 'none'; SELECT pg_reload_conf();"
 
+# dump the production database locally, obviously this is a bad idea most of the time
+[macos]
+[script]
+db_dump_production:
+	echo "{{ BLUE }}Enter the op:// reference to the production DB (e.g., op://Dev/prod DB/db-connection-string):{{ NORMAL }}"
+	read op_ref
+
+	local dump_file="tmp/$(date +%Y-%m-%d)_production.dump"
+	echo "Dumping production database..."
+	pg_dump $(op read "$op_ref") -F c -f "$dump_file"
+
+	echo "Created file: $dump_file"
+	echo "Example restore: \n{{ BLUE }}pg_restore --no-owner --no-privileges --if-exists --clean -d \$DATABASE_URL $dump_file{{ NORMAL }}"
+
 #######################
 # Secrets (via 1Password)
 #######################
