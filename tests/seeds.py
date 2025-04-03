@@ -1,7 +1,7 @@
 from app.models.user import User
 
-from tests.routes.utils import get_clerk_seed_user
 from tests.log import log
+from tests.routes.utils import get_clerk_seed_user
 
 
 def seed_test_data():

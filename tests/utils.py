@@ -1,5 +1,4 @@
 import funcy_pipe as fp
-import structlog
 
 from app.configuration.clerk import clerk
 from app.environments import is_testing
