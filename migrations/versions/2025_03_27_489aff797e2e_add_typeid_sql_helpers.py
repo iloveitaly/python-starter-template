@@ -23,35 +23,48 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    "https://github.com/jetify-com/typeid-sql/blob/main/sql/02_base32.sql"
+    """
+    - https://github.com/jetify-com/typeid-sql/blob/main/sql/02_base32.sql
+    - https://github.com/iloveitaly/opensource/blob/e9f63efec37b61d25f34d39b344646a1ff5bb7b2/typeid/typeid-sql/sql/03_typeid.sql#L70-L105
+    """
 
     op.execute("""
-CREATE OR REPLACE FUNCTION typeid_parse(typeid_str text)
-RETURNS uuid
-AS $$
-DECLARE
+create or replace function public.typeid_parse(typeid_str text)
+ returns uuid
+ language plpgsql
+ immutable
+as $function$
+declare
+  parts text[];  -- array to hold split parts of the string
   prefix text;
   suffix text;
-BEGIN
-  IF (typeid_str IS NULL) THEN
-    RETURN NULL;
-  END IF;
-  IF POSITION('_' IN typeid_str) = 0 THEN
-    RETURN base32_decode(typeid_str)::uuid;
-  END IF;
-  prefix := SPLIT_PART(typeid_str, '_', 1);
-  suffix := SPLIT_PART(typeid_str, '_', 2);
-  IF prefix IS NULL OR prefix = '' THEN
-    RAISE EXCEPTION 'typeid prefix cannot be empty with a delimiter';
-  END IF;
-  IF NOT prefix ~ '^[a-z]{1,63}$' THEN
-    RAISE EXCEPTION 'typeid prefix must match the regular expression [a-z]{1,63}';
-  END IF;
-  RETURN base32_decode(suffix)::uuid;
-END
-$$
-LANGUAGE plpgsql
-IMMUTABLE;
+begin
+  if (typeid_str is null) then
+    return null;
+  end if;
+  parts := string_to_array(typeid_str, '_');
+  if array_length(parts, 1) = 1 then
+    suffix := parts[1];
+    prefix := '';
+  else
+    suffix := parts[array_length(parts, 1)];  -- last part is the suffix
+    prefix := array_to_string(parts[1:array_length(parts, 1)-1], '_');  -- join all but last part with '_'
+    if prefix = '' then
+      raise exception 'typeid prefix cannot be empty with a delimiter';
+    end if;
+  end if;
+  if prefix != '' then
+    -- updated regex allows underscores in prefix, e.g., "doctor_note_schema"
+    if not prefix ~ '^[a-z]+(_[a-z]+)*$' then
+      raise exception 'typeid prefix must match the regular expression ^[a-z]+(_[a-z]+)*$';
+    end if;
+    if length(prefix) > 63 then
+      raise exception 'typeid prefix must be at most 63 characters';
+    end if;
+  end if;
+  return base32_decode(suffix)::uuid;
+end
+$function$
 """)
 
     op.execute("""
