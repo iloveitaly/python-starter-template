@@ -5,6 +5,7 @@ In order to load them, and keep the state consistent across local testing and CI
 However, it's easier to just run `pytest` and never think about environment variables.
 
 - This logic should only be run *locally* when running tests
+- The application should NOT be started before this is run, otherwise it won't work properly
 """
 
 import glob
@@ -12,10 +13,11 @@ import hashlib
 import json
 import os
 import subprocess
+import sys
 import typing as t
 
 from .constants import TMP_DIRECTORY
-from .utils import log
+from .log import log
 
 
 def is_using_direnv() -> bool:
@@ -34,6 +36,8 @@ def direnv_ci_environment() -> dict[str, t.Any]:
         shell=True,
         capture_output=True,
         text=True,
+        # 30 second timeout, arbitrary
+        timeout=30,
     )
 
     process_result.check_returncode()  # Raises CalledProcessError if exit code is non-zero
@@ -84,14 +88,21 @@ def update_environment(env: dict[str, t.Any]) -> None:
                 f"Attempting to modify dangerous environment variable: {key}"
             )
 
-    for key, value in env.items():
-        os.environ[key] = str(value)
+    log.debug("updating environment variables", env_vars=list(env.keys()))
+
+    # IMPORTANT this line is critical: if the env is not updated properly, it will NOT propagate to subprocesses
+    # like the integration test server.
+    os.environ.update(env)
 
 
 def load_ci_environment():
     if not is_using_direnv():
         log.info("Skipping direnv setup, not using direnv locally")
         return
+
+    assert "app" not in sys.modules, (
+        "app modules should not be imported before environment is set"
+    )
 
     sha = direnv_state_sha()
 

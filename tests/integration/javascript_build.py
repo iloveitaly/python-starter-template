@@ -21,7 +21,7 @@ from gitignore_parser import parse_gitignore
 from app import root
 from app.environments import is_local_testing
 
-from tests.utils import log
+from tests.log import log
 
 js_build_success = None
 

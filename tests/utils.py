@@ -8,8 +8,7 @@ from tests.constants import (
     CLERK_ALL_USERS_TO_PRESERVE,
 )
 
-# named logger for all test-specific logic to use
-log = structlog.get_logger(logger_name="test")
+from .log import log
 
 
 def delete_all_clerk_users():

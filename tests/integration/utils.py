@@ -16,19 +16,19 @@ from tests.routes.utils import get_clerk_dev_user
 
 def wait_for_loading(page: Page, timeout: int = 30000, extreme: bool = False):
     """
-    Comprehensive loading detection for modern React 18+ applications
+    Comprehensive loading detection for modern React 18+ applications, including CSS animations/transitions.
 
     Parameters:
         page: Playwright page object
         timeout: Maximum wait time in milliseconds
-        extreme: Whether to use additional React-specific loading detection
+        extreme: Whether to use additional React-specific and animation loading detection
     """
     # Basic page loading states
     page.wait_for_load_state("domcontentloaded")
     page.wait_for_load_state("load")
     page.wait_for_load_state("networkidle")
 
-    # Add React-specific loading detection when extreme=True
+    # Add React-specific and animation detection when extreme=True
     if extreme:
         page.evaluate("""() => {
             window._reactLoadingComplete = false;
@@ -43,7 +43,6 @@ def wait_for_loading(page: Page, timeout: int = 30000, extreme: bool = False):
                     if (window.document.documentElement.dataset.reactRouterLoading === 'true') return false;
 
                     // 3. Check for TanStack Query/React Query loading state
-                    // Modern apps expose this via a data attribute on HTML/body
                     if (document.documentElement.dataset.queryLoading === 'true') return false;
 
                     // 4. Check for common loading indicators
@@ -53,8 +52,11 @@ def wait_for_loading(page: Page, timeout: int = 30000, extreme: bool = False):
                     if (loadingIndicators.length > 0) return false;
 
                     // 5. Wait for any React transitions to complete (React 18+)
-                    // React sets this attribute during transitions
                     if (document.documentElement.dataset.reactTransition === 'active') return false;
+
+                    // 6. Wait for CSS animations and transitions to finish
+                    const animations = document.getAnimations();
+                    if (animations.length > 0) return false;
 
                     return true;
                 } catch (e) {
@@ -70,7 +72,7 @@ def wait_for_loading(page: Page, timeout: int = 30000, extreme: bool = False):
                     window._reactLoadingComplete = true;
                 } else if (Date.now() - startTime > 10000) {
                     // Timeout after 10 seconds of polling
-                    console.warn("React loading detection timed out");
+                    console.warn("React and animation loading detection timed out");
                     window._reactLoadingComplete = true;
                 } else {
                     setTimeout(poll, 100);
@@ -80,7 +82,7 @@ def wait_for_loading(page: Page, timeout: int = 30000, extreme: bool = False):
             poll();
         }""")
 
-        # Wait for React loading to complete
+        # Wait for React and animation loading to complete
         try:
             page.wait_for_function(
                 "() => window._reactLoadingComplete === true", timeout=timeout
@@ -88,7 +90,7 @@ def wait_for_loading(page: Page, timeout: int = 30000, extreme: bool = False):
         except Exception as e:
             from app import log
 
-            log.warning(f"React loading check timed out: {e}")
+            log.warning(f"React and animation loading check timed out: {e}")
 
     # Brief pause for any final renders
     page.wait_for_timeout(100)

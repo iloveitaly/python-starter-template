@@ -12,6 +12,7 @@ if os.environ["PYTHON_ENV"] != "test":
         "Consider using `just py_test"
         "\033[0m"
         )
+
     os.environ["PYTHON_ENV"] = "test"
 
     assert 'app' not in sys.modules, "app modules should not be imported before environment is set"
@@ -32,9 +33,10 @@ from pytest import Config, FixtureRequest
 from activemodel.pytest import database_reset_transaction, database_reset_truncate
 from decouple import config as decouple_config
 
-from tests.constants import TEST_RESULTS_DIRECTORY
-from tests.utils import delete_all_clerk_users, log
-from tests.seeds import seed_test_data
+from .constants import TEST_RESULTS_DIRECTORY
+from .utils import delete_all_clerk_users
+from .seeds import seed_test_data
+from .log import log
 
 log.info("multiprocess start method", start_method=multiprocessing.get_start_method())
 
