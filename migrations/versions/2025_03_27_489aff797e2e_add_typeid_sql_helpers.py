@@ -3,7 +3,7 @@
 Helpful when writing SQL queries directly vs using sqlalchemy.
 
 Revision ID: 489aff797e2e
-Revises: 7c1c1ea02e20
+Revises: cf868c4d11b7
 Create Date: 2025-03-27 20:02:44.254927
 
 """
@@ -17,7 +17,7 @@ import activemodel
 
 # revision identifiers, used by Alembic.
 revision: str = '489aff797e2e'
-down_revision: Union[str, None] = '7c1c1ea02e20'
+down_revision: Union[str, None] = 'cf868c4d11b7'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
