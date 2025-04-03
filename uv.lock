@@ -726,18 +726,14 @@ wheels = [
 
 [[package]]
 name = "flower"
-version = "2.0.1"
-source = { registry = "https://pypi.org/simple" }
+version = "2.0.0"
+source = { git = "https://github.com/iloveitaly/flower?rev=custom#6413e14389138ee8622aa1dbee391345a5a74cd7" }
 dependencies = [
     { name = "celery" },
     { name = "humanize" },
     { name = "prometheus-client" },
     { name = "pytz" },
     { name = "tornado" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/09/a1/357f1b5d8946deafdcfdd604f51baae9de10aafa2908d0b7322597155f92/flower-2.0.1.tar.gz", hash = "sha256:5ab717b979530770c16afb48b50d2a98d23c3e9fe39851dcf6bc4d01845a02a0", size = 3220408 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/a6/ff/ee2f67c0ff146ec98b5df1df637b2bc2d17beeb05df9f427a67bd7a7d79c/flower-2.0.1-py2.py3-none-any.whl", hash = "sha256:9db2c621eeefbc844c8dd88be64aef61e84e2deb29b271e02ab2b5b9f01068e2", size = 383553 },
 ]
 
 [[package]]
@@ -2122,7 +2118,7 @@ requires-dist = [
     { name = "clerk-backend-api", specifier = ">=1.8.0,<2.0.0" },
     { name = "css-inline", specifier = ">=0.14.3" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.3" },
-    { name = "flower", specifier = ">=2.0.1" },
+    { name = "flower", git = "https://github.com/iloveitaly/flower?rev=custom" },
     { name = "funcy-pipe", specifier = ">=0.11.1" },
     { name = "furl", specifier = ">=2.1.4" },
     { name = "ipython", specifier = ">=8.28.0" },
