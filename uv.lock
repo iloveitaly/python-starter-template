@@ -1071,8 +1071,8 @@ wheels = [
 
 [[package]]
 name = "j2lint"
-version = "1.1.0"
-source = { git = "https://github.com/aristanetworks/j2lint.git#9abcfef869475a97fe32bcb1ab8174b88e1f7270" }
+version = "1.2.0"
+source = { git = "https://github.com/aristanetworks/j2lint.git#ba3ae401e723b8e359ea675274d6733340f96582" }
 dependencies = [
     { name = "jinja2" },
     { name = "rich" },
@@ -1140,11 +1140,11 @@ wheels = [
 
 [[package]]
 name = "json5"
-version = "0.11.0"
+version = "0.12.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/f8/c5/1ac1e9f9f994cbfa40ff2a706872d017e89cda87d187709a2fd8a8b62ac2/json5-0.11.0.tar.gz", hash = "sha256:dab115459d9372760f2b568d949e069edd991f8e75458cff67328b9125750f12", size = 51014 }
+sdist = { url = "https://files.pythonhosted.org/packages/12/be/c6c745ec4c4539b25a278b70e29793f10382947df0d9efba2fa09120895d/json5-0.12.0.tar.gz", hash = "sha256:0b4b6ff56801a1c7dc817b0241bca4ce474a0e6a163bfef3fc594d3fd263ff3a", size = 51907 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a9/bd/2278060147a9a14990ab6e70e0f24a3b3f13e899a15ad16f69697c09a180/json5-0.11.0-py3-none-any.whl", hash = "sha256:19b10a65c82d1aefd389f92c13aeeb3c611c79e8d4f28442dfc153dd24f6f0ff", size = 35889 },
+    { url = "https://files.pythonhosted.org/packages/41/9f/3500910d5a98549e3098807493851eeef2b89cdd3032227558a104dfe926/json5-0.12.0-py3-none-any.whl", hash = "sha256:6d37aa6c08b0609f16e1ec5ff94697e2cbbfbad5ac112afa05794da9ab7810db", size = 36079 },
 ]
 
 [[package]]
@@ -2296,15 +2296,15 @@ wheels = [
 
 [[package]]
 name = "rich"
-version = "13.9.4"
+version = "14.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "markdown-it-py" },
     { name = "pygments" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ab/3a/0316b28d0761c6734d6bc14e770d85506c986c85ffb239e688eeaab2c2bc/rich-13.9.4.tar.gz", hash = "sha256:439594978a49a09530cff7ebc4b5c7103ef57baf48d5ea3184f21d9a2befa098", size = 223149 }
+sdist = { url = "https://files.pythonhosted.org/packages/a1/53/830aa4c3066a8ab0ae9a9955976fb770fe9c6102117c8ec4ab3ea62d89e8/rich-14.0.0.tar.gz", hash = "sha256:82f1bc23a6a21ebca4ae0c45af9bdbc492ed20231dcb63f297d6d1021a9d5725", size = 224078 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/19/71/39c7c0d87f8d4e6c020a393182060eaefeeae6c01dab6a84ec346f2567df/rich-13.9.4-py3-none-any.whl", hash = "sha256:6049d5e6ec054bf2779ab3358186963bac2ea89175919d699e378b99738c2a90", size = 242424 },
+    { url = "https://files.pythonhosted.org/packages/0d/9b/63f4c7ebc259242c89b3acafdb37b41d1185c07ff0011164674e9076b491/rich-14.0.0-py3-none-any.whl", hash = "sha256:1c9491e1951aac09caffd42f448ee3d04e58923ffe14993f6e83068dc395d7e0", size = 243229 },
 ]
 
 [[package]]
@@ -2775,11 +2775,11 @@ wheels = [
 
 [[package]]
 name = "typing-extensions"
-version = "4.13.0"
+version = "4.13.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/0e/3e/b00a62db91a83fff600de219b6ea9908e6918664899a2d85db222f4fbf19/typing_extensions-4.13.0.tar.gz", hash = "sha256:0a4ac55a5820789d87e297727d229866c9650f6521b64206413c4fbada24d95b", size = 106520 }
+sdist = { url = "https://files.pythonhosted.org/packages/76/ad/cd3e3465232ec2416ae9b983f27b9e94dc8171d56ac99b345319a9475967/typing_extensions-4.13.1.tar.gz", hash = "sha256:98795af00fb9640edec5b8e31fc647597b4691f099ad75f469a2616be1a76dff", size = 106633 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e0/86/39b65d676ec5732de17b7e3c476e45bb80ec64eb50737a8dce1a4178aba1/typing_extensions-4.13.0-py3-none-any.whl", hash = "sha256:c8dd92cc0d6425a97c18fbb9d1954e5ff92c1ca881a309c45f06ebc0b79058e5", size = 45683 },
+    { url = "https://files.pythonhosted.org/packages/df/c5/e7a0b0f5ed69f94c8ab7379c599e6036886bffcde609969a5325f47f1332/typing_extensions-4.13.1-py3-none-any.whl", hash = "sha256:4b6cf02909eb5495cfbc3f6e8fd49217e6cc7944e145cdda8caa3734777f9e69", size = 45739 },
 ]
 
 [[package]]
