@@ -43,12 +43,13 @@ class AuthenticateClerkRequest:
         httpx_request = httpx.Request(
             method=request.method,
             url=str(request.url),
-            headers=dict(request.headers),
+            headers=request.headers,
         )
 
         # Authenticate the request
-        auth_state: RequestState = self.sdk.authenticate_request(  # type: ignore
-            httpx_request,
+        auth_state = self.sdk.authenticate_request(
+            # https://github.com/clerk/clerk-sdk-python/issues/116
+            httpx_request,  # type: ignore
             AuthenticateRequestOptions(),
         )
 
