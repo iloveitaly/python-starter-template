@@ -5,6 +5,7 @@ from activemodel.session_manager import get_engine
 from sqlmodel import SQLModel
 
 from ..environments import is_development, is_testing
+from ..setup import get_root_path
 
 
 def database_url():
@@ -31,6 +32,8 @@ def configure_database():
     so the defaults are exactly what we want.
     """
 
+    run_migrations()
+
     activemodel.init(database_url())
 
 
@@ -43,3 +46,15 @@ def create_db_and_tables():
     assert len(SQLModel.metadata.tables.items()) > 0, "No tables found"
 
     SQLModel.metadata.create_all(get_engine())
+
+
+def run_migrations():
+    from alembic import command
+    from alembic.config import Config
+
+    from app import log
+
+    log.info("running alembic migrations")
+
+    alembic_cfg = Config(get_root_path() / "alembic.ini")
+    command.upgrade(alembic_cfg, "head")
