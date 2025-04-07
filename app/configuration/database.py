@@ -4,7 +4,7 @@ import activemodel
 from activemodel.session_manager import get_engine
 from sqlmodel import SQLModel
 
-from ..environments import is_development, is_testing
+from ..environments import is_development, is_production, is_staging, is_testing
 from ..setup import get_root_path
 
 
@@ -32,7 +32,8 @@ def configure_database():
     so the defaults are exactly what we want.
     """
 
-    run_migrations()
+    if is_production() or is_staging():
+        run_migrations()
 
     activemodel.init(database_url())
 
@@ -49,6 +50,19 @@ def create_db_and_tables():
 
 
 def run_migrations():
+    """
+    Automatically run migrations. Here's why we do this:
+
+    - Migrating automatically introduces some risk that an important migration happens without you watching it. However,
+      it's up to the migration author to test their migration before merging it, so this shouldn't be an issue. Additionally
+      the risk of *not* migrating automatically introduces additional manual steps for the developer, which is always risky.
+    - When the new version of the application depends on a database migration, it's hard to *not* auto-migrate.
+      In that scenario, the container will fail and roll back, which makes it challenging to actually run the migration.
+      You have to have a container which does not have readiness probes in place (which introduces another set of problems)
+    - If we auto-migrate, migration logs are sent to the logging system. If you shell into a container and migrate
+      manually, the migration status does not get persisted to the logging system.
+    """
+
     from alembic import command
     from alembic.config import Config
 
