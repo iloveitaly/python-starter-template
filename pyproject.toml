@@ -15,8 +15,7 @@ dependencies = [
     "cachetools>=5.5.1",
     "celery-once>=3.0.1",
     "celery[redis]>=5.4.0",
-    # TODO https://github.com/clerk/clerk-sdk-python/issues/110
-    "clerk-backend-api>=1.8.0,<2.0.0",
+    "clerk-backend-api>=1.8.0",
     "css-inline>=0.14.3",
     "fastapi[standard]>=0.115.3",
     "flower>=2.0.1",

@@ -302,7 +302,7 @@ wheels = [
 
 [[package]]
 name = "clerk-backend-api"
-version = "1.8.0"
+version = "2.0.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cryptography" },
@@ -311,11 +311,11 @@ dependencies = [
     { name = "pydantic" },
     { name = "pyjwt" },
     { name = "python-dateutil" },
-    { name = "typing-inspect" },
+    { name = "typing-inspection" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/fc/5c/0066df2ae201ddba438b2cf053e29af8d255e5adb80b69ece67b61021edc/clerk_backend_api-1.8.0.tar.gz", hash = "sha256:2b1498775c98c9f4e07e5ba06e98aea794577a8e1204b32329a71df064214175", size = 140612 }
+sdist = { url = "https://files.pythonhosted.org/packages/50/e9/f030d54da6f42c7e133600d599baa081bc61bd14e385664140bba43bcb5b/clerk_backend_api-2.0.2.tar.gz", hash = "sha256:58e53b85ceb386ae051f3f1984ad295a7cbad1a2d6d5761e5e9695149b8b10fd", size = 150149 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/86/2a/cd6e03c4df16823f7c6ca4dca109d8055e7190c59d122998e4e2d072b71f/clerk_backend_api-1.8.0-py3-none-any.whl", hash = "sha256:6da1a32fc8609354b5f3d0b46a032f01c67f17068fe004b91fa6e3f2733ecb37", size = 296117 },
+    { url = "https://files.pythonhosted.org/packages/ce/14/e13a4b212d6ebd05b209bf8c695747421e367bda4ee5e75d328b32f5aa68/clerk_backend_api-2.0.2-py3-none-any.whl", hash = "sha256:22b02119aa7b6c8011bc54cb9564760b8faf0bf85f5d775b299afa9fe64c9819", size = 314523 },
 ]
 
 [[package]]
@@ -2115,7 +2115,7 @@ requires-dist = [
     { name = "celery", extras = ["redis"], specifier = ">=5.4.0" },
     { name = "celery-once", specifier = ">=3.0.1" },
     { name = "celery-types", specifier = ">=0.23.0" },
-    { name = "clerk-backend-api", specifier = ">=1.8.0,<2.0.0" },
+    { name = "clerk-backend-api", specifier = ">=1.8.0" },
     { name = "css-inline", specifier = ">=0.14.3" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.3" },
     { name = "flower", git = "https://github.com/iloveitaly/flower?rev=custom" },
@@ -2780,19 +2780,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/76/ad/cd3e3465232ec2416ae9b983f27b9e94dc8171d56ac99b345319a9475967/typing_extensions-4.13.1.tar.gz", hash = "sha256:98795af00fb9640edec5b8e31fc647597b4691f099ad75f469a2616be1a76dff", size = 106633 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/df/c5/e7a0b0f5ed69f94c8ab7379c599e6036886bffcde609969a5325f47f1332/typing_extensions-4.13.1-py3-none-any.whl", hash = "sha256:4b6cf02909eb5495cfbc3f6e8fd49217e6cc7944e145cdda8caa3734777f9e69", size = 45739 },
-]
-
-[[package]]
-name = "typing-inspect"
-version = "0.9.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "mypy-extensions" },
-    { name = "typing-extensions" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/dc/74/1789779d91f1961fa9438e9a8710cdae6bd138c80d7303996933d117264a/typing_inspect-0.9.0.tar.gz", hash = "sha256:b23fc42ff6f6ef6954e4852c1fb512cdd18dbea03134f91f856a95ccc9461f78", size = 13825 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/65/f3/107a22063bf27bdccf2024833d3445f4eea42b2e598abfbd46f6a63b6cb0/typing_inspect-0.9.0-py3-none-any.whl", hash = "sha256:9ee6fc59062311ef8547596ab6b955e1b8aa46242d854bfc78f4f6b0eff35f9f", size = 8827 },
 ]
 
 [[package]]
