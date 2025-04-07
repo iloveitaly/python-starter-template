@@ -33,6 +33,11 @@ project_slug:
     project_slug must start with a letter, followed one or more letters, digits or dashes all lowercase.
     {% endif %}
 
+# https://github.com/superlinear-ai/substrate/blob/main/copier.yml
+project_name_snake_case:
+  when: false
+  default: "{{ project_name | lower | replace('-', '_') }}"
+
 from_email:
   type: str
   help: The email account to send emails from, you can set it later in .env
@@ -71,7 +76,6 @@ _exclude:
 
 _tasks:
   - git init
-  - rm README.md
   - git add -A
   - git commit -m "🎉 Initial commit"
   - ["{{ _copier_python }}", .copier/bootstrap.py]
