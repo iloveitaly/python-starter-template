@@ -40,7 +40,8 @@ function AdminBar() {
     <div className="fixed top-0 left-0 z-50 flex w-full items-center space-x-2 bg-white p-1 text-xs shadow">
       {data.current_user && (
         <div className="whitespace-nowrap">
-          {data.current_user.clerk_id} {data.current_user.email}
+          Clerk: {data.current_user.clerk_id} ID: {data.current_user.id} Email:{" "}
+          {data.current_user.email}
         </div>
       )}
       <Select value={selectedUser} onValueChange={setSelectedUser}>

@@ -10,6 +10,7 @@ from fastapi import APIRouter, Depends, HTTPException, Path, Request
 from pydantic import BaseModel as BasePydanticModel
 from pydantic import ConfigDict
 from starlette import status
+from typeid import TypeID
 
 from app import log
 
@@ -32,6 +33,7 @@ class UserSwitchData(BasePydanticModel):
     model_config = ConfigDict(from_attributes=True)
 
     clerk_id: str
+    id: TypeID
     email: str | None
 
 
@@ -52,7 +54,7 @@ def user_list(request: Request) -> UserListResponse:
     return UserListResponse(
         current_user=login_as_user,  # type: ignore
         users=list(
-            User.select(User.clerk_id, User.email)
+            User.select(User.clerk_id, User.email, User.id)
             .where(User.role != UserRole.admin)
             .all()
         ),  # type: ignore
