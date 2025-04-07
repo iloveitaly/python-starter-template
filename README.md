@@ -1,26 +1,26 @@
 # Python & React Router Project Template
 
-This is an extremely opinionated web application template:
+This is an extremely opinionated web application template.
 
-1. Full-stack integration tests. This includes HTTPS and production-build JS on CI.
-2. Eliminate magic commands. Env vars, developer environments, infra, etc should all be documented in code.
-3. Containerized builds.
-4. Full-stack typing.
-5. Use boring core technology. No fancy databases, no novel languages, no obscure frameworks.
+Here's some of the guiding principles in this stack:
+
+1. Use popular tooling + languages. LLMs perform better, easier to find developers.
+2. Full-stack integration tests. This includes HTTPS and production-build JS on CI.
+3. Eliminate magic commands. Env vars, developer environments, infra, etc should all be documented in code.
+4. Containerized builds.
+5. Full-stack typing.
+6. Use boring core technology. No fancy databases, no novel languages, no obscure frameworks.
 
 ## Tech Stack
 
 Here's the stack:
 
 * **Development lifecycle.** Justfile + Direnv + Mise + Lefthook + Localias + 1Password for local development & secret configuration
-* **Backend.** Uv + Ruff + Python + FastAPI + [ActiveModel](https://github.com/iloveitaly/activemodel) + SQLModel + SQLAlchemy + Alembic + Celery + TypeId + Playwright + [Mailers](https://github.com/alex-oleshkevich/mailers)
+* **Backend.** Uv + Ruff + Python + FastAPI + [ActiveModel](https://github.com/iloveitaly/activemodel) + SQLModel + SQLAlchemy + Alembic (migrations) + Celery (jobs) + [TypeId](https://github.com/akhundMurad/typeid-python) + Playwright + [Mailers](https://github.com/alex-oleshkevich/mailers) + Polyfactory.
 * **Frontend.** Pnpm + TypeScript + React + Vite + Vitest + React Router (in SPA mode) + ShadCN + Tailwind + ESLint + Prettier + [HeyAPI](https://heyapi.dev)
-* **Services.** Postgres + Redis + Mailpit
-  * Docker Compose for running locally and on CI
-  * Mailpit for local email testing
-  * OrbStack is recommended for local docker development for nice automatic domains
-* **Observability.** Sentry + Clerk (user management) + PostHog
-* **Build.** Docker + nixpacks for containerization
+* **Services.** Postgres + Redis + [Mailpit](https://mailpit.axllent.org) + Docker Compose for running it all on dev + CI.
+* **Observability.** Sentry + Clerk (user management) + PostHog + JSON structured logging.
+* **Build.** Docker + [nixpacks](https://nixpacks.com/docs/getting-started) for containerization
 * **CI/CD.** GitHub Actions for CI/CD
 * **Deployment.** Up to you: anything that supports a container.
 
@@ -33,7 +33,7 @@ There are many things I don't like about this setup. There's a complexity cost a
 Modern web development is all about tradeoffs. Here are the options as I see them:
 
 1. Use Rails, HotWire, etc.
-   1. You lose React, all of the amazing ui libraries that come with it, the massive JS + Py labor market, great tooling (formatting, linting, etc), typing (Sorbet is not great), 1st class SDKs for many APIs (playwright, for example), and better trained LLMs.
+   1. You lose React, all of the amazing UI libraries that come with it, the massive JS + Py labor market, great tooling (formatting, linting, etc), typing (Sorbet is not great), 1st class SDKs for many APIs (playwright, for example), and better trained LLMs.
    2. You get a battle-tested (Shopify! GitHub!) beautifully crafted batteries-included framework.
    3. You get a really beautiful language (I think Ruby is nicer than Python).
 2. Use full stack JavaScript/TypeScript.
@@ -43,7 +43,7 @@ Modern web development is all about tradeoffs. Here are the options as I see the
    1. You lose simplicity. You have to deal with two languages, which means more complex build systems and additional cognitive load.
    2. You lose a single beautifully crafted stack and instead have to stitch together a bunch of different tools (even if they are well-designed independently). Python's ecosystem is mature but not cohesive like Rails (no, Django is not even close).
    3. You get full-stack typing (if you do it right).
-   4. You get access to the great tooling ([static analysis](https://astral.sh) and improved LLM performance) on both Python and JavaScript.
+   4. You get access to the great tooling ([static analysis](https://astral.sh), amazing LLM performance, [great REPL tooling](https://github.com/iloveitaly/dotfiles/blob/a18fd4b0745877cfa03de2736caa39af49525afa/.python-functions#L4-L32)) on both Python and JavaScript.
    5. You can move fast with React and all of the [amazing](https://ui.shadcn.com) [UI](https://www.chakra-ui.com) libraries built on top of it, without having to deal with full stack JavaScript.
    6. You get access to massive JS + Py labor markets.
 
@@ -56,6 +56,7 @@ There are a couple of dependencies which are not managed by the project:
 * zsh. The stack has not been tested extensively on bash.
 * [mise](https://mise.jdx.dev)
 * docker (or preferably [OrbStack](https://orbstack.dev))
+* 1Password. You'll want the native macOS client for CLI integration.
 * Latest macOS
 * VS Code
 
@@ -138,7 +139,9 @@ Here are a couple additions to your shell environment that you'll probably want 
 
 ## Usage
 
-### Dependencies
+The following are poorly-organized notes about various pieces of the system.
+
+### Package Dependencies
 
 Non-language dependencies are always tricky. Here's how it's handled:
 
@@ -148,7 +151,7 @@ Non-language dependencies are always tricky. Here's how it's handled:
 * `apt` is used to install *some* of the tools required to run CI scripts (like zsh), but most are omitted since they should never run in production.
 * Direct install scripts are used to install some more obscure packages (localias, nixpacks, etc) that are not well supported by the os package manager or mise.
 
-### GitHub Actions
+### Toggling GitHub Actions
 
 It's helpful, especially when you are conserving GH actions credits and tinkering with your build setup, to sometimes disable GitHub actions.
 
@@ -158,7 +161,7 @@ The easiest way to do this is with the CLI:
 gh workflow disable # and `enable` to turn it back on
 ```
 
-### Python Factories
+### Python Data Factories
 
 I tried both [factoryboy](https://factoryboy.readthedocs.io/en/stable/index.html) and [polyfactory](https://github.com/litestar-org/polyfactory/) and landed on polyfactory for a couple reasons:
 
@@ -169,7 +172,7 @@ There are some significant gaps in functionality, but the maintainers [have been
 
 ### Python Debugging Extras
 
-I'm a big fan of lots of installing many debugging tools locally. These should not be installed in the production build.
+I'm a big of installing many debugging tools locally. These should not be installed in the production build.
 
 I've included my favorites in the `debugging-extras` group. These are not required for the project to run.
 
@@ -181,33 +184,58 @@ General recommendations for naming things throughout the system:
 * All lowercase GitHub organizations and names. Some systems are case sensitive and some are not.
 * All 1password fields should be hyphen-separated and not use spaces.
 
-### Pytest
+### Pytest Organization & Tooling
 
 * [pretty-traceback](https://github.com/mbarkhau/pretty-traceback/pull/17) is used to clean up the horrible-by-default pytest stack traces that make life difficult.
-* Since `tests/` is in the top-level of the project, `__init__.py` is required
+* Since `tests/` is in the top-level of the project, `__init__.py` is required.
 * All fixtures should go in `conftest.py`. Importing fixtures externally [could break in future versions.](https://docs.pytest.org/en/7.4.x/how-to/fixtures.html#using-fixtures-from-other-projects)
+* Transactional database cleaning is used for all non-integration tests.
 
 ### Pytest Formatting
 
+The default pytest output is terrible. Here's what I'd like:
+
+1. I want the start and end of a test to be clearly identified with `tests/integration/settings_test.py::test_example_note_upload` style formatted test identifier
+2. When a test fails, I want the logs for that test to be outputted, and then a marker that the test has completed. Even better, if we could dump the captured logs to a file instead/in addition to, that would be helpful
+3. The default stacktrace for exceptions raised during a test is very obnoxious. I want cleanly formatted stack traces with `pretty-traceback`
+4. I want a table of the tests which take the longest to run.
+5. I want to be able to enable "live logging" so log output is streamed to my terminal (in color)
+6. Code coverage output
+
+Options investigated:
+
 * https://github.com/samuelcolvin/pytest-pretty
+* https://github.com/Teemu/pytest-sugar
+
+TODO link to WIP project here
 
 ### Pytest Clerk
 
-Integration test that include auth are critical. Otherwise you aren't testing your entire app. Both integration and route tests hit the live Clerk API.
+Integrations test that include auth are critical. Otherwise you aren't testing your entire app. Both integration and route tests hit the live Clerk API.
 
 However, there's some pretty intense playwright trickery to make everything work. Clerk has bot protections in place, so to avoid getting caught, you need to mutate the URLs used to include a signed key.
 
 This is done by `setup_clerk_testing_token`. If you want to remove the custom playwright routing, you can do so using `teardown_clerk_testing_token`.
 
-### Migrations
+### Database Migrations
 
 1. SQLModel provides a way to push a model definition into the DB. However, once columns and not tables are mutated you must drop the table and recreate it otherwise changes will not take effect. If you develop in this way, you'll need to be extra careful.
 2. If you've been playing with a model locally, you'll want to `just db_reset` and then generate a new migration with `just db_generate_migration`. If you don't do this, your migration may work off of some of the development state.
-3. The database must be fully migrated before generating a new migration `just db_migrate` otherwise you will get an error.
+3. The database must be fully migrated before generating a new migration. Run `just db_migrate` otherwise you will get an error.
 
-### Environment Lifecycle
+### Production Database Migrations
 
-Across `py`, `js`, and `db` the following subcommands are supported:
+By default, [automatic migrations are enabled on deploy](https://github.com/iloveitaly/python-starter-template/blob/7df59f9b0d3e3f9221646cb717bf0e77a8febfee/app/configuration/database.py#L35-L37).
+
+If you want to disable and migrate manually, here's what you need to do:
+
+1. Deploy the new version of the application
+2. Open up a shell on a production container
+3. Run `alembic upgrade head`
+
+### Application Lifecycle Commands
+
+All commands to control and operate the application are in the [Justfile](./Justfile). Across `py`, `js`, and `db` the following 'subcommands' are supported:
 
 * `clean`. Wipe all temporary files related to the environment.
 * `setup`. Set up the environment.
@@ -222,7 +250,7 @@ There are top-level commands for many of these (`clean`, `setup`, `dev`, etc) wh
 
 ### Linting
 
-The more linting tools are better, as long as they are well maintained, useful, and add value.
+The more linting tools the better, as long as they are well maintained, useful, and add value. I think of linters as helpful teammates that let me know when I missed something.
 
 This project implements many linting tools (including DB SQL linting!). This could cause developer friction at some point, but we'll see how this scales as the codebase complexity grows.
 
@@ -234,7 +262,7 @@ Two methods are needed:
 
 * Transaction. Used whenever possible. If you create customize secondary engines outside the context of `activemodel` this will break.
 * Truncation. Transaction-based cleaning does not work is database mutations occur in a separate process.
-  * This gets tricky because of platform differences between macOS and Linux, but the tldr is although it's possible to share a DB session handle between the test process *and* the uvicorn server running during integration tests, it's a bad idea with lots of footguns, so we opt for truncation.
+  * This gets tricky because of platform differences between macOS and Linux, but the tldr is although it's possible to share a DB session handle between the test process *and* the uvicorn server running during integration tests, it's a bad idea with lots of footguns, so we opt for truncation on integration tests (which require a separate server process to run).
 
 ### General Testing Architecture
 
@@ -363,33 +391,46 @@ react-router seems to wrap `vite preview`
 direnv allow config
 -->
 
-### TypeID by Default
+### Production Console
+
+You need a REPL to operate a production application. There's a nice one bundled with the application:
+
+```shell
+./console.py
+```
+
+### TypeID for Database Primary Keys
 
 From my time at Stripe, I became a big fan of IDs with metadata about the object they represent. There's a great project, TypeID, which has implemented this across a bunch of languages. I've adopted it here.
 
-<!--
+If you are used to UUIDs instead of `int` primary keys, it can feel a little strange, but the benefits are huge:
 
-I wouldn't call myself an expert, but I do have opinions on best practices ![:slightly_smiling_face:](https://a.slack-edge.com/production-standard-emoji-assets/14.0/apple-medium/1f642@2x.png) First, yes, I've seen schemas which have an `id` and `ext_id` column for an external ID. But realistically, when stored with postgres's UUID column, it's stored as a 128-bit integer, only twice as big as the usual index column type, and with ULIDs (used by TypeID), the index/locality issue goes away. The biggest issue IMO is the ergonomics of a large, hard-to-memorize ID vs a smaller one. In my assessment, this issue is offset by:
+1. TypeIDs tell you what kind of ID they are
+2. TypeIDs are effectively base32 encoded UUIDs with a suffix. UUIDs are just as fast as int primary keys and don't take up much more space.
+3. Never getting a bad join (if you join the wrong table, there will be no results, because uuids never collide)
+4. Ability to pregenerate IDs clientside
 
-1.  TypeIDs tell you what kind of ID they are
-2.  Never getting a bad join (if you join the wrong table, there will be no results, because uuids never collide)
-3.  Ability to pregenerate IDs clientside
-4.  Eventually sequential IDs get big enough anyways.
+The biggest downsides are:
 
-Going back to the `id`/`ext_id` approach, the `ext_id` was actually more similar to a youtube video ID, something very compact. So even that came down to the ergonomics. Not sure what exactly you're building, but I'd say 90% of use cases can use ULID TypeIDs on postgres without thinking twice.
+* Ergonomics of a large, hard-to-memorize ID vs a smaller one.
+* You can't plop TypeIDs right into a raw SQL query. You need to translate them to a UUID ([or use `typeid_parse`](https://github.com/iloveitaly/python-starter-template/blob/7df59f9b0d3e3f9221646cb717bf0e77a8febfee/migrations/versions/2025_03_27_489aff797e2e_add_typeid_sql_helpers.py#L1))
 
--->
+In order to eliminate some of these ergonomics:
+
+1. [Check out the type ID raycast package](https://www.raycast.com/jmaeso/uuid-generator)
+2. [ActiveModel](https://github.com/iloveitaly/activemodel) has a couple of helpers to improve the DX
 
 ### Secrets
 
-The secret management is more complex that it seems like it should be. The primary reason behind this is to avoid secret
-drift at all costs. Here's why:
+The secret management in this template is more complex that it seems like it should be. The primary reason behind this is to avoid secret drift at all costs and to document in code all secrets, for all environments.
+
+Here's the issues I'm trying to avoid:
 
 * Different developers have *slightly* different secrets that create a "works on my machine" problem.
-* New secrets are not automatically integrated into local (or CI) environments causing the project to break when a new
-  environment variable is introduced.
+* New secrets are not automatically integrated into local (or CI) environments causing the project to break on CI and
+  and dev machines when a new environment variable is introduced.
 * Cumbersome and undocumented CI & production secret management. I want a single command to set secrets on CI & prod
-  without any thinking or manual intervention.
+  without any thinking or manual intervention. I want there to be a single source of truth for all secrets.
 
 Solving these problems adds more complexity to the developer experience. We'll see if it's worth it.
 
@@ -397,6 +438,7 @@ Secret management is handled in a couple of different places:
 
 * `.env*` files which source secrets from 1password using `op read`
 * `just secrets_*` which generate 1password connection tokens and set them on CI
+* `just direnv_*` to dump secret state in various scenarios
 
 Most likely, you'll need to bootstrap your secret management by manually setting your account + vault
 in order to generate a connection token:
@@ -427,6 +469,8 @@ I tried both RQ and Celery, and looked at other job queue systems, before landin
 #### Celery
 
 * Job scheduling is handled in the same process as job execution, which is a terrible idea in large-scale systems.
+* `celery-types` contains a bunch of type stubs that fix most of the typing issues
+* Spawn is not natively supported and fork has been depreciated https://github.com/celery/celery/issues/6036#issuecomment-1151224775
 
 #### RQ
 
@@ -459,6 +503,17 @@ worker: rq worker --with-scheduler -w rq.worker.SpawnWorker
 * Backend uses JSON logging in production
 * `devDependencies` should only contain dependencies that are required for local development. All dependencies required
   for building the frontend should be in `dependencies`.
+
+### Backend
+
+#### Installing Additional Packages
+
+Because of this glitch in nixpacks, it's not straightforward to install packages on nixpacks:
+
+```shell
+apt-get update
+LD_LIBRARY_PATH=/usr/lib apt-get install nano
+```
 
 ## Related
 
