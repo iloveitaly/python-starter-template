@@ -142,12 +142,11 @@ def get_valid_token(user: ClerkUser | None = None):
         _, _, user = get_clerk_dev_user()
 
     # now that we have a user, we need to create a session
-    session = clerk.sessions.create_session(
-        request=CreateSessionRequestBody(user_id=user.id)
-    )
+    assert user.id
+    session = clerk.sessions.create(request=CreateSessionRequestBody(user_id=user.id))
     assert session
 
-    token = clerk.sessions.create_session_token(session_id=session.id)
+    token = clerk.sessions.create_token(session_id=session.id)
     assert token
 
     return token.jwt
