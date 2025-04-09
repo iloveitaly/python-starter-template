@@ -908,7 +908,8 @@ github_ruleset: github_ruleset_delete
 
 GIT_DIRTY := `if [ -n "$(git status --porcelain)" ]; then echo "-dirty"; fi`
 GIT_SHA := `git rev-parse HEAD` + GIT_DIRTY
-GIT_DESCRIPTION := `git log -1 --pretty=%s`
+# We need to escape double quotes in commit messages.
+GIT_DESCRIPTION := `git log -1 --format=%s | sed 's/"/\\"/g'`
 BUILD_CREATED_AT := `date -u +%FT%TZ`
 NIXPACKS_BUILD_METADATA := (
 	'-e BUILD_COMMIT="' + GIT_SHA + '" ' +
