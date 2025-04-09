@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { href } from "react-router"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -27,13 +28,14 @@ function AdminBar() {
 
     await loginAsUser({ path: { user_id: selectedUser } })
 
-    window.location.reload()
+    // redirect to the root, reloading the same page could 404 because of different object IDs
+    window.location.replace(href("/"))
   }
 
   const handleLogout = async () => {
     await loginAsUser({ path: { user_id: (await getClient()).user.id } })
 
-    window.location.reload()
+    window.location.replace(href("/"))
   }
 
   return (
