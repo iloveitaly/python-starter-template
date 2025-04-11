@@ -39,17 +39,10 @@ class AuthenticateClerkRequest:
                 status_code=status.HTTP_401_UNAUTHORIZED, detail="Not Authenticated"
             )
 
-        # Convert FastAPI request headers to httpx format
-        httpx_request = httpx.Request(
-            method=request.method,
-            url=str(request.url),
-            headers=request.headers,
-        )
-
         # Authenticate the request
         auth_state = self.sdk.authenticate_request(
             # https://github.com/clerk/clerk-sdk-python/issues/116
-            httpx_request,  # type: ignore
+            request,
             AuthenticateRequestOptions(),
         )
 
