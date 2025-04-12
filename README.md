@@ -49,6 +49,19 @@ Modern web development is all about tradeoffs. Here are the options as I see the
 
 This template uses #3.
 
+### Why I Hate JavaScript
+
+JavaScript was built for the browser. Certain design decisions cannot be undone. The downstream impacts of this core decision cause development velocity to decrease over time with JavaScript:
+
+1. No REPL that can handle `await`, which makes the repl unusable (you can't debug or tinker with any async code!)
+2. No stack traces in async functions, make debugging prod code impossible.
+3. Everything is evented. This means there are no threads + processes, which makes properly modelling an application in your head more complicated and limits the number of tools you have (i.e. no ability to easily fork an application, compared to Python)
+4. Poor package quality. A bit more qualitative, but the average JS package has more poor code quality compared to Py. Additionally there are completely different ways of packing JS (ESM, UMD, etc) which cause weird package compatibility issues depending on how your TypeScript is configured.
+5. Additional layers of indirection. You run JS but write TS. This creates many downstream issues (node stack traces don't match up with your filesystem, without a translation layer)
+6. No centralization. Too many JS frameworks with not enough mindshare. The community cannot agree on a golden path (or four) and this really degrades the entire ecosystem.
+
+There are good reasons why I should be fine with the above limitations, but I've tried to love JavaScript and I just don't. I hate it. I want to minimize my encounter with it in my development life, which is the main reason I'm choosing python for the backend here instead of JavaScript.
+
 ## Getting Started
 
 There are a couple of dependencies which are not managed by the project:
