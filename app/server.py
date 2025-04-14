@@ -7,11 +7,11 @@ JavaScript client which will use these methods.
 
 from typing import Any
 
-import arrow
 import orjson
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from starlette import status
+from whenever import Instant
 
 from app.routes.api import external_api_app
 from app.routes.errors import EarlyResponseException
@@ -81,7 +81,7 @@ async def healthcheck():
 async def active_user_status():
     "check if users have logged in within the last day"
 
-    last_24_hours = arrow.utcnow().shift(days=-1).datetime
+    last_24_hours = Instant.now().subtract(hours=24).py_datetime()
     active_users = User.where(User.last_active_at > last_24_hours).count()  # type: ignore
 
     if active_users == 0:
