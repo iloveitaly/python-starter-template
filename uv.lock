@@ -1931,7 +1931,7 @@ wheels = [
 [[package]]
 name = "pytest-playwright-visual-snapshot"
 version = "0.2.0"
-source = { git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git#fe259cddf287b1acc0d6a051269543b5274f43e0" }
+source = { git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git#0a25dc1df2db9cdb1e0a9fbb8175560d25a9ee6b" }
 dependencies = [
     { name = "pillow" },
     { name = "pixelmatch" },
@@ -2058,6 +2058,7 @@ dependencies = [
     { name = "sqlmodel" },
     { name = "starlette-context" },
     { name = "structlog" },
+    { name = "structlog-config" },
     { name = "typeid-python" },
     { name = "typer" },
     { name = "uvicorn" },
@@ -2155,6 +2156,7 @@ requires-dist = [
     { name = "sqlmodel", specifier = ">=0.0.22" },
     { name = "starlette-context", specifier = ">=0.3.6" },
     { name = "structlog", specifier = ">=24.4.0" },
+    { name = "structlog-config", git = "https://github.com/iloveitaly/structlog-config.git" },
     { name = "typeid-python", extras = ["cli"], specifier = ">=0.3.2" },
     { name = "typer", specifier = ">=0.14.0" },
     { name = "uvicorn", specifier = ">=0.32.0" },
@@ -2648,6 +2650,16 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/78/b8/d3670aec25747e32d54cd5258102ae0d69b9c61c79e7aa326be61a570d0d/structlog-25.2.0.tar.gz", hash = "sha256:d9f9776944207d1035b8b26072b9b140c63702fd7aa57c2f85d28ab701bd8e92", size = 1367438 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/51/eb/244741c1abf7b4092686db0798a4c43491298f40ddec4226f5c4f6b5d3eb/structlog-25.2.0-py3-none-any.whl", hash = "sha256:0fecea2e345d5d491b72f3db2e5fcd6393abfc8cd06a4851f21fcd4d1a99f437", size = 68448 },
+]
+
+[[package]]
+name = "structlog-config"
+version = "0.1.0"
+source = { git = "https://github.com/iloveitaly/structlog-config.git#bf43006ad538aa9e369c9a9fa251161feee0ea77" }
+dependencies = [
+    { name = "orjson" },
+    { name = "python-decouple-typed" },
+    { name = "structlog" },
 ]
 
 [[package]]

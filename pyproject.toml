@@ -42,6 +42,7 @@ dependencies = [
     "pydantic[email,timezone]",
     "celery-types>=0.23.0",
     "furl>=2.1.4",
+    "structlog-config",
 ]
 
 [dependency-groups]
@@ -187,6 +188,9 @@ ipdb = { git = "https://github.com/iloveitaly/ipdb", rev = "support-executables"
 pretty-traceback = { git = "https://github.com/iloveitaly/pretty-traceback.git", rev = "local-traceback" }
 ipython-suggestions = { git = "https://github.com/iloveitaly/ipython-suggestions.git", rev = "ipython-9.x" }
 flower = { git = "https://github.com/iloveitaly/flower", rev = "custom" }
+
+[tool.uv.sources.structlog-config]
+git = "https://github.com/iloveitaly/structlog-config.git"
 
 [tool.uv.sources.pytest-playwright-visual-snapshot]
 git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git"
