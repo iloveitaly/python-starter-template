@@ -9,7 +9,6 @@ dependencies = [
     "aiosmtplib>=3.0.2",
     "alembic>=1.14.0",
     "alembic-postgresql-enum>=1.6.1",
-    "arrow>=1.3.0",
     "backoff>=2.2.1",
     "beautifulsoup4>=4.12.3",
     "cachetools>=5.5.1",
@@ -43,6 +42,8 @@ dependencies = [
     "celery-types>=0.23.0",
     "furl>=2.1.4",
     "structlog-config",
+    "textcase>=0.4.0",
+    "whenever>=0.7.3",
 ]
 
 [dependency-groups]
