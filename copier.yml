@@ -18,7 +18,7 @@ _message_before_copy: >-
 _message_after_copy: |
   Next steps:
 
-    1. Configure all 1p secret references in .env.shared and friends
+    1. Configure all 1p secret references in '.env*'
     2. Run 'direnv exec . just setup' or 'direnv exec . just setup --extras'
     3. Run 'direnv exec . just db_generate_migration "initial_commit"'
     4. Run 'direnv exec . just py_dev' to start a dev server
@@ -71,7 +71,6 @@ _exclude:
   - .github/workflows/repo-sync.yml
   - TODO
   - /.git
-  - migrations/versions/*
   - /README.md
 
 _tasks:
