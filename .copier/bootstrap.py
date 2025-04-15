@@ -1,3 +1,9 @@
+"""
+This script is executed by Copier after the project is generated.
+
+The 'right' way to do this is jinja syntax, but I want this project to actually function on it's own, which is why we do
+this hacky string substitution here.
+"""
 import json
 import os
 import re

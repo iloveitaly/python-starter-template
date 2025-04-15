@@ -35,6 +35,7 @@ exception group processor? https://github.com/apache/airflow/blob/4280b83977cd5a
 do we need a structlog.stdlib.ProcessorFormatter.wrap_for_formatter?
 maybe use a more custom json formatter? https://github.com/jeremyh/datacube-explorer/blob/b289b0cde0973a38a9d50233fe0fff00e8eb2c8e/cubedash/logs.py#L40C21-L40C42
 https://github.com/browser-use/browser-use/blob/76e4c2630d72c0aa313d1f34c8fb53bed86a0e15/browser_use/logging_config.py#L10 additional logging level
+`localias debug config --print | yq --output-format json` to assert against the local .localias
 
 ## Observability
 https://github.com/replicate/cog/blob/c95774f18b8df6f6a7b841be1900153ca04a57ad/python/cog/server/telemetry.py#L7 looks like there is some standard around this
@@ -95,6 +96,8 @@ should we add justfile to run production scripts? Probably not. Should document.
 `{"TimeStamp": "2024-12-17T22:05:33.8744132+00:00", "Log": "INFO   100.100.0.180:49730 - \"GET /favicon.ico HTTP/1.1\" 200"}` need to improve fastapi structured logging
 
 ## pytest
+https://github.com/flexmock/flexmock - for mocking and spy, https://grok.com/share/bGVnYWN5_3e3578b5-5ea5-4ba8-9f82-3a8752e3f59b
+https://github.com/microsoft/playwright-pytest/issues/187 weird concurrency issues
 https://grok.com/share/bGVnYWN5_db662e27-ebb0-4157-8c26-636ca80f5bbd better default pytest configuration
 https://github.com/flexmock/flexmockc
 interesting object matcher here https://github.com/replicate/cog/blob/c95774f18b8df6f6a7b841be1900153ca04a57ad/python/tests/conftest.py#L6-L23
@@ -184,3 +187,8 @@ binding for paste as plain text
 - [ ] pull copy to clipboard into a open source component
 - [ ] pull combobox stuff into the parent repo
 - [ ] create template for shadcn ui components that I can easily clone with copier and use for components
+- [ ] polyfactory stuff
+
+## ai
+
+- [ ] https://github.com/orgs/community/discussions/137150 no url reading in copilot
