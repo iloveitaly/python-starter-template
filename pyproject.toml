@@ -106,9 +106,17 @@ dev-dependencies = [
 # https://github.com/astral-sh/uv/issues/3898
 config-settings = { editable_mode = "compat" }
 
-# TODO https://discord.com/channels/1039017663004942429/1207998321562619954/1313194408069300225
-# [project.scripts]
-# app = "app.cli"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+# https://discord.com/channels/1039017663004942429/1207998321562619954/1313194408069300225
+[project.scripts]
+python-starter-template = "app.cli:app"
 
 [tool.ruff]
 extend-exclude = [
@@ -185,10 +193,11 @@ asyncio_default_fixture_loop_scope = "session"
 [tool.uv.sources]
 j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
 ipython-autoimport = { git = "https://github.com/iloveitaly/ipython-autoimport", rev = "ipython-9.x" }
-ipdb = { git = "https://github.com/iloveitaly/ipdb", rev = "support-executables" }
-pretty-traceback = { git = "https://github.com/iloveitaly/pretty-traceback.git", rev = "local-traceback" }
-ipython-suggestions = { git = "https://github.com/iloveitaly/ipython-suggestions.git", rev = "ipython-9.x" }
 flower = { git = "https://github.com/iloveitaly/flower", rev = "custom" }
+ipdb = { git = "https://github.com/iloveitaly/ipdb", rev = "support-executables" }
+pdbr = { git = "https://github.com/iloveitaly/pdbr", rev = "ipython-9.x" }
+pretty-traceback = { git = "https://github.com/iloveitaly/pretty-traceback.git", rev = "custom" }
+ipython-suggestions = { git = "https://github.com/iloveitaly/ipython-suggestions.git", rev = "ipython-9.x" }
 
 [tool.uv.sources.structlog-config]
 git = "https://github.com/iloveitaly/structlog-config.git"
