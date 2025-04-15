@@ -32,7 +32,6 @@ class log_execution_time(ContextDecorator):
     def __exit__(self, _type, _value, _traceback):
         elapsed = perf_counter() - self.time
 
-        # NOTE this assumes flow_sdk logger with accepts structured logging dict
         log.debug(
             f"{self.msg} took {elapsed:.3f} seconds",
             {
