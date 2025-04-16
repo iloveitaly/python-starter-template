@@ -55,7 +55,7 @@ production_image_name:
 
 one_password_account:
   type: str
-  help: 'The domain of the 1password account to use. Example: "example.1password.com"'
+  help: 'The domain of the 1password account to use. Example: "example.1password.com". Use "op account list" to get the list of accounts.'
   default: "{{ \"op account list --format json | jq -r '.[0].url' || echo ''\" | shell() | trim }}"
 
 one_password_vault:
@@ -72,6 +72,8 @@ _exclude:
   - TODO
   - /.git
   - /README.md
+  - /LICENSE.md
+  - tests/integration/__snapshots__
 
 _tasks:
   - git init
