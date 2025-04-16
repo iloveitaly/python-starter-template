@@ -1285,7 +1285,7 @@ wheels = [
 
 [[package]]
 name = "openai"
-version = "1.74.0"
+version = "1.74.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
@@ -1297,9 +1297,9 @@ dependencies = [
     { name = "tqdm" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/75/86/c605a6e84da0248f2cebfcd864b5a6076ecf78849245af5e11d2a5ec7977/openai-1.74.0.tar.gz", hash = "sha256:592c25b8747a7cad33a841958f5eb859a785caea9ee22b9e4f4a2ec062236526", size = 427571 }
+sdist = { url = "https://files.pythonhosted.org/packages/ec/29/6a31949f0935dd3190e5f4c101d409783943e90126b8b9dd58848888dcd8/openai-1.74.1.tar.gz", hash = "sha256:304fc7f3abb2184a2ab9bba4c6218ff2b687d7aa9bb641402be87e7b150b3c53", size = 427837 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a9/91/8c150f16a96367e14bd7d20e86e0bbbec3080e3eb593e63f21a7f013f8e4/openai-1.74.0-py3-none-any.whl", hash = "sha256:aff3e0f9fb209836382ec112778667027f4fd6ae38bdb2334bc9e173598b092a", size = 644790 },
+    { url = "https://files.pythonhosted.org/packages/4d/f8/910dabe008003cd56916f89e48a2657fac53be8d64225ada2d01f2b4880d/openai-1.74.1-py3-none-any.whl", hash = "sha256:9d50a119fcb647124096a4cbd6c6478894349f71c2f4cb4bf9772dbf9bda73a0", size = 644958 },
 ]
 
 [[package]]
@@ -2629,7 +2629,7 @@ wheels = [
 [[package]]
 name = "structlog-config"
 version = "0.1.0"
-source = { git = "https://github.com/iloveitaly/structlog-config.git#746fb8f64b542c74041141d787b62ff084b10805" }
+source = { git = "https://github.com/iloveitaly/structlog-config.git#299ed357d4a1e55f3ff1388770debf7ebee8cf6a" }
 dependencies = [
     { name = "orjson" },
     { name = "python-decouple-typed" },
