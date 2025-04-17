@@ -1073,7 +1073,7 @@ wheels = [
 [[package]]
 name = "j2lint"
 version = "1.2.0"
-source = { git = "https://github.com/aristanetworks/j2lint.git#2f6b867062b77dd1b475c58a63deee5ed03a7378" }
+source = { git = "https://github.com/aristanetworks/j2lint.git#0810d81f7aee71329e0fa51934e56052697f3520" }
 dependencies = [
     { name = "jinja2" },
     { name = "rich" },
@@ -1285,7 +1285,7 @@ wheels = [
 
 [[package]]
 name = "openai"
-version = "1.74.1"
+version = "1.75.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
@@ -1297,9 +1297,9 @@ dependencies = [
     { name = "tqdm" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ec/29/6a31949f0935dd3190e5f4c101d409783943e90126b8b9dd58848888dcd8/openai-1.74.1.tar.gz", hash = "sha256:304fc7f3abb2184a2ab9bba4c6218ff2b687d7aa9bb641402be87e7b150b3c53", size = 427837 }
+sdist = { url = "https://files.pythonhosted.org/packages/99/b1/318f5d4c482f19c5fcbcde190801bfaaaec23413cda0b88a29f6897448ff/openai-1.75.0.tar.gz", hash = "sha256:fb3ea907efbdb1bcfd0c44507ad9c961afd7dce3147292b54505ecfd17be8fd1", size = 429492 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4d/f8/910dabe008003cd56916f89e48a2657fac53be8d64225ada2d01f2b4880d/openai-1.74.1-py3-none-any.whl", hash = "sha256:9d50a119fcb647124096a4cbd6c6478894349f71c2f4cb4bf9772dbf9bda73a0", size = 644958 },
+    { url = "https://files.pythonhosted.org/packages/80/9a/f34f163294345f123673ed03e77c33dee2534f3ac1f9d18120384457304d/openai-1.75.0-py3-none-any.whl", hash = "sha256:fe6f932d2ded3b429ff67cc9ad118c71327db32eb9d32dd723de3acfca337125", size = 646972 },
 ]
 
 [[package]]
