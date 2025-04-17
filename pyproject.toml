@@ -101,6 +101,7 @@ dev-dependencies = [
     "gitignore-parser>=0.1.11",
     "pytest-playwright-visual-snapshot",
     "flexmock>=0.12.2",
+    "polyfactory>=2.20.0",
 ]
 # https://github.com/astral-sh/uv/issues/3898
 config-settings = { editable_mode = "compat" }
@@ -212,3 +213,10 @@ git = "https://github.com/iloveitaly/activemodel.git"
 [tool.uv.sources.djlint]
 git = "https://github.com/iloveitaly/djLint.git"
 rev = "github-output"
+
+[tool.uv.sources.polyfactory]
+git = "https://github.com/iloveitaly/polyfactory.git"
+rev = "custom"
+
+[tool.uv.sources.uv-development-toggle]
+git = "https://github.com/iloveitaly/uv-development-toggle.git"
