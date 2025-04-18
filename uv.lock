@@ -481,7 +481,7 @@ wheels = [
 
 [[package]]
 name = "datamodel-code-generator"
-version = "0.29.0"
+version = "0.30.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "argcomplete" },
@@ -494,9 +494,9 @@ dependencies = [
     { name = "pydantic" },
     { name = "pyyaml" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/23/8a/b364636e7c65578cc4be58b364044f935466ede37e3a6cfffe10220fc3d7/datamodel_code_generator-0.29.0.tar.gz", hash = "sha256:807cd6e2ce0188f7ce4db6eeb490dc143feef1daa8c78cf9e450ad9e2d05f246", size = 445479 }
+sdist = { url = "https://files.pythonhosted.org/packages/98/cc/645364517fa8269db348229e7939eae7b6c7e8fff8de12cbf49ef7320db8/datamodel_code_generator-0.30.0.tar.gz", hash = "sha256:00972ab4d3368d06ec29e8b6f06ff1d8cdddf1ee33e6401d5c58f31954692959", size = 446241 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0f/50/1a2ed9306b456e691158c680a53f0c96f19134526b1084593f24f33053a0/datamodel_code_generator-0.29.0-py3-none-any.whl", hash = "sha256:219da81a2107fcc0e356d2d87df5d139c38a6a10f4eb687a96b57bc21e370f34", size = 117704 },
+    { url = "https://files.pythonhosted.org/packages/6d/6c/78844a408221886f867e3c4842140b04a8d8fad28ee6db35e929b4ebda49/datamodel_code_generator-0.30.0-py3-none-any.whl", hash = "sha256:b1244f3f1b3e98daa48adeb6c366ed432305a1e9f363a57e6f8a7dd3ad364e70", size = 118024 },
 ]
 
 [[package]]
@@ -2897,8 +2897,8 @@ wheels = [
 
 [[package]]
 name = "uv-development-toggle"
-version = "0.4.0"
-source = { git = "https://github.com/iloveitaly/uv-development-toggle.git#c3eeab38f61f360226cf229736c88a1f0ff57217" }
+version = "0.5.0"
+source = { git = "https://github.com/iloveitaly/uv-development-toggle.git#6b942536bba0609af7aea4bf014d6fd67841cd5c" }
 dependencies = [
     { name = "rich" },
     { name = "tomlkit" },
