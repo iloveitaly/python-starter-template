@@ -16,8 +16,8 @@ from activemodel.mixins import SoftDeletionMixin, TimestampsMixin, TypeIDMixin
 from activemodel.types import TypeIDType
 from sqlmodel import Column, Field
 
-# NOTE we use usr_ for our prefix to avoid confusion
-CLERK_OBJECT_PREFIX = "user_"
+# NOTE usr_ is used for non-clerk prefix to avoid confusion
+CLERK_OBJECT_PREFIX = "user"
 
 # let's do it Stripe style :)
 API_KEY_PREFIX = "sk_live"
@@ -65,9 +65,9 @@ class User(
     # organization_id: str
 
     def before_save(self):
-        if not self.clerk_id.startswith(CLERK_OBJECT_PREFIX):
+        if not self.clerk_id.startswith(CLERK_OBJECT_PREFIX + "_"):
             raise ValueError(
-                f"clerk_id must start with {CLERK_OBJECT_PREFIX}, got {self.clerk_id}"
+                f"clerk_id must start with {CLERK_OBJECT_PREFIX + '_'}, got {self.clerk_id}"
             )
 
     # TODO should also check to ensure the value does not change, I think sqlalchemy stores this state somewhere?
