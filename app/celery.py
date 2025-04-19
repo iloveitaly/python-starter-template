@@ -1,3 +1,4 @@
+import asyncio
 from datetime import timedelta
 
 import celery_healthcheck
