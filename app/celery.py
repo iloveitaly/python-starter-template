@@ -5,10 +5,11 @@ from celery import Celery, signals
 from celery.app.task import Task
 from celery.schedules import crontab
 
-from app import log, root
-from app.configuration.redis import redis_url
-
 from activemodel.celery import register_celery_typeid_encoder
+
+from . import log, root
+from .configuration.redis import redis_url
+from .configuration.sentry import configure_sentry
 
 # https://github.com/sbdchd/celery-types
 Task.__class_getitem__ = classmethod(lambda cls, *args, **kwargs: cls)  # type: ignore[attr-defined]
@@ -41,6 +42,19 @@ class BaseTaskWithRetry(Task):
     retry_jitter = True
 
     # TODO should probably add a CM for the database session here...
+
+
+# TODO not currently used, would be better to have a pool for async execution. Need to consider a better approach here
+#      and see what community options have been built.
+class AsyncTask(Task):
+    abstract = True
+
+    def __call__(self, *args, **kwargs):
+        loop = asyncio.get_event_loop()
+        return loop.run_until_complete(self.run(*args, **kwargs))
+
+    async def run(self, *args, **kwargs):
+        raise NotImplementedError
 
 
 celery_app = Celery(
