@@ -862,41 +862,6 @@ secrets_ci_manage:
 	open https://$OP_ACCOUNT/developer-tools/directory
 
 #######################
-# GitHub
-#######################
-
-GITHUB_RULESET := """
-{
-	"name": "Protect master from force pushes",
-	"target": "branch",
-	"enforcement": "active",
-	"conditions": {
-		"ref_name": {
-			"include": ["refs/heads/master"],
-			"exclude": []
-		}
-	},
-	"rules": [
-		{
-			"type": "non_fast_forward"
-		}
-	]
-}
-"""
-
-_github_repo:
-	gh repo view --json nameWithOwner -q .nameWithOwner
-
-github_ruleset_delete:
-	repo=$(just _github_repo) && \
-	  ruleset_name=$(echo '{{GITHUB_RULESET}}' | jq -r .name) && \
-		ruleset_id=$(gh api repos/$repo/rulesets --jq ".[] | select(.name == \"$ruleset_name\") | .id") && \
-		(([ -n "${ruleset_id}" ] || (echo "No ruleset found" && exit 0)) || gh api --method DELETE repos/$repo/rulesets/$ruleset_id)
-
-github_ruleset: github_ruleset_delete
-	gh api --method POST repos/$(just _github_repo)/rulesets --input - <<< '{{GITHUB_RULESET}}'
-
-#######################
 # Production Build
 #
 # Some of the ENV variables and labels below are pulled from these projects:
@@ -1100,6 +1065,7 @@ extract_proc procname:
 	yq -r '.{{procname}}' Procfile
 
 # imported justfiles *can* creates some complexity
+import 'just/github.just'
 import 'just/direnv.just'
 
 # TODO imported justfiles are not namespaced by default!
