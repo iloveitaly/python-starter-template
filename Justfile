@@ -273,6 +273,3 @@ import 'just/secrets.just'
 import 'just/build.just'
 import 'just/github.just'
 import 'just/direnv.just'
-
-# TODO imported justfiles are not namespaced by default!
-# import? 'infra/Justfile'

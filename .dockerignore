@@ -19,8 +19,6 @@
 
 node_modules
 
-/celerybeat-schedule
-
 # TODO this may be a bad idea, but let's exclude this for now...
 /test
 /test_helpers
@@ -30,7 +28,8 @@ node_modules
 
 *.log
 
-Justfile*
+Justfile
+/just
 Procfile
 /TODO*
 /README.md
