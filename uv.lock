@@ -217,6 +217,20 @@ redis = [
 ]
 
 [[package]]
+name = "celery-healthcheck"
+version = "0.1.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "celery" },
+    { name = "fastapi" },
+    { name = "uvicorn" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b0/23/d80da2a9ba9dc83b136fbed9caa7f936e88fbc86409c44eb360d66c278c2/celery_healthcheck-0.1.1.tar.gz", hash = "sha256:3b3f14087f939c4bd5c16c0d3275a03cb20b7a926880a8421ab84c253947d54a", size = 27460 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/88/0e/2536a6bf4c6c7ffe23406c3330ee43e24db7ffd492ddfc6f9ae375cf24fe/celery_healthcheck-0.1.1-py3-none-any.whl", hash = "sha256:bbf324b0e6ba02fc1de125fa7b37e62edc4d0c1fb7c06eebd6d49777013638f8", size = 3608 },
+]
+
+[[package]]
 name = "celery-once"
 version = "3.0.1"
 source = { registry = "https://pypi.org/simple" }
@@ -2038,6 +2052,7 @@ dependencies = [
     { name = "beautifulsoup4" },
     { name = "cachetools" },
     { name = "celery", extra = ["redis"] },
+    { name = "celery-healthcheck" },
     { name = "celery-once" },
     { name = "celery-types" },
     { name = "clerk-backend-api" },
@@ -2138,6 +2153,7 @@ requires-dist = [
     { name = "beautifulsoup4", specifier = ">=4.12.3" },
     { name = "cachetools", specifier = ">=5.5.1" },
     { name = "celery", extras = ["redis"], specifier = ">=5.4.0" },
+    { name = "celery-healthcheck", specifier = ">=0.1.1" },
     { name = "celery-once", specifier = ">=3.0.1" },
     { name = "celery-types", specifier = ">=0.23.0" },
     { name = "clerk-backend-api", specifier = ">=1.8.0" },
