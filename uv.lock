@@ -5,7 +5,7 @@ requires-python = ">=3.13"
 [[package]]
 name = "activemodel"
 version = "0.11.0"
-source = { git = "https://github.com/iloveitaly/activemodel.git#12a5e1db9be741f12db174d5a25f6c2eee61a446" }
+source = { git = "https://github.com/iloveitaly/activemodel.git#5d7874506047b7ae91f22566e1dc2c64d68814f4" }
 dependencies = [
     { name = "python-decouple-typed" },
     { name = "sqlmodel" },
@@ -15,15 +15,11 @@ dependencies = [
 
 [[package]]
 name = "aiautocommit"
-version = "0.12.0"
-source = { registry = "https://pypi.org/simple" }
+version = "0.12.1"
+source = { git = "https://github.com/iloveitaly/aiautocommit.git#f06bd4917e80a51c91c02ab9f3d5ea1db50a085f" }
 dependencies = [
     { name = "click" },
     { name = "openai" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/b4/72/fe05c7dc566e3ba951fd76cd0340120172c9536817a427eb7915ee902897/aiautocommit-0.12.0.tar.gz", hash = "sha256:f58017ee760a8275941731a04b310658a677ffcfb449e3c5abe879507dcbd25a", size = 40138 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/50/12/3a440be77d6f25051aaf9332323fd3c22f1d22c6e3cb1f4331064c0aea8f/aiautocommit-0.12.0-py3-none-any.whl", hash = "sha256:0382b74c43a4cfcfe4c32b91f8f87098b11e0c4944d3c5a843fb6212feb068b9", size = 16263 },
 ]
 
 [[package]]
@@ -239,6 +235,21 @@ dependencies = [
     { name = "redis" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/07/ff/af718344bfa9e0e25fb6855095a928ac6525f23b14a3998dd99699dfdee0/celery_once-3.0.1.tar.gz", hash = "sha256:9098730d6a84a91ccd84868c4730a81487fd0ffb7220cb1836d2b928542159d0", size = 12692 }
+
+[[package]]
+name = "celery-redbeat"
+version = "2.3.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "celery" },
+    { name = "python-dateutil" },
+    { name = "redis" },
+    { name = "tenacity" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9b/9d/7112d5454aba17857f4d30b12d9bfdd2daa66e0561e7f00906700d9db987/celery_redbeat-2.3.2.tar.gz", hash = "sha256:7d6e41e4b807fafba5d88b98e3d3863f0df95ac3ed1692d70b134c079b936b8b", size = 22022 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/cc/97/e9c6147a2cf2bee08bd8f87d7b5af4a4359e82e7829e714bab25ed762a3f/celery_redbeat-2.3.2-py2.py3-none-any.whl", hash = "sha256:9d61ab6e29f59d676621a846c778a347d5acad22e90fb4386343a4852d4f7ac3", size = 15058 },
+]
 
 [[package]]
 name = "celery-types"
@@ -923,11 +934,11 @@ wheels = [
 
 [[package]]
 name = "identify"
-version = "2.6.9"
+version = "2.6.10"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/9b/98/a71ab060daec766acc30fb47dfca219d03de34a70d616a79a38c6066c5bf/identify-2.6.9.tar.gz", hash = "sha256:d40dfe3142a1421d8518e3d3985ef5ac42890683e32306ad614a29490abeb6bf", size = 99249 }
+sdist = { url = "https://files.pythonhosted.org/packages/0c/83/b6ea0334e2e7327084a46aaaf71f2146fc061a192d6518c0d020120cd0aa/identify-2.6.10.tar.gz", hash = "sha256:45e92fd704f3da71cc3880036633f48b4b7265fd4de2b57627cb157216eb7eb8", size = 99201 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/07/ce/0845144ed1f0e25db5e7a79c2354c1da4b5ce392b8966449d5db8dca18f1/identify-2.6.9-py2.py3-none-any.whl", hash = "sha256:c98b4322da415a8e5a70ff6e51fbc2d2932c015532d77e9f8537b4ba7813b150", size = 99101 },
+    { url = "https://files.pythonhosted.org/packages/2b/d3/85feeba1d097b81a44bcffa6a0beab7b4dfffe78e82fc54978d3ac380736/identify-2.6.10-py2.py3-none-any.whl", hash = "sha256:5f34248f54136beed1a7ba6a6b5c4b6cf21ff495aac7c359e1ef831ae3b8ab25", size = 99101 },
 ]
 
 [[package]]
@@ -1377,11 +1388,11 @@ wheels = [
 
 [[package]]
 name = "packaging"
-version = "24.2"
+version = "25.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d0/63/68dbb6eb2de9cb10ee4c9c14a0148804425e13c4fb20d61cce69f53106da/packaging-24.2.tar.gz", hash = "sha256:c228a6dc5e932d346bc5739379109d49e8853dd8223571c7c5b55260edc0b97f", size = 163950 }
+sdist = { url = "https://files.pythonhosted.org/packages/a1/d4/1fc4078c65507b51b96ca8f8c3ba19e6a61c8253c72794544580a7b6c24d/packaging-25.0.tar.gz", hash = "sha256:d443872c98d677bf60f6a1f2f8c1cb748e8fe762d2bf9d3148b5599295b0fc4f", size = 165727 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/88/ef/eb23f262cca3c0c4eb7ab1933c3b1f03d021f2c48f54763065b6f0e321be/packaging-24.2-py3-none-any.whl", hash = "sha256:09abb1bccd265c01f4a3aa3f7a7db064b36514d2cba19a2f694fe6150451a759", size = 65451 },
+    { url = "https://files.pythonhosted.org/packages/20/12/38679034af332785aac8774540895e234f4d07f7545804097de4b666afd8/packaging-25.0-py3-none-any.whl", hash = "sha256:29572ef2b1f17581046b3a2227d5c611fb25ec70ca1ba8554b24b0e69331a484", size = 66469 },
 ]
 
 [[package]]
@@ -1881,6 +1892,11 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/0a/f2/b16389f7ceccd96fd887762626c1509cdd39fdc8f7d4cec59cb1e9716df5/pytest_celery-1.2.0-py3-none-any.whl", hash = "sha256:d81d22a3bed21eb180fa2ee2dd701a00cc4f7c3f1d578e99620c887cad331fb6", size = 49040 },
 ]
 
+[package.optional-dependencies]
+redis = [
+    { name = "redis" },
+]
+
 [[package]]
 name = "pytest-cov"
 version = "6.1.1"
@@ -2054,6 +2070,7 @@ dependencies = [
     { name = "celery", extra = ["redis"] },
     { name = "celery-healthcheck" },
     { name = "celery-once" },
+    { name = "celery-redbeat" },
     { name = "celery-types" },
     { name = "clerk-backend-api" },
     { name = "css-inline" },
@@ -2132,7 +2149,7 @@ dev = [
     { name = "pyright" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
-    { name = "pytest-celery" },
+    { name = "pytest-celery", extra = ["redis"] },
     { name = "pytest-cov" },
     { name = "pytest-github-actions-annotate-failures" },
     { name = "pytest-playwright" },
@@ -2155,6 +2172,7 @@ requires-dist = [
     { name = "celery", extras = ["redis"], specifier = ">=5.4.0" },
     { name = "celery-healthcheck", specifier = ">=0.1.1" },
     { name = "celery-once", specifier = ">=3.0.1" },
+    { name = "celery-redbeat", specifier = ">=2.3.2" },
     { name = "celery-types", specifier = ">=0.23.0" },
     { name = "clerk-backend-api", specifier = ">=1.8.0" },
     { name = "css-inline", specifier = ">=0.14.3" },
@@ -2189,7 +2207,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 debugging-extras = [
-    { name = "aiautocommit" },
+    { name = "aiautocommit", git = "https://github.com/iloveitaly/aiautocommit.git" },
     { name = "colorama", specifier = ">=0.4.6" },
     { name = "datamodel-code-generator", specifier = ">=0.26.3" },
     { name = "debugpy", specifier = ">=1.8.8" },
@@ -2233,7 +2251,7 @@ dev = [
     { name = "pyright", specifier = ">=1.1.386" },
     { name = "pytest", specifier = ">=8.3.3" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
-    { name = "pytest-celery", specifier = ">=1.1.3" },
+    { name = "pytest-celery", extras = ["redis"], specifier = ">=1.1.3" },
     { name = "pytest-cov", specifier = ">=6.0.0" },
     { name = "pytest-github-actions-annotate-failures", specifier = ">=0.2.0" },
     { name = "pytest-playwright", specifier = ">=0.6.2" },
@@ -2440,11 +2458,11 @@ sqlalchemy = [
 
 [[package]]
 name = "setuptools"
-version = "78.1.0"
+version = "78.1.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/a9/5a/0db4da3bc908df06e5efae42b44e75c81dd52716e10192ff36d0c1c8e379/setuptools-78.1.0.tar.gz", hash = "sha256:18fd474d4a82a5f83dac888df697af65afa82dec7323d09c3e37d1f14288da54", size = 1367827 }
+sdist = { url = "https://files.pythonhosted.org/packages/81/9c/42314ee079a3e9c24b27515f9fbc7a3c1d29992c33451779011c74488375/setuptools-78.1.1.tar.gz", hash = "sha256:fcc17fd9cd898242f6b4adfaca46137a9edef687f43e6f78469692a5e70d851d", size = 1368163 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/54/21/f43f0a1fa8b06b32812e0975981f4677d28e0f3271601dc88ac5a5b83220/setuptools-78.1.0-py3-none-any.whl", hash = "sha256:3e386e96793c8702ae83d17b853fb93d3e09ef82ec62722e61da5cd22376dcd8", size = 1256108 },
+    { url = "https://files.pythonhosted.org/packages/90/99/158ad0609729111163fc1f674a5a42f2605371a4cf036d0441070e2f7455/setuptools-78.1.1-py3-none-any.whl", hash = "sha256:c3a9c4211ff4c309edb8b8c4f1cbfa7ae324c4ba9f91ff254e3d305b9fd54561", size = 1256462 },
 ]
 
 [[package]]
@@ -2717,11 +2735,11 @@ wheels = [
 
 [[package]]
 name = "textcase"
-version = "0.4.1"
+version = "0.4.3"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/3b/f6/5555d82857fe125ac04d71781475aa7f2f9cb908d59c5e5f2d10deb324a5/textcase-0.4.1.tar.gz", hash = "sha256:25d81009e5e2a25a9f8ebc81cab6b366ea272c045f33f698b07883f799b7695a", size = 6921 }
+sdist = { url = "https://files.pythonhosted.org/packages/75/e6/5499333512a7008cfe795c4e2db404c34c61da3446727b31bfd2fcf79783/textcase-0.4.3.tar.gz", hash = "sha256:1900dda7d5fc8cf44c414677b9be8b66b2354d9ff4107934ed577f11c1d1210a", size = 6946 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/23/8a/c2772182a3b7a1e13f8b491f2cff92d0d07464576a05e14540d7b4220cd1/textcase-0.4.1-py3-none-any.whl", hash = "sha256:d03e266e77a5fb0d7cdb31882f7e5d566e0adc7934f7182a2e1ab645a1979133", size = 6453 },
+    { url = "https://files.pythonhosted.org/packages/a0/a3/7e8d624362ca16a51df435d14c08e07adf266c27d16fad422f954a3abbbd/textcase-0.4.3-py3-none-any.whl", hash = "sha256:2f1a1c069ba60e224455ae6d45ca35344ad6a2ffffd05d6bd8161c0c34515f30", size = 6474 },
 ]
 
 [[package]]
@@ -2913,8 +2931,8 @@ wheels = [
 
 [[package]]
 name = "uv-development-toggle"
-version = "0.5.0"
-source = { git = "https://github.com/iloveitaly/uv-development-toggle.git#6b942536bba0609af7aea4bf014d6fd67841cd5c" }
+version = "0.6.0"
+source = { git = "https://github.com/iloveitaly/uv-development-toggle.git#c779cf7af525298002c7ccfb1a794dd9278a9790" }
 dependencies = [
     { name = "rich" },
     { name = "tomlkit" },
@@ -2922,15 +2940,15 @@ dependencies = [
 
 [[package]]
 name = "uvicorn"
-version = "0.34.1"
+version = "0.34.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "h11" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/86/37/dd92f1f9cedb5eaf74d9999044306e06abe65344ff197864175dbbd91871/uvicorn-0.34.1.tar.gz", hash = "sha256:af981725fc4b7ffc5cb3b0e9eda6258a90c4b52cb2a83ce567ae0a7ae1757afc", size = 76755 }
+sdist = { url = "https://files.pythonhosted.org/packages/a6/ae/9bbb19b9e1c450cf9ecaef06463e40234d98d95bf572fab11b4f19ae5ded/uvicorn-0.34.2.tar.gz", hash = "sha256:0e929828f6186353a80b58ea719861d2629d766293b6d19baf086ba31d4f3328", size = 76815 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5f/38/a5801450940a858c102a7ad9e6150146a25406a119851c993148d56ab041/uvicorn-0.34.1-py3-none-any.whl", hash = "sha256:984c3a8c7ca18ebaad15995ee7401179212c59521e67bfc390c07fa2b8d2e065", size = 62404 },
+    { url = "https://files.pythonhosted.org/packages/b1/4b/4cef6ce21a2aaca9d852a6e84ef4f135d99fcd74fa75105e2fc0c8308acd/uvicorn-0.34.2-py3-none-any.whl", hash = "sha256:deb49af569084536d269fe0a6d67e3754f104cf03aba7c11c40f01aadf33c403", size = 62483 },
 ]
 
 [package.optional-dependencies]
