@@ -13,10 +13,13 @@
   "tailwind-raw-reorder.tailwindConfigPath": "./web/tailwind.config.ts",
 
   // typescript / web projects
+  // the workspace typescript version does *not* seem to be used by default, you need to configure this
   "typescript.tsdk": "web/node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   // TODO is this picking the exact right typescript version from the repo?
   "typescript.preferGoToSourceDefinition": true,
+  "typescript.preferences.preferTypeOnlyAutoImports": true,
+  "typescript.surveys.enabled": false,
   "typescript.experimental.updateImportsOnPaste": true,
 
   // TODO unsure if this really works: https://stackoverflow.com/questions/53113031/how-to-see-a-fully-expanded-typescript-type-without-n-more-and
@@ -59,14 +62,13 @@
   // ],
 
   // new feature, should be the default in the future
-  "python.analysis.languageServerMode": "full",
   "python.analysis.diagnosticMode": "workspace",
   "python.analysis.packageIndexDepths": [
     {
       "name": "",
       "depth": 5,
       "includeAllSymbols": true
-    },
+    }
     // TODO packages are not being indexed, can't find fastapi symbols in the symbol search but can in the import analysis...
     // {
     //   "name": "fastapi",
@@ -76,7 +78,8 @@
 
     //   {"name":"pdf2image", "depth":3, "includeAllSymbols": true},
     // {"name":"decouple", "depth":3, "includeAllSymbols": true},
-    { "name": "pydantic", "depth": 3, "includeAllSymbols": true }
+    // { "name": "pydantic", "depth": 3, "includeAllSymbols": true },
+    // { "name": "sqlmodel", "depth": 3, "includeAllSymbols": true }
   ],
 
   // in web, prettier is used by default, but we want it to be used outside that directly
