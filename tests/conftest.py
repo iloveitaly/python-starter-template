@@ -104,7 +104,7 @@ def sync_celery():
     "run celery tasks synchronously instead of in the background"
 
     # TODO I have to change the name of celery app... :/
-    from app.celery import celery
+    from app.celery import celery_app
 
     # celery settings to mutate
     settings = {
@@ -113,15 +113,15 @@ def sync_celery():
     }
 
     # Store original values
-    original_settings = {key: celery.conf.get(key) for key in settings}
+    original_settings = {key: celery_app.conf.get(key) for key in settings}
 
     # Set to sync mode
-    celery.conf.update(settings)
+    celery_app.conf.update(settings)
 
     yield
 
     # Restore original values
-    celery.conf.update(original_settings)
+    celery_app.conf.update(original_settings)
 
 
 # TODO we should really throw an exception if integration and non-integration tests are mixed, this will cause DB related issues

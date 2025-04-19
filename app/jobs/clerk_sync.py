@@ -4,7 +4,7 @@ and update the User record's email column from the Clerk data.
 """
 
 from app import log
-from app.celery import celery
+from app.celery import celery_app
 from app.configuration.clerk import clerk
 
 from app.models.user import User
@@ -41,7 +41,7 @@ def perform() -> None:
     log.info("users synced with clerk")
 
 
-perform_celery = celery.task(perform)
+perform_celery = celery_app.task(perform)
 
 
 def queue():
