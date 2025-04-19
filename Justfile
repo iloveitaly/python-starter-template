@@ -279,21 +279,11 @@ clean: js_clean py_clean build_clean
 # destroy and rebuild py, js, db, etc
 nuke: js_nuke py_nuke db_nuke
 
-##########################
-# Dev Container Management
-##########################
-
-# Use --fast to avoid waiting until the containers are healthy, useful for CI runs
-[doc("Optional flag: --fast")]
-up *flag:
-	# if images have already been pulled, this ensures the latest versions are pulled so they match with
-	# CI or other environments that are pulling fresh versions of the images
-	docker compose pull
-
-	docker compose up -d {{ if flag == "--fast" { "" } else { "--wait" } }}
-
-down: db_down
-	docker compose down
+##############################################
+# Database Migrations
+#
+# Goal is to have similar semantics to rails.
+##############################################
 
 # separate task for the db to support db_reset
 db_up:
@@ -304,12 +294,6 @@ db_up:
 # turn off the database *and* completely remove the data
 db_down:
 	docker compose down --volumes postgres
-
-##############################################
-# Database Migrations
-#
-# Goal is to have similar semantics to rails.
-##############################################
 
 # completely destroy the dev and test databases, destroying the containers and rebuilding them
 db_reset_hard: db_down db_up db_migrate db_seed
@@ -436,7 +420,7 @@ db_dump_production:
 	echo "Example restore: \n{{ BLUE }}pg_restore --no-owner --no-privileges --if-exists --clean -d \$DATABASE_URL $dump_file{{ NORMAL }}"
 
 
-# imported justfiles *can* creates some complexity
+# do NOT allow for duplicate recipe names and variables otherwise this would get very complex
 import 'just/javascript.just'
 import 'just/ci.just'
 import 'just/python.just'
