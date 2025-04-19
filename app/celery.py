@@ -61,8 +61,9 @@ class AsyncTask(Task):
 celery_app = Celery(
     "tasks",
     broker=redis_url(),
-    # TODO why is this causing typing issues?
-    # result_backend=redis_url(),
+    result_backend=redis_url(),
+    redbeat_redis_url=redis_url(),
+    task_cls=BaseTaskWithRetry,
 )
 
 # endpoint for running a TCP healthcheck on the container
@@ -155,7 +156,7 @@ celery_app.conf.ONCE = {
 
 celery_app.conf.beat_schedule = {
     "example_normal": {
-        "task": "app.jobs.example_normal",
+        "task": "app.jobs.sync.perform",
         # can run sub-minute schedules
         "schedule": timedelta(seconds=2),
     },
