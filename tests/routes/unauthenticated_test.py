@@ -10,6 +10,13 @@ async def test_healthcheck(aclient):
     assert response.status_code == status.HTTP_200_OK
 
 
+async def test_unauthenticated_router(aclient):
+    response = await aclient.get(api_app.url_path_for("create_payment"))
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {"status": "ok"}
+
+
 async def test_user_status(aclient):
     response = await aclient.get(api_app.url_path_for("active_user_status"))
 

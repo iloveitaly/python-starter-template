@@ -23,6 +23,7 @@ from .environments import is_production
 from .routes.internal import internal_api_app
 from .routes.middleware import add_middleware
 from .routes.static import mount_public_directory
+from .routes.unauthenticated import unauthenticated_api
 from .templates import render_template
 
 fast_api_args = {}
@@ -60,6 +61,7 @@ api_app = FastAPI(
 
 api_app.include_router(internal_api_app)
 api_app.include_router(external_api_app)
+api_app.include_router(unauthenticated_api)
 
 add_middleware(api_app)
 

@@ -59,10 +59,11 @@ class AsyncTask(Task):
 
 
 celery_app = Celery(
+    # TODO why `tasks`? is there something better to use here?
     "tasks",
     broker=redis_url(),
-    result_backend=redis_url(),
-    redbeat_redis_url=redis_url(),
+    result_backend=redis_url(),  # type: ignore
+    redbeat_redis_url=redis_url(),  # type: ignore
     task_cls=BaseTaskWithRetry,
 )
 
