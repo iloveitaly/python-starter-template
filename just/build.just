@@ -188,7 +188,7 @@ build_shell-exec:
 # run the container locally, as if it were in production (against production DB, resources, etc)
 build_run-as-production procname="api" image_name=PYTHON_IMAGE_TAG:
 	# NOTE that resources are limited to a production-like environment, change if your production requirements are different
-	docker run -p 8202:80 \
+	docker run -p ${JAVASCRIPT_SERVER_PORT}:80 \
 		--memory=1g --cpus=2 \
 		$(just direnv_export_docker ".env.production.backend" --params) \
 		--platform linux/amd64 \
