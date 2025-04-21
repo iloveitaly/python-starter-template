@@ -2,8 +2,7 @@
 Completely unauthenticated API routes.
 """
 
-from fastapi import APIRouter, Depends, HTTPException, Request
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends
 
 from activemodel.session_manager import aglobal_session
 
