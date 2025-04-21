@@ -6,21 +6,14 @@ import json
 import re
 from urllib.request import urlopen
 
-from typeid import TypeID  # noqa: F401
-
-# autoimport packages
-import app.commands
-import app.jobs
-import app.models
+import ipython_playground
+from typeid import TypeID
 
 # helpful shortcuts
 from app import log
-from app.configuration.clerk import clerk  # noqa: F401
+from app.configuration.clerk import clerk
 
-from activemodel.utils import find_all_sqlmodels
-
-# make all sqlmodels available in the repl
-globals().update(find_all_sqlmodels(app.models))
+globals().update(ipython_playground.all_extras())
 
 
 def read_data_url(url):
