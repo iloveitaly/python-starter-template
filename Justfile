@@ -24,7 +24,7 @@
 # this will cause some extra frustration when developing scripts initially, but will make working with them more
 # intuitive and less error prone over time.
 
-# zsh is the default shell under macos, let's mirror it
+# zsh is the default shell under macos, let's mirror it everywhere
 set shell := ["zsh", "-cu", "-o", "pipefail"]
 
 # TODO v (cmd tracing) by default for [script]? created weird terminal clearing behavior
@@ -46,9 +46,6 @@ PROJECT_NAME := "python-starter-template"
 # execute a command in the (nearly) exact same environment as CI
 EXECUTE_IN_TEST := "CI=true direnv exec ."
 
-# the `exec` magic is to ensure `sys.stdout.isatty()` reports as false, which can change pytest plugin functionality
-# exec 1> >(cat)
-
 default:
 	just --list
 
@@ -58,6 +55,7 @@ lint: js_lint py_lint db_lint
 # this is done automatically for fastapi, but not for celery workers
 PYTHON_WATCHMEDO := "uv run --with watchdog watchmedo auto-restart --directory=./ --pattern=*.py --recursive --"
 
+# TODO should add an option to not run workers, this is overkill most of the time
 # start all of the services you need for development in a single terminal
 [macos]
 [script]
@@ -134,9 +132,6 @@ requirements *flags:
 	done
 
 	@if [[ "{{flags}}" =~ "--extras" ]]; then \
-		echo "Adding aiautocommit..."; \
-		uv tool add aiautocommit; \
-		\
 		echo "Removing sample git hooks..."; \
 		rm .git/hooks/*.sample || true; \
 		\
