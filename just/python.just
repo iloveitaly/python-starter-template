@@ -31,7 +31,7 @@ py_setup:
 py_clean:
 	# pycache should never appear because of PYTHON* vars
 
-	rm -rf .pytest_cache .ruff_cache .venv celerybeat-schedule || true
+	rm -rf .pytest_cache .ruff_cache .venv || true
 	rm -rf tests/**/snapshot_tests_failures || true
 
 	# rm -rf $PLAYWRIGHT_BROWSERS_PATH
