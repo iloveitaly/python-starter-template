@@ -9,7 +9,6 @@ import os
 import re
 import shutil
 from pathlib import Path
-from typing import Dict, List, Tuple
 
 # Change to parent directory of the script
 script_dir = Path(__file__).parent
@@ -22,7 +21,7 @@ shutil.copy2(".copier/README.md", "README.md")
 copier_answers = json.loads(Path(".copier-answers.yml").read_text())
 
 
-def replace_lines_in_files(replacements: Dict[str, List[Tuple[str, str]]]):
+def replace_lines_in_files(replacements: dict[str, list[tuple[str, str]]]):
     """
     replacements = {
         'file.txt': [
@@ -75,6 +74,8 @@ replacements = {
     ],
     "Justfile": [
         (r"^PROJECT_NAME :=", f'PROJECT_NAME := "{copier_answers["project_slug"]}"'),
+    ],
+    "just/build.just": [
         (
             r"^PYTHON_PRODUCTION_IMAGE_NAME :=",
             f'PYTHON_PRODUCTION_IMAGE_NAME := "{copier_answers["production_image_name"]}"',

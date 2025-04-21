@@ -8,4 +8,5 @@
 uv tool run --with jinja2_shell_extension \
   copier update --trust --skip-tasks --skip-answered \
   --exclude web \
-  --exclude pyproject.toml
+  --exclude pyproject.toml \
+  --exclude tests/integration/__snapshots__
