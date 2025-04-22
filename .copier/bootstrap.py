@@ -9,6 +9,7 @@ import os
 import re
 import shutil
 from pathlib import Path
+import uuid
 
 # Change to parent directory of the script
 script_dir = Path(__file__).parent
@@ -71,6 +72,14 @@ replacements = {
             r"export OP_VAULT_UID=",
             f"export OP_VAULT_UID={copier_answers['one_password_vault']}",
         ),
+        (
+            r"SESSION_SECRET_KEY=",
+            f"SESSION_SECRET_KEY={uuid.uuid4()}"
+        ),
+        (
+            r"web\.localhost",
+            f"{copier_answers['project_slug']}.localhost"
+        )
     ],
     "Justfile": [
         (r"^PROJECT_NAME :=", f'PROJECT_NAME := "{copier_answers["project_slug"]}"'),
@@ -81,6 +90,13 @@ replacements = {
             f'PYTHON_PRODUCTION_IMAGE_NAME := "{copier_answers["production_image_name"]}"',
         ),
     ],
+    ".localias.yaml": [
+        (
+            r"web\.localhost",
+            f'{copier_answers["project_slug"]}.localhost',
+        ),
+    ]
+
 }
 
 replace_lines_in_files(replacements)

@@ -1,5 +1,3 @@
-# TODO OP config?
-
 # NOTE some limitations of copier:
 #
 #   - any extensions must be installed manually
@@ -18,11 +16,18 @@ _message_before_copy: >-
 _message_after_copy: |
   Next steps:
 
-    1. Configure all 1p secret references in '.env*'
-    2. Run 'direnv exec . just setup' or 'direnv exec . just setup --extras'
-    3. Run 'direnv exec . just db_generate_migration "initial_commit"'
-    4. Run 'direnv exec . just py_dev' to start a dev server
-    5. Take a look at recommended shell hooks, etc
+    1. Configure all 1p secret references in '.env*' (rg 'op://' --hidden)
+    2. Run 'just setup' or 'just setup --extras'
+    4. Run 'just py_dev' to start a dev server
+    5. Update ports in .localias.yaml + .env*, if there's a conflict with an another app.
+       You easily change them (there's multiple defined in .localias.yaml) using fastmod:
+
+       $ fastmod 8203 10203 --hidden
+
+    6. Take a look at recommended shell hooks, etc specified in the readme.
+
+  If you don't have direnv setup properly, you can prefix any of the above commands with
+  `direnv exec .` to execute them with the proper environment variables.
 
 
 project_slug:
@@ -65,6 +70,8 @@ one_password_vault:
     {% if not (one_password_vault | regex_search('^[a-zA-Z0-9]+$')) %}
     one_password_vault must be a valid UUID from 1password
     {% endif %}
+
+# TODO ask for port starting range and replace in files
 
 _exclude:
   - metadata.json
