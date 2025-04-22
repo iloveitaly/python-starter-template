@@ -404,6 +404,34 @@ react-router seems to wrap `vite preview`
 direnv allow config
 -->
 
+### Using Azure OpenAI
+
+Azure's OpenAI services are great for new projects because they give you a ton of credits to play around with.
+
+You can [easily switch from OpenAI to Azure OpenAI](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/switching-endpoints). Here's the credentials you need to set:
+
+```shell
+export AZURE_OPENAI_API_KEY=does_not_start_with_sk-
+# note that eastus2 seems to get newer models first
+export AZURE_OPENAI_ENDPOINT=https://eastus2.api.cognitive.microsoft.com/
+# not the same as the OAI versions
+export OPENAI_API_VERSION=2025-03-01-preview
+```
+
+And in [`app/configuration/openai.py`](app/configuration/openai.py):
+
+```python
+from openai import AzureOpenAI
+
+openai = AzureOpenAI()
+```
+
+Other notes:
+
+* [Here's a list of models you can use](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models?tabs=global-standard%2Cstandard-chat-completions#model-summary-table-and-region-availability)
+* The model names must match the deployment names. You have to manage this yourself. [Checkout this terraform example.](./infra/azure/openai.tf)
+* [Here's a list of API versions](https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#rest-api-versioning)
+
 ### Production Console
 
 You need a REPL to operate a production application. There's a nice one bundled with the application:
