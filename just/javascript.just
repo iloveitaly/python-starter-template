@@ -111,9 +111,8 @@ js_shadcn_upgrade:
 JAVASCRIPT_PACKAGE_JSON := WEB_DIR / "package.json"
 
 # update package.json engines to match the current versions in .tool-versions
-[macos]
 [script]
-_js_sync-engine-versions:
+_js_sync-engine-versions: _dev_only
 	NODE_VERSION=$(mise list --current --json | jq -r ".node[0].version")
 	PNPM_VERSION=$(pnpm -v)
 

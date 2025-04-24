@@ -41,14 +41,12 @@ db_lint:
 	fi
 
 # open the database in the default macos GUI
-[macos]
-db_open:
+db_open: _dev_only
 	# TablePlus via Setapp is a great option here
 	open $DATABASE_URL
 
 # tui to interact with the database
-[macos]
-db_play:
+db_play: _dev_only
 	uv tool run pgcli $DATABASE_URL
 
 # run migrations on dev and test
@@ -66,8 +64,7 @@ db_migrate:
 	[ -n "${CI:-}" ] || (just _banner_echo "Migrating Test Database" && {{EXECUTE_IN_TEST}} uv run alembic upgrade head)
 
 # pick a migration to downgrade to
-[macos]
-db_downgrade:
+db_downgrade: _dev_only
 	alembic_target_id=$(uv run alembic history | fzf --delimiter '[->\s,]+' --bind 'enter:become(echo {2})') && \
 		just _banner_echo "Downgrading Dev Database..." && \
 		uv run alembic downgrade $alembic_target_id && \
@@ -114,20 +111,17 @@ db_nuke:
 	just db_generate_migration "initial_commit"
 
 # enable SQL debugging on the postgres database
-[macos]
-db_debug:
+db_debug: _dev_only
 	docker compose exec postgres \
 		psql -U $POSTGRES_USER -c "ALTER SYSTEM SET log_statement = 'all'; SELECT pg_reload_conf();"
 
-[macos]
-db_debug_off:
+db_debug_off: _dev_only
 	docker compose exec postgres \
 		psql -U $POSTGRES_USER -c "ALTER SYSTEM SET log_statement = 'none'; SELECT pg_reload_conf();"
 
 # dump the production database locally, obviously this is a bad idea most of the time
-[macos]
 [script]
-db_dump_production:
+db_dump_production: _dev_only
 	echo "{{ BLUE }}Enter the op:// reference to the production DB (e.g., op://Dev/prod DB/db-connection-string):{{ NORMAL }}"
 	read op_ref
 

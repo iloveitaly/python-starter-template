@@ -84,9 +84,8 @@ eval "$(just --completions $(basename $SHELL))"
 """
 
 # export direnv variables as a bash script to avoid using direnv and mutating your environment configuration
-[macos]
 [script]
-direnv_bash_export:
+direnv_bash_export: _dev_only
 	# TODO required direnv allow otherwise it won't work
 	target_file=".env.$(whoami).local"
 

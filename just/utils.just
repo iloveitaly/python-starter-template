@@ -14,3 +14,6 @@
 	printf "\n\033[0;36m%${banner_length}s#\033[0m\n" | tr " " "#" && \
 	printf "\033[0;36m# %s   \033[0m\n" "{{BANNER}}" && \
 	printf "\033[0;36m%${banner_length}s#\033[0m\n\n" | tr " " "#"
+
+_dev_only:
+	[[ "${PYTHON_ENV:-}" = "development" ]] || { echo "error: PYTHON_ENV must be set to 'development'"; exit 1; }

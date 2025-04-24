@@ -154,8 +154,7 @@ py_test:
 	fi
 
 # open playwright trace viewer on last trace zip. --remote to download last failed remote trace
-[macos]
-py_playwright_trace remote="":
+py_playwright_trace remote="": _dev_only
 		mkdir -p ${PLAYWRIGHT_RESULT_DIRECTORY}
 
 		# helpful to download to unique folder for two reasons: (a) easier to match up to web GHA view and (b) eliminates risk of gh-cli erroring out bc the directory already exists
@@ -170,8 +169,7 @@ py_playwright_trace remote="":
 		uv run playwright show-trace $(fd --no-ignore-vcs . ${PLAYWRIGHT_RESULT_DIRECTORY} -e zip -t f --exec-batch stat -f '%m %N' | sort -n | tail -1 | cut -f2- -d" ")
 
 # download the visual snapshots from the last failed playwright run, useful for updating non-macos screenshot versions
-[macos]
-py_playwright_visual-download:
+py_playwright_visual-download: _dev_only
 	failed_run_id=$(just _gha_last_failed_run_id) && \
 		rm -rf ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id} && \
 		mkdir -p ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id} && \
@@ -180,9 +178,8 @@ py_playwright_visual-download:
 
 
 # record playwright interactions for integration tests and dump them to a file
-[macos]
 [script]
-py_playwright-record:
+py_playwright-record: _dev_only
 	mkdir -p tmp/playwright
 	recorded_interaction=tmp/playwright/$(date +%m-%d-%s).py
 

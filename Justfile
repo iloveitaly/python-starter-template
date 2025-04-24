@@ -46,6 +46,7 @@ PROJECT_NAME := "python-starter-template"
 # execute a command in the (nearly) exact same environment as CI
 EXECUTE_IN_TEST := "CI=true direnv exec ."
 
+
 default:
 	just --list
 
@@ -57,9 +58,8 @@ PYTHON_WATCHMEDO := "uv run --with watchdog watchmedo auto-restart --directory=.
 
 # TODO should add an option to not run workers, this is overkill most of the time
 # start all of the services you need for development in a single terminal
-[macos]
 [script]
-dev: local-alias dev_kill
+dev: _dev_only local-alias dev_kill
 	just _banner_echo "Starting dev services"
 
 	# TODO we should think about the worker command a bit more...should we use the same exact command? should we generate vs hardcode?
@@ -78,9 +78,8 @@ dev: local-alias dev_kill
 	foreman start --root . --procfile=tmp/Procfile.dev
 
 # kill all processes bound to server ports
-[macos]
 [script]
-dev_kill:
+dev_kill: _dev_only
 	just _banner_echo "Killing all processes bound to server ports"
 
 	for port in "$JAVASCRIPT_SERVER_PORT" "$PYTHON_SERVER_PORT" "$PYTHON_TEST_SERVER_PORT"; do
@@ -104,18 +103,16 @@ dev_kill:
 BREW_PACKAGES := "fd entr 1password-cli yq jq fzf"
 EXTRA_BREW_PACKAGES := "lefthook peterldowns/tap/localias foreman pstree"
 
-[macos]
 [script]
-_brew_check_and_install brew_target:
+_brew_check_and_install brew_target: _dev_only
 	if ! brew list {{brew_target}} > /dev/null; then
 		echo "{{brew_target}} is not installed. Installing..."
 		brew install {{brew_target}}
 	fi
 
 # include all development requirements not handled by `mise` for local development
-[macos]
 [doc("--extras to install non-essential productivity tooling")]
-requirements *flags:
+requirements *flags: _dev_only
 	@if ! which mise > /dev/null; then \
 		echo "mise is not installed. Please install."; \
 		echo "  => https://mise.jdx.dev"; \
@@ -152,8 +149,7 @@ requirements *flags:
 	fi
 
 # setup everything you need for local development
-[macos]
-setup: requirements && py_setup up db_seed js_build
+setup: _dev_only requirements && py_setup up db_seed js_build
 	# NOTE this task should be non-destructive, the user should opt-in to something like `nuke`
 
 	# some reasoning behind the logic here:
@@ -175,8 +171,7 @@ setup: requirements && py_setup up db_seed js_build
 # TODO extract to my personal dotfiles as well
 # TODO should change the CURRENT_BASE for py and other x.x.y upgrades
 [script]
-[macos]
-_mise_upgrade:
+_mise_upgrade: _dev_only
 	# Get current tools and versions from local .tool-versions only
 	TOOLS=("${(@f)$(mise list --current --json | jq -r --arg PWD "$PWD" 'to_entries | map(select(.value[0].source.path == $PWD + "/.tool-versions")) | from_entries | keys[]')}")
 
@@ -215,29 +210,25 @@ _mise_upgrade:
 
 
 # sync the mise version to github actions yaml
-[macos]
-_mise_version_sync:
+_mise_version_sync: _dev_only
 	mise_version=$(mise --version | awk '{print $1}') && \
 		yq e '.runs.steps.0.with.version = "'$mise_version'"' .github/actions/common-setup/action.yml -i
 
 	git add .github/actions/common-setup/action.yml
 
 # upgrade mise, language versions, and essential packages
-[macos]
-tooling_upgrade: && _mise_upgrade _js_sync-engine-versions
+tooling_upgrade: _dev_only && _mise_upgrade _js_sync-engine-versions
 	mise self-update
 	HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade {{BREW_PACKAGES}}
 
 # upgrade everything: all packages on all languages, tooling, etc
-[macos]
-upgrade: tooling_upgrade js_upgrade py_upgrade
+upgrade: _dev_only tooling_upgrade js_upgrade py_upgrade
 	uv run python -m app.cli write-versions
 	git add .service-versions
 
 # run (or reload) daemon to setup local development aliases
-[macos]
 [script]
-local-alias:
+local-alias: _dev_only
 	if [[ "$(localias status)" == "daemon running with pid "* ]]; then
 		just _banner_echo "Localias Daemon Already Running, Reloading"
 		localias reload
