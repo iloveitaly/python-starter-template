@@ -536,6 +536,12 @@ worker: rq worker --with-scheduler -w rq.worker.SpawnWorker
 
 [I've left some of the configuration around](./app/rq.py) in case you want to try it out.
 
+### App Recommendations
+
+* TablePlus via Set App is a great database workbench
+* `httpie` has a great desktop app for API testing
+* Raycast + UUID extension is great for helping with type IDs
+
 ## Production
 
 ### Frontend
