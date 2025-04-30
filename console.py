@@ -1,6 +1,6 @@
 #!/usr/bin/env -S ipython -i
 # Description: production REPL, not designed to be used locally. `./console.py` in production.
-# ruff: noqa: F401
+# ruff: noqa: F401, F821
 
 import json
 import re
