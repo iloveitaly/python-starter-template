@@ -21,6 +21,7 @@ services:
 
   # port 6379
   redis:
+    # NOTE we are limiting to 6 since that is what is GA on azure
     image: redis:6
     restart: unless-stopped
     ports:
