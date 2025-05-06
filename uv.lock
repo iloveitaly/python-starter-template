@@ -2368,16 +2368,16 @@ wheels = [
 
 [[package]]
 name = "rich-toolkit"
-version = "0.14.4"
+version = "0.14.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "rich" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e1/33/18332e1359803ae6407a1e605a6bdb253a426ffe931555f1299f9e39eece/rich_toolkit-0.14.4.tar.gz", hash = "sha256:db256cf45165cae381c9bbf3b48a0fd4d99a07c80155cc655c80212a62e28fe1", size = 104487, upload-time = "2025-04-29T19:43:36.904Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d1/24/f0678256fbe0643b4ba00a460f4b736ef07042e459f8d4087c8b7011ab81/rich_toolkit-0.14.5.tar.gz", hash = "sha256:1cb7a3fa0bdbf35793460708664f3f797e8b18cedec9cd41a7e6125e4bc6272b", size = 104799, upload-time = "2025-05-05T10:19:24.521Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/44/48/c6d43d4c56c45c0171c771b2b73deeec493efb57795b651319201e7c4638/rich_toolkit-0.14.4-py3-none-any.whl", hash = "sha256:cc71ebee83eaa122d8e42882408bc5a4bf0240bbf1e368811ee56d249b3d742a", size = 24258, upload-time = "2025-04-29T19:43:35.502Z" },
+    { url = "https://files.pythonhosted.org/packages/d1/13/621cc551b72de51e6e5cb7cfc510a141e1858bd380ee3c8108fbda4a6be0/rich_toolkit-0.14.5-py3-none-any.whl", hash = "sha256:2fe9846ecbf5d0cdf236c7f43452b68d9da1436a81594aba6b79b3c48b05703b", size = 24791, upload-time = "2025-05-05T10:19:23.346Z" },
 ]
 
 [[package]]
@@ -2453,11 +2453,11 @@ sqlalchemy = [
 
 [[package]]
 name = "setuptools"
-version = "80.3.0"
+version = "80.3.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/51/6c/a3f892949418b5b9aced7396919c75ffb57e38f08b712b565f5eb10677ee/setuptools-80.3.0.tar.gz", hash = "sha256:ec8308eb180b2312062b1c5523204acf872cd8b0a9e6c2ae76431b22bc4065d7", size = 1314475, upload-time = "2025-05-03T09:17:32.334Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/70/dc/3976b322de9d2e87ed0007cf04cc7553969b6c7b3f48a565d0333748fbcd/setuptools-80.3.1.tar.gz", hash = "sha256:31e2c58dbb67c99c289f51c16d899afedae292b978f8051efaf6262d8212f927", size = 1315082, upload-time = "2025-05-04T18:47:04.397Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e6/61/a6239ff35d64e55def020335626894895847cc6659c0f8e1b676c58aad3b/setuptools-80.3.0-py3-none-any.whl", hash = "sha256:a65cffc4fb86167e3020b3ef58e08226baad8b29a3b34ce2c9d07e901bac481d", size = 1200273, upload-time = "2025-05-03T09:17:29.995Z" },
+    { url = "https://files.pythonhosted.org/packages/53/7e/5d8af3317ddbf9519b687bd1c39d8737fde07d97f54df65553faca5cffb1/setuptools-80.3.1-py3-none-any.whl", hash = "sha256:ea8e00d7992054c4c592aeb892f6ad51fe1b4d90cc6947cc45c45717c40ec537", size = 1201172, upload-time = "2025-05-04T18:47:02.575Z" },
 ]
 
 [[package]]
@@ -2632,16 +2632,16 @@ wheels = [
 
 [[package]]
 name = "squawk-cli"
-version = "1.6.0"
+version = "1.6.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/6a/40/152862a7636ee313706330e2894592bac89bee68fb74cd75df7bbb08476d/squawk_cli-1.6.0.tar.gz", hash = "sha256:29a39f41805b19b6da8e9b45d67025274b65dd20b9cda272fabd86479c7be972", size = 122290, upload-time = "2025-04-03T02:23:21.652Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/88/86/ed7c3d13857bd0bccefd39ac2b178d11ac72648721e3f275b3b1a163e2da/squawk_cli-1.6.1.tar.gz", hash = "sha256:084708f865b68d00e13ba8c58cc69ee4e25f5cc7863f5c9a7b226aa28dade866", size = 122600, upload-time = "2025-05-03T18:34:39.025Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/09/36/dffc5226af9c818e9d6352f6aaf45e5d641dea67ca9a3d0e1145a4956884/squawk_cli-1.6.0-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:4ee81f1ed14e7320cd5ff36316143cb6c5f90c25e3ce0d81f3cd699080d5a155", size = 2933553, upload-time = "2025-04-03T02:23:20.405Z" },
-    { url = "https://files.pythonhosted.org/packages/cd/a7/2160877cd29c879f2cc628db493b6a119066cbbd0cc57dac1a3672c038a7/squawk_cli-1.6.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:2985449d05ad376bcdde2fcbb6b5f1b98e915dcf21067a439ed28ac27951c3fe", size = 2847670, upload-time = "2025-04-03T02:23:18.595Z" },
-    { url = "https://files.pythonhosted.org/packages/37/52/85923c0a1f7a105a64fd92d0f36b829ec9ed5228d61c7dc3a7436664f371/squawk_cli-1.6.0-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:3cf278b8e28c1b8b66fb28def2e6e763ec67f5d467855a4e59d36cc09a06de94", size = 3560358, upload-time = "2025-04-03T02:23:14.893Z" },
-    { url = "https://files.pythonhosted.org/packages/bf/49/a3da7213fc62ac843032b5157433588a935e2632763a1b5aefa404a9898e/squawk_cli-1.6.0-py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:9c79e6292a70ccf5da2d7dffc17b69abb925bcc1e3531528eadb9e5fc5f49f41", size = 4345578, upload-time = "2025-04-03T02:23:16.834Z" },
-    { url = "https://files.pythonhosted.org/packages/06/fa/9a148b0ecec752deb10d3ef152b4881f1a47b5cd246d99642a839d307683/squawk_cli-1.6.0-py3-none-win32.whl", hash = "sha256:7a9c88c87748fbaf7c2fa72e0681a0028d05cf1927a9e27606563bea7a91ac17", size = 2484744, upload-time = "2025-04-03T02:23:24.515Z" },
-    { url = "https://files.pythonhosted.org/packages/09/72/3fae96a16b3e3fef28e9b0823b8d8dd851c9c7a245b35e900ae054b42e53/squawk_cli-1.6.0-py3-none-win_amd64.whl", hash = "sha256:6f64b7c6193d94aba944bca22a32f96e85d01f916ced990e83f6924b47a43c10", size = 2678464, upload-time = "2025-04-03T02:23:23.074Z" },
+    { url = "https://files.pythonhosted.org/packages/df/1f/b53c18e85c1f862a02ab066b56fed1fd1b9f3eeea440b8d02cea227e43de/squawk_cli-1.6.1-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:3058e20f0b7d21c1d110ea08bd0d61260e7e17a5d1c06d851198e100e05bb2cc", size = 2933403, upload-time = "2025-05-03T18:34:37.428Z" },
+    { url = "https://files.pythonhosted.org/packages/1b/21/c3a60fade6a860a5d7d9910f098288125e8d22d3d548f0d8e7c5eb80efac/squawk_cli-1.6.1-py3-none-macosx_11_0_arm64.whl", hash = "sha256:7c9d4492f51dd45324ddad82e8faa59a32e80881f712a01eb04227a2d3eed85d", size = 2847774, upload-time = "2025-05-03T18:34:35.576Z" },
+    { url = "https://files.pythonhosted.org/packages/7c/53/09c00b2aa64bc590e77318f8ebd1f63be8a06a9729edc052e06e3591dd74/squawk_cli-1.6.1-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:9a1651ec823bae37e2b17ce8e57f7a63cd4ec8d79f41f9f5d77bc3e755ccdc9e", size = 3559945, upload-time = "2025-05-03T18:34:32.259Z" },
+    { url = "https://files.pythonhosted.org/packages/5f/ea/45bc6ef27eb8038ebdb495f5432452040ee903055f185f43b5fe4675debe/squawk_cli-1.6.1-py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:15eec4b10ab764a4e0278a8542606e3a64458d0f76ab6c3b1ed7e73ab416c238", size = 4344501, upload-time = "2025-05-03T18:34:34.253Z" },
+    { url = "https://files.pythonhosted.org/packages/a4/62/d7ce0b872448a3693f8d1cbcd64fe28664ce0c40cd4586ea23ec3f0a3bf6/squawk_cli-1.6.1-py3-none-win32.whl", hash = "sha256:f130dba599f5fa7014a6eb72157f7216e4b271faffeda8e259a2b39450115f08", size = 2483093, upload-time = "2025-05-03T18:34:42.327Z" },
+    { url = "https://files.pythonhosted.org/packages/c0/77/e30d3bd2e3c238d9fa80c7d95982564f4f0058d8bfcd88f436be3bb72344/squawk_cli-1.6.1-py3-none-win_amd64.whl", hash = "sha256:c256d9ebc83c5226b5da9a3df19f9b6615219575723efbc97dcfbb8d9b3db59d", size = 2679949, upload-time = "2025-05-03T18:34:40.403Z" },
 ]
 
 [[package]]
@@ -2694,7 +2694,7 @@ wheels = [
 [[package]]
 name = "structlog-config"
 version = "0.1.0"
-source = { git = "https://github.com/iloveitaly/structlog-config.git#1103a702fd328f5677ca83ef88d607c5ccf46328" }
+source = { git = "https://github.com/iloveitaly/structlog-config.git#6b828c79fcf6461e284c0a2b486effa4e16777a1" }
 dependencies = [
     { name = "orjson" },
     { name = "python-decouple-typed" },
@@ -2844,14 +2844,14 @@ wheels = [
 
 [[package]]
 name = "types-setuptools"
-version = "80.1.0.20250503"
+version = "80.3.0.20250505"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "setuptools" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6a/63/973d60e59c70ef6fc98eff4f8fa1ef552c4f7486f79df68f16b3628b8ec1/types_setuptools-80.1.0.20250503.tar.gz", hash = "sha256:3cbdbe42c12e1d9179e6e87644a2cf176259411b5a3cc1d0fb0d824dc711d9ed", size = 43334, upload-time = "2025-05-03T02:58:15.134Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f4/1e/9c401fc3aa8f8c1596a9daedbe8d1c70c830e20d78753117d75f7e9b9535/types_setuptools-80.3.0.20250505.tar.gz", hash = "sha256:5fd3d34b8fa3441d68d010fef95e232d1e48f3f5cb578f3477b7aae4f8374502", size = 41205, upload-time = "2025-05-05T03:06:44.726Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f2/c1/9e878008ad0ecac9d89c28831095fb6b1de76f0d59a1765f3d8816fb0694/types_setuptools-80.1.0.20250503-py3-none-any.whl", hash = "sha256:b25bcbfeebae06bc4d2d09231b0c0622e95bdbb36df070cfe40b925fcef97dd3", size = 65979, upload-time = "2025-05-03T02:58:14.038Z" },
+    { url = "https://files.pythonhosted.org/packages/3f/bf/466fa9faaf6a99dc68c37492693069c99b4f83c73b5bac59649051a74937/types_setuptools-80.3.0.20250505-py3-none-any.whl", hash = "sha256:117c86a82367306388b55310d04da807ff4c3ecdf769656a5fdc0fdd06a2c1b6", size = 63106, upload-time = "2025-05-05T03:06:43.063Z" },
 ]
 
 [[package]]
@@ -2982,16 +2982,16 @@ wheels = [
 
 [[package]]
 name = "virtualenv"
-version = "20.30.0"
+version = "20.31.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "distlib" },
     { name = "filelock" },
     { name = "platformdirs" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/38/e0/633e369b91bbc664df47dcb5454b6c7cf441e8f5b9d0c250ce9f0546401e/virtualenv-20.30.0.tar.gz", hash = "sha256:800863162bcaa5450a6e4d721049730e7f2dae07720e0902b0e4040bd6f9ada8", size = 4346945, upload-time = "2025-03-31T16:33:29.185Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/53/07/655f4fb9592967f49197b00015bb5538d3ed1f8f96621a10bebc3bb822e2/virtualenv-20.31.1.tar.gz", hash = "sha256:65442939608aeebb9284cd30baca5865fcd9f12b58bb740a24b220030df46d26", size = 6076234, upload-time = "2025-05-05T22:45:39.829Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4c/ed/3cfeb48175f0671ec430ede81f628f9fb2b1084c9064ca67ebe8c0ed6a05/virtualenv-20.30.0-py3-none-any.whl", hash = "sha256:e34302959180fca3af42d1800df014b35019490b119eba981af27f2fa486e5d6", size = 4329461, upload-time = "2025-03-31T16:33:26.758Z" },
+    { url = "https://files.pythonhosted.org/packages/c5/67/7d7559264a6f8ec9ce4e397ddd9157a510be1e174dc98be898b6c18eeef4/virtualenv-20.31.1-py3-none-any.whl", hash = "sha256:f448cd2f1604c831afb9ea238021060be2c0edbcad8eb0a4e8b4e14ff11a5482", size = 6057843, upload-time = "2025-05-05T22:45:37.127Z" },
 ]
 
 [[package]]
