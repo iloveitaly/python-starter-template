@@ -40,7 +40,10 @@ def configure_database():
 
 def create_db_and_tables():
     """
-    Do not use when using alembic migrations, helpful for syncing the db during dev
+    Helpful for syncing in-progress models to the db during rapid development.
+
+    Do not use when using alembic migrations. Running this will cause Alembic to miss important migrations
+    since the latest changes are already in the database.
     """
 
     assert is_testing() or is_development()
@@ -51,7 +54,7 @@ def create_db_and_tables():
 
 def run_migrations():
     """
-    Automatically run migrations. Here's why we do this:
+    Run migrations within this process. Here's why we do this:
 
     - Migrating automatically introduces some risk that an important migration happens without you watching it. However,
       it's up to the migration author to test their migration before merging it, so this shouldn't be an issue. Additionally
