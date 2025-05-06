@@ -1114,7 +1114,7 @@ wheels = [
 [[package]]
 name = "j2lint"
 version = "1.2.0"
-source = { git = "https://github.com/aristanetworks/j2lint.git#399dab2989c0293109478df10b8b5db6e8cd51c6" }
+source = { git = "https://github.com/aristanetworks/j2lint.git#64d1695a0a692cf0c6b30e4e07c1d071c936a0d5" }
 dependencies = [
     { name = "jinja2" },
     { name = "rich" },
@@ -2895,15 +2895,14 @@ wheels = [
 
 [[package]]
 name = "urwid"
-version = "2.6.16"
+version = "3.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions" },
     { name = "wcwidth" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/98/21/ad23c9e961b2d36d57c63686a6f86768dd945d406323fb58c84f09478530/urwid-2.6.16.tar.gz", hash = "sha256:93ad239939e44c385e64aa00027878b9e5c486d59e855ec8ab5b1e1adcdb32a2", size = 848179, upload-time = "2024-10-15T16:07:24.297Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/38/c5/5df522255d59cb41f0670e4cf73c326ec2eafe209a710efdb7477e7f668c/urwid-3.0.0.tar.gz", hash = "sha256:3e1448110affd8b46edd41a7a9b7918dc3916fe153b2215b5977922c8cf5d6f1", size = 855371, upload-time = "2025-05-06T13:19:19.328Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/54/cb/271a4f5a1bf4208dbdc96d85b9eae744cf4e5e11ac73eda76dc98c8fd2d7/urwid-2.6.16-py3-none-any.whl", hash = "sha256:de14896c6df9eb759ed1fd93e0384a5279e51e0dde8f621e4083f7a8368c0797", size = 297196, upload-time = "2024-10-15T16:07:22.521Z" },
+    { url = "https://files.pythonhosted.org/packages/c9/f0/34b8a6aff7f8feeb064fbc99afd20af703d87e42a90a6eba3e7de059c500/urwid-3.0.0-py3-none-any.whl", hash = "sha256:5d9aa74b52e8b19f7191a4dfda73ad5ec772711b4d8ea2e89995b1db00c32d86", size = 295886, upload-time = "2025-05-06T13:19:17.588Z" },
 ]
 
 [[package]]
