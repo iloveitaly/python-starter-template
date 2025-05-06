@@ -11,5 +11,10 @@ up *flag:
 
 	docker compose up -d {{ if flag == "--fast" { "" } else { "--wait" } }}
 
+# stop all containers and remove the images
 down: db_down
 	docker compose down
+
+# open redis database in the default macos GUI
+redis_open: _dev_only
+	open "$REDIS_URL" -a TablePlus
