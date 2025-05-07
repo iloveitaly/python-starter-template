@@ -24,9 +24,6 @@ https://salabim.org/peek/#copying-to-the-clipboard
 super user pattern in clerk https://discord.com/channels/856971667393609759/1330543476433227877
 https://github.com/replicate/cog/blob/c95774f18b8df6f6a7b841be1900153ca04a57ad/python/cog/suppress_output.py#L7 interesting approach to surpressing output
 exception group processor? https://github.com/apache/airflow/blob/4280b83977cd5a53c2b24143f3c9a6a63e298acc/task_sdk/src/airflow/sdk/log.py#L42
-do we need a structlog.stdlib.ProcessorFormatter.wrap_for_formatter?
-maybe use a more custom json formatter? https://github.com/jeremyh/datacube-explorer/blob/b289b0cde0973a38a9d50233fe0fff00e8eb2c8e/cubedash/logs.py#L40C21-L40C42
-https://github.com/browser-use/browser-use/blob/76e4c2630d72c0aa313d1f34c8fb53bed86a0e15/browser_use/logging_config.py#L10 additional logging level
 `localias debug config --print | yq --output-format json` to assert against the local .localias
 
 ## Observability
@@ -69,8 +66,6 @@ forklift for s3 and remote storage
 %load_ext pgcli.magic for ipython
 add custom cspell dictionary instead of settings.json
 https://github.com/TablePlus/TablePlus/issues/3407 orb stack connections sometimes break
-extract playground logic into ipython extension
-extract toggle logic into pypi package
 fastapi dev conflicts with pdbr interactions, should allow fastapi logs to be funneled elsewhere; maybe we can detect breakpoint usage and do this automatically
 should we use sops? Probably can just use 1p, think about mutation risks here https://github.com/getsops/sops?tab=readme-ov-file#yaml-json-env-and-ini-type-extensions
 `uv pip install --config-setting editable_mode=compat --reinstall -e ./pypi/activemodel` and https://github.com/astral-sh/uv/issues/7028 and https://github.com/dagster-io/dagster/commit/9b3bf2dda8a44168326bb38f75bdd47493ee6da7#diff-85c2bb6d4721ed0a146ea51e2bd615dbdf2249ad3714adc1cacc1877707cadeeR161
@@ -85,12 +80,7 @@ add some mermaid diagrams to the readme https://raw.githubusercontent.com/devris
 ## commitlint
 removing unused import, should catch this specifically
 
-## production
-should we add justfile to run production scripts? Probably not. Should document.
-`{"TimeStamp": "2024-12-17T22:05:33.8744132+00:00", "Log": "INFO   100.100.0.180:49730 - \"GET /favicon.ico HTTP/1.1\" 200"}` need to improve fastapi structured logging
-
 ## pytest
-https://github.com/flexmock/flexmock - for mocking and spy, https://grok.com/share/bGVnYWN5_3e3578b5-5ea5-4ba8-9f82-3a8752e3f59b
 https://github.com/microsoft/playwright-pytest/issues/187 weird concurrency issues
 https://grok.com/share/bGVnYWN5_db662e27-ebb0-4157-8c26-636ca80f5bbd better default pytest configuration
 https://github.com/flexmock/flexmockc
@@ -98,11 +88,8 @@ interesting object matcher here https://github.com/replicate/cog/blob/c95774f18b
 timeout default for playwright to avoid hanging
 test logs are a mess. I need to figure out what pytest is doing and make them sane.
 --debug seems to generate a different test log
-https://github.com/darrenburns/pytest-clarity
+https://github.com/darrenburns/pytest-clarity - improve pytest logs
 https://github.com/nicoddemus/pytest-rich/blob/main/src/pytest_rich/header.py
-
-## open source
-localias upstream no caching
 
 ## ui
 dialog ovefflow not working https://github.com/shadcn-ui/ui/issues/16
@@ -150,7 +137,8 @@ maybe use a different event loop? Faster / less issues with playwright?
 ## build
 add nixpacks cache, waiting on comment from author about how to do this.
 push to registry
-https://railpack.com/guides/running-railpack-in-production
+switch to https://railpack.com/guides/running-railpack-in-production
+pull azure build and push stuff into this
 
 ## act compat
 https://github.com/catthehacker/docker_images/issues/138 - apt tool, still failing on apt-install but not because of missing packages
