@@ -1,4 +1,5 @@
 ## python
+https://grok.com/share/bGVnYWN5_8e8c1718-b3dc-4b32-95a3-61b85ab2be3e figure out how to limit threads that the async pool uses via an ENV var, useful for avoiding complex py-spy dumps in development
 https://github.com/pydantic/pydantic-extra-types
 https://celery.school/sqlalchemy-session-celery-tasks wrap celery task
 flower update, custom branch
@@ -61,6 +62,8 @@ can kamal work with a registry with container?
 flightcontrol on AWS or something like that on azure
 
 ## dev
+when updating container versions, we need to restart the containers to pick up on the new version, otherwise the persisted versions will not be updated
+https://github.com/terror/just-lsp/issues/60 - justfile lsp
 if a command running inside a direnv .envrc fails, it doesn't change the exit code https://github.com/direnv/direnv/issues/893
 forklift for s3 and remote storage
 %load_ext pgcli.magic for ipython
@@ -147,6 +150,7 @@ maybe use a different event loop? Faster / less issues with playwright?
 ## build
 add nixpacks cache, waiting on comment from author about how to do this.
 push to registry
+https://railpack.com/guides/running-railpack-in-production
 
 ## act compat
 https://github.com/catthehacker/docker_images/issues/138 - apt tool, still failing on apt-install but not because of missing packages
