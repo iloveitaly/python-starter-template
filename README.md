@@ -15,7 +15,7 @@ Here's some of the guiding principles in this stack:
 
 Here's the stack:
 
-* **Development lifecycle.** Justfile + Direnv + Mise + Lefthook + Localias + 1Password for local development & secret configuration
+* **Development lifecycle.** Justfile + [AI LLM Prompts](https://github.com/iloveitaly/llm-ide-prompts) + Direnv + Mise + Lefthook + Localias + 1Password for local development & secret configuration
 * **Backend.** Uv + Ruff + Python + FastAPI + [ActiveModel](https://github.com/iloveitaly/activemodel) + SQLModel + SQLAlchemy + Alembic (migrations) + Celery (jobs) + [TypeId](https://github.com/akhundMurad/typeid-python) + Playwright + [Mailers](https://github.com/alex-oleshkevich/mailers) + Polyfactory.
 * **Frontend.** Pnpm + TypeScript + React + Vite + Vitest + React Router (in SPA mode) + ShadCN + Tailwind + ESLint + Prettier + [HeyAPI](https://heyapi.dev)
 * **Services.** Postgres + Redis + [Mailpit](https://mailpit.axllent.org) + Docker Compose for running it all on dev + CI.
