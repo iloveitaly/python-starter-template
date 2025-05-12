@@ -1,4 +1,3 @@
-
 ---
 applyTo: "**/*.py"
 ---
@@ -10,7 +9,7 @@ When writing Python:
 * Prefer modern typing: `list[str]` over `List[str]`, `dict[str, int]` over `Dict[str, int]`, etc.
 * Use Pydantic models over dataclass or a typed dict.
 * Use SQLAlchemy for generating any SQL queries.
-* Use the `click` package for all command line argument parsing.
+* Use `click` for command line argument parsing.
 * Use `log.info("the message", the_variable=the_variable)` instead of `log.info("the message: %s", the_variable)` or `print` for logging. This object can be found at `from app import log`.
 * Log messages should be lowercase with no leading or trailing whitespace.
 * No variable interpolation in log messages.
