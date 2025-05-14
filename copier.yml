@@ -83,8 +83,6 @@ _exclude:
   - tests/integration/__snapshots__
 
 _tasks:
-  - cp .env.dev.local-example .env.dev.local
-  - cp .env.local-example .env.local
   - git init
   - git add -A
   - git commit -m "🎉 Initial commit"

@@ -156,6 +156,16 @@ setup: _dev_only requirements && py_setup up db_seed js_build
 	#
 	# 	- js_build is required for running e2e tests on the server
 
+	@if [ ! -f .env.dev.local ]; then \
+		cp .env.dev.local-example .env.dev.local; \
+		echo "Please edit .env.dev.local to your liking."; \
+	fi
+
+	@if [ ! -f .env.local ]; then \
+		cp .env.local-example .env.local; \
+		echo "Please edit .env.local to your liking."; \
+	fi
+
 	@echo 'If you are using localais, run `just local-alias` to start the daemon'
 
 # TODO extract to my personal dotfiles as well
