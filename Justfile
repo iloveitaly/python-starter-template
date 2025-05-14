@@ -148,22 +148,20 @@ requirements *flags: _dev_only
 		fi; \
 	fi
 
-# setup everything you need for local development
+# setup everything required for local development
 setup: _dev_only requirements && py_setup up db_seed js_build
-	# NOTE this task should be non-destructive, the user should opt-in to something like `nuke`
+	# NOTE this task should be non-destructive, the user should opt-in to something destructive like `nuke`
 
-	# some reasoning behind the logic here:
-	#
-	# 	- js_build is required for running e2e tests on the server
-
+	# `.local` variants enable the developer to override configuration options without
+	# committing them to the repository.
 	@if [ ! -f .env.dev.local ]; then \
 		cp .env.dev.local-example .env.dev.local; \
-		echo "Please edit .env.dev.local to your liking."; \
+		echo "Edit '.env.dev.local' to your liking."; \
 	fi
 
 	@if [ ! -f .env.local ]; then \
 		cp .env.local-example .env.local; \
-		echo "Please edit .env.local to your liking."; \
+		echo "Edit '.env.local' to your liking."; \
 	fi
 
 	@echo 'If you are using localais, run `just local-alias` to start the daemon'
