@@ -45,12 +45,15 @@ def dump_openapi(app_target: str = "api_app"):
 
     # Dynamically get the target app from app.server module
     server_module = importlib.import_module("app.server")
-    available_apps = [
-        name
-        for name in dir(server_module)
-        # TODO is this a fastapi router? Probably a better way to do this?
-        if not name.startswith("_") and hasattr(getattr(server_module, name), "routes")
-    ]
+
+    def is_fastapi_app(name):
+        if name.startswith("_"):
+            return False
+
+        obj = getattr(server_module, name)
+        return hasattr(obj, "routes")
+
+    available_apps = [name for name in dir(server_module) if is_fastapi_app(name)]
 
     if app_target not in available_apps:
         typer.echo(
@@ -59,8 +62,6 @@ def dump_openapi(app_target: str = "api_app"):
         raise typer.Exit(1)
 
     target_app = getattr(server_module, app_target)
-
-    # Use our utility function
     openapi = generate_openapi_schema(target_app)
 
     typer.echo(json.dumps(openapi))
