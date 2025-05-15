@@ -12,10 +12,10 @@
     "typegen:watch": "react-router typegen --watch"
   },
   "dependencies": {
-    "@clerk/clerk-react": "^5.31.2",
-    "@clerk/shared": "^3.8.2",
+    "@clerk/clerk-react": "^5.31.3",
+    "@clerk/shared": "^3.9.0",
     "@epic-web/invariant": "^1.0.0",
-    "@hey-api/client-fetch": "^0.10.0",
+    "@hey-api/client-fetch": "^0.10.1",
     "@hookform/resolvers": "^5.0.1",
     "@radix-ui/react-avatar": "^1.1.9",
     "@radix-ui/react-collapsible": "^1.1.10",
@@ -30,7 +30,7 @@
     "@react-router/dev": "7.6.0",
     "@react-router/node": "7.6.0",
     "@react-router/serve": "7.6.0",
-    "@sentry/react": "^9.18.0",
+    "@sentry/react": "^9.19.0",
     "@sentry/vite-plugin": "^3.4.0",
     "@tailwindcss/postcss": "^4.1.6",
     "@tailwindcss/typography": "^0.5.16",
@@ -66,7 +66,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.26.0",
-    "@hey-api/openapi-ts": "^0.67.3",
+    "@hey-api/openapi-ts": "^0.67.4",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
@@ -87,7 +87,7 @@
   },
   "engines": {
     "node": "^22.11.0",
-    "pnpm": "^10.10.0"
+    "pnpm": "^10.11.0"
   },
   "prettier": {
     "semi": false,
