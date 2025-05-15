@@ -164,6 +164,15 @@ Non-language dependencies are always tricky. Here's how it's handled:
 * `apt` is used to install *some* of the tools required to run CI scripts (like zsh), but most are omitted since they should never run in production.
 * Direct install scripts are used to install some more obscure packages (localias, nixpacks, etc) that are not well supported by the os package manager or mise.
 
+### JavaScript Code Organization
+
+Here's the logic behind frontend code organization:
+
+* `lib/` not specific to the project at all. In another life, this code could be a separate library.
+* `utils/` project-specific code, but not specific to a particular page
+* `hooks/` react hooks
+* `helpers/` page-specific code that is not a component, hook, etc
+
 ### Toggling GitHub Actions
 
 It's helpful, especially when you are conserving GH actions credits and tinkering with your build setup, to sometimes disable GitHub actions.
