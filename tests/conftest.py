@@ -35,7 +35,6 @@ from decouple import config as decouple_config
 
 from .constants import TEST_RESULTS_DIRECTORY
 from .utils import delete_all_clerk_users
-from .seeds import seed_test_data
 from .log import log
 
 log.info("multiprocess start method", start_method=multiprocessing.get_start_method())
@@ -92,12 +91,12 @@ def pytest_configure(config: Config):
 def pytest_sessionstart(session):
     "only executes once if a test is run, at the beginning of the test suite execution"
 
+    # TODO wonder if I could execute async?
     # without this, the clerk dev instance will get cluttered and throw errors
     delete_all_clerk_users()
+
     # clear out any previous cruft in this DB, which is why...
     database_reset_truncate()
-    # we reseed the database with a base set of records
-    seed_test_data()
 
 @pytest.fixture(scope="function")
 def sync_celery():
