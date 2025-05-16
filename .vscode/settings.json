@@ -127,5 +127,10 @@
       // TODO unclear if this is necessary?
       "file": "./.github/copilot-instructions.md"
     }
-  ]
+  ],
+
+  // I like bare URLs sometimes
+  "markdownlint.config": {
+    "MD034": false
+  }
 }
