@@ -9,7 +9,7 @@ from clerk_backend_api import User as ClerkUser
 from clerk_backend_api.jwks_helpers import AuthStatus
 from clerk_backend_api.jwks_helpers.authenticaterequest import RequestState
 from decouple import config as decouple_config
-from fastapi import Request, status
+from fastapi import Request
 from httpx import Response
 
 from app.configuration.clerk import clerk
@@ -165,7 +165,3 @@ def decode_cookie(response: Response):
     decoded = signer.unsign(encrypted_cookie_value)
     session_data = json.loads(base64.b64decode(decoded))
     return session_data
-
-
-def assert_status(response, status_code: int = status.HTTP_200_OK):  # noqa: F821
-    assert response.status_code == status_code, response.json()
