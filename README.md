@@ -73,7 +73,7 @@ There are a couple of dependencies which are not managed by the project:
 * Latest macOS
 * VS Code
 
-(you __could__ use a different setup (bash, vim, etc), but this is not the golden path for this project.)
+(you **could** use a different setup (bash, vim, etc), but this is not the golden path for this project.)
 
 [Copier](https://copier.readthedocs.io/en/stable/) is the easiest way to get started. It allows you to clone this project, automatically customize the important pieces of it, and most importantly *stay up to date* by pulling upstream changes:
 
@@ -173,6 +173,13 @@ Here's the logic behind frontend code organization:
 * `hooks/` react hooks
 * `helpers/` page-specific code that is not a component, hook, etc
 
+## Python Test Code Organization
+
+* `tests/**/utils.py` is for test-specific code that is not a fixture or a factory.
+* `tests/factories.py` all factories should go here.
+* `tests/assertions.py` all custom `assert_*` functions should go here.
+* `tests/**/conftest.py` is for test-specific fixtures. This is the only place you should put fixtures.
+
 ### Toggling GitHub Actions
 
 It's helpful, especially when you are conserving GH actions credits and tinkering with your build setup, to sometimes disable GitHub actions.
@@ -187,8 +194,8 @@ gh workflow disable # and `enable` to turn it back on
 
 I tried both [factoryboy](https://factoryboy.readthedocs.io/en/stable/index.html) and [polyfactory](https://github.com/litestar-org/polyfactory/) and landed on polyfactory for a couple reasons:
 
-- Integration with SQLAlchemy + Pydantic
-- Type inference. It looks at the types defined on the pydantic model (including sqlmodel!) and generates correct values for you. This is really nice.
+* Integration with SQLAlchemy + Pydantic
+* Type inference. It looks at the types defined on the pydantic model (including sqlmodel!) and generates correct values for you. This is really nice.
 
 There are some significant gaps in functionality, but the maintainers [have been open to contributions.](https://github.com/litestar-org/polyfactory/pulls?q=is%3Apr+author%3Ailoveitaly)
 
