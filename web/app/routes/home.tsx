@@ -68,6 +68,9 @@ export default function Page({ loaderData }: Route.ComponentProps) {
           </Breadcrumb>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
+          <a href="/form" className="text-blue-600 underline">
+            Go to Form Page
+          </a>
           {loaderData && loaderData.message}
           {Array.from({ length: 24 }).map((_, index) => (
             <div
