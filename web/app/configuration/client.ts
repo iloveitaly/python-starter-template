@@ -4,6 +4,7 @@ import { isDevelopment, requireEnv } from "~/utils/environment"
 import * as Sentry from "@sentry/react"
 import { getClient } from "./clerk"
 import { invariant } from "@epic-web/invariant"
+import { createClient } from "@hey-api/client-fetch"
 import { client } from "client/client.gen"
 
 // goal here is to avoid having any application code rely on this directly
@@ -45,4 +46,15 @@ client.setConfig({
 
     return token
   },
+})
+
+/**
+ * Public client for use in public routes
+ *
+ * Usage: `await endpointName({ client: publicClient })`
+ */
+export const publicClient = createClient({
+  baseUrl: VITE_PYTHON_URL,
+
+  // explicitly excluding any authentication configuration
 })
