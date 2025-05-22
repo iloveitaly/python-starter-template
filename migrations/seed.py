@@ -1,5 +1,8 @@
-# seed fresh development and test databases with data
+"""
+Seed fresh development and test databases with data.
 
+This is only file outside of tests/ that should import from that module (factories, constants, etc).
+"""
 
 from app.models.user import User
 
