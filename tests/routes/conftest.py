@@ -19,12 +19,15 @@ def api_client():
 
 
 @pytest.fixture
-def client():
+def client(faker):
     "client to connect to your fastapi routes"
     from app.server import api_app
 
     with TestClient(api_app, base_url=base_server_url()) as client:
         client.cookies.clear()
+        # Set default IP for all tests using this client, without this `testclient` is the ip address
+        # of `request.client.host` which is not a valid ipv4 or ipv6 address
+        client.headers = {"x-forwarded-for": faker.ipv4()}
         yield client
 
 

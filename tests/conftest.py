@@ -1,6 +1,8 @@
 import os
 import sys
 
+import stripe
+
 # When running locally, switching to the full-blown CI environment is a pain.
 # To make it quick & easy to run tests, we force the environment to test and load cached CI environment variables (if we can).
 # This will not be the same as CI, but it's closer and faster for devprod. It should never run on CI!
@@ -42,8 +44,9 @@ log.info("multiprocess start method", start_method=multiprocessing.get_start_met
 # NOTE this runs on any pytest invocation, even if no tests are run
 def pytest_configure(config: Config):
     # TODO huh, maybe we should use anyio instead?
+    # TODO pretty sure this doesn't actually work to disable plugins
     # anyio is installed by some other packages and it's plugin is discovered automatically, we disable it in favor of asyncio
-    config.option.plugins = ["no:anyio", "no:logging"]
+    config.option.plugins = ["no:anyio"]
 
     # when configuring in code, a tuple is used for the (mod, class) reference
     # check out _pytest/debugging.py for implementation details
@@ -158,3 +161,7 @@ def datatabase_reset_transaction_for_standard_tests(request):
         return
 
     yield from database_reset_transaction()
+
+@pytest.fixture
+def stripe_client():
+    return stripe.StripeClient(decouple_config("STRIPE_SECRET_KEY"))
