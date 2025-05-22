@@ -6,7 +6,6 @@
     "dev": "react-router dev",
     "build": "pnpm run openapi && react-router typegen && react-router build",
     "test": "pnpm run openapi && vitest run",
-    "start": "react-router-serve ./build/server/index.js",
     "openapi": "pnpm dlx @hey-api/openapi-ts",
     "typecheck": "react-router typegen && tsc",
     "typegen:watch": "react-router typegen --watch"
@@ -79,6 +78,7 @@
     "@vitest/coverage-v8": "^3.1.4",
     "eslint": "^9.27.0",
     "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "globals": "^16.1.0",
     "happy-dom": "^17.4.7",
     "prettier": "^3.5.3",

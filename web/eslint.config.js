@@ -1,11 +1,11 @@
 import pluginReact from "eslint-plugin-react"
+import reactHooks from "eslint-plugin-react-hooks"
 import globals from "globals"
 import tseslint from "typescript-eslint"
 
 import pluginJs from "@eslint/js"
 
-/** @type {import('eslint').Linter.Config[]} */
-export default [
+export default tseslint.config(
   {
     files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
   },
@@ -23,6 +23,7 @@ export default [
   ...tseslint.configs.recommended,
   // important change from the default
   pluginReact.configs.flat["jsx-runtime"],
+  reactHooks.configs["recommended-latest"],
   // https://typescript-eslint.io/rules/no-unused-vars/
   {
     rules: {
@@ -40,4 +41,4 @@ export default [
       ],
     },
   },
-]
+)
