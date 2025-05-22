@@ -2095,6 +2095,7 @@ dependencies = [
     { name = "sqlalchemy" },
     { name = "sqlmodel" },
     { name = "starlette-context" },
+    { name = "stripe" },
     { name = "structlog" },
     { name = "structlog-config" },
     { name = "textcase" },
@@ -2197,6 +2198,7 @@ requires-dist = [
     { name = "sqlalchemy", specifier = ">=2.0.36" },
     { name = "sqlmodel", specifier = ">=0.0.22" },
     { name = "starlette-context", specifier = ">=0.3.6" },
+    { name = "stripe", specifier = ">=12.1.0" },
     { name = "structlog", specifier = ">=24.4.0" },
     { name = "structlog-config", git = "https://github.com/iloveitaly/structlog-config.git" },
     { name = "textcase", specifier = ">=0.4.0" },
@@ -2687,6 +2689,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/50/a2/42e29208fea21d03e6487d3ae4b6f1a5bd21cf762b8b7eef95041e8c08ff/starlette_context-0.4.0.tar.gz", hash = "sha256:3242417c9354c067a4ac5009aff762dc0b322074216f664825d5d127108553be", size = 9131, upload-time = "2025-03-04T06:36:24.481Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/98/ec/90a4479bc3e307f3ff0b56165d70e1b01cf10882872823b27984bda375e2/starlette_context-0.4.0-py3-none-any.whl", hash = "sha256:dbcc11006587f901edd3d0a989a69a628fccf9d00c1ca3c28fab23ab88bd0093", size = 12273, upload-time = "2025-03-04T06:36:23.563Z" },
+]
+
+[[package]]
+name = "stripe"
+version = "12.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "requests" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/62/c4/4cbc0d81f44d0fd2a991b393597266347082a820df432c9f61df6cb0f80d/stripe-12.1.0.tar.gz", hash = "sha256:4a4b8516952cf5095e982257f0d47c45c1d2bbf7743e2cb12d6685f55da8b8d4", size = 1379855, upload-time = "2025-04-30T19:38:15.563Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/cd/4f/1efeebb7fdc8f1317821006f5830a56e9f030ffbf9369856a0ced16ee252/stripe-12.1.0-py2.py3-none-any.whl", hash = "sha256:1a3c9c0647c46da152efbd3b49f3494a32472b222857758e43df99759e790f29", size = 1622491, upload-time = "2025-04-30T19:38:13.773Z" },
 ]
 
 [[package]]
