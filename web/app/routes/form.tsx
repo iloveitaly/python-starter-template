@@ -25,7 +25,6 @@ export default function FormPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // TODO: handle submit
-    // eslint-disable-next-line no-console
     console.log(values)
   }
 
