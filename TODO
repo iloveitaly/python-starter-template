@@ -1,4 +1,8 @@
 ## python
+https://github.com/procrastinate-org/procrastinate
+https://github.com/janbjorge/PgQueuer
+https://tkte.ch/chancy/ look into this job queue?
+I think we should adopt a `lib/` for any code that, in a perfect world, should be extracted out into a library.
 https://grok.com/share/bGVnYWN5_8e8c1718-b3dc-4b32-95a3-61b85ab2be3e figure out how to limit threads that the async pool uses via an ENV var, useful for avoiding complex py-spy dumps in development
 https://github.com/pydantic/pydantic-extra-types
 https://celery.school/sqlalchemy-session-celery-tasks wrap celery task
@@ -31,6 +35,7 @@ https://github.com/replicate/cog/blob/c95774f18b8df6f6a7b841be1900153ca04a57ad/p
 https://victoriametrics.com - recommended instead of prometheus
 
 ## js
+`pnpm exec react-router routes --json` to get routes, we should compare against openai routes
 https://github.com/raineorshine/npm-check-updates/issues/1366 - exact versions not respected
 https://github.com/shadcn-ui/ui/issues/5669 - can't use `"verbatimModuleSyntax": true,`
 https://github.com/vantezzen/autoform - looks like an interesting way to autogenerate schema
