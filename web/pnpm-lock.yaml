@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@clerk/clerk-react':
-        specifier: ^5.31.5
-        version: 5.31.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: ^5.31.6
+        version: 5.31.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@clerk/shared':
-        specifier: ^3.9.2
-        version: 3.9.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: ^3.9.3
+        version: 3.9.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@epic-web/invariant':
         specifier: ^1.0.0
         version: 1.0.0
@@ -78,11 +78,11 @@ importers:
         specifier: ^4.1.7
         version: 4.1.7(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)(yaml@2.6.0))
       '@tanstack/react-query':
-        specifier: ^5.76.1
-        version: 5.76.1(react@19.1.0)
+        specifier: ^5.76.2
+        version: 5.76.2(react@19.1.0)
       '@tanstack/react-query-devtools':
-        specifier: ^5.76.1
-        version: 5.76.1(@tanstack/react-query@5.76.1(react@19.1.0))(react@19.1.0)
+        specifier: ^5.76.2
+        version: 5.76.2(@tanstack/react-query@5.76.2(react@19.1.0))(react@19.1.0)
       autoprefixer:
         specifier: ^10.4.21
         version: 10.4.21(postcss@8.5.3)
@@ -114,8 +114,8 @@ importers:
         specifier: ^8.5.3
         version: 8.5.3
       posthog-js:
-        specifier: ^1.245.1
-        version: 1.245.1(@rrweb/types@2.0.0-alpha.17)
+        specifier: ^1.246.0
+        version: 1.246.0(@rrweb/types@2.0.0-alpha.17)
       ramda:
         specifier: ^0.30.1
         version: 0.30.1
@@ -162,8 +162,8 @@ importers:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.8.3)(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)(yaml@2.6.0))
       zod:
-        specifier: ^3.25.20
-        version: 3.25.20
+        specifier: ^3.25.23
+        version: 3.25.23
     devDependencies:
       '@eslint/js':
         specifier: ^9.27.0
@@ -193,8 +193,8 @@ importers:
         specifier: '>=8.32.1'
         version: 8.32.1(@typescript-eslint/parser@8.32.1(eslint@9.27.0(jiti@2.4.2))(typescript@5.8.3))(eslint@9.27.0(jiti@2.4.2))(typescript@5.8.3)
       '@vitejs/plugin-react':
-        specifier: ^4.4.1
-        version: 4.4.1(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)(yaml@2.6.0))
+        specifier: ^4.5.0
+        version: 4.5.0(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)(yaml@2.6.0))
       '@vitest/coverage-v8':
         specifier: ^3.1.4
         version: 3.1.4(vitest@3.1.4(happy-dom@17.4.7)(jiti@2.4.2)(jsdom@25.0.1)(lightningcss@1.30.1)(yaml@2.6.0))
@@ -435,15 +435,15 @@ packages:
       react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
-  '@clerk/clerk-react@5.31.5':
-    resolution: {integrity: sha512-B5dL2Mg+eaZymA7X6pzpXH104aHubfm/47NlpUxJ92jYTFOSkjLwPszBBJoyy72EPcABs+9XIOWSWH9xvBMTEw==}
+  '@clerk/clerk-react@5.31.6':
+    resolution: {integrity: sha512-mAuCDBV5r1Wy2rcKvL8Dn1+l3DrmdYXhPOmmBY7y8Bb0V0yLkSeTlpk/s/j1PXgHFpnpoK1p433FoEnWVyoj4A==}
     engines: {node: '>=18.17.0'}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
       react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
 
-  '@clerk/shared@3.9.2':
-    resolution: {integrity: sha512-w5hUmqcsfCrGC6vX1uMi4+OVa2HcZpGZFWRMCL9Yig7JN/RZx+5Q7Uue7/GJmKRSsG2F4Jc2Yed6oIHIq6vVPg==}
+  '@clerk/shared@3.9.3':
+    resolution: {integrity: sha512-guXfBGNsqwBq1y5Pw8mfGZ7SPvZW6pJZeBB4A6JtU+edVKF8VQ1MbkWwD4Z2z7P+/D2OnIpVA+IkyHr2tO4eng==}
     engines: {node: '>=18.17.0'}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
@@ -1330,6 +1330,9 @@ packages:
     peerDependencies:
       react-router: 7.6.0
 
+  '@rolldown/pluginutils@1.0.0-beta.9':
+    resolution: {integrity: sha512-e9MeMtVWo186sgvFFJOPGy7/d2j2mZhLJIdVW0C/xDluuOvymEATqz6zKsP0ZmXGzQtqlyjz5sC1sYQUoJG98w==}
+
   '@rollup/plugin-strip@3.0.4':
     resolution: {integrity: sha512-LDRV49ZaavxUo2YoKKMQjCxzCxugu1rCPQa0lDYBOWLj6vtzBMr8DcoJjsmg+s450RbKbe3qI9ZLaSO+O1oNbg==}
     engines: {node: '>=14.0.0'}
@@ -1640,20 +1643,20 @@ packages:
     peerDependencies:
       vite: ^5.2.0 || ^6
 
-  '@tanstack/query-core@5.76.0':
-    resolution: {integrity: sha512-FN375hb8ctzfNAlex5gHI6+WDXTNpe0nbxp/d2YJtnP+IBM6OUm7zcaoCW6T63BawGOYZBbKC0iPvr41TteNVg==}
+  '@tanstack/query-core@5.76.2':
+    resolution: {integrity: sha512-PFGwWh5ss9cJQ67l6bZ7hqXbisX2gy13G2jP+VGY1bgdbCfOMWh6UBVnN62QbFXro6CCoX9hYzTnZHr6Rz00YQ==}
 
   '@tanstack/query-devtools@5.76.0':
     resolution: {integrity: sha512-1p92nqOBPYVqVDU0Ua5nzHenC6EGZNrLnB2OZphYw8CNA1exuvI97FVgIKON7Uug3uQqvH/QY8suUKpQo8qHNQ==}
 
-  '@tanstack/react-query-devtools@5.76.1':
-    resolution: {integrity: sha512-LFVWgk/VtXPkerNLfYIeuGHh0Aim/k9PFGA+JxLdRaUiroQ4j4eoEqBrUpQ1Pd/KXoG4AB9vVE/M6PUQ9vwxBQ==}
+  '@tanstack/react-query-devtools@5.76.2':
+    resolution: {integrity: sha512-XQqPM7ByqhitYtzzRXpFcPXY2FIMGY13atJoQnDInxX+ko7wOhAJg51QGzSxQwZ2JEy91taj0IaIUh3pOz2buw==}
     peerDependencies:
-      '@tanstack/react-query': ^5.76.1
+      '@tanstack/react-query': ^5.76.2
       react: ^18 || ^19
 
-  '@tanstack/react-query@5.76.1':
-    resolution: {integrity: sha512-YxdLZVGN4QkT5YT1HKZQWiIlcgauIXEIsMOTSjvyD5wLYK8YVvKZUPAysMqossFJJfDpJW3pFn7WNZuPOqq+fw==}
+  '@tanstack/react-query@5.76.2':
+    resolution: {integrity: sha512-rGkWberCrFdIxMdvSAJM/UOKeu0O/JVTbMmfhQoJpiU9Uq0EDx2EMCadnNuJWbXR4smDA2t7DY3NKkYFmDVS5A==}
     peerDependencies:
       react: ^18 || ^19
 
@@ -1789,8 +1792,8 @@ packages:
     resolution: {integrity: sha512-ar0tjQfObzhSaW3C3QNmTc5ofj0hDoNQ5XWrCy6zDyabdr0TWhCkClp+rywGNj/odAFBVzzJrK4tEq5M4Hmu4w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@vitejs/plugin-react@4.4.1':
-    resolution: {integrity: sha512-IpEm5ZmeXAP/osiBXVVP5KjFMzbWOonMs0NaQQl+xYnUAcq4oHUBsF2+p4MgKWG4YMmFYJU8A6sxRPuowllm6w==}
+  '@vitejs/plugin-react@4.5.0':
+    resolution: {integrity: sha512-JuLWaEqypaJmOJPLWwO335Ig6jSgC1FTONCWAxnqcQthLTK/Yc9aH6hr9z/87xciejbQcnP3GnA1FWUSWeXaeg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0 || ^6.0.0
@@ -3586,8 +3589,8 @@ packages:
     resolution: {integrity: sha512-dle9A3yYxlBSrt8Fu+IpjGT8SY8hN0mlaA6GY8t0P5PjIOZemULz/E2Bnm/2dcUOena75OTNkHI76uZBNUUq3A==}
     engines: {node: ^10 || ^12 || >=14}
 
-  posthog-js@1.245.1:
-    resolution: {integrity: sha512-I2HWR4VKAfX6Y8e/VtAq1DRUMcZi/1pjlpaRqDp60AGs0JnTiJ1F7o2ke52VTIs6gBnoZIQCe3Xh8z384hLMGQ==}
+  posthog-js@1.246.0:
+    resolution: {integrity: sha512-5lN/UMqDfxsLeSnT3LsY4P+eD1H+P9qxgN/iUk473LmhCM7IV8TAfdjJj23nnXk/euGNQtvyINYoD2DG+d4eEw==}
     peerDependencies:
       '@rrweb/types': 2.0.0-alpha.17
       rrweb-snapshot: 2.0.0-alpha.17
@@ -4567,8 +4570,8 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zod@3.25.20:
-    resolution: {integrity: sha512-z03fqpTMDF1G02VLKUMt6vyACE7rNWkh3gpXVHgPTw28NPtDFRGvcpTtPwn2kMKtQ0idtYJUTxchytmnqYswcw==}
+  zod@3.25.23:
+    resolution: {integrity: sha512-Od2bdMosahjSrSgJtakrwjMDb1zM1A3VIHCPGveZt/3/wlrTWBya2lmEh2OYe4OIu8mPTmmr0gnLHIWQXdtWBg==}
 
 snapshots:
 
@@ -4861,15 +4864,15 @@ snapshots:
       react-lifecycles-compat: 3.0.4
       warning: 3.0.0
 
-  '@clerk/clerk-react@5.31.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@clerk/clerk-react@5.31.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
-      '@clerk/shared': 3.9.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@clerk/shared': 3.9.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@clerk/types': 4.59.1
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       tslib: 2.8.1
 
-  '@clerk/shared@3.9.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@clerk/shared@3.9.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@clerk/types': 4.59.1
       dequal: 2.0.3
@@ -5760,6 +5763,8 @@ snapshots:
       - supports-color
       - typescript
 
+  '@rolldown/pluginutils@1.0.0-beta.9': {}
+
   '@rollup/plugin-strip@3.0.4(rollup@4.40.0)':
     dependencies:
       '@rollup/pluginutils': 5.1.3(rollup@4.40.0)
@@ -6029,19 +6034,19 @@ snapshots:
       tailwindcss: 4.1.7
       vite: 6.3.5(jiti@2.4.2)(lightningcss@1.30.1)(yaml@2.6.0)
 
-  '@tanstack/query-core@5.76.0': {}
+  '@tanstack/query-core@5.76.2': {}
 
   '@tanstack/query-devtools@5.76.0': {}
 
-  '@tanstack/react-query-devtools@5.76.1(@tanstack/react-query@5.76.1(react@19.1.0))(react@19.1.0)':
+  '@tanstack/react-query-devtools@5.76.2(@tanstack/react-query@5.76.2(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@tanstack/query-devtools': 5.76.0
-      '@tanstack/react-query': 5.76.1(react@19.1.0)
+      '@tanstack/react-query': 5.76.2(react@19.1.0)
       react: 19.1.0
 
-  '@tanstack/react-query@5.76.1(react@19.1.0)':
+  '@tanstack/react-query@5.76.2(react@19.1.0)':
     dependencies:
-      '@tanstack/query-core': 5.76.0
+      '@tanstack/query-core': 5.76.2
       react: 19.1.0
 
   '@testing-library/dom@10.4.0':
@@ -6215,11 +6220,12 @@ snapshots:
       '@typescript-eslint/types': 8.32.1
       eslint-visitor-keys: 4.2.0
 
-  '@vitejs/plugin-react@4.4.1(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)(yaml@2.6.0))':
+  '@vitejs/plugin-react@4.5.0(vite@6.3.5(jiti@2.4.2)(lightningcss@1.30.1)(yaml@2.6.0))':
     dependencies:
       '@babel/core': 7.26.10
       '@babel/plugin-transform-react-jsx-self': 7.25.9(@babel/core@7.26.10)
       '@babel/plugin-transform-react-jsx-source': 7.25.9(@babel/core@7.26.10)
+      '@rolldown/pluginutils': 1.0.0-beta.9
       '@types/babel__core': 7.20.5
       react-refresh: 0.17.0
       vite: 6.3.5(jiti@2.4.2)(lightningcss@1.30.1)(yaml@2.6.0)
@@ -8210,7 +8216,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  posthog-js@1.245.1(@rrweb/types@2.0.0-alpha.17):
+  posthog-js@1.246.0(@rrweb/types@2.0.0-alpha.17):
     dependencies:
       core-js: 3.39.0
       fflate: 0.4.8
@@ -9250,4 +9256,4 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod@3.25.20: {}
+  zod@3.25.23: {}
