@@ -12,4 +12,6 @@ uv tool run --with jinja2_shell_extension \
   --exclude uv.lock \
   --exclude tests/integration/__snapshots__ \
   --exclude .service-versions \
-  --exclude .tool-versions
+  --exclude .tool-versions \
+  --exclude .cursor \
+  --exclude .github/instructions
