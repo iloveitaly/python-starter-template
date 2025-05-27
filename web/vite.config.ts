@@ -1,6 +1,7 @@
 import { defineConfig } from "vite"
 import { loadEnv } from "vite"
 import viteCompression from "vite-plugin-compression"
+import devtoolsJson from "vite-plugin-devtools-json"
 import Terminal from "vite-plugin-terminal"
 import tsconfigPaths from "vite-tsconfig-paths"
 
@@ -100,6 +101,7 @@ function getModePlugins(mode: string) {
 
   return [
     Terminal(),
+    devtoolsJson(),
     // TODO this is still tool beta for rr7, need to wait for a more stable release
     // reactRouterDevTools()
   ]
@@ -122,6 +124,8 @@ export default defineConfig(({ mode }) => ({
     strictPort: true,
     // random ports to avoid conflict with other projects
     port: parseInt(process.env.JAVASCRIPT_SERVER_PORT),
+
+    // TODO https://github.com/DarthSim/hivemind/issues/40
   },
   plugins: [
     tailwindcss(),
