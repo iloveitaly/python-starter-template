@@ -1852,14 +1852,14 @@ wheels = [
 
 [[package]]
 name = "pytest-asyncio"
-version = "0.26.0"
+version = "1.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pytest" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8e/c4/453c52c659521066969523e87d85d54139bbd17b78f09532fb8eb8cdb58e/pytest_asyncio-0.26.0.tar.gz", hash = "sha256:c4df2a697648241ff39e7f0e4a73050b03f123f760673956cf0d72a4990e312f", size = 54156, upload-time = "2025-03-25T06:22:28.883Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d0/d4/14f53324cb1a6381bef29d698987625d80052bb33932d8e7cbf9b337b17c/pytest_asyncio-1.0.0.tar.gz", hash = "sha256:d15463d13f4456e1ead2594520216b225a16f781e144f8fdf6c5bb4667c48b3f", size = 46960, upload-time = "2025-05-26T04:54:40.484Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/20/7f/338843f449ace853647ace35870874f69a764d251872ed1b4de9f234822c/pytest_asyncio-0.26.0-py3-none-any.whl", hash = "sha256:7b51ed894f4fbea1340262bdae5135797ebbe21d8638978e35d31c6d19f72fb0", size = 19694, upload-time = "2025-03-25T06:22:27.807Z" },
+    { url = "https://files.pythonhosted.org/packages/30/05/ce271016e351fddc8399e546f6e23761967ee09c8c568bbfbecb0c150171/pytest_asyncio-1.0.0-py3-none-any.whl", hash = "sha256:4f024da9f1ef945e680dc68610b52550e36590a67fd31bb3b4943979a1f90ef3", size = 15976, upload-time = "2025-05-26T04:54:39.035Z" },
 ]
 
 [[package]]
@@ -2643,16 +2643,16 @@ wheels = [
 
 [[package]]
 name = "squawk-cli"
-version = "2.7.0"
+version = "2.9.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/5f/ac/47357854ef56ae4973f07e91491c512df9334e87c241ec99526d428fdf54/squawk_cli-2.7.0.tar.gz", hash = "sha256:915979bc25b9b36bc15166d48cdcd6e9044c1c7115f15b73d0b5272664a3e5b0", size = 387089, upload-time = "2025-05-15T03:40:45.866Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/12/40/11fb072c40942b77ad29a8da621a916e59910ca97c32d8c8ba4cb4faf6d4/squawk_cli-2.9.0.tar.gz", hash = "sha256:90e028faf67e6affba25bc10e3c92dab026b59f51d990ecd2498dbb96268102d", size = 1263730, upload-time = "2025-05-26T01:49:08.675Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/61/76/7f8fee44dcc421206e1a6e3049a1d9a69dcdfcc89caaa156c1047ace4d8a/squawk_cli-2.7.0-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:e8ba23970d9f1fc8e9beffdc23ac25491fe496da6042fd73a74948b190d0d3dc", size = 2847055, upload-time = "2025-05-15T03:40:44.063Z" },
-    { url = "https://files.pythonhosted.org/packages/d4/08/a3c88dc77bb30ee75ef0c4a192a5f78753139703dcdbb623d5066c7277c3/squawk_cli-2.7.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:a24d66b46fbf55f1f0458e474a3a03411d8d63981277f1eab513c90999d13234", size = 2736348, upload-time = "2025-05-15T03:40:42.257Z" },
-    { url = "https://files.pythonhosted.org/packages/28/81/415090522498dbce14ec30b03ed5b867772c574601bb49c9a416c01508c6/squawk_cli-2.7.0-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:a4ff006a0f156cdcc6a957a029784942bd81e19df4eb7fb3f44ba3ff78b5cf29", size = 3454212, upload-time = "2025-05-15T03:40:37.815Z" },
-    { url = "https://files.pythonhosted.org/packages/47/a8/96b01c5a05c46b0385b7cafbf1e1309df0b4ea881950e3005a04583bc3c5/squawk_cli-2.7.0-py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:e5e1c0882e55efa37a04584a983847366771b7b8fef4abe2b74a32628dec2383", size = 4183339, upload-time = "2025-05-15T03:40:40.304Z" },
-    { url = "https://files.pythonhosted.org/packages/37/7c/d31e397da867c1d9c2c661f41129d5743cfab20557e9a4dd9c6fae90ce50/squawk_cli-2.7.0-py3-none-win32.whl", hash = "sha256:ddd1b57b0d47788e06bc2455dc080fca6995765160bfb116323d1bd1cf8b642c", size = 2345667, upload-time = "2025-05-15T03:40:49.917Z" },
-    { url = "https://files.pythonhosted.org/packages/3f/39/1cdc4c547b0c53eae82852d9238954e590332d6af4d9f29e4acca45511f2/squawk_cli-2.7.0-py3-none-win_amd64.whl", hash = "sha256:64c967dab3c0fd032e5b8d836b5598ff05949e13ea52a1c4bb8fb274bdb3d605", size = 2509146, upload-time = "2025-05-15T03:40:47.665Z" },
+    { url = "https://files.pythonhosted.org/packages/98/f4/ec44df177e1f92113ade4b6c1cba6f6ac188303b9320e85b581b382d81ec/squawk_cli-2.9.0-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:471fabc0d7753af5b1675eebac6444ea7da5b3c0e125718f0c0fba0986a0f7ec", size = 2890433, upload-time = "2025-05-26T01:49:06.405Z" },
+    { url = "https://files.pythonhosted.org/packages/50/f8/1e4a08a051ea477bf90b20560d8e2d07038f36a576c1884b4ac2fcf5b749/squawk_cli-2.9.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:914dab111f441abb5e306ab78867228c6e84a2aa21a5f8ecdb4b2af1adef7907", size = 2783426, upload-time = "2025-05-26T01:49:04.404Z" },
+    { url = "https://files.pythonhosted.org/packages/7f/50/59c8dc0ee9913fea647fdc607cc23bf88eb3eff6a374d293b66167e72333/squawk_cli-2.9.0-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:2aaee957bc5c83ce8667712449f4b2f050db3f2a6488184477c5733cae31216f", size = 3493760, upload-time = "2025-05-26T01:49:00.627Z" },
+    { url = "https://files.pythonhosted.org/packages/cd/10/4d1c2267ce564107fa99e883c6cd1f052c4f7830a06157788ead287dbf91/squawk_cli-2.9.0-py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:337475c2c1e976b97ecb1131a084604e48d339bd2162aac8a833b73a20894c3e", size = 4233328, upload-time = "2025-05-26T01:49:02.602Z" },
+    { url = "https://files.pythonhosted.org/packages/aa/30/8cd274da6104c6ca3a99d14d999821ae4c9356650fd945f67f709cdefb31/squawk_cli-2.9.0-py3-none-win32.whl", hash = "sha256:0ac52246b4a3d9ebe356c83687bfd8dc935a00e36fb101a20ddb6a18cdd44ec4", size = 2388419, upload-time = "2025-05-26T01:49:11.92Z" },
+    { url = "https://files.pythonhosted.org/packages/06/7e/0b0604ac63bd2e73033dae7a14ac86ed898b5c3c7aefd666ff7fb3eee381/squawk_cli-2.9.0-py3-none-win_amd64.whl", hash = "sha256:d839c092bd9b9be5004c448f786dffc45ebe29e68f35365215d14f17a98323ad", size = 2548121, upload-time = "2025-05-26T01:49:10.286Z" },
 ]
 
 [[package]]
@@ -2718,7 +2718,7 @@ wheels = [
 [[package]]
 name = "structlog-config"
 version = "0.1.0"
-source = { git = "https://github.com/iloveitaly/structlog-config.git#9722e7e2abca93fb152726a738e8a78f5cdf63ae" }
+source = { git = "https://github.com/iloveitaly/structlog-config.git#a7b66ea626829b36a46ad4f73a4f1eb5bd12ca86" }
 dependencies = [
     { name = "orjson" },
     { name = "python-decouple-typed" },
