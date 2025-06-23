@@ -11,24 +11,26 @@ _secrets_service-token CONTEXT WRITE_PERMISSION="false":
 			--vault "${OP_VAULT_UID}:read_items${write_permission}" \
 			--raw
 
-# for terraform and other tools which can create entries
-secrets_write-service-token: _dev_only
+# generate r+w 1p service account token for terraform and other tools which can create 1P records
+secrets_write-service-token: _not_production
 	@echo '{{ BLUE }}Update your ".env.local" with this value:{{ NORMAL }}'
 
 	just _secrets_service-token write true | jq -r -R '@sh "export OP_SERVICE_ACCOUNT_TOKEN=\(.)"'
 
 # generate service account token for local development
-secrets_local-service-token user=`whoami`: _dev_only
+secrets_local-service-token user=`whoami`: _not_production
+	@echo '{{ BLUE }}Update your ".env.local" with this value:{{ NORMAL }}'
+
 	just _secrets_service-token {{user}} | jq -r -R '@sh "export OP_SERVICE_ACCOUNT_TOKEN=\(.)"'
 
 # grant GH actions access to the 1p vault, this needs to be done every 90d
-secrets_ci_grant-github-actions: _dev_only
+secrets_ci_grant-github-actions: _not_production
 	# 90d is the max expiration time allowed
 	# this can be safely run multiple times, it will not regenerate the service account token
 	service_account_token=$(just _secrets_service-token github-actions) && \
 		gh secret set OP_SERVICE_ACCOUNT_TOKEN --app actions --body "$service_account_token"
 
 # manage the op service account from the web ui
-secrets_ci_manage: _dev_only
+secrets_ci_manage: _not_production
 	# you cannot revoke/delete a service account with the cli, you must login and delete it from the web ui
 	open https://$OP_ACCOUNT/developer-tools/directory
