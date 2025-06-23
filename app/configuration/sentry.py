@@ -1,7 +1,6 @@
 import sentry_sdk
 import sentry_sdk.integrations
 from decouple import config
-from posthog.sentry.posthog_integration import PostHogIntegration
 
 from ..environments import is_job_monitor, is_production, python_environment
 
@@ -43,7 +42,7 @@ def configure_sentry(integrations=[]):
         traces_sample_rate=0.1,
         # posthog integration is not a standard integration included with Sentry
         # https://docs.sentry.io/platforms/python/integrations/
-        integrations=[PostHogIntegration()] + integrations,
+        integrations=integrations,
         before_send_transaction=filter_transactions,
         _experiments={
             # Set continuous_profiling_auto_start to True

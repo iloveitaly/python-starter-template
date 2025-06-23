@@ -4,10 +4,9 @@ import typing as t
 
 import itsdangerous
 from cachetools import LRUCache, cached
-from clerk_backend_api import CreateSessionRequestBody
+from clerk_backend_api import CreateSessionRequestBody, RequestState
 from clerk_backend_api import User as ClerkUser
-from clerk_backend_api.jwks_helpers import AuthStatus
-from clerk_backend_api.jwks_helpers.authenticaterequest import RequestState
+from clerk_backend_api.security import AuthStatus
 from decouple import config as decouple_config
 from fastapi import Request
 from httpx import Response
@@ -62,10 +61,8 @@ def _get_or_create_clerk_user(email: str):
         return user_list[0]
     elif len(user_list) == 0:
         return clerk.users.create(
-            request={
-                "email_address": [email],
-                "password": CLERK_DEV_USER_PASSWORD,
-            }
+            email_address=[email],
+            password=CLERK_DEV_USER_PASSWORD,
         )
     else:
         raise ValueError("more than one user found")

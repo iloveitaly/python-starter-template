@@ -3,11 +3,7 @@ Attempting to upstream at: https://github.com/clerk/clerk-sdk-python/pull/65/fil
 """
 
 import httpx
-from clerk_backend_api import Clerk
-from clerk_backend_api.jwks_helpers.authenticaterequest import (
-    AuthenticateRequestOptions,
-    RequestState,
-)
+from clerk_backend_api import AuthenticateRequestOptions, Clerk, RequestState
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
