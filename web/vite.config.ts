@@ -1,10 +1,10 @@
+import { reactRouterDevTools } from "react-router-devtools"
 import { defineConfig } from "vite"
 import { loadEnv } from "vite"
 import viteCompression from "vite-plugin-compression"
 import devtoolsJson from "vite-plugin-devtools-json"
 import Terminal from "vite-plugin-terminal"
 import tsconfigPaths from "vite-tsconfig-paths"
-
 import { reactRouter } from "@react-router/dev/vite"
 import { sentryVitePlugin } from "@sentry/vite-plugin"
 import tailwindcss from "@tailwindcss/vite"
@@ -99,12 +99,7 @@ function getModePlugins(mode: string) {
     ]
   }
 
-  return [
-    Terminal(),
-    devtoolsJson(),
-    // TODO this is still tool beta for rr7, need to wait for a more stable release
-    // reactRouterDevTools()
-  ]
+  return [Terminal(), devtoolsJson(), reactRouterDevTools()]
 }
 
 // test configuration is done via vitest.config.ts, this is only for the build system
@@ -129,8 +124,8 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     tailwindcss(),
-    reactRouter(),
     tsconfigPaths(),
     ...getModePlugins(mode),
+    reactRouter(),
   ],
 }))

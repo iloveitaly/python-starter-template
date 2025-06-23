@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "react-router dev",
+    "start": "react-router serve --port 3000",
     "build": "pnpm run openapi && react-router typegen && react-router build",
     "test": "pnpm run openapi && vitest run",
     "openapi": "pnpm dlx @hey-api/openapi-ts",
