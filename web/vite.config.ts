@@ -5,6 +5,7 @@ import viteCompression from "vite-plugin-compression"
 import devtoolsJson from "vite-plugin-devtools-json"
 import Terminal from "vite-plugin-terminal"
 import tsconfigPaths from "vite-tsconfig-paths"
+
 import { reactRouter } from "@react-router/dev/vite"
 import { sentryVitePlugin } from "@sentry/vite-plugin"
 import tailwindcss from "@tailwindcss/vite"
