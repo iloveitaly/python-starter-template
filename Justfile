@@ -178,7 +178,7 @@ _mise_upgrade: _dev_only
 			CURRENT=$(mise list --current --json | jq -r --arg TOOL "$TOOL" --arg PWD "$PWD" 'to_entries | map(select(.value[0].source.path == $PWD + "/.tool-versions")) | from_entries | .[$TOOL][0].version')
 			echo "Current version of $TOOL: $CURRENT"
 
-			if [[ "$TOOL" == "node" || "$TOOL" == "python" ]]; then
+			if [[ "$TOOL" == "python" ]]; then
 					# Extract major.minor version
 					CURRENT_BASE=$(echo "$CURRENT" | cut -d. -f1,2)
 					echo "Current base version of $TOOL: $CURRENT_BASE"
