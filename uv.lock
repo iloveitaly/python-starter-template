@@ -215,16 +215,16 @@ redis = [
 
 [[package]]
 name = "celery-healthcheck"
-version = "0.1.1"
+version = "0.1.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "celery" },
     { name = "fastapi" },
     { name = "uvicorn" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b0/23/d80da2a9ba9dc83b136fbed9caa7f936e88fbc86409c44eb360d66c278c2/celery_healthcheck-0.1.1.tar.gz", hash = "sha256:3b3f14087f939c4bd5c16c0d3275a03cb20b7a926880a8421ab84c253947d54a", size = 27460, upload-time = "2025-04-01T02:14:37.131Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e9/7f/334faa74e28ff91faf2cd9a77f0bac058273b405b198ed97f264b4446849/celery_healthcheck-0.1.2.tar.gz", hash = "sha256:1058bea2ac8c0e43b60d19a5b97543b08e24bb953a72ff2c137668a400119308", size = 31026, upload-time = "2025-06-25T14:56:17.633Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/88/0e/2536a6bf4c6c7ffe23406c3330ee43e24db7ffd492ddfc6f9ae375cf24fe/celery_healthcheck-0.1.1-py3-none-any.whl", hash = "sha256:bbf324b0e6ba02fc1de125fa7b37e62edc4d0c1fb7c06eebd6d49777013638f8", size = 3608, upload-time = "2025-04-01T02:14:35.663Z" },
+    { url = "https://files.pythonhosted.org/packages/41/4b/d94029128deb1564c8ee552613a5eef7eb0f3a06c8c46a0c11f71e702612/celery_healthcheck-0.1.2-py3-none-any.whl", hash = "sha256:5094fc23b8f7980bca33c64af3673dab520c91328bde7af29067e6bff7d3f1f3", size = 3674, upload-time = "2025-06-25T14:56:16.05Z" },
 ]
 
 [[package]]
@@ -368,14 +368,14 @@ wheels = [
 
 [[package]]
 name = "click-plugins"
-version = "1.1.1"
+version = "1.1.1.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5f/1d/45434f64ed749540af821fd7e42b8e4d23ac04b1eda7c26613288d6cd8a8/click-plugins-1.1.1.tar.gz", hash = "sha256:46ab999744a9d831159c3411bb0c79346d94a444df9a3a3742e9ed63645f264b", size = 8164, upload-time = "2019-04-04T04:27:04.82Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c3/a4/34847b59150da33690a36da3681d6bbc2ec14ee9a846bc30a6746e5984e4/click_plugins-1.1.1.2.tar.gz", hash = "sha256:d7af3984a99d243c131aa1a828331e7630f4a88a9741fd05c927b204bcf92261", size = 8343, upload-time = "2025-06-25T00:47:37.555Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e9/da/824b92d9942f4e472702488857914bdd50f73021efea15b4cad9aca8ecef/click_plugins-1.1.1-py2.py3-none-any.whl", hash = "sha256:5d262006d3222f5057fd81e1623d4443e41dcda5dc815c06b442aa3c02889fc8", size = 7497, upload-time = "2019-04-04T04:27:03.36Z" },
+    { url = "https://files.pythonhosted.org/packages/3d/9a/2abecb28ae875e39c8cad711eb1186d8d14eab564705325e77e4e6ab9ae5/click_plugins-1.1.1.2-py2.py3-none-any.whl", hash = "sha256:008d65743833ffc1f5417bf0e78e8d2c23aab04d9745ba817bd3e71b0feb6aa6", size = 11051, upload-time = "2025-06-25T00:47:36.731Z" },
 ]
 
 [[package]]
@@ -916,7 +916,7 @@ wheels = [
 
 [[package]]
 name = "icecream"
-version = "2.1.4"
+version = "2.1.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "asttokens" },
@@ -924,9 +924,9 @@ dependencies = [
     { name = "executing" },
     { name = "pygments" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/78/5e/9f41831f032b9ce456c919c4989952562fcc2b0eb8c038080c24ce20d6cd/icecream-2.1.4.tar.gz", hash = "sha256:58755e58397d5350a76f25976dee7b607f5febb3c6e1cddfe6b1951896e91573", size = 15872, upload-time = "2025-01-09T16:23:20.993Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/0e/5f/9635c20f14f558768e89b0e20c32ca852640b8973e102ff2f6ee229bbebc/icecream-2.1.5.tar.gz", hash = "sha256:14d21e3383326a69a8c1a3bcf11f83283459f0d269ece5af83fce2c0d663efec", size = 16744, upload-time = "2025-06-25T18:02:31.44Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/57/1d/43ef7a6875190e6745ffcd1b12c7aaa7efed082897401e311ee1cd75c8b2/icecream-2.1.4-py3-none-any.whl", hash = "sha256:7bb715f69102cae871b3a361c3b656536db02cfcadac9664c673581cac4df4fd", size = 14782, upload-time = "2025-01-09T16:23:18.213Z" },
+    { url = "https://files.pythonhosted.org/packages/36/0a/9496191b82b2839cc92fc713a5888931ab301dfcc55b9d5a49665cdb2aa5/icecream-2.1.5-py3-none-any.whl", hash = "sha256:c020917c5cb180a528dbba170250ccd8b74ebc75f2a7a8e839819bf959b9f80c", size = 14378, upload-time = "2025-06-25T18:02:30.262Z" },
 ]
 
 [[package]]

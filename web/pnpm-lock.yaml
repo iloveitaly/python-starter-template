@@ -19,7 +19,7 @@ importers:
         version: 1.0.0
       '@hey-api/client-fetch':
         specifier: ^0.13.1
-        version: 0.13.1(@hey-api/openapi-ts@0.76.0(magicast@0.3.5)(typescript@5.8.3))
+        version: 0.13.1(@hey-api/openapi-ts@0.77.0(magicast@0.3.5)(typescript@5.8.3))
       '@hookform/resolvers':
         specifier: ^5.1.1
         version: 5.1.1(react-hook-form@7.58.1(react@19.1.0))
@@ -63,8 +63,8 @@ importers:
         specifier: 7.6.2
         version: 7.6.2(react-router@7.6.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.8.3)
       '@sentry/react':
-        specifier: ^9.31.0
-        version: 9.31.0(react@19.1.0)
+        specifier: ^9.32.0
+        version: 9.32.0(react@19.1.0)
       '@sentry/vite-plugin':
         specifier: ^3.5.0
         version: 3.5.0(encoding@0.1.13)
@@ -169,8 +169,8 @@ importers:
         specifier: ^9.29.0
         version: 9.29.0
       '@hey-api/openapi-ts':
-        specifier: ^0.76.0
-        version: 0.76.0(magicast@0.3.5)(typescript@5.8.3)
+        specifier: ^0.77.0
+        version: 0.77.0(magicast@0.3.5)(typescript@5.8.3)
       '@testing-library/jest-dom':
         specifier: ^6.6.3
         version: 6.6.3
@@ -179,7 +179,7 @@ importers:
         version: 16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^5.2.2
-        version: 5.2.2(@vue/compiler-sfc@3.5.12)(prettier@3.6.0)
+        version: 5.2.2(@vue/compiler-sfc@3.5.12)(prettier@3.6.1)
       '@types/ramda':
         specifier: ^0.30.2
         version: 0.30.2
@@ -214,11 +214,11 @@ importers:
         specifier: ^18.0.1
         version: 18.0.1
       prettier:
-        specifier: ^3.6.0
-        version: 3.6.0
+        specifier: ^3.6.1
+        version: 3.6.1
       prettier-plugin-tailwindcss:
         specifier: ^0.6.13
-        version: 0.6.13(@trivago/prettier-plugin-sort-imports@5.2.2(@vue/compiler-sfc@3.5.12)(prettier@3.6.0))(prettier@3.6.0)
+        version: 0.6.13(@trivago/prettier-plugin-sort-imports@5.2.2(@vue/compiler-sfc@3.5.12)(prettier@3.6.1))(prettier@3.6.1)
       typescript-eslint:
         specifier: ^8.35.0
         version: 8.35.0(eslint@9.29.0(jiti@2.4.2))(typescript@5.8.3)
@@ -784,8 +784,8 @@ packages:
     resolution: {integrity: sha512-yktiFZoWPtEW8QKS65eqKwA5MTKp88CyiL8q72WynrBs/73SAaxlSWlA2zW/DZlywZ5hX1OYzrCC0wFdvO9c2w==}
     engines: {node: '>= 16'}
 
-  '@hey-api/openapi-ts@0.76.0':
-    resolution: {integrity: sha512-zNSZX6pqOULV0znt8UFTLLNKT5ArBXAXcIQiVMZLOCNmwyQ7c23B0QsjboRYOrb3NzVwYehT/5Nj65axDkxXOw==}
+  '@hey-api/openapi-ts@0.77.0':
+    resolution: {integrity: sha512-HAJbd8QfxeBPZ788Ghiw7bzzzTKxW+wW+34foleEztyZJnRV20barvevu8YAK1BtyiIGIpEtAfoqO8KUj4VuBw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=22.10.0}
     hasBin: true
     peerDependencies:
@@ -1521,28 +1521,28 @@ packages:
   '@rrweb/types@2.0.0-alpha.17':
     resolution: {integrity: sha512-AfDTVUuCyCaIG0lTSqYtrZqJX39ZEYzs4fYKnexhQ+id+kbZIpIJtaut5cto6dWZbB3SEe4fW0o90Po3LvTmfg==}
 
-  '@sentry-internal/browser-utils@9.31.0':
-    resolution: {integrity: sha512-rviu/jUmeQbY4rSO8l4pubOtRIhFtH5Gu/ryRNMTlpJRdomp4uxddqthHUDH5g6xCXZsMTyJEIdx0aTqbgr/GQ==}
+  '@sentry-internal/browser-utils@9.32.0':
+    resolution: {integrity: sha512-mVWdruSWXF+2WgS24jwLhWFyC/nDQbKXseLR8paU9LGSnVtlBlQseIx1GrANbJrhBxiEWSft4WiuxU34wPsbXg==}
     engines: {node: '>=18'}
 
-  '@sentry-internal/feedback@9.31.0':
-    resolution: {integrity: sha512-Ygi/8UZ7p2B4DhXQjZDtOc45vNUHkfk2XETBTBGkByEQkE8vygzSiKhgRcnVpzwq+8xKFMRy+PxvpcCo+PNQew==}
+  '@sentry-internal/feedback@9.32.0':
+    resolution: {integrity: sha512-OaXaovXqlhN1sG2wtJMhxMEjyeuK7RwY57o96LgKE0bWM//Fs9WWCOkGa+7l8TOf0+0ib7gfhJZlpN0hlqOgRw==}
     engines: {node: '>=18'}
 
-  '@sentry-internal/replay-canvas@9.31.0':
-    resolution: {integrity: sha512-VGqfvQCIuXQZeecrBf8bd4sj8lYGzUA/2CffTAkad1nB1Onyz0Kzo54qLWemivCxA3ufHf6DCpNA3Loa/0ywFQ==}
+  '@sentry-internal/replay-canvas@9.32.0':
+    resolution: {integrity: sha512-tu+coeTRpJxknmWPMJC2jqmIM5IsVoRn9gEDdkSrcPbgx/GwgE03fSJVBJL1tOEA8yRNIhZPMR86ORE7/7n2ow==}
     engines: {node: '>=18'}
 
-  '@sentry-internal/replay@9.31.0':
-    resolution: {integrity: sha512-V5rvcO/xSj8JMw4ZnZT2cBYC+UOuIiZ2Flj4EoIurxMrTgowE1uMXUBA32EBfuB5/vQSJXB6W5uAudhk7LjBPQ==}
+  '@sentry-internal/replay@9.32.0':
+    resolution: {integrity: sha512-mOHUKjUtHbEwshikrCQPM1ZqWAMUEcpEGashnXQp3KQivvbTxrExiNnt6XK5TjJyGvsI3A907Bp/HvEzgneYgQ==}
     engines: {node: '>=18'}
 
   '@sentry/babel-plugin-component-annotate@3.5.0':
     resolution: {integrity: sha512-s2go8w03CDHbF9luFGtBHKJp4cSpsQzNVqgIa9Pfa4wnjipvrK6CxVT4icpLA3YO6kg5u622Yoa5GF3cJdippw==}
     engines: {node: '>= 14'}
 
-  '@sentry/browser@9.31.0':
-    resolution: {integrity: sha512-DzG72JJTqHzE0Qo2fHeHm3xgFs97InaSQStmTMxOA59yPqvAXbweNPcsgCNu1q76+jZyaJcoy1qOwahnLuEVDg==}
+  '@sentry/browser@9.32.0':
+    resolution: {integrity: sha512-BzPogpH87n+sC9VPfXaXkiKJtagLpIB87LGg1hSBURpwGx6Rt2ORmaVYgwwuuFZX8Hia727IIM7pbcbNfrXGRQ==}
     engines: {node: '>=18'}
 
   '@sentry/bundler-plugin-core@3.5.0':
@@ -1595,12 +1595,12 @@ packages:
     engines: {node: '>= 10'}
     hasBin: true
 
-  '@sentry/core@9.31.0':
-    resolution: {integrity: sha512-6JeoPGvBgT9m2YFIf2CrW+KrrOYzUqb9+Xwr/Dw25kPjVKy+WJjWqK8DKCNLgkBA22OCmSOmHuRwFR0YxGVdZQ==}
+  '@sentry/core@9.32.0':
+    resolution: {integrity: sha512-1wAXMMmeY4Ny2MJBCuri3b4LMVPjqXdgbVgTxxipGW+gzPsjv+8+LCSnJAR/cRBr8JoXV+qGC2tE06rI1XDj3A==}
     engines: {node: '>=18'}
 
-  '@sentry/react@9.31.0':
-    resolution: {integrity: sha512-cZT/AwRiawRED7pB4Ug6ZRbcWd92HQxOPc12KKe5ZUQFEc9jUqH6HqwzQUSMzkg86NrE9Hc6XXga+JZ3Q1Lzow==}
+  '@sentry/react@9.32.0':
+    resolution: {integrity: sha512-4d13sA/e9oEEK9cB6DZxVNDLTw9Q2x0WzhKtit6jhFKv1ItQ61Uu+euBJLfy3yCzFGl7PJbfJViMt2bhqjkTuA==}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^16.14.0 || 17.x || 18.x || 19.x
@@ -3831,8 +3831,8 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
 
-  prettier@3.6.0:
-    resolution: {integrity: sha512-ujSB9uXHJKzM/2GBuE0hBOUgC77CN3Bnpqa+g80bkv3T3A93wL/xlzDATHhnhkzifz/UE2SNOvmbTz5hSkDlHw==}
+  prettier@3.6.1:
+    resolution: {integrity: sha512-5xGWRa90Sp2+x1dQtNpIpeOQpTDBs9cZDmA/qs2vDNN2i18PdapqY7CmBeyLlMuGqXJRIOPaCaVZTLNQRWUH/A==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -5371,9 +5371,9 @@ snapshots:
 
   '@floating-ui/utils@0.2.8': {}
 
-  '@hey-api/client-fetch@0.13.1(@hey-api/openapi-ts@0.76.0(magicast@0.3.5)(typescript@5.8.3))':
+  '@hey-api/client-fetch@0.13.1(@hey-api/openapi-ts@0.77.0(magicast@0.3.5)(typescript@5.8.3))':
     dependencies:
-      '@hey-api/openapi-ts': 0.76.0(magicast@0.3.5)(typescript@5.8.3)
+      '@hey-api/openapi-ts': 0.77.0(magicast@0.3.5)(typescript@5.8.3)
 
   '@hey-api/json-schema-ref-parser@1.0.6':
     dependencies:
@@ -5382,7 +5382,7 @@ snapshots:
       js-yaml: 4.1.0
       lodash: 4.17.21
 
-  '@hey-api/openapi-ts@0.76.0(magicast@0.3.5)(typescript@5.8.3)':
+  '@hey-api/openapi-ts@0.77.0(magicast@0.3.5)(typescript@5.8.3)':
     dependencies:
       '@hey-api/json-schema-ref-parser': 1.0.6
       ansi-colors: 4.1.3
@@ -6120,33 +6120,33 @@ snapshots:
       rrweb-snapshot: 2.0.0-alpha.18
     optional: true
 
-  '@sentry-internal/browser-utils@9.31.0':
+  '@sentry-internal/browser-utils@9.32.0':
     dependencies:
-      '@sentry/core': 9.31.0
+      '@sentry/core': 9.32.0
 
-  '@sentry-internal/feedback@9.31.0':
+  '@sentry-internal/feedback@9.32.0':
     dependencies:
-      '@sentry/core': 9.31.0
+      '@sentry/core': 9.32.0
 
-  '@sentry-internal/replay-canvas@9.31.0':
+  '@sentry-internal/replay-canvas@9.32.0':
     dependencies:
-      '@sentry-internal/replay': 9.31.0
-      '@sentry/core': 9.31.0
+      '@sentry-internal/replay': 9.32.0
+      '@sentry/core': 9.32.0
 
-  '@sentry-internal/replay@9.31.0':
+  '@sentry-internal/replay@9.32.0':
     dependencies:
-      '@sentry-internal/browser-utils': 9.31.0
-      '@sentry/core': 9.31.0
+      '@sentry-internal/browser-utils': 9.32.0
+      '@sentry/core': 9.32.0
 
   '@sentry/babel-plugin-component-annotate@3.5.0': {}
 
-  '@sentry/browser@9.31.0':
+  '@sentry/browser@9.32.0':
     dependencies:
-      '@sentry-internal/browser-utils': 9.31.0
-      '@sentry-internal/feedback': 9.31.0
-      '@sentry-internal/replay': 9.31.0
-      '@sentry-internal/replay-canvas': 9.31.0
-      '@sentry/core': 9.31.0
+      '@sentry-internal/browser-utils': 9.32.0
+      '@sentry-internal/feedback': 9.32.0
+      '@sentry-internal/replay': 9.32.0
+      '@sentry-internal/replay-canvas': 9.32.0
+      '@sentry/core': 9.32.0
 
   '@sentry/bundler-plugin-core@3.5.0(encoding@0.1.13)':
     dependencies:
@@ -6202,12 +6202,12 @@ snapshots:
       - encoding
       - supports-color
 
-  '@sentry/core@9.31.0': {}
+  '@sentry/core@9.32.0': {}
 
-  '@sentry/react@9.31.0(react@19.1.0)':
+  '@sentry/react@9.32.0(react@19.1.0)':
     dependencies:
-      '@sentry/browser': 9.31.0
-      '@sentry/core': 9.31.0
+      '@sentry/browser': 9.32.0
+      '@sentry/core': 9.32.0
       hoist-non-react-statics: 3.3.2
       react: 19.1.0
 
@@ -6354,7 +6354,7 @@ snapshots:
       '@types/react': 19.1.8
       '@types/react-dom': 19.1.6(@types/react@19.1.8)
 
-  '@trivago/prettier-plugin-sort-imports@5.2.2(@vue/compiler-sfc@3.5.12)(prettier@3.6.0)':
+  '@trivago/prettier-plugin-sort-imports@5.2.2(@vue/compiler-sfc@3.5.12)(prettier@3.6.1)':
     dependencies:
       '@babel/generator': 7.26.5
       '@babel/parser': 7.26.7
@@ -6362,7 +6362,7 @@ snapshots:
       '@babel/types': 7.26.7
       javascript-natural-sort: 0.7.1
       lodash: 4.17.21
-      prettier: 3.6.0
+      prettier: 3.6.1
     optionalDependencies:
       '@vue/compiler-sfc': 3.5.12
     transitivePeerDependencies:
@@ -8331,7 +8331,7 @@ snapshots:
 
   mlly@1.7.4:
     dependencies:
-      acorn: 8.14.0
+      acorn: 8.15.0
       pathe: 2.0.3
       pkg-types: 1.3.1
       ufo: 1.5.4
@@ -8588,15 +8588,15 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-tailwindcss@0.6.13(@trivago/prettier-plugin-sort-imports@5.2.2(@vue/compiler-sfc@3.5.12)(prettier@3.6.0))(prettier@3.6.0):
+  prettier-plugin-tailwindcss@0.6.13(@trivago/prettier-plugin-sort-imports@5.2.2(@vue/compiler-sfc@3.5.12)(prettier@3.6.1))(prettier@3.6.1):
     dependencies:
-      prettier: 3.6.0
+      prettier: 3.6.1
     optionalDependencies:
-      '@trivago/prettier-plugin-sort-imports': 5.2.2(@vue/compiler-sfc@3.5.12)(prettier@3.6.0)
+      '@trivago/prettier-plugin-sort-imports': 5.2.2(@vue/compiler-sfc@3.5.12)(prettier@3.6.1)
 
   prettier@2.8.8: {}
 
-  prettier@3.6.0: {}
+  prettier@3.6.1: {}
 
   pretty-format@27.5.1:
     dependencies:
