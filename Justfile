@@ -221,6 +221,7 @@ tooling_upgrade: _dev_only && _mise_upgrade _js_sync-engine-versions
 
 # upgrade everything: all packages on all languages, tooling, etc
 upgrade: _dev_only tooling_upgrade js_upgrade py_upgrade
+	playwright install
 	uv run python -m app.cli write-versions
 	git add .service-versions
 
