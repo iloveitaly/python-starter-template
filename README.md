@@ -519,6 +519,21 @@ Here are the devprod principles this project adheres to:
 * Ability to build production-identical containers locally for debugging
 * Container building and registry storage should be handled on CI. This reduces vendor lock in.
 
+### Procfile
+
+The good old Procfile is still used in this repo. I like Procfiles, they are a great way to define exactly what the main production
+entrypoints of an application are.
+
+They are used in two ways:
+
+1. [[Procfile]] defines the main production entrypoints of the application
+2. `just dev` generates a `Procfile.dev` which is used for local development. This file is not checked in to git. This enables a bunch of development services to be run and managed by a single command (foreman)
+
+Isn't there anything better than `foreman`? Unfortunately, no. Foreman hasn't been touched in a long time, but it's still the best:
+
+* hivemind does not ignore terminal clear control sequences. This means certain commands (like JavaScript build watchers) will randomly clear the terminal, which drives me nuts.
+* ultraman looks to have some obvious bugs. Could be worth checking into in the future again.
+
 ### Python Job Queue
 
 I tried both RQ and Celery, and looked at other job queue systems, before landing on Celery.

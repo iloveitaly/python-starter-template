@@ -72,9 +72,6 @@ dev: _dev_only local-alias dev_kill
 	openapi: just js_generate-openapi --watch
 	EOF
 
-	# foreman is abandonded, but it still works
-	# hivemind does not ignore terminal clear control sequences
-	# ultraman looks to have some obvious bugs
 	foreman start --root . --procfile=tmp/Procfile.dev
 
 # kill all processes bound to server ports
