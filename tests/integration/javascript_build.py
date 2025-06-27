@@ -123,7 +123,7 @@ $ just py_js-build
     log.info("Starting Javascript Build...")
 
     build_process = subprocess.Popen(
-        # NOTE this line is subjet to change, keep it sync with the Justfile
+        # NOTE this line is subject to change, keep it sync with the Justfile
         ["just", "py_js-build"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
