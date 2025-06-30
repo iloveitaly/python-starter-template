@@ -4,7 +4,7 @@ import { isDevelopment, requireEnv } from "~/utils/environment"
 import * as Sentry from "@sentry/react"
 import { getClient } from "./clerk"
 import { invariant } from "@epic-web/invariant"
-import { createClient } from "@hey-api/client-fetch"
+import { createClient } from "client/client"
 import { client } from "client/client.gen"
 
 // goal here is to avoid having any application code rely on this directly
