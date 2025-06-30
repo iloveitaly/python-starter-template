@@ -1,0 +1,136 @@
+{
+  "editor.renderControlCharacters": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+
+  // favor words that are close to the cursor when suggesting completions
+  "editor.suggest.localityBonus": true,
+
+  // gen imports by default, new feature
+  "editor.pasteAs.preferences": ["text.updateImports"],
+
+  // css
+  "tailwind-raw-reorder.tailwindConfigPath": "./web/tailwind.config.ts",
+
+  // typescript / web projects
+  // the workspace typescript version does *not* seem to be used by default, you need to configure this
+  "typescript.tsdk": "web/node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  // TODO is this picking the exact right typescript version from the repo?
+  "typescript.preferGoToSourceDefinition": true,
+  "typescript.preferences.preferTypeOnlyAutoImports": true,
+  "typescript.surveys.enabled": false,
+  "typescript.experimental.updateImportsOnPaste": true,
+
+  // TODO unsure if this really works: https://stackoverflow.com/questions/53113031/how-to-see-a-fully-expanded-typescript-type-without-n-more-and
+  "typescript.experimental.expandableHover": true,
+
+  "prettier.prettierPath": "web/node_modules/prettier",
+  "prettier.ignorePath": "web/.prettierignore",
+
+  "[typescript][typescriptreact][javascript][javascriptreact]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnPaste": false
+  },
+
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "editor.tabSize": 4
+  },
+  // don't remove unused imports on save, this can be done later by a linting script
+  "ruff.lint.ignore": ["F401"],
+
+  "[toml]": {
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4
+  },
+  "python.analysis.autoFormatStrings": true,
+
+  // for import autosuggest
+  "python.analysis.indexing": true,
+  "python.analysis.autoImportCompletions": true,
+
+  // TODO I had issues with develop = True imports, but it was fixed :/
+  // "python.analysis.extraPaths": [
+  //   "~/Projects/python"
+  // ],
+
+  // new feature, should be the default in the future
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.packageIndexDepths": [
+    {
+      "name": "",
+      "depth": 5,
+      "includeAllSymbols": true
+    }
+    // TODO packages are not being indexed, can't find fastapi symbols in the symbol search but can in the import analysis...
+    // {
+    //   "name": "fastapi",
+    //   "depth": 3,
+    //   "includeAllSymbols": true
+    // }
+
+    //   {"name":"pdf2image", "depth":3, "includeAllSymbols": true},
+    // {"name":"decouple", "depth":3, "includeAllSymbols": true},
+    // { "name": "pydantic", "depth": 3, "includeAllSymbols": true },
+    // { "name": "sqlmodel", "depth": 3, "includeAllSymbols": true }
+  ],
+
+  // in web, prettier is used by default, but we want it to be used outside that directly
+  "[json][jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+
+  "files.associations": {
+    // Procfile's don't have a default file association, but are essentially yaml files
+    "Procfile*": "yaml",
+    ".tool-versions": "shellscript",
+    ".env*": "shellscript",
+    "TODO*": "markdown",
+    "app/templates/**/*.md": "jinja-md",
+    "app/templates/**/*.html": "jinja-html"
+  },
+
+  "files.exclude": {
+    "web/node_modules": true,
+    ".ruff_cache": true,
+    ".pytest_cache": true,
+    ".venv": true,
+    "!pypi/**/*.py": false,
+    // TODO I don't think this works
+    "*env*": false
+  },
+  "search.exclude": {
+    "pypi/**/*.py": false
+  },
+
+  "[justfile]": {
+    "editor.insertSpaces": false,
+    //   "editor.detectIndentation": false,
+    "editor.tabSize": 2,
+    "editor.trimAutoWhitespace": true,
+    // "editor.defaultFormatter": "nefrob.vscode-just-syntax",
+    "editor.formatOnSave": true
+  },
+
+  // copilot config https://code.visualstudio.com/docs/copilot/copilot-customization
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      // TODO unclear if this is necessary?
+      "file": "./.github/copilot-instructions.md"
+    }
+  ],
+
+  // I like bare URLs sometimes
+  "markdownlint.config": {
+    "MD034": false
+  }
+}
