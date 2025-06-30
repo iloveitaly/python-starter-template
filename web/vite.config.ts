@@ -1,56 +1,32 @@
 import { reactRouterDevTools } from "react-router-devtools"
 import { defineConfig } from "vite"
-import { loadEnv } from "vite"
+import { checkEnv } from "vite-plugin-check-env"
 import viteCompression from "vite-plugin-compression"
 import devtoolsJson from "vite-plugin-devtools-json"
 import Terminal from "vite-plugin-terminal"
 import tsconfigPaths from "vite-tsconfig-paths"
 
+import { invariant } from "@epic-web/invariant"
 import { reactRouter } from "@react-router/dev/vite"
 import { sentryVitePlugin } from "@sentry/vite-plugin"
 import tailwindcss from "@tailwindcss/vite"
 
+const JAVASCRIPT_SERVER_PORT = process.env.JAVASCRIPT_SERVER_PORT
+
+invariant(
+  JAVASCRIPT_SERVER_PORT,
+  "Missing JAVASCRIPT_SERVER_PORT environment variable. Include to run build.",
+)
+
 // TODO extract out to another file
 // ensure that the env variables are loaded if they are used!
-function requireEnvCheckerPlugin(mode: string) {
-  const env = loadEnv(mode, process.cwd())
-
-  return {
-    name: "vite-plugin-require-env-checker",
-    enforce: "pre",
-    transform(code: string, id: string) {
-      // Only check JS/TS files
-      if (!/\.(js|ts|jsx|tsx)$/.test(id)) return
-
-      // TODO make the method name that is checked for configurable
-      const requireEnvRegex = /requireEnv\(["'`](.*?)["'`]\)/g
-      let match
-      const missingVars = new Set()
-
-      while ((match = requireEnvRegex.exec(code)) !== null) {
-        const envKey = match[1]
-        if (!env[envKey]) {
-          missingVars.add(envKey)
-        }
-      }
-
-      if (missingVars.size > 0) {
-        const missingVarsList = Array.from(missingVars).join(", ")
-        throw new Error(
-          `Missing environment variables for requireEnv: ${missingVarsList}`,
-        )
-      }
-    },
-  }
-}
-
 function getModePlugins(mode: string) {
   if (mode === "production") {
     const authToken = process.env.SENTRY_AUTH_TOKEN
-
     const VITE_BUILD_COMMIT = process.env.VITE_BUILD_COMMIT
 
     // fine for sentry to have auth under a CI build being used for integration testing
+
     if (!authToken) {
       const CI = process.env.CI
 
@@ -95,7 +71,7 @@ function getModePlugins(mode: string) {
         }),
       // only check env vars when building for production
       // some ENV is only available in prod
-      requireEnvCheckerPlugin(mode),
+      checkEnv(),
       viteCompression(),
     ]
   }
@@ -119,7 +95,7 @@ export default defineConfig(({ mode }) => ({
     // if the port is in use, fail loudly
     strictPort: true,
     // random ports to avoid conflict with other projects
-    port: parseInt(process.env.JAVASCRIPT_SERVER_PORT),
+    port: parseInt(JAVASCRIPT_SERVER_PORT),
 
     // TODO https://github.com/DarthSim/hivemind/issues/40
   },
