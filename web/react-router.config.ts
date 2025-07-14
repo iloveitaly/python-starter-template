@@ -5,4 +5,8 @@ import type { Config } from "@react-router/dev/config"
 export default {
   ssr: false,
   buildDirectory: "build/" + process.env.NODE_ENV,
+  // TODO list routes out you want to prerender here for SEO + caching purposes
+  // async prerender() {
+  //   return ["/"]
+  // },
 } satisfies Config
