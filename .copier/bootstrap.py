@@ -35,17 +35,9 @@ def replace_lines_in_files(replacements: dict[str, list[tuple[str, str]]]):
         path = Path(filepath)
         content = path.read_text()
 
-        def full_line_match(existing_regex):
-            if not pattern.startswith("^"):
-                existing_regex = f"^.*{existing_regex}"
-            if not pattern.endswith("$"):
-                existing_regex += ".*"
-
-            return existing_regex
-
         for pattern, replacement in patterns:
             content = re.sub(
-                full_line_match(pattern),
+                pattern,
                 replacement,
                 content,
                 flags=re.MULTILINE,
@@ -56,24 +48,24 @@ def replace_lines_in_files(replacements: dict[str, list[tuple[str, str]]]):
 
 replacements = {
     "pyproject.toml": [
-        (r"^name = \"", f'name = "{copier_answers["project_slug"]}"'),
-        (r'python-starter-template = "app.cli:app"', f'{copier_answers["project_slug"]} = "app.cli:app"')
+        (r'^name = ".*$', f'name = "{copier_answers["project_slug"]}"'),
+        (r'^python-starter-template = "app.cli:app".*$', f'{copier_answers["project_slug"]} = "app.cli:app"')
     ],
     ".env.shared": [
         (
-            r"export EMAIL_FROM_ADDRESS=",
+            r"^export EMAIL_FROM_ADDRESS=.*$",
             f"export EMAIL_FROM_ADDRESS={copier_answers['from_email']}",
         ),
         (
-            r"export OP_ACCOUNT=",
+            r"^export OP_ACCOUNT=.*$",
             f"export OP_ACCOUNT={copier_answers['one_password_account']}",
         ),
         (
-            r"export OP_VAULT_UID=",
+            r"^export OP_VAULT_UID=.*$",
             f"export OP_VAULT_UID={copier_answers['one_password_vault']}",
         ),
         (
-            r"SESSION_SECRET_KEY=",
+            r"^SESSION_SECRET_KEY=.*$",
             f"SESSION_SECRET_KEY={uuid.uuid4()}"
         ),
         (
@@ -82,11 +74,11 @@ replacements = {
         )
     ],
     "Justfile": [
-        (r"^PROJECT_NAME :=", f'PROJECT_NAME := "{copier_answers["project_slug"]}"'),
+        (r"^PROJECT_NAME :=.*$", f'PROJECT_NAME := "{copier_answers["project_slug"]}"'),
     ],
     "just/build.just": [
         (
-            r"^PYTHON_PRODUCTION_IMAGE_NAME :=",
+            r"^PYTHON_PRODUCTION_IMAGE_NAME :=.*$",
             f'PYTHON_PRODUCTION_IMAGE_NAME := "{copier_answers["production_image_name"]}"',
         ),
     ],
