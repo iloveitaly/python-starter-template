@@ -1,4 +1,5 @@
 import pluginReact from "eslint-plugin-react"
+import reactCompiler from "eslint-plugin-react-compiler"
 import reactHooks from "eslint-plugin-react-hooks"
 import globals from "globals"
 import tseslint from "typescript-eslint"
@@ -24,7 +25,13 @@ export default tseslint.config(
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   // important change from the default
-  pluginReact.configs.flat["jsx-runtime"],
+  {
+    // for React 17+, should be default in the future
+    ...pluginReact.configs.flat["jsx-runtime"],
+    // TODO will be default in the future, must define for now
+    settings: { react: { version: "detect" } },
+  },
+  reactCompiler.configs.recommended,
   reactHooks.configs["recommended-latest"],
   // https://typescript-eslint.io/rules/no-unused-vars/
   {
