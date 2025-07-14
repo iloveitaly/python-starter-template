@@ -1,5 +1,7 @@
 import { type MetaFunction } from "react-router"
 
+import { SiReact } from "@icons-pack/react-simple-icons"
+
 import type { Route } from "./+types/home"
 
 import { AppSidebar } from "~/components/app-sidebar"
@@ -68,9 +70,12 @@ export default function Page({ loaderData }: Route.ComponentProps) {
           </Breadcrumb>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
-          <a href="/form" className="text-blue-600 underline">
-            Go to Form Page
-          </a>
+          <div className="flex items-center gap-2">
+            <SiReact className="h-5 w-5 text-blue-500" />
+            <a href="/form" className="text-blue-600 underline">
+              Go to Form Page
+            </a>
+          </div>
           {loaderData && loaderData.message}
           {Array.from({ length: 24 }).map((_, index) => (
             <div
