@@ -1,5 +1,12 @@
+/**
+ * https://github.com/remix-run/react-router/blob/755f285748881571c27d5a553e90cf46861dbd45/packages/react-router-dev/vite/plugin.ts#L283
+ * https://docs.docker.com/engine/storage/containerd/
+ *
+ * Remember, you cannot use transformIndexHtml in a RR vite plugin:
+ * https://github.com/remix-run/react-router/issues/12352
+ */
 import fs from "fs"
-import { Plugin, ResolvedConfig } from "vite"
+import { Plugin } from "vite"
 
 import path from "path"
 
@@ -86,7 +93,7 @@ export default function vitePluginExposeGlobals(
               })
             }
           } else if (exp.globalName) {
-            code += `${globalObject}.${exp.globalName} = mod.default || mod;\n`
+            code += `${globalObject}.${exp.globalName} = 'default' in mod ? mod.default : mod;\n`
           }
 
           code += `}).catch(err => console.error('Failed to expose ${exp.from}:', err));\n`
