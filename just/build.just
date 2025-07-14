@@ -26,11 +26,11 @@ PYTHON_RAILPACK_PREPARE_CMD := "railpack prepare ." + \
 	" --plan-out railpack.json" + \
 	" --info-out railpack-info.json" + \
 	" --env PYTHON_ENV=production" + \
+	" " + RAILPACK_BUILD_METADATA + \
 	" $(just direnv_export_docker '" + SHARED_ENV_FILE +"' --params)"
 
 PYTHON_RAILPACK_BUILD_CMD := "docker buildx build ." + \
 	" --build-arg BUILDKIT_SYNTAX=" + FRONTEND_IMAGE + \
-	" " + RAILPACK_BUILD_METADATA + \
 	" -f railpack.json" + \
 	" -t " + PYTHON_IMAGE_TAG + \
 	" --platform linux/amd64" + \
@@ -50,12 +50,12 @@ JAVASCRIPT_RAILPACK_PREPARE_CMD := "railpack prepare " + WEB_DIR + \
 	" --plan-out " + WEB_DIR + "/railpack.json" + \
 	" --info-out " + WEB_DIR + "/railpack-info.json" + \
 	" --env VITE_BUILD_COMMIT=" + GIT_SHA + \
+	" " + RAILPACK_BUILD_METADATA + \
 	" $(just direnv_export_docker '" + JAVASCRIPT_SECRETS_FILE + "' --params) " + \
 	" $(just direnv_export_docker '" + SHARED_ENV_FILE + "' --params)"
 
 JAVASCRIPT_RAILPACK_BUILD_CMD := "docker buildx build " + WEB_DIR + \
 	" --build-arg BUILDKIT_SYNTAX=" + FRONTEND_IMAGE + \
-	" " + RAILPACK_BUILD_METADATA + \
 	" -f " + WEB_DIR + "/railpack.json" + \
 	" -t " + JAVASCRIPT_IMAGE_TAG + \
 	" --platform linux/amd64" + \
