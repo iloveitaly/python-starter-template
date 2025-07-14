@@ -26,17 +26,18 @@ BUILD_PLATFORM := "linux/arm64/v8"
 
 # NOTE production secrets are *not* included in the image, they are set on deploy
 PYTHON_RAILPACK_PREPARE_CMD := "railpack prepare ." + \
+	" --verbose" + \
 	" --plan-out railpack.json" + \
 	" --info-out railpack-info.json" + \
 	" --env PYTHON_ENV=production" + \
+	" " + RAILPACK_BUILD_METADATA + \
 	" $(just direnv_export_docker '" + SHARED_ENV_FILE +"' --params)"
 
 PYTHON_RAILPACK_BUILD_CMD := "docker buildx build ." + \
 	" --build-arg BUILDKIT_SYNTAX=" + FRONTEND_IMAGE + \
-	" " + RAILPACK_BUILD_METADATA + \
 	" -f railpack.json" + \
 	" -t " + PYTHON_IMAGE_TAG + \
-	" --platform linux/amd64" + \
+	" --platform " + BUILD_PLATFORM + \
 	" --cache-to type=inline" + \
 	" --cache-from " + PYTHON_PRODUCTION_IMAGE_NAME + ":latest" + \
 	" --label org.opencontainers.image.revision='" + GIT_SHA + "'" + \
@@ -50,18 +51,19 @@ PYTHON_RAILPACK_BUILD_CMD := "docker buildx build ." + \
 # Also, we can't just mount /app/build/server with -v since the build process removes the entire /app/build directory.
 # Some ENV var are set for us, like NODE_ENV: https://railpack.com/docs/providers/node#environment-variables
 JAVASCRIPT_RAILPACK_PREPARE_CMD := "railpack prepare " + WEB_DIR + \
+	" --verbose" + \
 	" --plan-out " + WEB_DIR + "/railpack.json" + \
 	" --info-out " + WEB_DIR + "/railpack-info.json" + \
 	" --env VITE_BUILD_COMMIT=" + GIT_SHA + \
+	" " + RAILPACK_BUILD_METADATA + \
 	" $(just direnv_export_docker '" + JAVASCRIPT_SECRETS_FILE + "' --params) " + \
 	" $(just direnv_export_docker '" + SHARED_ENV_FILE + "' --params)"
 
 JAVASCRIPT_RAILPACK_BUILD_CMD := "docker buildx build " + WEB_DIR + \
 	" --build-arg BUILDKIT_SYNTAX=" + FRONTEND_IMAGE + \
-	" " + RAILPACK_BUILD_METADATA + \
 	" -f " + WEB_DIR + "/railpack.json" + \
 	" -t " + JAVASCRIPT_IMAGE_TAG + \
-	" --platform linux/amd64" + \
+	" --platform " + BUILD_PLATFORM + \
 	" --cache-to type=inline" + \
 	" --cache-from " + JAVASCRIPT_PRODUCTION_IMAGE_NAME + ":latest" + \
 	" --label org.opencontainers.image.description=\"Used for building javascript assets, not for deployment\""
@@ -134,7 +136,15 @@ build_javascript_debug: build_javascript_dump
 	# note that you *may* run into trouble using the interactive injected shell if you are using an old builder version
 	# Force the latest builder: `docker buildx use orbstack`
 
-	BUILDX_EXPERIMENTAL=1 docker buildx debug --invoke /bin/sh build -f {{WEB_DIR}}/railpack.json {{WEB_DIR}}
+	# BUILDX_EXPERIMENTAL=1 docker buildx debug --invoke /bin/sh build -f {{WEB_DIR}}/railpack.json {{WEB_DIR}}
+	BUILDX_EXPERIMENTAL=1 docker buildx debug \
+		--debug \
+		--invoke /bin/bash \
+		--progress plain \
+		build -f {{WEB_DIR}}/railpack.json --build-arg BUILDKIT_SYNTAX={{FRONTEND_IMAGE}} {{WEB_DIR}}
+
+	BUILDX_EXPERIMENTAL=1 docker buildx build --debug --progress plain -f web/railpack.json --build-arg BUILDKIT_SYNTAX=ghcr.io/railwayapp/railpack-frontend:latest web
+
 
 # support non-macos installations for github actions
 _build_requirements:
