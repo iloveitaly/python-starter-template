@@ -1,7 +1,5 @@
 import { type MetaFunction } from "react-router"
 
-import { SiReact } from "@icons-pack/react-simple-icons"
-
 import type { Route } from "./+types/home"
 
 import { AppSidebar } from "~/components/app-sidebar"
@@ -20,6 +18,8 @@ import {
   SidebarTrigger,
 } from "~/components/ui/sidebar"
 import { applicationData } from "~/configuration/client"
+
+import { SiReact } from "@icons-pack/react-simple-icons"
 
 export const meta: MetaFunction = () => {
   return [
