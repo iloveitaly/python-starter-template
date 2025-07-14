@@ -35,8 +35,8 @@ project_slug:
   help: Dash separated project slug
   default: "{{ \"basename $(pwd)\" | shell() | trim | regex_replace(' ', '-') | regex_replace('_', '-') }}"
   validator: >-
-    {% if not (project_name | regex_search('^[a-z][a-z0-9-_]+$')) %}
-    project_name must start with a letter, followed one or more letters, digits or dashes all lowercase.
+    {% if not (project_slug | regex_search('^[a-z][a-z0-9-_]+$')) %}
+    project_slug must start with a letter, followed one or more letters, digits or dashes all lowercase.
     {% endif %}
 
 # https://github.com/superlinear-ai/substrate/blob/main/copier.yml
