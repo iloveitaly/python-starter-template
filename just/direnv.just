@@ -54,7 +54,7 @@ with_entries(
 	# 		 instead of the escaped version, which is most likely fine.
 
 	if {{ if flag == "--params" { "true" } else { "false" } }}; then; \
-		just direnv_export "{{target}}" | jq -r 'to_entries | map("-e \(.key)=\(.value)") | join(" ")'; \
+		just direnv_export "{{target}}" | jq -r 'to_entries | map("--env \(.key)=\(.value)") | join(" ")'; \
 	elif {{ if flag == "--shell" { "true" } else { "false" } }}; then; \
 		just direnv_export "{{target}}" | jq -r 'to_entries[] | "export \(.key)=\(.value | @sh)"'; \
 	else; \
