@@ -14,9 +14,9 @@ GIT_SHA := `git rev-parse HEAD` + GIT_DIRTY
 GIT_DESCRIPTION := `git log -1 --format=%s | sed 's/"/\\"/g'`
 BUILD_CREATED_AT := `date -u +%FT%TZ`
 NIXPACKS_BUILD_METADATA := (
-	'-e BUILD_COMMIT="' + GIT_SHA + '" ' +
-	'-e BUILD_DESCRIPTION="' + GIT_DESCRIPTION + '" ' +
-	'-e BUILD_CREATED_AT="' + BUILD_CREATED_AT + '" '
+	'--env BUILD_COMMIT="' + GIT_SHA + '" ' +
+	'--env BUILD_DESCRIPTION="' + GIT_DESCRIPTION + '" ' +
+	'--env BUILD_CREATED_AT="' + BUILD_CREATED_AT + '" '
 )
 
 # architecture images will be running on
@@ -40,12 +40,11 @@ PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
 # for this reason, we need to emulate the production environment, then build the assets statically.
 # Also, we can't just mount /app/build/server with -v since the build process removes the entire /app/build directory.
 # Some ENV var are set for us, like NODE_ENV: https://nixpacks.com/docs/providers/node#environment-variables
-JAVASCRIPT_NIXPACKS_BUILD_CMD := "nixpacks build " + WEB_DIR + " " + \
+JAVASCRIPT_NIXPACKS_BUILD_CMD := "railpack build " + WEB_DIR + " " + \
 	" --name " + JAVASCRIPT_IMAGE_TAG + " " + \
 	" " + NIXPACKS_BUILD_METADATA + \
 	" --platform=" + BUILD_PLATFORM + \
 	" --env VITE_BUILD_COMMIT=" + GIT_SHA + " " + \
-	" --cache-from " + JAVASCRIPT_PRODUCTION_IMAGE_NAME + ":latest --inline-cache" + \
 	" $(just direnv_export_docker '" + JAVASCRIPT_SECRETS_FILE + "' --params) " + \
 	" $(just direnv_export_docker '" + SHARED_ENV_FILE + "' --params) " + \
 	" --label org.opencontainers.image.description=\"Used for building javascript assets, not for deployment\""
