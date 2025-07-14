@@ -1,8 +1,9 @@
 ---
 description:
-globs: *.py
+globs: **/*.py
 alwaysApply: false
 ---
+## Python
 
 When writing Python:
 
@@ -12,17 +13,28 @@ When writing Python:
 * Use Pydantic models over dataclass or a typed dict.
 * Use SQLAlchemy for generating any SQL queries.
 * Use `click` for command line argument parsing.
-* Use `log.info("the message", the_variable=the_variable)` instead of `log.info("the message: %s", the_variable)` or `print` for logging. This object can be found at `from app import log`.
-* Log messages should be lowercase with no leading or trailing whitespace.
-* No variable interpolation in log messages.
-* When a particular need can be met with a mature, reasonably adopted and maintained package, I would prefer to use that package rather than engineering my own solution.
+* Use `log.info("the message", the_variable=the_variable)` instead of `log.info("The message: %s", the_variable)` or `print` for logging. This object can be found at `from app import log`.
+  * Log messages should be lowercase with no leading or trailing whitespace.
+  * No variable interpolation in log messages.
+  * Do not coerce database IDs or dates to strings
+* Do not worry about import ordering or other formatting issues.
 
-### SQLModel & SQLAlchemy
+### Date & DateTime
+
+* Use the `whenever` library for datetime + time instead of the stdlib date library. `Instant.now().format_common_iso()`
+
+### Database & ORM
+
+When accessing database records:
+
+* SQLModel (wrapping SQLAlchemy) is used
+* Do not manage database sessions, these are managed by a custom tool
+  * Use `TheModel(...).save()` to persist a record
+  * Use `TheModel.where(...).order_by(...)` to query records. `.where()` returns a SQLAlchemy select object that you can further customize the query.
 
 When writing database models:
 
-* Don't use `Field(...)` unless required. For instance, use `= None` instead of `= Field(default=None)`.
+* Don't use `Field(...)` unless required (i.e. when specifying a JSON type for a `dict` or pydantic model using `Field(sa_type=JSONB)`). For instance, use `= None` instead of `= Field(default=None)`.
 * Add enum classes close to where they are used, unless they are used across multiple classes (then put them at the top of the file)
 * Use single double-quote docstrings (a string below the field definition) instead of comments to describe a field's purpose.
 * Use `ModelName.foreign_key()` when generating a foreign key field
-
