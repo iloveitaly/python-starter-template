@@ -59,7 +59,7 @@ with_entries(
 	# dokku wants all environment variables on a single line, which is why we join them with a space
 
 	if {{ if flag == "--params" { "true" } else { "false" } }}; then; \
-		just direnv_export "{{target}}" | jq -r 'to_entries | map("-e \(.key)=\(.value)") | join(" ")'; \
+		just direnv_export "{{target}}" | jq -r 'to_entries | map("--env \(.key)=\(.value)") | join(" ")'; \
 	elif {{ if flag == "--shell" { "true" } else { "false" } }}; then; \
 		just direnv_export "{{target}}" | jq -r 'to_entries[] | "export \(.key)=\(.value | @sh)"'; \
 	elif {{ if flag == "--dokku" { "true" } else { "false" } }}; then; \
