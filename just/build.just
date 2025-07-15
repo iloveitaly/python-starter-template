@@ -19,12 +19,15 @@ NIXPACKS_BUILD_METADATA := (
 	'-e BUILD_CREATED_AT="' + BUILD_CREATED_AT + '" '
 )
 
+# architecture images will be running on
+BUILD_PLATFORM := "linux/arm64/v8"
+
 # NOTE production secrets are *not* included in the image, they are set on deploy
 PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
 	" --name " + PYTHON_IMAGE_TAG + \
 	" " + NIXPACKS_BUILD_METADATA + \
 	" --env PYTHON_ENV=production" + \
-	" --platform=linux/amd64" + \
+	" --platform=" + BUILD_PLATFORM + \
 	" $(just direnv_export_docker '" + SHARED_ENV_FILE +"' --params)" + \
 	" --inline-cache --cache-from " + PYTHON_PRODUCTION_IMAGE_NAME + ":latest" + \
 	" --label org.opencontainers.image.revision='" + GIT_SHA + "'" + \
@@ -40,7 +43,7 @@ PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
 JAVASCRIPT_NIXPACKS_BUILD_CMD := "nixpacks build " + WEB_DIR + " " + \
 	" --name " + JAVASCRIPT_IMAGE_TAG + " " + \
 	" " + NIXPACKS_BUILD_METADATA + \
-	" --platform=linux/amd64 " + \
+	" --platform=" + BUILD_PLATFORM + \
 	" --env VITE_BUILD_COMMIT=" + GIT_SHA + " " + \
 	" --cache-from " + JAVASCRIPT_PRODUCTION_IMAGE_NAME + ":latest --inline-cache" + \
 	" $(just direnv_export_docker '" + JAVASCRIPT_SECRETS_FILE + "' --params) " + \
@@ -107,7 +110,16 @@ build_javascript: _production_build_assertions
 
 # dump nixpacks-generated Dockerfile for manual build and production debugging
 build_javascript_dump:
-	{{JAVASCRIPT_NIXPACKS_BUILD_CMD}} --out web
+	{{JAVASCRIPT_NIXPACKS_BUILD_CMD}} --out {{WEB_DIR}}
+
+# inject a shell where the javascript build fails, helpful for debugging nixpacks build failures
+build_javascript_debug: build_javascript_dump
+	# note that you *may* run into trouble using the interactive injected shell if you are using an old builder version
+	# Force the latest builder: `docker buildx use orbstack`
+
+	# store the modified build command in a variable rather than editing the file
+	BUILD_DEBUG_CMD=$(sed 's/docker build/BUILDX_EXPERIMENTAL=1 docker buildx debug --invoke bash build/' {{WEB_DIR}}/.nixpacks/build.sh) && \
+		eval "$BUILD_DEBUG_CMD"
 
 # support non-macos installations for github actions
 _build_requirements:
@@ -160,7 +172,7 @@ build_dump:
 build_clean:
 	rm -rf .nixpacks web/.nixpacks || true
 
-# inject a shell where the build fails
+# inject a shell where the build fails, helpful for debugging nixpacks build failures
 build_debug: build_dump
 	# note that you *may* run into trouble using the interactive injected shell if you are using an old builder version
 	# Force the latest builder: `docker buildx use orbstack`

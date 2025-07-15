@@ -46,17 +46,20 @@ with_entries(
 		CI=true direnv export json | jq -r '{{jq_script}}'
 
 # export env variables for a particular file in a format docker can consume
-[doc("Export as docker '-e' params: --params\nExport as shell: --shell")]
+[doc("Export as docker '-e' params: --params\nExport as shell: --shell\nExport as dokku: --dokku")]
 @direnv_export_docker target *flag:
 	# NOTE @sh below does NOT handle newlines, tabs, etc in ANSI-C format like direnv does
 	#      https://github.com/iloveitaly/direnv/blob/1a39d968c165fddff3b9a4c5538025d71f73ee43/internal/cmd/shell_bash.go#L97
 	#      this could cause issues for us, although it seems as though @sh just includes the literal newline or tab char
 	# 		 instead of the escaped version, which is most likely fine.
+	# dokku wants all environment variables on a single line, which is why we join them with a space
 
 	if {{ if flag == "--params" { "true" } else { "false" } }}; then; \
 		just direnv_export "{{target}}" | jq -r 'to_entries | map("-e \(.key)=\(.value)") | join(" ")'; \
 	elif {{ if flag == "--shell" { "true" } else { "false" } }}; then; \
 		just direnv_export "{{target}}" | jq -r 'to_entries[] | "export \(.key)=\(.value | @sh)"'; \
+	elif {{ if flag == "--dokku" { "true" } else { "false" } }}; then; \
+		just direnv_export "{{target}}" | jq -r '[to_entries[] | "\(.key)=\(.value | @base64)"] | join(" ")'; \
 	else; \
 		just direnv_export "{{target}}" | jq -r 'to_entries[] | "\(.key)=\(.value)"'; \
 	fi
