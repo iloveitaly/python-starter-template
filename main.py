@@ -10,6 +10,7 @@ Some notes:
   https://github.com/fastapi/fastapi-cli/blob/9a4741816dc288bbd931e693166117d98ee14dea/src/fastapi_cli/cli.py#L162-L171
 - Customizing which files are watched for autoreload is challenging (no excludes). https://github.com/fastapi/fastapi/discussions/2863
 - The integration tests also run a server. If we make major updates here, we need to manually adjust that command.
+- Some deployments set a PORT variable, some only set it on the Procfile (dokku when using a non-web process type).
 """
 
 import os

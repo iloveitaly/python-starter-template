@@ -13,7 +13,7 @@ config = context.config
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
-if config.config_file_name is not None:
+if config.get_main_option("skip_logging_config") != "true" and config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 import alembic_postgresql_enum

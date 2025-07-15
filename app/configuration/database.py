@@ -18,12 +18,17 @@ def database_url():
     else:
         url = config("DATABASE_URL", cast=str)
 
+    # some environments (dokku) specify the DATABASE_URL as postgres://
+    url = url.replace("postgres://", "postgresql://")
+
     assert url.startswith("postgresql")
 
     # sqlalchemy does *not* allow to specify the dialect of the DB outside of the url protocol
     # https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls
     # without this, psycopg2 would be used, which is not intended!
-    return url.replace("postgresql://", "postgresql+psycopg://")
+    url = url.replace("postgresql://", "postgresql+psycopg://")
+
+    return url
 
 
 def configure_database():
@@ -74,4 +79,5 @@ def run_migrations():
     log.info("running alembic migrations")
 
     alembic_cfg = Config(get_root_path() / "alembic.ini")
+    alembic_cfg.set_main_option("skip_logging_config", "true")
     command.upgrade(alembic_cfg, "head")
