@@ -75,15 +75,21 @@ There are a couple of dependencies which are not managed by the project:
 
 (you **could** use a different setup (bash, vim, etc), but this is not the golden path for this project.)
 
-[Copier](https://copier.readthedocs.io/en/stable/) is the easiest way to get started. It allows you to clone this project, automatically customize the important pieces of it, and most importantly *stay up to date* by pulling upstream changes:
+[Copier](https://copier.readthedocs.io/en/stable/) is the easiest way to get started. It allows you to clone this project, automatically customize the important pieces of it, and most importantly *stay up to date* by pulling upstream changes.
+
+Create a new folder with your package name (this makes it easier to infer the package name from the folder name via copier scripts):
 
 ```shell
 mkdir your-project
+cd your-project
+```
 
+Then run the copier script to set up the package:
+
+```shell
 # shell extensions help copier infer github username, etc. Not required if you want to do that yourself.
-uv tool run --with jinja2_shell_extension \
-  copier copy https://github.com/iloveitaly/python-starter-template . \
-  --trust
+uv tool run --with jinja2_shell_extension copier@latest copy \
+  --trust --vcs-ref=HEAD https://github.com/iloveitaly/python-package-template .
 ```
 
 The neat thing about copier is [you can pull updates](.copier/update.sh) from this template later on:
@@ -170,8 +176,8 @@ Here's the logic behind frontend code organization:
 
 * `lib/` not specific to the project at all. In another life, this code could be a separate library.
 * `utils/` project-specific code, but not specific to a particular page
-* `hooks/` react hooks
 * `helpers/` page-specific code that is not a component, hook, etc
+* `hooks/` react hooks
 
 ## Python Test Code Organization
 
@@ -448,6 +454,11 @@ Other notes:
 * The model names must match the deployment names. You have to manage this yourself. [Checkout this terraform example.](./infra/azure/openai.tf)
 * [Here's a list of API versions](https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#rest-api-versioning)
 
+### Python Commands
+
+This project uses the "commands" pattern. This goes my many names (interactor, etc). All files within `app/commands/` are
+programmatically enforced to have a `perform` method that can take any number (or no!) arguments.
+
 ### Production Console
 
 You need a REPL to operate a production application. There's a nice one bundled with the application:
@@ -504,7 +515,10 @@ in order to generate a connection token:
 OP_ACCOUNT=company.1password.com OP_VAULT_UID=a_uuid just secrets_local-service-token
 ```
 
-And drop the resulting token in your `.env.local` file.
+And drop the resulting token in your `.env.local` file. This credential will expire every 90 days.
+
+One thing to be careful of dependent environment variables. If
+you have a variable that depends on another variable pulled from 1Password, you'll want to set an empty default value.
 
 ### DevProd
 
