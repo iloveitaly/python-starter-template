@@ -67,6 +67,10 @@ celery_app = Celery(
     task_cls=BaseTaskWithRetry,
 )
 
+# ensures all job classes are available to celery and avoids circular imports
+# that would be caused by adding them as a top-level import
+celery_app.autodiscover_tasks(["app.jobs"])
+
 # endpoint for running a TCP healthcheck on the container
 celery_healthcheck.register(celery_app)
 
@@ -109,13 +113,6 @@ def receiver_setup_logging(
 ):  # pragma: no cover
     # this ensures celery does not override our application's logging configuration
     pass
-
-
-@signals.worker_init.connect
-def worker_init_import_jobs(sender, **kwargs):
-    import app.jobs  # noqa: F401
-    # ensures all job classes are available to celery and avoids circular imports
-    # that would be caused by adding them as a top-level import
 
 
 @signals.worker_process_init.connect
