@@ -31,11 +31,12 @@ node_modules
 
 Justfile
 /just
-Procfile
 /TODO*
 /README.md
 /playground*
 /tests
+
+# NOTE /Procfile is intentionally not ignored, it can be used by some deployments (dokku)
 
 docker-compose*.yml
 lefthook.yml
