@@ -202,7 +202,7 @@ build_run-as-production procname="api" image_name=PYTHON_IMAGE_TAG:
 	docker run -p ${JAVASCRIPT_SERVER_PORT}:80 \
 		--memory=1g --cpus=2 \
 		$(just direnv_export_docker ".env.production.backend" --params) \
-		--platform linux/amd64 \
+		--platform {{BUILD_PLATFORM}} \
 		"{{image_name}}" \
 		"$(just _extract_proc "{{procname}}")"
 
