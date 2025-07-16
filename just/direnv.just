@@ -32,7 +32,10 @@ with_entries(
 	# OP_SERVICE_ACCOUNT_TOKEN is also included since on CI this is effectively global state that enables 1p access.
 	# When run on your local machine, 1p global state may be persisted elsewhere, so this would be a noop.
 	env -i HOME="$HOME" PATH="$PATH" OP_SERVICE_ACCOUNT_TOKEN="${OP_SERVICE_ACCOUNT_TOKEN:-}" op daemon -d
-	env -i HOME="$HOME" PATH="$PATH" OP_SERVICE_ACCOUNT_TOKEN="${OP_SERVICE_ACCOUNT_TOKEN:-}" \
+	# OP_* variables are passed through to avoid having to hardcode the account token or vault uid
+	# depending on your secret setup, you may want to use a different approach
+	env -i HOME="$HOME" PATH="$PATH" \
+		OP_SERVICE_ACCOUNT_TOKEN="${OP_SERVICE_ACCOUNT_TOKEN:-}" OP_VAULT_UID="${OP_VAULT_UID:-}" \
 		RENDER_DIRENV="{{target}}" \
 		direnv export json | jq -r '{{jq_script}}'
 
@@ -42,7 +45,8 @@ with_entries(
 
 # JSON dump of the test environment secrets, used for local pytest runs (direnv.py for more details)
 @direnv_export_ci:
-	env -i HOME="$HOME" PATH="$PATH" OP_SERVICE_ACCOUNT_TOKEN="${OP_SERVICE_ACCOUNT_TOKEN:-}" \
+	env -i HOME="$HOME" PATH="$PATH" \
+		OP_SERVICE_ACCOUNT_TOKEN="${OP_SERVICE_ACCOUNT_TOKEN:-}" \
 		CI=true direnv export json | jq -r '{{jq_script}}'
 
 # export env variables for a particular file in a format docker can consume
