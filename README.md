@@ -183,7 +183,7 @@ Here's the logic behind frontend code organization:
 
 * `tests/**/utils.py` is for test-specific code that is not a fixture or a factory.
 * `tests/factories.py` all factories should go here.
-* `tests/assertions.py` all custom `assert_*` functions should go here.
+* `tests/**/assertions.py` all custom `assert_*` functions should go here.
 * `tests/**/conftest.py` is for test-specific fixtures. This is the only place you should put fixtures.
 
 ### Toggling GitHub Actions
@@ -391,6 +391,17 @@ VITE_BUILD_COMMIT=-dirty node inspect web/node_modules/@react-router/dev/bin.js 
 ### Pytest Route Tests
 
 * Use `api_app.url_path_for` for all URL generation.
+
+If you have separate domains used for app, api, etc you can build a fastapi client that sets the `Host` header to the correct domain:
+
+```python
+@pytest.fixture
+def api_client():
+    from app.server import api_app
+
+    with TestClient(api_app, base_url="api.example.com") as client:
+        yield client
+```
 
 ### Pytest Integration Playwright Tests
 

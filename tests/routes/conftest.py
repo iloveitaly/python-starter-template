@@ -11,14 +11,6 @@ from tests.routes.utils import (
 
 
 @pytest.fixture
-def api_client():
-    from app.server import api_app
-
-    with TestClient(api_app, base_url="api.example.com") as client:
-        yield client
-
-
-@pytest.fixture
 def client(faker):
     "client to connect to your fastapi routes"
     from app.server import api_app

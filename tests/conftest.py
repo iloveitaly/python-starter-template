@@ -28,7 +28,6 @@ import app.models  # noqa: F401
 import multiprocessing
 
 from pathlib import Path
-from pretty_traceback import formatting
 
 import pytest
 from pytest import Config, FixtureRequest
