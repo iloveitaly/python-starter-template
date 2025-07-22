@@ -89,6 +89,7 @@ _tasks:
   - git commit -m "🎉 Initial commit"
   - ["{{ _copier_python }}", .copier/bootstrap.py]
   - git add -A
+  - git commit -m "build: default template values updated"
 
 # although it's annoying to have the .copier-answers.yml file in the root, it allows `copier update`
 # to work properly
