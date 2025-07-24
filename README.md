@@ -172,12 +172,18 @@ Non-language dependencies are always tricky. Here's how it's handled:
 
 ### JavaScript Code Organization
 
-Here's the logic behind frontend code organization:
+Here's how frontend code is organized in `web/app/`:
 
-* `lib/` not specific to the project at all. In another life, this code could be a separate library.
-* `utils/` project-specific code, but not specific to a particular page
-* `helpers/` page-specific code that is not a component, hook, etc
-* `hooks/` react hooks
+- `lib/` not specific to the project. This code could be a separate package at some point.
+- `utils/` project-specific code, but not specific to a particular page.
+- `helpers/` page- or section-specific code that is not a component, hook, etc.
+- `hooks/` react hooks.
+- `configuration/` providers, library configuration, and other setup code.
+- `components/` react components.
+  - `ui/` reusable ShadCN UI components (buttons, forms, etc.).
+  - `shared/` components shared across multiple pages.
+  - create additional folders for route- or section-specific components.
+
 
 ## Python Test Code Organization
 
