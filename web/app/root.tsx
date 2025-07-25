@@ -6,28 +6,17 @@ import {
   ScrollRestoration,
   isRouteErrorResponse,
 } from "react-router"
-import type { LinksFunction } from "react-router"
 
 import { withProviders } from "~/configuration"
 
 import { Loader2 } from "lucide-react"
 
+import { type Route } from "./+types/root"
+
 import PageNotFound from "@/components/shared/PageNotFound"
 
+import * as Sentry from "@sentry/react"
 import "./app.css"
-
-export const links: LinksFunction = () => [
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
-  {
-    rel: "preconnect",
-    href: "https://fonts.gstatic.com",
-    crossOrigin: "anonymous",
-  },
-  {
-    rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-  },
-]
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -76,9 +65,13 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
     message = "Error"
     details = error.statusText || details
-  } else if (import.meta.env.DEV && error && error instanceof Error) {
-    details = error.message
-    stack = error.stack
+  } else if (error && error instanceof Error) {
+    Sentry.captureException(error)
+
+    if (import.meta.env.DEV) {
+      details = error.message
+      stack = error.stack
+    }
   }
 
   return (
