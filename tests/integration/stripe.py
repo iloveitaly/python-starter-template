@@ -5,7 +5,18 @@ Playwright helpers to fill out various Stripe forms.
 from playwright.sync_api import Page, expect
 
 
-def fill_stripe_checkout(page: Page, *, card_number: str = "4242424242424242") -> None:
+# removed old card_number version, only card_type version remains
+def fill_stripe_checkout(
+    page: Page,
+    *,
+    card_type: str = "success",  # "success" | "failure"
+) -> None:
+    card_number_map = {
+        "success": "4242424242424242",  # Stripe test card for success
+        "failure": "4000000000000002",  # Stripe test card for failure (card declined)
+    }
+    card_number = card_number_map.get(card_type, "4242424242424242")
+
     # Find the Stripe iframe dynamically by its name pattern
     stripe_iframe = None
     for iframe in page.query_selector_all("iframe"):
