@@ -47,7 +47,7 @@ export function HydrateFallback() {
     <div className="flex h-screen w-screen items-center justify-center">
       <div className="space-y-4 text-center">
         <Loader2 className="text-primary mx-auto h-8 w-8 animate-spin" />
-        <p className="text-muted-foreground">Loading application...</p>
+        <p className="text-muted-foreground">Loading...</p>
       </div>
     </div>
   )
