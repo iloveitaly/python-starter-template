@@ -47,12 +47,6 @@ function getModePlugins(config: ConfigEnv): PluginOption[] {
       console.warn("Missing SENTRY_AUTH_TOKEN. Sentry will not be enabled.")
     }
 
-    // this will fail when building prod, so we have to force when we are building dev
-    invariant(
-      JAVASCRIPT_SERVER_PORT,
-      "Missing JAVASCRIPT_SERVER_PORT environment variable. Include to run build.",
-    )
-
     return [
       // only check env vars when building for production, some ENV are only available in prod
       checkEnv(),
@@ -80,6 +74,12 @@ function getModePlugins(config: ConfigEnv): PluginOption[] {
         ),
     ].filter((item) => item !== undefined && item !== null && item !== "")
   }
+
+  // this will fail when building prod, so we have to force when we are building dev
+  invariant(
+    JAVASCRIPT_SERVER_PORT,
+    "Missing JAVASCRIPT_SERVER_PORT environment variable. Include to run build.",
+  )
 
   return [Terminal(), devtoolsJson()]
 }
