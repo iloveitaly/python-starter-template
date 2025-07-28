@@ -4,6 +4,17 @@
 # Goal is to have similar semantics to rails.
 ##############################################
 
+# Helper to run a command in both dev and test environments, with a label for the banner
+# It does require you to pass the command as a string, which is a bit of a pain.
+# It does NOT change the DATABASE_URL, if you need to pass the TEST_DATABASE_URL you must do that
+# manually and cannot use this helper.
+_run_in_dev_and_test label *command: _dev_only
+	@just _banner_echo "Running in dev environment: {{label}}"
+	{{command}}
+
+	@just _banner_echo "Running in test environment: {{label}}"
+	{{EXECUTE_IN_TEST}} {{command}}
+
 # separate task for the db to support db_reset
 db_up:
 	docker compose up -d --wait postgres
@@ -15,13 +26,24 @@ db_down:
 	docker compose down --volumes postgres
 
 # completely destroy the dev and test databases, destroying the containers and rebuilding them
-db_reset_hard: db_down db_up db_migrate db_seed
+db_reset_hard: _dev_only db_down db_up db_migrate db_seed
 
-# NOTE migration & seed are intentionally omitted so db_nuke and friends can run
+DB_TERMINATE_AND_RESET_SCHEMA := "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = current_database() AND pid <> pg_backend_pid(); DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+
+# drop all DB connections and then drop all tables and completely reset the schema
+_db_reset_schema: _dev_only
+	psql $DATABASE_URL -c "{{DB_TERMINATE_AND_RESET_SCHEMA}}"
+	psql $TEST_DATABASE_URL -c "{{DB_TERMINATE_AND_RESET_SCHEMA}}"
+
 # destroys all data in the dev and test databases, leaves the containers running
-db_reset:
-	psql $DATABASE_URL -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
-	psql $TEST_DATABASE_URL -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+db_reset: _dev_only _db_reset_schema db_migrate db_seed
+
+# TODO can we do something in SQLModel to sync new columns to the DB as well
+# wipe, migrate, and set database state to the latest (head) model configuration. Do not use in production, always use migrations
+db_reset_head: _dev_only _db_reset_schema db_migrate db_migrate_head db_seed
+
+# destroy and rebuild the database from the ground up, without mutating migrations or recreating database containers (unlike nuke)
+db_destroy: db_reset db_migrate db_seed
 
 db_lint:
 	uv run alembic check
@@ -63,6 +85,10 @@ db_migrate:
 
 	[ -n "${CI:-}" ] || (just _banner_echo "Migrating Test Database" && {{EXECUTE_IN_TEST}} uv run alembic upgrade head)
 
+# quickly reset the entire database, migrate, seed, *and* sync database state to what the latest model configuration is
+db_migrate_head: _dev_only
+	just _run_in_dev_and_test "db_migrate_head" 'uv run python -c "import app.models; from app.configuration.database import create_db_and_tables; create_db_and_tables()"'
+
 # pick a migration to downgrade to
 db_downgrade: _dev_only
 	alembic_target_id=$(uv run alembic history | fzf --delimiter '[->\s,]+' --bind 'enter:become(echo {2})') && \
@@ -71,6 +97,7 @@ db_downgrade: _dev_only
 		just _banner_echo "Downgrading Test Database..." && \
 		{{EXECUTE_IN_TEST}} uv run alembic downgrade $alembic_target_id
 
+# TODO I don't think we really want to migrate the database automatically. Instead, want this to be an independent command that we can call inside the reset and other operations.
 # add seed data to dev and test
 db_seed: db_migrate
 	@just _banner_echo "Seeding Database"
@@ -96,9 +123,6 @@ db_generate_migration migration_name="":
 
 	just _banner_echo "Migration Generated. Run 'just db_migrate' to apply the migration"
 
-# destroy and rebuild the database from the ground up, without mutating migrations
-db_destroy: db_reset db_migrate db_seed
-
 # rm migrations and regenerate: only for use in early development
 db_nuke:
 	# I personally hate having a nearly-greenfield project with a bunch of migrations from DB schema iteration
@@ -107,7 +131,7 @@ db_nuke:
 	# first, wipe all of the existing migrations
 	rm -rf migrations/versions/* || true
 
-	just db_reset
+	just _db_reset_schema
 	just db_generate_migration "initial_commit"
 
 # enable SQL debugging on the postgres database
@@ -115,6 +139,7 @@ db_debug: _dev_only
 	docker compose exec postgres \
 		psql -U $POSTGRES_USER -c "ALTER SYSTEM SET log_statement = 'all'; SELECT pg_reload_conf();"
 
+# disable SQL debugging on the postgres database
 db_debug_off: _dev_only
 	docker compose exec postgres \
 		psql -U $POSTGRES_USER -c "ALTER SYSTEM SET log_statement = 'none'; SELECT pg_reload_conf();"
@@ -125,7 +150,7 @@ db_dump_production: _dev_only
 	echo "{{ BLUE }}Enter the op:// reference to the production DB (e.g., op://Dev/prod DB/db-connection-string):{{ NORMAL }}"
 	read op_ref
 
-	local dump_file="tmp/$(date +%Y-%m-%d)_production.dump"
+	local dump_file="$TMP_DIRECTORY/$(date +%Y-%m-%d)_production.dump"
 	echo "Dumping production database..."
 	pg_dump $(op read "$op_ref") -F c -f "$dump_file"
 
