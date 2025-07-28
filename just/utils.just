@@ -16,10 +16,10 @@
 	printf "\033[0;36m%${banner_length}s#\033[0m\n\n" | tr " " "#"
 
 # prevent a script from running if not in development mode
-_dev_only:
+@_dev_only:
 	[[ "${PYTHON_ENV:-}" = "development" ]] || { echo "error: PYTHON_ENV must be set to 'development'"; exit 1; }
 
 # a more lazy _dev_only that can be used in contexts where the PYTHON_ENV is not set, which most commonly occurs when direnv is failing
 # the main use case for this is generating 1P account tokens; if no token exists or the token is expired, direnv could fail
-_not_production:
+@_not_production:
 	[[ -z "${PYTHON_ENV:-}" || "${PYTHON_ENV}" = "development" ]] || { echo "error: PYTHON_ENV is not empty or development"; exit 1; }

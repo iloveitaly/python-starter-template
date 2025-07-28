@@ -16,7 +16,11 @@ js_setup:
 	{{_pnpm}} react-router typegen
 
 js_clean:
-	rm -rf {{WEB_DIR}}/build {{WEB_DIR}}/client {{WEB_DIR}}/node_modules {{WEB_DIR}}/.react-router || true
+	rm -rf {{WEB_DIR}}/build \
+				 {{WEB_DIR}}/client \
+				 {{WEB_DIR}}/node_modules \
+				 public \
+				 {{WEB_DIR}}/.react-router || true
 
 # clean and rebuild
 js_nuke: js_clean js_setup
