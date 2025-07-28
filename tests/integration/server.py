@@ -20,6 +20,7 @@ from furl import furl
 from app import log
 from app.environments import is_local_testing
 from app.server import api_app
+from app.utils.debug import install_remote_debugger
 
 from tests.constants import PYTHON_TEST_SERVER_HOST
 from tests.integration.javascript_build import wait_for_javascript_build
@@ -91,6 +92,9 @@ def run_server():
     It runs in a fork. Depending on your system, how that process fork is constructed is different, which can lead to
     surprising behavior (like the transaction database cleaner not working). This is why we need to run
     """
+
+    # the server does NOT have access to stdin, so let's use a piped debugging server
+    install_remote_debugger()
 
     # TODO we should be able to assert code signature on configuration in `main.py` so this alerts us when we are out of sync
 

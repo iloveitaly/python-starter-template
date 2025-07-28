@@ -29,6 +29,20 @@ def install_traps():
     log.info("installed debugging traps")
 
 
+def install_remote_debugger():
+    """
+    There are many scenarios were you don't have a stdin that you can use to debug.
+
+    This installs a remote debugger that you can connect to using `rpdb`:
+    """
+    try:
+        import rpdb
+
+        sys.breakpointhook = rpdb.set_trace
+    except ImportError:
+        log.warning("rpdb not installed, cannot set breakpoint hook")
+
+
 def install_coroutine_trap():
     """
     Listen to USR1 signal to dump all coroutine state to the console.
