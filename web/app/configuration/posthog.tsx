@@ -1,53 +1,36 @@
 /*
-The posthog JS library is a mess. The context provider has to be recreated here because of the following issues:
+ * The posthog JS library is a mess. This latest iteration is the recommended solution and seems to work, but I would
+ * expect issues with this library and don't assume it's well designed.
+ *
+ * - https://github.com/PostHog/posthog-js/pull/1293
+ * - https://github.com/PostHog/posthog.com/pull/9830
+ * - https://github.com/PostHog/posthog-js/issues/908
+ */
+import React from "react"
+import { useEffect, useState } from "react"
 
-- https://github.com/PostHog/posthog-js/pull/1293
-- https://github.com/PostHog/posthog.com/pull/9830
-- https://github.com/PostHog/posthog-js/issues/908
-*/
-import React, { createContext, useContext, useRef } from "react"
-
-import { posthog } from "posthog-js"
+import posthog from "posthog-js"
+import { PostHogProvider } from "posthog-js/react"
 
 import { isDevelopment, isTesting, requireEnv } from "~/utils/environment"
 
-type PosthogType = typeof posthog | undefined
+export function PHProvider({ children }: { children: React.ReactNode }) {
+  const [hydrated, setHydrated] = useState(false)
 
-const PosthogContext = createContext<PosthogType>(undefined)
-
-interface PosthogProviderProps {
-  children: React.ReactNode
-}
-
-export function PostHogProvider({ children }: PosthogProviderProps) {
-  const posthogInstanceRef = useRef<PosthogType>(undefined)
-
-  // https://react.dev/reference/react/useRef#avoiding-recreating-the-ref-contents
-  // Note that in StrictMode, this will run twice.
-  function getPosthogInstance() {
-    if (posthogInstanceRef.current) return posthogInstanceRef.current
-
-    posthogInstanceRef.current = posthog.init(requireEnv("VITE_POSTHOG_KEY"), {
+  useEffect(() => {
+    posthog.init(requireEnv("VITE_POSTHOG_KEY"), {
       api_host:
         import.meta.env["VITE_POSTHOG_HOST"] ?? "https://us.i.posthog.com",
-      person_profiles: "identified_only",
       defaults: "2025-05-24",
-
-      // required for react-router
-      capture_pageview: false,
+      person_profiles: "identified_only", // or 'always' to create profiles for anonymous users as well
     })
 
-    return posthogInstanceRef.current
-  }
+    setHydrated(true)
+  }, [])
 
-  return (
-    <PosthogContext.Provider value={getPosthogInstance()}>
-      {children}
-    </PosthogContext.Provider>
-  )
+  if (!hydrated) return <>{children}</>
+  return <PostHogProvider client={posthog}>{children}</PostHogProvider>
 }
-
-export const usePosthog = () => useContext(PosthogContext)
 
 export default function withPostHogProvider(Component: React.ComponentType) {
   if (isDevelopment() || isTesting()) {
@@ -58,9 +41,9 @@ export default function withPostHogProvider(Component: React.ComponentType) {
     props: React.ComponentProps<typeof Component>,
   ) {
     return (
-      <PostHogProvider>
+      <PHProvider>
         <Component {...props} />
-      </PostHogProvider>
+      </PHProvider>
     )
   }
 }
