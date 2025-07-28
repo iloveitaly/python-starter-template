@@ -1,5 +1,5 @@
 import { reactRouterDevTools } from "react-router-devtools"
-import { defineConfig } from "vite"
+import { type ConfigEnv, type PluginOption, defineConfig } from "vite"
 import { checkEnv } from "vite-plugin-check-env"
 import viteCompression from "vite-plugin-compression"
 import devtoolsJson from "vite-plugin-devtools-json"
@@ -8,25 +8,20 @@ import tsconfigPaths from "vite-tsconfig-paths"
 
 import { invariant } from "@epic-web/invariant"
 import { reactRouter } from "@react-router/dev/vite"
-import { sentryVitePlugin } from "@sentry/vite-plugin"
+import { sentryReactRouter } from "@sentry/react-router"
 import tailwindcss from "@tailwindcss/vite"
 
 const JAVASCRIPT_SERVER_PORT = process.env.JAVASCRIPT_SERVER_PORT
 
-invariant(
-  JAVASCRIPT_SERVER_PORT,
-  "Missing JAVASCRIPT_SERVER_PORT environment variable. Include to run build.",
-)
+function getModePlugins(config: ConfigEnv): PluginOption[] {
+  const { mode } = config
 
-// TODO extract out to another file
-// ensure that the env variables are loaded if they are used!
-function getModePlugins(mode: string) {
   if (mode === "production") {
     const authToken = process.env.SENTRY_AUTH_TOKEN
+
     const VITE_BUILD_COMMIT = process.env.VITE_BUILD_COMMIT
 
     // fine for sentry to have auth under a CI build being used for integration testing
-
     if (!authToken) {
       const CI = process.env.CI
 
@@ -37,12 +32,13 @@ function getModePlugins(mode: string) {
       }
 
       // If build is dirty, then we aren't building for prod (probably local)
-      // ensuring dirty builds are not deployed is checked upstream, so we can rely on this.
+      // ensuring dirty builds are not deployed is checked upstream via Justfiles, so we can rely on this.
       //
-      // If we are in CI, then it's fine not to have a sentry token
+      // If we are in CI, then it's fine not to have a sentry token.
       //
       // Remember, although production builds are created in CI, they are done within
-      // a docker container and do not inherit CI and other ENV vars
+      // a docker container and do not inherit CI and other ENV vars, so although it's built in a CI environment
+      // the CI environment variables are not set, which is what we are concerned about here.
 
       if (!CI && !VITE_BUILD_COMMIT.endsWith("-dirty")) {
         throw new Error("Missing SENTRY_AUTH_TOKEN. Include to fix build.")
@@ -51,36 +47,45 @@ function getModePlugins(mode: string) {
       console.warn("Missing SENTRY_AUTH_TOKEN. Sentry will not be enabled.")
     }
 
+    // this will fail when building prod, so we have to force when we are building dev
+    invariant(
+      JAVASCRIPT_SERVER_PORT,
+      "Missing JAVASCRIPT_SERVER_PORT environment variable. Include to run build.",
+    )
+
     return [
-      // Put the Sentry vite plugin after all other plugins
-      authToken &&
-        sentryVitePlugin({
-          // real component names in errors
-          reactComponentAnnotation: { enabled: true },
-
-          // TODO unsure if this is required
-          org: process.env.SENTRY_ORG,
-          project: process.env.SENTRY_PROJECT,
-
-          // Auth tokens can be obtained from https://ORG_NAME.sentry.io/settings/auth-tokens/new-token/
-          authToken: process.env.SENTRY_AUTH_TOKEN,
-
-          release: {
-            name: VITE_BUILD_COMMIT,
-          },
-        }),
-      // only check env vars when building for production
-      // some ENV is only available in prod
+      // only check env vars when building for production, some ENV are only available in prod
       checkEnv(),
       viteCompression(),
-    ]
+
+      // Put the Sentry vite plugin after all other plugins
+      authToken &&
+        sentryReactRouter(
+          {
+            // real component names in errors
+            reactComponentAnnotation: { enabled: true },
+
+            // TODO unsure if this is required
+            org: process.env.SENTRY_ORG,
+            project: process.env.SENTRY_PROJECT,
+
+            // Auth tokens can be obtained from https://ORG_NAME.sentry.io/settings/auth-tokens/new-token/
+            authToken: process.env.SENTRY_AUTH_TOKEN,
+
+            release: {
+              name: VITE_BUILD_COMMIT,
+            },
+          },
+          config,
+        ),
+    ].filter((item) => item !== undefined && item !== null && item !== "")
   }
 
-  return [Terminal(), devtoolsJson(), reactRouterDevTools()]
+  return [Terminal(), devtoolsJson()]
 }
 
 // test configuration is done via vitest.config.ts, this is only for the build system
-export default defineConfig(({ mode }) => ({
+export default defineConfig((config) => ({
   // TODO need to disable .env file loading https://discord.com/channels/804011606160703521/1307442221288656906
   // build.outDir is ignored and buildDirectory in react-router.config.ts is used instead
   build: {
@@ -96,13 +101,13 @@ export default defineConfig(({ mode }) => ({
     strictPort: true,
     // random ports to avoid conflict with other projects
     port: parseInt(JAVASCRIPT_SERVER_PORT),
-
-    // TODO https://github.com/DarthSim/hivemind/issues/40
   },
   plugins: [
+    // TODO needs to go first, and needs to be conditional
     tailwindcss(),
-    tsconfigPaths(),
-    ...getModePlugins(mode),
+    config.mode === "development" && reactRouterDevTools(),
     reactRouter(),
+    tsconfigPaths(),
+    ...getModePlugins(config),
   ],
 }))
