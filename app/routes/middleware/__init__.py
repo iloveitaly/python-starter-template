@@ -85,6 +85,7 @@ def add_middleware(app: FastAPI):
     # trusted hosts are not required for development, but reduces delta between prod & dev
     # include the API host in your trusted host list, this will be used as the `Host` when HTTP/2 is used (which does
     # not specify the `Host` header explicitly, it's inferred from `:authority` pseudo-header)
+    # when this check fails, you'll get a plain "Invalid host header" response with a 400 status code. No logs.
     allowed_hosts_without_scheme = allowed_hosts(False)
     app.add_middleware(
         TrustedHostMiddleware, allowed_hosts=allowed_hosts_without_scheme
