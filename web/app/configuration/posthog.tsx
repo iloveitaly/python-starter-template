@@ -28,8 +28,10 @@ export function PostHogProvider({ children }: PosthogProviderProps) {
     if (posthogInstanceRef.current) return posthogInstanceRef.current
 
     posthogInstanceRef.current = posthog.init(requireEnv("VITE_POSTHOG_KEY"), {
-      api_host: requireEnv("VITE_POSTHOG_HOST"),
+      api_host:
+        import.meta.env["VITE_POSTHOG_HOST"] ?? "https://us.i.posthog.com",
       person_profiles: "identified_only",
+      defaults: "2025-05-24",
 
       // required for react-router
       capture_pageview: false,
