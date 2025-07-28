@@ -1,6 +1,9 @@
 ## python
+limit FE dynamic routes to generated react router routes
+https://github.com/jd/tenacity - use this instead of backoff
+https://github.com/astral-sh/ty?tab=readme-ov-file - new type checker, after it is out of beta
 https://github.com/procrastinate-org/procrastinate
-https://github.com/janbjorge/PgQueuer
+https://github.com/janbjorge/PgQueuer - another job queue
 https://tkte.ch/chancy/ look into this job queue?
 I think we should adopt a `lib/` for any code that, in a perfect world, should be extracted out into a library.
 https://grok.com/share/bGVnYWN5_8e8c1718-b3dc-4b32-95a3-61b85ab2be3e figure out how to limit threads that the async pool uses via an ENV var, useful for avoiding complex py-spy dumps in development
@@ -29,12 +32,17 @@ super user pattern in clerk https://discord.com/channels/856971667393609759/1330
 https://github.com/replicate/cog/blob/c95774f18b8df6f6a7b841be1900153ca04a57ad/python/cog/suppress_output.py#L7 interesting approach to surpressing output
 exception group processor? https://github.com/apache/airflow/blob/4280b83977cd5a53c2b24143f3c9a6a63e298acc/task_sdk/src/airflow/sdk/log.py#L42
 `localias debug config --print | yq --output-format json` to assert against the local .localias
+we should lint against this `from migrations.seed import PYTHON_SERVER_HOST`, seed should only be executed directly
 
 ## Observability
 https://github.com/replicate/cog/blob/c95774f18b8df6f6a7b841be1900153ca04a57ad/python/cog/server/telemetry.py#L7 looks like there is some standard around this
 https://victoriametrics.com - recommended instead of prometheus
 
 ## js
+automatic required indicators for zod forms https://grok.com/share/bGVnYWN5_ca175942-e870-4b67-b47b-6d804bdc5428
+https://github.com/dhaxor/super-utils-plus - functional utilities for js
+https://github.com/remix-run/react-router/discussions/12522 - eslint for react router?
+probably remove the _HOST vars which prepend https, we can just do that in the frontend logic
 `pnpm exec react-router routes --json` to get routes, we should compare against openai routes
 https://github.com/raineorshine/npm-check-updates/issues/1366 - exact versions not respected
 https://github.com/shadcn-ui/ui/issues/5669 - can't use `"verbatimModuleSyntax": true,`
@@ -58,13 +66,21 @@ https://simondosda.github.io/posts/2021-05-10-eslint-imports.html auto fix unuse
 js test build should not include valid sentry token, can we use a console DSN?
 
 ## deployment
+app.json from movie tickets
 grafana timing integration
 https://grafana.com for observability
 log ingestion service, need to investigate
 can kamal work with a registry with container?
 flightcontrol on AWS or something like that on azure
 
+## pytest
+playwright: In config: trace = "on-first-retry"
+
 ## dev
+`just direnv_export_docker '.env.production.frontend' --params` can still silently fail
+https://grok.com/share/bGVnYWN5_74eae3f3-cd3f-4465-9a8d-f7d4fc0faf45 prevent py analysis from picking up seed, console, etc files
+zrok? https://github.com/openziti/zrok/issues/1006
+each PR gets a staging environment https://preevy.dev/tunnel-server or https://github.com/UffizziCloud/uffizzi?tab=readme-ov-file
 when updating container versions, we need to restart the containers to pick up on the new version, otherwise the persisted versions will not be updated
 https://github.com/terror/just-lsp/issues/60 - justfile lsp
 if a command running inside a direnv .envrc fails, it doesn't change the exit code https://github.com/direnv/direnv/issues/893
@@ -101,6 +117,7 @@ https://github.com/nicoddemus/pytest-rich/blob/main/src/pytest_rich/header.py
 dialog ovefflow not working https://github.com/shadcn-ui/ui/issues/16
 
 ## ci
+https://grok.com/share/bGVnYWN5_8e866e32-04ee-4404-856d-415b7578947c playwright doesn't like react, need more helpers, and copy existing helpers from movietickets
 cache py dependencies https://github.com/astral-sh/setup-uv/blob/d837751086f305827240e5292bdf208a757ceef1/src/utils/inputs.ts#L59
 https://graphite.dev/guides/github-actions-caching - cache docker build and postgres images? https://lipanski.com/posts/speed-up-your-docker-builds-with-cache-from
 https://github.com/tecolicom/actions-use-apt-tools/issues/5
@@ -141,10 +158,13 @@ maybe use a different event loop? Faster / less issues with playwright?
 ```
 
 ## build
+add gitleaks check to local lefthook and CI, add lefthook documentation to upstream readme. brew install gitleaks
+
 add nixpacks cache, waiting on comment from author about how to do this.
 push to registry
 switch to https://railpack.com/guides/running-railpack-in-production
 pull azure build and push stuff into this
+the build debug stuff doesn't work when there are spaces in the build args, this is also probably going to break with the new railpack system...
 
 ## act compat
 https://github.com/catthehacker/docker_images/issues/138 - apt tool, still failing on apt-install but not because of missing packages
@@ -166,6 +186,18 @@ binding for paste as plain text
     }
 }
 ```
+
+## javascript
+
+- [ ] https://grok.com/share/bGVnYWN5_7b44bc14-aea6-4a23-8218-d5550748692a better zod errors
+- [ ] https://github.com/remix-run/react-router/discussions/14081 typed href query params
+- [ ] vite image optimization import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
+- [ ] client loader query string https://discord.com/channels/770287896669978684/1392961395930431528/1392961395930431528
+
+## secrets
+
+- [ ] OP_VAULT_UID in direnv export should be copied from the existing environemnt
+- [ ] understand how the service account tokens show up in the web ui and how we can prevent duplicates https://1password-devs.slack.com/archives/C037XTZ9RA6/p1752017067566649
 
 ## open source
 
