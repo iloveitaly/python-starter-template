@@ -1,4 +1,6 @@
-from playwright.sync_api import Page
+from playwright.sync_api import Locator, Page
+
+from app import log
 
 from app.models.user import User
 
@@ -88,8 +90,6 @@ def wait_for_loading(page: Page, timeout: int = 30000, extreme: bool = False):
                 "() => window._reactLoadingComplete === true", timeout=timeout
             )
         except Exception as e:
-            from app import log
-
             log.warning(f"React and animation loading check timed out: {e}")
 
     # Brief pause for any final renders
@@ -118,3 +118,20 @@ def login_as_dev_user(page: Page):
     assert User.count() == 1
 
     return User.first()
+
+
+def safely_scroll_then_click(locator: Locator):
+    """
+    If a button is off screen, the default scroll then click can sometimes
+    cause the wrong thing to be clicked. I believe this has to do with the
+    iframes embedded in the page, but we can't be sure.
+
+    This was true as of version: 138.0.7204.23
+    """
+
+    locator.scroll_into_view_if_needed()
+    locator.page.wait_for_timeout(1_500)
+    locator.click()
+
+    # Optionally, return locator if chaining is needed
+    return locator
