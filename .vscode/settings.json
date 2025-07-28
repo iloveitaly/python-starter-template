@@ -56,6 +56,10 @@
   "python.analysis.indexing": true,
   "python.analysis.autoImportCompletions": true,
 
+  // TODO need to figure out the env stuff before enabling
+  "python.testing.pytestEnabled": false,
+  "python.envFile": "${workspaceFolder}/.env",
+
   // TODO I had issues with develop = True imports, but it was fixed :/
   // "python.analysis.extraPaths": [
   //   "~/Projects/python"
