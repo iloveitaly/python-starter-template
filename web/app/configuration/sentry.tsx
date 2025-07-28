@@ -14,6 +14,10 @@ if (isProduction()) {
   Sentry.init({
     dsn: requireEnv("VITE_SENTRY_DSN"),
 
+    // Adds request headers and IP for users, for more info visit:
+    // https://docs.sentry.io/platforms/javascript/guides/react-router/configuration/options/#sendDefaultPii
+    sendDefaultPii: true,
+
     environment: environmentName(),
     // TODO this may not be needed if we integrate sentry release, unsure
     release: requireEnv("VITE_BUILD_COMMIT"),
