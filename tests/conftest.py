@@ -6,7 +6,7 @@ import stripe
 # When running locally, switching to the full-blown CI environment is a pain.
 # To make it quick & easy to run tests, we force the environment to test and load cached CI environment variables (if we can).
 # This will not be the same as CI, but it's closer and faster for devprod. It should never run on CI!
-if os.environ["PYTHON_ENV"] != "test":
+if os.getenv("PYTHON_ENV", "development") != "test":
     print(
         "\033[91m"
         "PYTHON_ENV is not set to 'test', forcing.\n\n"
@@ -35,7 +35,6 @@ from activemodel.pytest import database_reset_transaction, database_reset_trunca
 from decouple import config as decouple_config
 
 from .constants import TEST_RESULTS_DIRECTORY
-from .utils import delete_all_clerk_users
 from .log import log
 
 log.info("multiprocess start method", start_method=multiprocessing.get_start_method())
@@ -92,6 +91,7 @@ def pytest_configure(config: Config):
 
 def pytest_sessionstart(session):
     "only executes once if a test is run, at the beginning of the test suite execution"
+    from .utils import delete_all_clerk_users
 
     # TODO wonder if I could execute async?
     # without this, the clerk dev instance will get cluttered and throw errors
