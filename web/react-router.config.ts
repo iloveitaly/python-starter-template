@@ -8,7 +8,9 @@ export default {
   buildDirectory: "build/" + process.env.NODE_ENV,
   // required by sentry documentation https://docs.sentry.io/platforms/javascript/guides/react-router/
   buildEnd: async ({ viteConfig, reactRouterConfig, buildManifest }) => {
-    await sentryOnBuildEnd({ viteConfig, reactRouterConfig, buildManifest })
+    if (viteConfig.mode === "production") {
+      await sentryOnBuildEnd({ viteConfig, reactRouterConfig, buildManifest })
+    }
   },
   // TODO list routes out you want to prerender here for SEO + caching purposes
   // async prerender() {
