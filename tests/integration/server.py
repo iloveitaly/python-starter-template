@@ -142,9 +142,9 @@ def server():
     if not wait_for_port(PYTHON_SERVER_TEST_PORT):
         raise Exception("server failed to start")
 
-    wait_for_javascript_build()
-
     try:
+        wait_for_javascript_build()
+
         yield
     finally:
         assert wait_for_termination(proc.pid)
