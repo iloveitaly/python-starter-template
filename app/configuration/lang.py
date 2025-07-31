@@ -7,6 +7,9 @@ weird bugs between dev, prod, ci, etc.
 
 import multiprocessing
 import os
+import sys
+
+from app.environments import is_production
 
 
 def configure_python():
@@ -38,3 +41,7 @@ def configure_python():
             error=e,
             existing_method=multiprocessing.get_start_method(),
         )
+
+    if is_production() and "PYTHONBREAKPOINT" not in os.environ and sys.breakpointhook:
+        sys.breakpointhook = None
+        log.info("disabling python breakpoints in production environment")
