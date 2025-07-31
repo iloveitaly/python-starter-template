@@ -11,3 +11,26 @@ export function getQueryParam(request: Request, key: string): string | null {
   const url = new URL(request.url)
   return url.searchParams.get(key)
 }
+
+export function getQueryParams(request: Request): Record<string, string> {
+  const url = new URL(request.url)
+  const params: Record<string, string> = {}
+
+  for (const [key, value] of url.searchParams) {
+    params[key] = value
+  }
+
+  return params
+}
+
+export function debounce<T extends (...args: any[]) => any>(
+  func: T,
+  wait: number,
+): (...args: Parameters<T>) => void {
+  let timeout: NodeJS.Timeout | null = null
+
+  return (...args: Parameters<T>) => {
+    if (timeout) clearTimeout(timeout)
+    timeout = setTimeout(() => func(...args), wait)
+  }
+}
