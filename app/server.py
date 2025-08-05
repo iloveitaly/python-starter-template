@@ -8,7 +8,7 @@ JavaScript client which will use these methods.
 from typing import Any
 
 import orjson
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from starlette import status
 from whenever import Instant
