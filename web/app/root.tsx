@@ -1,3 +1,6 @@
+/**
+ * This file is prerendered and generates the index.html that is served to the client.
+ */
 import {
   Links,
   Meta,
