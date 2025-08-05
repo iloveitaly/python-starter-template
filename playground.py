@@ -3,6 +3,8 @@
 
 import ipython_playground
 
+# helpful shortcuts
+from app import log
 from app.configuration.clerk import clerk
 
 globals().update(ipython_playground.all_extras())

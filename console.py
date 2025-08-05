@@ -17,7 +17,11 @@ globals().update(ipython_playground.all_extras())
 
 
 def read_data_url(url):
-    "read a url with json, csv, etc and return the data"
+    """
+    Read a url with json, csv, etc and return the data.
+
+    Helpful for pulling external data for one-off scripts
+    """
 
     # convert start gist URLS to raw URLs
     if re.match(r"https?://gist\.github\.com/", url):
