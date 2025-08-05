@@ -12,7 +12,10 @@ def test_no_duplicate_route_names():
     """
     # Extract route names, filtering out routes without names
     route_names = [
-        route.name for route in api_app.routes if hasattr(route, "name") and route.name
+        # without getattr, there's typing errors :/
+        getattr(route, "name", None)
+        for route in api_app.routes
+        if getattr(route, "name", None)
     ]
 
     # Identify duplicates using Counter
