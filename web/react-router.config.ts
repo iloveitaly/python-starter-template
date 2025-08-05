@@ -8,7 +8,7 @@ export default {
   buildDirectory: "build/" + process.env.NODE_ENV,
   // required by sentry documentation https://docs.sentry.io/platforms/javascript/guides/react-router/
   buildEnd: async ({ viteConfig, reactRouterConfig, buildManifest }) => {
-    if (viteConfig.mode === "production") {
+    if (viteConfig.mode === "production" && "sentryConfig" in viteConfig) {
       await sentryOnBuildEnd({ viteConfig, reactRouterConfig, buildManifest })
     }
   },
