@@ -9,4 +9,6 @@ def assert_matches(regex, string):
 
 
 def assert_status(response, status_code: int = status.HTTP_200_OK):
-    assert response.status_code == status_code, response.json()
+    assert response.status_code == status_code, (
+        f"{response.status_code}: {response.json()}"
+    )
