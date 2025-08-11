@@ -118,10 +118,23 @@ That should do most of what you need. Here are some bits you'll need to handle m
 
 ### Simple Mode
 
-If you despise dev productivity tooling (no judgement!) you can:
+If you despise dev productivity tooling you can avoid using:
 
-* Avoid using direnv.
-* Avoid using 1password.
+* direnv
+* 1password
+* mise
+* localias
+* docker
+
+Here's what you need to do:
+
+1. Make sure you have `just` installed. You'll need this.
+2. Make sure you install the [right versions](./.tool-versions) of python, node, and pnpm.
+3. Make sure you setup redis + postgres locally in whatever way you want and set the `DATABASE_URL` and `REDIS_URL` variables to match your setup.
+4. Instead of using `just dev` you'll need to run `just js_dev` and `just py_dev` in separate terminals.
+5. Get a `.env` file you can just `source` using your terminal
+   1. Adjust the host-related environment variables to match how you are going to host it locally
+   2. [You may run into some cookie-related issues](https://github.com/iloveitaly/python-starter-template/blob/fd4af0a93587f211816b276ba5ff9211cdfbab34/app/routes/middleware/__init__.py#L97-L108)
 
 If you are working on a team, ask a friend who has the system fully configured to run:
 
@@ -129,15 +142,20 @@ If you are working on a team, ask a friend who has the system fully configured t
 just direnv_bash_export
 ```
 
-You can simply source the resulting file when you create a new shell session.
+If you don't have a teammate with the full setup, you will need 1Password CLI and direnv to run this successfully.
+
+Then, you can simply source the resulting file when you create a new shell session:
+
+```shell
+source .env.yourname.local
+```
 
 The primary downside to this approach is:
 
-* Any mutated API keys from 1Password will not be automatically updated
-* Updated ENV configuration will not be automatically used
-* You cannot easily
-
-If you are a solo contributor to the project, you'll have to edit the `.envrc` and friends down to a single `.env` which you could manually or use traditional `dotenv` tooling in python and javascript.
+* Any mutated API keys from 1Password will not be automatically updated. You'll need to update these manually.
+* Updated ENV configuration will not be automatically used. You need to manage sourcing.
+* You'll need to manually update your env for tests, if you need to use different configuration ([this is done automatically for you](tests/direnv.py))
+* Some cookie issues and https-related problems since you aren't using a real domain (probably some workarounds here, but I haven't tried)
 
 ### Advanced Mode
 
