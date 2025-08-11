@@ -73,19 +73,27 @@ with_entries(
 
 BASH_EXPORT_PREAMBLE := """
 # Description: easy source-able bash script in case a user doesn't want to bother with direnv and friends
+# More info: https://github.com/iloveitaly/python-starter-template#simple-mode
 
 # we assume a venv is already setup using `just setup`
 source .venv/bin/activate
 
 # `mise` is installed in ~/.local/bin by default, we assume the user is not using mise across their installation
 # so we force the path to be added.
-
 export PATH="$HOME/.local/bin:$PATH"
 
-eval "$(mise activate)"
+if command -v mise >/dev/null 2>&1; then
+	eval "$(mise activate)"
+else
+	echo "[direnv_bash_export] mise not found, skipping activation" >&2
+fi
 
 # just runner completions make life a *lot* better
-eval "$(just --completions $(basename $SHELL))"
+if command -v just >/dev/null 2>&1; then
+	eval "$(just --completions $(basename "$SHELL"))"
+else
+	echo "[direnv_bash_export] just not found, skipping completions." >&2
+fi
 
 ## BEGIN DIRENV EXPORT
 """
