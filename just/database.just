@@ -30,10 +30,14 @@ db_reset_hard: _dev_only db_down db_up db_migrate db_seed
 
 DB_TERMINATE_AND_RESET_SCHEMA := "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = current_database() AND pid <> pg_backend_pid(); DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
 
+# not all users have psql + friends installed locally, and brew does not install aliases to psql for modern versions by
+# default, so we use the binaries inside the container.
+PSQL_BIN := "docker compose exec postgres psql"
+
 # drop all DB connections and then drop all tables and completely reset the schema
 _db_reset_schema: _dev_only
-	psql $DATABASE_URL -c "{{DB_TERMINATE_AND_RESET_SCHEMA}}"
-	psql $TEST_DATABASE_URL -c "{{DB_TERMINATE_AND_RESET_SCHEMA}}"
+	{{PSQL_BIN}} $DATABASE_URL -c "{{DB_TERMINATE_AND_RESET_SCHEMA}}"
+	{{PSQL_BIN}} $TEST_DATABASE_URL -c "{{DB_TERMINATE_AND_RESET_SCHEMA}}"
 
 # destroys all data in the dev and test databases, leaves the containers running
 db_reset: _dev_only _db_reset_schema db_migrate db_seed
@@ -77,7 +81,7 @@ db_migrate:
 	mkdir -p migrations/versions
 
 	# dev database is created automatically, but test database is not. We need to fail gracefully when the database already exists.
-	psql $DATABASE_URL -c "CREATE DATABASE ${TEST_DATABASE_NAME};" || true
+	{{PSQL_BIN}} $DATABASE_URL -c "CREATE DATABASE ${TEST_DATABASE_NAME};" || true
 
 	@just _banner_echo "Migrating Database"
 
@@ -136,23 +140,30 @@ db_nuke:
 
 # enable SQL debugging on the postgres database
 db_debug: _dev_only
-	docker compose exec postgres \
-		psql -U $POSTGRES_USER -c "ALTER SYSTEM SET log_statement = 'all'; SELECT pg_reload_conf();"
+	{{PSQL_BIN}} -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER SYSTEM SET log_statement = 'all'" -c "SELECT pg_reload_conf();"
 
 # disable SQL debugging on the postgres database
 db_debug_off: _dev_only
-	docker compose exec postgres \
-		psql -U $POSTGRES_USER -c "ALTER SYSTEM SET log_statement = 'none'; SELECT pg_reload_conf();"
+	{{PSQL_BIN}} -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER SYSTEM SET log_statement = 'none'" -c "SELECT pg_reload_conf();"
 
 # dump the production database locally, obviously this is a bad idea most of the time
 [script]
 db_dump_production: _dev_only
-	echo "{{ BLUE }}Enter the op:// reference to the production DB (e.g., op://Dev/prod DB/db-connection-string):{{ NORMAL }}"
-	read op_ref
+	echo "{{ BLUE }}Enter the op:// reference or postgres:// URL for the production DB:{{ NORMAL }}"
+	echo "{{ BLUE }}e.g., op://Dev/prod DB/db-connection-string or postgres://user:pass@host:5432/dbname{{ NORMAL }}"
+	read db_ref
 
-	local dump_file="$TMP_DIRECTORY/$(date +%Y-%m-%d)_production.dump"
+	mkdir -p $TMP_DIRECTORY/database-backups
+	local dump_file="$TMP_DIRECTORY/database-backups/$(date +%Y-%m-%d)_production.dump"
 	echo "Dumping production database..."
-	pg_dump $(op read "$op_ref") -F c -f "$dump_file"
+
+	if [[ "$db_ref" == postgres://* ]]; then
+		DB_URL="$db_ref"
+	else
+		DB_URL=$(op read "$db_ref")
+	fi
+
+	pg_dump "$DB_URL" -F c -f "$dump_file"
 
 	echo "Created file: $dump_file"
 	echo "Example restore: \n{{ BLUE }}pg_restore --no-owner --no-privileges --if-exists --clean -d \$DATABASE_URL $dump_file{{ NORMAL }}"
