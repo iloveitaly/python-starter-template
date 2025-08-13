@@ -80,13 +80,16 @@ js_upgrade:
 	# intentionally without lockfile so it's updated
 	{{_pnpm}} install
 
+	{{_pnpm}} dlx update-browserslist-db@latest
+
 	cd {{WEB_DIR}} && git add package.json pnpm-lock.yaml
 
 # generate a typescript client from the openapi spec
 [doc("Optional flag: --watch")]
 js_generate-openapi *flag:
 	if {{ if flag == "--watch" { "true" } else { "false" } }}; then; \
-		fd --extension=py . | entr just _js_generate-openapi; \
+		fd --extension=py . --exclude=tests --exclude=migrations . \
+			| entr just _js_generate-openapi; \
 	else; \
 		just _js_generate-openapi; \
 	fi
