@@ -163,6 +163,16 @@ setup: _dev_only requirements && py_setup up db_seed js_build
 
 	@echo 'If you are using localais, run `just local-alias` to start the daemon'
 
+# if a dev is having trouble with their environment, this outputs all the versions + debugging information of core tools which could be causing the problem
+[macos]
+setup_debug:
+	docker --version
+	just --version
+	sw_vers -productVersion
+	uname -m
+	zsh --version
+	if command -v op >/dev/null 2>&1; then op --version; fi
+
 # TODO extract to my personal dotfiles as well
 # TODO should change the CURRENT_BASE for py and other x.x.y upgrades
 [script]
