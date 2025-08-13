@@ -146,7 +146,7 @@ requirements *flags: _dev_only
 	fi
 
 # setup everything required for local development
-setup: _dev_only requirements && py_setup up db_seed js_build
+setup: _dev_only requirements && py_setup up db_seed js_setup
 	# NOTE this task should be non-destructive, the user should opt-in to something destructive like `nuke`
 
 	# `.local` variants enable the developer to override configuration options without
