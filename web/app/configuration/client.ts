@@ -11,6 +11,7 @@ import { client } from "client/client.gen"
 // so we only have a single file to change if the API changes on us
 export * from "client/sdk.gen"
 export type * from "client/types.gen"
+export * from "client/@tanstack/react-query.gen"
 
 const VITE_PYTHON_URL = requireEnv("VITE_PYTHON_URL")
 
@@ -57,4 +58,24 @@ export const publicClient = createClient({
   baseUrl: VITE_PYTHON_URL,
 
   // explicitly excluding any authentication configuration
+})
+
+// this loader checks the response codes and throws specific type of errors that will render different error pages
+// this should be used in any clientLoaders
+export const publicClientLoader = createClient({
+  baseUrl: VITE_PYTHON_URL,
+  // explicitly exclude any authentication configuration
+})
+
+// https://heyapi.dev/openapi-ts/clients/fetch#interceptors
+// https://github.com/sparkplug/momoapi-node/blob/a547cac2fd4ad52e06e56b9b318714498d6aa80c/src/client.ts#L40
+// TODO need to understand if it's better to map `error`
+publicClientLoader.interceptors.response.use((response) => {
+  if (response.status === 404) {
+    throw new Response("Not Found", { status: 404 })
+  } else if (response.status === 500) {
+    throw new Response("Server Error", { status: 500 })
+  }
+
+  return response
 })
