@@ -37,10 +37,17 @@ def configure_database():
     so the defaults are exactly what we want.
     """
 
+    # initialize before running migrations since the migration may need to use the database
+    # for standard schema mutations, this should not occur, but if we interact with SQLModel using the session helpers
+    # we need to have this set in order to use those (at least, for now).
+    # TODO we should consider setting `init` manually in each migration that needs this and understand if running this
+    # before a migration will cause an issue...
+    activemodel.init(database_url())
+
+    # TODO I wonder if this will cause issues with the system not picking up on required DB changes? We will see
+
     if is_production() or is_staging():
         run_migrations()
-
-    activemodel.init(database_url())
 
 
 def create_db_and_tables():
