@@ -44,6 +44,15 @@ assert (
     == "a3ebf7850a8389fc2d8328d7322745f233879bc300ab5cc1bd2a52a5e1710815"
 )
 
+# without this, the index file will be cached and therefore can easily serve stale content
+# this did not cause an issue on Chrome, but Safari heavily caches files without these directives.
+# https://claude.ai/share/882b6f3f-9212-41ae-9594-1c32f03b8825
+HTML_NOCACHE_HEADERS = {
+    "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+    "Pragma": "no-cache",
+    "Expires": "0",
+}
+
 
 class GZipStaticFiles(StaticFiles):
     "Check for a precompressed gz file and serve that instead. Loosely based on GZipMiddleware"
@@ -82,7 +91,8 @@ def mount_public_directory(app: FastAPI):
     # in development, a separate py & js server will be used, if the development build DNE that's fine
     if not public_path.exists() and (is_development() or is_local_testing()):
         log.warning(
-            "The development build does not exist. Static files will not be served"
+            "The development build does not exist. Static files will not be served",
+            build_path=public_path,
         )
         return app
 
@@ -97,9 +107,23 @@ def mount_public_directory(app: FastAPI):
         name="public",
     )
 
+    index_html_response = FileResponse(
+        public_path / "index.html",
+        # never cache this file, we want it to be pulled on every page load since it (a) is very small and (b) mostly
+        # links out to other files, which we can safely cache
+        headers=HTML_NOCACHE_HEADERS,
+    )
+
     @app.get("/", include_in_schema=False)
     async def javascript_index():
-        return FileResponse(public_path / "index.html")
+        return index_html_response
+
+    # TODO Assets with hashes: cache aggressively?
+    # elif "/assets/" in str(fp) and any(char in fp.stem for char in ['-', '_']):  # Has hash
+    #     headers = {
+    #         "Cache-Control": "public, max-age=31536000, immutable",  # 1 year
+    #     }
+    #     return FileResponse(fp, headers=headers)
 
     @app.get("/{path:path}", include_in_schema=False)
     async def frontend_handler(path: str):
@@ -114,7 +138,7 @@ def mount_public_directory(app: FastAPI):
         fp = public_path / path
 
         if not fp.exists():
-            fp = public_path / "index.html"
+            return index_html_response
 
         return FileResponse(fp)
 
