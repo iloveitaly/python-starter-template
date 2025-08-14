@@ -16,6 +16,7 @@ import subprocess
 import threading
 import time
 
+import pytest
 from gitignore_parser import parse_gitignore
 
 from app import root
@@ -27,6 +28,9 @@ js_build_success = None
 
 # Build state file, the mtime is used to trigger new js builds
 BUILD_STATE_FILE = root / "tmp" / ".js_build_success"
+
+# NOTE this line is subject to change, keep it sync with the Justfile
+PYTHON_JAVASCRIPT_BUILD_CMD = ["just", "py_js-build"]
 
 
 def get_latest_mtime(directory):
@@ -123,8 +127,7 @@ $ just py_js-build
     log.info("Starting Javascript Build...")
 
     build_process = subprocess.Popen(
-        # NOTE this line is subject to change, keep it sync with the Justfile
-        ["just", "py_js-build"],
+        PYTHON_JAVASCRIPT_BUILD_CMD,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
@@ -139,6 +142,7 @@ $ just py_js-build
                 "Javascript build failed:\nSTDOUT:\n%s\n\nSTDERR:\n%s", stdout, stderr
             )
             js_build_success = False
+            pytest.exit("JavaScript build failed")
         else:
             log.info("Javascript Build finished")
             BUILD_STATE_FILE.touch()  # Update build state on success
