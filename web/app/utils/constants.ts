@@ -1,0 +1,16 @@
+/**
+ * Project-specific constants.
+ */
+import { requireEnv } from "~/utils/environment"
+
+import { invariant } from "@epic-web/invariant"
+
+// TODO we should figure out an option to acquire the base url dynamically from the request using a middleware
+export const BASE_URL = requireEnv("VITE_APP_BASE_URL")
+
+invariant(
+  BASE_URL &&
+    (BASE_URL.startsWith("http") || BASE_URL.startsWith("https")) &&
+    BASE_URL.endsWith("/"),
+  "VITE_APP_BASE_URL must be a valid URL starting with http(s)://",
+)
