@@ -21,6 +21,8 @@ py_setup:
 	# the installation process is fast enough (<10s) to eliminate the need for attempting to cache via GHA
 	# if this turns out not to be true, we should implement: https://github.com/hirasso/thumbhash-custom-element/blob/main/.github/workflows/tests.yml
 
+	# TODO why should we use --only-shell here? can we extract this out and run it after we update the packages as well?
+
 	if [ -z "${CI:-}" ]; then \
 		uv run playwright install chromium; \
 	else \
