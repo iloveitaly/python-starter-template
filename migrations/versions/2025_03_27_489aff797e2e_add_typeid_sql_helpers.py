@@ -2,6 +2,37 @@
 
 Helpful when writing SQL queries directly vs using sqlalchemy.
 
+Functions:
+- typeid_parse(typeid_str text) -> uuid
+  Parses a TypeID string (with optional prefix like "order_...") and returns a uuid.
+
+- base32_decode(s text) -> uuid
+  Decodes a 26-character TypeID suffix (Crockford base32) into a uuid.
+
+Examples:
+-- Parse a full TypeID (with or without prefix)
+SELECT typeid_parse('scrn_01hxyzexampleexampleexample') AS id;
+
+-- Join against a table storing uuids
+SELECT *
+FROM screening
+WHERE screening.id = typeid_parse(:typeid);
+
+-- Decode just the suffix
+SELECT base32_decode('01hxyzexampleexampleexample') AS id;
+
+-- Multiple-underscore prefixes are allowed
+SELECT typeid_parse('doctor_note_schema_01hxyzexampleexampleexample');
+
+-- Use in expressions
+SELECT count(*)
+FROM tickets
+WHERE screening_id = typeid_parse(:screening_id);
+
+Notes:
+- Prefix (when present) must match ^[a-z]+(_[a-z]+)*$ and be <= 63 characters.
+- Suffix must be 26 chars, use the base32 alphabet, and start with 0-7.
+
 Revision ID: 489aff797e2e
 Revises: cf868c4d11b7
 Create Date: 2025-03-27 20:02:44.254927
@@ -17,7 +48,7 @@ import activemodel
 
 # revision identifiers, used by Alembic.
 revision: str = '489aff797e2e'
-down_revision: Union[str, None] = 'cf868c4d11b7'
+down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -164,7 +195,57 @@ language plpgsql
 immutable;
 """)
 
+    # Encodes a UUID as a base32 string
+    op.execute("""
+create or replace function base32_encode(id uuid)
+returns text
+as $$
+declare
+  bytes bytea;
+  alphabet bytea = '0123456789abcdefghjkmnpqrstvwxyz';
+  output text = '';
+begin
+  bytes = uuid_send(id);
+
+  -- 10 byte timestamp
+  output = output || chr(get_byte(alphabet, (get_byte(bytes, 0) & 224) >> 5));
+  output = output || chr(get_byte(alphabet, (get_byte(bytes, 0) & 31)));
+  output = output || chr(get_byte(alphabet, (get_byte(bytes, 1) & 248) >> 3));
+  output = output || chr(get_byte(alphabet, ((get_byte(bytes, 1) & 7) << 2) | ((get_byte(bytes, 2) & 192) >> 6)));
+  output = output || chr(get_byte(alphabet, (get_byte(bytes, 2) & 62) >> 1));
+  output = output || chr(get_byte(alphabet, ((get_byte(bytes, 2) & 1) << 4) | ((get_byte(bytes, 3) & 240) >> 4)));
+  output = output || chr(get_byte(alphabet, ((get_byte(bytes, 3) & 15) << 1) | ((get_byte(bytes, 4) & 128) >> 7)));
+  output = output || chr(get_byte(alphabet, (get_byte(bytes, 4) & 124) >> 2));
+  output = output || chr(get_byte(alphabet, ((get_byte(bytes, 4) & 3) << 3) | ((get_byte(bytes, 5) & 224) >> 5)));
+  output = output || chr(get_byte(alphabet, (get_byte(bytes, 5) & 31)));
+
+  -- 16 bytes of entropy
+  output = output || chr(get_byte(alphabet, (get_byte(bytes, 6) & 248) >> 3));
+  output = output || chr(get_byte(alphabet, ((get_byte(bytes, 6) & 7) << 2) | ((get_byte(bytes, 7) & 192) >> 6)));
+  output = output || chr(get_byte(alphabet, (get_byte(bytes, 7) & 62) >> 1));
+  output = output || chr(get_byte(alphabet, ((get_byte(bytes, 7) & 1) << 4) | ((get_byte(bytes, 8) & 240) >> 4)));
+  output = output || chr(get_byte(alphabet, ((get_byte(bytes, 8) & 15) << 1) | ((get_byte(bytes, 9) & 128) >> 7)));
+  output = output || chr(get_byte(alphabet, (get_byte(bytes, 9) & 124) >> 2));
+  output = output || chr(get_byte(alphabet, ((get_byte(bytes, 9) & 3) << 3) | ((get_byte(bytes, 10) & 224) >> 5)));
+  output = output || chr(get_byte(alphabet, (get_byte(bytes, 10) & 31)));
+  output = output || chr(get_byte(alphabet, (get_byte(bytes, 11) & 248) >> 3));
+  output = output || chr(get_byte(alphabet, ((get_byte(bytes, 11) & 7) << 2) | ((get_byte(bytes, 12) & 192) >> 6)));
+  output = output || chr(get_byte(alphabet, (get_byte(bytes, 12) & 62) >> 1));
+  output = output || chr(get_byte(alphabet, ((get_byte(bytes, 12) & 1) << 4) | ((get_byte(bytes, 13) & 240) >> 4)));
+  output = output || chr(get_byte(alphabet, ((get_byte(bytes, 13) & 15) << 1) | ((get_byte(bytes, 14) & 128) >> 7)));
+  output = output || chr(get_byte(alphabet, (get_byte(bytes, 14) & 124) >> 2));
+  output = output || chr(get_byte(alphabet, ((get_byte(bytes, 14) & 3) << 3) | ((get_byte(bytes, 15) & 224) >> 5)));
+  output = output || chr(get_byte(alphabet, (get_byte(bytes, 15) & 31)));
+
+  return output;
+end
+$$
+language plpgsql
+immutable;
+""")
+
 
 def downgrade() -> None:
     op.execute("DROP FUNCTION IF EXISTS typeid_parse(text);")
     op.execute("DROP FUNCTION IF EXISTS base32_decode(text);")
+    op.execute("DROP FUNCTION IF EXISTS base32_encode(text);")
