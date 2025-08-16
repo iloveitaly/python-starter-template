@@ -25,6 +25,7 @@ env:
   GH_TOKEN: ${{ github.token }}
 
   # required otherwise github api calls are rate limited
+  # mise, and other tools, use this token to authenticate and eliminate rate limits
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # a important design goal is to avoid custom configuration in CI. This enables tests to be run in a CI-like environment
