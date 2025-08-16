@@ -3,7 +3,7 @@
 
 # this *should* be compatible with mise and asdf, but I'm only testing with mise
 
-uv 0.8.10
+uv 0.8.11
 just 1.42.4
 direnv 2.37.1
 
@@ -13,5 +13,5 @@ pnpm 9.15.9
 # python and node versions must be tied to what is available in nixpgs
 # https://search.nixos.org/packages?channel=24.11&show=nodejs_22&from=0&size=50&sort=relevance&type=packages&query=node
 
-python 3.13.6
+python 3.13.7
 node 22.18.0

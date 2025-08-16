@@ -8,7 +8,7 @@ runs:
     # mise can rarely get stuck installing. It normally takes < 10s to install, so this should never be more than a minute
     - uses: jdx/mise-action@v2
       with:
-        version: 2025.8.9
+        version: 2025.8.10
     # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
     - uses: tecolicom/actions-use-apt-tools@v1
       with:
