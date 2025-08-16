@@ -16,13 +16,13 @@ _run_in_dev_and_test label *command: _dev_only
 	{{EXECUTE_IN_TEST}} {{command}}
 
 # separate task for the db to support db_reset
-db_up:
+db_up: _dev_only
 	docker compose up -d --wait postgres
 
 # TODO may need to run `docker rm $(docker ps -aq)` as well
 # TODO docker down does not exit 1 if it partially failed
 # turn off the database *and* completely remove the data
-db_down:
+db_down: _dev_only
 	docker compose down --volumes postgres
 
 # completely destroy the dev and test databases, destroying the containers and rebuilding them
@@ -35,19 +35,19 @@ DB_TERMINATE_AND_RESET_SCHEMA := "SELECT pg_terminate_backend(pid) FROM pg_stat_
 PSQL_BIN := "docker compose exec postgres psql"
 
 # drop all DB connections and then drop all tables and completely reset the schema
-_db_reset_schema: _dev_only
+db_reset_schema: _dev_only
 	{{PSQL_BIN}} $DATABASE_URL -c "{{DB_TERMINATE_AND_RESET_SCHEMA}}"
 	{{PSQL_BIN}} $TEST_DATABASE_URL -c "{{DB_TERMINATE_AND_RESET_SCHEMA}}"
 
 # destroys all data in the dev and test databases, leaves the containers running
-db_reset: _dev_only _db_reset_schema db_migrate db_seed
+db_reset: _dev_only db_reset_schema db_migrate db_seed
 
 # TODO can we do something in SQLModel to sync new columns to the DB as well
 # wipe, migrate, and set database state to the latest (head) model configuration. Do not use in production, always use migrations
-db_reset_head: _dev_only _db_reset_schema db_migrate db_migrate_head db_seed
+db_reset_head: _dev_only db_reset_schema db_migrate db_migrate_head db_seed
 
 # destroy and rebuild the database from the ground up, without mutating migrations or recreating database containers (unlike nuke)
-db_destroy: db_reset db_migrate db_seed
+db_destroy: _dev_only db_reset db_migrate db_seed
 
 db_lint:
 	uv run alembic check
@@ -76,7 +76,7 @@ db_play: _dev_only
 	uv tool run pgcli $DATABASE_URL
 
 # run migrations on dev and test
-db_migrate:
+db_migrate: _not_production
 	# if this folder is wiped, you'll get a strange error from alembic
 	mkdir -p migrations/versions
 
@@ -103,8 +103,11 @@ db_downgrade: _dev_only
 
 # TODO I don't think we really want to migrate the database automatically. Instead, want this to be an independent command that we can call inside the reset and other operations.
 # add seed data to dev and test
-db_seed: db_migrate
+db_seed: _not_production db_migrate
 	@just _banner_echo "Seeding Database"
+
+	# you WILL get errors at this stage if you have SQLModel mutations that do not have an associated migration
+	# and if you rely on them within your seeding process
 	uv run python migrations/seed.py
 
 	[ -n "${CI:-}" ] || (just _banner_echo "Seeding Test Database" && {{EXECUTE_IN_TEST}} uv run python migrations/seed.py)
@@ -112,7 +115,7 @@ db_seed: db_migrate
 # TODO you can't preview what the migration will look like before naming it?
 # generate migration based on the current state of the database
 [script]
-db_generate_migration migration_name="":
+db_generate_migration migration_name="": _dev_only
 	if [ -z "{{migration_name}}" ]; then
 		echo "Enter the migration name (use add/remove/update prefix): "
 		read name
@@ -128,14 +131,14 @@ db_generate_migration migration_name="":
 	just _banner_echo "Migration Generated. Run 'just db_migrate' to apply the migration"
 
 # rm migrations and regenerate: only for use in early development
-db_nuke:
+db_nuke: _dev_only
 	# I personally hate having a nearly-greenfield project with a bunch of migrations from DB schema iteration
 	# this should only be used *before* you've launched and prod and don't need properly migration support
 
 	# first, wipe all of the existing migrations
 	rm -rf migrations/versions/* || true
 
-	just _db_reset_schema
+	just db_reset_schema
 	just db_generate_migration "initial_commit"
 
 # enable SQL debugging on the postgres database
