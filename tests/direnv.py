@@ -19,6 +19,8 @@ import typing as t
 from .constants import TMP_DIRECTORY
 from .log import log
 
+DIRENV_STATE_DIRECTORY = TMP_DIRECTORY / "direnv_state"
+
 
 def is_using_direnv() -> bool:
     """
@@ -106,7 +108,9 @@ def load_ci_environment():
 
     sha = direnv_state_sha()
 
-    direnv_state_file = TMP_DIRECTORY / f"direnv_state_{sha}"
+    DIRENV_STATE_DIRECTORY.mkdir(parents=True, exist_ok=True)
+
+    direnv_state_file = DIRENV_STATE_DIRECTORY / sha
 
     # if state file exists, then load the cached env state
     if direnv_state_file.exists():
