@@ -46,6 +46,8 @@ PROJECT_NAME := "python-starter-template"
 # execute a command in the (nearly) exact same environment as CI
 EXECUTE_IN_TEST := "CI=true direnv exec ."
 
+# avoid using the app entrypoint shortcut to avoid having to modify the name across different projects
+APP_CLI := "uv run python -m app.cli"
 
 default:
 	just --list
@@ -229,7 +231,7 @@ tooling_upgrade: _dev_only && _mise_upgrade _js_sync-engine-versions
 # upgrade everything: all packages on all languages, tooling, etc
 upgrade: _dev_only tooling_upgrade js_upgrade py_upgrade
 	playwright install
-	uv run python -m app.cli write-versions
+	{{APP_CLI}} write-versions
 	git add .service-versions
 
 # run (or reload) daemon to setup local development aliases
