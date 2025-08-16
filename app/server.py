@@ -20,6 +20,7 @@ from app.routes.utils.openapi import simplify_operation_ids
 from app.models.user import User
 
 from .environments import is_production
+from .routes.healthcheck import healthcheck_api_app
 from .routes.internal import internal_api_app
 from .routes.middleware import add_middleware
 from .routes.static import mount_public_directory
@@ -62,6 +63,7 @@ api_app = FastAPI(
 api_app.include_router(internal_api_app)
 api_app.include_router(external_api_app)
 api_app.include_router(unauthenticated_api)
+api_app.include_router(healthcheck_api_app)
 
 add_middleware(api_app)
 register_exception_handlers(api_app)
@@ -72,27 +74,6 @@ async def index():
     from datetime import datetime
 
     return render_template("routes/index.html", {"date": datetime.now()})
-
-
-@api_app.get("/healthcheck")
-async def healthcheck():
-    "basic uptime check"
-    return {"status": "ok"}
-
-
-@api_app.get("/status")
-async def active_user_status():
-    "check if users have logged in within the last day"
-
-    last_24_hours = Instant.now().subtract(hours=24).py_datetime()
-    active_users = User.where(User.last_active_at > last_24_hours).count()  # type: ignore
-
-    if active_users == 0:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-        )
-
-    return {"status": "ok"}
 
 
 # important that this is done after all routes are added
