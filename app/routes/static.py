@@ -48,14 +48,29 @@ assert (
 # this did not cause an issue on Chrome, but Safari heavily caches files without these directives.
 # https://claude.ai/share/882b6f3f-9212-41ae-9594-1c32f03b8825
 HTML_NOCACHE_HEADERS = {
-    "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+    # allow storage but require revalidation to avoid stale SPA shell
+    "Cache-Control": "no-cache, max-age=0, must-revalidate",
     "Pragma": "no-cache",
     "Expires": "0",
+    "Accept-Ranges": "none",
+}
+
+GZIP_HEADERS = {
+    "Content-Encoding": "gzip",
+    "Vary": "Accept-Encoding",
+    # we don't support streaming, but if we don't explicitly say we can't do streaming (range request)
+    # nginx will advertise and some bots/fancy browsers will attempt to do range requests causing
+    # a flood of exceptions in our application. This never occurs right away, but as the files age
+    # (if there's no recent deploys) clients will attempt to do range requests and you'll see a bunch of errors
+    "Accept-Ranges": "none",
 }
 
 
 class GZipStaticFiles(StaticFiles):
     "Check for a precompressed gz file and serve that instead. Loosely based on GZipMiddleware"
+
+    # TODO for hashed asset files, we should add a very long cache header: public, max-age=31536000, immutable
+    # TODO should we assert against the three possible types we would expecvt here?
 
     async def get_response(self, path: str, scope: Scope):
         # GZipMiddleware checks the scope for HTTP
@@ -69,16 +84,31 @@ class GZipStaticFiles(StaticFiles):
 
                 if os.path.exists(gz_path):
                     content_type, _ = mimetypes.guess_type(full_path)
-                    headers = {"Content-Encoding": "gzip"}
+                    headers = GZIP_HEADERS
 
                     return FileResponse(
                         gz_path,
-                        # FileResponse uses `guess_type` but falls back to `text/plain`
+                        # FileResponse uses `guess_type` but falls back to `text/plain`, we mimic this behavior, but
+                        # for the non-gzipped file
                         media_type=(content_type or "text/plain"),
                         headers=headers,
                     )
 
         return await super().get_response(path, scope)
+
+        # TODO appartently AI thinks we should add these headers to non-gzip responses too, in case we end up
+        # TODO however, I've never seen this error in the wild...
+        # serving them as gzipped in the future... I need to investigate this more
+        # response = await super().get_response(path, scope)
+
+        # # ensure caches keep distinct representations per Accept-Encoding
+        # try:
+        #     response.headers.setdefault("Vary", "Accept-Encoding")
+        # except Exception:
+        #     # some responses may not have mutable headers; in that case just return as-is
+        #     pass
+
+        # return response
 
 
 def mount_public_directory(app: FastAPI):
