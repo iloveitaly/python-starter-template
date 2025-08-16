@@ -1,8 +1,11 @@
 ## python
+pydantic doesn't render JSON schema in a way that retool likes https://github.com/pydantic/pydantic/issues/7161
+https://github.com/gotcha/ipdb/blob/5b5c8683e2a3ac7fddc4013d3863c8086e23a639/ipdb/stdout.py#L9-L11 maybe this will fix some of our stdout issues?
+should consume react router routes and only respond to those routes in the static glob
 limit FE dynamic routes to generated react router routes
 https://github.com/jd/tenacity - use this instead of backoff
 https://github.com/astral-sh/ty?tab=readme-ov-file - new type checker, after it is out of beta
-https://github.com/procrastinate-org/procrastinate
+https://github.com/procrastinate-org/procrastinate - another pg-based job queue
 https://github.com/janbjorge/PgQueuer - another job queue
 https://tkte.ch/chancy/ look into this job queue?
 I think we should adopt a `lib/` for any code that, in a perfect world, should be extracted out into a library.
@@ -75,8 +78,11 @@ flightcontrol on AWS or something like that on azure
 
 ## pytest
 playwright: In config: trace = "on-first-retry"
+stabalized scrolling https://grok.com/share/bGVnYWN5_22b6f3ac-a0dc-49d5-a92a-223d43834a70
+pytest-failure-tracker to track failures across test runs, if we combine this with locking
 
 ## dev
+if someone's completion system is not initialized, the bash direnv export thing will fail with `compdef not defined` sort of error
 `just direnv_export_docker '.env.production.frontend' --params` can still silently fail
 https://grok.com/share/bGVnYWN5_74eae3f3-cd3f-4465-9a8d-f7d4fc0faf45 prevent py analysis from picking up seed, console, etc files
 zrok? https://github.com/openziti/zrok/issues/1006
@@ -189,6 +195,8 @@ binding for paste as plain text
 
 ## javascript
 
+- [ ] https://github.com/remix-run/react-router/issues/12761 understand safari caching more; have we fixed this with HTML caching?
+- [ ] maybe remove log statements here? https://github.com/lunaticscode/vite-remove-console?tab=readme-ov-file
 - [ ] https://grok.com/share/bGVnYWN5_7b44bc14-aea6-4a23-8218-d5550748692a better zod errors
 - [ ] https://github.com/remix-run/react-router/discussions/14081 typed href query params
 - [ ] vite image optimization import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
