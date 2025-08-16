@@ -34,7 +34,14 @@ def write_versions():
 
 
 @app.command()
-def dump_openapi(app_target: str = "api_app"):
+def dump_openapi(
+    app_target: str = "api_app",
+    list_apps: bool = typer.Option(
+        False,
+        "--list-apps",
+        help="List available FastAPI app targets and exit",
+    ),
+):
     """
     Dump OpenAPI schema for the specified app target.
     """
@@ -55,9 +62,17 @@ def dump_openapi(app_target: str = "api_app"):
 
     available_apps = [name for name in dir(server_module) if is_fastapi_app(name)]
 
+    if list_apps:
+        typer.echo(
+            "Available FastAPI app targets:\n"
+            + "\n".join(f"- {n}" for n in available_apps)
+        )
+        return
+
     if app_target not in available_apps:
         typer.echo(
-            f"Error: '{app_target}' not found. Available targets: {', '.join(available_apps)}"
+            f"Error: '{app_target}' not found.\n\nAvailable FastAPI app targets:\n"
+            + "\n".join(f"- {n}" for n in available_apps)
         )
         raise typer.Exit(1)
 
