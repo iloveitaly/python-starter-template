@@ -151,3 +151,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  /* standard blue <a> link */
+  .text-blue-link {
+    @apply text-blue-600 underline hover:text-blue-800;
+  }
+}
