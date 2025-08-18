@@ -31,5 +31,6 @@ export default defineConfig({
       name: "@hey-api/typescript",
     },
     "@tanstack/react-query",
+    "zod",
   ],
 })

@@ -12,6 +12,7 @@ import { client } from "client/client.gen"
 export * from "client/sdk.gen"
 export type * from "client/types.gen"
 export * from "client/@tanstack/react-query.gen"
+export * from "client/zod.gen"
 
 const VITE_PYTHON_URL = requireEnv("VITE_PYTHON_URL")
 
@@ -79,3 +80,13 @@ publicClientLoader.interceptors.response.use((response) => {
 
   return response
 })
+
+// TODO implement dynamic base URL interceptor for development, helpful for ngrok and friends
+// function dynamicBaseInterceptor(request: Request): Request {
+//   const origin = window.location.origin;
+//   const newBase = origin === 'https://example.com' ? 'https://api.example.com' : 'https://staging.api.example.com';
+//   const newUrl = request.url.replace(OpenAPI.BASE, newBase);
+//   return new Request(newUrl, request);
+// }
+
+// OpenAPI.interceptors.request.use(dynamicBaseInterceptor);
