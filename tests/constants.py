@@ -29,3 +29,6 @@ TMP_DIRECTORY = config("TMP_DIRECTORY", cast=Path)
 TEST_RESULTS_DIRECTORY = config("TEST_RESULTS_DIRECTORY", cast=Path)
 
 PYTHON_TEST_SERVER_HOST = config("PYTHON_TEST_SERVER_HOST", cast=str)
+
+LONG_INTEGRATION_TEST_TIMEOUT = 15_000
+"indicates that a particular part of a integration test may need a while to resolve"
