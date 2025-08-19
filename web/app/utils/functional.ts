@@ -1,4 +1,9 @@
-//  JS functional tooling is terrible by default, this should be the single entrypoint for all additional functional tooling
+/**
+ * JS functional tooling is terrible by default, this should be the single entrypoint for all additional functional tooling.
+ * Goal is limit exports to just the common set of functions that are needed.
+ *
+ * Usage: `import { f } from "~/utils/functional"
+ */
 import * as R from "ramda"
 
 // TODO is there a ramda thing for this
@@ -31,4 +36,10 @@ export function arrayWrap(v: never) {
   return [v]
 }
 
-export default { isNil: R.isNil, isEmpty, isBlank, arrayWrap }
+export default {
+  isNil: R.isNil,
+  isEmpty,
+  isBlank,
+  arrayWrap,
+  partialRight: R.partialRight,
+}
