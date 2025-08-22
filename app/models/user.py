@@ -52,6 +52,7 @@ class User(
             TypeIDType(API_KEY_PREFIX), nullable=True, unique=True, index=True
         ),
         default=None,
+        exclude=True,
     )
 
     def generate_api_key(self):
