@@ -7,6 +7,8 @@ from httpx import ASGITransport, AsyncClient
 from tests.routes.utils import (
     MockAuthenticateRequest,
     base_server_url,
+    bearer_headers,
+    get_valid_token,
 )
 
 
@@ -20,6 +22,23 @@ def client(faker):
         # Set default IP for all tests using this client, without this `testclient` is the ip address
         # of `request.client.host` which is not a valid ipv4 or ipv6 address
         client.headers = {"x-forwarded-for": faker.ipv4()}
+        yield client
+
+
+@pytest.fixture
+def loud_client(faker):
+    "client to connect to your fastapi routes that throws an error instead of rendering them"
+
+    from app.server import api_app
+
+    with TestClient(
+        api_app,
+        base_url=base_server_url(),
+        # TODO need to make sure we have the right thing here, unsure if this is doing exactly what we want
+        raise_server_exceptions=False,
+    ) as client:
+        client.cookies.clear()
+        client.headers = {"X-forwarded-for": faker.ipv4()}
         yield client
 
 
@@ -39,6 +58,18 @@ def authenticated_client():
         yield client
 
     api_app.dependency_overrides = {}
+
+
+@pytest.fixture
+def authenticated_api_client():
+    """API client with Bearer token authentication."""
+    from app.server import api_app
+
+    token = get_valid_token()
+
+    with TestClient(api_app, base_url="api.example.com") as client:
+        client.headers.update(bearer_headers(token))
+        yield client
 
 
 @pytest.fixture

@@ -149,6 +149,16 @@ def get_valid_token(user: ClerkUser | None = None):
     return token.jwt
 
 
+def bearer_headers(token: str) -> dict[str, str]:
+    """Generate Authorization header with Bearer token."""
+    return {"Authorization": f"Bearer {token}"}
+
+
+def distribution_headers(distribution) -> dict[str, str]:
+    """Generate Authorization header for distribution API key."""
+    return bearer_headers(distribution.api_key)
+
+
 def decode_cookie(response: Response):
     "decode a signed cookie into a dict for inspection and assertion"
     from app.routes.middleware import SESSION_SECRET_KEY
