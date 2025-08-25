@@ -8,16 +8,12 @@ JavaScript client which will use these methods.
 from typing import Any
 
 import orjson
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.responses import JSONResponse
-from starlette import status
-from whenever import Instant
 
 from app.routes.api import external_api_app
 from app.routes.errors import register_exception_handlers
 from app.routes.utils.openapi import simplify_operation_ids
-
-from app.models.user import User
 
 from .environments import is_production
 from .routes.healthcheck import healthcheck_api_app
