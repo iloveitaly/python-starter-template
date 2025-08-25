@@ -3,13 +3,21 @@
 #######################
 
 _secrets_service-token CONTEXT WRITE_PERMISSION="false":
+	# this can occur if .envrc fails because of an expired service token, it's also hard to notice and understand exactly
+	# what to do here, so let's make it clear to the user what they need to do to fix it.
+	@[[ -n "${OP_VAULT_UID:-}" ]] || { \
+		echo "{{RED}}error: OP_VAULT_UID must be set in order to generate a service account token{{NORMAL}}" >&2; \
+		echo "{{BLUE}}Set it with: export OP_VAULT_UID=5pxsyszwmfyzhzsz5ncglvo3ku{{NORMAL}}" >&2; \
+		exit 1; \
+	}
+
 	# if OP_SERVICE_ACCOUNT_TOKEN is set, the service-account API will not work
 	unset OP_SERVICE_ACCOUNT_TOKEN && \
-	write_permission=$([[ "{{WRITE_PERMISSION}}" == "true" ]] && echo ",write_items" || echo "") && \
-	op service-account create {{PROJECT_NAME}}-{{CONTEXT}} \
-			--expires-in '90d' \
-			--vault "${OP_VAULT_UID}:read_items${write_permission}" \
-			--raw
+		write_permission=$([[ "{{WRITE_PERMISSION}}" == "true" ]] && echo ",write_items" || echo "") && \
+		op service-account create {{PROJECT_NAME}}-{{CONTEXT}} \
+				--expires-in '90d' \
+				--vault "${OP_VAULT_UID}:read_items${write_permission}" \
+				--raw
 
 # generate r+w 1p service account token for terraform and other tools which can create 1P records
 secrets_write-service-token: _not_production
@@ -18,10 +26,25 @@ secrets_write-service-token: _not_production
 	just _secrets_service-token write true | jq -r -R '@sh "export OP_SERVICE_ACCOUNT_TOKEN=\(.)"'
 
 # generate service account token for local development
+[script]
 secrets_local-service-token user=`whoami`: _not_production
-	@echo '{{ BLUE }}Update your ".env.local" with this value:{{ NORMAL }}'
+	# @sh ensures the output is a valid bash export statement
+	# the `$() || {}` is sneaky syntax that let's us exit if the subshell command fails
+	token_shell_export=$(
+		just _secrets_service-token {{user}} |
+		jq -r -R '@sh "export OP_SERVICE_ACCOUNT_TOKEN=\(.)"'
+	) || {
+		echo "{{RED}}error: failed to generate 1Passwordservice account token{{NORMAL}}" >&2
+		exit 1
+	}
 
-	just _secrets_service-token {{user}} | jq -r -R '@sh "export OP_SERVICE_ACCOUNT_TOKEN=\(.)"'
+	echo '{{ BLUE }}Update your ".env.local" OP_SERVICE_ACCOUNT_TOKEN with this value:{{ NORMAL }}'
+	echo "$token_shell_export"
+
+	if [ -f .env.local ]; then
+		sed -i.bak "s|^export OP_SERVICE_ACCOUNT_TOKEN.*$|${token_shell_export}|" .env.local && rm .env.local.bak
+		echo "{{GREEN}}Updated OP_SERVICE_ACCOUNT_TOKEN in .env.local{{NORMAL}}"
+	fi
 
 # grant GH actions access to the 1p vault, this needs to be done every 90d
 secrets_ci_grant-github-actions: _not_production
