@@ -33,19 +33,20 @@ if (isProduction()) {
       }),
     ],
 
-    // Set tracesSampleRate to 1.0 to capture 100%
-    // of transactions for performance monitoring.
-    // We recommend adjusting this value in production
-    tracesSampleRate: 1.0,
+    // assume `contains` on all string entries
+    denyUrls: ["youtube.com"],
+
+    // 1.0 to capture 100% of transactions for performance monitoring.
+    tracesSampleRate: 0.05,
 
     // TODO(mbianco) pull domain from ENV
     // TODO(mbianco) should pull localias as well
     // Set `tracePropagationTargets` to control for which URLs distributed tracing should be enabled
-    tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
+    // tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
 
-    // Capture Replay for 10% of all sessions,
+    // Capture Replay for 5% of all sessions,
     // plus for 100% of sessions with an error
-    replaysSessionSampleRate: 0.1,
+    replaysSessionSampleRate: 0.05,
     replaysOnErrorSampleRate: 1.0,
   })
 }
