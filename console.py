@@ -2,6 +2,7 @@
 # Description: production REPL, not designed to be used locally. `./console.py` in production.
 # ruff: noqa: F401, F821
 
+# some common utilities that are a pain to reimplement
 import json
 import re
 from urllib.request import urlopen
@@ -28,3 +29,6 @@ def read_data_url(url):
         url = url.replace("gist.github.com", "gist.githubusercontent.com") + "/raw"
 
     return urlopen(url).read()
+
+
+ipython_playground.output()
