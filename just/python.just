@@ -86,7 +86,14 @@ py_lint +FILES=".":
 		# TODO this is a neat trick, we should use it in other places too + document
 		# https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/workflow-commands-for-github-actions#setting-a-warning-message
 		# https://github.com/jakebailey/pyright-action/blob/b7d7f8e5e5f195796c6f3f0b471a761a115d3b2c/src/main.ts#L62
-		jq -r '.generalDiagnostics[] | "::\(.severity) file=\(.file),line=\(.range.start.line),endLine=\(.range.end.line),col=\(.range.start.character),endColumn=\(.range.end.character)::\(.message)"' < pyright_report.json
+		jq -r \
+		--arg root "$GITHUB_WORKSPACE/" \
+		'
+			.generalDiagnostics[] |
+			.file as $file |
+  		($file | sub("^\\Q\($root)\\E"; "")) as $rel_file |
+			"::\(.severity) file=\($rel_file),line=\(.range.start.line),endLine=\(.range.end.line),col=\(.range.start.character),endColumn=\(.range.end.character)::$rel_file:\(.range.start.line): \(.message)"
+		' < pyright_report.json
 		rm pyright_report.json
 
 		# check jinja2 template language
