@@ -23,6 +23,7 @@ def test_authorized_bad_credentials(client: TestClient):
 
 def test_authorized_good_credentials(client: TestClient):
     token_id = get_valid_token()
+    assert token_id
 
     response = client.get(
         api_app.url_path_for("application_data"),
