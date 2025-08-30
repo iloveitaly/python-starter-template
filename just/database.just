@@ -149,6 +149,10 @@ db_debug: _dev_only
 db_debug_off: _dev_only
 	{{PSQL_BIN}} -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER SYSTEM SET log_statement = 'none'" -c "SELECT pg_reload_conf();"
 
+# generate an AI prompt to help with writing SQL from the local development database (better when it's filled with real data)
+db_prompt: _dev_only
+	uvx llm-sql-prompt@latest $DATABASE_URL --all
+
 # dump the production database locally, obviously this is a bad idea most of the time
 [script]
 db_dump_production: _dev_only
