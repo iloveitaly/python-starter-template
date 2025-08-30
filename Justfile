@@ -25,13 +25,10 @@
 # intuitive and less error prone over time.
 
 # zsh is the default shell under macos, let's mirror it everywhere
-set shell := ["zsh", "-cu", "-o", "pipefail"]
-
-# TODO v (cmd tracing) by default for [script]? created weird terminal clearing behavior
-# TODO can we force tracing and a custom PS4 prompt? Would be good to understand how Just handles echoing commands
-# set script-interpreter := ["zsh", "-euvBh"]
+set shell := ["zsh", "-ceuBh", "-o", "pipefail"]
 
 # determines what shell to use for [script]
+# TODO can we force tracing and a custom PS4 prompt? Would be good to understand how Just handles echoing commands
 set script-interpreter := ["zsh", "-euBh", "-o", "pipefail"]
 
 # avoid seeing comments in the output
