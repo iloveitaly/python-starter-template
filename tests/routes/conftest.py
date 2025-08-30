@@ -66,7 +66,7 @@ def authenticated_api_client():
     from app.server import api_app
 
     token = get_valid_token()
-    # assert token
+    assert token
 
     with TestClient(api_app, base_url="api.example.com") as client:
         client.headers.update(bearer_headers(token))
