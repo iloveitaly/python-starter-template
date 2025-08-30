@@ -92,7 +92,7 @@ py_lint +FILES=".":
 			.generalDiagnostics[] |
 			.file as $file |
 			($file | sub("^\\Q\($root)\\E"; "")) as $rel_file |
-			"::\(.severity) file=\($rel_file),line=\(.range.start.line),endLine=\(.range.end.line),col=\(.range.start.character),endColumn=\(.range.end.character)::$rel_file:\(.range.start.line): \(.message)"
+			"::\(.severity) file=\($rel_file),line=\(.range.start.line),endLine=\(.range.end.line),col=\(.range.start.character),endColumn=\(.range.end.character)::\($rel_file):\(.range.start.line): \(.message)"
 		' < pyright_report.json
 		rm pyright_report.json
 
