@@ -5,7 +5,7 @@ requires-python = ">=3.13"
 [[package]]
 name = "activemodel"
 version = "0.11.0"
-source = { git = "https://github.com/iloveitaly/activemodel.git#3c47e601b8f3eb8a85d9cb84a3e64df68ea10d90" }
+source = { git = "https://github.com/iloveitaly/activemodel.git#5d92b992d4f71af0bf8244826cd4d12281fe350b" }
 dependencies = [
     { name = "python-decouple-typed" },
     { name = "sqlmodel" },
@@ -918,11 +918,11 @@ wheels = [
 
 [[package]]
 name = "httpdbg"
-version = "1.2.6"
+version = "2.0.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/f4/1a/9b0144d2511e9b9a27236a5326b5ba4284efab632d6bfdfc3fb21e270b53/httpdbg-1.2.6.tar.gz", hash = "sha256:2b9b56239dc1daa1a71cef211331213675e5b5be22750550fef1ff4e8126a758", size = 74810, upload-time = "2025-07-27T15:49:58.764Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c6/0f/4b57f1536ce599b79aa3ae37ea86fb055e57d12dd4d9f3a9c1c610e51f70/httpdbg-2.0.0.tar.gz", hash = "sha256:1fba03ded25119f9262a9c5ba08732f1a972b5c99669e1787a24e6beb90e3a61", size = 79361, upload-time = "2025-08-31T08:53:54.568Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ea/af/3fad8c376d18eb36c89604213ed97749efd4bfd5da27a3e6a2c9266df3d9/httpdbg-1.2.6-py3-none-any.whl", hash = "sha256:520a96dda6f66faac3a04e64b8581299278d0766e2fb1d1112388b2cf8a640c5", size = 81705, upload-time = "2025-07-27T15:49:56.89Z" },
+    { url = "https://files.pythonhosted.org/packages/76/9b/8e23f60f94d6bc84055de951b9a913e729e059710278f56cb44d0474946b/httpdbg-2.0.0-py3-none-any.whl", hash = "sha256:82796e58f509531e40a4e16d08128660870312a5ab31c805826d20b597c1772a", size = 87271, upload-time = "2025-08-31T08:53:52.854Z" },
 ]
 
 [[package]]
