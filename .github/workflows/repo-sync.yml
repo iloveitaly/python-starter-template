@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fetching Local Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Repository Metadata Sync
         uses: iloveitaly/github-actions-metadata-sync@v1
         with:
