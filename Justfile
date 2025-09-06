@@ -237,7 +237,7 @@ _mise_version_sync: _dev_only
 
 # upgrade mise, language versions, and essential packages
 tooling_upgrade: _dev_only && _mise_upgrade _js_sync-engine-versions
-	mise self-update
+	mise self-update --yes
 	HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade {{BREW_PACKAGES}}
 
 # upgrade everything: all packages on all languages, tooling, etc
