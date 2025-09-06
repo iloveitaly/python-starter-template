@@ -36,6 +36,7 @@ https://github.com/replicate/cog/blob/c95774f18b8df6f6a7b841be1900153ca04a57ad/p
 exception group processor? https://github.com/apache/airflow/blob/4280b83977cd5a53c2b24143f3c9a6a63e298acc/task_sdk/src/airflow/sdk/log.py#L42
 `localias debug config --print | yq --output-format json` to assert against the local .localias
 we should lint against this `from migrations.seed import PYTHON_SERVER_HOST`, seed should only be executed directly
+ipython in prod + dokku outputs logs directly to stdout https://stackoverflow.com/questions/11833654/log-ipython-output
 
 ## Observability
 https://github.com/replicate/cog/blob/c95774f18b8df6f6a7b841be1900153ca04a57ad/python/cog/server/telemetry.py#L7 looks like there is some standard around this
