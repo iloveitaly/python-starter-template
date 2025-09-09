@@ -1,4 +1,7 @@
 from decouple import config
+from redis.lock import LockError
+
+from app.configuration.redis import get_redis
 
 import activemodel
 from activemodel.session_manager import get_engine
@@ -66,7 +69,9 @@ def create_db_and_tables():
 
 def run_migrations():
     """
-    Run migrations within this process. Here's why we do this:
+    Run migrations 'inline', within the current process.
+
+    Here's why we do this:
 
     - Migrating automatically introduces some risk that an important migration happens without you watching it. However,
       it's up to the migration author to test their migration before merging it, so this shouldn't be an issue. Additionally
@@ -76,6 +81,15 @@ def run_migrations():
       You have to have a container which does not have readiness probes in place (which introduces another set of problems)
     - If we auto-migrate, migration logs are sent to the logging system. If you shell into a container and migrate
       manually, the migration status does not get persisted to the logging system.
+    - Not all deployment platforms make it easy to run migrations in a container that has access to env vars.
+
+    At one point, we implemented a distributed migration lock to wait on concurrent migrations. We removed this and moved
+    to a migrations/env.py lock:
+
+    - It required redis, which was another dependency in an environment that is often different than production
+    - If the container was killed, the lock would not be released, which caused migrations to hang indefinitely on next
+      deploy.
+
     """
 
     from alembic import command
@@ -87,4 +101,27 @@ def run_migrations():
 
     alembic_cfg = Config(get_root_path() / "alembic.ini")
     alembic_cfg.set_main_option("skip_logging_config", "true")
-    command.upgrade(alembic_cfg, "head")
+
+    def needs_migration():
+        from alembic.runtime.migration import MigrationContext
+        from alembic.script import ScriptDirectory
+
+        script_dir = ScriptDirectory.from_config(alembic_cfg)
+        heads = script_dir.get_heads()
+
+        with get_engine().connect() as conn:
+            ctx = MigrationContext.configure(conn)
+            current_heads = ctx.get_current_heads()
+            return set(current_heads) != set(heads)
+
+    # it's possible for this command to run concurrently if run on container start, which is the only way in some
+    # environments. When this occurs, we should wait to acquire a distributed migration lock.
+    # Ideally, we would know that the migration succeeded on the other box, but that would require digging in to the
+    # Alembic internals, and it's easier just to run the migrations again which will result in a noop if another container
+    # already executed the migrations.
+
+    if needs_migration():
+        command.upgrade(alembic_cfg, "head")
+        log.info("migrations applied")
+    else:
+        log.info("no migrations needed")
