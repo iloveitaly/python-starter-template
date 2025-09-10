@@ -1,3 +1,5 @@
+import re
+
 from decouple import config
 from fastapi import FastAPI
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
@@ -23,9 +25,24 @@ This is a very important configuration option:
 
 def allowed_hosts(with_scheme: bool = False) -> list[str]:
     """
-    Returns a list of allowed hosts, with or without scheme.
+    Returns a list of allowed hosts for this service.
 
-    Development hosts are automatically added.
+    - When `with_scheme=True`, production hosts are prefixed with `https://`.
+      In development, known development hosts are prefixed with `http://` to
+      match typical local setups and CORS expectations.
+    - When `with_scheme=False`, bare hostnames are returned.
+    - Common development hosts are automatically added when running in development.
+
+    This function is used by:
+    - CORS configuration (origins must include scheme and, for dev, may include ports)
+    - Trusted host protection (FastAPI `TrustedHostMiddleware`)
+    - Session/cookie domain selection (the first host in the list)
+
+    Notes:
+    - `ALLOWED_HOST_LIST` must contain bare hostnames only (no scheme, no path).
+      If an entry begins with `http://`, it will be ignored and a warning logged.
+    - Local development often runs on arbitrary ports; CORS handling augments these
+      values with a regex to allow any port for development hosts.
     """
 
     DEVELOPMENT_HOSTS = [
@@ -34,22 +51,43 @@ def allowed_hosts(with_scheme: bool = False) -> list[str]:
         "localhost",
     ]
 
-    hosts = [host.strip() for host in ALLOWED_HOST_LIST.split(",")]
+    raw_hosts = [host.strip() for host in ALLOWED_HOST_LIST.split(",")]
+
+    hosts: list[str] = []
+    for host in raw_hosts:
+        if not host:
+            continue
+        if host.lower().startswith("http://"):
+            # guidance: host list should be bare hostnames only
+            log.warning("http scheme provided in allowed host; omit scheme", host=host)
+            continue
+        hosts.append(host)
+
     assert hosts
 
     if with_scheme:
-        hosts = [f"https://{host}" for host in hosts]
+        # production hosts default to https; development hosts default to http in dev
+        def with_correct_scheme(h: str) -> str:
+            if is_development() and h in DEVELOPMENT_HOSTS:
+                return f"http://{h}"
+            return f"https://{h}"
+
+        hosts = [with_correct_scheme(host) for host in hosts]
 
     if is_development():
         if with_scheme:
             # don't force https for devs who aren't using localias
-            hosts.extend(
-                [f"http://{host}" for host in DEVELOPMENT_HOSTS if host not in hosts]
-            )
+            # ensure all dev hosts are available over http
+            dev_http_hosts = [f"http://{host}" for host in DEVELOPMENT_HOSTS]
+            for dev_host in dev_http_hosts:
+                if dev_host not in hosts:
+                    hosts.append(dev_host)
         else:
             hosts.extend(DEVELOPMENT_HOSTS)
 
-    return hosts
+    # keep order stable but remove duplicates
+    unique_hosts: list[str] = list(dict.fromkeys(hosts))
+    return unique_hosts
 
 
 def add_middleware(app: FastAPI):
@@ -69,6 +107,15 @@ def add_middleware(app: FastAPI):
     # CORS require that a specific scheme is used for the request
     allowed_hosts_with_schemes = allowed_hosts(True)
 
+    # In development, browsers include the dynamic port in the Origin for local servers
+    # (e.g. Vite, Playwright, etc.). Since we don't know the port, allow any port for
+    # known development hosts via a regex while still enumerating explicit origins.
+    allow_origin_regex: str | None = None
+    if is_development():
+        dev_hosts = ["127.0.0.0", "0.0.0.0", "localhost"]
+        dev_hosts_pattern = "|".join(re.escape(h) for h in dev_hosts)
+        allow_origin_regex = rf"^http://(?:{dev_hosts_pattern})(?::\\d+)?$"
+
     log.info("allowed_origins", allowed_origins=allowed_hosts_with_schemes)
 
     # even in development, CORS is required, especially since we are using separate domains for API & frontend
@@ -76,6 +123,7 @@ def add_middleware(app: FastAPI):
     app.add_middleware(
         CORSMiddleware,
         allow_origins=allowed_hosts_with_schemes,
+        allow_origin_regex=allow_origin_regex,
         # tells browsers to expose and include credentials (such as cookies, client-side certificates, and authorization headers) in cross-origin requests.
         allow_credentials=True,
         allow_methods=["*"],
