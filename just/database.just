@@ -73,7 +73,7 @@ db_open: _dev_only
 
 # tui to interact with the database
 db_play: _dev_only
-	uv tool run pgcli $DATABASE_URL
+	uvx pgcli@latest $DATABASE_URL
 
 # run migrations on dev and test
 db_migrate: _not_production
