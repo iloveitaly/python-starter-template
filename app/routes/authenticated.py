@@ -1,3 +1,7 @@
+"""
+Routes that are authenticated against a Clerk user session.
+"""
+
 from fastapi import APIRouter, Depends, Request
 from pydantic import BaseModel
 
@@ -12,7 +16,7 @@ from .dependencies.user import inject_user_record
 # extract into variable for test import to easily override dependencies
 authenticate_clerk_request_middleware = AuthenticateClerkRequest(CLERK_PRIVATE_KEY)
 
-internal_api_app = APIRouter(
+authenticated_api_app = APIRouter(
     prefix="/internal/v1",
     # TODO unclear what the tags are used for...
     tags=["private"],
@@ -22,14 +26,14 @@ internal_api_app = APIRouter(
         Depends(aglobal_session),
         # make sure the user is auth'd via clerk to this endpoint
         Depends(authenticate_clerk_request_middleware),
-        # inject a doctor record into the request state
+        # inject a user record into the request state
         Depends(inject_user_record),
-        # allow admins to switch to another doctor
+        # allow admins to switch to another user
         Depends(login_as),
     ],
 )
 
-internal_api_app.include_router(admin_api_app)
+authenticated_api_app.include_router(admin_api_app)
 
 
 class AppData(BaseModel, extra="forbid"):
@@ -38,6 +42,6 @@ class AppData(BaseModel, extra="forbid"):
     user_id: str
 
 
-@internal_api_app.get("/")
+@authenticated_api_app.get("/")
 def application_data(request: Request) -> AppData:
     return AppData(user_id=str(request.state.user.id))

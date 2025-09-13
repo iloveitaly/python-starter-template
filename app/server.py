@@ -16,8 +16,8 @@ from app.routes.errors import register_exception_handlers
 from app.routes.utils.openapi import simplify_operation_ids
 
 from .environments import is_production
+from .routes.authenticated import authenticated_api_app
 from .routes.healthcheck import healthcheck_api_app
-from .routes.internal import internal_api_app
 from .routes.middleware import add_middleware
 from .routes.static import mount_public_directory
 from .routes.unauthenticated import unauthenticated_api
@@ -56,7 +56,7 @@ api_app = FastAPI(
     default_response_class=ORJSONSortedResponse,
 )
 
-api_app.include_router(internal_api_app)
+api_app.include_router(authenticated_api_app)
 api_app.include_router(external_api_app)
 api_app.include_router(unauthenticated_api)
 api_app.include_router(healthcheck_api_app)
