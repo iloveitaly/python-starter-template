@@ -95,11 +95,15 @@ db_migrate_head: _dev_only
 
 # pick a migration to downgrade to
 db_downgrade: _dev_only
-	alembic_target_id=$(uv run alembic history | fzf --delimiter '[->\s,]+' --bind 'enter:become(echo {2})') && \
+	alembic_target_id=$(LOG_LEVEL=ERROR uv run alembic history | fzf --delimiter '[->\s,]+' --bind 'enter:become(echo {2})') && \
 		just _banner_echo "Downgrading Dev Database..." && \
 		uv run alembic downgrade $alembic_target_id && \
 		just _banner_echo "Downgrading Test Database..." && \
 		{{EXECUTE_IN_TEST}} uv run alembic downgrade $alembic_target_id
+
+# a common workflow is: add more columns, add migration, run migration; revise, downgrade migration, regenerate migration, rerun migrations
+db_downgrade_last:
+	alembic downgrade -1
 
 # TODO I don't think we really want to migrate the database automatically. Instead, want this to be an independent command that we can call inside the reset and other operations.
 # add seed data to dev and test
