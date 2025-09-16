@@ -1,4 +1,6 @@
 """
+Server entrypoint. Run by `uvicorn` to start the server.
+
 `fastapi` cli will automatically start a uvicorn server using this file.
 
 Route method names are important as they will be used for the openapi spec which will in turn be used to generate a
@@ -11,8 +13,10 @@ import orjson
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
+from app.constants import BUILD_COMMIT
 from app.routes.api import external_api_app
 from app.routes.errors import register_exception_handlers
+from app.routes.utils.json_response import ORJSONSortedResponse
 from app.routes.utils.openapi import simplify_operation_ids
 
 from .environments import is_production
@@ -23,7 +27,8 @@ from .routes.static import mount_public_directory
 from .routes.unauthenticated import unauthenticated_api
 from .templates import render_template
 
-fast_api_args = {}
+# used when generating openapi spec
+fast_api_args = {"version": BUILD_COMMIT}
 
 # disable API documentation in production
 if is_production():
@@ -32,22 +37,11 @@ if is_production():
         "redoc_url": None,
         "openapi_url": None,
     }
+else:
+    fast_api_args = {
+        "debug": True,
+    }
 
-
-class ORJSONSortedResponse(JSONResponse):
-    """
-    Lifted from the non-sorted fastapi-built version. ORJSONResponse is much faster than JSONResponse, but it does
-    not respect the order of the keys:
-
-    https://stackoverflow.com/questions/64408092/how-to-set-response-class-in-fastapi
-    """
-
-    def render(self, content: Any) -> bytes:
-        return orjson.dumps(content, option=orjson.OPT_NON_STR_KEYS)
-
-
-# TODO should we set a debug flag? https://fastapi.tiangolo.com/reference/fastapi/?h=debug#fastapi.FastAPI--example
-# TODO set `version:` as GIT sha? Set `title:`? https://github.com/fastapiutils/fastapi-utils/blob/e9e7e2c834d703503a3bf5d5605db6232dd853b9/fastapi_utils/api_settings.py#L43
 
 # TODO not possible to type this properly :/ https://github.com/python/typing/discussions/1501
 # NOTE `api_app` and not `app` is used intentionally here to make imports more specific
@@ -56,9 +50,18 @@ api_app = FastAPI(
     default_response_class=ORJSONSortedResponse,
 )
 
+# requires clerk authentication
 api_app.include_router(authenticated_api_app)
+
+# requires api key authentication
 api_app.include_router(external_api_app)
+
+# public api, no authentication
 api_app.include_router(unauthenticated_api)
+
+api_app.include_router(unauthenticated_html)
+
+# healthcheck endpoint, no authentication
 api_app.include_router(healthcheck_api_app)
 
 add_middleware(api_app)
