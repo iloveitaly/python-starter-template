@@ -6,6 +6,20 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function isElementInViewport(el: Element | null): boolean {
+  if (!el) return false
+
+  const rect = el.getBoundingClientRect()
+
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <=
+      (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  )
+}
+
 // for query string usage in clientLoaders
 export function getQueryParam(request: Request, key: string): string | null {
   const url = new URL(request.url)

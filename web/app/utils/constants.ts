@@ -14,3 +14,15 @@ invariant(
     BASE_URL.endsWith("/"),
   "VITE_APP_BASE_URL must be a valid URL starting with http(s)://",
 )
+
+// Define the constant, checking for window availability
+export const IN_IFRAME =
+  typeof window !== "undefined"
+    ? (() => {
+        try {
+          return window !== window.top
+        } catch (_e) {
+          return true // Assume iframe if access is restricted
+        }
+      })()
+    : false // Default to false on server
