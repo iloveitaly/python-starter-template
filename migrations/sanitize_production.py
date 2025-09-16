@@ -24,7 +24,8 @@ if is_production() or is_staging():
 
 from app import log
 
-from activemodel.session_manager import global_session
+from activemodel.session_manager import get_session, global_session
+from sqlmodel import func, literal
 
 
 def randomize_stripe_checkout_and_payment_ids() -> None:
