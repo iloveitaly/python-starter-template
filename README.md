@@ -192,23 +192,30 @@ Non-language dependencies are always tricky. Here's how it's handled:
 
 Here's how frontend code is organized in `web/app/`:
 
-- `lib/` not specific to the project. This code could be a separate package at some point.
-- `utils/` project-specific code, but not specific to a particular page.
-- `helpers/` page- or section-specific code that is not a component, hook, etc.
-- `hooks/` react hooks.
-- `configuration/` providers, library configuration, and other setup code.
-- `components/` react components.
-  - `ui/` reusable ShadCN UI components (buttons, forms, etc.).
-  - `shared/` components shared across multiple pages.
-  - create additional folders for route- or section-specific components.
+* `lib/` not specific to the project. This code could be a separate package at some point.
+* `utils/` project-specific code, but not specific to a particular page.
+* `helpers/` page- or section-specific code that is not a component, hook, etc.
+* `hooks/` react hooks.
+* `configuration/` providers, library configuration, and other setup code.
+* `components/` react components.
+  * `ui/` reusable ShadCN UI components (buttons, forms, etc.).
+  * `shared/` components shared across multiple pages.
+  * create additional folders for route- or section-specific components.
 
-
-## Python Test Code Organization
+### Python Test Code Organization
 
 * `tests/**/utils.py` is for test-specific code that is not a fixture or a factory.
 * `tests/factories.py` all factories should go here.
 * `tests/**/assertions.py` all custom `assert_*` functions should go here.
 * `tests/**/conftest.py` is for test-specific fixtures. This is the only place you should put fixtures.
+* `tests/{commands,routes,jobs,models}/` map to corresponding application categories under `app/`.
+
+### Public Directories
+
+There are two public directories in the project:
+
+* `public/` is not used in development. During the build process, bundled javascript is copied here and served using [[app/routes/static.py]]. This is excluded from git.
+* `web/public` is used in development *and* production. This is where the vite dev server serves static files from. Files included here are tracked by git and bundled by vite into the production assets.
 
 ### Toggling GitHub Actions
 
@@ -415,6 +422,7 @@ VITE_BUILD_COMMIT=-dirty node inspect web/node_modules/@react-router/dev/bin.js 
 ### Pytest Route Tests
 
 * Use `api_app.url_path_for` for all URL generation.
+* Not specific to route tests, but be aware of `faker`. It can generate invalid random data (like invalid zip codes, which can cause issues with automated tests on geocoding systems).
 
 If you have separate domains used for app, api, etc you can build a fastapi client that sets the `Host` header to the correct domain:
 
@@ -449,6 +457,8 @@ Instead of `breakpoint()` use this to debug and test the page:
 ```python
 page.pause()
 ```
+
+You can also use `--slowmo=500` to make it easier to see what is going on
 
 <!--
 ## Architecture Notes
