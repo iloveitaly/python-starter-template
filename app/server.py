@@ -7,11 +7,8 @@ Route method names are important as they will be used for the openapi spec which
 JavaScript client which will use these methods.
 """
 
-from typing import Any
 
-import orjson
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
 
 from app.constants import BUILD_COMMIT
 from app.routes.api import external_api_app
@@ -25,7 +22,7 @@ from .routes.healthcheck import healthcheck_api_app
 from .routes.middleware import add_middleware
 from .routes.static import mount_public_directory
 from .routes.unauthenticated import unauthenticated_api
-from .templates import render_template
+from .routes.unauthenticated_html import unauthenticated_html
 
 # used when generating openapi spec
 fast_api_args = {"version": BUILD_COMMIT}
@@ -66,13 +63,6 @@ api_app.include_router(healthcheck_api_app)
 
 add_middleware(api_app)
 register_exception_handlers(api_app)
-
-
-@api_app.get("/hello")
-async def index():
-    from datetime import datetime
-
-    return render_template("routes/index.html", {"date": datetime.now()})
 
 
 # important that this is done after all routes are added

@@ -46,7 +46,7 @@ def loud_client(faker):
 def authenticated_client():
     "mocks out the clerk authentication and returns a static response"
 
-    from app.routes.internal import authenticate_clerk_request_middleware
+    from app.routes.authenticated import authenticate_clerk_request_middleware
     from app.server import api_app
 
     api_app.dependency_overrides[authenticate_clerk_request_middleware] = (
