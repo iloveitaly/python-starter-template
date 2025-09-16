@@ -25,7 +25,6 @@ if is_production() or is_staging():
 from app import log
 
 from activemodel.session_manager import get_session, global_session
-from sqlmodel import func, literal
 
 
 def randomize_stripe_checkout_and_payment_ids() -> None:
@@ -38,16 +37,16 @@ def randomize_stripe_checkout_and_payment_ids() -> None:
     return
 
     with get_session() as session:
-        session.exec(
-            TicketReservationOrder.__table__.update().values(
-                {
-                    "stripe_checkout_session_id": literal("cs_test_")
-                    + func.base32_encode(func.gen_random_uuid()),
-                    "stripe_payment_intent_id": literal("pi_")
-                    + func.base32_encode(func.gen_random_uuid()),
-                }
-            )
-        )
+        # session.exec(
+        #     TicketReservationOrder.__table__.update().values(
+        #         {
+        #             "stripe_checkout_session_id": literal("cs_test_")
+        #             + func.base32_encode(func.gen_random_uuid()),
+        #             "stripe_payment_intent_id": literal("pi_")
+        #             + func.base32_encode(func.gen_random_uuid()),
+        #         }
+        #     )
+        # )
 
         session.commit()
 
