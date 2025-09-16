@@ -1,3 +1,15 @@
+"""
+Strangely enough there is not a library that does this for us.
+
+We should consider contributing this to the community.
+
+Should try this lib first:
+
+https://github.com/un33k/python-ipware/tree/main
+
+We also need to build this into the logging middleware on structlog
+"""
+
 from urllib.parse import parse_qsl
 
 from starlette.requests import Request
@@ -6,7 +18,7 @@ from starlette.websockets import WebSocket
 from app import log
 
 
-async def client_ip_address(request: Request | WebSocket):
+def client_ip_from_request(request: Request | WebSocket) -> str | None:
     """
     Get the client IP address from the request.
 
@@ -36,10 +48,11 @@ async def client_ip_address(request: Request | WebSocket):
             ip = forwarded_parts.get("for", "").strip()
         else:
             ip = value.strip()
-        log.info("client ip header used", header=header)
+
+        log.debug("extracted client IP from header", header=header)
+
         return ip
 
-    if request.client:
-        return request.client.host
+    host = getattr(request.client, "host", None)
 
-    return None
+    return host
