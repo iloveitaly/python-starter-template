@@ -1,13 +1,10 @@
 from decouple import config
-from redis.lock import LockError
-
-from app.configuration.redis import get_redis
 
 import activemodel
 from activemodel.session_manager import get_engine
 from sqlmodel import SQLModel
 
-from ..environments import is_development, is_production, is_staging, is_testing
+from ..environments import is_development, is_testing
 from ..setup import get_root_path
 
 
@@ -47,11 +44,6 @@ def configure_database():
     # before a migration will cause an issue...
     activemodel.init(database_url())
 
-    # TODO I wonder if this will cause issues with the system not picking up on required DB changes? We will see
-
-    if is_production() or is_staging():
-        run_migrations()
-
 
 def create_db_and_tables():
     """
@@ -69,22 +61,32 @@ def create_db_and_tables():
 
 def run_migrations():
     """
-    Run migrations 'inline', within the current process.
+    Run migrations within the current process.
 
-    Here's why we do this:
+    Migrating automatically introduces risk that an important migration happens without you watching it. However,
+    it's up to the migration author to test their migration before merging it, so this shouldn't be an issue.
 
-    - Migrating automatically introduces some risk that an important migration happens without you watching it. However,
-      it's up to the migration author to test their migration before merging it, so this shouldn't be an issue. Additionally
-      the risk of *not* migrating automatically introduces additional manual steps for the developer, which is always risky.
-    - When the new version of the application depends on a database migration, it's hard to *not* auto-migrate.
-      In that scenario, the container will fail and roll back, which makes it challenging to actually run the migration.
-      You have to have a container which does not have readiness probes in place (which introduces another set of problems)
+    Here's why you may want to do this:
+
+    - The risk of *not* migrating automatically introduces additional manual steps for the developer, which is always risky.
+    - When the new version of the application depends on a database migration, it's hard to *not* auto-migrate. Unless
+      migrations are carefully staged so application code does not depend on them, you have to migrate before launching
+      a new container depending on those migrations. If you don't, the container will fail and roll back, which makes
+      it challenging to actually run the migration. You have to have a container that does not have readiness probes
+      in place (which introduces another set of problems) in order to run the migration.
     - If we auto-migrate, migration logs are sent to the logging system. If you shell into a container and migrate
       manually, the migration status does not get persisted to the logging system.
     - Not all deployment platforms make it easy to run migrations in a container that has access to env vars.
 
+    For this reason, while an application is simple and the database is small, we recommend auto-migrating on startup.
+    We've experimented with a bunch of places to do this, and here's what we recommend:
+
+    - Run this migration logic during the setup() call right after setup() is marked as run
+    - Start the container ideally in a pre-start hook or as the entrypoint command. If this isn't possible, running it
+      on container startup works, but will cause issues with liveness probes timing out for larger migrations.
+
     At one point, we implemented a distributed migration lock to wait on concurrent migrations. We removed this and moved
-    to a migrations/env.py lock:
+    to a migrations/env.py lock in postgres instead of a redis-based distributed lock. Here's why:
 
     - It required redis, which was another dependency in an environment that is often different than production
     - If the container was killed, the lock would not be released, which caused migrations to hang indefinitely on next
