@@ -7,6 +7,10 @@ import ipython_playground
 from app import log
 from app.configuration.clerk import clerk
 
+# additional utils
+import funcy as fp
+import funcy as f
+
 globals().update(ipython_playground.all_extras())
 
 ipython_playground.output()
