@@ -69,23 +69,24 @@
   // I need to investigate this further and see if the functionality here has changed
   // new feature, should be the default in the future
   // "python.analysis.diagnosticMode": "workspace",
-  // "python.analysis.packageIndexDepths": [
-  // {
-  //   "name": "",
-  //   "depth": 5,
-  //   "includeAllSymbols": true
-  // }
-  // TODO packages are not being indexed, can't find fastapi symbols in the symbol search but can in the import analysis...
-  // {
-  //   "name": "fastapi",
-  //   "depth": 3,
-  //   "includeAllSymbols": true
-  // }
-  //   {"name":"pdf2image", "depth":3, "includeAllSymbols": true},
-  // {"name":"decouple", "depth":3, "includeAllSymbols": true},
-  // { "name": "pydantic", "depth": 3, "includeAllSymbols": true },
-  // { "name": "sqlmodel", "depth": 3, "includeAllSymbols": true }
-  // ],
+  "python.analysis.packageIndexDepths": [
+    // {
+    //   "name": "",
+    //   "depth": 5,
+    //   "includeAllSymbols": true
+    // }
+    // TODO packages are not being indexed, can't find fastapi symbols in the symbol search but can in the import analysis...
+    // {"name":"pdf2image", "depth":3, "includeAllSymbols": true},
+    // {"name":"decouple", "depth":3, "includeAllSymbols": true},
+
+    { "name": "celery", "depth": 2, "includeAllSymbols": true },
+    { "name": "fastapi", "depth": 2, "includeAllSymbols": true },
+    { "name": "pydantic", "depth": 2, "includeAllSymbols": true },
+    { "name": "sqlmodel", "depth": 2, "includeAllSymbols": true },
+    { "name": "activemodel", "depth": 3, "includeAllSymbols": true }
+  ],
+
+  // TODO cursor now uses a separate python extension, needs its own config...
 
   // in web, prettier is used by default, but we want it to be used outside that directly
   "[json][jsonc]": {
@@ -126,6 +127,12 @@
     "editor.formatOnSave": true
   },
 
+  // this is important, as we want to make sure the plain old zsh is used (not tmux) for automation/agent terminals
+  "terminal.integrated.automationProfile.osx": {
+    "path": "/opt/homebrew/bin/zsh",
+    "args": ["-i"]
+  },
+
   // copilot config https://code.visualstudio.com/docs/copilot/copilot-customization
   "github.copilot.chat.codeGeneration.useInstructionFiles": true,
   "chat.sendElementsToChat.enabled": true,
@@ -133,5 +140,8 @@
   // I like bare URLs sometimes
   "markdownlint.config": {
     "MD034": false
-  }
+  },
+
+  // cursor specific config :/
+  "cursorpyright.analysis.autoImportCompletions": true
 }
