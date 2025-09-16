@@ -14,20 +14,23 @@ import tailwindcss from "@tailwindcss/vite"
 const JAVASCRIPT_SERVER_PORT = process.env.JAVASCRIPT_SERVER_PORT
 
 function getModePlugins(config: ConfigEnv): PluginOption[] {
-  const { mode } = config
+  // when `typegen` is run, the import.meta.* vars are not set
+  // additionally, typegen runs `react-router build` under the hood, which sets the mode to production by default
+  // however, what we are trying to detect here is when the application is being built for production
+  const viteAndNodeAreProduction =
+    config.mode === "production" && process.env.NODE_ENV === "production"
 
-  if (mode === "production") {
-    const authToken = process.env.SENTRY_AUTH_TOKEN
-
+  if (viteAndNodeAreProduction) {
+    const SENTRY_AUTH_TOKEN = process.env.SENTRY_AUTH_TOKEN
     const VITE_BUILD_COMMIT = process.env.VITE_BUILD_COMMIT
 
     // fine for sentry to have auth under a CI build being used for integration testing
-    if (!authToken) {
+    if (!SENTRY_AUTH_TOKEN) {
       const CI = process.env.CI
 
       if (!VITE_BUILD_COMMIT) {
         throw new Error(
-          "Missing VITE_BUILD_COMMIT environment variable. Include to run build.",
+          "Missing VITE_BUILD_COMMIT environment variable. Include to run production build.",
         )
       }
 
@@ -53,7 +56,7 @@ function getModePlugins(config: ConfigEnv): PluginOption[] {
       viteCompression(),
 
       // Put the Sentry vite plugin after all other plugins
-      authToken &&
+      SENTRY_AUTH_TOKEN &&
         sentryReactRouter(
           {
             // real component names in errors
@@ -99,13 +102,13 @@ export default defineConfig((config) => ({
     host: "0.0.0.0",
     // if the port is in use, fail loudly
     strictPort: true,
-    // random ports to avoid conflict with other projects
+    // use the same port every time so localias is happy
     port: parseInt(JAVASCRIPT_SERVER_PORT),
   },
   plugins: [
-    // TODO needs to go first, and needs to be conditional
-    tailwindcss(),
+    // needs to go first, and needs to be conditional!
     config.mode === "development" && reactRouterDevTools(),
+    tailwindcss(),
     reactRouter(),
     tsconfigPaths(),
     ...getModePlugins(config),
