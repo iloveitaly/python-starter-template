@@ -19,7 +19,7 @@ from app.environments import is_production, is_staging
 
 # do not allow running in staging or production
 if is_production() or is_staging():
-    raise RuntimeError("migrate_production.py must never run in production or staging")
+    raise RuntimeError("sanitize_production.py must never run in production or staging")
 
 
 from app import log
