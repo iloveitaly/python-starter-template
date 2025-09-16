@@ -95,3 +95,15 @@ def routes():
             typer.echo(f"{method}   {route.path}    {route.name}")
         else:
             typer.echo(f"unsupported route: {route}")
+
+
+@app.command()
+def migrate():
+    """
+    Run migrations on the database. This is helpful when running a `release:` command before
+    deployment to migrate your database. Alternatively, you can automatically run migrations during startup,
+    but this is not good practice
+    """
+    from app.configuration.database import run_migrations
+
+    run_migrations()
