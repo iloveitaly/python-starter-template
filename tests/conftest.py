@@ -2,6 +2,7 @@ import os
 import sys
 
 import stripe
+from stripe import StripeClient
 
 # When running locally, switching to the full-blown CI environment is a pain.
 # To make it quick & easy to run tests, we force the environment to test and load cached CI environment variables (if we can).
@@ -36,6 +37,9 @@ from decouple import config as decouple_config
 
 from .constants import TEST_RESULTS_DIRECTORY
 from .log import log
+
+# add any local plugins here
+pytest_plugins = ["tests.plugins.improved_playwright_failures"]
 
 log.info("multiprocess start method", start_method=multiprocessing.get_start_method())
 
@@ -89,16 +93,20 @@ def pytest_configure(config: Config):
         '[data-clerk-component="UserButton"]',
     ]
 
+    config.option.activemodel_preserve_tables = [
+        "alembic_version",
+        # add any tables you want to preserve here
+    ]
+
 def pytest_sessionstart(session):
     "only executes once if a test is run, at the beginning of the test suite execution"
     from .utils import delete_all_clerk_users
 
-    # TODO wonder if I could execute async?
     # without this, the clerk dev instance will get cluttered and throw errors
     delete_all_clerk_users()
 
     # clear out any previous cruft in this DB, which is why...
-    database_reset_truncate()
+    database_reset_truncate(pytest_config=session.config)
 
 @pytest.fixture(scope="function")
 def sync_celery():
@@ -155,7 +163,7 @@ def datatabase_reset_transaction_for_standard_tests(request):
         # transaction truncation cannot be used with integration tests since the forked server does not retain the same
         # db connection in memory and therefore the transaction rollback does not work. To get around this, we truncate the
         # database before running any tests, although this also has the side effect of destroying any test seed data.
-        database_reset_truncate()
+        database_reset_truncate(pytest_config=request.config)
         yield
         return
 
