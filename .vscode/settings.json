@@ -98,7 +98,8 @@
     // Procfile's don't have a default file association, but are essentially yaml files
     "Procfile*": "yaml",
     ".tool-versions": "shellscript",
-    ".env*": "shellscript",
+    ".envrc": "shellscript",
+    "env/*": "shellscript",
     "TODO*": "markdown",
     "*.mdc": "markdown",
     "app/templates/**/*.md": "jinja-md",
