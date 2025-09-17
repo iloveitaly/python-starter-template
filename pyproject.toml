@@ -184,10 +184,11 @@ tests = ["tests"]
 [tool.pytest.ini_options]
 # Not sure entirely why, but without tee-sys, the builtin fd-based log capture breaks on CI (but not locally)
 addopts = ["-p no:logging", "--import-mode=importlib"]
-# avoid depreciation warnings causing spammy logs
 filterwarnings = [
+    # avoid depreciation warnings causing spammy logs
     "ignore::DeprecationWarning",
-    "error:coroutine .* was never awaited:RuntimeWarning",
+    # raise level of these errors
+    "error:RuntimeWarning",
 ]
 # by default, pytest seems to hijack many logs and output them to the terminal
 # this is nice if you don't have a custom login like we do
@@ -196,8 +197,8 @@ norecursedirs = ["pypi"]
 # TODO would love if we could move this to conftest.py and put in the artifact folder
 debug_file = "tmp/pytestdebug.log"
 # TODO right now this option does not enable us to get it directly
-asyncio_default_test_loop_scope = "session"
-asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "function"
+asyncio_default_fixture_loop_scope = "function"
 
 # https://coverage.readthedocs.io/en/latest/config.html#run-data-file
 [tool.coverage.run]
