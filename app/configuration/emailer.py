@@ -86,7 +86,11 @@ def mail(
         html=html_content,
     )
 
-    # Get current event loop if one exists, otherwise create new one
-    # TODO https://github.com/alex-oleshkevich/mailers/issues/14
-    loop = asyncio.get_event_loop()
-    return loop.run_until_complete(_mailer.send(message))
+    # If we're already inside a running loop, schedule the send as a task and return it.
+    # Otherwise, run the coroutine to completion in a fresh loop.
+    try:
+        asyncio.get_running_loop()
+    except RuntimeError:
+        return asyncio.run(_mailer.send(message))
+    else:
+        return asyncio.create_task(_mailer.send(message))
