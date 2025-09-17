@@ -12,7 +12,6 @@ import json
 
 from app.configuration.versions import (
     VERSIONS_FILE,
-    chrome_version,
     postgres_version,
     redis_version,
 )
