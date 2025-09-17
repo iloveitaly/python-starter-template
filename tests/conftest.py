@@ -39,7 +39,7 @@ from .constants import TEST_RESULTS_DIRECTORY
 from .log import log
 
 # add any local plugins here
-pytest_plugins = ["tests.plugins.improved_playwright_failures"]
+# pytest_plugins = ["tests.plugins.improved_playwright_failures"]
 
 log.info("multiprocess start method", start_method=multiprocessing.get_start_method())
 
