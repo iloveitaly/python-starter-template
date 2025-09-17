@@ -14,9 +14,6 @@ from tests.integration.server import (  # noqa: F401
     terminate_server,
 )
 
-# https://github.com/pytest-dev/pytest-asyncio/pull/871/files
-pytestmark = pytest.mark.asyncio(loop_scope="package")
-
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):

@@ -10,8 +10,6 @@ version alignment to reduce the risk of weird bugs occurring because of version 
 
 import json
 
-import pytest
-
 from app.configuration.versions import (
     VERSIONS_FILE,
     chrome_version,
@@ -36,7 +34,6 @@ def test_postgres_version_matches():
     )
 
 
-@pytest.mark.asyncio(loop_scope="function")
 def test_chrome_version_matches_persisted_version():
     persisted_chrome_version = json.loads(VERSIONS_FILE.read_bytes())["chrome"]
 
