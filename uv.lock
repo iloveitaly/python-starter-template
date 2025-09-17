@@ -16,11 +16,15 @@ dependencies = [
 [[package]]
 name = "aiautocommit"
 version = "0.13.1"
-source = { git = "https://github.com/iloveitaly/aiautocommit.git#de4e05a614124ed758cae9613571d21914d5fb2b" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "backoff" },
     { name = "click" },
     { name = "openai" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/84/80/5d23f00475a34e04097a0bf7564c6f6fade7dabada8a0ffd196eb0f66a91/aiautocommit-0.13.1.tar.gz", hash = "sha256:0d1df25866b7419c608e6f2a89d3bc5114e6f6faf8d1d05d523cc35f3de00e49", size = 61639, upload-time = "2025-08-18T16:39:11.306Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/09/15/60f5e790d48097dddc54eedc86e6385cacc43a2f4d5816e4ed1fce7b974a/aiautocommit-0.13.1-py3-none-any.whl", hash = "sha256:287734f9c4261716f4283f6e42772c2728a464b693c2b06e1aca7c2bacb96a16", size = 16706, upload-time = "2025-08-18T16:39:10.335Z" },
 ]
 
 [[package]]
@@ -726,7 +730,7 @@ wheels = [
 [[package]]
 name = "djlint"
 version = "1.36.4"
-source = { git = "https://github.com/iloveitaly/djLint.git?rev=github-output#8131b820492ab0f35e3e96e2879b54db5eaddcaf" }
+source = { git = "https://github.com/iloveitaly/djLint.git?rev=github-output#1d296061240f0ffdc8fd7e58cd554db6724ea5d7" }
 dependencies = [
     { name = "click" },
     { name = "colorama" },
@@ -846,16 +850,16 @@ wheels = [
 
 [[package]]
 name = "fastapi"
-version = "0.116.1"
+version = "0.116.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pydantic" },
     { name = "starlette" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/78/d7/6c8b3bfe33eeffa208183ec037fee0cce9f7f024089ab1c5d12ef04bd27c/fastapi-0.116.1.tar.gz", hash = "sha256:ed52cbf946abfd70c5a0dccb24673f0670deeb517a88b3544d03c2a6bf283143", size = 296485, upload-time = "2025-07-11T16:22:32.057Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/01/64/1296f46d6b9e3b23fb22e5d01af3f104ef411425531376212f1eefa2794d/fastapi-0.116.2.tar.gz", hash = "sha256:231a6af2fe21cfa2c32730170ad8514985fc250bec16c9b242d3b94c835ef529", size = 298595, upload-time = "2025-09-16T18:29:23.058Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e5/47/d63c60f59a59467fda0f93f46335c9d18526d7071f025cb5b89d5353ea42/fastapi-0.116.1-py3-none-any.whl", hash = "sha256:c46ac7c312df840f0c9e220f7964bada936781bc4e2e6eb71f1c4d7553786565", size = 95631, upload-time = "2025-07-11T16:22:30.485Z" },
+    { url = "https://files.pythonhosted.org/packages/32/e4/c543271a8018874b7f682bf6156863c416e1334b8ed3e51a69495c5d4360/fastapi-0.116.2-py3-none-any.whl", hash = "sha256:c3a7a8fb830b05f7e087d920e0d786ca1fc9892eb4e9a84b227be4c1bc7569db", size = 95670, upload-time = "2025-09-16T18:29:21.329Z" },
 ]
 
 [package.optional-dependencies]
@@ -1241,10 +1245,14 @@ wheels = [
 
 [[package]]
 name = "ipython-autoimport"
-version = "0.5.post2+g4f39222ad"
-source = { git = "https://github.com/iloveitaly/ipython-autoimport?rev=ipython-9.x#4f39222ad693549cdc7b7f58c4818edee84a84cf" }
+version = "0.5.1"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ipython" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/74/33/740d3884ed0eaa602172083b78dedc1d87121abdd74985667491a656b654/ipython_autoimport-0.5.1.tar.gz", hash = "sha256:7187bf26b3ae00c0f2da56af85e6f36821abe57b266846232ab8985e4fe7a2ab", size = 9265, upload-time = "2025-03-11T11:42:30.148Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ca/a9/02f79756107ad99225743303f6c454e6c3886d6777f863900ae6128c076a/ipython_autoimport-0.5.1-py3-none-any.whl", hash = "sha256:235cd59c7b576cd3f8593c6fdf149d388662cc8efa2baa59030fefee463443c8", size = 7288, upload-time = "2025-03-11T11:42:29.193Z" },
 ]
 
 [[package]]
@@ -1342,10 +1350,14 @@ wheels = [
 [[package]]
 name = "j2lint"
 version = "1.2.0"
-source = { git = "https://github.com/aristanetworks/j2lint.git#25d0a6eeebf77050d3e2cf71ba5a305072d4db8b" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jinja2" },
     { name = "rich" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/41/b8/c3a194c6ec14d51104ac9070564b42c0335ba131d7d27e3e137d227c2a1d/j2lint-1.2.0.tar.gz", hash = "sha256:3bb9d2a3e3eb1647fe6c469bfbd2c2a9a8597378cda8590ed9eb7df7f3334639", size = 32451, upload-time = "2025-04-04T07:51:17.58Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/05/7c/f24df7f5fca454036ed4d87847c81390793d120c3c89629cef8d79ecc3fc/j2lint-1.2.0-py3-none-any.whl", hash = "sha256:cda7fab7af742f25dcb4925168de785721dcf66c7add2063d8e3643241e19e4e", size = 34880, upload-time = "2025-04-04T07:51:15.536Z" },
 ]
 
 [[package]]
@@ -2633,7 +2645,7 @@ requires-dist = [
     { name = "starlette-context", specifier = ">=0.3.6" },
     { name = "stripe", specifier = ">=12.1.0" },
     { name = "structlog", specifier = ">=24.4.0" },
-    { name = "structlog-config", git = "https://github.com/iloveitaly/structlog-config.git" },
+    { name = "structlog-config" },
     { name = "textcase", specifier = ">=0.4.0" },
     { name = "typeid-python", extras = ["cli"], specifier = ">=0.3.2" },
     { name = "typer", specifier = ">=0.14.0" },
@@ -2644,7 +2656,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 debugging-extras = [
-    { name = "aiautocommit", git = "https://github.com/iloveitaly/aiautocommit.git" },
+    { name = "aiautocommit" },
     { name = "colorama", specifier = ">=0.4.6" },
     { name = "datamodel-code-generator", specifier = ">=0.26.3" },
     { name = "debugpy", specifier = ">=1.8.8" },
@@ -2654,7 +2666,7 @@ debugging-extras = [
     { name = "icecream", specifier = ">=2.1.4" },
     { name = "ipdb", git = "https://github.com/iloveitaly/ipdb?rev=support-executables" },
     { name = "ipython", specifier = ">=9.0.2" },
-    { name = "ipython-autoimport", git = "https://github.com/iloveitaly/ipython-autoimport?rev=ipython-9.x" },
+    { name = "ipython-autoimport" },
     { name = "ipython-ctrlr-fzf", specifier = ">=0.2.1" },
     { name = "ipython-suggestions", git = "https://github.com/iloveitaly/ipython-suggestions.git?rev=ipython-9.x" },
     { name = "ipythonclipboard", specifier = ">=1.0b2" },
@@ -2671,7 +2683,7 @@ debugging-extras = [
     { name = "rich", specifier = ">=13.9.4" },
     { name = "rpdb", specifier = ">=0.2.0" },
     { name = "sqlparse", specifier = ">=0.5.2" },
-    { name = "uv-development-toggle", git = "https://github.com/iloveitaly/uv-development-toggle.git" },
+    { name = "uv-development-toggle", specifier = ">=0.2.1" },
 ]
 dev = [
     { name = "covdefaults", specifier = ">=2.3.0" },
@@ -2681,7 +2693,7 @@ dev = [
     { name = "flexmock", specifier = ">=0.12.2" },
     { name = "gitignore-parser", specifier = ">=0.1.11" },
     { name = "ipython", specifier = ">=8.28.0" },
-    { name = "j2lint", git = "https://github.com/aristanetworks/j2lint.git" },
+    { name = "j2lint", specifier = ">=1.1.0" },
     { name = "polyfactory", git = "https://github.com/iloveitaly/polyfactory.git?rev=custom" },
     { name = "pretty-traceback", git = "https://github.com/iloveitaly/pretty-traceback.git?rev=custom" },
     { name = "pyright", extras = ["nodejs"], specifier = ">=1.1.386" },
@@ -3154,14 +3166,14 @@ wheels = [
 
 [[package]]
 name = "starlette"
-version = "0.47.3"
+version = "0.48.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/15/b9/cc3017f9a9c9b6e27c5106cc10cc7904653c3eec0729793aec10479dd669/starlette-0.47.3.tar.gz", hash = "sha256:6bc94f839cc176c4858894f1f8908f0ab79dfec1a6b8402f6da9be26ebea52e9", size = 2584144, upload-time = "2025-08-24T13:36:42.122Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a7/a5/d6f429d43394057b67a6b5bbe6eae2f77a6bf7459d961fdb224bf206eee6/starlette-0.48.0.tar.gz", hash = "sha256:7e8cee469a8ab2352911528110ce9088fdc6a37d9876926e73da7ce4aa4c7a46", size = 2652949, upload-time = "2025-09-13T08:41:05.699Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ce/fd/901cfa59aaa5b30a99e16876f11abe38b59a1a2c51ffb3d7142bb6089069/starlette-0.47.3-py3-none-any.whl", hash = "sha256:89c0778ca62a76b826101e7c709e70680a1699ca7da6b44d38eb0a7e61fe4b51", size = 72991, upload-time = "2025-08-24T13:36:40.887Z" },
+    { url = "https://files.pythonhosted.org/packages/be/72/2db2f49247d0a18b4f1bb9a5a39a0162869acf235f3a96418363947b3d46/starlette-0.48.0-py3-none-any.whl", hash = "sha256:0764ca97b097582558ecb498132ed0c7d942f233f365b86ba37770e026510659", size = 73736, upload-time = "2025-09-13T08:41:03.869Z" },
 ]
 
 [[package]]
@@ -3200,12 +3212,16 @@ wheels = [
 
 [[package]]
 name = "structlog-config"
-version = "0.3.0"
-source = { git = "https://github.com/iloveitaly/structlog-config.git#585fe5e690a00e746e71091c862a37a5f5c9c0d6" }
+version = "0.2.0"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "orjson" },
     { name = "python-decouple-typed" },
     { name = "structlog" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/21/8c/63e6cd2a77be8dc91408d86849cf87876e78022a9749d93eb4c3d927db36/structlog_config-0.2.0.tar.gz", hash = "sha256:ba2e891f9deba6f956071c25566165301fa67ef0756fd8829e92ef2e9e350439", size = 81110, upload-time = "2025-08-05T13:56:33.577Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b5/90/3fd2b2f95f07bdf9c3685dde528ac5e3a5da51270a8fc43ca053e17eec45/structlog_config-0.2.0-py3-none-any.whl", hash = "sha256:6d59be89203bbe2eab02bd001896439c5482411b576bfab813c00e51a425875e", size = 16288, upload-time = "2025-08-05T13:56:32.604Z" },
 ]
 
 [[package]]
@@ -3435,10 +3451,14 @@ wheels = [
 [[package]]
 name = "uv-development-toggle"
 version = "0.6.0"
-source = { git = "https://github.com/iloveitaly/uv-development-toggle.git#d642a5d162232e09663401005e73816edd7d6c78" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "rich" },
     { name = "tomlkit" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/f0/ac/10f2e153e57dbe68e1ee36446a61128698a8a59554d1bb0b008966992874/uv_development_toggle-0.6.0.tar.gz", hash = "sha256:d035e2d9bb5596db9213b26d6483918f71b79de1361c1342757d2a9a039773a9", size = 19798, upload-time = "2025-04-19T14:34:02.282Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a0/83/ed4375583fc2bacbeffcccce09fe0d31a96af366ed3fee008ae095e9d610/uv_development_toggle-0.6.0-py3-none-any.whl", hash = "sha256:8621b3683a16701c094259165f363a369d22aa9b1f44449b1c8541e27b165f7f", size = 7094, upload-time = "2025-04-19T14:34:01.094Z" },
 ]
 
 [[package]]

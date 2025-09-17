@@ -199,20 +199,12 @@ asyncio_default_fixture_loop_scope = "session"
 [tool.coverage.run]
 # data_file = "tmp/test-results/.coverage"
 
-# TODO https://github.com/astral-sh/uv/issues/9258
-# https://docs.astral.sh/uv/reference/settings/#override-dependencies
-
 [tool.uv.sources]
-j2lint = { git = "https://github.com/aristanetworks/j2lint.git" }
-ipython-autoimport = { git = "https://github.com/iloveitaly/ipython-autoimport", rev = "ipython-9.x" }
 flower = { git = "https://github.com/iloveitaly/flower", rev = "custom" }
 ipdb = { git = "https://github.com/iloveitaly/ipdb", rev = "support-executables" }
 pdbr = { git = "https://github.com/iloveitaly/pdbr", rev = "ipython-9.x" }
 pretty-traceback = { git = "https://github.com/iloveitaly/pretty-traceback.git", rev = "custom" }
 ipython-suggestions = { git = "https://github.com/iloveitaly/ipython-suggestions.git", rev = "ipython-9.x" }
-
-[tool.uv.sources.structlog-config]
-git = "https://github.com/iloveitaly/structlog-config.git"
 
 [tool.uv.sources.activemodel]
 git = "https://github.com/iloveitaly/activemodel.git"
@@ -224,12 +216,6 @@ rev = "github-output"
 [tool.uv.sources.polyfactory]
 git = "https://github.com/iloveitaly/polyfactory.git"
 rev = "custom"
-
-[tool.uv.sources.uv-development-toggle]
-git = "https://github.com/iloveitaly/uv-development-toggle.git"
-
-[tool.uv.sources.aiautocommit]
-git = "https://github.com/iloveitaly/aiautocommit.git"
 
 [tool.uv.sources.docker]
 git = "https://github.com/docker/docker-py.git"
