@@ -74,6 +74,7 @@ export SMTP_URL=smtp://${SMTP_HOST}:1025
 # specify the 1p account that should be used to source secrets via `op read`
 # export OP_ACCOUNT=yourdomain.1password.com
 
+#
 # right click on the vault with your secrets and copy the UID
 export OP_VAULT_UID=g46wit25zdsr2ul7yivj4air2u
 
