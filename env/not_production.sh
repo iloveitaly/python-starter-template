@@ -19,16 +19,16 @@ export FLOWER_PASSWORD=password
 export FLOWER_PORT=8205
 
 # output directory is used by CI and justfiles
-export TMP_DIRECTORY=tmp
+export TMP_DIRECTORY=$ROOT_DIR/tmp
 export TEST_RESULTS_DIRECTORY=$TMP_DIRECTORY/test-results
 export PLAYWRIGHT_RESULT_DIRECTORY=$TEST_RESULTS_DIRECTORY/playwright
 export PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY=tests/integration/__snapshots__
 # without this, playwright will use a different browser path across linux and macos
-export PLAYWRIGHT_BROWSERS_PATH=~/.cache/ms-playwright
+export PLAYWRIGHT_BROWSERS_PATH=$TMP_DIRECTORY/ms-playwright
 
 # used for py tests, justfile recipes, and JS build
 # use an absolute path since this is run from within `web/`
-export OPENAPI_JSON_PATH=$PWD/web/openapi.json
+export OPENAPI_JSON_PATH=$ROOT_DIR/web/openapi.json
 
 # only applicable in development, javascript is bundled in the py container in prod
 export JAVASCRIPT_SERVER_PORT=8202
@@ -48,7 +48,7 @@ export EMAIL_FROM_ADDRESS="noreply@example.com"
 if [ -z "${DATABASE_HOST:-}" ] && [ -z "${REDIS_HOST:-}" ] && [ -z "${SMTP_HOST:-}" ]; then
   # .orb.local is a nice-to-have feature from: https://docs.orbstack.dev/docker/domains
   # you can replace with localhost or any other postgres/redis host
-  SERVICES_HOST=$(basename $PWD).orb.local
+  SERVICES_HOST=$(basename $ROOT_DIR).orb.local
   REDIS_HOST=redis.${SERVICES_HOST}
   DATABASE_HOST=postgres.${SERVICES_HOST}
   SMTP_HOST=mailpit.${SERVICES_HOST}
