@@ -7,7 +7,6 @@ Route method names are important as they will be used for the openapi spec which
 JavaScript client which will use these methods.
 """
 
-
 from fastapi import FastAPI
 
 from app.constants import BUILD_COMMIT
