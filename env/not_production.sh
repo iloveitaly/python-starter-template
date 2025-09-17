@@ -44,7 +44,7 @@ export VITE_APP_BASE_URL="https://${JAVASCRIPT_SERVER_HOST}"
 # default from address for the mailer system
 export EMAIL_FROM_ADDRESS="noreply@example.com"
 
-# set these conditionally so they be overwritten by CI (or `.env.local`), which has a different server configuration
+# set these conditionally so they be overwritten by CI (or `env/all.local.sh`), which has a different server configuration
 if [ -z "${DATABASE_HOST:-}" ] && [ -z "${REDIS_HOST:-}" ] && [ -z "${SMTP_HOST:-}" ]; then
   # .orb.local is a nice-to-have feature from: https://docs.orbstack.dev/docker/domains
   # you can replace with localhost or any other postgres/redis host

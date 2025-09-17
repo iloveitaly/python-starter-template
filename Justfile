@@ -91,7 +91,7 @@ dev_kill: _dev_only
 		fi
 	done
 
-# Description: this syncs the project with the upstream python-starter-template repo.
+# syncs the project with the upstream python-starter-template repo.
 update_from_upstream_template:
 	#   - Skips all javascript updates
 	#   - You'll need to manually review conflicts of which there will be many
@@ -125,13 +125,13 @@ _brew_check_and_install brew_target: _dev_only
 [doc("--extras to install non-essential productivity tooling")]
 requirements *flags: _dev_only
 	@if ! which mise > /dev/null; then \
-		echo "mise is not installed. Please install."; \
+		echo "mise is not installed."; \
 		echo "  => https://mise.jdx.dev"; \
 		exit 1; \
 	fi
 
 	@if ! which docker > /dev/null; then \
-		echo "docker is not installed. Please install."; \
+		echo "docker is not installed."; \
 		exit 1; \
 	fi
 
