@@ -48,7 +48,7 @@ def pytest_configure(config: Config):
     # TODO huh, maybe we should use anyio instead?
     # TODO pretty sure this doesn't actually work to disable plugins
     # anyio is installed by some other packages and it's plugin is discovered automatically, we disable it in favor of asyncio
-    config.option.plugins = ["no:anyio"]
+    config.option.plugins = ["no:anyio", "no:playwright"]
 
     # when configuring in code, a tuple is used for the (mod, class) reference
     # check out _pytest/debugging.py for implementation details
@@ -69,6 +69,7 @@ def pytest_configure(config: Config):
     config.option.tbstyle = "native"
 
     # must be session to align with playwright expectations
+    # this picks up async test functions and runs them within an event loop
     config.option.asyncio_mode = "auto"
     # TODO right now this option can only be set on ini, which is strange
     # config.option.asyncio_default_fixture_loop_scope = "session"
