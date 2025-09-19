@@ -16,6 +16,7 @@ from typing import Optional
 
 from clerk_backend_api import Clerk
 from playwright.sync_api import Page
+from whenever import Instant
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +35,30 @@ PUBLISHABLE_KEY_TEST_PREFIX = "pk_test_"
 PUBLISHABLE_FRONTEND_API_DEV_REGEX = (
     r"^(([a-z]+)-){2}([0-9]{1,2})\.clerk\.accounts([a-z.]*)(dev|com)$"
 )
+
+
+def clerk_test_email() -> str:
+    """
+    https://clerk.com/docs/testing/test-emails-and-phones
+
+    Use verification code 424242.
+    """
+
+    return f"test-{Instant.now().timestamp()}+clerk_test@example.com"
+
+
+def clerk_login_and_verify(page: Page, email: str) -> None:
+    """
+    Login to Clerk and verify the email.
+    """
+    page.get_by_label("Email address").fill(email)
+    page.get_by_role("button", name="Continue", exact=True).click()
+    page.get_by_label("Enter verification code", exact=True).press_sequentially(
+        # slowly type the verification code, it's one single input
+        "424242",
+        delay=100,
+    )
+    # when the verification code is filled, the button will automatically be clicked
 
 
 @dataclass
