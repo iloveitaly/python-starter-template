@@ -263,7 +263,11 @@ def build_conversion_event_payload(
     first_name: str | None = None,
     last_name: str | None = None,
     full_name: str | None = None,
+    event_id: str | None = None,
 ) -> dict:
+    """Build a Facebook Pixel event payload.
+
+    https://developers.facebook.com/docs/marketing-api/conversions-api/parameters/server-event"""
     # derive values that used to be parameters
     event_time = int(time.time())
     event_source_url = str(request.url)
@@ -292,6 +296,8 @@ def build_conversion_event_payload(
                     full_name=full_name,
                 ).as_sdk_dict(),
                 "custom_data": custom_data,
+                # order id, or other unique identifier for deduplication
+                "event_id": event_id,
             }
         ]
     }
