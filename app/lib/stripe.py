@@ -1,3 +1,5 @@
+from operator import attrgetter
+
 import stripe
 from fastapi import HTTPException
 from starlette import status
@@ -57,6 +59,7 @@ ALLOWED_STRIPE_TYPES = {
     "products",
     "setup_intents",
     "payment_methods",
+    "checkout_sessions",
 }
 
 
@@ -101,6 +104,8 @@ def get_stripe_type_from_id(
         return "payment_intents"
     elif stripe_object_id.startswith("pm_"):
         return "payment_methods"
+    elif stripe_object_id.startswith("cs_"):
+        return "checkout.sessions"
     else:
         if raise_on_missing:
             raise ValueError(f"unknown stripe id: {stripe_object_id}")
@@ -114,7 +119,8 @@ def stripe_retrieve(stripe_object_id: str, client: stripe.StripeClient):
     if stripe_type is None:
         raise ValueError(f"Cannot retrieve for id: {stripe_object_id}")
 
-    return getattr(client, stripe_type).retrieve(stripe_object_id)
+    # Resolve dotted attributes like "checkout.sessions" or single-level names
+    return attrgetter(stripe_type)(client).retrieve(stripe_object_id)
 
 
 def payment_intent_is_disputed(
