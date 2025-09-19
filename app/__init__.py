@@ -16,6 +16,7 @@ from .configuration.emailer import configure_mailer
 from .configuration.lang import configure_python
 from .configuration.openai import configure_openai
 from .configuration.patches import configure_patches
+from .configuration.posthog import configure_posthog
 from .configuration.sentry import configure_sentry
 from .configuration.signals import configure_signals
 from .configuration.versions import check_service_versions
@@ -46,7 +47,8 @@ def setup():
     configure_mailer()
     check_service_versions()
     configure_patches()
-    configure_signals()
+    configure_posthog()
+    # configure_signals()
 
     log.info("application setup", environment=python_environment())
 
