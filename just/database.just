@@ -103,7 +103,8 @@ db_downgrade: _dev_only
 
 # a common workflow is: add more columns, add migration, run migration; revise, downgrade migration, regenerate migration, rerun migrations
 db_downgrade_last:
-	alembic downgrade -1
+	uv run alembic downgrade -1
+	{{EXECUTE_IN_TEST}} uv run alembic downgrade -1
 
 # TODO I don't think we really want to migrate the database automatically. Instead, want this to be an independent command that we can call inside the reset and other operations.
 # add seed data to dev and test
