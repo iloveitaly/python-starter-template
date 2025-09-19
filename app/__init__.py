@@ -48,7 +48,7 @@ def setup():
     check_service_versions()
     configure_patches()
     configure_posthog()
-    # configure_signals()
+    configure_signals()
 
     log.info("application setup", environment=python_environment())
 

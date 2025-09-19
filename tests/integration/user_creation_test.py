@@ -1,12 +1,9 @@
-import time
-
 from playwright.sync_api import Page, expect
 
 from app.models.user import User
 
 from tests.constants import CLERK_DEV_USER_PASSWORD
 from tests.integration.clerk import (
-    clerk_login_and_verify,
     clerk_test_email,
     setup_clerk_testing_token,
 )
