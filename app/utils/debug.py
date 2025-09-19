@@ -36,6 +36,8 @@ def install_remote_debugger():
     This installs a remote debugger that you can connect to using `rpdb`:
     """
     try:
+        import sys
+
         import rpdb
 
         sys.breakpointhook = rpdb.set_trace
