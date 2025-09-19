@@ -2,16 +2,82 @@ import faulthandler
 import inspect
 import os
 import signal
+from collections import defaultdict
+from types import FrameType
+from typing import Callable, Set
 
 import structlog
 
 log = structlog.get_logger()
 
+_handlers: dict[int, list[Callable]] = defaultdict(
+    list
+)  # sig -> list of user-added handlers
+_original_handlers: dict[int, Callable | int | None] = {}  # sig -> original handler
+_installed: Set[int] = set()  # signals with chained handler installed
 
-def log_existing_handler(sig, old_handler):
-    """Log details if modifying an existing signal handler."""
-    # SIG_DFL: default signal handler (usually terminates process)
-    if old_handler in (signal.SIG_DFL, signal.SIG_IGN):
+
+def add_handler(sig: int, handler: Callable[[int, FrameType | None], None]) -> None:
+    if sig not in _installed:
+        _install_chained_handler(sig)
+    _handlers[sig].append(handler)
+    log.debug(
+        "added user handler for signal",
+        signum=sig,
+        signal=signal.strsignal(sig),
+    )
+
+
+def _install_chained_handler(sig: int) -> None:
+    old_handler = signal.getsignal(sig)
+    _log_existing_handler(sig, old_handler)
+    _original_handlers[sig] = old_handler
+
+    def chained_handler(signum: int, frame: FrameType | None) -> None:
+        log.info(
+            "received signal",
+            signum=signum,
+            signal=signal.strsignal(signum),
+        )
+
+        # Then original handler if applicable
+        orig = _original_handlers.get(signum)
+        if callable(orig):
+            orig(signum, frame)
+        elif (
+            orig == signal.SIG_DFL
+        ):  # SIG_DFL: default signal handler (typically terminates the process or performs OS-default action)
+            signal.signal(signum, signal.SIG_DFL)
+            os.kill(os.getpid(), signum)
+            signal.signal(signum, chained_handler)  # Restore; unreached if terminating
+        elif (
+            orig == signal.SIG_IGN
+        ):  # SIG_IGN: ignore the signal (do nothing when received)
+            pass
+        else:
+            log.warning(
+                "unhandled original signal handler",
+                signal=signal.strsignal(signum),
+                handler=orig,
+            )
+        # Then user-added handlers in order
+        for user_handler in _handlers[signum]:
+            user_handler(signum, frame)
+
+    signal.signal(sig, chained_handler)
+    _installed.add(sig)
+    log.debug(
+        "installed chained handler for signal",
+        signum=sig,
+        signal=signal.strsignal(sig),
+    )
+
+
+def _log_existing_handler(sig: int, old_handler: Callable | int | None) -> None:
+    if old_handler in (
+        signal.SIG_DFL,
+        signal.SIG_IGN,
+    ):  # SIG_DFL: default handler; SIG_IGN: ignore signal
         return
 
     log.info(
@@ -35,73 +101,23 @@ def log_existing_handler(sig, old_handler):
             )
 
 
-def add_signal_handler(sig, new_handler):
-    """
-    Add a new handler for the signal while chaining to the existing one.
-
-    Logs if overriding an existing handler and attempts to preserve original behavior.
-    """
-    old_handler = signal.getsignal(sig)
-    log_existing_handler(sig, old_handler)
-
-    def chained_handler(signum, frame):
-        new_handler(signum, frame)  # Execute new handler first
-        if callable(old_handler):
-            old_handler(signum, frame)
-        # SIG_DFL: default signal handler (usually terminates process)
-        elif old_handler == signal.SIG_DFL:
-            signal.signal(signum, signal.SIG_DFL)
-            os.kill(os.getpid(), signum)
-            signal.signal(signum, chained_handler)  # Restore; unreached if terminating
-        # SIG_IGN is handled by doing nothing
-        elif old_handler == signal.SIG_IGN:
-            pass
-        else:
-            log.warning(
-                "unhandled signal handler",
-                signal=signal.strsignal(sig),
-                handler=old_handler,
-            )
-
-    signal.signal(sig, chained_handler)
-    log.debug(
-        "installed logging handler for signal",
-        signum=sig,
-        signal=signal.strsignal(sig),
-    )
-
-
-def log_handler(signum, frame):
-    """Log the received signal."""
-    log.info(
-        "received signal",
-        signum=signum,
-        signal=signal.strsignal(signum),
-    )
-
-
-def configure_signals():
-    # Exclude uncatchable signals
+def configure_signals() -> None:
     catchable_sigs = set(signal.Signals) - {
-        # SIGKILL: cannot be caught or ignored (force kill)
-        signal.SIGKILL,
-        # SIGSTOP: cannot be caught or ignored (force stop)
-        signal.SIGSTOP,
-        # SIGINT: interrupt signal (Ctrl+C), there's a default python handler for this
-        signal.SIGINT,
+        signal.SIGKILL,  # Kill (cannot be caught or ignored)
+        signal.SIGSTOP,  # Stop (cannot be caught or ignored)
+        signal.SIGINT,  # Interrupt (usually Ctrl+C)
     }
 
     if faulthandler.is_enabled():
-        # avoids logging around these signals already being caught, etc
         catchable_sigs -= {
-            signal.SIGSEGV,
-            signal.SIGFPE,
-            signal.SIGABRT,
-            signal.SIGBUS,
-            signal.SIGILL,
+            signal.SIGSEGV,  # Segmentation fault (invalid memory access)
+            signal.SIGFPE,  # Floating point exception (e.g., divide by zero)
+            signal.SIGABRT,  # Abort (from abort() or assert failure)
+            signal.SIGBUS,  # Bus error (misaligned memory access)
+            signal.SIGILL,  # Illegal instruction
         }
 
     for sig in catchable_sigs:
-        add_signal_handler(sig, log_handler)
+        _install_chained_handler(sig)
 
     log.info("installed signal handlers")
