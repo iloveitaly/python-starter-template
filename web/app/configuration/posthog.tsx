@@ -22,7 +22,8 @@ export function PHProvider({ children }: { children: React.ReactNode }) {
       api_host:
         import.meta.env["VITE_POSTHOG_HOST"] ?? "https://us.i.posthog.com",
       defaults: "2025-05-24",
-      person_profiles: "identified_only", // or 'always' to create profiles for anonymous users as well
+      // or 'always' to create profiles for anonymous users as well
+      person_profiles: "identified_only",
     })
 
     setHydrated(true)
