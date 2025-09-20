@@ -125,7 +125,9 @@ def server():
 
     # defensively code against multiprocessing coding errors
     if wait_for_port(PYTHON_SERVER_TEST_PORT, 1):
-        raise Exception("server is already running, should be closed!")
+        raise Exception(
+            "server is already running, should be closed! Use `just dev_kill` to terminall all processes holding ports."
+        )
 
     # NOTE this is a very important line! It forks an *entirely new* python process and does not inherit
     #      any state from the pytest setup. This means database sessions, redis connections, etc are entirely
@@ -160,6 +162,8 @@ def home_url():
 def report_localias_status():
     """
     For integration tests, we require localalias to be running in the background since we use https.
+
+    TODO https://github.com/peterldowns/localias/issues/64
     """
     import subprocess
 
