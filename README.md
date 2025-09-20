@@ -458,7 +458,16 @@ Instead of `breakpoint()` use this to debug and test the page:
 page.pause()
 ```
 
-You can also use `--slowmo=500` to make it easier to see what is going on
+Some tips:
+
+* Playwright has various verbose logging mechanisms. Check out `.env.dev.local-example` for more information.
+* You can also use `--slowmo=500` to slow down playwright interactions so you can see what's going on.
+* Specific versions of `playwright` are locked to specific chromium versions. This is done via a JSON file bundled into the package at `driver/package/browsers.json`
+* If chromium does not open with `--headed` try restarting your VS Code, terminal, and if all else  fails computer. Sometimes things can get corrupted in the process hierarchy and cause it to fail.
+
+Here's a video demonstrating how to debug a playwright test:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/2ikjyAowVFY?si=rQJHJ_K3XF1Ay8cV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 <!--
 ## Architecture Notes
