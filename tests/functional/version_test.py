@@ -12,6 +12,7 @@ import json
 
 from app.configuration.versions import (
     VERSIONS_FILE,
+    chrome_version,
     postgres_version,
     redis_version,
 )
@@ -33,7 +34,7 @@ def test_postgres_version_matches():
     )
 
 
-# def test_chrome_version_matches_persisted_version():
-#     persisted_chrome_version = json.loads(VERSIONS_FILE.read_bytes())["chrome"]
+def test_chrome_version_matches_persisted_version():
+    persisted_chrome_version = json.loads(VERSIONS_FILE.read_bytes())["chrome"]
 
-#     assert persisted_chrome_version == chrome_version(), VERSION_ERROR.format("chrome")
+    assert persisted_chrome_version == chrome_version(), VERSION_ERROR.format("chrome")

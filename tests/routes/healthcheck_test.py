@@ -1,5 +1,6 @@
 """
-TODO why async? mostly to test async client tests
+These tests don't need to be async. However, they are simple tests that also test mixing async with sync tests
+which has caused lots of issues in the past.
 """
 
 from fastapi import status
