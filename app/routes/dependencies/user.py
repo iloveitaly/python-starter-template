@@ -14,6 +14,7 @@ def inject_user_record(request: Request):
     """
 
     clerk_id = request.state.auth_state.payload["sub"]
+    # TODO need to upsert to avoid rate condition on first load
     user = User.find_or_create_by(clerk_id=clerk_id)
 
     if user.deleted_at:
