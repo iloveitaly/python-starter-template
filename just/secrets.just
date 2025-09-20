@@ -21,7 +21,7 @@ _secrets_service-token CONTEXT WRITE_PERMISSION="false":
 
 # generate r+w 1p service account token for terraform and other tools which can create 1P records
 secrets_write-service-token: _not_production
-	@echo '{{ BLUE }}Update your ".env.local" with this value:{{ NORMAL }}'
+	@echo '{{ BLUE }}Update your "env/all.local.sh" with this value:{{ NORMAL }}'
 
 	just _secrets_service-token write true | jq -r -R '@sh "export OP_SERVICE_ACCOUNT_TOKEN=\(.)"'
 
@@ -55,5 +55,6 @@ secrets_ci_grant-github-actions: _not_production
 
 # manage the op service account from the web ui
 secrets_ci_manage: _not_production
+	# https://$OP_ACCOUNT.1password.com/developer-tools/active/service-accounts
 	# you cannot revoke/delete a service account with the cli, you must login and delete it from the web ui
 	open https://$OP_ACCOUNT/developer-tools/directory

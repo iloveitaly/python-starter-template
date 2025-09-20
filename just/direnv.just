@@ -102,7 +102,7 @@ fi
 [script]
 direnv_bash_export: _dev_only
 	# TODO required direnv allow otherwise it won't work
-	target_file=".env.$(whoami).local"
+	target_file="env/$(whoami).local.sh"
 
 	cat << 'EOF' > "$target_file"
 	{{BASH_EXPORT_PREAMBLE}}

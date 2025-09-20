@@ -51,13 +51,13 @@ JAVASCRIPT_NIXPACKS_BUILD_CMD := "nixpacks build " + WEB_DIR + " " + \
 	" --label org.opencontainers.image.description=\"Used for building javascript assets, not for deployment\""
 
 # .env file without any secrets that should exist on all environments
-SHARED_ENV_FILE := ".env"
+SHARED_ENV_FILE := "env/all.sh"
 
-# .env file with production variables, no secrets, for python
-PYTHON_PRODUCTION_ENV_FILE := ".env.production.backend"
+# .env file with production secrets for python
+PYTHON_PRODUCTION_ENV_FILE := "env/production.backend.sh"
 
 # .env file with production variables that are safe to share publicly (frontend)
-JAVASCRIPT_SECRETS_FILE := ".env.production.frontend"
+JAVASCRIPT_SECRETS_FILE := "env/production.frontend.sh"
 
 # by default, the py image name is pulled from the project name
 PYTHON_IMAGE_NAME := PROJECT_NAME
@@ -201,7 +201,7 @@ build_run-as-production procname="api" image_name=PYTHON_IMAGE_TAG:
 	# NOTE that resources are limited to a production-like environment, change if your production requirements are different
 	docker run -p ${JAVASCRIPT_SERVER_PORT}:80 \
 		--memory=1g --cpus=2 \
-		$(just direnv_export_docker ".env.production.backend" --params) \
+		$(just direnv_export_docker "env/production.backend.sh" --params) \
 		--platform {{BUILD_PLATFORM}} \
 		"{{image_name}}" \
 		"$(just _extract_proc "{{procname}}")"

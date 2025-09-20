@@ -11,7 +11,7 @@ if os.getenv("PYTHON_ENV", "development") != "test":
     print(
         "\033[91m"
         "PYTHON_ENV is not set to 'test', forcing.\n\n"
-        "Additional variables may set in '.env.test' and required to run tests.\n\n"
+        "Additional variables may set in 'env/test.sh' and required to run tests.\n\n"
         "Consider using `just py_test"
         "\033[0m"
         )

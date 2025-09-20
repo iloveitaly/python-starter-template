@@ -147,7 +147,7 @@ If you don't have a teammate with the full setup, you will need 1Password CLI an
 Then, you can simply source the resulting file when you create a new shell session:
 
 ```shell
-source .env.yourname.local
+source env/yourname.local.sh
 ```
 
 The primary downside to this approach is:
@@ -569,7 +569,7 @@ in order to generate a connection token:
 OP_ACCOUNT=company.1password.com OP_VAULT_UID=a_uuid just secrets_local-service-token
 ```
 
-And drop the resulting token in your `.env.local` file. This credential will expire every 90 days.
+And drop the resulting token in your `env/all.local.sh` file. This credential will expire every 90 days.
 
 One thing to be careful of dependent environment variables. If
 you have a variable that depends on another variable pulled from 1Password, you'll want to set an empty default value.
