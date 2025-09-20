@@ -58,6 +58,9 @@ py_dev:
 	kill -9 $(lsof -t -i :${PYTHON_SERVER_PORT}) 2>/dev/null || true
 	PORT=$PYTHON_SERVER_PORT uv run python main.py
 
+py_generate_react_router:
+	uvx react-router-routes@latest app/react_router_routes.py --directory ./web
+
 py_play:
 	./playground.py
 
