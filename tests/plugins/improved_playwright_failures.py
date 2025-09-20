@@ -145,9 +145,19 @@ def _should_ignore_console_log(
 
 @pytest.fixture(autouse=True)
 def playwright_console_logging(
-    page: Page, request: pytest.FixtureRequest, pytestconfig: PlaywrightConfig
+    request: pytest.FixtureRequest, pytestconfig: PlaywrightConfig
 ) -> Generator[None, None, None]:
     """Fixture to capture and log Playwright console messages."""
+    if "page" not in request.fixturenames:
+        yield
+        return
+
+    try:
+        page: Page = request.getfixturevalue("page")
+    except pytest.FixtureLookupError:
+        yield
+        return
+
     logs: list[StructuredConsoleLog] = []
     pytestconfig._playwright_console_logs[request.node.nodeid] = logs
 
