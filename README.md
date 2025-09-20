@@ -467,7 +467,7 @@ Some tips:
 
 Here's a video demonstrating how to debug a playwright test:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/2ikjyAowVFY?si=rQJHJ_K3XF1Ay8cV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+[![How to Debug Playwright Tests in Python](https://img.youtube.com/vi/rQJHJ_K3XF1Ay8cV/0.jpg)](https://www.youtube.com/watch?v=rQJHJ_K3XF1Ay8cV)
 
 <!--
 ## Architecture Notes
