@@ -24,7 +24,8 @@ def add_handler(sig: int, handler: Callable[[int, FrameType | None], None]) -> N
     log.debug(
         "added user handler for signal",
         signum=sig,
-        signal=signal.strsignal(sig),
+        signal_name=_signal_name(sig),
+        sigcode=_sigcode(sig),
     )
 
 
@@ -37,7 +38,8 @@ def _install_chained_handler(sig: int) -> None:
         log.info(
             "received signal",
             signum=signum,
-            signal=signal.strsignal(signum),
+            signal_name=_signal_name(signum),
+            sigcode=_sigcode(signum),
         )
 
         # Then original handler if applicable
@@ -57,7 +59,8 @@ def _install_chained_handler(sig: int) -> None:
         else:
             log.warning(
                 "unhandled original signal handler",
-                signal=signal.strsignal(signum),
+                signal_name=_signal_name(signum),
+                sigcode=_sigcode(signum),
                 handler=orig,
             )
         # Then user-added handlers in order
@@ -69,7 +72,8 @@ def _install_chained_handler(sig: int) -> None:
     log.debug(
         "installed chained handler for signal",
         signum=sig,
-        signal=signal.strsignal(sig),
+        signal_name=_signal_name(sig),
+        sigcode=_sigcode(sig),
     )
 
 
@@ -83,7 +87,8 @@ def _log_existing_handler(sig: int, old_handler: Callable | int | None) -> None:
     log.info(
         "modifying existing handler for signal",
         signum=sig,
-        signal=signal.strsignal(sig),
+        signal_name=_signal_name(sig),
+        sigcode=_sigcode(sig),
     )
 
     if callable(old_handler):
@@ -95,10 +100,29 @@ def _log_existing_handler(sig: int, old_handler: Callable | int | None) -> None:
             log.info(
                 "could not retrieve source location for handler of signal",
                 signum=sig,
-                signal=signal.strsignal(sig),
+                signal_name=_signal_name(sig),
+                sigcode=_sigcode(sig),
                 error=error,
                 old_handler=old_handler,
             )
+
+
+def _signal_name(signum: int) -> str:
+    """Return a clean signal name without any trailing numeric suffix.
+
+    Some platforms may format the string as "Name: 28"; strip the numeric suffix.
+    """
+    text = signal.strsignal(signum) or ""
+
+    head, sep, tail = text.rpartition(":")
+    if sep and tail.strip().isdigit():
+        return head.strip()
+
+    return text
+
+
+def _sigcode(signum: int) -> str:
+    return signal.Signals(signum).name
 
 
 def configure_signals() -> None:
@@ -106,6 +130,7 @@ def configure_signals() -> None:
         signal.SIGKILL,  # Kill (cannot be caught or ignored)
         signal.SIGSTOP,  # Stop (cannot be caught or ignored)
         signal.SIGINT,  # Interrupt (usually Ctrl+C)
+        signal.SIGCHLD,  # Child process terminated, noisy
     }
 
     if faulthandler.is_enabled():
