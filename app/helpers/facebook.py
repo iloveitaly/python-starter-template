@@ -1,3 +1,11 @@
+"""
+Facebook/Meta tracking helpers
+
+TODO
+
+- disable option for local tests? Is this needed with how facebook works?
+"""
+
 import hashlib
 import re
 import time
@@ -94,7 +102,12 @@ MetaEventName = Literal[
 
 
 def get_facebook_pixel() -> AdsPixel:
-    FacebookAdsApi.init(access_token=META_PIXEL_KEY, api_version=API_VERSION)
+    FacebookAdsApi.init(
+        access_token=META_PIXEL_KEY,
+        api_version=API_VERSION,
+        # this is crazy: without this, facebook overrides sys.excepthook AND sends exception data to their servers
+        crash_log=False,
+    )
     return AdsPixel(META_PIXEL_ID)
 
 
