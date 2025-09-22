@@ -4,11 +4,12 @@
 # subdomains are used so cookies set on the web domain can be passed to the API domain
 # in production, the same domain is used.
 
+# javascript/react router server, for development only (not testing)
+# this is the main domain you'll interact with to manually test the site
+web.localhost: 8202
 # dev py server
 api.web.localhost: 8200
 # test py server
 api-test.web.localhost: 8201
-# javascript/react router server, for development only (not testing)
-web.localhost: 8202
 # job monitoring (flower)
 flower.web.localhost: 8203
