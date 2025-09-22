@@ -22,6 +22,15 @@ This is a very important configuration option:
 - Determines which hosts cookies are set for (first one in the list!)
 """
 
+DEVELOPMENT_HOSTS = [
+    "127.0.0.1",
+    "::1",
+    "localhost",
+]
+"""
+0.0.0.0 is a bind address only adn is not used by browsers, which is why it's excluded
+"""
+
 
 def allowed_hosts(with_scheme: bool = False) -> list[str]:
     """
@@ -34,60 +43,50 @@ def allowed_hosts(with_scheme: bool = False) -> list[str]:
     - Common development hosts are automatically added when running in development.
 
     This function is used by:
+
     - CORS configuration (origins must include scheme and, for dev, may include ports)
     - Trusted host protection (FastAPI `TrustedHostMiddleware`)
     - Session/cookie domain selection (the first host in the list)
 
     Notes:
+
     - `ALLOWED_HOST_LIST` must contain bare hostnames only (no scheme, no path).
       If an entry begins with `http://`, it will be ignored and a warning logged.
-    - Local development often runs on arbitrary ports; CORS handling augments these
+    - Local development servers often run on arbitrary ports; CORS handling augments these
       values with a regex to allow any port for development hosts.
     """
 
-    DEVELOPMENT_HOSTS = [
-        "127.0.0.0",
-        "0.0.0.0",
-        "localhost",
-    ]
-
     raw_hosts = [host.strip() for host in ALLOWED_HOST_LIST.split(",")]
 
-    hosts: list[str] = []
+    hosts_without_scheme: list[str] = []
     for host in raw_hosts:
         if not host:
             continue
         if host.lower().startswith("http://"):
-            # guidance: host list should be bare hostnames only
-            log.warning("http scheme provided in allowed host; omit scheme", host=host)
+            log.warning(
+                "http scheme provided in allowed host, ignoring host", host=host
+            )
             continue
-        hosts.append(host)
+        hosts_without_scheme.append(host)
 
-    assert hosts
-
-    if with_scheme:
-        # production hosts default to https; development hosts default to http in dev
-        def with_correct_scheme(h: str) -> str:
-            if is_development() and h in DEVELOPMENT_HOSTS:
-                return f"http://{h}"
-            return f"https://{h}"
-
-        hosts = [with_correct_scheme(host) for host in hosts]
+    assert hosts_without_scheme, "at least a single allowed host is required"
 
     if is_development():
-        if with_scheme:
-            # don't force https for devs who aren't using localias
-            # ensure all dev hosts are available over http
-            dev_http_hosts = [f"http://{host}" for host in DEVELOPMENT_HOSTS]
-            for dev_host in dev_http_hosts:
-                if dev_host not in hosts:
-                    hosts.append(dev_host)
-        else:
-            hosts.extend(DEVELOPMENT_HOSTS)
+        hosts_without_scheme.extend(DEVELOPMENT_HOSTS)
+
+    if not with_scheme:
+        return list(dict.fromkeys(hosts_without_scheme))
+
+    # production hosts default to https; development hosts default to http in dev
+    def with_correct_scheme(h: str) -> str:
+        if is_development() and h in DEVELOPMENT_HOSTS:
+            return f"http://{h}"
+        return f"https://{h}"
+
+    hosts_with_scheme = [with_correct_scheme(host) for host in hosts_without_scheme]
 
     # keep order stable but remove duplicates
-    unique_hosts: list[str] = list(dict.fromkeys(hosts))
-    return unique_hosts
+    return list(dict.fromkeys(hosts_with_scheme))
 
 
 def add_middleware(app: FastAPI):
@@ -112,8 +111,7 @@ def add_middleware(app: FastAPI):
     # known development hosts via a regex while still enumerating explicit origins.
     allow_origin_regex: str | None = None
     if is_development():
-        dev_hosts = ["127.0.0.0", "0.0.0.0", "localhost"]
-        dev_hosts_pattern = "|".join(re.escape(h) for h in dev_hosts)
+        dev_hosts_pattern = "|".join(re.escape(h) for h in DEVELOPMENT_HOSTS)
         allow_origin_regex = rf"^http://(?:{dev_hosts_pattern})(?::\\d+)?$"
 
     log.info("allowed_origins", allowed_origins=allowed_hosts_with_schemes)
