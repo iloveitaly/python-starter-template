@@ -34,11 +34,11 @@ secrets_local-service-token user=`whoami`: _not_production
 		just _secrets_service-token {{user}} |
 		jq -r -R '@sh "export OP_SERVICE_ACCOUNT_TOKEN=\(.)"'
 	) || {
-		echo "{{RED}}error: failed to generate 1Passwordservice account token{{NORMAL}}" >&2
+		echo "{{RED}}error: failed to generate 1Password service account token{{NORMAL}}" >&2
 		exit 1
 	}
 
-	echo '{{ BLUE }}Update your ".env.local" OP_SERVICE_ACCOUNT_TOKEN with this value:{{ NORMAL }}'
+	echo '{{ BLUE }}Update your "env/all.local.sh" OP_SERVICE_ACCOUNT_TOKEN with this value:{{ NORMAL }}'
 	echo "$token_shell_export"
 
 	if [ -f env/all.local.sh ]; then
