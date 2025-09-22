@@ -100,7 +100,7 @@ export const useIframeHeightSender = () => {
  * ```
  */
 export function withIFrameHeightSender<P extends object>(
-  WrappedComponent: ComponentType<P>
+  WrappedComponent: ComponentType<P>,
 ) {
   return function WithIFrameHeightSender(props: P) {
     useIframeHeightSender()
