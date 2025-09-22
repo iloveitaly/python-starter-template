@@ -41,9 +41,9 @@ secrets_local-service-token user=`whoami`: _not_production
 	echo '{{ BLUE }}Update your ".env.local" OP_SERVICE_ACCOUNT_TOKEN with this value:{{ NORMAL }}'
 	echo "$token_shell_export"
 
-	if [ -f .env.local ]; then
-		sed -i.bak "s|^export OP_SERVICE_ACCOUNT_TOKEN.*$|${token_shell_export}|" .env.local && rm .env.local.bak
-		echo "{{GREEN}}Updated OP_SERVICE_ACCOUNT_TOKEN in .env.local{{NORMAL}}"
+	if [ -f env/all.local.sh ]; then
+		sed -i.bak "s|^export OP_SERVICE_ACCOUNT_TOKEN.*$|${token_shell_export}|" env/all.local.sh && rm env/all.local.sh.bak
+		echo "{{GREEN}}Updated OP_SERVICE_ACCOUNT_TOKEN in env/all.local.sh{{NORMAL}}"
 	fi
 
 # grant GH actions access to the 1p vault, this needs to be done every 90d
