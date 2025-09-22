@@ -8,7 +8,7 @@ _min_copier_version: 9.4.1
 _jinja_extensions:
   - jinja2_shell_extension.ShellExtension
 
-_message_before_copy: >-
+_message_before_copy: |
   IMPORTANT!!
 
   Install mise and docker before continuing.
@@ -18,13 +18,8 @@ _message_after_copy: |
 
     1. Configure all 1p secret references in '.env*' (rg 'op://' --hidden)
     2. Run 'just setup' or 'just setup --extras'
-    4. Run 'just py_dev' to start a dev server
-    5. Update ports in .localias.yaml + .env*, if there's a conflict with an another app.
-       You easily change them (there's multiple defined in .localias.yaml) using fastmod:
-
-       $ fastmod 8203 10203 --hidden
-
-    6. Take a look at recommended shell hooks, etc specified in the readme.
+    3. Run 'just py_dev' to start a dev server
+    4. Take a look at recommended shell hooks, etc specified in the readme.
 
   If you don't have direnv setup properly, you can prefix any of the above commands with
   `direnv exec .` to execute them with the proper environment variables.
@@ -66,7 +61,7 @@ one_password_account:
 
 one_password_vault:
   type: str
-  help: The UUID of the 1password vault to use
+  help: The UUID of the 1password vault to use. Use "op vault list" to get the list of vaults.
   validator: >-
     {% if not (one_password_vault | regex_search('^[a-zA-Z0-9]+$')) %}
     one_password_vault must be a valid UUID from 1password
@@ -89,8 +84,10 @@ _tasks:
   - git add -A
   - git commit -m "🎉 Initial commit"
   - ["{{ _copier_python }}", .copier/bootstrap.py]
-  - git add -A
-  - git commit -m "build: default template values updated"
+  - "git add -A && git commit -m 'build: default template values updated'"
+  - ["{{ _copier_python }}", .copier/pick_unique_ports.py]
+  - "git add -A && git commit -m 'build: selected random ports'"
+  - "command -v direnv >/dev/null 2>&1 && direnv allow ."
 
 # although it's annoying to have the .copier-answers.yml file in the root, it allows `copier update`
 # to work properly

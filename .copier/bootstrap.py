@@ -51,7 +51,7 @@ replacements = {
         (r'^name = ".*$', f'name = "{copier_answers["project_slug"]}"'),
         (r'^python-starter-template = "app.cli:app".*$', f'{copier_answers["project_slug"]} = "app.cli:app"')
     ],
-    ".env.shared": [
+    "env/not_production.sh": [
         (
             r"^export EMAIL_FROM_ADDRESS=.*$",
             f"export EMAIL_FROM_ADDRESS={copier_answers['from_email']}",
