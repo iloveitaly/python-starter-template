@@ -2,7 +2,6 @@ import os
 import sys
 
 import stripe
-from stripe import StripeClient
 
 # When running locally, switching to the full-blown CI environment is a pain.
 # To make it quick & easy to run tests, we force the environment to test and load cached CI environment variables (if we can).
