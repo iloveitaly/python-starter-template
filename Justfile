@@ -103,6 +103,7 @@ update_from_upstream_template:
 		--exclude tests/integration/__snapshots__ \
 		--exclude .service-versions \
 		--exclude .tool-versions \
+		--exclude .localias.yaml \
 		--exclude .cursor \
 		--exclude .github/instructions
 
@@ -165,17 +166,17 @@ setup: _dev_only requirements && py_setup up db_seed js_setup
 
 	# `.local` variants enable the developer to override configuration options without
 	# committing them to the repository.
-	@if [ ! -f .env.dev.local ]; then \
-		cp .env.dev.local-example .env.dev.local; \
-		echo "Edit '.env.dev.local' to your liking."; \
+	@if [ ! -f env/dev.local.sh ]; then \
+		cp env/dev.local-example.sh env/dev.local.sh; \
+		echo "Edit 'env/dev.local.sh' to your liking."; \
 	fi
 
-	@if [ ! -f .env.local ]; then \
-		cp .env.local-example .env.local; \
-		echo "Edit '.env.local' to your liking."; \
+	@if [ ! -f env/all.local.sh ]; then \
+		cp env/all.local-example.sh env/all.local.sh; \
+		echo "Edit 'env/all.local.sh' to your liking."; \
 	fi
 
-	@echo 'If you are using localais, run `just local-alias` to start the daemon'
+	@echo 'If you are using localias, run `just local-alias` to start the daemon'
 
 # if a dev is having trouble with their environment, this outputs all the versions + debugging information of core tools which could be causing the problem
 [macos]

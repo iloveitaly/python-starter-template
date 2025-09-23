@@ -4,6 +4,11 @@
 # when running `op` commands, you can set the token here. `just secrets_local-service-token`
 # export OP_SERVICE_ACCOUNT_TOKEN=
 
+# specify the 1p account that should be used to source secrets via `op read`
+# useful if you have multiple 1p accounts, otherwise does not need to be set
+# avoid committing to source control if you are security paranoid
+# export OP_ACCOUNT=yourdomain.1password.com
+
 # if your services are not hosted via orb stack
 # export DATABASE_HOST=localhost
 # export REDIS_HOST=localhost

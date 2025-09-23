@@ -7,7 +7,8 @@ _secrets_service-token CONTEXT WRITE_PERMISSION="false":
 	# what to do here, so let's make it clear to the user what they need to do to fix it.
 	@[[ -n "${OP_VAULT_UID:-}" ]] || { \
 		echo "{{RED}}error: OP_VAULT_UID must be set in order to generate a service account token{{NORMAL}}" >&2; \
-		echo "{{BLUE}}Set it with: export OP_VAULT_UID=5pxsyszwmfyzhzsz5ncglvo3ku{{NORMAL}}" >&2; \
+		echo "{{BLUE}}Set it with: export OP_VAULT_UID=YOUR_VAULT_UID{{NORMAL}}" >&2; \
+		echo "{{BLUE}}If you have multiple 1Password accounts, also set: export OP_ACCOUNT=yourdomain.1password.com{{NORMAL}}" >&2; \
 		exit 1; \
 	}
 
