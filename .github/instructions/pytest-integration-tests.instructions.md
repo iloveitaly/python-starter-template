@@ -1,7 +1,5 @@
 ---
-description:
-globs: tests/integration/**/*.py
-alwaysApply: false
+applyTo: "tests/integration/**/*.py"
 ---
 ## Pytest Integration Tests
 
@@ -11,5 +9,3 @@ alwaysApply: false
 - Use the `faker` factory to generate emails, etc.
 - Don't add obvious `assert` descriptions
 - Do not use the `db_session` fixture here. Instead, use `with test_session():` if you need to setup complex database state
-- if a UI timeout is occuring, it could be because it cannot find a element because the rendering has changed. Check the failure screenshot and see if you can correct the test assertion.
-- The integration tests can take a very long time to run. Do not abort them if they are taking a long time.
