@@ -69,13 +69,11 @@ export SMTP_URL=smtp://${SMTP_HOST}:1025
 #######################
 
 # NOTE OP_ACCOUNT and OP_VAULT_UID are *not* required when using a service account to access, which is what is used
-#      on CI. This is because `OP_SERVICE_ACCOUNT_TOKEN` is tied to a single vault.
+#      on CI. This is because `OP_SERVICE_ACCOUNT_TOKEN` is tied to a single vault. However, the vault UID is still
+#      used to reference specific 1Password items which is why we keep it here.
 
-# specify the 1p account that should be used to source secrets via `op read`
-# export OP_ACCOUNT=yourdomain.1password.com
-
-#
-# right click on the vault with your secrets and copy the UID
+# NOTE: very important value, it's used to generate a service account token for CI
+# right click on the vault with your secrets in 1Password and copy the UID
 export OP_VAULT_UID=g46wit25zdsr2ul7yivj4air2u
 
 # random secret key for fastapi session signing
