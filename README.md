@@ -11,6 +11,10 @@ Here's some of the guiding principles in this stack:
 5. Full-stack typing.
 6. Use boring core technology. No fancy databases, no novel languages, no obscure frameworks.
 
+Here's a (long, sorry) video of setting up a new project with this template:
+
+[![Setting up a new FastAPI + React Router Project](https://img.youtube.com/vi/FmJ_Zrwlnuc/0.jpg)](https://www.youtube.com/watch?v=FmJ_Zrwlnuc)
+
 ## Tech Stack
 
 Here's the stack:
