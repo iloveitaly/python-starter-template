@@ -32,6 +32,8 @@ export PYRIGHT_PYTHON_PYLANCE_VERSION=latest-release
 # useful when the process is forked and stdin is not connected to a tty (fastapi dev, etc) and stdout is overloaded
 # export PYTHONBREAKPOINT=rpdb.set_trace
 
+# export IPDB_CONTEXT_SIZE
+
 # run playwright in headful mode, can also use --headed on pytest CLI
 # https://github.com/microsoft/playwright-python/blob/c4df71cb9cf653622c1aa7b02ed874f2fae3feb1/tests/conftest.py#L50
 # export HEADFUL=1
@@ -60,12 +62,12 @@ export PYRIGHT_PYTHON_PYLANCE_VERSION=latest-release
 # export PRETTY_TRACEBACK_LOCAL_ONLY=True
 
 # suppress or expand py warnings
-# export PYTHONWARNINGS="ignore::DeprecationWarning,ignore:ResourceWarning"
 # export PYTHONWARNINGS=""
+export PYTHONWARNINGS="ignore::DeprecationWarning,ignore:ResourceWarning"
 
 # not standard python, but used in many libraries. Adds color to output.
 # NO_COLOR is used to control our application logging color
-# export PY_COLORS=1
+export PY_COLORS=1
 # export NO_COLOR=1
 
 # debugging a trace mise issue?
