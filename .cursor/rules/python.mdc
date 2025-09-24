@@ -15,9 +15,10 @@ When writing Python:
 * Use `log.info("the message", the_variable=the_variable)` instead of `log.info("The message: %s", the_variable)` or `print` for logging. This object can be found at `from app import log`.
   * Log messages should be lowercase with no leading or trailing whitespace.
   * No variable interpolation in log messages.
-  * Do not coerce database IDs or dates to `str`
+  * Do not coerce database IDs, dates, or Path objects to `str`
 * Do not fix import ordering or other linting issues.
 * Never edit or create any files in `migrations/versions/`
+* Place all comments on dedicated lines immediately above the code statements they describe. Avoid inline comments appended to the end of code lines.
 * Do not `try/catch` raw `Exceptions` unless explicitly told to. Prefer to let exceptions raise and cause an explicit error.
 
 ### Typing
