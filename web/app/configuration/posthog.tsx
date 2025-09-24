@@ -24,6 +24,8 @@ export function PHProvider({ children }: { children: React.ReactNode }) {
       defaults: "2025-05-24",
       // or 'always' to create profiles for anonymous users as well
       person_profiles: "identified_only",
+      // don't use Sentry *and* posthog for error tracking!
+      autocapture: false,
     })
 
     setHydrated(true)

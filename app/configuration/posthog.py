@@ -6,6 +6,8 @@ from app.environments import is_production
 posthog_client = Posthog(
     config("POSTHOG_SECRET_KEY"),
     host=config("POSTHOG_HOST", default="https://us.i.posthog.com"),
+    # don't use Sentry *and* posthog for error tracking!
+    enable_exception_autocapture=False,
 )
 
 if not is_production():

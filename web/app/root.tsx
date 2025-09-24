@@ -70,6 +70,8 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     details = error.statusText || details
   } else if (error && error instanceof Error) {
     Sentry.captureException(error)
+    // don't use Sentry *and* posthog for error tracking!
+    // posthog.captureException(error)
 
     if (import.meta.env.DEV) {
       details = error.message
