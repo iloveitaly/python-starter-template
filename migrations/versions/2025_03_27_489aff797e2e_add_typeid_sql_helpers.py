@@ -48,7 +48,7 @@ import activemodel
 
 # revision identifiers, used by Alembic.
 revision: str = '489aff797e2e'
-down_revision: Union[str, None] = "cf868c4d11b7"
+down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
