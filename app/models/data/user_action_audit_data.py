@@ -10,7 +10,7 @@ from ipaddress import ip_address
 from fastapi import Request
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import IPvAnyAddress
-from whenever import SystemDateTime
+from whenever import Instant
 
 
 class UserActionAuditData(PydanticBaseModel):
@@ -28,5 +28,5 @@ class UserActionAuditData(PydanticBaseModel):
         return cls(
             ip_address=ip_address(client_ip),
             build_version=BUILD_COMMIT,
-            timestamp=SystemDateTime.now().py_datetime(),
+            timestamp=Instant.now().to_system_tz().py_datetime(),
         )
