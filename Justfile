@@ -104,7 +104,6 @@ update_from_upstream_template:
 		--exclude .service-versions \
 		--exclude .tool-versions \
 		--exclude .localias.yaml \
-		--exclude .cursor \
 		--exclude .github/instructions
 
 #######################
