@@ -2,6 +2,8 @@
 Static data for various tests which is not database backed
 """
 
+from random import choice
+
 # Realistic zip codes to use in tests, faker does not generate correct zip codes
 REAL_ZIP_CODES = [
     "40145",
@@ -109,7 +111,6 @@ REAL_ZIP_CODES = [
 
 def real_zip_code():
     """Return a random real zip code from the list."""
-    from random import choice
 
     return choice(REAL_ZIP_CODES)
 
@@ -147,3 +148,20 @@ REAL_LOCATIONS = [
         "zip_code": "85001",
     },
 ]
+
+
+def random_geolocation_point():
+    """Return a random real location as a GeolocationPoint."""
+
+    from app.models.data.geolocation_point import GeolocationPoint
+
+    location_data = choice(REAL_LOCATIONS)
+    lng, lat = location_data["location"]
+
+    return GeolocationPoint(
+        lat=lat,
+        lng=lng,
+        city=location_data["city"],
+        state=location_data["state"],
+        postal_code=location_data["zip_code"],
+    )
