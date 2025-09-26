@@ -28,6 +28,7 @@ mise.local.toml
 /public
 
 # plugin installation folder
-infra/.terraform
+.terraform/
 # this contains secrets!
-infra/terraform.tfstate*
+terraform.tfstate*
+# keep `.terraform.lock.hcl`, it's like a package manager lock file
