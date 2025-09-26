@@ -9,3 +9,6 @@ applyTo: "tests/integration/**/*.py"
 - Use the `faker` factory to generate emails, etc.
 - Don't add obvious `assert` descriptions
 - Do not use the `db_session` fixture here. Instead, use `with test_session():` if you need to setup complex database state
+- if a UI timeout is occuring, it could be because it cannot find a element because the rendering has changed. Check the failure screenshot and see if you can correct the test assertion.
+- The integration tests can take a very long time to run. Do not abort them if they are taking a long time.
+- Use `expect(page.get_by_text("Screening is fully booked")).to_be_visible()` instead of `expect(page.get_by_role("heading")).to_contain_text("Screening is fully booked")`. It's less brittle.

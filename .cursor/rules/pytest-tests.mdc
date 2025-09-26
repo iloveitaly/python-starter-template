@@ -12,3 +12,4 @@ alwaysApply: false
 - If you get lazy attribute errors, or need a database session to share across logic, use the `db_session` fixture to fix the issue.
   - Note that when writing route tests a `db_session` is not needed for the logic inside of the route.
 - When testing Stripe, use the sandbox API. Never mock out Stripe interactions unless explicitly told to.
+- Omit obvious docstrings and comments.

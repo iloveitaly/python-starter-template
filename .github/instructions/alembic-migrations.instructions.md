@@ -3,7 +3,20 @@ applyTo: "migrations/versions/*.py"
 ---
 ## Alembic Migrations
 
-### Data Migrations
+### Default Content for New Non-Nullable Columns
+
+To add a non-nullable column and set a specific value for all existing rows without a persistent server default:
+
+```python
+# 1. Add the column as nullable (no default needed):
+op.add_column('distribution', sa.Column('default_campaign_ending_date', sa.DateTime(timezone=True), nullable=True))
+# 2. Update existing rows with your desired value (e.g., a specific datetime)
+op.execute("UPDATE distribution SET default_campaign_ending_date = %s", [datetime.utcnow()])
+# 3. Alter the column to non-nullable:
+op.alter_column('distribution', 'default_campaign_ending_date', nullable=False)
+```
+
+### Record Backfill Operations
 
 For migrations that include data mutation, and not only schema modifications, use this pattern to setup a session:
 
@@ -26,4 +39,12 @@ def upgrade() -> None:
 
   # flush before running any other operations, otherwise not all changes will persist to the transaction
   session.flush()
+```
+
+However, if you don't need the business logic attached to the models, you can execute a query using `op.execute`:
+
+```python
+op.execute(
+  TheModel.__table__.update().values({"a_field": "a_value"}) # type: ignore
+)
 ```

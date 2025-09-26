@@ -7,5 +7,6 @@ applyTo: "tests/**/*.py"
   - Here's an example of how to create + persist a factory `DistributionFactory.save()`
 - Use the `faker` factory to generate emails, etc.
 - Do not mock or patch unless I instruct you to. Test as much of the application stack as possible in each test.
-- If you get lazy attribute errors, use the `db_session` fixture
-- If we are testing Stripe interactions, assume we want to hit the live sandbox API. Don't mock out Stripe interactions unless I explicitly instruct you to.
+- If you get lazy attribute errors, or need a database session to share across logic, use the `db_session` fixture to fix the issue.
+  - Note that when writing route tests a `db_session` is not needed for the logic inside of the route.
+- When testing Stripe, use the sandbox API. Never mock out Stripe interactions unless explicitly told to.
