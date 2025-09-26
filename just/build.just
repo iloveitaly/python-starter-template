@@ -22,7 +22,8 @@ RAILPACK_BUILD_METADATA := (
 FRONTEND_IMAGE := "ghcr.io/railwayapp/railpack-frontend:latest"
 
 # architecture images will be running on
-BUILD_PLATFORM := "linux/arm64/v8"
+BUILD_PLATFORM := "linux/amd64"
+# BUILD_PLATFORM := "linux/arm64/v8"
 
 # NOTE production secrets are *not* included in the image, they are set on deploy
 PYTHON_RAILPACK_PREPARE_CMD := "railpack prepare ." + \
@@ -31,7 +32,7 @@ PYTHON_RAILPACK_PREPARE_CMD := "railpack prepare ." + \
 	" --info-out railpack-info.json" + \
 	" --env PYTHON_ENV=production" + \
 	" " + RAILPACK_BUILD_METADATA + \
-	" $(just direnv_export_docker '" + SHARED_ENV_FILE +"' --params)"
+	" $(just direnv_export_docker '" + SHARED_ENV_FILE + "' --params)"
 
 PYTHON_RAILPACK_BUILD_CMD := "docker buildx build ." + \
 	" --build-arg BUILDKIT_SYNTAX=" + FRONTEND_IMAGE + \
@@ -54,6 +55,14 @@ JAVASCRIPT_RAILPACK_PREPARE_CMD := "railpack prepare " + WEB_DIR + \
 	" --verbose" + \
 	" --plan-out " + WEB_DIR + "/railpack.json" + \
 	" --info-out " + WEB_DIR + "/railpack-info.json" + \
+	" --env VITE_BUILD_COMMIT=" + GIT_SHA + \
+	" " + RAILPACK_BUILD_METADATA + \
+	" $(just direnv_export_docker '" + JAVASCRIPT_SECRETS_FILE + "' --params) " + \
+	" $(just direnv_export_docker '" + SHARED_ENV_FILE + "' --params)"
+
+JAVASCRIPT_RAILPACK_BUILD_INLINE_CMD := "railpack --verbose build " + WEB_DIR + \
+	" --show-plan --progress plain" + \
+	" --name " + JAVASCRIPT_IMAGE_TAG + \
 	" --env VITE_BUILD_COMMIT=" + GIT_SHA + \
 	" " + RAILPACK_BUILD_METADATA + \
 	" $(just direnv_export_docker '" + JAVASCRIPT_SECRETS_FILE + "' --params) " + \
@@ -108,7 +117,7 @@ _production_build_assertions:
 	fi
 
 # within railpack, this is where the SPA client assets are built
-JAVASCRIPT_CONTAINER_BUILD_DIR := "/app/build/client"
+JAVASCRIPT_CONTAINER_BUILD_DIR := "/app/build/production/client"
 # outside of railpack, within the python application folder, this is where the SPA assets are stored
 JAVASCRIPT_PRODUCTION_BUILD_DIR := "public"
 
@@ -117,8 +126,7 @@ build_javascript: _production_build_assertions
 	@just _banner_echo "Building JavaScript Assets in Container..."
 	rm -rf "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}" || true
 
-	{{JAVASCRIPT_RAILPACK_PREPARE_CMD}}
-	{{JAVASCRIPT_RAILPACK_BUILD_CMD}}
+	{{JAVASCRIPT_RAILPACK_BUILD_INLINE_CMD}}
 
 	@just _banner_echo "Extracting JavaScript Assets from Container..."
 
