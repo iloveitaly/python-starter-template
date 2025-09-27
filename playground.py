@@ -6,6 +6,7 @@ import ipython_playground
 # helpful shortcuts
 from app import log
 from app.configuration.clerk import clerk
+from tests.factories import *
 
 # additional utils
 import funcy as fp

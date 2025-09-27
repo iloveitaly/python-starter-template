@@ -9,9 +9,7 @@ import { invariant } from "@epic-web/invariant"
 export const BASE_URL = requireEnv("VITE_APP_BASE_URL")
 
 invariant(
-  BASE_URL &&
-    (BASE_URL.startsWith("http") || BASE_URL.startsWith("https")) &&
-    BASE_URL.endsWith("/"),
+  BASE_URL && BASE_URL.startsWith("http") && BASE_URL.endsWith("/"),
   "VITE_APP_BASE_URL must be a valid URL starting with http(s)://",
 )
 
