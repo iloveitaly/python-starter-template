@@ -32,12 +32,17 @@ DB_TERMINATE_AND_RESET_SCHEMA := "SELECT pg_terminate_backend(pid) FROM pg_stat_
 
 # not all users have psql + friends installed locally, and brew does not install aliases to psql for modern versions by
 # default, so we use the binaries inside the container.
-PSQL_BIN := "docker compose exec postgres psql"
+#
+# -T flag: Disables pseudo-TTY allocation
+#   * Interactive commands (psql) need TTY (-t)
+#   * Non-interactive commands (pg_dump) don't need TTY and can fail with TTY (-T)
+#   * pg_dump with output redirection (> file) works best without TTY
+DOCKER_POSTGRES := "docker compose run --rm -T postgres"
 
 # drop all DB connections and then drop all tables and completely reset the schema
 db_reset_schema: _dev_only
-	{{PSQL_BIN}} $DATABASE_URL -c "{{DB_TERMINATE_AND_RESET_SCHEMA}}"
-	{{PSQL_BIN}} $TEST_DATABASE_URL -c "{{DB_TERMINATE_AND_RESET_SCHEMA}}"
+	{{DOCKER_POSTGRES}} psql $DATABASE_URL -c "{{DB_TERMINATE_AND_RESET_SCHEMA}}"
+	{{DOCKER_POSTGRES}} psql $TEST_DATABASE_URL -c "{{DB_TERMINATE_AND_RESET_SCHEMA}}"
 
 # destroys all data in the dev and test databases, leaves the containers running
 db_reset: _dev_only db_reset_schema db_migrate db_seed
@@ -81,7 +86,7 @@ db_migrate: _not_production
 	mkdir -p migrations/versions
 
 	# dev database is created automatically, but test database is not. We need to fail gracefully when the database already exists.
-	{{PSQL_BIN}} $DATABASE_URL -c "CREATE DATABASE ${TEST_DATABASE_NAME};" || true
+	{{DOCKER_POSTGRES}} psql $DATABASE_URL -c "CREATE DATABASE ${TEST_DATABASE_NAME};" || true
 
 	@just _banner_echo "Migrating Database"
 
@@ -148,26 +153,22 @@ db_nuke: _dev_only
 
 # enable SQL debugging on the postgres database
 db_debug: _dev_only
-	{{PSQL_BIN}} -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER SYSTEM SET log_statement = 'all'" -c "SELECT pg_reload_conf();"
+	{{DOCKER_POSTGRES}} psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER SYSTEM SET log_statement = 'all'" -c "SELECT pg_reload_conf();"
 
 # disable SQL debugging on the postgres database
 db_debug_off: _dev_only
-	{{PSQL_BIN}} -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER SYSTEM SET log_statement = 'none'" -c "SELECT pg_reload_conf();"
+	{{DOCKER_POSTGRES}} psql -U $POSTGRES_USER -d $POSTGRES_DB -c "ALTER SYSTEM SET log_statement = 'none'" -c "SELECT pg_reload_conf();"
 
 # generate an AI prompt to help with writing SQL from the local development database (better when it's filled with real data)
 db_prompt: _dev_only
 	uvx llm-sql-prompt@latest $DATABASE_URL --all
 
-# dump the production database locally, obviously this is a bad idea most of the time
+# dump the production database locally, obviously this is dangerous
 [script]
 db_dump_production: _dev_only
 	echo "{{ BLUE }}Enter the op:// reference or postgres:// URL for the production DB:{{ NORMAL }}"
 	echo "{{ BLUE }}e.g., op://Dev/prod DB/db-connection-string or postgres://user:pass@host:5432/dbname{{ NORMAL }}"
 	read db_ref
-
-	mkdir -p $TMP_DIRECTORY/database-backups
-	local dump_file="$TMP_DIRECTORY/database-backups/$(date +%Y-%m-%d)_production.dump"
-	echo "Dumping production database..."
 
 	if [[ "$db_ref" == postgres://* ]]; then
 		DB_URL="$db_ref"
@@ -175,7 +176,24 @@ db_dump_production: _dev_only
 		DB_URL=$(op read "$db_ref")
 	fi
 
-	pg_dump "$DB_URL" -F c -f "$dump_file"
+	mkdir -p $TMP_DIRECTORY/database-backups
+	dump_file="$TMP_DIRECTORY/database-backups/$(date '+%Y-%m-%d_%s')_production.dump"
+	echo "Dumping production database..."
+
+	pg_dump "$DB_URL" -F c > "$dump_file"
 
 	echo "Created file: $dump_file"
 	echo "Example restore: \n{{ BLUE }}pg_restore --no-owner --no-privileges --if-exists --clean -d \$DATABASE_URL $dump_file{{ NORMAL }}"
+
+# create a backup file of the local dev database
+[script]
+db_dump_dev: _dev_only
+	mkdir -p $TMP_DIRECTORY/database-backups
+	dump_file="$TMP_DIRECTORY/database-backups/$(date '+%Y-%m-%d_%s')_dev.dump"
+	echo "Dumping dev database..."
+
+	{{DOCKER_POSTGRES}} pg_dump "$DATABASE_URL" -F c > "$dump_file"
+
+	echo "Created file: $dump_file"
+	echo "Example pg_restore command:"
+	echo "pg_restore --no-owner --no-privileges --if-exists --clean -d \$DATABASE_URL $dump_file"
