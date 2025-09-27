@@ -1,8 +1,103 @@
-# TODO WIP
+# TODO should prob move to some env config? pull from 1p or something? Maybe a env/build.sh?
+HOST := "ip-address-of-host"
+HOST_USER := "ssh-user"
+DOKKU_APP := "app-name"
 
-deploy:
+DOKKU_APP_OPTION := "--app " + DOKKU_APP
+
+# the `dokku` cli only traces its own output if DOKKU_TRACE is set
+# detect if it's set and make sure --trace is passed to the cli to trace remote commands too
+DOKKU_TRACE_OPTION := if env_var_or_default("DOKKU_TRACE", "0") == "1" { "--trace" } else { "" }
+
+# https://github.com/psviderski/unregistry
+# install `docker pussh` on the local machine
+setup_dokku_unregistry: _dev_only
+	mkdir -p ~/.docker/cli-plugins
+	curl -sSL https://raw.githubusercontent.com/psviderski/unregistry/main/docker-pussh \
+		-o ~/.docker/cli-plugins/docker-pussh
+	chmod +x ~/.docker/cli-plugins/docker-pussh
+
+# setup a dokku remote
+setup_dokku_remote: _dev_only
 	if ! git remote | grep -q dokku; then \
-		git remote add dokku dokku@dokku.me:app; \
+		git remote add dokku dokku@{{HOST}}:{{DOKKU_APP}}; \
 	fi
 
-	git push dokku main
+	# TODO can we install via mise?
+	# install dokku cli via homebrew
+	brew install dokku
+
+setup_dokku: setup_dokku_unregistry setup_dokku_remote
+
+# `UNREGISTRY_DEBUG=1` for debug trace logs
+build_pussh $UNREGISTRY_IMAGE="ghcr.io/psviderski/unregistry:0.3.1":
+	docker tag {{PYTHON_IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:{{GIT_SHA}}
+	docker pussh {{PYTHON_PRODUCTION_IMAGE_NAME}}:{{GIT_SHA}} {{HOST_USER}}@{{HOST}}
+
+	docker tag {{PYTHON_IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:latest
+	docker pussh {{PYTHON_PRODUCTION_IMAGE_NAME}}:latest {{HOST_USER}}@{{HOST}}
+
+deploy $DOKKU_HOST=HOST:
+	# TODO dokku failures do not report a non-zero exit code
+
+	# env must be passed as arguments, not via stdin
+	# we avoid a restart since the from-image will restart the app
+	# note that variables are NOT unset when this is run, so we need to unset them manually
+	dokku {{DOKKU_APP_OPTION}} config:set --encoded --no-restart \
+		$(just direnv_export_docker ".env.production.backend" --dokku)
+
+	dokku {{DOKKU_APP_OPTION}} {{DOKKU_TRACE_OPTION}} git:from-image {{PYTHON_PRODUCTION_IMAGE_NAME}}:{{GIT_SHA}}
+
+# TODO would be better to assign DOKKU_HOST on the recipe-level https://github.com/casey/just/issues/2825
+dokku *args:
+	DOKKU_HOST={{HOST}} dokku {{DOKKU_APP_OPTION}} {{DOKKU_TRACE_OPTION}} {{args}}
+
+dokku_production_version $DOKKU_HOST=HOST:
+	DOKKU_HOST={{HOST}} dokku {{DOKKU_APP_OPTION}} run 'echo $BUILD_COMMIT'
+
+[script]
+dokku_dump_production $DOKKU_HOST=HOST: _dev_only
+	mkdir -p $TMP_DIRECTORY/database-backups
+	local dump_file="$TMP_DIRECTORY/database-backups/$(date +%Y-%m-%d_%s)_production.dump"
+
+	dokku {{DOKKU_APP_OPTION}} {{DOKKU_TRACE_OPTION}} postgres:export movie_tickets_postgres > "$dump_file"
+
+	echo "{{BLUE}}Created file: $dump_file{{NORMAL}}"
+	echo "Example restore: \n{{ BLUE }}docker compose run postgres pg_restore --no-owner --no-privileges --if-exists --clean -d \$DATABASE_URL $dump_file{{ NORMAL }}"
+	echo "Example migration: \n{{ BLUE }}python migrations/sanitize_production.py{{ NORMAL }}"
+
+[script]
+dokku_import_production_database: dokku_dump_production db_reset_schema
+	# Find the most recent dump file
+	local dump_file=$(ls -t $TMP_DIRECTORY/database-backups/*.dump | head -n 1)
+
+	echo "{{BLUE}}Importing database from: $dump_file{{NORMAL}}"
+
+	docker compose run --volume "$(pwd)/tmp/database-backups:/tmp/database-backups" postgres pg_restore --no-owner --no-privileges --if-exists --clean -d $DATABASE_URL "$dump_file"
+
+	# migration production requires correct database state
+	just db_migrate
+
+	just _banner_echo "Running production migration script"
+	uv run python migrations/sanitize_production.py
+
+# TODO pull the port config stuff from the other infra config stuff
+# dokku letsencrypt:set app-name email mike@mikebian.co
+# dokku letsencrypt:enable app-name
+
+# TODO create a read-only user, should really be done automatically through terraform so we can wire it in to 1password
+# CREATE ROLE movie_tickets_readonly WITH LOGIN PASSWORD 'secure_password';
+# GRANT CONNECT ON DATABASE movie_tickets_postgres TO movie_tickets_readonly;
+# GRANT USAGE ON SCHEMA public TO movie_tickets_readonly;
+# GRANT SELECT ON ALL TABLES IN SCHEMA public TO movie_tickets_readonly;
+# ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO movie_tickets_readonly;
+
+# db_repl:
+# docker exec -it dokku.postgres.movie_tickets_postgres psql -U postgres
+
+# TODO automatic database migrations that don't just run on every deploy
+# "scripts": {
+#   "dokku": {
+#     "predeploy": "'alembic upgrade head'"
+#   }
+# },
