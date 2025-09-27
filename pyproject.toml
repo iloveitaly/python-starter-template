@@ -194,7 +194,6 @@ filterwarnings = [
 # by default, pytest seems to hijack many logs and output them to the terminal
 # this is nice if you don't have a custom login like we do
 testpaths = "tests"
-norecursedirs = ["pypi"]
 # TODO would love if we could move this to conftest.py and put in the artifact folder
 debug_file = "tmp/pytestdebug.log"
 # TODO right now this option does not enable us to get it directly

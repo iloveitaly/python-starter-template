@@ -103,12 +103,8 @@
     ".ruff_cache": true,
     ".pytest_cache": true,
     ".venv": true,
-    "!pypi/**/*.py": false,
     // TODO I don't think this works
     "*env*": false
-  },
-  "search.exclude": {
-    "pypi/**/*.py": false
   },
 
   "[justfile]": {

@@ -13,23 +13,34 @@ GIT_SHA := `git rev-parse HEAD` + GIT_DIRTY
 # We need to escape double quotes in commit messages.
 GIT_DESCRIPTION := `git log -1 --format=%s | sed 's/"/\\"/g'`
 BUILD_CREATED_AT := `date -u +%FT%TZ`
-NIXPACKS_BUILD_METADATA := (
-	'-e BUILD_COMMIT="' + GIT_SHA + '" ' +
-	'-e BUILD_DESCRIPTION="' + GIT_DESCRIPTION + '" ' +
-	'-e BUILD_CREATED_AT="' + BUILD_CREATED_AT + '" '
+RAILPACK_BUILD_METADATA := (
+	'--env BUILD_COMMIT="' + GIT_SHA + '" ' +
+	'--env BUILD_DESCRIPTION="' + GIT_DESCRIPTION + '" ' +
+	'--env BUILD_CREATED_AT="' + BUILD_CREATED_AT + '" '
 )
 
+FRONTEND_IMAGE := "ghcr.io/railwayapp/railpack-frontend:latest"
+
 # architecture images will be running on
-BUILD_PLATFORM := "linux/arm64/v8"
+BUILD_PLATFORM := "linux/amd64"
+# BUILD_PLATFORM := "linux/arm64/v8"
 
 # NOTE production secrets are *not* included in the image, they are set on deploy
-PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
-	" --name " + PYTHON_IMAGE_TAG + \
-	" " + NIXPACKS_BUILD_METADATA + \
+PYTHON_RAILPACK_PREPARE_CMD := "railpack prepare ." + \
+	" --verbose" + \
+	" --plan-out railpack.json" + \
+	" --info-out railpack-info.json" + \
 	" --env PYTHON_ENV=production" + \
-	" --platform=" + BUILD_PLATFORM + \
-	" $(just direnv_export_docker '" + SHARED_ENV_FILE +"' --params)" + \
-	" --inline-cache --cache-from " + PYTHON_PRODUCTION_IMAGE_NAME + ":latest" + \
+	" " + RAILPACK_BUILD_METADATA + \
+	" $(just direnv_export_docker '" + SHARED_ENV_FILE + "' --params)"
+
+PYTHON_RAILPACK_BUILD_CMD := "docker buildx build ." + \
+	" --build-arg BUILDKIT_SYNTAX=" + FRONTEND_IMAGE + \
+	" -f railpack.json" + \
+	" -t " + PYTHON_IMAGE_TAG + \
+	" --platform " + BUILD_PLATFORM + \
+	" --cache-to type=inline" + \
+	" --cache-from " + PYTHON_PRODUCTION_IMAGE_NAME + ":latest" + \
 	" --label org.opencontainers.image.revision='" + GIT_SHA + "'" + \
 	" --label org.opencontainers.image.created='" + BUILD_CREATED_AT + "'" + \
 	' --label org.opencontainers.image.source="$(just _repo_url)"' + \
@@ -39,15 +50,31 @@ PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
 # Production assets bundle public "secrets" (safe to expose publicly) which are extracted from the environment
 # for this reason, we need to emulate the production environment, then build the assets statically.
 # Also, we can't just mount /app/build/server with -v since the build process removes the entire /app/build directory.
-# Some ENV var are set for us, like NODE_ENV: https://nixpacks.com/docs/providers/node#environment-variables
-JAVASCRIPT_NIXPACKS_BUILD_CMD := "nixpacks build " + WEB_DIR + " " + \
-	" --name " + JAVASCRIPT_IMAGE_TAG + " " + \
-	" " + NIXPACKS_BUILD_METADATA + \
-	" --platform=" + BUILD_PLATFORM + \
-	" --env VITE_BUILD_COMMIT=" + GIT_SHA + " " + \
-	" --cache-from " + JAVASCRIPT_PRODUCTION_IMAGE_NAME + ":latest --inline-cache" + \
+# Some ENV var are set for us, like NODE_ENV: https://railpack.com/docs/providers/node#environment-variables
+JAVASCRIPT_RAILPACK_PREPARE_CMD := "railpack prepare " + WEB_DIR + \
+	" --verbose" + \
+	" --plan-out " + WEB_DIR + "/railpack.json" + \
+	" --info-out " + WEB_DIR + "/railpack-info.json" + \
+	" --env VITE_BUILD_COMMIT=" + GIT_SHA + \
+	" " + RAILPACK_BUILD_METADATA + \
 	" $(just direnv_export_docker '" + JAVASCRIPT_SECRETS_FILE + "' --params) " + \
-	" $(just direnv_export_docker '" + SHARED_ENV_FILE + "' --params) " + \
+	" $(just direnv_export_docker '" + SHARED_ENV_FILE + "' --params)"
+
+JAVASCRIPT_RAILPACK_BUILD_INLINE_CMD := "railpack --verbose build " + WEB_DIR + \
+	" --show-plan --progress plain" + \
+	" --name " + JAVASCRIPT_IMAGE_TAG + \
+	" --env VITE_BUILD_COMMIT=" + GIT_SHA + \
+	" " + RAILPACK_BUILD_METADATA + \
+	" $(just direnv_export_docker '" + JAVASCRIPT_SECRETS_FILE + "' --params) " + \
+	" $(just direnv_export_docker '" + SHARED_ENV_FILE + "' --params)"
+
+JAVASCRIPT_RAILPACK_BUILD_CMD := "docker buildx build " + WEB_DIR + \
+	" --build-arg BUILDKIT_SYNTAX=" + FRONTEND_IMAGE + \
+	" -f " + WEB_DIR + "/railpack.json" + \
+	" -t " + JAVASCRIPT_IMAGE_TAG + \
+	" --platform " + BUILD_PLATFORM + \
+	" --cache-to type=inline" + \
+	" --cache-from " + JAVASCRIPT_PRODUCTION_IMAGE_NAME + ":latest" + \
 	" --label org.opencontainers.image.description=\"Used for building javascript assets, not for deployment\""
 
 # .env file without any secrets that should exist on all environments
@@ -89,9 +116,9 @@ _production_build_assertions:
 		exit 1; \
 	fi
 
-# within nixpacks, this is where the SPA client assets are built
-JAVASCRIPT_CONTAINER_BUILD_DIR := "/app/build/client"
-# outside of nixpacks, within the python application folder, this is where the SPA assets are stored
+# within railpack, this is where the SPA client assets are built
+JAVASCRIPT_CONTAINER_BUILD_DIR := "/app/build/production/client"
+# outside of railpack, within the python application folder, this is where the SPA assets are stored
 JAVASCRIPT_PRODUCTION_BUILD_DIR := "public"
 
 # build the javascript assets by creating an image, building assets inside the container, and then copying them to the host
@@ -99,33 +126,39 @@ build_javascript: _production_build_assertions
 	@just _banner_echo "Building JavaScript Assets in Container..."
 	rm -rf "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}" || true
 
-	{{JAVASCRIPT_NIXPACKS_BUILD_CMD}}
+	{{JAVASCRIPT_RAILPACK_BUILD_INLINE_CMD}}
 
 	@just _banner_echo "Extracting JavaScript Assets from Container..."
 
 	# Cannot extract files out of a image, only a container. We create a tmp container to extract assets.
 	docker rm tmp-js-container || true
 	docker create --name tmp-js-container {{JAVASCRIPT_IMAGE_TAG}}
-	docker cp tmp-js-container:/app/build/production/client "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}"
+	docker cp tmp-js-container:{{JAVASCRIPT_CONTAINER_BUILD_DIR}} "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}"
 
-# dump nixpacks-generated Dockerfile for manual build and production debugging
+# dump railpack-generated plan for manual build and production debugging
 build_javascript_dump:
-	{{JAVASCRIPT_NIXPACKS_BUILD_CMD}} --out {{WEB_DIR}}
+	{{JAVASCRIPT_RAILPACK_PREPARE_CMD}}
 
-# inject a shell where the javascript build fails, helpful for debugging nixpacks build failures
+# inject a shell where the javascript build fails, helpful for debugging railpack build failures
 build_javascript_debug: build_javascript_dump
 	# note that you *may* run into trouble using the interactive injected shell if you are using an old builder version
 	# Force the latest builder: `docker buildx use orbstack`
 
-	# store the modified build command in a variable rather than editing the file
-	BUILD_DEBUG_CMD=$(sed 's/docker build/BUILDX_EXPERIMENTAL=1 docker buildx debug --invoke bash build/' {{WEB_DIR}}/.nixpacks/build.sh) && \
-		eval "$BUILD_DEBUG_CMD"
+	# BUILDX_EXPERIMENTAL=1 docker buildx debug --invoke /bin/sh build -f {{WEB_DIR}}/railpack.json {{WEB_DIR}}
+	BUILDX_EXPERIMENTAL=1 docker buildx debug \
+		--debug \
+		--invoke /bin/bash \
+		--progress plain \
+		build -f {{WEB_DIR}}/railpack.json --build-arg BUILDKIT_SYNTAX={{FRONTEND_IMAGE}} {{WEB_DIR}}
+
+	BUILDX_EXPERIMENTAL=1 docker buildx build --debug --progress plain -f web/railpack.json --build-arg BUILDKIT_SYNTAX=ghcr.io/railwayapp/railpack-frontend:latest web
+
 
 # support non-macos installations for github actions
 _build_requirements:
-	@if ! which nixpacks > /dev/null; then \
-		echo "nixpacks is not installed. Installing...."; \
-		{{ if os() == "macos" { "brew install nixpacks" } else { "curl -sSL https://nixpacks.com/install.sh | bash" } }}; \
+	@if ! which railpack > /dev/null; then \
+		echo "railpack is not installed. Installing...."; \
+		{{ if os() == "macos" { "curl -sSL https://railpack.com/install.sh | sh -s -- --bin-dir ~/.local/bin" } else { "curl -sSL https://railpack.com/install.sh | sh" } }}; \
 	fi
 
 # url of the repo on github for build metadata
@@ -140,13 +173,14 @@ _build_requirements:
 		echo "$GITHUB_RUN_ID"; \
 	fi
 
-# build the docker container using nixpacks
+# build the docker container using railpack
 build: _build_requirements _production_build_assertions build_javascript
 	@just _banner_echo "Building Python Image..."
-	{{PYTHON_NIXPACKS_BUILD_CMD}}
+	{{PYTHON_RAILPACK_PREPARE_CMD}}
+	{{PYTHON_RAILPACK_BUILD_CMD}}
 
 build_push: _production_build_assertions
-	# JS image is not used in prod, but is used for nixpacks caching, so we push to the registry
+	# JS image is not used in prod, but is used for railpack caching, so we push to the registry
 	docker tag {{PYTHON_IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:{{GIT_SHA}}
 	docker push {{PYTHON_PRODUCTION_IMAGE_NAME}}:{{GIT_SHA}}
 
@@ -164,28 +198,24 @@ build_inspect *flags:
 build_dive: _dev_only (_brew_check_and_install "dive")
 	dive "{{PYTHON_IMAGE_TAG}}"
 
-# dump nixpacks-generated Dockerfile for manual build and production debugging
+# dump railpack-generated plan for manual build and production debugging
 build_dump:
-	{{PYTHON_NIXPACKS_BUILD_CMD}} --out .
+	{{PYTHON_RAILPACK_PREPARE_CMD}}
 
-# clear out nixpacks and other artifacts specific to production containers
+# clear out railpack and other artifacts specific to production containers
 build_clean:
-	rm -rf .nixpacks web/.nixpacks || true
+	rm -rf railpack.json railpack-info.json {{WEB_DIR}}/railpack.json {{WEB_DIR}}/railpack-info.json || true
 
-# inject a shell where the build fails, helpful for debugging nixpacks build failures
+# inject a shell where the build fails, helpful for debugging railpack build failures
 build_debug: build_dump
 	# note that you *may* run into trouble using the interactive injected shell if you are using an old builder version
 	# Force the latest builder: `docker buildx use orbstack`
 
-	# store the modified build command in a variable rather than editing the file
-	BUILD_DEBUG_CMD=$(sed 's/docker build/BUILDX_EXPERIMENTAL=1 docker buildx debug --invoke bash build/' .nixpacks/build.sh) && \
-		eval "$BUILD_DEBUG_CMD"
-
-	# BUILDX_EXPERIMENTAL=1 docker buildx debug --invoke bash build . -f ./.nixpacks/Dockerfile
+	BUILDX_EXPERIMENTAL=1 docker buildx debug --invoke /bin/sh build -f railpack.json .
 
 # instead of using autogenerated Dockerfile, build from the dumped Dockerfile which can be manually modified for development
 build_from-dump:
-	.nixpacks/build.sh
+	{{PYTHON_RAILPACK_BUILD_CMD}}
 
 # open up a bash shell in the last built container, helpful for debugging production builds
 build_shell: build
