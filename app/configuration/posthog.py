@@ -8,6 +8,7 @@ posthog_client = Posthog(
     host=config("POSTHOG_HOST", default="https://us.i.posthog.com"),
     # don't use Sentry *and* posthog for error tracking!
     enable_exception_autocapture=False,
+    # there is no builtin fastapi integration for exceptions!
 )
 
 if not is_production():
