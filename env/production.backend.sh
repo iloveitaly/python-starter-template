@@ -1,9 +1,12 @@
 # NOTE this should be used by your deployment system to read in secrets for production
 
+# TODO we shouldn't need to add this here since it's added into the production image
 export PYTHON_ENV=production
 
 export LOG_LEVEL=info
-export PORT=80
+
+# some systems, like dokku, will specify a port for you
+# export PORT=80
 
 export SMTP_URL=smtp://fake_host.com:1025
 # TODO should add automatically replacing these domains with real values to bootstrap script
