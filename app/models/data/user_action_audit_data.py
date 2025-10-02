@@ -10,7 +10,10 @@ from ipaddress import ip_address
 from fastapi import Request
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import IPvAnyAddress
+from structlog_config import fastapi_access_logger
 from whenever import Instant
+
+from app.constants import BUILD_COMMIT
 
 
 class UserActionAuditData(PydanticBaseModel):
@@ -20,10 +23,7 @@ class UserActionAuditData(PydanticBaseModel):
 
     @classmethod
     def from_request(cls, request: "Request") -> "UserActionAuditData":
-        from app.constants import BUILD_COMMIT
-        from app.routes.dependencies.realip import client_ip_from_request
-
-        client_ip = client_ip_from_request(request) or "0.0.0.0"
+        client_ip = fastapi_access_logger.client_ip_from_request(request) or "0.0.0.0"
 
         return cls(
             ip_address=ip_address(client_ip),
