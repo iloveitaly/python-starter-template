@@ -3,17 +3,19 @@
 #######################
 
 WEB_DIR := "web"
-_pnpm := "cd " + WEB_DIR + " && pnpm ${PNPM_GLOBAL_FLAGS:-}"
 
-# pnpm alias
+# `mise exec` to the version specified in the web/ directory is used
+_pnpm := "cd " + WEB_DIR + " && mise exec -- pnpm ${PNPM_GLOBAL_FLAGS:-}"
+
+# pnpm alias to avoid having to make sure you are in the right directory
 pnpm +PNPM_CMD:
 	{{_pnpm}} {{PNPM_CMD}}
 
 js_setup:
 	# frozen-lockfile is used on CI and when building for production, so we default so that mode
 	{{_pnpm}} install --frozen-lockfile
-	# TODO do we actually need this? Or will RR do this for us when building a preview + build?
-	{{_pnpm}} react-router typegen
+
+	# running `js_dev` will automatically run all other JS build steps, so we just install here
 
 js_clean:
 	rm -rf {{WEB_DIR}}/build \
