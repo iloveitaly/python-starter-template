@@ -93,6 +93,12 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
+  "json.schemas": [
+    {
+      "fileMatch": ["railpack.json"],
+      "url": "https://schema.railpack.com"
+    }
+  ],
 
   "files.associations": {
     // Procfile's don't have a default file association, but are essentially yaml files
