@@ -131,6 +131,7 @@ def configure_signals() -> None:
         signal.SIGSTOP,  # Stop (cannot be caught or ignored)
         signal.SIGINT,  # Interrupt (usually Ctrl+C)
         signal.SIGCHLD,  # Child process terminated, noisy
+        signal.SIGWINCH,  # Window size change (not useful for us)
     }
 
     if faulthandler.is_enabled():
