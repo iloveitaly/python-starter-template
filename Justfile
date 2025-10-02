@@ -259,7 +259,7 @@ local-alias: _dev_only
 
 	just _banner_echo "Local Alias Configuration"
 
-	localias debug config --print
+	localias -c ~/.localias.yml debug config --print
 
 clean: js_clean py_clean build_clean
 	rm -rf tmp/* || true
