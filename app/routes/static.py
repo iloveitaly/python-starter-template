@@ -167,6 +167,12 @@ def mount_public_directory(app: FastAPI):
         """
         fp = public_path / path
 
+        # react-router puts prerendered HTML routes into the `index.html` in directory name of the route requested
+        # https://reactrouter.com/how-to/pre-rendering
+        prerender_path = public_path / path / "index.html"
+        if prerender_path.exists():
+            return FileResponse(prerender_path)
+
         if not fp.exists():
             return index_html_response
 
