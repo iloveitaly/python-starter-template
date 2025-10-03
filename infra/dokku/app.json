@@ -1,0 +1,45 @@
+{
+  "formation": {
+    "web": {
+      "max_parallel": 4,
+      "quantity": 2
+    },
+    "worker": {
+      "quantity": 1
+    }
+  },
+  "healthchecks": {
+    "web": [
+      {
+        "type": "startup",
+        "name": "web check",
+        "description": "Checking if the app responds to the /health/ready endpoint",
+        "path": "/healthcheck",
+        "attempts": 5,
+        "delay": 10,
+        "wait": 10,
+        "timeout": 60
+      },
+      {
+        "type": "startup",
+        "name": "index load",
+        "description": "Checking if the app responds to the / endpoint",
+        "path": "/",
+        "attempts": 5,
+        "wait": 10,
+        "delay": 10,
+        "timeout": 60
+      }
+    ],
+    "worker": [
+      {
+        "type": "startup",
+        "name": "worker check",
+        "description": "Checking if the worker responds to the /health/ready endpoint",
+        "path": "/",
+        "port": 9000,
+        "attempts": 5
+      }
+    ]
+  }
+}
