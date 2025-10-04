@@ -1,4 +1,5 @@
 import funcy_pipe as fp
+import requests
 
 from app.configuration.clerk import clerk
 from app.environments import is_testing
@@ -8,6 +9,23 @@ from tests.constants import (
 )
 
 from .log import log
+
+
+def get_public_ip_address() -> str | None:
+    """
+    Get the current public IP address of this server. Helpful when you have geolocation stuff that is
+    dependent on a clients IP address.
+
+    Returns:
+        The public IP address as a string, or None if the request fails
+    """
+    try:
+        response = requests.get("https://api.ipify.org", timeout=5.0)
+        response.raise_for_status()
+        return response.text.strip()
+    except Exception as e:
+        log.debug("failed to get public IP address", error=str(e))
+        return None
 
 
 def delete_all_clerk_users():
