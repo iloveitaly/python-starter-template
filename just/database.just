@@ -180,20 +180,18 @@ db_dump_production: _dev_only
 	dump_file="$TMP_DIRECTORY/database-backups/$(date '+%Y-%m-%d_%s')_production.dump"
 	echo "Dumping production database..."
 
-	pg_dump "$DB_URL" -F c > "$dump_file"
+	# custom format: compressed, supports selective restore with pg_restore
+	pg_dump "$DB_URL" --format c > "$dump_file"
 
 	echo "Created file: $dump_file"
 	echo "Example restore: \n{{ BLUE }}pg_restore --no-owner --no-privileges --if-exists --clean -d \$DATABASE_URL $dump_file{{ NORMAL }}"
 
 # create a backup file of the local dev database
-[script]
 db_dump_dev: _dev_only
 	mkdir -p $TMP_DIRECTORY/database-backups
-	dump_file="$TMP_DIRECTORY/database-backups/$(date '+%Y-%m-%d_%s')_dev.dump"
-	echo "Dumping dev database..."
+	@echo "{{GREEN}}Dumping dev database...{{NORMAL}}"
 
-	{{DOCKER_POSTGRES}} pg_dump "$DATABASE_URL" -F c > "$dump_file"
+	{{DOCKER_POSTGRES}} pg_dump "$DATABASE_URL" --format c > "$TMP_DIRECTORY/database-backups/$(date '+%Y-%m-%d_%s')_dev.dump"
 
-	echo "Created file: $dump_file"
-	echo "Example pg_restore command:"
-	echo "pg_restore --no-owner --no-privileges --if-exists --clean -d \$DATABASE_URL $dump_file"
+	@echo "Created file: {{BLUE}}$TMP_DIRECTORY/database-backups/$(date '+%Y-%m-%d_%s')_dev.dump{{NORMAL}}"
+	@echo "{{GREEN}}Example pg_restore command:{{NORMAL}}\n{{ BLUE }}pg_restore --no-owner --no-privileges --if-exists --clean -d \$DATABASE_URL \$TMP_DIRECTORY/database-backups/$(date '+%Y-%m-%d_%s')_dev.dump{{ NORMAL }}"
