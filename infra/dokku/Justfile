@@ -29,6 +29,7 @@ setup_dokku_remote: _dev_only
 
 setup_dokku: setup_dokku_unregistry setup_dokku_remote
 
+# https://github.com/psviderski/unregistry
 # `UNREGISTRY_DEBUG=1` for debug trace logs
 build_pussh $UNREGISTRY_IMAGE="ghcr.io/psviderski/unregistry:0.3.1":
 	docker tag {{PYTHON_IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:{{GIT_SHA}}
@@ -44,7 +45,7 @@ deploy $DOKKU_HOST=HOST:
 	# we avoid a restart since the from-image will restart the app
 	# note that variables are NOT unset when this is run, so we need to unset them manually
 	dokku {{DOKKU_APP_OPTION}} config:set --encoded --no-restart \
-		$(just direnv_export_docker ".env.production.backend" --dokku)
+		$(just direnv_export_docker "env/production.backend.sh" --dokku)
 
 	dokku {{DOKKU_APP_OPTION}} {{DOKKU_TRACE_OPTION}} git:from-image {{PYTHON_PRODUCTION_IMAGE_NAME}}:{{GIT_SHA}}
 
