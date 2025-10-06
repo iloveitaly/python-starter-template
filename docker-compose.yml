@@ -3,7 +3,7 @@
 services:
   # port 5432
   postgres:
-    image: postgres:16
+    image: postgres:18
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -21,8 +21,8 @@ services:
 
   # port 6379
   redis:
-    # NOTE we are limiting to 6 since that is what is GA on azure
-    image: redis:6
+    # NOTE you'll probably need to drop this value for your production environment which will lag edge releases
+    image: redis:8
     restart: unless-stopped
     ports:
       - ${CI:+6379}:6379
