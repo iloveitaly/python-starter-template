@@ -4,6 +4,7 @@ from app import log
 
 from app.models.user import User
 
+from tests.constants import LONG_INTEGRATION_TEST_TIMEOUT
 from tests.integration.clerk import setup_clerk_testing_token
 from tests.integration.server import home_url
 from tests.routes.utils import get_clerk_dev_user
@@ -113,6 +114,15 @@ def login_as_dev_user(page: Page):
     page.get_by_role("button", name="Continue").click()
 
     wait_for_loading(page)
+
+    # The wait command above is brittle and does not guarantee that the clerk login process has finished.
+    # However, we know that if we've navigated away from the root URL that we properly logged into the application.
+    # In order to provide a more robust loading completion indicator, we assert that the
+    # current pages route is not the route that we started on. This will ensure that we've completed the login step and
+    # have moved into the application.
+    page.wait_for_url(
+        lambda url: url != home_url(), timeout=LONG_INTEGRATION_TEST_TIMEOUT
+    )
 
     # only a single doctor should be created!
     assert User.count() == 1
