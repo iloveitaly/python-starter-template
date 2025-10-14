@@ -11,15 +11,6 @@ up *flag:
 
 	docker compose up -d {{ if flag == "--fast" { "" } else { "--wait" } }}
 
-	docker run --rm \
-		-v /etc/hosts:/etc/hosts \
-		-v /var/run/docker.sock:/var/run/docker.sock \
-		--cap-add NET_ADMIN \
-		-e ETCHOSTS_ALL=1 \
-		costela/docker-etchosts -once
-
-	cat /etc/hosts
-
 # stop all containers and remove the images
 down: db_down
 	docker compose down
