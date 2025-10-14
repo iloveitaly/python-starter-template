@@ -23,7 +23,7 @@ from app.server import api_app
 from app.utils.debug import install_remote_debugger
 
 from tests.constants import PYTHON_TEST_SERVER_HOST
-from tests.integration.javascript_build import wait_for_javascript_build
+from tests.integration.javascript_build import start_js_build, wait_for_javascript_build
 
 PYTHON_SERVER_TEST_PORT = config("PYTHON_TEST_SERVER_PORT", cast=int)
 
@@ -125,7 +125,7 @@ def server():
 
     # defensively code against multiprocessing coding errors
     if wait_for_port(PYTHON_SERVER_TEST_PORT, 1):
-        raise Exception(
+        pytest.exit(
             "server is already running, should be closed! Use `just dev_kill` to terminall all processes holding ports."
         )
 
@@ -181,3 +181,10 @@ def report_localias_status():
             "localias daemon is not running. Integration tests may fail.",
             output=result.stdout,
         )
+
+
+# run this file directly (with PYTHON_ENV=test) to start the server manually to debug test-only server issues
+if __name__ == "__main__":
+    start_js_build()
+    wait_for_javascript_build()
+    run_server()
