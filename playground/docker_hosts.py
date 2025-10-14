@@ -21,13 +21,18 @@ hosts: dict = {}
 
 @click.command()
 @click.argument('file', default='/etc/hosts')
-@click.option('--dry-run', is_flag=True, help='Simulate updates without writing to file.')
-@click.option('--tld', default='localhost', help='TLD to append to domains.')
-def main(file, dry_run, tld):
+@click.option('--dry-run', is_flag=True, help='Simulate updates without writing to file')
+@click.option('--tld', default='localhost', show_default=True, help='TLD to append to domains')
+@click.option('--listen', is_flag=True, help='Listen for container events and update continuously')
+def main(file, dry_run, tld, listen):
     log = configure_logger()
     client = docker.from_env()
     load_running_containers(client)
     update_hosts_file(file, log, dry_run, tld)
+
+    if not listen:
+        return
+
     process_events(client, file, log, dry_run, tld)
 
 
