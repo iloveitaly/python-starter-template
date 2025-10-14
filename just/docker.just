@@ -11,6 +11,9 @@ up *flag:
 
 	docker compose up -d {{ if flag == "--fast" { "" } else { "--wait" } }}
 
+	uv run playground/docker_hosts.py
+	cat /etc/hosts
+
 # stop all containers and remove the images
 down: db_down
 	docker compose down
