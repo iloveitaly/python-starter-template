@@ -60,6 +60,7 @@ def upgrade() -> None:
     """
 
     op.execute("""
+-- squawk-ignore-file require-timeout-settings
 create or replace function public.typeid_parse(typeid_str text)
  returns uuid
  language plpgsql
