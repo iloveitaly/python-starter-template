@@ -17,6 +17,9 @@ js_setup:
 
 	# running `js_dev` will automatically run all other JS build steps, so we just install here
 
+js_dependency_tree:
+	{{_pnpm}} list --prod --depth 2
+
 js_clean:
 	rm -rf {{WEB_DIR}}/build \
 				 {{WEB_DIR}}/client \
