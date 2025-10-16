@@ -26,6 +26,12 @@ export PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY=tests/integration/__snapshots__
 # without this, playwright will use a different browser path across linux and macos
 export PLAYWRIGHT_BROWSERS_PATH=$TMP_DIRECTORY/ms-playwright
 
+# caching bytecode saves ~1.5s on load time on a m2 max
+# as long as we can throw all of the cached file in another dir, it's worth it!
+# I don't like pyc files everywhere on production, which is why it's disabled by default in that env.
+export PYTHONPYCACHEPREFIX=$TMP_DIRECTORY/pycache
+export PYTHONDONTWRITEBYTECODE=0
+
 # used for py tests, justfile recipes, and JS build
 # use an absolute path since this is run from within `web/`
 export OPENAPI_JSON_PATH=$ROOT_DIR/web/openapi.json
@@ -39,10 +45,14 @@ export PYTHON_SERVER_HOST=api.web.localhost
 # TODO we could just choose to have the frontend logic add the protocol?
 # protocol is important, otherwise you'll get CORS errors in browser
 export VITE_PYTHON_URL="https://${PYTHON_SERVER_HOST}/"
-export VITE_APP_BASE_URL="https://${JAVASCRIPT_SERVER_HOST}"
+export VITE_APP_BASE_URL="https://${JAVASCRIPT_SERVER_HOST}/"
 
 # default from address for the mailer system
 export EMAIL_FROM_ADDRESS="noreply@example.com"
+
+#############################
+# Service Host Configuration
+#############################
 
 # set these conditionally so they be overwritten by CI (or `env/all.local.sh`), which has a different server configuration
 if [ -z "${DATABASE_HOST:-}" ] && [ -z "${REDIS_HOST:-}" ] && [ -z "${SMTP_HOST:-}" ]; then
