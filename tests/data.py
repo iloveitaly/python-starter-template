@@ -1,5 +1,8 @@
 """
-Static data for various tests which is not database backed
+Static data for various tests that does not rely on a database or network connection.
+
+Faker is great, but often creates data that is not realistic (i.e. invalid zip codes). This can be problematic for ensuring
+that the system works properly in production.
 """
 
 from random import choice
