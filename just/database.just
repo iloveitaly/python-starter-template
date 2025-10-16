@@ -28,10 +28,21 @@ db_down: _dev_only
 # completely destroy the dev and test databases, destroying the containers and rebuilding them
 db_reset_hard: _dev_only db_down db_up db_migrate db_seed
 
+# this is a very aggressive termination SQL which terminates all DB connections and immediately drops schema
 DB_TERMINATE_AND_RESET_SCHEMA := "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = current_database() AND pid <> pg_backend_pid(); DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
 
-# not all users have psql + friends installed locally, and brew does not install aliases to psql for modern versions by
-# default, so we use the binaries inside the container.
+# When running postgres CLI binaries, we do so inside the container. Here's why:
+#
+# - Not all devs have psql* installed, and brew does not install binary aliases by default
+# - Using the image versions ensures the exact same version of the binaries are used everywhere
+#
+# However, this does complicate interactions:
+#
+# * Locally, I'm using OrbStack which has nice friendly domain references that work anywhere. No problems there.
+# * In other environments (CI/Linux), this is not the case. Since we are using `run` the pg binaries are running
+#   in a new container so `localhost` references won't work.
+#
+# In order to fix this we must replicate the *.orb domains on CI by updating the /etc/hosts file.
 #
 # -T flag: Disables pseudo-TTY allocation
 #   * Interactive commands (psql) need TTY (-t)
