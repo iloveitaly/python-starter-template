@@ -159,11 +159,11 @@ def random_geolocation_point():
     from app.models.data.geolocation_point import GeolocationPoint
 
     location_data = choice(REAL_LOCATIONS)
-    lng, lat = location_data["location"]
+    lon, lat = location_data["location"]
 
     return GeolocationPoint(
         lat=lat,
-        lng=lng,
+        lon=lon,
         city=location_data["city"],
         state=location_data["state"],
         postal_code=location_data["zip_code"],
