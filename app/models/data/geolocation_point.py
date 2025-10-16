@@ -13,7 +13,7 @@ from pydantic import model_validator
 
 class GeolocationPoint(PydanticBaseModel):
     lat: float
-    lng: float
+    lon: float
 
     city: str | None = None
     postal_code: str | None = None
