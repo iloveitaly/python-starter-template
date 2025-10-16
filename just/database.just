@@ -65,10 +65,10 @@ db_lint:
 	# TODO should submit upstream for the jq transformations so others can copy, add to docs
 	if [ -n "${CI:-}" ]; then \
 		LOG_LEVEL=error uv run alembic upgrade head --sql | \
-			uv run squawk --reporter=json --exclude=prefer-text-field | \
+			uvx --from squawk-cli@latest squawk --reporter=json --exclude=prefer-text-field | \
 			jq -r '.[] | "::\(if .level == "Error" then "error" else "warning" end) file=\(.file),line=\(.line),col=\(.column),title=\(.rule_name)::\(.messages[0].Note)"'; \
 	else \
-		LOG_LEVEL=error uv run alembic upgrade head --sql | uv run squawk --exclude=prefer-text-field; \
+		LOG_LEVEL=error uv run alembic upgrade head --sql | uvx --from squawk-cli@latest squawk --exclude=prefer-text-field; \
 	fi
 
 # open the database in the default macos GUI
