@@ -39,6 +39,8 @@ PUBLISHABLE_FRONTEND_API_DEV_REGEX = (
 
 def clerk_test_email() -> str:
     """
+    Unique email every time can that be used to login to clerk using test codes.
+
     https://clerk.com/docs/testing/test-emails-and-phones
 
     Use verification code 424242.
