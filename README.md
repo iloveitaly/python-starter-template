@@ -216,12 +216,21 @@ Here's how frontend code is organized in `web/app/`:
 * `tests/**/conftest.py` is for test-specific fixtures. This is the only place you should put fixtures.
 * `tests/{commands,routes,jobs,models}/` map to corresponding application categories under `app/`.
 
+### Assets & Static Files
+
+Avoid putting assets in the `public/` folder as much as you can. In other words:
+
+* Instead of referencing the public asset path in your tsx (i.e. `<img src="/images/the_image.png" />`), import the image and use it as a module (i.e. `import theImage from '~/assets/the_image.png'; <img src={theImage} />`). This enables vite to optimize the image, hash it, and bundle it properly.
+* Since the image is content-hashed, this enables the python static asset logic to add cache headers which enable reverse proxies like cloudflare to aggressively cache the assets. This is a big win for performance and eliminates the need for you to setup the assets on a CDN manually.
+* Also, avoiding the `public/` directory makes it explicit what code or systems rely on an asset. Since the
+  image, CSS, etc is content-hashed, other systems by definition will not rely on it unless it's within the vite build system
+
 ### Public Directories
 
 There are two public directories in the project:
 
 * `public/` is not used in development. During the build process, bundled javascript is copied here and served using [[app/routes/static.py]]. This is excluded from git.
-* `web/public` is used in development *and* production. This is where the vite dev server serves static files from. Files included here are tracked by git and bundled by vite into the production assets.
+* `web/public` is used in development *and* production. In development, this is where the vite dev server serves static files from. Files included here (excluding the generated vite files) are tracked by git and bundled by vite into the production assets.
 
 ### Toggling GitHub Actions
 
