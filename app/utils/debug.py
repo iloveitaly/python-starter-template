@@ -60,7 +60,11 @@ def install_coroutine_trap():
     import sys
 
     def dump_all_tasks(sig, frame):
-        all_tasks = asyncio.all_tasks()
+        try:
+            all_tasks = asyncio.all_tasks()
+        except RuntimeError as e:
+            print(f"error getting all tasks: {e}", file=sys.stderr)
+            return
 
         print(f"dump all tasks ({len(all_tasks)}) stack trace", file=sys.stderr)
 
