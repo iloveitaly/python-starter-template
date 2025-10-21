@@ -20,6 +20,7 @@ There are some nuances we need to consider:
 
 import mimetypes
 import os
+import re
 
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
@@ -44,9 +45,6 @@ assert (
     == "a3ebf7850a8389fc2d8328d7322745f233879bc300ab5cc1bd2a52a5e1710815"
 )
 
-# without this, the index file will be cached and therefore can easily serve stale content
-# this did not cause an issue on Chrome, but Safari heavily caches files without these directives.
-# https://claude.ai/share/882b6f3f-9212-41ae-9594-1c32f03b8825
 HTML_NOCACHE_HEADERS = {
     # allow storage but require revalidation to avoid stale SPA shell
     "Cache-Control": "no-cache, max-age=0, must-revalidate",
@@ -54,6 +52,16 @@ HTML_NOCACHE_HEADERS = {
     "Expires": "0",
     "Accept-Ranges": "none",
 }
+"""
+Without these headers, the index.html response will be cached and therefore can easily serve stale content.
+This did not cause issues on Chrome, but Safari heavily caches files without these directives. This seems to only
+happen with static HTML (since all of the other assets are hashed based on their content).
+
+For this reason, anytime we are serving static HTML, we should never cache the file. Instead, the client should pull it
+on every page load since it (a) is very small and (b) mostly links out to other files (JS, CSS, etc), which we can safely cache.
+
+https://claude.ai/share/882b6f3f-9212-41ae-9594-1c32f03b8825
+"""
 
 GZIP_HEADERS = {
     "Content-Encoding": "gzip",
@@ -67,7 +75,21 @@ GZIP_HEADERS = {
 
 
 class GZipStaticFiles(StaticFiles):
-    "Check for a precompressed gz file and serve that instead. Loosely based on GZipMiddleware"
+    """
+    - Meant to be used when mounting a static asset directory
+    - Check for a precompressed gz file and serve that instead. Loosely based on GZipMiddleware
+    - Detects a content-based hash in the file path and adds the CDN headers to the response for reverse proxy caching
+    """
+
+    CDN_HEADERS = {
+        # these are carefully defined headers for asset caching when using a CDN / reverse proxy. This allows cloudflare
+        # to cache assets with a content-based hash without hitting the origin server.
+        #
+        # - public: the asset is public and can be cached by a CDN / reverse proxy
+        # - max-age: 1 year
+        # - immutable: the asset is immutable and will not change
+        "Cache-Control": "public, max-age=31536000, immutable",
+    }
 
     # TODO for hashed asset files, we should add a very long cache header: public, max-age=31536000, immutable
     # TODO should we assert against the three possible types we would expecvt here?
@@ -76,15 +98,21 @@ class GZipStaticFiles(StaticFiles):
         # GZipMiddleware checks the scope for HTTP
         if scope["type"] == "http":
             headers = Headers(scope=scope)
+
+            # browser must indicate that it supports gzip
             if "gzip" in headers.get("Accept-Encoding", ""):
                 # returns tuple where first element is a string full path on the local filesystem
                 # and second is stat information
                 full_path = self.lookup_path(path)[0]
                 gz_path = full_path + ".gz"
 
+                # not all assets have a gzip version
                 if os.path.exists(gz_path):
                     content_type, _ = mimetypes.guess_type(full_path)
                     headers = GZIP_HEADERS
+
+                    if self.has_vite_hash(full_path):
+                        headers.update(self.CDN_HEADERS)
 
                     return FileResponse(
                         gz_path,
@@ -94,21 +122,25 @@ class GZipStaticFiles(StaticFiles):
                         headers=headers,
                     )
 
-        return await super().get_response(path, scope)
+        response = await super().get_response(path, scope)
 
-        # TODO appartently AI thinks we should add these headers to non-gzip responses too, in case we end up
-        # TODO however, I've never seen this error in the wild...
-        # serving them as gzipped in the future... I need to investigate this more
-        # response = await super().get_response(path, scope)
+        log.info(f"Adding CDN headers to {path}")
+        if self.has_vite_hash(path):
+            response.headers.update(self.CDN_HEADERS)
 
-        # # ensure caches keep distinct representations per Accept-Encoding
-        # try:
-        #     response.headers.setdefault("Vary", "Accept-Encoding")
-        # except Exception:
-        #     # some responses may not have mutable headers; in that case just return as-is
-        #     pass
+        return response
 
-        # return response
+    def has_vite_hash(self, path: str) -> bool:
+        """
+        Vite includes a content-based hash in the file name. This is used to bust the cache when the file content changes.
+
+        We detect this 8 character hash in the file name"
+        """
+
+        filename = os.path.basename(path)
+        # TODO remove the file extension from the pattern once we are comfortable with this logic
+        pattern = r".+-[A-Za-z0-9_-]{8}\.(?:js|css|png|webp)(?:\.gz)?$"
+        return bool(re.match(pattern, filename))
 
 
 def mount_public_directory(app: FastAPI):
@@ -139,8 +171,6 @@ def mount_public_directory(app: FastAPI):
 
     index_html_response = FileResponse(
         public_path / "index.html",
-        # never cache this file, we want it to be pulled on every page load since it (a) is very small and (b) mostly
-        # links out to other files, which we can safely cache
         headers=HTML_NOCACHE_HEADERS,
     )
 
@@ -171,11 +201,18 @@ def mount_public_directory(app: FastAPI):
         # https://reactrouter.com/how-to/pre-rendering
         prerender_path = public_path / path / "index.html"
         if prerender_path.exists():
-            return FileResponse(prerender_path)
+            return FileResponse(prerender_path, headers=HTML_NOCACHE_HEADERS)
 
         if not fp.exists():
             return index_html_response
 
-        return FileResponse(fp)
+        args = {}
+
+        # if you prerender `/` a .html file an additional HTML file is generated which is used to load the front page
+        # it's also possible that additional HTML files are used or generated which should also not be cached
+        if str(fp).endswith(".html"):
+            args["headers"] = HTML_NOCACHE_HEADERS
+
+        return FileResponse(fp, **args)
 
     return app
