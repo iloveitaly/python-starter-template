@@ -110,7 +110,7 @@ class CeleryTestUtils:
         return all_tasks
 
     def jobs_of_type(self, task: Union[str, Callable]) -> list[dict[str, Any]]:
-        task_name = task.name if callable(task) else task
+        task_name = task.name if callable(task) else task  # type: ignore
         all_tasks = self.get_all_queued_tasks()
         return [
             t for t in all_tasks if dig("headers.task", t, default=None) == task_name
