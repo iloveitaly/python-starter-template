@@ -1,6 +1,5 @@
 """Pytest plugin for Celery testing utilities."""
 
-import base64
 from functools import reduce
 from operator import getitem
 from typing import Any, Callable, Union
@@ -8,9 +7,6 @@ from typing import Any, Callable, Union
 import kombu.utils.json
 import pytest
 import redis
-from kombu import serialization
-
-from app import log
 
 
 # TODO use funcy version once it is released
