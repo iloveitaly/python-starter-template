@@ -1,10 +1,10 @@
+import posthog
 from decouple import config
-from posthog import Posthog
 
 from app.environments import is_production
 
-posthog_client = Posthog(
-    config("POSTHOG_SECRET_KEY"),
+posthog_client = posthog.Posthog(
+    project_api_key=config("POSTHOG_SECRET_KEY"),
     host=config("POSTHOG_HOST", default="https://us.i.posthog.com"),
     # don't use Sentry *and* posthog for error tracking!
     enable_exception_autocapture=False,
@@ -13,6 +13,10 @@ posthog_client = Posthog(
 
 if not is_production():
     posthog_client.disabled = True
+
+# https://github.com/PostHog/posthog-python/issues/353
+# without this, a newly-created client will be used for things like catching context exceptions
+posthog.default_client = posthog_client
 
 
 def configure_posthog():
