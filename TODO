@@ -1,4 +1,7 @@
 ## python
+better configuration py module: autoload and call configure() if it exists
+custom default fastapi error handler https://grok.com/share/bGVnYWN5_fe5638b4-5f0b-4cca-afe6-369468eb5f2e
+watch out for frozen dataclasses in excpetions https://grok.com/share/bGVnYWN5_914c248a-4efc-4b24-b05e-2deb11197554
 pydantic doesn't render JSON schema in a way that retool likes https://github.com/pydantic/pydantic/issues/7161
 https://github.com/gotcha/ipdb/blob/5b5c8683e2a3ac7fddc4013d3863c8086e23a639/ipdb/stdout.py#L9-L11 maybe this will fix some of our stdout issues?
 should consume react router routes and only respond to those routes in the static glob
@@ -38,6 +41,10 @@ exception group processor? https://github.com/apache/airflow/blob/4280b83977cd5a
 we should lint against this `from migrations.seed import PYTHON_SERVER_HOST`, seed should only be executed directly
 ipython in prod + dokku outputs logs directly to stdout https://stackoverflow.com/questions/11833654/log-ipython-output
 
+## fastapi
+https://pypi.org/project/apiexception/ - better logging of API error types
+https://github.com/long2ice/fastapi-cache need a caching tool that I trust, ask to take over this one and make it more maintained.
+
 ## Observability
 https://github.com/replicate/cog/blob/c95774f18b8df6f6a7b841be1900153ca04a57ad/python/cog/server/telemetry.py#L7 looks like there is some standard around this
 https://victoriametrics.com - recommended instead of prometheus
@@ -70,6 +77,7 @@ https://simondosda.github.io/posts/2021-05-10-eslint-imports.html auto fix unuse
 js test build should not include valid sentry token, can we use a console DSN?
 
 ## deployment
+https://grok.com/share/bGVnYWN5_0b800f1c-f85b-483f-bc7e-4e10f3b15536 need unregistry clearing script
 app.json from movie tickets
 grafana timing integration
 https://grafana.com for observability
@@ -135,7 +143,7 @@ distribute tests across databases and redis https://pytest-xdist.readthedocs.io/
 enable verbose debugging on tests when GHA debug is enabled
 maybe screenshot comments? https://github.com/ActivityWatch/aw-webui/blob/291da6f2c5e7a6b896f23a4eec5ffed9874321ba/.github/workflows/comment.yml#L69
 add console logs to log `page.on("console", lambda msg: print(f"Console Message: {msg.type()}: {msg.text()}"))`
-
+add domains for services just/docker.just https://github.com/dvddarias/docker-hoster/blob/develop/hoster.py and https://github.com/costela/docker-etchosts
 
 downside with this action is it requires write access to the repo and manages a separate branch. instead we should just add a coverage failure threshold.
 ```
@@ -196,6 +204,12 @@ binding for paste as plain text
 
 ## javascript
 
+```
+    log.warn("Rewardful is not available")
+    // TODO would be cool if we could tag a message to also be sent to Sentry
+    Sentry.captureMessage("Rewardful is not available")
+```
+- [ ] wrap comments? https://github.com/dnut/Rewrap
 - [ ] https://github.com/remix-run/react-router/issues/12761 understand safari caching more; have we fixed this with HTML caching?
 - [ ] maybe remove log statements here? https://github.com/lunaticscode/vite-remove-console?tab=readme-ov-file
 - [ ] https://grok.com/share/bGVnYWN5_7b44bc14-aea6-4a23-8218-d5550748692a better zod errors
@@ -221,6 +235,7 @@ binding for paste as plain text
 
 ## ai
 
+- [ ] postgres MCP connected to credentials
 - [ ] https://github.com/orgs/community/discussions/137150 no url reading in copilot
 
 ## template
