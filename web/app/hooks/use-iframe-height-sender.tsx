@@ -30,6 +30,18 @@ function getParentOrigin() {
   }
 }
 
+/**
+ * Automatically sends iframe height updates to the parent window when mounted inside an iframe.
+ *
+ * @example
+ * ```tsx
+ * export default function UnauthenticatedLayout() {
+ *   useIframeHeightSender()
+ *
+ *   return <Outlet />
+ * }
+ * ```
+ */
 export const useIframeHeightSender = () => {
   useEffect(() => {
     // Only run if embedded in an iframe
