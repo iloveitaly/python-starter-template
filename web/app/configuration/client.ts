@@ -27,6 +27,8 @@ if (
 
 // TODO I don't know if the auth function will be rerun multiple times...
 client.setConfig({
+  // TODO we want to have better support for ngrok in the future, which means we need to support two distinct domains
+  //      maybe we can dynamically determine which to use
   baseUrl: VITE_PYTHON_URL,
   // same-origin is default, this is required in development since different API & FE server domains are used
   // https://github.com/hey-api/openapi-ts/issues/769#issuecomment-2222735798
@@ -68,14 +70,25 @@ export const publicClientLoader = createClient({
   // explicitly exclude any authentication configuration
 })
 
-// https://heyapi.dev/openapi-ts/clients/fetch#interceptors
-// https://github.com/sparkplug/momoapi-node/blob/a547cac2fd4ad52e06e56b9b318714498d6aa80c/src/client.ts#L40
-// TODO need to understand if it's better to map `error`
+/**
+ * Raise an exception on HTTP error code.
+ *
+ * Helpful when running a API request within a `clientLoader` that is expected to succeed, and if it doesn't, you want
+ * to render an error page. This enables you to avoid adding try/catch a million times and instead define a global
+ * error boundary for your route.
+ *
+ * https://heyapi.dev/openapi-ts/clients/fetch#interceptors
+ * https://github.com/sparkplug/momoapi-node/blob/a547cac2fd4ad52e06e56b9b318714498d6aa80c/src/client.ts#L40
+ *
+ * TODO need to understand if it's better to map `error`
+ */
 publicClientLoader.interceptors.response.use((response) => {
   if (response.status === 404) {
     throw new Response("Not Found", { status: 404 })
-  } else if (response.status === 500) {
-    throw new Response("Server Error", { status: 500 })
+  } else if (response.status >= 400 && response.status < 500) {
+    throw new Response("Client Error", { status: response.status })
+  } else if (response.status >= 500) {
+    throw new Response("Server Error", { status: response.status })
   }
 
   return response
