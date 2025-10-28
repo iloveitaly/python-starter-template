@@ -1,4 +1,6 @@
 // the autogen'd client from the python's openapi.json is configured here
+import posthog from "posthog-js"
+
 import { isDevelopment, requireEnv } from "~/utils/environment"
 
 import * as Sentry from "@sentry/react"
@@ -93,6 +95,31 @@ publicClientLoader.interceptors.response.use((response) => {
 
   return response
 })
+
+/**
+ * Add the posthog distinct and session IDs to the request headers.
+ *
+ * This is helpful for linking frontend events to backend events. This could fail
+ * if adblockers are in place or if these are used before `init` is called.
+ */
+function addPosthogHeaders(request: Request): Request {
+  const newHeaders = new Headers(request.headers)
+
+  const distinctId = posthog.get_distinct_id()
+  if (distinctId) {
+    newHeaders.set("X-Posthog-Distinct-Id", distinctId)
+  }
+
+  const sessionId = posthog.get_session_id()
+  if (sessionId) {
+    newHeaders.set("X-Posthog-Session-Id", sessionId)
+  }
+
+  return new Request(request, { headers: newHeaders })
+}
+publicClientLoader.interceptors.request.use(addPosthogHeaders)
+publicClient.interceptors.request.use(addPosthogHeaders)
+client.interceptors.request.use(addPosthogHeaders)
 
 // TODO implement dynamic base URL interceptor for development, helpful for ngrok and friends
 // function dynamicBaseInterceptor(request: Request): Request {
