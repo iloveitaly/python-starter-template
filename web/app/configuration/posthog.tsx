@@ -29,8 +29,15 @@ if (typeof window !== "undefined") {
     debug: isDebugEnabled(),
     // or 'always' to create profiles for anonymous users as well
     person_profiles: "identified_only",
-    // don't use Sentry *and* posthog for error tracking!
-    autocapture: false,
+    // this controls both autocapture of exceptions *and* clicks
+    // you can disable exception autocapture in your settings
+    autocapture: true,
+    // by default, posthog will *not* capture all query string params
+    custom_campaign_params: [
+      // Rewardful referral code params
+      "via",
+      "referral",
+    ],
     // copied from the react router example, unsure if these are the best settings
     capture_pageview: "history_change",
     capture_pageleave: true,

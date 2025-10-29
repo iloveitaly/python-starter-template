@@ -43,10 +43,21 @@ function configureLogging() {
       LOG_LEVEL_MAP[logLevelFromEnv] ?? DEFAULT_LOG_LEVEL
   }
 
+  // this *could* occur intentionally, but it should be rare and it's ok to be noisy when it happens
+  if (isDebugEnabled() && isProduction()) {
+    loggerInstance.error("debug logging is enabled in production")
+  }
+
   return loggerInstance
 }
 
 const log = configureLogging()
+
+// intended to be used to enable verbose logging on various libraries that have a `debug` flag
+export function isDebugEnabled(): boolean {
+  const logger = loggerInstance || configureLogging()
+  return logger.settings.minLevel <= LOG_LEVEL_MAP.debug
+}
 
 export { log }
 export default { log }
