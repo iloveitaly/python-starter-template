@@ -108,8 +108,16 @@ debugging-extras = [
 
 [tool.uv]
 # https://github.com/astral-sh/uv/issues/3898
-config-settings = { editable_mode = "compat" }
+# config-settings = { editable_mode = "compat" }
 
+# Explicitly declare the package(s) to install in editable mode.
+# Required for `editable_mode = "strict"` with flat layouts (app/ at project root).
+# Without this, uv cannot auto-discover the package and will fail.
+packages = ["app"]
+
+# Use "strict" to create a real symlink in site-packages/app → /path/to/project/app
+# Enables live edits, IDE path resolution, and avoids .pth file overhead. "compat" uses .pth files.
+editable_mode = "strict"
 
 # hatching is a modern replacement for the default setuptools
 [build-system]
