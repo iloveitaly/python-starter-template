@@ -3,6 +3,7 @@ import { type ConfigEnv, type PluginOption, defineConfig } from "vite"
 import { checkEnv } from "vite-plugin-check-env"
 import viteCompression from "vite-plugin-compression"
 import devtoolsJson from "vite-plugin-devtools-json"
+import svgr from "vite-plugin-svgr"
 import Terminal from "vite-plugin-terminal"
 import tsconfigPaths from "vite-tsconfig-paths"
 
@@ -95,6 +96,11 @@ export default defineConfig((config) => ({
     // option required for Sentry sourcemap upload
     sourcemap: true,
   },
+  // annoying to have to worry about removing these, and we don't have our standard logging
+  // https://github.com/vitejs/vite/discussions/7920
+  esbuild: {
+    drop: ["console", "debugger"],
+  },
   server: {
     // by default, vite will only listen on ipv6 loopback!
     // there does not seem to be an easy way to listen on ipv4 & ipv6
@@ -111,6 +117,8 @@ export default defineConfig((config) => ({
     tailwindcss(),
     reactRouter(),
     tsconfigPaths(),
+    // `?react` to end of SVG imports to transform to React components
+    svgr(),
     ...getModePlugins(config),
   ],
 }))
