@@ -62,6 +62,8 @@ async def inject_posthog_tags(request: Request):
 
         if request.url.path:
             tags["$request_path"] = request.url.path
+            # the js SDK uses this param, I suspect $request_path is incorrect
+            tags["$pathname"] = request.url.path
 
         if request_ip := fastapi_access_logger.client_ip_from_request(request):
             # django uses $ip_address, but posthog web library uses $ip
