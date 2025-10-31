@@ -72,6 +72,10 @@ GZIP_HEADERS = {
     # (if there's no recent deploys) clients will attempt to do range requests and you'll see a bunch of errors
     "Accept-Ranges": "none",
 }
+"""
+It's critical to `copy()` these headers. If they aren't copied for each request, it's possible for FastAPI or Starlette
+to mutate them in a way that causes future requests to fail. This occurred for us specifically around content ranges.
+"""
 
 
 class GZipStaticFiles(StaticFiles):
@@ -109,10 +113,10 @@ class GZipStaticFiles(StaticFiles):
                 # not all assets have a gzip version
                 if os.path.exists(gz_path):
                     content_type, _ = mimetypes.guess_type(full_path)
-                    headers = GZIP_HEADERS
+                    headers = GZIP_HEADERS.copy()
 
                     if self.has_vite_hash(full_path):
-                        headers.update(self.CDN_HEADERS)
+                        headers.update(self.CDN_HEADERS.copy())
 
                     return FileResponse(
                         gz_path,
@@ -124,9 +128,8 @@ class GZipStaticFiles(StaticFiles):
 
         response = await super().get_response(path, scope)
 
-        log.info(f"Adding CDN headers to {path}")
         if self.has_vite_hash(path):
-            response.headers.update(self.CDN_HEADERS)
+            response.headers.update(self.CDN_HEADERS.copy())
 
         return response
 
@@ -171,19 +174,12 @@ def mount_public_directory(app: FastAPI):
 
     index_html_response = FileResponse(
         public_path / "index.html",
-        headers=HTML_NOCACHE_HEADERS,
+        headers=HTML_NOCACHE_HEADERS.copy(),
     )
 
     @app.get("/", include_in_schema=False)
     async def javascript_index():
         return index_html_response
-
-    # TODO Assets with hashes: cache aggressively?
-    # elif "/assets/" in str(fp) and any(char in fp.stem for char in ['-', '_']):  # Has hash
-    #     headers = {
-    #         "Cache-Control": "public, max-age=31536000, immutable",  # 1 year
-    #     }
-    #     return FileResponse(fp, headers=headers)
 
     @app.get("/{path:path}", include_in_schema=False)
     async def frontend_handler(path: str):
@@ -201,7 +197,7 @@ def mount_public_directory(app: FastAPI):
         # https://reactrouter.com/how-to/pre-rendering
         prerender_path = public_path / path / "index.html"
         if prerender_path.exists():
-            return FileResponse(prerender_path, headers=HTML_NOCACHE_HEADERS)
+            return FileResponse(prerender_path, headers=HTML_NOCACHE_HEADERS.copy())
 
         if not fp.exists():
             return index_html_response
@@ -211,7 +207,7 @@ def mount_public_directory(app: FastAPI):
         # if you prerender `/` a .html file an additional HTML file is generated which is used to load the front page
         # it's also possible that additional HTML files are used or generated which should also not be cached
         if str(fp).endswith(".html"):
-            args["headers"] = HTML_NOCACHE_HEADERS
+            args["headers"] = HTML_NOCACHE_HEADERS.copy()
 
         return FileResponse(fp, **args)
 
