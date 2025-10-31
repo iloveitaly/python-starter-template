@@ -1,6 +1,9 @@
 """
 Facebook/Meta tracking helpers
 
+- Surprisingly, the pixel endpoint is pretty slow. Can be 200-400ms per request. Throw this in a background thread
+  when possible.
+
 TODO
 
 - disable option for local tests? Is this needed with how facebook works?
@@ -14,7 +17,7 @@ from typing import Literal
 from decouple import config
 from facebook_business.adobjects.adspixel import AdsPixel
 from facebook_business.api import FacebookAdsApi
-from fastapi import Request
+from fastapi import BackgroundTasks, Request
 from pydantic import BaseModel
 
 from app import log
@@ -277,6 +280,7 @@ def build_conversion_event_payload(
     last_name: str | None = None,
     full_name: str | None = None,
     event_id: str | None = None,
+    background_tasks: BackgroundTasks | None = None,
 ) -> dict:
     """Build a Facebook Pixel event payload.
 
@@ -319,13 +323,23 @@ def build_conversion_event_payload(
     if TEST_EVENT_CODE_OVERRIDE:
         payload["test_event_code"] = TEST_EVENT_CODE_OVERRIDE
 
-    # send the event through the pixel; swallow errors
+    # Send async if background_tasks provided, otherwise sync
+    if background_tasks:
+        background_tasks.add_task(_send_facebook_event, payload, event_name)
+    else:
+        _send_facebook_event(payload, event_name)
+
+    return payload
+
+
+def _send_facebook_event(payload: dict, event_name: str) -> None:
+    """Send event to Facebook."""
     try:
         pixel = get_facebook_pixel()
         pixel.create_event(params=payload)
     except Exception as e:  # noqa: BLE001
         log.exception(
-            "facebook pixel event send failed", error=str(e), event_name=event_name
+            "facebook pixel event send failed",
+            error=str(e),
+            event_name=payload["data"][0]["event_name"],
         )
-
-    return payload
