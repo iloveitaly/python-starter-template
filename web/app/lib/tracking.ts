@@ -61,13 +61,21 @@ export type TrackingParamName = (typeof TRACKING_PARAM_NAMES)[number]
  *   },
  * })
  */
-export function trackingParamsFromSearch(searchParams?: URLSearchParams): Record<string, string> {
-  const sp = searchParams ?? (typeof window !== "undefined" ? new URLSearchParams(window.location.search) : undefined)
+export function trackingParamsFromSearch(
+  searchParams?: URLSearchParams,
+): Record<string, string> {
+  const sp =
+    searchParams ??
+    (typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search)
+      : undefined)
 
   const params: Record<string, string> = {}
 
   if (!sp) {
-    log.error("trackingParamsFromSearch called without searchParams and window is undefined")
+    log.error(
+      "trackingParamsFromSearch called without searchParams and window is undefined",
+    )
     return params
   }
 
