@@ -1,15 +1,12 @@
 import pluginReact from "eslint-plugin-react"
-import reactCompiler from "eslint-plugin-react-compiler"
 import reactHooks from "eslint-plugin-react-hooks"
 import globals from "globals"
 import tseslint from "typescript-eslint"
 
 import pluginJs from "@eslint/js"
 
-export default tseslint.config(
-  {
-    files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
-  },
+export default [
+  // 1. Global Ignores
   {
     ignores: [
       "build",
@@ -21,21 +18,29 @@ export default tseslint.config(
       "app/components",
     ],
   },
-  { languageOptions: { globals: globals.browser } },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-  // important change from the default
+
+  // 2. Global Settings and Language Options
   {
-    // for React 17+, should be default in the future
-    ...pluginReact.configs.flat["jsx-runtime"],
-    // TODO will be default in the future, must define for now
+    languageOptions: { globals: globals.browser },
     settings: { react: { version: "detect" } },
   },
-  reactCompiler.configs.recommended,
-  reactHooks.configs["recommended-latest"],
-  // https://typescript-eslint.io/rules/no-unused-vars/
+
+  // 3. Core Recommended Configurations
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
+
+  // 4. React Plugin Configuration (JSX Runtime for React 17+)
+  pluginReact.configs.flat["jsx-runtime"],
+
+  // 5. React Hooks and Compiler Configuration
+  reactHooks.configs.flat["recommended-latest"],
+
+  // 6. Custom Rule Overrides
   {
+    // Ensure these overrides apply to the relevant file types
+    files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
     rules: {
+      // https://typescript-eslint.io/rules/no-unused-vars/
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
@@ -50,4 +55,4 @@ export default tseslint.config(
       ],
     },
   },
-)
+]
