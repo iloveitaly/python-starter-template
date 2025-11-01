@@ -48,6 +48,7 @@ dependencies = [
     "stripe>=12.1.0",
     "usaddress>=0.5.16",
     "facebook-business>=23.0.1",
+    "beautiful-traceback>=0.1.0",
 ]
 
 
@@ -70,7 +71,6 @@ debugging-extras = [
     "pdbr[ipython]>=0.8.9",
     "pipdeptree>=2.25.0",
     "pre-commit>=4.1.0",
-    "pretty-traceback>=2024.1021",
     "psutil>=6.1.0",
     "pudb>=2024.1.3",
     "py-spy>=0.4.0",
@@ -87,7 +87,6 @@ dev = [
     "coverage>=7.6.7",
     "deptry>=0.20.0",
     "ipython>=8.28.0",
-    "pretty-traceback>=2024.1021",
     "pyright[nodejs]>=1.1.386",
     "pytest-asyncio>=1.2.0",
     "pytest-celery[redis]>=1.1.3",
@@ -214,7 +213,6 @@ asyncio_default_fixture_loop_scope = "function"
 flower = { git = "https://github.com/iloveitaly/flower", rev = "custom" }
 ipdb = { git = "https://github.com/iloveitaly/ipdb", rev = "support-executables" }
 pdbr = { git = "https://github.com/iloveitaly/pdbr", rev = "ipython-9.x" }
-pretty-traceback = { git = "https://github.com/iloveitaly/pretty-traceback.git", rev = "custom" }
 ipython-suggestions = { git = "https://github.com/iloveitaly/ipython-suggestions.git", rev = "ipython-9.x" }
 
 [tool.uv.sources.activemodel]

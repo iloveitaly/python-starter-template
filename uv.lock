@@ -250,6 +250,18 @@ wheels = [
 ]
 
 [[package]]
+name = "beautiful-traceback"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "colorama" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/38/15/8bdb5738b0f91249b33c4888bfb9ddc223aee11a9b8187c78db7474c4b25/beautiful_traceback-0.1.0.tar.gz", hash = "sha256:82e21e13a3c9a1cc4242aa99d3d24bde324e680d7419fc420a0711d7e47280b8", size = 10557, upload-time = "2025-10-31T14:59:49.427Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7d/09/d88db1cfb476afd0dbcdfc03eba9b716ac40b04dc26c13849949ff9cafd6/beautiful_traceback-0.1.0-py3-none-any.whl", hash = "sha256:7731688b69a86bc763505b45ed2901c916b98e2bdeef96cfc22f82c9f573cd85", size = 13269, upload-time = "2025-10-31T14:59:48.351Z" },
+]
+
+[[package]]
 name = "billiard"
 version = "4.2.2"
 source = { registry = "https://pypi.org/simple" }
@@ -2125,14 +2137,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pretty-traceback"
-version = "2024.1021"
-source = { git = "https://github.com/iloveitaly/pretty-traceback.git?rev=custom#bff7ddaa313e81d4a012d8caea7acbbcad3a8eb9" }
-dependencies = [
-    { name = "colorama" },
-]
-
-[[package]]
 name = "probableparsing"
 version = "0.0.1"
 source = { registry = "https://pypi.org/simple" }
@@ -2777,6 +2781,7 @@ dependencies = [
     { name = "alembic" },
     { name = "alembic-postgresql-enum" },
     { name = "backoff" },
+    { name = "beautiful-traceback" },
     { name = "cachetools" },
     { name = "celery", extra = ["redis"] },
     { name = "celery-healthcheck" },
@@ -2838,7 +2843,6 @@ debugging-extras = [
     { name = "pdbr", extra = ["ipython"] },
     { name = "pipdeptree" },
     { name = "pre-commit" },
-    { name = "pretty-traceback" },
     { name = "psutil" },
     { name = "pudb" },
     { name = "py-spy" },
@@ -2859,7 +2863,6 @@ dev = [
     { name = "ipython" },
     { name = "j2lint" },
     { name = "polyfactory" },
-    { name = "pretty-traceback" },
     { name = "pyright", extra = ["nodejs"] },
     { name = "pytest" },
     { name = "pytest-asyncio" },
@@ -2880,6 +2883,7 @@ requires-dist = [
     { name = "alembic", specifier = ">=1.14.0" },
     { name = "alembic-postgresql-enum", specifier = ">=1.6.1" },
     { name = "backoff", specifier = ">=2.2.1" },
+    { name = "beautiful-traceback", specifier = ">=0.1.0" },
     { name = "cachetools", specifier = ">=5.5.1" },
     { name = "celery", extras = ["redis"], specifier = ">=5.4.0" },
     { name = "celery-healthcheck", specifier = ">=0.1.1" },
@@ -2941,7 +2945,6 @@ debugging-extras = [
     { name = "pdbr", extras = ["ipython"], git = "https://github.com/iloveitaly/pdbr?rev=ipython-9.x" },
     { name = "pipdeptree", specifier = ">=2.25.0" },
     { name = "pre-commit", specifier = ">=4.1.0" },
-    { name = "pretty-traceback", git = "https://github.com/iloveitaly/pretty-traceback.git?rev=custom" },
     { name = "psutil", specifier = ">=6.1.0" },
     { name = "pudb", specifier = ">=2024.1.3" },
     { name = "py-spy", specifier = ">=0.4.0" },
@@ -2962,7 +2965,6 @@ dev = [
     { name = "ipython", specifier = ">=8.28.0" },
     { name = "j2lint", specifier = ">=1.1.0" },
     { name = "polyfactory", git = "https://github.com/iloveitaly/polyfactory.git?rev=custom" },
-    { name = "pretty-traceback", git = "https://github.com/iloveitaly/pretty-traceback.git?rev=custom" },
     { name = "pyright", extras = ["nodejs"], specifier = ">=1.1.386" },
     { name = "pytest", specifier = ">=8.3.3" },
     { name = "pytest-asyncio", specifier = ">=1.2.0" },
