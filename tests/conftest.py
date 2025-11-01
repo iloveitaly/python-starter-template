@@ -13,26 +13,30 @@ if os.getenv("PYTHON_ENV", "development") != "test":
         "Additional variables may set in 'env/test.sh' and required to run tests.\n\n"
         "Consider using `just py_test"
         "\033[0m"
-        )
+    )
 
     os.environ["PYTHON_ENV"] = "test"
 
-    assert 'app' not in sys.modules, "app modules should not be imported before environment is set"
+    assert "app" not in sys.modules, (
+        "app modules should not be imported before environment is set"
+    )
 
     from tests.direnv import load_ci_environment
+
     load_ci_environment()
 
-# important to ensure model metadata is added to the application
-import app.models  # noqa: F401
-
 import multiprocessing
-
 from pathlib import Path
 
 import pytest
-from pytest import Config, FixtureRequest
 from activemodel.pytest import database_reset_transaction, database_reset_truncate
 from decouple import config as decouple_config
+from pytest import Config, FixtureRequest
+
+# important to ensure model metadata is added to the application
+import app.models  # noqa: F401
+from app.celery import celery_app
+from app.configuration.redis import get_redis
 
 from .constants import TEST_RESULTS_DIRECTORY
 from .log import log
@@ -41,6 +45,7 @@ from .log import log
 pytest_plugins = ["tests.plugins.improved_playwright_failures"]
 
 log.info("multiprocess start method", start_method=multiprocessing.get_start_method())
+
 
 # NOTE this runs on any pytest invocation, even if no tests are run
 def pytest_configure(config: Config):
@@ -51,7 +56,7 @@ def pytest_configure(config: Config):
 
     # when configuring in code, a tuple is used for the (mod, class) reference
     # check out _pytest/debugging.py for implementation details
-    config.option.usepdb_cls = ('pdbr', 'RichPdb')
+    config.option.usepdb_cls = ("pdbr", "RichPdb")
 
     config.option.disable_warnings = True
 
@@ -61,7 +66,7 @@ def pytest_configure(config: Config):
     # playwright config
     config.option.screenshot = "only-on-failure"
     config.option.tracing = "retain-on-failure"
-    # TODO although output is a generic CLI option, it's specific to playwright
+    # TODO although output is a generic-sounding CLI option, it's specific to playwright
     config.option.output = decouple_config("PLAYWRIGHT_RESULT_DIRECTORY", cast=str)
 
     # this forces pretty-traceback to be used instead of the default pytest tb, which is absolutely terrible
@@ -86,8 +91,12 @@ def pytest_configure(config: Config):
         "PRETTY_TRACEBACK_LOCAL_ONLY", default=False, cast=bool
     )
 
-    config.option.playwright_visual_snapshots_path = decouple_config("PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY", cast=Path)
-    config.option.playwright_visual_snapshot_failures_path = TEST_RESULTS_DIRECTORY / "playwright_visual_snapshot_failures"
+    config.option.playwright_visual_snapshots_path = decouple_config(
+        "PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY", cast=Path
+    )
+    config.option.playwright_visual_snapshot_failures_path = (
+        TEST_RESULTS_DIRECTORY / "playwright_visual_snapshot_failures"
+    )
     config.option.playwright_visual_snapshot_masks = [
         '[data-clerk-component="UserButton"]',
     ]
@@ -96,6 +105,7 @@ def pytest_configure(config: Config):
         "alembic_version",
         # add any tables you want to preserve here
     ]
+
 
 def pytest_sessionstart(session):
     "only executes once if a test is run, at the beginning of the test suite execution"
@@ -107,17 +117,22 @@ def pytest_sessionstart(session):
     # clear out any previous cruft in this DB, which is why...
     database_reset_truncate(pytest_config=session.config)
 
+
 @pytest.fixture(scope="function")
 def sync_celery():
-    "run celery tasks synchronously instead of in the background"
+    """
+    Include this fixture and celery tasks will run synchronously instead of in the background
+
+    https://docs.celeryq.dev/en/stable/userguide/testing.html
+    """
 
     # TODO I have to change the name of celery app... :/
     from app.celery import celery_app
 
     # celery settings to mutate
     settings = {
-        'task_always_eager': True,
-        'task_eager_propagates': True,
+        "task_always_eager": True,
+        "task_eager_propagates": True,
     }
 
     # Store original values
@@ -130,6 +145,18 @@ def sync_celery():
 
     # Restore original values
     celery_app.conf.update(original_settings)
+
+
+@pytest.fixture(scope="function", autouse=True)
+def clear_redis():
+    "clear the redis database completely before each test"
+    get_redis().flushdb()
+    yield
+
+
+@pytest.fixture
+def celery_config():
+    return celery_app.conf
 
 
 # TODO we should really throw an exception if integration and non-integration tests are mixed, this will cause DB related issues
@@ -167,6 +194,7 @@ def datatabase_reset_transaction_for_standard_tests(request):
         return
 
     yield from database_reset_transaction()
+
 
 @pytest.fixture
 def stripe_client():
