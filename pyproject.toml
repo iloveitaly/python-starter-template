@@ -52,29 +52,6 @@ dependencies = [
 
 
 [dependency-groups]
-dev = [
-    "covdefaults>=2.3.0",
-    "coverage>=7.6.7",
-    "deptry>=0.20.0",
-    "ipython>=8.28.0",
-    "pretty-traceback>=2024.1021",
-    "pyright[nodejs]>=1.1.386",
-    "pytest-asyncio>=1.2.0",
-    "pytest-celery[redis]>=1.1.3",
-    "pytest-github-actions-annotate-failures>=0.2.0",
-    "pytest>=8.3.3",
-    "ruff>=0.7.1",
-    "djlint>=1.36.1",
-    "pytest-sugar>=1.0.0",
-    "j2lint>=1.1.0",
-    "pytest-playwright>=0.6.2",
-    "pytest-cov>=6.0.0",
-    "pytest-timer[termcolor]>=1.0.0",
-    "gitignore-parser>=0.1.11",
-    "pytest-playwright-visual-snapshot",
-    "flexmock>=0.12.2",
-    "polyfactory>=2.20.0",
-]
 debugging-extras = [
     "colorama>=0.4.6",
     "datamodel-code-generator>=0.26.3",
@@ -105,8 +82,31 @@ debugging-extras = [
     "uv-development-toggle>=0.2.1",
     "aiautocommit",
 ]
+dev = [
+    "covdefaults>=2.3.0",
+    "coverage>=7.6.7",
+    "deptry>=0.20.0",
+    "ipython>=8.28.0",
+    "pretty-traceback>=2024.1021",
+    "pyright[nodejs]>=1.1.386",
+    "pytest-asyncio>=1.2.0",
+    "pytest-celery[redis]>=1.1.3",
+    "pytest-github-actions-annotate-failures>=0.2.0",
+    "pytest>=8.3.3",
+    "ruff>=0.7.1",
+    "djlint>=1.36.1",
+    "pytest-sugar>=1.0.0",
+    "j2lint>=1.1.0",
+    "pytest-playwright>=0.6.2",
+    "pytest-cov>=6.0.0",
+    "pytest-timer[termcolor]>=1.0.0",
+    "gitignore-parser>=0.1.11",
+    "pytest-playwright-visual-snapshot",
+    "flexmock>=0.12.2",
+    "polyfactory>=2.20.0",
+]
 
-[tool.uv]
+[tool.uv.config-settings]
 # https://github.com/astral-sh/uv/issues/3898
 # config-settings = { editable_mode = "compat" }
 
