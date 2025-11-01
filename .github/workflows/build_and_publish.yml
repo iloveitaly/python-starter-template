@@ -67,7 +67,7 @@ jobs:
 
       - name: Upload test artifacts
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           # playwright traces, screenshots, logs, etc
           # traces and pngs allow us to debug e2e test failures
