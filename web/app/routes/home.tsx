@@ -20,6 +20,7 @@ import {
 import { applicationData } from "~/configuration/client"
 
 import { SiReact } from "@icons-pack/react-simple-icons"
+import * as inflection from "inflection"
 
 export const meta: MetaFunction = () => {
   return [
@@ -44,6 +45,8 @@ export async function clientLoader(_loader_args: Route.ClientLoaderArgs) {
 }
 
 export default function Page({ loaderData }: Route.ComponentProps) {
+  // placeholder count for the demo tiles below
+  const placeholderCount = 24
   return (
     <SidebarProvider
       style={
@@ -75,6 +78,9 @@ export default function Page({ loaderData }: Route.ComponentProps) {
             <a href="/form" className="text-blue-600 underline">
               Go to Form Page
             </a>
+            <span className="text-sm text-muted-foreground ml-2">
+              {placeholderCount} {inflection.pluralize("message")}
+            </span>
           </div>
           {loaderData && loaderData.message}
           {Array.from({ length: 24 }).map((_, index) => (
