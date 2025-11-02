@@ -60,7 +60,7 @@ def pytest_configure(config: Config):
 
     config.option.disable_warnings = True
 
-    # this forces pretty-traceback to be used instead of the default pytest tb, which is absolutely terrible
+    # this forces beautiful-traceback to be used instead of the default pytest tb, which is absolutely terrible
     config.option.tbstyle = "native"
 
     # playwright config
@@ -86,9 +86,9 @@ def pytest_configure(config: Config):
     config.option.log_file = str(TEST_RESULTS_DIRECTORY / "pytest.log")
     # config.option.log_file_level = "DEBUG"
 
-    config.option.enable_pretty_traceback = True
-    config.option.enable_pretty_traceback_local_stack_only = decouple_config(
-        "PRETTY_TRACEBACK_LOCAL_ONLY", default=False, cast=bool
+    config.option.enable_beautiful_traceback = True
+    config.option.enable_beautiful_traceback_local_stack_only = decouple_config(
+        "BEAUTIFUL_TRACEBACK_LOCAL_ONLY", default=False, cast=bool
     )
 
     config.option.playwright_visual_snapshots_path = decouple_config(

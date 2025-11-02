@@ -24,11 +24,11 @@ def configure_debugging():
     #     )
 
     try:
-        import pretty_traceback
+        import beautiful_traceback
 
-        pretty_traceback.install(
+        beautiful_traceback.install(
             local_stack_only=config(
-                "PRETTY_TRACEBACK_LOCAL_ONLY", default=False, cast=bool
+                "BEAUTIFUL_TRACEBACK_LOCAL_ONLY", default=False, cast=bool
             )
         )
     except ImportError:
