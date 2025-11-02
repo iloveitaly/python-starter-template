@@ -13,7 +13,7 @@ up *flag:
 
 	# enables us to (a) avoid exposing ports to the host machine and (b) have dns names for each service in CI
 	# this is done for us on macOS via OrbStack. Without this, the `DOCKER_POSTGRES` binary approach would not work
-	[[ -n "${CI:-}" ]] && sudo uvx docker-hosts
+	[[ -n "${CI:-}" ]] && sudo $(which uvx) docker-hosts
 
 # stop all containers and remove the images
 down: db_down
