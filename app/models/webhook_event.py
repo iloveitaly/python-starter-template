@@ -1,10 +1,9 @@
 """
-TODO needs more refinement before it's ready for prime time
+TODO needs more refinement before it's ready for prime time, pull in tests from movie project
 
 Example payload:
 
 >>> to_json(StreamingOrder.sample().webhook('streaming_order.created').payload())
-
 >>> to_json(StreamingOrder.sample().webhook("streaming_order.created").model_json_schema())
 """
 
@@ -28,6 +27,10 @@ WebhookTypesType = Literal["order.created"]
 # convert the literal types into a nice array that we can use
 WebhookTypes: list[str] = list(get_args(WebhookTypesType))
 
+# Fallback webhook endpoint used when no distribution endpoint is available.
+# Keep at module level so it can be easily changed or exported later.
+DEFAULT_WEBHOOK_ENDPOINT = "https://example.com/webhook"
+
 
 class WebhookBase(PydanticBaseModel):
     """
@@ -36,7 +39,6 @@ class WebhookBase(PydanticBaseModel):
 
     type: WebhookTypesType
     id: TypeIDType
-    distribution_id: TypeIDType
 
     def payload(self) -> dict:
         "generates a JSON of the more complex data payload model structure in your subclass"
@@ -45,48 +47,27 @@ class WebhookBase(PydanticBaseModel):
 
     def queue_webhook(self):
         """
-        Pull type, distribution_id, and id from the model. Use the JSON representation of the remainder of the fields
-        as the payload, create a webhook record, and queue it for delivery.
+        Create a webhook event record and queue it for delivery.
         """
         assert self.type in WebhookTypes, f"Invalid webhook type: {self.type}"
-
-        distribution = Distribution.one(self.distribution_id)
-
-        # skip if no endpoint configured
-        if not distribution.webhook_endpoint:
-            log.info(
-                "skip webhook enqueue, no endpoint",
-                distribution_id=self.distribution_id,
-                event_type=self.type,
-            )
-            return
 
         event = WebhookEvent.from_webhook_data(self)
 
         log.info(
             "queuing webhook",
             event_id=event.id,
-            distribution_id=event.distribution_id,
+            destination=event.destination,
             event_type=event.type,
         )
 
         app.jobs.process_webhook.queue(event.id)
 
 
-class WebhookEvent(
-    BaseModel,
-    TimestampsMixin,
-    TypeIDMixin("wh"),
-    # table=True
-):
+class WebhookEvent(BaseModel, TimestampsMixin, TypeIDMixin("wh"), table=True):
     """Represents an outbound webhook queued for delivery."""
 
     destination: str
     "HTTP endpoint that will receive the webhook POST"
-
-    # distribution_id: TypeIDType = Distribution.foreign_key()
-    # "owning distribution that generated this event"
-    # distribution: Distribution = Relationship()
 
     # TODO https://github.com/fastapi/sqlmodel/pull/1439 use the literal type above
     type: str = Field(index=True, min_length=1)
@@ -110,14 +91,10 @@ class WebhookEvent(
     @classmethod
     def from_webhook_data(cls, webhook_data: WebhookBase) -> "WebhookEvent":
         """
-        Create a new WebhookEvent record from the webhook data (which is derived from a model object)
+        Create a new WebhookEvent record from webhook data.
         """
-        distribution = Distribution.one(webhook_data.distribution_id)
-        assert distribution.webhook_endpoint is not None
-
         return cls(
-            destination=distribution.webhook_endpoint,
-            distribution_id=distribution.id,
+            destination=DEFAULT_WEBHOOK_ENDPOINT,
             type=webhook_data.type,
             payload=webhook_data.payload(),
             originating_id=webhook_data.id.uuid,
