@@ -1,3 +1,4 @@
+import * as inflection from "inflection"
 import { type MetaFunction } from "react-router"
 
 import type { Route } from "./+types/home"
@@ -20,7 +21,6 @@ import {
 import { applicationData } from "~/configuration/client"
 
 import { SiReact } from "@icons-pack/react-simple-icons"
-import * as inflection from "inflection"
 
 export const meta: MetaFunction = () => {
   return [
@@ -78,7 +78,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
             <a href="/form" className="text-blue-600 underline">
               Go to Form Page
             </a>
-            <span className="text-sm text-muted-foreground ml-2">
+            <span className="text-muted-foreground ml-2 text-sm">
               {placeholderCount} {inflection.pluralize("message")}
             </span>
           </div>
