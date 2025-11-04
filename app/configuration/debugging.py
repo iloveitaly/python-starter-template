@@ -2,32 +2,9 @@
 Provide an entrypoint for configuring development tooling to make life easier
 """
 
-import types
-
 from decouple import config
 
 from app.environments import is_production, is_staging
-
-
-class VariableLoggingModule(types.ModuleType):
-    """
-    Helpful class to help determine when a particular field is overridden by tracing when an attribute is set.
-
-    >>> sys.__class__ = VariableLoggingModule
-    """
-
-    def __setattr__(self, name, value):
-        if name == "excepthook":
-            import inspect
-
-            frame = inspect.currentframe().f_back
-            filename = frame.f_code.co_filename
-            lineno = frame.f_lineno
-            function_name = frame.f_code.co_name
-            print(
-                f"Logging: excepthook overridden at {filename}:{lineno} in {function_name}"
-            )
-        super().__setattr__(name, value)
 
 
 def configure_debugging():

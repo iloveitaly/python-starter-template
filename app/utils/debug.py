@@ -422,3 +422,28 @@ class apdb_context(AsyncContextDecorator):
             pdb.post_mortem(exc_traceback)
             return self.suppress_exc
         return False
+
+
+class VariableLoggingModule(types.ModuleType):
+    """
+    Helpful class to help determine when a particular field is overridden by tracing when an attribute is set.
+
+    >>> sys.__class__ = VariableLoggingModule
+    """
+
+    def __setattr__(self, name, value):
+        if name == "excepthook":
+            import inspect
+
+            currentframe = inspect.currentframe()
+            assert currentframe
+            frame = currentframe.f_back
+            assert frame
+            filename = frame.f_code.co_filename
+            lineno = frame.f_lineno
+            function_name = frame.f_code.co_name
+            # TODO maybe use structured logging here?
+            print(
+                f"Logging: excepthook overridden at {filename}:{lineno} in {function_name}"
+            )
+        super().__setattr__(name, value)
