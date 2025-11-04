@@ -2,7 +2,11 @@ from operator import attrgetter
 
 import stripe
 from fastapi import HTTPException
+from pydantic import BaseModel
 from starlette import status
+from stripe import Charge, PaymentIntent, StripeClient
+
+from app import log
 
 
 def extract_payment_intent_id_from_client_secret(client_secret_id: str) -> str:
@@ -136,3 +140,51 @@ def payment_intent_is_disputed(
             return True
 
     return False
+
+
+class CheckoutCountryZip(BaseModel):
+    country: str | None = None
+    postal_code: str | None = None
+
+
+def extract_country_zip_from_checkout_session(
+    stripe_client: StripeClient, session_id: str
+) -> CheckoutCountryZip:
+    """Extract country and postal_code from a Checkout Session.
+
+    Prefers customer_details.address; falls back to payment_intent.latest_charge.billing_details.address.
+
+    Returns an empty object CheckoutCountryZip on Stripe errors. Gracefully fail on failures since this is designed
+    to be used with conversion tracking (i.e.,fine if it fails every once in a while).
+    """
+    try:
+        session = stripe_client.v1.checkout.sessions.retrieve(
+            session_id,
+            params={"expand": ["payment_intent.latest_charge"]},
+        )
+
+        if session.customer_details and session.customer_details.address:
+            addr = session.customer_details.address
+            return CheckoutCountryZip(
+                country=addr.country, postal_code=addr.postal_code
+            )
+
+        if (
+            session.payment_intent
+            and isinstance(session.payment_intent, PaymentIntent)
+            and (charge := session.payment_intent.latest_charge)
+        ):
+            assert isinstance(charge, Charge)
+            if charge.billing_details and charge.billing_details.address:
+                addr = charge.billing_details.address
+                return CheckoutCountryZip(
+                    country=addr.country, postal_code=addr.postal_code
+                )
+
+        return CheckoutCountryZip()
+
+    except Exception as e:  # noqa: BLE001
+        log.error(
+            "stripe error extracting country zip", error=str(e), session_id=session_id
+        )
+        return CheckoutCountryZip()
