@@ -13,11 +13,39 @@ def is_testing():
 
 
 def is_local_testing():
-    "for auto-building javascript assets when running tests locally"
+    """
+    Are tests being run outside of a CI environment?
+
+    For determining when to auto-build javascript assets when running integration tests locally
+    """
 
     # TODO sys.platform != "darwin"?
 
     return is_testing() and config("CI", default=False, cast=bool) is False
+
+
+def is_integration_testing():
+    """
+    Are we running integration tests?
+
+    Integration tests spawn a separate python process to run the fastapi server alongside the
+    pytest instance and playwright process.
+
+    This is helpful for enabling additional integrations which you don't want enabled during
+    unit tests or local development. For instance, Posthog integration.
+    """
+    return is_testing() and "PYTEST_INTEGRATION_TESTING" in os.environ
+
+
+def is_debug_logging():
+    """
+    Are we debug level or lower?
+
+    Useful for automatically enabling debug mode in various external libraries
+    """
+
+    # TODO need to implement with the latest structlog stuff
+    pass
 
 
 def is_production():
