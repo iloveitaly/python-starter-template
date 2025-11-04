@@ -5,10 +5,6 @@
 #   - Do NOT include quotes in any of the values here. This will cause downstream issues when building containers.
 #     Docker does not like quotes in any of it's env files or vars.
 
-# required when running pytest, python, etc; not required when running fastapi and ipython
-# PYTHONSAFEPATH=1 prevents PWD from being added to sys.path automatically
-export PYTHONPATH=.
-
 # use a non-standard port to avoid conflicts with other applications
 export PYTHON_SERVER_PORT=8200
 export PYTHON_TEST_SERVER_PORT=8201
