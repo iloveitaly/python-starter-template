@@ -11,6 +11,8 @@ runs:
         version: 2025.11.2
         # TODO this is a hack, we need a way of specifying what group of packages to install...
         working_directory: web
+    - run: mise use jq@latest
+      shell: bash
     # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
     - uses: tecolicom/actions-use-apt-tools@v1
       with:
