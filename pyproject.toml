@@ -39,7 +39,7 @@ dependencies = [
     "pydantic[email,timezone]",
     "celery-types>=0.23.0",
     "furl>=2.1.4",
-    "structlog-config",
+    "structlog-config[fastapi]",
     "textcase>=0.4.0",
     "whenever>=0.7.3",
     "celery-healthcheck>=0.1.1",
