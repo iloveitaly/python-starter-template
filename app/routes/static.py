@@ -172,14 +172,15 @@ def mount_public_directory(app: FastAPI):
         name="public",
     )
 
-    index_html_response = FileResponse(
-        public_path / "index.html",
-        headers=HTML_NOCACHE_HEADERS.copy(),
-    )
-
     @app.get("/", include_in_schema=False)
     async def javascript_index():
-        return index_html_response
+        # recreating the same FileResponse object each time is intentional
+        # without this, we run the risk of some strange state issue corrupting the request
+        # and causing issues over time.
+        return FileResponse(
+            public_path / "index.html",
+            headers=HTML_NOCACHE_HEADERS.copy(),
+        )
 
     @app.get("/{path:path}", include_in_schema=False)
     async def frontend_handler(path: str):
@@ -200,7 +201,10 @@ def mount_public_directory(app: FastAPI):
             return FileResponse(prerender_path, headers=HTML_NOCACHE_HEADERS.copy())
 
         if not fp.exists():
-            return index_html_response
+            return FileResponse(
+                public_path / "index.html",
+                headers=HTML_NOCACHE_HEADERS.copy(),
+            )
 
         args = {}
 
