@@ -7,15 +7,16 @@ runs:
     # NOTE cannot run checkout in this local action, must be run by the parent action
     # mise can rarely get stuck installing. It normally takes < 10s to install, so this should never be more than a minute
     - uses: jdx/mise-action@v3
+      env:
+        MISE_ENV: dev
       with:
         version: 2025.11.2
-        # TODO this is a hack, we need a way of specifying what group of packages to install...
+        # TODO this will install packages in web *and* the parent, we need a way of specifying what group of packages to install across multiple folders
         working_directory: web
-    - run: mise use jq@latest
-      shell: bash
     # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
     - uses: tecolicom/actions-use-apt-tools@v1
       with:
+        # TODO is there *really* not a backend for zsh in mise?
         tools: zsh libnss3-tools
     # without any additional options, this simply installs the latest version of the cli
     - uses: 1password/load-secrets-action@v2
