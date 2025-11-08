@@ -1,8 +1,8 @@
 """base_models
 
-Revision ID: 45cb46f82351
+Revision ID: 0782ae000489
 Revises: 489aff797e2e
-Create Date: 2025-11-03 13:25:49.877935
+Create Date: 2025-11-08 21:29:58.465882
 
 """
 from typing import Sequence, Union
@@ -14,7 +14,7 @@ import activemodel
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = '45cb46f82351'
+revision: str = '0782ae000489'
 down_revision: Union[str, None] = '489aff797e2e'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -44,8 +44,8 @@ def upgrade() -> None:
     sa.Column('destination', sqlmodel.sql.sqltypes.AutoString(), nullable=False, comment='HTTP endpoint that will receive the webhook POST'),
     sa.Column('type', sqlmodel.sql.sqltypes.AutoString(), nullable=False, comment="application event name (e.g. 'ticket.paid') used for routing/observability"),
     sa.Column('payload', postgresql.JSONB(astext_type=sa.Text()), nullable=False, comment='JSON body sent to destination as the POST request payload'),
-    sa.Column('failed_at', sa.DateTime(), nullable=True, comment='timestamp of the last failed delivery attempt'),
-    sa.Column('succeeded_at', sa.DateTime(), nullable=True, comment='timestamp when delivery last succeeded (used to prevent resends)'),
+    sa.Column('failed_at', sa.DateTime(timezone=True), nullable=True, comment='timestamp of the last failed delivery attempt'),
+    sa.Column('succeeded_at', sa.DateTime(timezone=True), nullable=True, comment='timestamp when delivery last succeeded (used to prevent resends)'),
     sa.Column('originating_id', sa.Uuid(), nullable=True, comment='identifier of the domain object this event refers to, if any'),
     sa.Column('response_payload', postgresql.JSONB(astext_type=sa.Text()), nullable=True, comment='JSON body received from the destination as the POST response payload'),
     sa.PrimaryKeyConstraint('id', name=op.f('webhook_event_pkey')),
