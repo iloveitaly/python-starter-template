@@ -73,17 +73,9 @@ db_lint:
 
 	# TODO don't fail on warnings https://github.com/sbdchd/squawk/issues/348
 	# TODO remove rule exclusion when https://github.com/sbdchd/squawk/issues/392 is fixed
-	# TODO should submit upstream for the jq transformations so others can copy, add to docs
-	if [ -n "${CI:-}" ]; then \
-		LOG_LEVEL=error uv run alembic upgrade head --sql | \
-			uvx --from squawk-cli@latest squawk --reporter=json \
-			  --exclude=prefer-text-field --pg-version=$(jq -r '.postgres' .service-versions) | \
-			jq -r '.[] | "::\(if .level == "Error" then "error" else "warning" end) file=\(.file),line=\(.line),col=\(.column),title=\(.rule_name)::\(.messages[0].Note)"'; \
-	else \
-		LOG_LEVEL=error uv run alembic upgrade head --sql | \
-		  uvx --from squawk-cli@latest squawk \
-				--exclude=prefer-text-field --pg-version=$(jq -r '.postgres' .service-versions) | \
-	fi
+	LOG_LEVEL=error uv run alembic upgrade head --sql | \
+		uvx --from squawk-cli@latest squawk --reporter=json \
+			--exclude=prefer-text-field --pg-version=$(jq -r '.postgres' .service-versions); \
 
 # open the database in the default macos GUI
 db_open: _dev_only
