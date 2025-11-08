@@ -19,6 +19,7 @@ from app import log
 from activemodel import BaseModel
 from activemodel.mixins import TimestampsMixin, TypeIDMixin
 from activemodel.types import TypeIDType
+import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Field
 
@@ -76,10 +77,10 @@ class WebhookEvent(BaseModel, TimestampsMixin, TypeIDMixin("wh"), table=True):
     payload: dict = Field(sa_type=JSONB)
     "JSON body sent to destination as the POST request payload"
 
-    failed_at: datetime | None = None
+    failed_at: datetime | None = Field(default=None, sa_type=sa.DateTime(timezone=True))
     "timestamp of the last failed delivery attempt"
 
-    succeeded_at: datetime | None = None
+    succeeded_at: datetime | None = Field(default=None, sa_type=sa.DateTime(timezone=True))
     "timestamp when delivery last succeeded (used to prevent resends)"
 
     originating_id: UUID | None = Field(default=None, index=True)
