@@ -9,6 +9,7 @@ Types are ignored since not all of the packages are included as dependencies
 
 import pdb
 import traceback
+import types
 from contextlib import ContextDecorator, contextmanager
 from functools import wraps
 from logging import Logger
