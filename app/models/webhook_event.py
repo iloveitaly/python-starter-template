@@ -16,10 +16,10 @@ from pydantic import BaseModel as PydanticBaseModel
 import app.jobs.process_webhook
 from app import log
 
+import sqlalchemy as sa
 from activemodel import BaseModel
 from activemodel.mixins import TimestampsMixin, TypeIDMixin
 from activemodel.types import TypeIDType
-import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Field
 
@@ -80,7 +80,9 @@ class WebhookEvent(BaseModel, TimestampsMixin, TypeIDMixin("wh"), table=True):
     failed_at: datetime | None = Field(default=None, sa_type=sa.DateTime(timezone=True))
     "timestamp of the last failed delivery attempt"
 
-    succeeded_at: datetime | None = Field(default=None, sa_type=sa.DateTime(timezone=True))
+    succeeded_at: datetime | None = Field(
+        default=None, sa_type=sa.DateTime(timezone=True)
+    )
     "timestamp when delivery last succeeded (used to prevent resends)"
 
     originating_id: UUID | None = Field(default=None, index=True)
