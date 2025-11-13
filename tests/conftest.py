@@ -199,3 +199,40 @@ def datatabase_reset_transaction_for_standard_tests(request):
 @pytest.fixture
 def stripe_client():
     return stripe.StripeClient(decouple_config("STRIPE_SECRET_KEY"))
+
+
+@pytest.fixture
+def httpx_breakpoint(httpx_mock):
+    """
+    Debug fixture for pytest-httpx that pauses at every HTTP request interception.
+
+    Usage:
+        def test_something(httpx_breakpoint):
+            # Your test code here
+            # When httpx makes a request, you'll hit a breakpoint
+            # and can inspect the request object
+
+    Based on: https://til.simonwillison.net/pytest/pytest-httpx-debug
+    """
+    def intercept(request):
+        from pprint import pprint
+        import json
+
+        print(f"\n🔍 HTTPX Request Intercepted:")
+        print(f"URL: {request.url}")
+
+        if request.content:
+            try:
+                print("Body:")
+                pprint(json.loads(request.content))
+            except (json.JSONDecodeError, TypeError):
+                print(f"Body (raw): {request.content}")
+
+        print(f"Method: {request.method}")
+        print(f"Headers: {dict(request.headers)}")
+
+        breakpoint()
+        return True
+
+    httpx_mock.should_mock = intercept
+    return httpx_mock
