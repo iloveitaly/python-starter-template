@@ -214,10 +214,6 @@ asyncio_default_fixture_loop_scope = "function"
 flower = { git = "https://github.com/iloveitaly/flower", rev = "custom" }
 ipdb = { git = "https://github.com/iloveitaly/ipdb", rev = "support-executables" }
 pdbr = { git = "https://github.com/iloveitaly/pdbr", rev = "ipython-9.x" }
-ipython-suggestions = { git = "https://github.com/iloveitaly/ipython-suggestions.git", rev = "ipython-9.x" }
-
-[tool.uv.sources.activemodel]
-git = "https://github.com/iloveitaly/activemodel.git"
 
 [tool.uv.sources.djlint]
 git = "https://github.com/iloveitaly/djLint.git"
