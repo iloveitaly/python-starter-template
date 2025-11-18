@@ -10,4 +10,5 @@ export default [
     route("/home", "routes/home.tsx"),
     route("/form", "routes/form.tsx"),
   ]),
+  layout("layouts/unauthenticated.tsx", [route("/login", "routes/login.tsx")]),
 ] satisfies RouteConfig
