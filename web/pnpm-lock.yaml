@@ -247,8 +247,8 @@ importers:
         specifier: ^8.47.0
         version: 8.47.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
       vite-plugin-check-env:
-        specifier: ^1.2.11
-        version: 1.2.11(vite@7.2.2(@types/node@20.19.0)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.6.0))
+        specifier: ^1.2.12
+        version: 1.2.12(vite@7.2.2(@types/node@20.19.0)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.6.0))
       vite-plugin-devtools-json:
         specifier: ^1.0.0
         version: 1.0.0(vite@7.2.2(@types/node@20.19.0)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.6.0))
@@ -4903,8 +4903,8 @@ packages:
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
 
-  vite-plugin-check-env@1.2.11:
-    resolution: {integrity: sha512-p9KYUvDQM4tNvWPiDSDu/NeEz2A4jjRF2yj+uuIv2O63s0yEqR/N+EmF1KQ+I+kB52srjt5e8TohOR8ymNyBzA==}
+  vite-plugin-check-env@1.2.12:
+    resolution: {integrity: sha512-2ppudaCwfVdz8bZsuZ5a5SdfeK51/jllOrYyF7TIhrVfq/yb6fpTzFjJTUzxR7tu51j0uUDh2418lK5JwuigPw==}
     peerDependencies:
       vite: '>=2.9.0'
 
@@ -10276,7 +10276,7 @@ snapshots:
       - tsx
       - yaml
 
-  vite-plugin-check-env@1.2.11(vite@7.2.2(@types/node@20.19.0)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.6.0)):
+  vite-plugin-check-env@1.2.12(vite@7.2.2(@types/node@20.19.0)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.6.0)):
     dependencies:
       vite: 7.2.2(@types/node@20.19.0)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.6.0)
 
