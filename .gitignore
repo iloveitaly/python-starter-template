@@ -30,4 +30,6 @@ mise.local.toml
 terraform.tfstate*
 # keep `.terraform.lock.hcl`, it's like a package manager lock file
 
+# AI agent local state
 .claude/settings.local.json
+.cursor/screenshots/
