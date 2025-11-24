@@ -52,7 +52,7 @@ params = f.compact({"city": city, "stateCode": stateCode})
 
 ### Date & DateTime
 
-* Use the `whenever` library for datetime + time instead of the stdlib date library. `Instant.now().format_common_iso()`
+* Use the `whenever` library for datetime + time instead of the stdlib date library. `Instant.now().format_iso()`
 * DateTime mutation should explicitly opt in to a specific timezone `SystemDateTime.now().add(days=-7)`
 
 ### Database & ORM

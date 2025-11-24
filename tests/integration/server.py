@@ -100,7 +100,7 @@ def run_server():
     actual_hash = hash_function_code(main.get_server_config)
     # NOTE: if this hash changes, it means the server configuration in `main.py` has changed
     #       and we should verify that this file also needs to be updated.
-    expected_hash = "c77e6f8a1f3a8a465fab143c4c2f50304179aa3cd881d87df71027e82eb98276"
+    expected_hash = "137b6591c4449946964eae758d32a2961e23e90f9ead9b32bb96e8143bbe9d18"
     assert (
         actual_hash == expected_hash
     ), f"main.py config has changed. New hash: {actual_hash}"

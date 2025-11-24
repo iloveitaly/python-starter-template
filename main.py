@@ -16,17 +16,15 @@ Some notes:
 import os
 import sys
 
-import uvicorn
-from decouple import config
-
 # assume PYTHONSAFE=1, add current directory so we can import `app`
 sys.path.append(os.path.dirname(__file__))
 
-# Import app modules AFTER modifying sys.path
-from app.environments import is_development
-
 
 def get_server_config():
+    from decouple import config
+
+    from app.environments import is_development
+
     additional_args = {}
     is_dev = is_development()
 
@@ -69,4 +67,6 @@ def get_server_config():
 # uvicorn will "rerun" this file in some way, so although we should be able to throw an exception when this condition
 # isn't met that ends up causing issues with how uvicorn is invoked.
 if __name__ == "__main__":
+    import uvicorn
+
     uvicorn.run(**get_server_config())
