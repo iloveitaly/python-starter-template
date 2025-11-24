@@ -12,7 +12,7 @@ py_setup:
 	# don't include debugging-extras on CI
 	# --no-sources to allow local dev packages to be used: https://github.com/astral-sh/uv/issues/9258#issuecomment-2499541207
 	if [ -z "${CI:-}" ]; then \
-		uv sync --group=debugging-extras; \
+		uv sync --all-groups; \
 	else \
 		uv sync --no-sources; \
 	fi
