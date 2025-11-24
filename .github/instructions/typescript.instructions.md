@@ -9,6 +9,7 @@ applyTo: "**/*.ts,**/*.tsx"
 - Prefer `function theName() {` over `const theName = () =>`
 - Use `import { invariant } from @epic-web/invariant` instead of another invariant library
 - Use `requireEnv("VITE_THE_ENV_VAR")` instead of `process.env.THE_ENV_VAR`
+- Don't use `console.{log,error}`. Use `from ~/configuration/logging import log` and `log.info("string", {structured: "log"})` instead.
 
 Here's how frontend code is organized in `web/app/`:
 

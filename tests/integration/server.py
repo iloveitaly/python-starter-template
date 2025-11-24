@@ -17,11 +17,12 @@ import uvicorn
 from decouple import config
 from furl import furl
 
+import main
 from app import log
 from app.environments import is_local_testing
 from app.server import api_app
 from app.utils.debug import install_remote_debugger
-
+from app.utils.patching import hash_function_code
 from tests.constants import PYTHON_TEST_SERVER_HOST
 from tests.integration.javascript_build import start_js_build, wait_for_javascript_build
 
@@ -96,7 +97,13 @@ def run_server():
     # the server does NOT have access to stdin, so let's use a piped debugging server
     install_remote_debugger()
 
-    # TODO we should be able to assert code signature on configuration in `main.py` so this alerts us when we are out of sync
+    actual_hash = hash_function_code(main.get_server_config)
+    # NOTE: if this hash changes, it means the server configuration in `main.py` has changed
+    #       and we should verify that this file also needs to be updated.
+    expected_hash = "137b6591c4449946964eae758d32a2961e23e90f9ead9b32bb96e8143bbe9d18"
+    assert (
+        actual_hash == expected_hash
+    ), f"main.py config has changed. New hash: {actual_hash}"
 
     uvicorn.run(
         api_app,

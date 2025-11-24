@@ -19,17 +19,16 @@ import sys
 # assume PYTHONSAFE=1, add current directory so we can import `app`
 sys.path.append(os.path.dirname(__file__))
 
-# uvicorn will "rerun" this file in some way, so although we should be able to throw an exception when this condition
-# isn't met that ends up causing issues with how uvicorn is invoked.
-if __name__ == "__main__":
-    import uvicorn
+
+def get_server_config():
     from decouple import config
 
     from app.environments import is_development
 
     additional_args = {}
+    is_dev = is_development()
 
-    if is_development():
+    if is_dev:
         additional_args = {
             "reload": True,
             "reload_excludes": [
@@ -42,19 +41,32 @@ if __name__ == "__main__":
         }
 
     PORT = config("PORT", cast=int)
+    WEB_CONCURRENCY = config("WEB_CONCURRENCY", default=None, cast=int)
 
-    uvicorn.run(
+    config_args = {
         # a import path is required for dev, so we use that for prod as well
-        app="app.server:api_app",
+        "app": "app.server:api_app",
         # bind on all interfaces
-        host="0.0.0.0",
-        port=PORT,
-        # TODO we should tune this and have it pulled from env
-        # workers=2,
+        "host": "0.0.0.0",
+        "port": PORT,
         # NOTE important to ensure structlog controls logging in production
-        log_config=None,
+        "log_config": None,
         # a custom access logger is implemted which plays nicely with structlog
-        access_log=False,
+        "access_log": False,
         # loop="auto" is the default, which looks like anyio in a stacktrace, but anyio uses uvloop behind the scenes
         **additional_args,
-    )
+    }
+
+    # Only set workers if reload is NOT enabled, as they are mutually exclusive
+    if WEB_CONCURRENCY is not None and not is_dev:
+        config_args["workers"] = WEB_CONCURRENCY
+
+    return config_args
+
+
+# uvicorn will "rerun" this file in some way, so although we should be able to throw an exception when this condition
+# isn't met that ends up causing issues with how uvicorn is invoked.
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(**get_server_config())
