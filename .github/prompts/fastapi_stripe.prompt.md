@@ -22,7 +22,7 @@ def create_order_session(
     Creates a checkout session. This happens after the user visits
     the checkout page.
     """
-    session = stripe_client.checkout.sessions.create(
+    session = stripe_client.v1.checkout.sessions.create(
         params={
             "ui_mode": "custom",
             "line_items": [
@@ -70,7 +70,7 @@ def create_pending_order(
 
 
     # let's validate the stripe checkout session id is real
-    stripe_session = stripe_client.checkout.sessions.retrieve(
+    stripe_session = stripe_client.v1.checkout.sessions.retrieve(
         data.stripe_checkout_session_id
     )
 
@@ -102,7 +102,7 @@ def complete_ticket_purchase(
     request: Request,
     session_id: str = Query(),
 ):
-    stripe_session = stripe_client.checkout.sessions.retrieve(session_id)
+    stripe_session = stripe_client.v1.checkout.sessions.retrieve(session_id)
 
     if stripe_session.status != "complete":
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
@@ -123,7 +123,7 @@ def ticket_purchase_status(
     screening_id: TypeIDType = Query(),
 ) -> str:
     stripe_client = distribution.stripe_client()
-    stripe_session = stripe_client.checkout.sessions.retrieve(
+    stripe_session = stripe_client.v1.checkout.sessions.retrieve(
         stripe_checkout_session_id
     )
 

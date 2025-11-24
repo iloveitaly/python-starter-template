@@ -1,20 +1,22 @@
 
 Coding instructions for all programming languages:
 
-- Never use emojis in any code, comments, or documentation unless explicitly requested by the user.
+- Never use emojis anywhere unless explicitly requested.
 - If no language is specified, assume the latest version of python.
 - If tokens or other secrets are needed, pull them from an environment variable
 - Prefer early returns over nested if statements.
 - Prefer `continue` within a loop vs nested if statements.
 - Prefer smaller functions over larger functions. Break up logic into smaller chunks with well-named functions.
+- Prefer constants with separators: `10_000` is preferred to `10000` (or `10_00` over `1000` in the case of a integer representing cents).
 - Only add comments if the code is not self-explanatory. Do not add obvious code comments.
 - Do not remove existing comments.
 - When I ask you to write code, prioritize simplicity and legibility over covering all edge cases, handling all errors, etc.
 - When a particular need can be met with a mature, reasonably adopted and maintained package, I would prefer to use that package rather than engineering my own solution.
 - Never add error handling to catch an error without being asked to do so. Fail hard and early with assertions and allow exceptions to propagate.
 - When naming variables or functions, use names that describe the effect. For example, instead of `function handleClaimFreeTicket` (a function which opens a dialog box) use `function openClaimFreeTicketDialog`.
-- Do not install system packages. Instead, ask me to install them for you.
+- Do not install missing system packages! Instead, ask me to install them for you.
 - If terminal commands are failing because of missing variables or commands which are unrelated to your current task, stop your work and let me know.
+- Don't worry about fixing lint errors or running lint scripts unless I specifically ask you to.
 
 Use line breaks to organize code into logical groups. Instead of:
 
@@ -44,3 +46,4 @@ Pay careful attention to these instructions when running tests, generating datab
   - When debugging integration tests look at `$PLAYWRIGHT_RESULT_DIRECTORY`. There's a directory for each test failure. In that directory you fill find a `failure.html` containing the rendered DOM of the page on failure and a screenshot of the contents. Use these to debug why it failed.
 - Do not attempt to create or run database migrations. Pause your work and let me know you need a migration run.
 - Use `uv add` to add python packages. No need for `pip compile`, etc.
+- Use `pnpm` and not `pnpm`. Run all `pnpm` commands in the `web/` directory.
