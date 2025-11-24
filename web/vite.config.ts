@@ -14,6 +14,9 @@ import tailwindcss from "@tailwindcss/vite"
 
 const JAVASCRIPT_SERVER_PORT = process.env.JAVASCRIPT_SERVER_PORT
 
+// helpful for early development: disables sentry, build commits, etc and enables more simple deployment
+const SIMPLE_DEPLOYMENT = true
+
 function getModePlugins(config: ConfigEnv): PluginOption[] {
   // when `typegen` is run, the import.meta.* vars are not set
   // additionally, typegen runs `react-router build` under the hood, which sets the mode to production by default
@@ -26,7 +29,7 @@ function getModePlugins(config: ConfigEnv): PluginOption[] {
     const VITE_BUILD_COMMIT = process.env.VITE_BUILD_COMMIT
 
     // fine for sentry to have auth under a CI build being used for integration testing
-    if (!SENTRY_AUTH_TOKEN) {
+    if (!SENTRY_AUTH_TOKEN && !SIMPLE_DEPLOYMENT) {
       const CI = process.env.CI
 
       if (!VITE_BUILD_COMMIT) {
@@ -44,7 +47,7 @@ function getModePlugins(config: ConfigEnv): PluginOption[] {
       // a docker container and do not inherit CI and other ENV vars, so although it's built in a CI environment
       // the CI environment variables are not set, which is what we are concerned about here.
 
-      if (!CI && !VITE_BUILD_COMMIT.endsWith("-dirty")) {
+      if (!CI && !SIMPLE_DEPLOYMENT && !VITE_BUILD_COMMIT.endsWith("-dirty")) {
         throw new Error("Missing SENTRY_AUTH_TOKEN. Include to fix build.")
       }
 
@@ -53,11 +56,12 @@ function getModePlugins(config: ConfigEnv): PluginOption[] {
 
     return [
       // only check env vars when building for production, some ENV are only available in prod
-      checkEnv(),
+      !SIMPLE_DEPLOYMENT && checkEnv(),
       viteCompression(),
 
       // Put the Sentry vite plugin after all other plugins
       SENTRY_AUTH_TOKEN &&
+        !SIMPLE_DEPLOYMENT &&
         sentryReactRouter(
           {
             // real component names in errors
