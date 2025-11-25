@@ -7,6 +7,8 @@ from clerk_backend_api import AuthenticateRequestOptions, Clerk, RequestState
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
+from app import log
+
 
 class AuthenticateClerkRequest:
     """
@@ -48,7 +50,14 @@ class AuthenticateClerkRequest:
             AuthenticateRequestOptions(),
         )
 
+        # credentials were provided, and may even be valid clerk credentials, but may be stale which can cause them to fail the is_signed_in check
         if not auth_state.is_signed_in:
+            log.warning(
+                "clerk authentication failed",
+                reason=auth_state.message,
+                payload=auth_state.payload,
+            )
+
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED, detail=auth_state.message
             )
