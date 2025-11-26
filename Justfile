@@ -123,7 +123,6 @@ _brew_check_and_install brew_target: _dev_only
 
 # include all development requirements not handled by `mise` for local development
 [doc("--extras to install non-essential productivity tooling")]
-[macos]
 requirements *flags: _dev_only
 	# in most cases, mise will definitely be installed
 	@if ! which mise > /dev/null; then \
