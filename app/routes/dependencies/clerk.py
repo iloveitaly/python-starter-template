@@ -55,6 +55,7 @@ class AuthenticateClerkRequest:
             log.warning(
                 "clerk authentication failed",
                 reason=auth_state.message,
+                # TODO we aren't sure exactly what is in this payload at this point
                 payload=auth_state.payload,
             )
 
