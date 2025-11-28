@@ -55,6 +55,15 @@ class User(
         exclude=True,
     )
 
+    service_token: TypeIDType | None = Field(
+        sa_column=Column(
+            TypeIDType(API_KEY_PREFIX), nullable=True, unique=True, index=True
+        ),
+        default=None,
+        exclude=True,
+    )
+    "new column for zero-downtime rename of api_key"
+    
     def generate_api_key(self):
         api_key = TypeID(API_KEY_PREFIX)
 
