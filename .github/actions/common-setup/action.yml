@@ -18,8 +18,8 @@ runs:
       with:
         # TODO is there *really* not a backend for zsh in mise?
         tools: zsh libnss3-tools
-    # without any additional options, this simply installs the latest version of the cli
-    - uses: 1password/load-secrets-action@v2
+    # 1Password temporarily disabled - use GitHub secrets instead
+    # - uses: 1password/load-secrets-action@v2
     - uses: iloveitaly/github-action-direnv-load-and-mask@master
       with:
         environment_allowlist: >
