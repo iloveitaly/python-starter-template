@@ -1,10 +1,8 @@
 # tools shared between dev and ci should be specified here. This makes it easy to specify exact versions.
 # if tools are dev only, they should be installed via brew or some other method.
 
-# this *should* be compatible with mise and asdf, but I'm only testing with mise
-
 just 1.43.1
 direnv 2.37.1
 
-uv 0.9.11
+uv 0.9.12
 python 3.14.0

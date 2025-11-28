@@ -5,8 +5,10 @@ alwaysApply: false
 ---
 ## Pytest Tests
 
-- Look to tests/factories.py to generate any required database state
-  - Here's an example of how to create + persist a factory `DistributionFactory.save()`
+- Look to @tests/factories.py to generate any required database state
+  - For example, to create and persist a `Distribution` record `DistributionFactory.save()`
+  - If a factory doesn't exist for the model you are working with, create one.
+  - You can customize one or more params in a factory using `DistributionFactory.save(host="custom_host.com)`
 - Use the `faker` factory to generate emails, etc.
 - Do not mock or patch unless I instruct you to. Test as much of the application stack as possible in each test.
 - If you get lazy attribute errors, or need a database session to share across logic, use the `db_session` fixture to fix the issue.
