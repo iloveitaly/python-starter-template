@@ -68,6 +68,7 @@ class User(
         api_key = TypeID(API_KEY_PREFIX)
 
         self.api_key = api_key  # type: ignore
+        self.service_token = api_key  # type: ignore
         self.save()
 
         return api_key
