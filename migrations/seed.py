@@ -14,6 +14,12 @@ if __name__ != "__main__":
         "This module should only be executed directly and should not be imported."
     )
 
+import sys
+from pathlib import Path
+
+# Add project root to path for tests import
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 from app.environments import is_production, is_staging
 
 if is_production() or is_staging():
