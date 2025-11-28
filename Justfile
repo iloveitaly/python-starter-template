@@ -124,6 +124,7 @@ _brew_check_and_install brew_target: _dev_only
 # include all development requirements not handled by `mise` for local development
 [doc("--extras to install non-essential productivity tooling")]
 requirements *flags: _dev_only
+	# in most cases, mise will definitely be installed
 	@if ! which mise > /dev/null; then \
 		echo "mise is not installed."; \
 		echo "  => https://mise.jdx.dev"; \
@@ -131,7 +132,9 @@ requirements *flags: _dev_only
 	fi
 
 	@if ! which docker > /dev/null; then \
-		echo "docker is not installed."; \
+		echo "docker is not installed. Install either docker or OrbStack:"; \
+		echo "  => https://docs.docker.com/get-docker/"; \
+		echo "  => https://orbstack.dev"; \
 		exit 1; \
 	fi
 
@@ -139,6 +142,7 @@ requirements *flags: _dev_only
 		just _brew_check_and_install $brew_package; \
 	done
 
+	# bonus packages that are just for devprod
 	@if [[ "{{flags}}" =~ "--extras" ]]; then \
 		echo "Removing sample git hooks..."; \
 		rm .git/hooks/*.sample || true; \
@@ -187,6 +191,7 @@ setup_debug:
 	zsh --version
 	if command -v op >/dev/null 2>&1; then op --version; fi
 
+# TODO This needs to work for multiple MIS or tool version files. We should also try to make this more generic so it works for a MIS or a tool version file.
 # TODO extract to my personal dotfiles as well
 # TODO should change the CURRENT_BASE for py and other x.x.y upgrades
 [script]

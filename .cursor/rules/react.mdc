@@ -25,6 +25,7 @@ alwaysApply: false
 - Include a two line breaks between any `useHook()` calls and any `useState()` definitions for a component.
 - When using a function prop inside a `useEffect`, please use a pattern that avoids including the function in the dependency array, like the `useRef` trick.
 - When writing React components, always hoist complex conditional expressions into descriptively named constants at the top of the component function for better readability and maintainability.
+- When managing API response data, store the entire response object (or relevant subset) in a single `useState` rather than creating separate state variables for each field. Derive individual values from the response object when passing to child components using optional chaining (e.g., response?.field || defaultValue).
 - Refactor ternary to &&: `{condition ? <A/> : <B/>}` → `{condition && <A/>}{!condition && <B/>}`
 - Use the following pattern to reference query string values (i.e. `?theQueryStringParam=value`):
 
@@ -98,3 +99,7 @@ return (
   </Form>
 )
 ```
+
+### Styling
+
+* Use `text-blue-link` for styling any simple `<a>` tags
