@@ -77,7 +77,9 @@ export PY_COLORS=1
 # export BUILDKIT_PROGRESS=plain
 
 # add paths to override default tooling, helpful when hacking on a cli dependency
-# PATH_add ~/Projects/go/localias/bin/ # go example
+# note that this can be problematic if you have binaries which override with mise. Mise will most likely force its
+# bin/ dirs for those binaries first.
+# PATH_add ~/Projects/go/localias/bin/
 # PATH_add ~/Projects/deployment/nixpacks/target/release/
 
 # casing is important on openai level
