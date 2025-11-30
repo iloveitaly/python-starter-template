@@ -49,3 +49,8 @@ export function requireEnv(name: string) {
 console.debug("environment status", {
   env: environmentName(),
 })
+
+if (typeof window !== "undefined" && isDevelopment()) {
+  // @ts-expect-error - copy environment to global state for debugging
+  window.VITE_ENV = import.meta.env
+}
