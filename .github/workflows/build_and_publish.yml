@@ -18,8 +18,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # run `just secrets_ci_grant-github-actions` to grant CI access to 1Password
-  OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+  # 1Password temporarily disabled - set secrets directly in GitHub repo settings
+  # OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
   # for the gh-cli
   GH_TOKEN: ${{ github.token }}
