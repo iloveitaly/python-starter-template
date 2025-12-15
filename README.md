@@ -113,7 +113,14 @@ uv tool run --with jinja2_shell_extension copier update --trust --skip-tasks --s
 Once you've copied the template and have the above dependencies installed, you can run:
 
 ```shell
+# installs Just, Direnv, etc
 mise install
+
+# injects the correct environment into your shell, import to run before settings up the project
+# note that direnv, if you choose to use it, requires a hook in your shell config https://direnv.net/docs/hook.html
+direnv allow .
+
+# with correct environment variables in place, now you can run the project setup script which will configure
 just setup
 ```
 
@@ -589,6 +596,14 @@ And drop the resulting token in your `env/all.local.sh` file. This credential wi
 One thing to be careful of dependent environment variables. If
 you have a variable that depends on another variable pulled from 1Password, you'll want to set an empty default value.
 
+#### 1Password
+
+Some tips for working with 1Password:
+
+* Create a vault for your project
+* If you switch vaults, all of your item UUIDs will change.
+* Unfortunately, each time you authenticate your machine it will create a new integration instance (with the same name) in the 1Passsword UI.
+
 ### DevProd
 
 Here are the devprod principles this project adheres to:
@@ -626,6 +641,7 @@ I tried both RQ and Celery, and looked at other job queue systems, before landin
 * Job scheduling is handled in the same process as job execution, which is a terrible idea in large-scale systems.
 * `celery-types` contains a bunch of type stubs that fix most of the typing issues
 * Spawn is not natively supported and fork has been depreciated https://github.com/celery/celery/issues/6036#issuecomment-1151224775
+* `job_function.__wrapped__` is how to grab the original undecorated method to call manually in a console
 
 #### RQ
 
