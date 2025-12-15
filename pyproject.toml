@@ -140,6 +140,7 @@ extend-exclude = [
     "migrations/versions/*.py",
     "tests/conftest.py",
     ".copier",
+    "tmp",
 ]
 force-exclude = true
 
@@ -157,6 +158,7 @@ exclude = [
     # don't make playing less fun and force types
     "playground",
     ".copier",
+    "tmp",
 ]
 # https://github.com/microsoft/pylance-release/blob/71dcf9409c5ba65f1138069ac80ae9e2122d7867/USING_WITH_PYRIGHT.md
 autoSearchPaths = false
