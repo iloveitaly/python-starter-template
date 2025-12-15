@@ -57,6 +57,7 @@ jobs:
       - run: just py_lint
       - run: just db_migrate
       - run: just db_lint
+      - run: env
       - run: just py_test
 
       # NOTE one important problem with `detached` is if something fails, the github environment does seem to get wiped
