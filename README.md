@@ -77,6 +77,8 @@ There are a couple of dependencies which are not managed by the project:
 * Latest macOS
 * VS Code
 
+(If you want to bootstrap without 1Password on first run, set `OP_INTEGRATION_DISABLED=1` to load fake secret values instead of running `op inject`.)
+
 (you **could** use a different setup (bash, vim, etc), but this is not the golden path for this project.)
 
 [Copier](https://copier.readthedocs.io/en/stable/) is the easiest way to get started. It allows you to clone this project, automatically customize the important pieces of it, and most importantly *stay up to date* by pulling upstream changes.
