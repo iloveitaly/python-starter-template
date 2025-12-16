@@ -18,6 +18,7 @@ def write_versions():
         VERSIONS_FILE,
         chrome_version,
         postgres_version,
+        python_version,
         redis_version,
     )
 
@@ -27,6 +28,8 @@ def write_versions():
                 "chrome": chrome_version(),
                 "postgres": postgres_version(),
                 "redis": redis_version(),
+                # this is already defined via mise, but to alert the developer of venv issues we duplicate it here
+                "python": python_version(),
             },
             indent=2,
         )

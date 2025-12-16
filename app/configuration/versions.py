@@ -5,6 +5,7 @@ of extremely hard-to-debug issues, so we capture & check versions on test & in p
 
 import inspect
 import json
+import sys
 
 from app.setup import get_root_path
 
@@ -39,6 +40,15 @@ def check_service_versions():
             got=current_postgres,
         )
 
+    # this can happen, mostly locally, if another process creates the venv from a sys python without us knowing
+    current_python = python_version()
+    if current_python != persisted_versions["python"]:
+        log.warning(
+            "python version mismatch",
+            expected=persisted_versions["python"],
+            got=current_python,
+        )
+
 
 def postgres_version() -> str:
     from app.configuration.database import get_engine
@@ -70,3 +80,10 @@ def chrome_version() -> str:
     with sync_playwright() as p:
         browser = p.chromium.launch()
         return browser.version
+
+
+def python_version() -> str:
+    """
+    Get the current Python version as a string.
+    """
+    return f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"

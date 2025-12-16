@@ -21,7 +21,7 @@ def configure_python():
     """
     from app import log
 
-    warn_if_not_in_venv()
+    inspect_python_runtime()
 
     if "TZ" not in os.environ:
         log.warning("TZ not set, update your environment configuration")
@@ -50,21 +50,22 @@ def configure_python():
         log.info("disabling python breakpoints in production environment")
 
 
-def warn_if_not_in_venv() -> None:
+def inspect_python_runtime() -> None:
     """
-    Check if the Python interpreter is running in a virtual environment.
+    Run some runtime checks to alert on some rare-but-hard-to-debug issues.
+
+    - Check if the Python interpreter is running in a virtual environment.
+    - Check if the interpreter is the global/system Python. For instance, VSC extensions will attempt to create a
+      venv with the system Python vs the mise python.
 
     If not, log a warning with environment details.
-
-    - sys.real_prefix is set by virtualenv (not venv) to the original prefix
-    - sys.prefix: root directory of the current Python installation (e.g., /usr/local for system Python or /path/to/venv for virtual env)
-    - sys.base_prefix: original base installation prefix (system-wide Python's prefix) in venv environments (equals sys.prefix outside venvs)
     """
 
     from app import log
 
     executable = Path(sys.executable).resolve()
 
+    # is set by virtualenv (not venv) to the original prefix
     real_prefix = getattr(sys, "real_prefix", None)
 
     in_venv = (
@@ -78,13 +79,24 @@ def warn_if_not_in_venv() -> None:
         env_vars = {key: os.environ.get(key) for key in env_var_keys}
 
         log.warning(
-            "running with global python interpreter. use a virtual environment.",
+            "not using a virtual environment",
             interpreter=executable,
             real_prefix=real_prefix,
             env=env_vars,
             sys_path=sys.path,
+            # root directory of the current Python installation (e.g., /usr/local for system Python or /path/to/venv for virtual env)
             prefix=sys.prefix,
+            # original base installation prefix (system-wide Python's prefix) in venv environments (equals sys.prefix outside venvs)
             base_prefix=sys.base_prefix,
         )
     else:
-        log.debug("virtual environment detected", interpreter=executable)
+        log.debug(
+            "virtual environment detected", interpreter=executable, venv=sys.prefix
+        )
+
+    # TODO there are probably other keywords we should test for
+    if in_venv and ("homebrew" in str(executable) or "/usr/bin/" in str(executable)):
+        log.warning(
+            "using venv, but interpreter is from an unexpected location",
+            interpreter=executable,
+        )
