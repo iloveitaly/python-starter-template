@@ -2,11 +2,13 @@ name: Build & Publish
 
 on:
   workflow_dispatch:
+    # Actions > Build & Publish> Run workflow
     # allow ssh access to be enabled via the GH actions UI
     inputs:
       debug_enabled:
         type: boolean
-        description: "Run with tmate enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
+        # https://github.com/marketplace/actions/debugging-with-tmate
+        description: "Run with tmate enabled for ssh debugging"
         required: false
         default: false
   push:
@@ -57,7 +59,6 @@ jobs:
       - run: just py_lint
       - run: just db_migrate
       - run: just db_lint
-      - run: env
       - run: just py_test
 
       # NOTE one important problem with `detached` is if something fails, the github environment does seem to get wiped
