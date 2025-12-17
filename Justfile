@@ -267,22 +267,28 @@ upgrade: _dev_only tooling_upgrade js_upgrade py_upgrade
 	{{APP_CLI}} write-versions
 	git add .service-versions
 
+# this is currently the default global config path
+GLOBAL_LOCALIAS_CONFIG := "~/.config/localias.yaml"
+
 # need `[script]` for early exit
 # run (or reload) daemon to setup local development aliases
 [script]
 local-alias: _dev_only
-	# updating localias, instead of a reload, enables other configuration by other projects to not get wiped out
-	if [[ "$(localias status)" == "daemon running with pid "* ]]; then \
-		just _banner_echo "Localias Daemon Already Running, Reloading"; \
-		yq eval 'to_entries | .[] | "localias -c ~/.config/localias.yaml set \"\(.key)\" \"\(.value)\""' .localias.yaml | zsh; \
-		exit 0; \
+	# We want to support running multiple concurrent projects with different localias configs
+	# to do this, we need to use a global config, instead of simply loading from the project config.
+	# This is why we iterate over the local config and use the native `set` to update the global config.
+	yq eval 'to_entries | .[] | "localias -c {{GLOBAL_LOCALIAS_CONFIG}} set \"\(.key)\" \"\(.value)\""' .localias.yaml | zsh
+
+	# if localias is already running, the above `set` will automatically reload localias with the new aliases
+	if [[ "$(localias status)" == "daemon running with pid "* ]]; then
+		just _banner_echo "Localias Daemon Already Running, Updated Aliases"
+		exit 0
 	fi
 
-	localias -c ~/.config/localias.yaml start
+	localias -c {{GLOBAL_LOCALIAS_CONFIG}} start
 
-	just _banner_echo "Local Alias Configuration"
-
-	localias debug config --print
+	just _banner_echo "Global Local Alias Configuration"
+	localias -c {{GLOBAL_LOCALIAS_CONFIG}} debug config --print
 
 clean: js_clean py_clean build_clean
 	rm -rf tmp/* || true
