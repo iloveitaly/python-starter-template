@@ -142,6 +142,8 @@ requirements *flags: _dev_only
 		just _brew_check_and_install $brew_package; \
 	done
 
+	mise install
+
 	# bonus packages that are just for devprod
 	@if [[ "{{flags}}" =~ "--extras" ]]; then \
 		echo "Removing sample git hooks..."; \
