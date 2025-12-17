@@ -3,7 +3,7 @@
 #######################
 
 # build commands generate a lot of output and when `[script]` is used no commands are echo'd, this lets us make build
-# output easier to read in CI.
+# output easier to read in CI by adding a header + footer of "###"
 @_banner_echo BANNER:
 	# TODO use style tags from justfile
 	# TODO I wonder if sending an endgroup when one isn't started will cause issues.

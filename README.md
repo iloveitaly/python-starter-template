@@ -77,7 +77,7 @@ There are a couple of dependencies which are not managed by the project:
 * Latest macOS
 * VS Code
 
-(If you want to bootstrap without 1Password on first run, set `OP_INTEGRATION_DISABLED=1` to load fake secret values instead of running `op inject`).
+To bootstrap without 1Password, set `OP_INTEGRATION_DISABLED=1` to load fake secret values instead of any 1Password references.
 
 (you **could** use a different setup (bash, vim, etc), but this is not the golden path for this project.)
 
