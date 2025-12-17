@@ -227,3 +227,8 @@ rev = "custom"
 [tool.uv.sources.docker]
 git = "https://github.com/docker/docker-py.git"
 rev = "orbstack-socket"
+
+# https://github.com/gruns/icecream/pull/226
+[tool.uv.sources.icecream]
+git = "https://github.com/iloveitaly/icecream.git"
+rev = "exclude-tests"
