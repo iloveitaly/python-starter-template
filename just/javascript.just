@@ -128,8 +128,8 @@ JAVASCRIPT_PACKAGE_JSON := WEB_DIR / "package.json"
 # update package.json engines to match the current versions in .tool-versions
 [script]
 _js_sync-engine-versions: _dev_only
-	NODE_VERSION=$(mise list --current --json | jq -r ".node[0].version")
-	PNPM_VERSION=$(pnpm -v)
+	NODE_VERSION=$(cd {{WEB_DIR}} && mise list --current --json | jq -r ".node[0].version")
+	PNPM_VERSION=$(cd {{WEB_DIR}} && pnpm -v)
 
 	# jq does not have edit in place
 	# https://stackoverflow.com/questions/36565295/jq-to-replace-text-directly-on-file-like-sed-i

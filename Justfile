@@ -195,16 +195,32 @@ setup_debug:
 # TODO extract to my personal dotfiles as well
 # TODO should change the CURRENT_BASE for py and other x.x.y upgrades
 [script]
-_mise_upgrade: _dev_only
-	# Get current tools and versions from local .tool-versions only
-	TOOLS=("${(@f)$(mise list --current --json | jq -r --arg PWD "$PWD" 'to_entries | map(select(.value[0].source.path == $PWD + "/.tool-versions")) | from_entries | keys[]')}")
+_mise_upgrade target_dir="": _dev_only
+	if [[ -n "{{target_dir}}" ]]; then
+		cd "{{target_dir}}"
+	fi
+
+	# Get current tools and versions only from paths within this repo
+	TOOLS=("${(@f)$(mise list --current --json | jq -r --arg PWD "$PWD" '
+		to_entries
+		| map(select((.value[0].source.path // "") | startswith($PWD + "/")))
+		| from_entries
+		| keys[]
+	')}")
+
+	minor_updates_only=("python" "node")
 
 	for TOOL in $TOOLS; do
-	    # Get current version
-			CURRENT=$(mise list --current --json | jq -r --arg TOOL "$TOOL" --arg PWD "$PWD" 'to_entries | map(select(.value[0].source.path == $PWD + "/.tool-versions")) | from_entries | .[$TOOL][0].version')
+			CURRENT=$(mise list --current --json | jq -r --arg TOOL "$TOOL" --arg PWD "$PWD" '
+				to_entries
+				| map(select((.value[0].source.path // "") | startswith($PWD + "/")))
+				| from_entries
+				| .[$TOOL][0].version
+			')
 			echo "Current version of $TOOL: $CURRENT"
 
-			if [[ "$TOOL" == "python" ]]; then
+			# do not automatically update a major version for python
+			if (( ${minor_updates_only[(I)$TOOL]} )); then
 					# Extract major.minor version
 					CURRENT_BASE=$(echo "$CURRENT" | cut -d. -f1,2)
 					echo "Current base version of $TOOL: $CURRENT_BASE"
@@ -241,7 +257,7 @@ _mise_version_sync: _dev_only
 	git add .github/actions/common-setup/action.yml
 
 # upgrade mise, language versions, and essential packages
-tooling_upgrade: _dev_only && _mise_upgrade _js_sync-engine-versions
+tooling_upgrade: _dev_only && _mise_upgrade (_mise_upgrade WEB_DIR) _js_sync-engine-versions
 	mise self-update --yes
 	HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade {{BREW_PACKAGES}}
 
