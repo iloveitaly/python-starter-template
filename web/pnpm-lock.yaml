@@ -28,7 +28,7 @@ importers:
         version: 13.8.0(react@19.2.3)
       '@posthog/react':
         specifier: ^1.5.2
-        version: 1.5.2(@types/react@19.2.7)(posthog-js@1.306.2)(react@19.2.3)
+        version: 1.5.2(@types/react@19.2.7)(posthog-js@1.309.0)(react@19.2.3)
       '@radix-ui/react-avatar':
         specifier: ^1.1.11
         version: 1.1.11(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -129,8 +129,8 @@ importers:
         specifier: ^8.5.6
         version: 8.5.6
       posthog-js:
-        specifier: ^1.306.2
-        version: 1.306.2
+        specifier: ^1.309.0
+        version: 1.309.0
       ramda:
         specifier: ^0.32.0
         version: 0.32.0
@@ -177,8 +177,8 @@ importers:
         specifier: ^1.3.0
         version: 1.3.0(rollup@4.53.3)(vite@7.3.0(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2))
       vite-tsconfig-paths:
-        specifier: ^6.0.1
-        version: 6.0.1(typescript@5.9.3)(vite@7.3.0(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2))
+        specifier: ^6.0.2
+        version: 6.0.2(typescript@5.9.3)(vite@7.3.0(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2))
       zod:
         specifier: ^4.2.1
         version: 4.2.1
@@ -958,8 +958,8 @@ packages:
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
 
-  '@posthog/core@1.7.1':
-    resolution: {integrity: sha512-kjK0eFMIpKo9GXIbts8VtAknsoZ18oZorANdtuTj1CbgS28t4ZVq//HAWhnxEuXRTrtkd+SUJ6Ux3j2Af8NCuA==}
+  '@posthog/core@1.8.0':
+    resolution: {integrity: sha512-SfmG1EdbR+2zpQccgBUxM/snCROB9WGkY7VH1r9iaoTNqoaN9IkmIEA/07cZLY4DxVP8jt6Vdfe3s84xksac1g==}
 
   '@posthog/react@1.5.2':
     resolution: {integrity: sha512-KHdXbV1yba7Y2l8BVmwXlySWxqKVLNQ5ZiVvWOf7r3Eo7GIFxCM4CaNK/z83kKWn8KTskmKy7AGF6Hl6INWK3g==}
@@ -2379,8 +2379,8 @@ packages:
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
-  baseline-browser-mapping@2.9.8:
-    resolution: {integrity: sha512-Y1fOuNDowLfgKOypdc9SPABfoWXuZHBOyCS4cD52IeZBhr4Md6CLLs6atcxVrzRmQ06E7hSlm5bHHApPKR/byA==}
+  baseline-browser-mapping@2.9.9:
+    resolution: {integrity: sha512-V8fbOCSeOFvlDj7LLChUcqbZrdKD9RU/VR260piF1790vT0mfLSwGc/Qzxv3IqiTukOpNtItePa0HBpMAj7MDg==}
     hasBin: true
 
   basic-auth@2.0.1:
@@ -3856,8 +3856,8 @@ packages:
     resolution: {integrity: sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==}
     engines: {node: '>=0.10.0'}
 
-  posthog-js@1.306.2:
-    resolution: {integrity: sha512-zBEjDvUs5RNTWbyHVjbL16Oigm2buFG2PQRRMC46hfL2HSh+8//zMD5gV3etxkUhjjTltKubK3mkqONMldw9Yg==}
+  posthog-js@1.309.0:
+    resolution: {integrity: sha512-SmFF0uKX3tNTgQOW4mR4shGLQ0YYG0FXyKTz13SbIH83/FtAJedppOIL7s0y9e7rjogBh6LsPekphhchs9Kh1Q==}
 
   powershell-utils@0.1.0:
     resolution: {integrity: sha512-dM0jVuXJPsDN6DvRpea484tCUaMiXWjuCn++HGTqUWzGDjv5tZkEZldAJ/UMlqRYGFrD/etByo4/xOuC/snX2A==}
@@ -4552,8 +4552,8 @@ packages:
     peerDependencies:
       vite: ^2.0.0||^3.0.0||^4.0.0||^5.0.0||^6.0.0
 
-  vite-tsconfig-paths@6.0.1:
-    resolution: {integrity: sha512-OQuYkfCQhc2T+n//0N7/oogTosgiSyZQ7dydrpUlH5SbnFTtplpekdY4GMi6jDwEpiwWlqeUJMyPfC2ePM1+2A==}
+  vite-tsconfig-paths@6.0.2:
+    resolution: {integrity: sha512-c06LOO8fWB5RuEPpEIHXU9t7Dt4DoiPIljnKws9UygIaQo6PoFKawTftz5/QVcO+6pOs/HHWycnq4UrZkWVYnQ==}
     peerDependencies:
       vite: '*'
     peerDependenciesMeta:
@@ -5480,13 +5480,13 @@ snapshots:
 
   '@polka/url@1.0.0-next.29': {}
 
-  '@posthog/core@1.7.1':
+  '@posthog/core@1.8.0':
     dependencies:
       cross-spawn: 7.0.6
 
-  '@posthog/react@1.5.2(@types/react@19.2.7)(posthog-js@1.306.2)(react@19.2.3)':
+  '@posthog/react@1.5.2(@types/react@19.2.7)(posthog-js@1.309.0)(react@19.2.3)':
     dependencies:
-      posthog-js: 1.306.2
+      posthog-js: 1.309.0
       react: 19.2.3
     optionalDependencies:
       '@types/react': 19.2.7
@@ -7054,7 +7054,7 @@ snapshots:
 
   balanced-match@1.0.2: {}
 
-  baseline-browser-mapping@2.9.8: {}
+  baseline-browser-mapping@2.9.9: {}
 
   basic-auth@2.0.1:
     dependencies:
@@ -7094,7 +7094,7 @@ snapshots:
 
   browserslist@4.28.0:
     dependencies:
-      baseline-browser-mapping: 2.9.8
+      baseline-browser-mapping: 2.9.9
       caniuse-lite: 1.0.30001760
       electron-to-chromium: 1.5.258
       node-releases: 2.0.27
@@ -7102,7 +7102,7 @@ snapshots:
 
   browserslist@4.28.1:
     dependencies:
-      baseline-browser-mapping: 2.9.8
+      baseline-browser-mapping: 2.9.9
       caniuse-lite: 1.0.30001760
       electron-to-chromium: 1.5.267
       node-releases: 2.0.27
@@ -8602,9 +8602,9 @@ snapshots:
     dependencies:
       xtend: 4.0.2
 
-  posthog-js@1.306.2:
+  posthog-js@1.309.0:
     dependencies:
-      '@posthog/core': 1.7.1
+      '@posthog/core': 1.8.0
       core-js: 3.47.0
       fflate: 0.4.8
       preact: 10.27.2
@@ -9357,7 +9357,7 @@ snapshots:
       - rollup
       - supports-color
 
-  vite-tsconfig-paths@6.0.1(typescript@5.9.3)(vite@7.3.0(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)):
+  vite-tsconfig-paths@6.0.2(typescript@5.9.3)(vite@7.3.0(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)):
     dependencies:
       debug: 4.4.3
       globrex: 0.1.2
