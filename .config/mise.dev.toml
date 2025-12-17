@@ -1,0 +1,19 @@
+[tools]
+"github:peterldowns/localias" = "latest"
+"jq" = "latest"
+
+# packages that are *not* required for running the development server, tests, etc should be included here
+# uv provides two ways of managing tools: via `uv tool` and `uvx`. `uv tool` caches the tool in the local venv
+# while `uvx` installs the tool globally. It would be better to have local-only tools
+"pipx:ruff" = "latest"
+"pipx:squawk-cli" = "latest"
+"pipx:aiautocommit" = "latest"
+
+[env]
+# add paths to override default tooling, helpful when hacking on a cli dependency
+# note that this can be problematic if you have binaries which override with mise. Mise will most likely force its
+# bin/ dirs for those binaries first.
+# _.path = [
+#     "~/Projects/go/localias/bin/",
+#     "~/Projects/deployment/nixpacks/target/release/",
+# ]

@@ -1,0 +1,5 @@
+[tools]
+cargo-binstall = "latest"
+"cargo:commitlint-rs" = "latest"
+# ^ did not work, but this did: cargo binstall commitlint-rs
+"pipx:aiautocommit" = "latest"
