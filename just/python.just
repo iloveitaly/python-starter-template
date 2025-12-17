@@ -35,8 +35,8 @@ py_clean:
 
 	rm -rf .pytest_cache .ruff_cache .venv || true
 	rm -rf tests/**/snapshot_tests_failures || true
+	rm -rf $PLAYWRIGHT_BROWSERS_PATH || true
 
-	# rm -rf $PLAYWRIGHT_BROWSERS_PATH
 	# TODO should remove pnpm global cache:   pnpm store path
 	# rm -rf $(pnpm store path)
 
