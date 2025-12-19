@@ -74,7 +74,7 @@ db_lint:
 	# TODO don't fail on warnings https://github.com/sbdchd/squawk/issues/348
 	# TODO remove rule exclusion when https://github.com/sbdchd/squawk/issues/392 is fixed
 	LOG_LEVEL=error uv run alembic upgrade head --sql | \
-		uvx --from squawk-cli@latest squawk --reporter=json \
+		squawk --reporter=json \
 			--exclude=prefer-text-field --pg-version=$(jq -r '.postgres' .service-versions); \
 
 # open the database in the default macos GUI

@@ -80,7 +80,6 @@ debugging-extras = [
     "rpdb>=0.2.0",
     "sqlparse>=0.5.2",
     "uv-development-toggle>=0.2.1",
-    "aiautocommit",
 ]
 dev = [
     "covdefaults>=2.3.0",
@@ -104,6 +103,7 @@ dev = [
     "pytest-playwright-visual-snapshot",
     "flexmock>=0.12.2",
     "polyfactory>=2.20.0",
+    "squawk-cli>=2.33.2",
 ]
 
 [tool.uv.config-settings]

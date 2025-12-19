@@ -2,11 +2,10 @@
 "github:peterldowns/localias" = "latest"
 "jq" = "latest"
 
-# packages that are *not* required for running the development server, tests, etc should be included here
+# packages that are *not* required for running the development server, tests, build, etc should be included here
 # uv provides two ways of managing tools: via `uv tool` and `uvx`. `uv tool` caches the tool in the local venv
 # while `uvx` installs the tool globally. It would be better to have local-only tools
-"pipx:ruff" = "latest"
-"pipx:squawk-cli" = "latest"
+# TODO I've only partially migrated debugging-extras to this, need to finish
 "pipx:aiautocommit" = "latest"
 
 [env]

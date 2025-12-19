@@ -1,5 +1,8 @@
 # NOTE: rename to `.env.dev.local` and customize for your local development preferences
 
+# this enables configuration in `.config/mise.dev.toml`
+export MISE_ENV=dev
+
 # https://github.com/microsoft/pylance-release/blob/8a9161449fb8a2076f19681dabc3b7c93c7de1d7/USING_WITH_PYRIGHT.md?plain=1#L9
 export PYRIGHT_PYTHON_PYLANCE_VERSION=latest-release
 
@@ -76,13 +79,9 @@ export PY_COLORS=1
 # debugging a nixpacks/docker issue and want to consume the raw logs?
 # export BUILDKIT_PROGRESS=plain
 
-# add paths to override default tooling, helpful when hacking on a cli dependency
-# note that this can be problematic if you have binaries which override with mise. Mise will most likely force its
-# bin/ dirs for those binaries first.
-# PATH_add ~/Projects/go/localias/bin/
-# PATH_add ~/Projects/deployment/nixpacks/target/release/
-
 # casing is important on openai level
 # export OPENAI_LOG=debug
 export LOG_LEVEL=info
 export VITE_LOG_LEVEL=info
+
+# DO NOT use PATH_add or otherwise mutate PATH in direnv, use `mise.dev.toml` instead
