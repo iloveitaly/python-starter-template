@@ -31,7 +31,8 @@
     "unifiedjs.vscode-mdx"
   ],
   "unwantedRecommendations": [
-    // I like the idea of this, but it messes with my overly-custom terminal environment
+    // mutates settings and environment, causing all sorts of havoc!
+    // this occurs even if you disable the extension.
     "hverlin.mise-vscode",
     "firsttris.vscode-jest-runner",
     // ruff replaces all of these py linting tools
