@@ -10,7 +10,7 @@ runs:
       env:
         MISE_ENV: dev
       with:
-        version: 2025.12.10
+        version: 2025.12.12
         # TODO this will install packages in web *and* the parent, we need a way of specifying what group of packages to install across multiple folders
         working_directory: web
     # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
