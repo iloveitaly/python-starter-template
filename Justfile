@@ -209,7 +209,7 @@ _mise_upgrade target_dir="": _dev_only
 	# Get current tools and versions only from paths within this repo
 	TOOLS=("${(@f)$(mise list --current --json | jq -r --arg PWD "$PWD" '
 		to_entries
-		| map(select((.value[0].source.path // "") | startswith($PWD + "/")))
+		| map(select((.value[0].source.path // "") | startswith($PWD + "/.tool-versions")))
 		| from_entries
 		| keys[]
 	')}")

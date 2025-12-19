@@ -4,7 +4,9 @@
 
 # packages that are *not* required for running the development server, tests, build, etc should be included here
 # uv provides two ways of managing tools: via `uv tool` and `uvx`. `uv tool` caches the tool in the local venv
-# while `uvx` installs the tool globally. It would be better to have local-only tools
+# while `uvx` installs the tool globally. These pipx tools use `uvx` under the hood but the tools are not installed
+# in the local venv, they are installed globally for the user, which is generally what we want for this class of dev-only
+# CLI tools.
 # TODO I've only partially migrated debugging-extras to this, need to finish
 "pipx:aiautocommit" = "latest"
 
