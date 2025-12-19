@@ -1,4 +1,6 @@
 ## python
+https://github.com/pjg11/micro-urlopen?referrer=grok.com - url open for micro
+https://docs.basedpyright.com/v1.36.0/benefits-over-pyright/baseline/ we should use this instead of pyright?
 better configuration py module: autoload and call configure() if it exists
 custom default fastapi error handler https://grok.com/share/bGVnYWN5_fe5638b4-5f0b-4cca-afe6-369468eb5f2e
 watch out for frozen dataclasses in excpetions https://grok.com/share/bGVnYWN5_914c248a-4efc-4b24-b05e-2deb11197554
@@ -174,7 +176,7 @@ maybe use a different event loop? Faster / less issues with playwright?
 
 ## build
 add gitleaks check to local lefthook and CI, add lefthook documentation to upstream readme. brew install gitleaks
-
+another alternative is https://grok.com/share/bGVnYWN5_950e9cbf-036f-4398-b573-df889547b913
 add nixpacks cache, waiting on comment from author about how to do this.
 push to registry
 switch to https://railpack.com/guides/running-railpack-in-production
@@ -204,6 +206,8 @@ binding for paste as plain text
 
 ## javascript
 
+- [ ] can't run two tanstack dev servers at once https://github.com/TanStack/devtools/issues/198 https://github.com/TanStack/query/issues/9932
+- [ ] do i need this? eslint-config-prettier
 ```
     log.warn("Rewardful is not available")
     // TODO would be cool if we could tag a message to also be sent to Sentry
@@ -217,6 +221,9 @@ binding for paste as plain text
 - [ ] vite image optimization import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 - [ ] client loader query string https://discord.com/channels/770287896669978684/1392961395930431528/1392961395930431528
 
+## react router
+
+- [ ] // routes are not being normalized https://grok.com/share/bGVnYWN5_ae86b04f-988a-45e6-8dad-f918199ed739
 ## secrets
 
 - [ ] OP_VAULT_UID in direnv export should be copied from the existing environemnt
@@ -228,16 +235,13 @@ binding for paste as plain text
 - [ ] https://github.com/djlint/djLint/pull/1049#issuecomment-2656628325
 - [ ] https://github.com/janglad/shadcn-dropzone/pull/5/files
 - [ ] https://github.com/nainglinnkhant/lingua-time/pull/3
-- [ ] pull copy to clipboard into a open source component
 - [ ] pull combobox stuff into the parent repo
-- [ ] create template for shadcn ui components that I can easily clone with copier and use for components
 - [ ] polyfactory stuff
 
 ## ai
 
 - [ ] postgres MCP connected to credentials
-- [ ] https://github.com/orgs/community/discussions/137150 no url reading in copilot
 
 ## template
 
-- [ ] would be neat to dynamically pick coices https://github.com/copier-org/copier/issues/2078
+- [ ] would be neat to dynamically pick choices https://github.com/copier-org/copier/issues/2078
