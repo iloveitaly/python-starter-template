@@ -80,7 +80,7 @@ export SMTP_URL=smtp://${SMTP_HOST}:1025
 
 # NOTE: very important value, it's used to generate a service account token for CI
 # right click on the vault with your secrets in 1Password and copy the UID
-export OP_VAULT_UID=g46wit25zdsr2ul7yivj4air2u
+export OP_VAULT_UID=qjgvx3wzvo3vz3vic7nhytqttm
 
 # random secret key for fastapi session signing
 export SESSION_SECRET_KEY=de76c21e-e79d-4ad8-8e89-80ec58c71997
@@ -96,15 +96,14 @@ export ALLOWED_HOST_LIST="$JAVASCRIPT_SERVER_HOST,$PYTHON_TEST_SERVER_HOST,api.w
 # - Env var values should be in the format of "op://${OP_VAULT_UID}/epctgojloj7legp7h62zktshha/sandbox-clerk-secret-key"
 
 op_inject_source <<'EOF'
-export CLERK_PRIVATE_KEY="op://${OP_VAULT_UID}/epctgojloj7legp7h62zktshha/sandbox-clerk-secret-key"
-export OPENAI_API_KEY="op://${OP_VAULT_UID}/3kilfl4b5gegds7anifvali6zu/credential"
-export SENTRY_DSN="op://${OP_VAULT_UID}/4dsjcmjzybuipafki2wl2eovsy/backend-dsn"
-export POSTHOG_SECRET_KEY="fake"
+export CLERK_PRIVATE_KEY="op://${OP_VAULT_UID}/f5k2z5od2bmbibupey4fze6koi/sandbox-clerk-secret-key"
+export OPENAI_API_KEY="api-key"
+export SENTRY_DSN="backend-dsn"
+export POSTHOG_SECRET_KEY="secret-key"
 
-export VITE_SENTRY_DSN="op://${OP_VAULT_UID}/4dsjcmjzybuipafki2wl2eovsy/frontend-dsn"
-export VITE_CLERK_PUBLIC_KEY="op://${OP_VAULT_UID}/epctgojloj7legp7h62zktshha/sandbox-clerk-public-key"
-export VITE_POSTHOG_KEY="op://${OP_VAULT_UID}/25dj3ith4d37cy5ghssr3mo5rq/public-key"
-export VITE_POSTHOG_HOST="op://${OP_VAULT_UID}/25dj3ith4d37cy5ghssr3mo5rq/posthog-host"
+export VITE_SENTRY_DSN="frontend-dsn"
+export VITE_CLERK_PUBLIC_KEY="op://${OP_VAULT_UID}/f5k2z5od2bmbibupey4fze6koi/sandbox-clerk-public-key"
+export VITE_POSTHOG_KEY="public-key"
 EOF
 
 export CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLIC_KEY
