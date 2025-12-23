@@ -28,7 +28,7 @@ importers:
         version: 13.8.0(react@19.2.3)
       '@posthog/react':
         specifier: ^1.5.2
-        version: 1.5.2(@types/react@19.2.7)(posthog-js@1.310.0)(react@19.2.3)
+        version: 1.5.2(@types/react@19.2.7)(posthog-js@1.310.1)(react@19.2.3)
       '@radix-ui/react-avatar':
         specifier: ^1.1.11
         version: 1.1.11(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -129,8 +129,8 @@ importers:
         specifier: ^8.5.6
         version: 8.5.6
       posthog-js:
-        specifier: ^1.310.0
-        version: 1.310.0
+        specifier: ^1.310.1
+        version: 1.310.1
       ramda:
         specifier: ^0.32.0
         version: 0.32.0
@@ -3859,8 +3859,8 @@ packages:
     resolution: {integrity: sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==}
     engines: {node: '>=0.10.0'}
 
-  posthog-js@1.310.0:
-    resolution: {integrity: sha512-ODhxtHm8Ppcs77hi7c61Yk/h2QQxFkfFLg+yCL8dRdB4rev9eQywdoYGuH2KRGChT/En7tByawboPYEJ0Uh/FA==}
+  posthog-js@1.310.1:
+    resolution: {integrity: sha512-UkR6zzlWNtqHDXHJl2Yk062DOmZyVKTPL5mX4j4V+u3RiYbMHJe47+PpMMUsvK1R2e1r/m9uSlHaJMJRzyUjGg==}
 
   powershell-utils@0.1.0:
     resolution: {integrity: sha512-dM0jVuXJPsDN6DvRpea484tCUaMiXWjuCn++HGTqUWzGDjv5tZkEZldAJ/UMlqRYGFrD/etByo4/xOuC/snX2A==}
@@ -5482,9 +5482,9 @@ snapshots:
     dependencies:
       cross-spawn: 7.0.6
 
-  '@posthog/react@1.5.2(@types/react@19.2.7)(posthog-js@1.310.0)(react@19.2.3)':
+  '@posthog/react@1.5.2(@types/react@19.2.7)(posthog-js@1.310.1)(react@19.2.3)':
     dependencies:
-      posthog-js: 1.310.0
+      posthog-js: 1.310.1
       react: 19.2.3
     optionalDependencies:
       '@types/react': 19.2.7
@@ -8600,7 +8600,7 @@ snapshots:
     dependencies:
       xtend: 4.0.2
 
-  posthog-js@1.310.0:
+  posthog-js@1.310.1:
     dependencies:
       '@posthog/core': 1.9.0
       core-js: 3.47.0
