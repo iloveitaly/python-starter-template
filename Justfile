@@ -104,7 +104,9 @@ update_from_upstream_template:
 		--exclude .service-versions \
 		--exclude .tool-versions \
 		--exclude .localias.yaml \
-		--exclude .github/instructions
+		--exclude .github/instructions \
+		--exclude .github/copilot-instructions.md \
+		--exclude .cursor/rules
 
 #######################
 # Setup
