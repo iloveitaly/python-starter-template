@@ -1,8 +1,8 @@
 import funcy_pipe as fp
-import requests
 
 from app.configuration.clerk import clerk
 from app.environments import is_testing
+from app.utils.geolocation import get_cached_public_ip
 
 from tests.constants import (
     CLERK_ALL_USERS_TO_PRESERVE,
@@ -19,13 +19,7 @@ def get_public_ip_address() -> str | None:
     Returns:
         The public IP address as a string, or None if the request fails
     """
-    try:
-        response = requests.get("https://api.ipify.org", timeout=5.0)
-        response.raise_for_status()
-        return response.text.strip()
-    except Exception as e:
-        log.debug("failed to get public IP address", error=str(e))
-        return None
+    return get_cached_public_ip()
 
 
 def delete_all_clerk_users():
