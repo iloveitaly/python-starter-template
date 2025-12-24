@@ -68,6 +68,7 @@ dev: _dev_only local-alias dev_kill
 	py_worker: {{PYTHON_WATCHMEDO}} $(yq '.worker' Procfile --output-format yaml)
 	py_scheduler: {{PYTHON_WATCHMEDO}} $(yq '.scheduler' Procfile --output-format yaml)
 	js_dev: just js_dev
+	py_generate: just py_generate --watch
 	openapi: just js_generate-openapi --watch
 	EOF
 

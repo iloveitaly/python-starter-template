@@ -58,9 +58,6 @@ py_dev:
 	kill -9 $(lsof -t -i :${PYTHON_SERVER_PORT}) 2>/dev/null || true
 	PORT=$PYTHON_SERVER_PORT uv run python main.py
 
-py_generate_react_router:
-	uvx react-router-routes@latest app/react_router_routes.py --directory ./web
-
 py_play:
 	./playground.py
 
@@ -164,6 +161,26 @@ py_test:
 		{{EXECUTE_IN_TEST}} uv run pytest . --verbosity=2 --ignore tests/integration {{PYTEST_COV_PARAMS}}
 		{{EXECUTE_IN_TEST}} uv run pytest tests/integration --verbosity=2 --cov-append {{PYTEST_COV_PARAMS}}
 	fi
+
+# regenerate all python generated files
+[doc("Optional flag: --watch")]
+py_generate *flag:
+	if {{ if flag == "--watch" { "true" } else { "false" } }}; then; \
+		fd --extension=py . --exclude=tests --exclude=migrations --exclude=playground . \
+			| entr just _py_generate; \
+	else; \
+		just _py_generate; \
+	fi
+
+# regenerate all
+_py_generate:
+	mkdir -p app/generated
+
+	# python types for react router routes
+	uvx react-router-routes@latest app/generated/react_router_routes.py --directory {{WEB_DIR}}
+
+	# typed routes from fastapi routes to replace `url_for`
+	python -m app.cli.generate_url_for api_app --output app/generated/fastapi_typed_routes.py
 
 # open playwright trace viewer on last trace zip. --remote to download last failed remote trace
 py_playwright_trace remote="": _dev_only
