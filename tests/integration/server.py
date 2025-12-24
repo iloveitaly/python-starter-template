@@ -96,6 +96,9 @@ def run_server():
     # the server does NOT have access to stdin, so let's use a piped debugging server
     install_remote_debugger()
 
+    # set a environment variable to indicate that we are running this server for integration tests
+    os.environ["PYTEST_INTEGRATION_TESTING"] = "true"
+
     # TODO we should be able to assert code signature on configuration in `main.py` so this alerts us when we are out of sync
 
     uvicorn.run(
@@ -183,8 +186,11 @@ def report_localias_status():
         )
 
 
-# run this file directly (with PYTHON_ENV=test) to start the server manually to debug test-only server issues
+# run this file directly to start the server manually to debug test-only server issues
 if __name__ == "__main__":
+    # set PYTHON_ENV=test otherwise javascript build will not run
+    os.environ["PYTHON_ENV"] = "test"
+
     start_js_build()
     wait_for_javascript_build()
     run_server()
