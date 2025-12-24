@@ -229,3 +229,6 @@ py_spy:
 	ps -eo pid,command | \
 		awk -v dir="$(pwd)" '$2 ~ /python/ && system("lsof -p " $1 " 2>/dev/null | grep -q " dir) == 0 {print $1}' | \
 		xargs -I{} sudo py-spy dump --pid {}
+
+py_cli *args:
+	uv run python -m app.cli {{args}}
