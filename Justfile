@@ -99,6 +99,7 @@ update_from_upstream_template:
 	uv tool run --with jinja2_shell_extension \
 		copier update --trust --skip-tasks --skip-answered \
 		--exclude web \
+		--exclude migrations/versions/ \
 		--exclude pyproject.toml \
 		--exclude uv.lock \
 		--exclude tests/integration/__snapshots__ \
