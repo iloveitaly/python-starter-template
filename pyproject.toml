@@ -127,11 +127,6 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["app"]
 
-# create a nice cli for the application for various operational tasks
-# https://discord.com/channels/1039017663004942429/1207998321562619954/1313194408069300225
-[project.scripts]
-python-starter-template = "app.cli:app"
-
 [tool.ruff]
 extend-exclude = [
     "playground",
