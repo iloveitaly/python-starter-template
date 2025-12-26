@@ -36,6 +36,8 @@ py_clean:
 	rm -rf .pytest_cache .ruff_cache .venv || true
 	rm -rf tests/**/snapshot_tests_failures || true
 	rm -rf $PLAYWRIGHT_BROWSERS_PATH || true
+	find . -type f -name "*.pyc" -delete
+	find . -type d -name "__pycache__" -delete || true
 
 	# TODO should remove pnpm global cache:   pnpm store path
 	# rm -rf $(pnpm store path)
@@ -180,10 +182,12 @@ _py_generate:
 	uvx react-router-routes@latest app/generated/react_router_routes.py --directory {{WEB_DIR}}
 
 	# typed routes from fastapi routes to replace `url_for`
-	python -m app.cli.generate_url_for api_app --output app/generated/fastapi_typed_routes.py
+	uv run app/cli/generate_typed_routes.py \
+		--app-module app.server:api_app \
+		--output app/generated/fastapi_typed_routes.py
 
 # open playwright trace viewer on last trace zip. --remote to download last failed remote trace
-py_playwright_trace remote="": _dev_only
+py_playwright_view_trace remote="": _dev_only
 		mkdir -p ${PLAYWRIGHT_RESULT_DIRECTORY}
 
 		# helpful to download to unique folder for two reasons: (a) easier to match up to web GHA view and (b) eliminates risk of gh-cli erroring out bc the directory already exists
@@ -191,6 +195,7 @@ py_playwright_trace remote="": _dev_only
 				failed_run_id=$(just _gha_last_failed_run_id) && \
 				mkdir -p ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id} && \
 				gh run --dir ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id} download $failed_run_id; \
+				echo "{{BLUE}}Downloaded remote GHA run to ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id}{{NORMAL}}"; \
 		fi
 
 		# NOTE it's insane, but fd does not have a "find last modified file"
@@ -205,8 +210,7 @@ py_playwright_visual-download: _dev_only
 		gh run --dir ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id} download $failed_run_id && \
 		cp -R ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id}/test-results/${PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY}/ ${PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY}/
 
-
-# record playwright interactions for integration tests and dump them to a file
+# open chromium to record playwright interactions for integration tests and dump them to a file
 [script]
 py_playwright-record: _dev_only
 	mkdir -p tmp/playwright
@@ -220,6 +224,7 @@ py_playwright-record: _dev_only
 	echo $recorded_interaction
 	pbcopy < $recorded_interaction
 
+# TODO why in the python module?
 # open mailpit web ui, helpful for inspecting emails
 py_mailpit_open:
 	open "https://$(echo $SMTP_URL | cut -d'/' -f3 | cut -d':' -f1)"
@@ -231,4 +236,4 @@ py_spy:
 		xargs -I{} sudo py-spy dump --pid {}
 
 py_cli *args:
-	uv run python -m app.cli {{args}}
+	@{{APP_CLI}} {{args}}
