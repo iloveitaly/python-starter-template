@@ -235,5 +235,7 @@ py_spy:
 		awk -v dir="$(pwd)" '$2 ~ /python/ && system("lsof -p " $1 " 2>/dev/null | grep -q " dir) == 0 {print $1}' | \
 		xargs -I{} sudo py-spy dump --pid {}
 
+# avoid using the app entrypoint shortcut to avoid having to modify the name across different projects
+# consistent CLI entrypoint for the python app CLI
 py_cli *args:
-	@{{APP_CLI}} {{args}}
+	uv run python -m app.cli {{args}}

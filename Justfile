@@ -43,9 +43,6 @@ PROJECT_NAME := "python-starter-template"
 # execute a command in the (nearly) exact same environment as CI
 EXECUTE_IN_TEST := "CI=true direnv exec ."
 
-# avoid using the app entrypoint shortcut to avoid having to modify the name across different projects
-APP_CLI := "uv run python -m app.cli"
-
 default:
 	just --list
 
