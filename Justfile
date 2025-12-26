@@ -274,7 +274,7 @@ tooling_upgrade: _dev_only && _mise_upgrade (_mise_upgrade WEB_DIR) _js_sync-eng
 # upgrade everything: all packages on all languages, tooling, etc
 upgrade: _dev_only tooling_upgrade js_upgrade py_upgrade
 	playwright install
-	{{APP_CLI}} write-versions
+	just py_cli write-versions
 	git add .service-versions
 
 # this is currently the default global config path

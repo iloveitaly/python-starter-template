@@ -1,6 +1,4 @@
-cursor_sync:
-  # TODO add MCP sync
-  cp .vscode/settings.json .cursor/settings.json
+# misc devprod scripts
 
 [script]
 ngrok:

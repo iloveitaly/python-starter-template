@@ -102,7 +102,7 @@ js_generate-openapi *flag:
 _js_generate-openapi:
 	# you may want to customize the application target, depending on you are structuring your frontend code
 	# jq is here to pretty print the output
-	LOG_LEVEL=error {{APP_CLI}} dump-openapi \
+	LOG_LEVEL=error just py_cli dump-openapi \
 		--app-target authenticated_api_app \
 		| jq -r . > "$OPENAPI_JSON_PATH"
 
