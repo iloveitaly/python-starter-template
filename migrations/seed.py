@@ -19,6 +19,8 @@ from app.environments import is_production, is_staging
 if is_production() or is_staging():
     raise RuntimeError("seed.py must never run in production or staging")
 
+from app import log
+
 from app.models.user import User
 
 from tests.routes.utils import get_clerk_seed_user
