@@ -219,7 +219,7 @@ def httpx_breakpoint(httpx_mock):
         from pprint import pprint
         import json
 
-        print(f"\n🔍 HTTPX Request Intercepted:")
+        print(f"\nHTTPX Request Intercepted:")
         print(f"URL: {request.url}")
 
         if request.content:
