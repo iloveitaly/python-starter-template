@@ -18,7 +18,7 @@ import {
 // Additionally, all authenticated routes will 400 if not auth'd propely.
 
 // TODO it seems as though we don't need to manually trigger a pageview event, that's already done for us
-// if we use the same identity key in the backend, users will be automatically merged
+// you must use the same identity key in the backend and frontend so users will be automatically merged
 // https://clerk.com/blog/how-to-use-clerk-with-posthog-identify-in-nextjs
 function PosthogIdentity() {
   const posthog = usePostHog()

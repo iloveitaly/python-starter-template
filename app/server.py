@@ -63,7 +63,6 @@ api_app.include_router(healthcheck_api_app)
 add_middleware(api_app)
 register_exception_handlers(api_app)
 
-
 # important that this is done after all routes are added
 simplify_operation_ids(api_app)
 
