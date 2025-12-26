@@ -19,9 +19,9 @@ from facebook_business.adobjects.adspixel import AdsPixel
 from facebook_business.api import FacebookAdsApi
 from fastapi import BackgroundTasks, Request
 from pydantic import BaseModel
+from structlog_config.fastapi_access_logger import client_ip_from_request
 
 from app import log
-from app.routes.dependencies.realip import client_ip_from_request
 
 META_PIXEL_ID = config("META_PIXEL_ID", cast=str)
 META_PIXEL_KEY = config("META_PIXEL_KEY", cast=str)
