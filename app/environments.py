@@ -72,3 +72,11 @@ def is_pytest():
     PYTEST_CURRENT_TEST is set by pytest to indicate the current test being run
     """
     return "PYTEST_CURRENT_TEST" in os.environ
+
+
+def use_service_token() -> bool:
+    """
+    Feature flag to read from service_token instead of api_key.
+    Set USE_SERVICE_TOKEN=true to enable.
+    """
+    return config("USE_SERVICE_TOKEN", default=False, cast=bool)

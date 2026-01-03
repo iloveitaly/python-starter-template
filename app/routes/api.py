@@ -10,6 +10,7 @@ from starlette_context import context
 from typeid import TypeID
 from typeid.errors import TypeIDException
 
+from app.environments import use_service_token
 from app.models.user import API_KEY_PREFIX, User
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -31,7 +32,12 @@ def authenticate_api_request_middleware(
     if token_as_typeid.prefix != API_KEY_PREFIX:
         raise UNAUTHORIZED_EXCEPTION
 
-    api_user = User.get(api_key=token_as_typeid.uuid)
+    if use_service_token():
+        api_user = User.get(service_token=token_as_typeid.uuid)
+    else:
+        api_user = User.get(api_key=token_as_typeid.uuid)
+        if not api_user:
+            api_user = User.get(service_token=token_as_typeid.uuid)
 
     if not api_user:
         raise UNAUTHORIZED_EXCEPTION
