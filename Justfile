@@ -298,7 +298,8 @@ local-alias: _dev_only
 	localias -c {{GLOBAL_LOCALIAS_CONFIG}} debug config --print
 
 clean: js_clean py_clean build_clean
-	rm -rf tmp/* || true
+	rm -rf $TMP_DIRECTORY/* || true
+	mkdir -p $TMP_DIRECTORY
 	rm -rf .git/hooks/* || true
 
 # destroy and rebuild py, js, db, etc
