@@ -17,10 +17,12 @@ import uvicorn
 from decouple import config
 from furl import furl
 
+import main
 from app import log
 from app.environments import is_local_testing
 from app.server import api_app
 from app.utils.debug import install_remote_debugger
+from app.utils.patching import hash_function_code
 
 from tests.constants import PYTHON_TEST_SERVER_HOST
 from tests.integration.javascript_build import start_js_build, wait_for_javascript_build
@@ -99,7 +101,13 @@ def run_server():
     # set a environment variable to indicate that we are running this server for integration tests
     os.environ["PYTEST_INTEGRATION_TESTING"] = "true"
 
-    # TODO we should be able to assert code signature on configuration in `main.py` so this alerts us when we are out of sync
+    # NOTE: if this hash changes, it means the server configuration in `main.py` has changed
+    #       and we should verify that this file also needs to be updated.
+    actual_hash = hash_function_code(main.get_server_config)
+    expected_hash = "8c7c75edf10d89f8c3c17d65f5a23c5f5d5e5e5e5e5e5e5e5e5e5e5e5e5e5e5"
+    assert actual_hash == expected_hash, (
+        f"main.py config has changed. New hash: {actual_hash}"
+    )
 
     uvicorn.run(
         api_app,
