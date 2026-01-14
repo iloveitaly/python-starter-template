@@ -77,11 +77,15 @@ class WebhookEvent(BaseModel, TimestampsMixin, TypeIDMixin("wh"), table=True):
     payload: dict = Field(sa_type=JSONB)
     "JSON body sent to destination as the POST request payload"
 
-    failed_at: datetime | None = Field(default=None, sa_type=sa.DateTime(timezone=True))
+    failed_at: datetime | None = Field(
+        default=None,
+        sa_type=sa.DateTime(timezone=True),  # type: ignore
+    )
     "timestamp of the last failed delivery attempt"
 
     succeeded_at: datetime | None = Field(
-        default=None, sa_type=sa.DateTime(timezone=True)
+        default=None,
+        sa_type=sa.DateTime(timezone=True),  # type: ignore
     )
     "timestamp when delivery last succeeded (used to prevent resends)"
 
