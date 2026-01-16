@@ -1,5 +1,10 @@
 """
-Adapted from: https://github.com/clerk/javascript/blob/main/packages/testing/src/playwright/setupClerkTestingToken.ts
+Helpers to avoid hitting Captchas when testing.
+
+Adapted from:
+
+- https://github.com/clerk/javascript/blob/main/packages/testing/src/playwright/setupClerkTestingToken.ts
+- https://github.com/clerk/javascript/tree/main/packages/testing/src/playwright
 
 Usage:
 
@@ -11,8 +16,10 @@ Attempting to upstream at: https://github.com/clerk/clerk-sdk-python/pull/65/fil
 
 import logging
 import os
+import re
 from dataclasses import dataclass
 from typing import Optional
+from urllib.parse import parse_qs, urlencode, urlparse
 
 from clerk_backend_api import Clerk
 from playwright.sync_api import Page
@@ -119,7 +126,9 @@ def setup_clerk_testing_token(page: Page, frontend_api_url: str | None = None):
     """
 
     if not frontend_api_url:
-        frontend_api_url = os.environ.get("CLERK_FAPI_URL")
+        frontend_api_url = os.environ.get("CLERK_FAPI_URL") or os.environ.get(
+            "CLERK_FAPI"
+        )
 
     if not frontend_api_url and (
         clerk_publishable_key := os.environ.get("CLERK_PUBLISHABLE_KEY")
@@ -146,7 +155,7 @@ def setup_clerk_testing_token(page: Page, frontend_api_url: str | None = None):
                 "CLERK_TESTING_TOKEN or CLERK_PRIVATE_KEY is required to generate a test token"
             )
 
-    api_url = f"https://{frontend_api_url}/v1/**"
+    api_url = re.compile(rf"^https://{re.escape(frontend_api_url)}/v1/.*?(\?.*)?$")
 
     logger.debug(f"Adding clerk testing token to URL url={api_url}")
 
@@ -155,7 +164,6 @@ def setup_clerk_testing_token(page: Page, frontend_api_url: str | None = None):
         Inject the testing token into each Clerk API call driven by the frontend flow.\
         """
         url = request.url
-        from urllib.parse import parse_qs, urlencode, urlparse
 
         parsed_url = urlparse(url)
         params = parse_qs(parsed_url.query)
@@ -168,10 +176,25 @@ def setup_clerk_testing_token(page: Page, frontend_api_url: str | None = None):
 
         logger.debug("rewriting URL old=%s new=%s", url, new_url)
 
-        # unfortunately, this logic makes it hard to use breakpoint debugging
-        # it creates some sort of event loop for handling the routes which in turn prevents us from interactively
-        # navigating in the browser.
-        route.continue_(url=new_url)
+        response = route.fetch(url=new_url)
+        payload = response.json()
+
+        if isinstance(payload, dict):
+            response_data = payload.get("response")
+            if (
+                isinstance(response_data, dict)
+                and response_data.get("captcha_bypass") is False
+            ):
+                response_data["captcha_bypass"] = True
+
+            client_data = payload.get("client")
+            if (
+                isinstance(client_data, dict)
+                and client_data.get("captcha_bypass") is False
+            ):
+                client_data["captcha_bypass"] = True
+
+        route.fulfill(response=response, json=payload)
 
     page.route(api_url, handle_route)
 
