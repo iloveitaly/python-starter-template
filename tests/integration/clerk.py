@@ -6,6 +6,11 @@ Adapted from:
 - https://github.com/clerk/javascript/blob/main/packages/testing/src/playwright/setupClerkTestingToken.ts
 - https://github.com/clerk/javascript/tree/main/packages/testing/src/playwright
 
+Update prompt:
+
+> https://github.com/clerk/javascript/commits/main/packages/testing/src/playwright
+> I'd like to inspect the history of this package. Clone it to tmp/ and inspect the changes on This folder over the last four months. Adapt any changes in the JavaScript to the clerk.py that I've referenced.
+
 Usage:
 
 >>> def test_signup(server, page: Page) -> None:
