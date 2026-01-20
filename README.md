@@ -189,6 +189,23 @@ Here are a couple additions to your shell environment that you'll probably want 
 * [just](https://just.systems/man/en/shell-completion-scripts.html)
 * [fzf tab completion](https://github.com/Aloxaf/fzf-tab) (this makes working with just really nice)
 
+The "best" way to install these is to use [zinit](https://github.com/iloveitaly/dotfiles/blob/6d1de58943edc342053b3b04c67baf62ec6128ec/.zsh_plugins#L43-L44)
+although you can also just drop the direct `source` calls into your `.zshrc`.
+
+### Shell Environment
+
+Both mise and direnv, which are used heavily in this template, mutate your shell environment heavily.
+Because of this, you want to be really careful about how your shell environment is set up.
+
+Some things to watch out for:
+
+* Make sure mise hooks are run *before* direnv hooks. If not, if direnv mutates `$PATH` it will drop mise modifications, which means referencing to python, just, and other tools managed by mise will be incorrect.
+* I recommend [using mise to mutate $PATH](.config/mise.toml) and not mutating `$PATH` with direnv. This means mise should manage venv creation.
+* Any terminals launched by agents should execute the mise and direnv hooks as well. This can get tricky if you have a heavily
+  modified shell config (like I do). You'll need to create a different load path for an "agent shell".
+
+<!-- link to blog post here -->
+
 ## Usage
 
 The following are poorly-organized notes about various pieces of the system.
@@ -217,6 +234,10 @@ Here's how frontend code is organized in `web/app/`:
   * `shared/` components shared across multiple pages.
   * create additional folders for route- or section-specific components.
 
+### Python Application Code Organzation
+
+[This is documented here](.github/instructions/python-app.instructions.md)
+
 ### Python Test Code Organization
 
 * `tests/**/utils.py` is for test-specific code that is not a fixture or a factory.
@@ -224,6 +245,8 @@ Here's how frontend code is organized in `web/app/`:
 * `tests/**/assertions.py` all custom `assert_*` functions should go here.
 * `tests/**/conftest.py` is for test-specific fixtures. This is the only place you should put fixtures.
 * `tests/{commands,routes,jobs,models}/` map to corresponding application categories under `app/`.
+
+<!-- move to LLM instructions -->
 
 ### Assets & Static Files
 
@@ -241,7 +264,9 @@ There are two public directories in the project:
 * `public/` is not used in development. During the build process, bundled javascript is copied here and served using [[app/routes/static.py]]. This is excluded from git.
 * `web/public` is used in development *and* production. In development, this is where the vite dev server serves static files from. Files included here (excluding the generated vite files) are tracked by git and bundled by vite into the production assets.
 
-### Toggling GitHub Actions
+### GitHub Actions
+
+#### Toggling GitHub Actions
 
 It's helpful, especially when you are conserving GH actions credits and tinkering with your build setup, to sometimes disable GitHub actions.
 
@@ -566,9 +591,18 @@ In order to eliminate some of these ergonomics:
 1. [Check out the type ID raycast package](https://www.raycast.com/jmaeso/uuid-generator)
 2. [ActiveModel](https://github.com/iloveitaly/activemodel) has a couple of helpers to improve the DX
 
-### Secrets
+### Secrets & Environment Variables
 
-The secret management in this template is more complex that it seems like it should be. The primary reason behind this is to avoid secret drift at all costs and to document in code all secrets, for all environments.
+Check out the [secrets rules for LLMs](./.github/prompts/secrets.prompt.md) for a deeper explanation of how
+environment variables are managed.
+
+Long-term, I'd like to eliminate direnv and manage all environment variables completely with mise. There are a lot of
+parts to the system that are still dependent on direnv, and mise does not have all of the required features,
+so this will take some time.
+
+The secret management in this application is more complex that it seems like it should be. The primary reason behind
+this is to avoid "secret drift" at all costs and to document all secrets in code, for all environments. I hate having
+secrets, commands, and config scattered in the minds of developers. Everything should be in code, even if it's painful.
 
 Here's the issues I'm trying to avoid:
 
@@ -600,18 +634,26 @@ you have a variable that depends on another variable pulled from 1Password, you'
 
 #### 1Password
 
+Secure values are stored in 1Password. Direnv calls out to a 1Password CLI which pulls these secrets into the developers ENV
+(the same process is used for CI and deployment).
+
 Some tips for working with 1Password:
 
-* Create a vault for your project
-* If you switch vaults, all of your item UUIDs will change.
+* Create a vault for each unique project.
+* If you switch vaults, all of your item UUIDs will change. Do not change your vault unless you like manual work.
 * Unfortunately, each time you authenticate your machine it will create a new integration instance (with the same name) in the 1Passsword UI.
+  * I've reported this to 1Password, hopefully this will be fixed within the next year or so.
 
 ### DevProd
+
+Developer productivity was always important but it's only going to become more important in the age of LLMs.
 
 Here are the devprod principles this project adheres to:
 
 * There should be no secret scripts on a developers machine. Everything to setup and manage a environment should be within the repo. I've chosen a Justfile for this purpose.
 * The entire lifecycle of a project should be documented in code. Most of the time, this means Justfile recipes.
+* Prefer more devprod scripts to less. This creates more noise, but it's easier to cut out noise over time than invent the wheel or waste
+  time trying to find that magic shell command to fix an issue.
 
 ### Deployment
 
@@ -633,6 +675,24 @@ Isn't there anything better than `foreman`? Unfortunately, no. Foreman hasn't be
 
 * hivemind does not ignore terminal clear control sequences. This means certain commands (like JavaScript build watchers) will randomly clear the terminal, which drives me nuts.
 * ultraman looks to have some obvious bugs. Could be worth checking into in the future again.
+
+### Frontend Analytics
+
+* Use Google Tag Manager, Analytics (npm package), and Posthog (you can emit events through their backend) in that order.
+  * By sending a server side conversion event to Posthog, you can then forward that event to other services. One analytics
+    package to rule them all.
+* [Here's a list of properties that Posthog collects from the frontend](https://posthog.com/docs/references/posthog-js/types/Properties)
+* [Using the same UUID is not enough to merge posthog events](https://github.com/PostHog/posthog/issues/17211#issuecomment-1936002281).
+* You probably want to use a proxy domain for posthog and google tag manager
+
+<!-- TODO link to cloudflare analytics example -->
+
+<!--
+### Frontend Dev Tools
+
+* https://github.com/reduxjs/redux-devtools
+* TODO react developer tools
+-->
 
 ### Python Job Queue
 
