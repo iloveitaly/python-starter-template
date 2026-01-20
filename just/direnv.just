@@ -95,6 +95,12 @@ else
 	echo "[direnv_bash_export] just not found, skipping completions." >&2
 fi
 
+# instructs mise to install additional local development tooling
+export MISE_ENV=dev
+
+# ensures if python calls direnv, it doesn't attempt to mutate your environment
+export DIRENV_DISABLE=1
+
 ## BEGIN DIRENV EXPORT
 """
 
@@ -112,5 +118,5 @@ direnv_bash_export: _dev_only
 	echo $'\n\n## END DIRENV EXPORT' >> "$target_file"
 
 	echo $'\n'
-	echo "File generated: $target_file"
-	echo "Source using 'source $target_file'"
+	echo "File generated: {{CYAN}}$target_file{{NORMAL}}"
+	echo "Source using '{{CYAN}}source $target_file{{NORMAL}}'"
