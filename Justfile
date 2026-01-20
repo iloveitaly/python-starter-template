@@ -185,17 +185,17 @@ setup: _dev_only requirements && py_setup up db_seed js_setup
 	@echo 'If you are using localias, run `just local-alias` to start the daemon'
 
 # if a dev is having trouble with their environment, this outputs all the versions + debugging information of core tools which could be causing the problem
-[macos]
 setup_debug:
-	just --version
-	mise --version
-	uv --version
-	docker --version
-	sw_vers -productVersion
+	echo $PATH
 	uname -m
 	zsh --version
+	# mise installs everything else
+	mise --version
+	just --version
+	uv --version
+	docker --version
+	command -v sw_vers >/dev/null 2>&1 && sw_vers -productVersion || echo "sw_vers not found"
 	if command -v op >/dev/null 2>&1; then op --version; fi
-	echo $PATH
 	direnv exec . zsh -c 'env'
 
 # TODO This needs to work for multiple MIS or tool version files. We should also try to make this more generic so it works for a MIS or a tool version file.
