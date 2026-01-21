@@ -93,8 +93,7 @@ js_upgrade:
 [doc("Optional flag: --watch")]
 js_generate-openapi *flag:
 	if {{ if flag == "--watch" { "true" } else { "false" } }}; then; \
-		fd --extension=py . --exclude=tests --exclude=migrations . \
-			| entr just _js_generate-openapi; \
+		watchexec -e py --ignore 'tests/' --ignore 'migrations/' -- just _js_generate-openapi; \
 	else; \
 		just _js_generate-openapi; \
 	fi

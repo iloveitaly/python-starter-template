@@ -168,8 +168,7 @@ py_test:
 [doc("Optional flag: --watch")]
 py_generate *flag:
 	if {{ if flag == "--watch" { "true" } else { "false" } }}; then; \
-		fd --extension=py . --exclude=tests --exclude=migrations --exclude=playground . \
-			| entr just _py_generate; \
+		watchexec -e py --ignore 'tests/' --ignore 'migrations/' --ignore 'playground/' -- just _py_generate; \
 	else; \
 		just _py_generate; \
 	fi
