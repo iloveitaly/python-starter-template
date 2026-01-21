@@ -92,10 +92,13 @@ dev_kill: _dev_only
 
 # syncs the project with the upstream python-starter-template repo.
 update_from_upstream_template:
-	#   - Skips all javascript updates
-	#   - You'll need to manually review conflicts of which there will be many
+	echo "Updating project from upstream template. Remember:"
+	echo "- Update skips all javascript updates"
+	echo "- You'll need to manually review conflicts of which there will be many"
+	echo "- 'incoming' change in a diff is the template changes"
+
 	uv tool run --with jinja2_shell_extension \
-		copier update --trust --skip-tasks --skip-answered \
+		copier update --trust --skip-tasks --skip-answered --vcs-ref=HEAD \
 		--exclude web \
 		--exclude migrations/versions/ \
 		--exclude pyproject.toml \
