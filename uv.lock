@@ -236,14 +236,14 @@ wheels = [
 
 [[package]]
 name = "beautiful-traceback"
-version = "0.2.0"
+version = "0.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorama" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/90/fc/abeabbe9249172841a02053611ed93ff7039beaa68147f37e5c6b138699d/beautiful_traceback-0.2.0.tar.gz", hash = "sha256:d27101ea638b4e103b6841b5132ec136283ec430f2bb5414e490726901c7d327", size = 11333, upload-time = "2025-11-10T23:21:24.783Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/94/22/c112edab8e82b30f49082d9f52a083e05fb8cd0b333510ff2dd5232570ef/beautiful_traceback-0.3.0.tar.gz", hash = "sha256:caff49fba45e45bef170140b8405c3fb74ca1e947cabd5adab0243be02984b2c", size = 13808, upload-time = "2026-01-20T22:45:05.261Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/62/0a/ee1c7f64735e90002ac0494bf84f60a891d49852a64be61f0bbfffa1d248/beautiful_traceback-0.2.0-py3-none-any.whl", hash = "sha256:ddcb3e76959951f55881288f207699b4d10a09520d0eda6478ea54a363acc8b2", size = 14397, upload-time = "2025-11-10T23:21:23.607Z" },
+    { url = "https://files.pythonhosted.org/packages/a4/95/a3b0968e8e6554fab83d1daa66bcd5fddb892d4d942051ac676326209777/beautiful_traceback-0.3.0-py3-none-any.whl", hash = "sha256:618a8c1cfa2a87804e7b38138faf696c2e950483dccb4feba86f1ac57759ff47", size = 17632, upload-time = "2026-01-20T22:45:04.467Z" },
 ]
 
 [[package]]
@@ -2442,11 +2442,11 @@ wheels = [
 
 [[package]]
 name = "pycparser"
-version = "2.23"
+version = "3.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/fe/cf/d2d3b9f5699fb1e4615c8e32ff220203e43b248e1dfcc6736ad9057731ca/pycparser-2.23.tar.gz", hash = "sha256:78816d4f24add8f10a06d6f05b4d424ad9e96cfebf68a4ddc99c65c0720d00c2", size = 173734, upload-time = "2025-09-09T13:23:47.91Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1b/7d/92392ff7815c21062bea51aa7b87d45576f649f16458d78b7cf94b9ab2e6/pycparser-3.0.tar.gz", hash = "sha256:600f49d217304a5902ac3c37e1281c9fe94e4d0489de643a9504c5cdfdfc6b29", size = 103492, upload-time = "2026-01-21T14:26:51.89Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a0/e3/59cd50310fc9b59512193629e1984c1f95e5c8ae6e5d8c69532ccc65a7fe/pycparser-2.23-py3-none-any.whl", hash = "sha256:e5c6e8d3fbad53479cab09ac03729e0a9faf2bee3db8208a550daf5af81a5934", size = 118140, upload-time = "2025-09-09T13:23:46.651Z" },
+    { url = "https://files.pythonhosted.org/packages/0c/c3/44f3fbbfa403ea2a7c779186dc20772604442dde72947e7d01069cbe98e3/pycparser-3.0-py3-none-any.whl", hash = "sha256:b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992", size = 48172, upload-time = "2026-01-21T14:26:50.693Z" },
 ]
 
 [[package]]
@@ -3463,11 +3463,11 @@ sqlalchemy = [
 
 [[package]]
 name = "setuptools"
-version = "80.9.0"
+version = "80.10.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/18/5d/3bf57dcd21979b887f014ea83c24ae194cfcd12b9e0fda66b957c69d1fca/setuptools-80.9.0.tar.gz", hash = "sha256:f36b47402ecde768dbfafc46e8e4207b4360c654f1f3bb84475f0a28628fb19c", size = 1319958, upload-time = "2025-05-27T00:56:51.443Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/86/ff/f75651350db3cf2ef767371307eb163f3cc1ac03e16fdf3ac347607f7edb/setuptools-80.10.1.tar.gz", hash = "sha256:bf2e513eb8144c3298a3bd28ab1a5edb739131ec5c22e045ff93cd7f5319703a", size = 1229650, upload-time = "2026-01-21T09:42:03.061Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a3/dc/17031897dae0efacfea57dfd3a82fdd2a2aeb58e0ff71b77b87e44edc772/setuptools-80.9.0-py3-none-any.whl", hash = "sha256:062d34222ad13e0cc312a4c02d73f059e86a4acbfbdea8f8f76b28c99f306922", size = 1201486, upload-time = "2025-05-27T00:56:49.664Z" },
+    { url = "https://files.pythonhosted.org/packages/e0/76/f963c61683a39084aa575f98089253e1e852a4417cb8a3a8a422923a5246/setuptools-80.10.1-py3-none-any.whl", hash = "sha256:fc30c51cbcb8199a219c12cc9c281b5925a4978d212f84229c909636d9f6984e", size = 1099859, upload-time = "2026-01-21T09:42:00.688Z" },
 ]
 
 [[package]]
@@ -3715,17 +3715,17 @@ wheels = [
 
 [[package]]
 name = "structlog-config"
-version = "0.7.0"
+version = "0.8.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
+    { name = "fastapi-ipware" },
     { name = "orjson" },
     { name = "python-decouple-typed" },
-    { name = "python-ipware" },
     { name = "structlog" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/db/c4/b14adcbcdb0fef1db2b8f48df64a6ebe16ba3f2febc907bf2c6739f0720a/structlog_config-0.7.0.tar.gz", hash = "sha256:f7957b8f93de7d70b15673a28da7441674018d98eaf1f598b3caa1ee521ca074", size = 17919, upload-time = "2025-11-12T19:27:59.607Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/43/b0/6e1e870b8b32fa40585c9b77492ad6cefc92c1f3174b7d969683ebf12f8f/structlog_config-0.8.0.tar.gz", hash = "sha256:5666c1af6b1203e1ecf093ceca6552b1e5bc6472c18fdaa3467e8282c7577356", size = 18044, upload-time = "2026-01-20T23:44:52.779Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/27/1b/471dc2cb8f57be16a4f63b5ddae266d3fcff9ebba83ee352bc045f4e2c6b/structlog_config-0.7.0-py3-none-any.whl", hash = "sha256:86b0d3ad96ae1b69e56219a356dc5578989c33acecca746813559adea914dc3a", size = 22597, upload-time = "2025-11-12T19:27:58.574Z" },
+    { url = "https://files.pythonhosted.org/packages/ae/bf/a5bcfd8c3be22fcdb3455af04afd449909ea060efc6d2a4f25acd208dc33/structlog_config-0.8.0-py3-none-any.whl", hash = "sha256:6a48237830d30aaeb34c8ae9741842976c6eb0f531dd18a0459a4594c13bbada", size = 22661, upload-time = "2026-01-20T23:44:51.895Z" },
 ]
 
 [package.optional-dependencies]
