@@ -119,14 +119,6 @@ packages = ["app"]
 # Enables live edits, IDE path resolution, and avoids .pth file overhead. "compat" uses .pth files.
 editable_mode = "strict"
 
-# hatching is a modern replacement for the default setuptools
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.hatch.build.targets.wheel]
-packages = ["app"]
-
 [tool.ruff]
 extend-exclude = [
     "playground",
