@@ -1,6 +1,10 @@
 [tools]
 "github:peterldowns/localias" = "latest"
 "jq" = "latest"
+"mprocs" = "latest"
+"fd" = "latest"
+"yq" = "latest"
+"watchexec" = "latest"
 
 # packages that are *not* required for running the development server, tests, build, etc should be included here
 # uv provides two ways of managing tools: via `uv tool` and `uvx`. `uv tool` caches the tool in the local venv

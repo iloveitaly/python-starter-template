@@ -1,5 +1,7 @@
 [tools]
-cargo-binstall = "latest"
 "cargo:commitlint-rs" = "latest"
 # ^ did not work, but this did: cargo binstall commitlint-rs
 "pipx:aiautocommit" = "latest"
+"lefthook" = "latest"
+# not really an extra, since this is used on CI, but the CI version is installed/used via a GHA
+"1password-cli" = "latest"
