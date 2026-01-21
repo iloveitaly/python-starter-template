@@ -92,10 +92,12 @@ dev_kill: _dev_only
 
 # syncs the project with the upstream python-starter-template repo.
 update_from_upstream_template:
-	echo "Updating project from upstream template. Remember:"
-	echo "- Update skips all javascript updates"
-	echo "- You'll need to manually review conflicts of which there will be many"
-	echo "- 'incoming' change in a diff is the template changes"
+	@echo "Updating project from upstream template. Remember:\n"
+	@echo "- Update skips all javascript updates"
+	@echo "- You'll need to manually review conflicts of which there will be many"
+	@echo "- 'incoming' change in a diff is the template changes\n"
+
+	@just _banner_echo "Running Upgrade From Template"
 
 	uv tool run --with jinja2_shell_extension \
 		copier update --trust --skip-tasks --skip-answered --vcs-ref=HEAD \
