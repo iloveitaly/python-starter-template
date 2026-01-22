@@ -1,5 +1,8 @@
-# misc devprod scripts
+###############################
+# Scripts for Local Development
+###############################
 
+# expose the local server via ngrok for sharing your environment with others
 [script]
 ngrok:
   DIRECTORY=$(basename $(pwd)) && cat << EOF > $TMP_DIRECTORY/ngrok.yml
