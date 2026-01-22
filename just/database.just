@@ -39,7 +39,7 @@ DB_TERMINATE_AND_RESET_SCHEMA := "SELECT pg_terminate_backend(pid) FROM pg_stat_
 # However, this does complicate interactions:
 #
 # * Locally, I'm using OrbStack which has nice friendly domain references that work anywhere. No problems there.
-# * In other environments (CI/Linux), this is not the case. Since we are using `run` the pg binaries are running
+# * In other environments (CI/Linux/WSL), this is not the case. Since we are using `run` the pg binaries are running
 #   in a new container so `localhost` references won't work.
 #
 # In order to fix this we must replicate the *.orb domains on CI by updating the /etc/hosts file.
@@ -91,8 +91,10 @@ db_migrate: _not_production
 	# if this folder is wiped, you'll get a strange error from alembic
 	mkdir -p migrations/versions
 
-	# dev database is created automatically, but test database is not. We need to fail gracefully when the database already exists.
-	{{DOCKER_POSTGRES}} psql $DATABASE_URL -c "CREATE DATABASE ${TEST_DATABASE_NAME};" || true
+	# dev database is created automatically, but test database is not. We want to fail loudly when creation of the test DB fails.
+	# PostgreSQL does not support IF NOT EXISTS on CREATE DATABASE which is why we run the WHERE NOT EXISTS query first.
+	echo "SELECT 'CREATE DATABASE ${TEST_DATABASE_NAME}' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '${TEST_DATABASE_NAME}')\gexec" | \
+		{{DOCKER_POSTGRES}} psql "$DATABASE_URL"
 
 	@just _banner_echo "Migrating Database"
 

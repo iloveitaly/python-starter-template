@@ -161,7 +161,7 @@ build_inspect *flags:
 	docker image inspect --format "{{ '{{ json . }}' }}" "{{PYTHON_IMAGE_TAG}}" | jq -r {{ flags }}
 
 # interactively inspect the layers of the built image
-build_dive: _dev_only (_brew_check_and_install "dive")
+build_dive: _dev_only
 	dive "{{PYTHON_IMAGE_TAG}}"
 
 # dump nixpacks-generated Dockerfile for manual build and production debugging
