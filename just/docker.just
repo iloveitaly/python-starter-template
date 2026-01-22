@@ -12,8 +12,10 @@ up *flag:
 	docker compose up -d {{ if flag == "--fast" { "" } else { "--wait" } }}
 
 	# enables us to (a) avoid exposing ports to the host machine and (b) have dns names for each service in CI
-	# this is done for us on macOS via OrbStack. Without this, the `DOCKER_POSTGRES` binary approach would not work
-	[[ -n "${CI:-}" ]] && sudo $(which uvx) docker-hosts || true
+	# this is done for us on macOS via OrbStack. Without this, the `DOCKER_POSTGRES` binary approach would not work.
+  # this approach works well on Linux, but not on WSL. Default WSL configuration does not assign each container a unique
+  # address.
+	[[ -n "${CI:-}" ]] && sudo $(which uvx) docker-hosts@latest || true
 
 # stop all containers and remove the images
 down: db_down
