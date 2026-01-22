@@ -2,7 +2,7 @@
 name = "python-starter-template"
 version = "0.1.0"
 description = ""
-requires-python = ">=3.13"
+requires-python = ">=3.14"
 dependencies = [
     "activemodel>=0.2.0",
     "aiosmtplib>=3.0.2",
@@ -50,7 +50,6 @@ dependencies = [
     "facebook-business>=23.0.1",
     "beautiful-traceback>=0.3.0",
 ]
-
 
 [dependency-groups]
 debugging-extras = [
@@ -106,18 +105,16 @@ dev = [
     "squawk-cli>=2.33.2",
 ]
 
-[tool.uv.config-settings]
-# https://github.com/astral-sh/uv/issues/3898
-# config-settings = { editable_mode = "compat" }
+# this eliminates the need for `editable_mode = "strict"` and other config that was previously required
+[build-system]
+requires = ["uv_build>=0.9.0,<0.10.0"]
+build-backend = "uv_build"
 
-# Explicitly declare the package(s) to install in editable mode.
-# Required for `editable_mode = "strict"` with flat layouts (app/ at project root).
-# Without this, uv cannot auto-discover the package and will fail.
-packages = ["app"]
-
-# Use "strict" to create a real symlink in site-packages/app → /path/to/project/app
-# Enables live edits, IDE path resolution, and avoids .pth file overhead. "compat" uses .pth files.
-editable_mode = "strict"
+# flat layout (default for app/ at root)
+[tool.uv.build-backend]
+# avoids the src/ directory structure
+module-root = ""
+module-name = "app"
 
 [tool.ruff]
 extend-exclude = [
