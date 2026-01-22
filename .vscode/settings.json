@@ -123,11 +123,11 @@
 
   "[justfile]": {
     "editor.insertSpaces": false,
-    //   "editor.detectIndentation": false,
+    "editor.detectIndentation": false,
     "editor.tabSize": 2,
     "editor.trimAutoWhitespace": true,
-    // "editor.defaultFormatter": "nefrob.vscode-just-syntax",
     "editor.formatOnSave": true
+    // "editor.defaultFormatter": "nefrob.vscode-just-syntax",
   },
 
   // this is important, as we want to make sure the plain old zsh is used (not tmux) for automation/agent terminals
