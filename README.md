@@ -212,11 +212,13 @@ The following are poorly-organized notes about various pieces of the system.
 
 ### Package Dependencies
 
-Non-language dependencies are always tricky. Here's how it's handled:
+Non-language dependencies are always tricky, especially when considering the myriad environments that need to be handled.
 
-* `brew` is used to install tools required by development scripts
-* `mise` is used for runtimes, package managers (uv, pnpm), and runners (direnv + just). Mise should be used to install any tools required for running `build*` and `test*` Justfile recipes but not tools that are *very* popular (like jq, etc) which are better installed by the native os package manager.
-  * Note that `asdf` could probably be used instead of `mise`, but I haven't tested it and there's many Justfile recipes that use mise.
+Here's what we do:
+
+* `mise` is used for runtimes, package managers (uv, pnpm), and runners (direnv + just). Mise should be used to install
+  any tools required for running `build*` and `test*` Justfile recipes. Mise can also be used to install tools required
+  by development scripts such as `yq`, `jq`, etc.
 * `apt` is used to install *some* of the tools required to run CI scripts (like zsh), but most are omitted since they should never run in production.
 * Direct install scripts are used to install some more obscure packages (localias, nixpacks, etc) that are not well supported by the os package manager or mise.
 
@@ -693,6 +695,15 @@ Isn't there anything better than `foreman`? Unfortunately, no. Foreman hasn't be
 * https://github.com/reduxjs/redux-devtools
 * TODO react developer tools
 -->
+
+### Docker Containers
+
+#### OrbStack
+
+If you run into trouble accessing the .orb domains, make sure you have the right privacy and sandbox settings set up for OrbStack.
+It's possible that a recent update to Mac OS wiped out the security settings and you'll need to reset them.
+
+[I ran into issues along these lines many times.](https://discord.com/channels/1106380155536035840/1318603119990538340)
 
 ### Python Job Queue
 
