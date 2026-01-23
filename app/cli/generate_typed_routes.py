@@ -10,9 +10,13 @@
 # ///
 
 from pathlib import Path
+from types import ModuleType
 
 import click
+from fastapi import FastAPI
+from fastapi.routing import APIRoute
 from jinja2 import Template
+from pydantic import BaseModel
 from structlog_config import configure_logger
 
 log = configure_logger()
@@ -41,31 +45,51 @@ def {{ app_info.prefix }}_url_path_for(name: str, **path_params) -> str:
 '''
 
 
-def extract_routes(app):
+class RouteInfo(BaseModel):
+    name: str
+    path: str
+
+
+class AppInfo(BaseModel):
+    import_path: str
+    name: str
+    prefix: str
+    routes: list[RouteInfo]
+
+
+def extract_routes(app: FastAPI) -> list[RouteInfo]:
     """Extract route information from a FastAPI app."""
-    routes = []
+    routes: list[RouteInfo] = []
 
     for route in app.routes:
-        if hasattr(route, "name") and route.name:
-            routes.append(
-                {
-                    "name": route.name,
-                    "path": route.path,
-                }
+        if not isinstance(route, APIRoute):
+            continue
+
+        if not route.name:
+            continue
+
+        routes.append(
+            RouteInfo(
+                name=route.name,
+                path=route.path,
             )
+        )
 
     # Sort for consistent output
-    routes.sort(key=lambda x: x["name"])
+    routes.sort(key=lambda x: x.name)
 
     log.info("extracted_routes", count=len(routes))
     return routes
 
 
-def load_app(app_module: str, prefix: str | None):
+def load_app(app_module: str, prefix: str | None) -> AppInfo:
     """Load a FastAPI app and extract its information."""
     module_path, app_name = app_module.split(":")
-    module = __import__(module_path, fromlist=[app_name])
+    module: ModuleType = __import__(module_path, fromlist=[app_name])
     app = getattr(module, app_name)
+
+    if not isinstance(app, FastAPI):
+        raise click.ClickException(f"{app_module} is not a FastAPI app")
 
     log.info("app_loaded", module=module_path, app=app_name)
 
@@ -76,15 +100,15 @@ def load_app(app_module: str, prefix: str | None):
         prefix = app_name
         log.info("using_default_prefix", prefix=prefix)
 
-    return {
-        "import_path": module_path,
-        "name": app_name,
-        "prefix": prefix,
-        "routes": routes,
-    }
+    return AppInfo(
+        import_path=module_path,
+        name=app_name,
+        prefix=prefix,
+        routes=routes,
+    )
 
 
-def generate_typed_module(apps_info: list[dict], output_path: Path):
+def generate_typed_module(apps_info: list[AppInfo], output_path: Path) -> None:
     """Generate Python module with typed url_path_for functions."""
 
     log.info(
@@ -100,7 +124,7 @@ def generate_typed_module(apps_info: list[dict], output_path: Path):
 
     output_path.write_text(output)
 
-    total_routes = sum(len(app["routes"]) for app in apps_info)
+    total_routes = sum(len(app.routes) for app in apps_info)
     log.info(
         "module_generated", output_path=str(output_path), total_routes=total_routes
     )
@@ -125,7 +149,9 @@ def generate_typed_module(apps_info: list[dict], output_path: Path):
     default=None,
     help="Prefix for the generated function (default: uses app variable name). Should match order of --app-module.",
 )
-def main(app_module: tuple[str, ...], output: Path, prefix: tuple[str, ...] | None):
+def main(
+    app_module: tuple[str, ...], output: Path, prefix: tuple[str, ...] | None
+) -> None:
     """Generate typed url_path_for functions for FastAPI applications."""
 
     log.info("starting_generation", app_modules=app_module, output=str(output))
