@@ -1,4 +1,5 @@
 ## python
+https://github.com/fastapi/sqlmodel/pull/1345 - sa_type type fix so we can remove ignores.
 https://github.com/pjg11/micro-urlopen?referrer=grok.com - url open for micro
 https://docs.basedpyright.com/v1.36.0/benefits-over-pyright/baseline/ we should use this instead of pyright?
 better configuration py module: autoload and call configure() if it exists
@@ -93,6 +94,7 @@ stabalized scrolling https://grok.com/share/bGVnYWN5_22b6f3ac-a0dc-49d5-a92a-223
 pytest-failure-tracker to track failures across test runs, if we combine this with locking
 
 ## dev
+https://honcho.readthedocs.io/en/latest/#why-did-you-port-foreman - py port of foreman
 if someone's completion system is not initialized, the bash direnv export thing will fail with `compdef not defined` sort of error
 `just direnv_export_docker '.env.production.frontend' --params` can still silently fail
 https://grok.com/share/bGVnYWN5_74eae3f3-cd3f-4465-9a8d-f7d4fc0faf45 prevent py analysis from picking up seed, console, etc files
@@ -205,7 +207,7 @@ binding for paste as plain text
 ```
 
 ## javascript
-
+- [ ] https://perfectionist.dev and https://github.com/azat-io/eslint-plugin-perfectionist
 - [ ] can't run two tanstack dev servers at once https://github.com/TanStack/devtools/issues/198 https://github.com/TanStack/query/issues/9932
 - [ ] do i need this? eslint-config-prettier
 ```
@@ -245,3 +247,13 @@ binding for paste as plain text
 ## template
 
 - [ ] would be neat to dynamically pick choices https://github.com/copier-org/copier/issues/2078
+
+## wsl bootstrap checklist
+
+- check if curl exists, DNE on debian. Required to install mise.
+- WSL uses bash by default. You have to install zsh for Just
+- mise install
+- need to skip brew package install on `just setup`
+- need environment variables before `just up`
+- `sudo apt install lsof` DNE on debian
+- on WSL you need to run `localias debug cert --install` so that certs are trusted
