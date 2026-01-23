@@ -8,7 +8,7 @@ JINJA_TEMPLATE_DIR := "app/templates"
 # create venv and install packages
 py_setup:
 	# `mise env`` will generate a venv if it DNE
-  # TODO feels like there should be a cleaner way to get mise to regenerate the venv...
+	# TODO feels like there should be a cleaner way to get mise to regenerate the venv...
 	[ -d ".venv" ] || mise env
 
 	# don't include debugging-extras on CI
