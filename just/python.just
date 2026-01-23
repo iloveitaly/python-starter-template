@@ -83,6 +83,7 @@ py_lint +FILES=".":
 		# TODO I'm surprised that ruff doesn't auto detect github... need to double check on this
 		uv tool run ruff check --output-format=github {{FILES}} || exit_code=$?
 		uv tool run ruff format --check {{FILES}} || exit_code=$?
+		uvx detect-shadowed-modules@latest || exit_code=$?
 
 		uv run pyright {{FILES}} --outputjson > pyright_report.json || exit_code=$?
 		# TODO this is a neat trick, we should use it in other places too + document
@@ -105,6 +106,7 @@ py_lint +FILES=".":
 	else
 		uv tool run ruff check {{FILES}} || exit_code=$?
 		uv run pyright {{FILES}} || exit_code=$?
+		uvx detect-shadowed-modules@latest || exit_code=$?
 		uv run j2lint --extension j2,html {{JINJA_TEMPLATE_DIR}}
 	fi
 
