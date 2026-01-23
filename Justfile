@@ -78,6 +78,7 @@ update_from_upstream_template:
 		copier update@latest --trust --skip-tasks --skip-answered --vcs-ref=HEAD \
 		--exclude web \
 		--exclude migrations/versions/ \
+		--exclude app/generated/ \
 		--exclude pyproject.toml \
 		--exclude uv.lock \
 		--exclude tests/integration/__snapshots__ \
