@@ -206,6 +206,42 @@ Some things to watch out for:
 
 <!-- link to blog post here -->
 
+### WSL Setup
+
+If you are developing on Windows using WSL (Windows Subsystem for Linux) this section is for you!
+
+WSL Debian/Ubuntu doesn't include some tools by default. Make sure yours has them installed:
+
+```bash
+  sudo apt update
+  sudo apt install -y curl zsh lsof
+```
+
+<!-- TODO: try to make localias install with mise !-->
+For localias you will have to download a GitHub binary 
+
+```
+  curl https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.43c3619/localias-linux-amd64
+  chmod +x localias-linux-amd64
+  sudo mv localias-linux-amd64 /usr/local/bin/localias
+
+  # verify 
+  localias --version
+
+  # make certs trusted
+  localias debug cert --install
+```
+
+Mise installation 
+```
+curl https://mise.run/bash | sh 
+```
+
+#### Docker
+
+For better experience it's recommended to use Docker Engine inside WSL instead of Docker Desktop. As Docker Desktop makes containers inside network inaccesable via their IP addreses.
+
+
 ## Usage
 
 The following are poorly-organized notes about various pieces of the system.
