@@ -1,6 +1,9 @@
 ## Motivation
 
-<!-- describe why we are making this change -->
+<!--
+- describe why we are making this change
+- if applicable, reference the github issue `fixed #123`
+-->
 
 ## Description
 
