@@ -7,7 +7,9 @@ JINJA_TEMPLATE_DIR := "app/templates"
 
 # create venv and install packages
 py_setup:
-	[ -d ".venv" ] || uv venv
+	# `mise env`` will generate a venv if it DNE
+  # TODO feels like there should be a cleaner way to get mise to regenerate the venv...
+	[ -d ".venv" ] || mise env
 
 	# don't include debugging-extras on CI
 	# --no-sources to allow local dev packages to be used: https://github.com/astral-sh/uv/issues/9258#issuecomment-2499541207
@@ -44,9 +46,7 @@ py_clean:
 
 
 # rebuild the venv from scratch
-py_nuke: py_clean && py_setup
-	# reload will recreate the venv and reset VIRTUAL_ENV and friends
-	direnv reload
+py_nuke: py_clean py_setup
 
 py_upgrade:
 	# https://github.com/astral-sh/uv/issues/6794

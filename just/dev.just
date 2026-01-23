@@ -9,7 +9,7 @@ PYTHON_WATCHMEDO := "uv run --with watchdog watchmedo auto-restart --directory=.
 # TODO should add an option to not run workers, this is overkill most of the time
 # start all of the services you need for development in a single terminal
 [script]
-dev: _dev_only local-alias dev_kill
+dev: _dev_only localalias dev_kill
 	just _banner_echo "Starting dev services"
 
 	# TODO we should think about the worker command a bit more...should we use the same exact command? should we generate vs hardcode?
@@ -50,7 +50,7 @@ GLOBAL_LOCALIAS_CONFIG := "~/.config/localias.yaml"
 # need `[script]` for early exit
 # run (or reload) daemon to setup local development aliases
 [script]
-local-alias: _dev_only
+localalias: _dev_only
 	# We want to support running multiple concurrent projects with different localias configs
 	# to do this, we need to use a global config, instead of simply loading from the project config.
 	# This is why we iterate over the local config and use the native `set` to update the global config.

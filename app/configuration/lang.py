@@ -96,7 +96,7 @@ def inspect_python_runtime() -> None:
 
     # TODO there are probably other keywords we should test for
     if in_venv and ("homebrew" in str(executable) or "/usr/bin/" in str(executable)):
-        log.warning(
+        log.error(
             "using venv, but interpreter is from an unexpected location",
             interpreter=executable,
         )
