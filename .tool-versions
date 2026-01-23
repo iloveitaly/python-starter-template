@@ -1,6 +1,9 @@
 # tools shared between dev and ci should be specified here. This makes it easy to specify exact versions.
 # if tools are dev only, they should be installed via brew or some other method.
 
+# exact versions should always be specified so there if something breaks, we know exactly which version
+# it used to previously work under.
+
 just 1.46.0
 direnv 2.37.1
 
