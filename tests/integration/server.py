@@ -69,6 +69,8 @@ def wait_for_termination(pid, timeout=10) -> bool:
 
 
 def wait_for_port(port: int, timeout: int = 30) -> bool:
+    "used by the server fixture to wait until the server is ready to accept connections on the specified test port, which is used by localias"
+
     import socket
 
     from tests.conftest import log
