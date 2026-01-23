@@ -43,8 +43,16 @@ PROJECT_NAME := "python-starter-template"
 # execute a command in the (nearly) exact same environment as CI
 EXECUTE_IN_TEST := "CI=true direnv exec ."
 
+default_message := """
+Here's are the commands you want to explore!
+
+- setup (and setup_debug if you are running into issues)
+- dev
+- {py,js}_test
+- upgrade
+"""
 default:
-	just --list
+	@echo "{{default_message}}"
 
 lint: js_lint py_lint db_lint
 
@@ -60,6 +68,7 @@ nuke: js_nuke py_nuke db_nuke
 update_from_upstream_template:
 	@echo "Updating project from upstream template. Remember:\n"
 	@echo "- Update skips all javascript updates"
+	@echo "- Update skips .tool-versions updates"
 	@echo "- You'll need to manually review conflicts of which there will be many"
 	@echo "- 'incoming' change in a diff is the template changes\n"
 
