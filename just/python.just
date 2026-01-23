@@ -154,9 +154,9 @@ py_test:
 	if [[ -n "${CI:-}" ]]; then
 		just _banner_echo "Building Javascript for Integration Tests"
 		just py_js-build
-	  just _banner_echo "Running Non-Integration Tests"
+		just _banner_echo "Running Non-Integration Tests"
 		uv run pytest . --verbosity=2 --ignore tests/integration {{PYTEST_COV_PARAMS}}
-	  just _banner_echo "Running Integration"
+		just _banner_echo "Running Integration"
 		uv run pytest tests/integration --verbosity=2 --cov-append {{PYTEST_COV_PARAMS}}
 	else
 		# when not running in CI, JS is built automatically
@@ -173,15 +173,17 @@ py_generate *flag:
 		just _py_generate; \
 	fi
 
-# regenerate all
+# regenerate all files, written as a helper so the file watcher can easily rerun
 _py_generate:
 	mkdir -p app/generated
 
-	# python types for react router routes
-	uvx react-router-routes@latest app/generated/react_router_routes.py --directory {{WEB_DIR}}
+	# generate typed python routes from react-router routes
+	mise exec -- uvx react-router-routes@latest --verbose \
+		app/generated/react_router_routes.py \
+		--directory {{WEB_DIR}}
 
-	# typed routes from fastapi routes to replace `url_for`
-	uv run app/cli/generate_typed_routes.py \
+	# generate typed fastapi routes, for python, from the fastapi app
+	uv run -m app.cli.generate_typed_routes \
 		--app-module app.server:api_app \
 		--output app/generated/fastapi_typed_routes.py
 

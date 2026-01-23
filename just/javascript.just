@@ -121,29 +121,3 @@ js_shadcn *arguments:
 
 js_shadcn_upgrade:
 	just js_shadcn diff
-
-JAVASCRIPT_PACKAGE_JSON := WEB_DIR / "package.json"
-
-# update package.json engines to match the current versions in .tool-versions
-[script]
-_js_sync-engine-versions: _dev_only
-	NODE_VERSION=$(cd {{WEB_DIR}} && mise list --current --json | jq -r ".node[0].version")
-	PNPM_VERSION=$(cd {{WEB_DIR}} && pnpm -v)
-
-	# jq does not have edit in place
-	# https://stackoverflow.com/questions/36565295/jq-to-replace-text-directly-on-file-like-sed-i
-	tmp_package=$(mktemp)
-
-	# >= vs ^ or ~ can cause weird compatibility issues such as:
-	#   https://community.render.com/t/issue-with-deploy/26570/7
-	# Always take a conservative approach with javascript system versions.
-
-	jq "
-		. + {
-			engines: {
-				node: \"^$NODE_VERSION\",
-				pnpm: \"^$PNPM_VERSION\"
-			}
-	}" "{{JAVASCRIPT_PACKAGE_JSON}}" > "$tmp_package"
-
-	mv "$tmp_package" "{{JAVASCRIPT_PACKAGE_JSON}}"
