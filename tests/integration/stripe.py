@@ -6,7 +6,7 @@ from typing import Any
 
 from playwright.sync_api import Page, expect
 
-from tests.integration.utils import safely_scroll_then_click
+from .utils import safely_scroll_then_click
 
 
 # removed old card_number version, only card_type version remains

@@ -3,12 +3,13 @@ from playwright.sync_api import Page, expect
 from app.models.user import User
 
 from tests.constants import CLERK_DEV_USER_PASSWORD
-from tests.integration.clerk import (
+
+from .clerk import (
     clerk_test_email,
     setup_clerk_testing_token,
 )
-from tests.integration.server import home_url
-from tests.integration.utils import login_as_dev_user, wait_for_loading
+from .server import home_url
+from .utils import login_as_dev_user, wait_for_loading
 
 
 def test_signin(server, page: Page, assert_snapshot) -> None:

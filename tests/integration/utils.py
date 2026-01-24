@@ -5,9 +5,10 @@ from app import log
 from app.models.user import User
 
 from tests.constants import LONG_INTEGRATION_TEST_TIMEOUT
-from tests.integration.clerk import setup_clerk_testing_token
-from tests.integration.server import home_url
 from tests.routes.utils import get_clerk_dev_user
+
+from .clerk import setup_clerk_testing_token
+from .server import home_url
 
 # TODO scroll to bottom?
 # page.evaluate("window.scrollTo(0, document.body.scrollHeight)")

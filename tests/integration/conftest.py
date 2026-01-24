@@ -6,8 +6,8 @@ import pytest
 
 from app import log
 
-from tests.integration.javascript_build import start_js_build
-from tests.integration.server import (  # noqa: F401
+from .javascript_build import start_js_build
+from .server import (  # noqa: F401
     report_localias_status,
     # IMPORTANT `server` is a fixture and this important exposes it to the tests
     server,
