@@ -103,6 +103,7 @@ dev = [
     "flexmock>=0.12.2",
     "polyfactory>=2.20.0",
     "squawk-cli>=2.33.2",
+    "detect-shadowed-modules>=0.1.0",
 ]
 
 # this eliminates the need for `editable_mode = "strict"` and other config that was previously required
@@ -219,3 +220,6 @@ rev = "exclude-tests"
 
 [tool.uv.sources.activemodel]
 git = "https://github.com/iloveitaly/activemodel.git"
+
+[tool.uv.sources.beautiful-traceback]
+git = "https://github.com/iloveitaly/beautiful-traceback.git"
