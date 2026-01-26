@@ -1,8 +1,14 @@
 # fmt: off
 
+import os
+
+# without importing the full alembic library, which would create
+# an additional very unintuitive runtime dependency, we cannot determine
+# if we are "in" an alembic migration or not. This ENV var let's us do this.
+os.environ["ALEMBIC_MIGRATION"] = "true"
+
 import hashlib
 from logging.config import fileConfig
-import os
 
 from sqlalchemy import engine_from_config, text
 from sqlalchemy import pool
@@ -110,6 +116,7 @@ def run_migrations_online() -> None:
 
 
 if context.is_offline_mode():
+    # `alembic check` is an example of when offline mode is used
     run_migrations_offline()
 else:
     run_migrations_online()
