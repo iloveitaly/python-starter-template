@@ -79,7 +79,7 @@ def is_alembic_migration():
     Alembic makes a proxy to the current EnvironmentContext available as alembic.context only during migration execution.
     """
     try:
-        import alembic.context
+        import alembic.context  # noqa: F401
 
         return True
     except ImportError:
