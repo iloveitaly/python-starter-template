@@ -121,8 +121,7 @@ _mise_upgrade target_dir="": _dev_only
 	# TODO https://discord.com/channels/1066429325269794907/1314301006992900117/1316773799688933406
 	mise install
 
-	git add .tool-versions {{WEB_DIR}}/mise.toml
-
+	git add .tool-versions
 
 # sync the mise version to github actions yaml
 _mise_gha_version_sync: _dev_only
@@ -133,8 +132,9 @@ _mise_gha_version_sync: _dev_only
 
 # sync the parent/root pnpm + node version to the web subdirectory for railpack
 _mise_web_version_sync: _dev_only
-	# This reads the current versions from the parent and applies them to the subdir
-	cd {{WEB_DIR}} && mise use node@$(mise current node) pnpm@$(mise current pnpm)
+	# reads the current versions from the parent and applies them to the subdir
+	mise --cd {{WEB_DIR}} use node@$(mise current node) pnpm@$(mise current pnpm)
+	git add {{WEB_DIR}}/mise.toml
 
 JAVASCRIPT_PACKAGE_JSON := WEB_DIR / "package.json"
 
@@ -163,7 +163,7 @@ _js_sync-engine-versions: _dev_only
 	mv "$tmp_package" "{{JAVASCRIPT_PACKAGE_JSON}}"
 
 # upgrade mise, language versions, and essential packages
-tooling_upgrade: _dev_only && _mise_upgrade _js_sync-engine-versions _mise_web_version_sync _mise_gha_version_sync
+tooling_upgrade: _dev_only && _mise_upgrade _mise_web_version_sync _js_sync-engine-versions _mise_gha_version_sync
 	mise self-update --yes
 	mise upgrade
 
