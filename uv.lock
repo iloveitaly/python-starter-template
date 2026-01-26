@@ -2450,16 +2450,13 @@ wheels = [
 
 [[package]]
 name = "pytest-playwright-visual-snapshot"
-version = "0.2.4"
-source = { registry = "https://pypi.org/simple" }
+version = "0.3.1"
+source = { git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git#ad261b2adf50390840cde6930114029210c71163" }
 dependencies = [
     { name = "pillow" },
     { name = "pixelmatch" },
     { name = "pytest-playwright" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/58/17/30950fbf944dd7cfda511e29483addb8e9ae42acecd803c85b5952b258dc/pytest_playwright_visual_snapshot-0.2.4.tar.gz", hash = "sha256:efa0361795437683de57cd7bdb8c1615190b5c9cba059b4cee912bd7b57a5f85", size = 77766, upload-time = "2025-11-04T18:51:59.007Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/cb/a3/5a25438d115397685b2cb440582372706c93f0123de42e87f85549e00165/pytest_playwright_visual_snapshot-0.2.4-py3-none-any.whl", hash = "sha256:9c27c933053fa832f89eda9d9207a74604f08fb14d37af2e21c08d21b45a4886", size = 6368, upload-time = "2025-11-04T18:51:57.869Z" },
+    { name = "structlog-config" },
 ]
 
 [[package]]
@@ -2777,7 +2774,7 @@ dev = [
     { name = "pytest-github-actions-annotate-failures", specifier = ">=0.2.0" },
     { name = "pytest-httpx", specifier = ">=0.35.0" },
     { name = "pytest-playwright", specifier = ">=0.6.2" },
-    { name = "pytest-playwright-visual-snapshot" },
+    { name = "pytest-playwright-visual-snapshot", git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git" },
     { name = "pytest-sugar", specifier = ">=1.0.0" },
     { name = "pytest-timer", extras = ["termcolor"], specifier = ">=1.0.0" },
     { name = "ruff", specifier = ">=0.7.1" },
