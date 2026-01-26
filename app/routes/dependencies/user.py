@@ -14,16 +14,21 @@ def inject_user_record(request: Request):
     """
 
     clerk_id = request.state.auth_state.payload["sub"]
-    # TODO need to upsert to avoid rate condition on first load
-    user = User.find_or_create_by(clerk_id=clerk_id)
+    # upsert to avoid race condition on first load
+    user = User.upsert(
+        data={
+            "clerk_id": clerk_id,
+            "last_active_at": datetime.now(),
+            # upsert does not automatically update timestamps
+            "updated_at": datetime.now(),
+        },
+        unique_by="clerk_id",
+    )
 
     if user.deleted_at:
         raise HTTPException(
             status_code=status.HTTP_410_GONE, detail="Your Account has Been Disabled"
         )
-
-    user.last_active_at = datetime.now()
-    user.save()
 
     request.state.user = user
 
