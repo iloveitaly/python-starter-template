@@ -26,7 +26,7 @@ runs:
           DIRENV_DIR, PYTHON_TEST_SERVER_HOST, JAVASCRIPT_SERVER_HOST, VITE_PYTHON_URL, OPENAPI_JSON_PATH, TMP_DIRECTORY, PLAYWRIGHT_RESULT_DIRECTORY, TEST_RESULTS_DIRECTORY, VIRTUAL_ENV, PATH, PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY, TZ, VIRTUAL_ENV, PYTHONPYCACHEPREFIX
 
     # cache node_modules
-    - uses: actions/cache@v4
+    - uses: actions/cache@v5
       with:
         path: web/node_modules
         key: ${{ runner.os }}-node-modules-${{ hashFiles('web/pnpm-lock.yaml') }}
