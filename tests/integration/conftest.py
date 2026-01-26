@@ -14,6 +14,9 @@ from .server import (  # noqa: F401
     terminate_server,
 )
 
+# ensures we get left/right diffs for user creation assertions
+pytest.register_assert_rewrite("tests.integration.utils")
+
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):

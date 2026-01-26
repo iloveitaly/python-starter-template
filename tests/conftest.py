@@ -37,10 +37,10 @@ from pytest import Config, FixtureRequest
 import app.models  # noqa: F401
 from app.celery import celery_app
 from app.configuration.redis import get_redis
+from app.environments import is_local_testing
 
 from .constants import TEST_RESULTS_DIRECTORY
 from .log import log
-
 # add any local plugins here
 # pytest_plugins = ["tests.plugins.improved_playwright_failures"]
 pytest_plugins = []
@@ -91,6 +91,9 @@ def pytest_configure(config: Config):
     config.option.enable_beautiful_traceback_local_stack_only = decouple_config(
         "BEAUTIFUL_TRACEBACK_LOCAL_ONLY", default=False, cast=bool
     )
+
+    # disable visual assertions when running locally
+    config.option.playwright_visual_disable_snapshots = is_local_testing()
 
     config.option.playwright_visual_snapshots_path = decouple_config(
         "PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY", cast=Path

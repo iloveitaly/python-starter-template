@@ -1,3 +1,5 @@
+import time
+
 from playwright.sync_api import Locator, Page
 
 from app import log
@@ -113,6 +115,25 @@ def login_as_dev_user(page: Page):
 
     page.get_by_label("Password", exact=True).fill(password)
     page.get_by_role("button", name="Continue").click()
+
+    # depending on clerk configuration, we may need to enter OTP
+    # "Enter verification code" is the aria-label and not visible on page
+    otp_input = page.get_by_label("Enter verification code", exact=True)
+    try:
+        otp_input.wait_for(state="visible", timeout=2_500)
+        otp_input.press_sequentially(
+            # slowly type the verification code, it's one single input
+            "424242",
+            delay=100,
+        )
+
+        # there is not button that triggers submission, it auto-submits on complete input
+        # we need to ensure the loading states are reset before moving on, otherwise we won't be on the next page when
+        # so we wait for the OTP field to dissapear
+        otp_input.wait_for(state="detached", timeout=LONG_INTEGRATION_TEST_TIMEOUT)
+    except Exception:
+        # TODO we should have a more scoped exception here
+        pass
 
     wait_for_loading(page)
 
