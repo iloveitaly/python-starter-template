@@ -86,6 +86,10 @@ db_open: _dev_only
 db_play: _dev_only
 	uvx pgcli@latest $DATABASE_URL
 
+# run all migration "scripts" which are a unique concept to this application
+_db_migrate_scripts: _not_production
+	fd --type=f . migrations/scripts/ | sort | xargs uv run python
+
 # run migrations on dev and test
 db_migrate: _not_production
 	# if this folder is wiped, you'll get a strange error from alembic
@@ -100,7 +104,11 @@ db_migrate: _not_production
 
 	uv run alembic upgrade head
 
-	[ -n "${CI:-}" ] || (just _banner_echo "Migrating Test Database" && {{EXECUTE_IN_TEST}} uv run alembic upgrade head)
+	[ -n "${CI:-}" ] || ( \
+		just _banner_echo "Migrating Test Database" && \
+		{{EXECUTE_IN_TEST}} uv run alembic upgrade head && \
+		{{EXECUTE_IN_TEST}} just _db_migrate_scripts \
+	)
 
 # quickly reset the entire database, migrate, seed, *and* sync database state to what the latest model configuration is
 db_migrate_head: _dev_only
