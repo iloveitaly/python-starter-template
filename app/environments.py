@@ -76,11 +76,7 @@ def is_pytest():
 
 def is_alembic_migration():
     """
-    Alembic makes a proxy to the current EnvironmentContext available as alembic.context only during migration execution.
+    Returns True if the code is running inside an active Alembic migration process.
     """
-    try:
-        import alembic.context  # noqa: F401
 
-        return True
-    except ImportError:
-        return False
+    return os.environ.get("ALEMBIC_MIGRATION", "false").lower() == "true"
