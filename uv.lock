@@ -258,11 +258,11 @@ wheels = [
 
 [[package]]
 name = "cachetools"
-version = "6.2.5"
+version = "6.2.6"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/86/e7/18ea2907d2ca91e9c0697596b8e60cd485b091152eb4109fad1e468e457d/cachetools-6.2.5.tar.gz", hash = "sha256:6d8bfbba1ba94412fb9d9196c4da7a87e9d4928fffc5e93542965dca4740c77f", size = 32168, upload-time = "2026-01-25T14:57:40.349Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/39/91/d9ae9a66b01102a18cd16db0cf4cd54187ffe10f0865cc80071a4104fbb3/cachetools-6.2.6.tar.gz", hash = "sha256:16c33e1f276b9a9c0b49ab5782d901e3ad3de0dd6da9bf9bcd29ac5672f2f9e6", size = 32363, upload-time = "2026-01-27T20:32:59.956Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e3/a6/24169d70ec5264b65ba54ba49b3d10f46d6b1ad97e185c94556539b3dfc8/cachetools-6.2.5-py3-none-any.whl", hash = "sha256:db3ae5465e90befb7c74720dd9308d77a09b7cf13433570e07caa0845c30d5fe", size = 11553, upload-time = "2026-01-25T14:57:39.112Z" },
+    { url = "https://files.pythonhosted.org/packages/90/45/f458fa2c388e79dd9d8b9b0c99f1d31b568f27388f2fdba7bb66bbc0c6ed/cachetools-6.2.6-py3-none-any.whl", hash = "sha256:8c9717235b3c651603fff0076db52d6acbfd1b338b8ed50256092f7ce9c85bda", size = 11668, upload-time = "2026-01-27T20:32:58.527Z" },
 ]
 
 [[package]]
@@ -1050,6 +1050,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/53/e4/203a76fa2ef46cdb0a618295cc115220cbb874229d4d8721068335eb87f0/furl-2.1.4.tar.gz", hash = "sha256:877657501266c929269739fb5f5980534a41abd6bbabcb367c136d1d3b2a6015", size = 57526, upload-time = "2025-03-09T05:36:21.175Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/61/8c/dce3b1b7593858eba995b2dfdb833f872c7f863e3da92aab7128a6b11af4/furl-2.1.4-py2.py3-none-any.whl", hash = "sha256:da34d0b34e53ffe2d2e6851a7085a05d96922b5b578620a37377ff1dbeeb11c8", size = 27550, upload-time = "2025-03-09T05:36:19.928Z" },
+]
+
+[[package]]
+name = "generate-fastapi-typed-routes"
+version = "0.3.0"
+source = { git = "https://github.com/iloveitaly/generate-fastapi-typed-routes.git#ab7bb48ec65e9482bd1864fc0392b17fe222d666" }
+dependencies = [
+    { name = "click" },
+    { name = "fastapi" },
+    { name = "jinja2" },
+    { name = "pydantic" },
+    { name = "structlog-config" },
 ]
 
 [[package]]
@@ -2594,6 +2606,7 @@ dependencies = [
     { name = "flower" },
     { name = "funcy-pipe" },
     { name = "furl" },
+    { name = "generate-fastapi-typed-routes" },
     { name = "ipython" },
     { name = "ipython-playground" },
     { name = "itsdangerous" },
@@ -2658,6 +2671,7 @@ dev = [
     { name = "detect-shadowed-modules" },
     { name = "djlint" },
     { name = "flexmock" },
+    { name = "generate-fastapi-typed-routes" },
     { name = "gitignore-parser" },
     { name = "ipython" },
     { name = "j2lint" },
@@ -2673,6 +2687,7 @@ dev = [
     { name = "pytest-playwright-visual-snapshot" },
     { name = "pytest-sugar" },
     { name = "pytest-timer", extra = ["termcolor"] },
+    { name = "react-router-routes" },
     { name = "ruff" },
     { name = "squawk-cli" },
 ]
@@ -2698,6 +2713,7 @@ requires-dist = [
     { name = "flower", git = "https://github.com/iloveitaly/flower?rev=custom" },
     { name = "funcy-pipe", specifier = ">=0.11.1" },
     { name = "furl", specifier = ">=2.1.4" },
+    { name = "generate-fastapi-typed-routes", git = "https://github.com/iloveitaly/generate-fastapi-typed-routes.git" },
     { name = "ipython", specifier = ">=8.28.0" },
     { name = "ipython-playground", specifier = ">=0.3.0" },
     { name = "itsdangerous", specifier = ">=2.2.0" },
@@ -2762,6 +2778,7 @@ dev = [
     { name = "detect-shadowed-modules", specifier = ">=0.1.0" },
     { name = "djlint", git = "https://github.com/iloveitaly/djLint.git?rev=github-output" },
     { name = "flexmock", specifier = ">=0.12.2" },
+    { name = "generate-fastapi-typed-routes", git = "https://github.com/iloveitaly/generate-fastapi-typed-routes.git" },
     { name = "gitignore-parser", specifier = ">=0.1.11" },
     { name = "ipython", specifier = ">=8.28.0" },
     { name = "j2lint", specifier = ">=1.1.0" },
@@ -2777,6 +2794,7 @@ dev = [
     { name = "pytest-playwright-visual-snapshot", git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git" },
     { name = "pytest-sugar", specifier = ">=1.0.0" },
     { name = "pytest-timer", extras = ["termcolor"], specifier = ">=1.0.0" },
+    { name = "react-router-routes", git = "https://github.com/iloveitaly/react-router-routes.git" },
     { name = "ruff", specifier = ">=0.7.1" },
     { name = "squawk-cli", specifier = ">=2.33.2" },
 ]
@@ -2843,6 +2861,16 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/da/92/1446574745d74df0c92e6aa4a7b0b3130706a4142b2d1a5869f2eaa423c6/pyyaml-6.0.3-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:16249ee61e95f858e83976573de0f5b2893b3677ba71c9dd36b9cf8be9ac6d65", size = 829923, upload-time = "2025-09-25T21:32:54.537Z" },
     { url = "https://files.pythonhosted.org/packages/f0/7a/1c7270340330e575b92f397352af856a8c06f230aa3e76f86b39d01b416a/pyyaml-6.0.3-cp314-cp314t-win_amd64.whl", hash = "sha256:4ad1906908f2f5ae4e5a8ddfce73c320c2a1429ec52eafd27138b7f1cbe341c9", size = 174062, upload-time = "2025-09-25T21:32:55.767Z" },
     { url = "https://files.pythonhosted.org/packages/f1/12/de94a39c2ef588c7e6455cfbe7343d3b2dc9d6b6b2f40c4c6565744c873d/pyyaml-6.0.3-cp314-cp314t-win_arm64.whl", hash = "sha256:ebc55a14a21cb14062aa4162f906cd962b28e2e9ea38f9b4391244cd8de4ae0b", size = 149341, upload-time = "2025-09-25T21:32:56.828Z" },
+]
+
+[[package]]
+name = "react-router-routes"
+version = "0.4.1"
+source = { git = "https://github.com/iloveitaly/react-router-routes.git#f0e887191350572fc26da2d39fd23af60173a839" }
+dependencies = [
+    { name = "jinja2" },
+    { name = "structlog-config" },
+    { name = "typer" },
 ]
 
 [[package]]

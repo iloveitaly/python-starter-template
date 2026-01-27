@@ -49,6 +49,7 @@ dependencies = [
     "usaddress>=0.5.16",
     "facebook-business>=23.0.1",
     "beautiful-traceback>=0.3.0",
+    "generate-fastapi-typed-routes",
 ]
 
 [dependency-groups]
@@ -104,6 +105,8 @@ dev = [
     "polyfactory>=2.20.0",
     "squawk-cli>=2.33.2",
     "detect-shadowed-modules>=0.1.0",
+    "generate-fastapi-typed-routes>=0.3.0",
+    "react-router-routes>=0.4.0",
 ]
 
 # this eliminates the need for `editable_mode = "strict"` and other config that was previously required
@@ -195,11 +198,15 @@ asyncio_default_fixture_loop_scope = "function"
 
 # https://coverage.readthedocs.io/en/latest/config.html#run-data-file
 [tool.coverage.run]
+omit = ["tests/*", "migrations/*"]
 # data_file = "tmp/test-results/.coverage"
 
 [tool.uv.sources]
 flower = { git = "https://github.com/iloveitaly/flower", rev = "custom" }
 ipdb = { git = "https://github.com/iloveitaly/ipdb", rev = "support-executables" }
+
+[tool.uv.sources.generate-fastapi-typed-routes]
+git = "https://github.com/iloveitaly/generate-fastapi-typed-routes.git"
 
 [tool.uv.sources.djlint]
 git = "https://github.com/iloveitaly/djLint.git"
@@ -226,3 +233,6 @@ git = "https://github.com/iloveitaly/beautiful-traceback.git"
 
 [tool.uv.sources.pytest-playwright-visual-snapshot]
 git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git"
+
+[tool.uv.sources.react-router-routes]
+git = "https://github.com/iloveitaly/react-router-routes.git"

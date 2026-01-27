@@ -179,13 +179,16 @@ py_generate *flag:
 _py_generate:
 	mkdir -p app/generated
 
+	# TODO may be able to use uvx in the future, but uv run for now has eliminated
+
 	# generate typed python routes from react-router routes
-	mise exec -- uvx react-router-routes@latest --verbose \
+	# `mise exec` is required for the pnpm execution
+	mise exec -- uv run react-router-routes \
 		app/generated/react_router_routes.py \
 		--directory {{WEB_DIR}}
 
 	# generate typed fastapi routes, for python, from the fastapi app
-	uv run -m app.cli.generate_typed_routes \
+	LOG_LEVEL=ERROR uv run generate-fastapi-typed-routes \
 		--app-module app.server:api_app \
 		--output app/generated/fastapi_typed_routes.py
 

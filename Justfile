@@ -75,7 +75,8 @@ update_from_upstream_template:
 	@just _banner_echo "Running Upgrade From Template"
 
 	uv tool run --with jinja2_shell_extension \
-		copier update@latest --trust --skip-tasks --skip-answered --vcs-ref=HEAD \
+		copier update@latest update \
+		--trust --skip-tasks --skip-answered --vcs-ref=HEAD \
 		--exclude web \
 		--exclude migrations/versions/ \
 		--exclude app/generated/ \

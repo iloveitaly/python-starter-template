@@ -101,12 +101,15 @@ db_migrate: _not_production
 		{{DOCKER_POSTGRES}} psql "$DATABASE_URL"
 
 	@just _banner_echo "Migrating Database"
-
 	uv run alembic upgrade head
+
+	@just _banner_echo "Running Migration Scripts"
+	just _db_migrate_scripts
 
 	[ -n "${CI:-}" ] || ( \
 		just _banner_echo "Migrating Test Database" && \
 		{{EXECUTE_IN_TEST}} uv run alembic upgrade head && \
+		just _banner_echo "Running Migration Scripts" && \
 		{{EXECUTE_IN_TEST}} just _db_migrate_scripts \
 	)
 
