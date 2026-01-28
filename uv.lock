@@ -1054,7 +1054,7 @@ wheels = [
 
 [[package]]
 name = "generate-fastapi-typed-routes"
-version = "0.3.1"
+version = "0.3.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -1063,9 +1063,9 @@ dependencies = [
     { name = "pydantic" },
     { name = "structlog-config" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/60/eb/fec99c794ee497b9a5e7e399f7c5b654874a10817f4f085cec2dbf74c1a5/generate_fastapi_typed_routes-0.3.1.tar.gz", hash = "sha256:b52e8a93a533bc56d0aad0edbe967ff65bdf00b332faf78fb830cd2dde396887", size = 4860, upload-time = "2026-01-27T22:24:22.995Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e7/a4/934774607e929e23ea97cd38d291694d64f994944e23f6356517206bc4d8/generate_fastapi_typed_routes-0.3.2.tar.gz", hash = "sha256:402d537570f332963beb0d69518bad3c590fa985b842975634ab767a62908630", size = 4060, upload-time = "2026-01-28T17:48:50.677Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6d/bc/5ad5c58437916388503ba6e1b5f02650e632a40ce327eb8c201c29248c18/generate_fastapi_typed_routes-0.3.1-py3-none-any.whl", hash = "sha256:97e10f24f3a91cd2b4e3fd888d115b642c1aae6703c7502a1db65e16ce52f092", size = 5955, upload-time = "2026-01-27T22:24:23.734Z" },
+    { url = "https://files.pythonhosted.org/packages/bc/8a/341044a5f4456a9286cff4cf9fe4470810b4f693bad56b865b573211dc10/generate_fastapi_typed_routes-0.3.2-py3-none-any.whl", hash = "sha256:fcf3048491da1faf729a075a310b7b14ee15256ca353caf789efe88818391c9b", size = 5130, upload-time = "2026-01-28T17:48:49.871Z" },
 ]
 
 [[package]]
@@ -2610,7 +2610,6 @@ dependencies = [
     { name = "flower" },
     { name = "funcy-pipe" },
     { name = "furl" },
-    { name = "generate-fastapi-typed-routes" },
     { name = "ipython" },
     { name = "ipython-playground" },
     { name = "itsdangerous" },
@@ -2717,7 +2716,6 @@ requires-dist = [
     { name = "flower", git = "https://github.com/iloveitaly/flower?rev=custom" },
     { name = "funcy-pipe", specifier = ">=0.11.1" },
     { name = "furl", specifier = ">=2.1.4" },
-    { name = "generate-fastapi-typed-routes" },
     { name = "ipython", specifier = ">=8.28.0" },
     { name = "ipython-playground", specifier = ">=0.3.0" },
     { name = "itsdangerous", specifier = ">=2.2.0" },
@@ -2782,7 +2780,7 @@ dev = [
     { name = "detect-shadowed-modules", specifier = ">=0.1.0" },
     { name = "djlint", git = "https://github.com/iloveitaly/djLint.git?rev=github-output" },
     { name = "flexmock", specifier = ">=0.12.2" },
-    { name = "generate-fastapi-typed-routes", specifier = ">=0.3.0" },
+    { name = "generate-fastapi-typed-routes", specifier = ">=0.3.2" },
     { name = "gitignore-parser", specifier = ">=0.1.11" },
     { name = "ipython", specifier = ">=8.28.0" },
     { name = "j2lint", specifier = ">=1.1.0" },
