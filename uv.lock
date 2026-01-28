@@ -219,10 +219,14 @@ wheels = [
 
 [[package]]
 name = "beautiful-traceback"
-version = "0.3.0"
-source = { git = "https://github.com/iloveitaly/beautiful-traceback.git#c5c8eb2614e7e78230dd653d1b20510bf63e8269" }
+version = "0.4.0"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorama" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/05/49/5a322c146cfae7b8b18a1de508703f96984b49b9308b295693d7c82ac812/beautiful_traceback-0.4.0.tar.gz", hash = "sha256:35059ed53beecae91be9202ed45ae817f8cc27580d580f8491842ab8679cc040", size = 14070, upload-time = "2026-01-28T18:02:37.762Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3f/75/f9ddacd0db9ade9063302ce49503b4821d2009212ab5390a8d5b8d6b7490/beautiful_traceback-0.4.0-py3-none-any.whl", hash = "sha256:fb3110350746887f2603ea3e6152fecfa1844fffb726c32e5ce883dfebfdc2e5", size = 17936, upload-time = "2026-01-28T18:02:36.44Z" },
 ]
 
 [[package]]
@@ -2384,6 +2388,22 @@ redis = [
 ]
 
 [[package]]
+name = "pytest-celery-utils"
+version = "0.1.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "celery" },
+    { name = "kombu" },
+    { name = "pytest" },
+    { name = "redis" },
+    { name = "structlog-config" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/14/dc/b61595979f0a468ec9196cdff18f2b1a279259931d51407cfc39c0a04ceb/pytest_celery_utils-0.1.2.tar.gz", hash = "sha256:08f20558ea980a99bbc69ed57be2a7b0505ed8b3630b0b14c0428663c6d69028", size = 3603, upload-time = "2026-01-28T18:00:48.361Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3b/9c/57aa7769b0c35e7586d95fa149aa86c6dd1163532dbf511902bf0191cc4e/pytest_celery_utils-0.1.2-py3-none-any.whl", hash = "sha256:79b8776ad5e2518552f031fa73dfd8f34fa283dc4d4ecd721ac60cccb98f2c91", size = 4552, upload-time = "2026-01-28T18:00:47.095Z" },
+]
+
+[[package]]
 name = "pytest-cov"
 version = "7.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2467,12 +2487,16 @@ wheels = [
 [[package]]
 name = "pytest-playwright-visual-snapshot"
 version = "0.4.0"
-source = { git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git#47abe7e7ecca42353460bc22d2fc52a84d92a85e" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pillow" },
     { name = "pixelmatch" },
     { name = "pytest-playwright" },
     { name = "structlog-config" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/0b/b4/c5bd1c47186c228aab68b2f7f56b38b090e9c217ccc5ed08fe1170bb1f30/pytest_playwright_visual_snapshot-0.4.0.tar.gz", hash = "sha256:f07f146b05bc6186db9b54ea2c72d072e7230a749be71e19dd02ce232af98d22", size = 6824, upload-time = "2026-01-26T22:40:26.031Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/51/d4/88938c9931e4f22b85ae689fe0a18f7f50b490341b83fdd98140b1714b48/pytest_playwright_visual_snapshot-0.4.0-py3-none-any.whl", hash = "sha256:39e278075f00104852aa75a92f8ca3f01842d1833b333fff296bbd21ecf93d41", size = 7890, upload-time = "2026-01-26T22:40:25.202Z" },
 ]
 
 [[package]]
@@ -2683,6 +2707,7 @@ dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "pytest-celery", extra = ["redis"] },
+    { name = "pytest-celery-utils" },
     { name = "pytest-cov" },
     { name = "pytest-github-actions-annotate-failures" },
     { name = "pytest-httpx" },
@@ -2702,7 +2727,7 @@ requires-dist = [
     { name = "alembic", specifier = ">=1.14.0" },
     { name = "alembic-postgresql-enum", specifier = ">=1.6.1" },
     { name = "backoff", specifier = ">=2.2.1" },
-    { name = "beautiful-traceback", git = "https://github.com/iloveitaly/beautiful-traceback.git" },
+    { name = "beautiful-traceback", specifier = ">=0.3.0" },
     { name = "cachetools", specifier = ">=5.5.1" },
     { name = "celery", extras = ["redis"], specifier = ">=5.4.0" },
     { name = "celery-healthcheck", specifier = ">=0.1.1" },
@@ -2789,11 +2814,12 @@ dev = [
     { name = "pytest", specifier = ">=8.3.3" },
     { name = "pytest-asyncio", specifier = ">=1.2.0" },
     { name = "pytest-celery", extras = ["redis"], specifier = ">=1.1.3" },
+    { name = "pytest-celery-utils", specifier = ">=0.1.2" },
     { name = "pytest-cov", specifier = ">=6.0.0" },
     { name = "pytest-github-actions-annotate-failures", specifier = ">=0.2.0" },
     { name = "pytest-httpx", specifier = ">=0.35.0" },
     { name = "pytest-playwright", specifier = ">=0.6.2" },
-    { name = "pytest-playwright-visual-snapshot", git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git" },
+    { name = "pytest-playwright-visual-snapshot" },
     { name = "pytest-sugar", specifier = ">=1.0.0" },
     { name = "pytest-timer", extras = ["termcolor"], specifier = ">=1.0.0" },
     { name = "react-router-routes", specifier = ">=0.4.0" },
