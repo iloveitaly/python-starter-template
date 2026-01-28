@@ -205,9 +205,6 @@ omit = ["tests/*", "migrations/*"]
 flower = { git = "https://github.com/iloveitaly/flower", rev = "custom" }
 ipdb = { git = "https://github.com/iloveitaly/ipdb", rev = "support-executables" }
 
-[tool.uv.sources.generate-fastapi-typed-routes]
-git = "https://github.com/iloveitaly/generate-fastapi-typed-routes.git"
-
 [tool.uv.sources.djlint]
 git = "https://github.com/iloveitaly/djLint.git"
 rev = "github-output"
@@ -234,5 +231,3 @@ git = "https://github.com/iloveitaly/beautiful-traceback.git"
 [tool.uv.sources.pytest-playwright-visual-snapshot]
 git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git"
 
-[tool.uv.sources.react-router-routes]
-git = "https://github.com/iloveitaly/react-router-routes.git"

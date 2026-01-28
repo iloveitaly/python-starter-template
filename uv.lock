@@ -1055,13 +1055,17 @@ wheels = [
 [[package]]
 name = "generate-fastapi-typed-routes"
 version = "0.3.1"
-source = { git = "https://github.com/iloveitaly/generate-fastapi-typed-routes.git#734b2a84f4d241cdef67cbbd639cd25d283aef7d" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "fastapi" },
     { name = "jinja2" },
     { name = "pydantic" },
     { name = "structlog-config" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/60/eb/fec99c794ee497b9a5e7e399f7c5b654874a10817f4f085cec2dbf74c1a5/generate_fastapi_typed_routes-0.3.1.tar.gz", hash = "sha256:b52e8a93a533bc56d0aad0edbe967ff65bdf00b332faf78fb830cd2dde396887", size = 4860, upload-time = "2026-01-27T22:24:22.995Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/6d/bc/5ad5c58437916388503ba6e1b5f02650e632a40ce327eb8c201c29248c18/generate_fastapi_typed_routes-0.3.1-py3-none-any.whl", hash = "sha256:97e10f24f3a91cd2b4e3fd888d115b642c1aae6703c7502a1db65e16ce52f092", size = 5955, upload-time = "2026-01-27T22:24:23.734Z" },
 ]
 
 [[package]]
@@ -2713,7 +2717,7 @@ requires-dist = [
     { name = "flower", git = "https://github.com/iloveitaly/flower?rev=custom" },
     { name = "funcy-pipe", specifier = ">=0.11.1" },
     { name = "furl", specifier = ">=2.1.4" },
-    { name = "generate-fastapi-typed-routes", git = "https://github.com/iloveitaly/generate-fastapi-typed-routes.git" },
+    { name = "generate-fastapi-typed-routes" },
     { name = "ipython", specifier = ">=8.28.0" },
     { name = "ipython-playground", specifier = ">=0.3.0" },
     { name = "itsdangerous", specifier = ">=2.2.0" },
@@ -2778,7 +2782,7 @@ dev = [
     { name = "detect-shadowed-modules", specifier = ">=0.1.0" },
     { name = "djlint", git = "https://github.com/iloveitaly/djLint.git?rev=github-output" },
     { name = "flexmock", specifier = ">=0.12.2" },
-    { name = "generate-fastapi-typed-routes", git = "https://github.com/iloveitaly/generate-fastapi-typed-routes.git" },
+    { name = "generate-fastapi-typed-routes", specifier = ">=0.3.0" },
     { name = "gitignore-parser", specifier = ">=0.1.11" },
     { name = "ipython", specifier = ">=8.28.0" },
     { name = "j2lint", specifier = ">=1.1.0" },
@@ -2794,7 +2798,7 @@ dev = [
     { name = "pytest-playwright-visual-snapshot", git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git" },
     { name = "pytest-sugar", specifier = ">=1.0.0" },
     { name = "pytest-timer", extras = ["termcolor"], specifier = ">=1.0.0" },
-    { name = "react-router-routes", git = "https://github.com/iloveitaly/react-router-routes.git" },
+    { name = "react-router-routes", specifier = ">=0.4.0" },
     { name = "ruff", specifier = ">=0.7.1" },
     { name = "squawk-cli", specifier = ">=2.33.2" },
 ]
@@ -2866,11 +2870,15 @@ wheels = [
 [[package]]
 name = "react-router-routes"
 version = "0.4.1"
-source = { git = "https://github.com/iloveitaly/react-router-routes.git#ef671107554a135df27bbe4f049bf67b08f5a481" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jinja2" },
     { name = "structlog-config" },
     { name = "typer" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ff/8f/ada48462eda2ef5fac9c228ac344358299be96d2f3298fcf895243dd688f/react_router_routes-0.4.1.tar.gz", hash = "sha256:79bcde2ba99f7bc80fda0a8d1ce84b87322082bd46e181b29cf35e88aba6ce8c", size = 6448, upload-time = "2026-01-28T17:18:13.445Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c2/3a/b5b7c102411d9a63dfd8c10d60ea412fad791c665a96323ed0af53e7416c/react_router_routes-0.4.1-py3-none-any.whl", hash = "sha256:21a77a631f1d5ec663d62d01320d98b18ecb0d07ad59688648cc2e36cd08cfbf", size = 7734, upload-time = "2026-01-28T17:18:12.302Z" },
 ]
 
 [[package]]
