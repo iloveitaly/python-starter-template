@@ -3,7 +3,8 @@ import json
 import typer
 from fastapi.routing import APIRoute
 
-app = typer.Typer()
+# disable rich tracebacks in favor of beautiful_traceback
+app = typer.Typer(pretty_exceptions_enable=False)
 
 
 @app.command()
