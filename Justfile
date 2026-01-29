@@ -44,12 +44,11 @@ PROJECT_NAME := "python-starter-template"
 EXECUTE_IN_TEST := "CI=true direnv exec ."
 
 default_message := """
-Here's are the commands you want to explore!
+Explore these commands:
 
 - setup (and setup_debug if you are running into issues)
 - dev
-- {py,js}_test
-- upgrade
+- {py,js}_{clean,test,lint,lint_fix,dev,generate}
 """
 default:
 	@echo "{{default_message}}"
@@ -67,7 +66,8 @@ nuke: js_nuke py_nuke db_nuke
 # syncs the project with the upstream python-starter-template repo.
 update_from_upstream_template:
 	@echo "Updating project from upstream template. Remember:\n"
-	@echo "- Update skips all javascript updates"
+	@echo "- Update skips all javascript updates. View changes:"
+	@echo "   glo -- web/ \":(exclude)web/package.json\" \":(exclude)web/pnpm*\" \":(exclude)web/mise.toml\""
 	@echo "- Update skips .tool-versions updates"
 	@echo "- You'll need to manually review conflicts of which there will be many"
 	@echo "- 'incoming' change in a diff is the template changes\n"
