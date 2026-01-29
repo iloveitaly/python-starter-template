@@ -12,11 +12,13 @@ py_setup:
 	[ -d ".venv" ] || mise env
 
 	# don't include debugging-extras on CI
-	# --no-sources to allow local dev packages to be used: https://github.com/astral-sh/uv/issues/9258#issuecomment-2499541207
+  # note that the packages used on CI are different than production, which introduces some risk
+  # `--no-sources` would prevent local dev packages from being used, if you want to mirror prod in CI more closely
+  #   https://github.com/astral-sh/uv/issues/9258#issuecomment-2499541207
 	if [ -z "${CI:-}" ]; then \
 		uv sync --all-groups; \
 	else \
-		uv sync --no-sources; \
+		uv sync --no-editable; \
 	fi
 
 	# important for CI to install browsers for playwright
@@ -139,7 +141,7 @@ py_js-build:
 	# to do this, we build the app and serve it like it will be served in production
 	export PNPM_GLOBAL_FLAGS="--silent" && {{EXECUTE_IN_TEST}} just js_build
 
-PYTEST_COV_PARAMS := "--cov --cov-report=html:${TEST_RESULTS_DIRECTORY}/htmlcov --cov-report=term"
+PYTEST_COV_PARAMS := "--cov --cov-report=html:${TEST_RESULTS_DIRECTORY}/htmlcov"
 
 # run tests with the exact same environment that will be used on CI
 [script]
