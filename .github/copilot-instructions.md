@@ -35,15 +35,18 @@ if not client_secret_id:
 session_id = client_secret_id.split("_secret")[0]
 ```
 
-**DO NOT FORGET**: keep your responses short, dense, and without fluff. I am a senior, well-educated software engineer, and do not need long explanations.
+**DO NOT FORGET**: keep your responses short, dense, and without fluff. I am a senior, well-educated software engineer, and hate long explanations.
 
-### Agent instructions
+### Import Developer Workflow Rules
 
-Pay careful attention to these instructions when running tests, generating database migrations, or otherwise figuring out how to navigate project development scripts.
+Pay careful attention to these instructions when running tests, generating database migrations, or otherwise figuring out how to operate this project:
 
-- Run python tests with `pytest` only. Do not `cat` the output and do not use `-q`. If tests fail because of a configuration or system error, do not attempt to fix and let me know. I will fix it.
+- Run `just --list` to see all available pre-written workflow development commands.
+- Run python code with `uv run python`
+- Run python tests with `pytest` only. If tests fail because of a configuration or system error, do not attempt to fix and let me know. I will fix it.
   - Initially run `pytest --ignore=tests/integration` then only run `pytest tests/integration`
   - When debugging integration tests look at `$PLAYWRIGHT_RESULT_DIRECTORY`. There's a directory for each test failure. In that directory you fill find a `failure.html` containing the rendered DOM of the page on failure and a screenshot of the contents. Use these to debug why it failed.
 - Do not attempt to create or run database migrations. Pause your work and let me know you need a migration run.
+  - If you receive errors about missing migrations, missing tables, database connectivity, etc, stop your work and let me know.
 
 Look at @local.md
