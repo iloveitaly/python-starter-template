@@ -3,6 +3,7 @@ applyTo: "migrations/versions/*.py"
 ---
 ## Alembic Migrations
 
+
 ### Default Content for New Non-Nullable Columns
 
 To add a non-nullable column and set a specific value for all existing rows without a persistent server default:

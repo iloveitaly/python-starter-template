@@ -1,6 +1,8 @@
 ---
-mode: agent
+mode: 'agent'
+description: ''
 ---
+## Fastapi_Stripe
 
 A Stripe Checkout implementation takes four steps:
 

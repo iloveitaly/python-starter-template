@@ -1,11 +1,13 @@
 ---
-description:
+description: Typescript
 globs: **/*.ts,**/*.tsx
 alwaysApply: false
 ---
-## TypeScript
+## Typescript
 
-- Use `pnpm`, not `npm`
+
+- Use `pnpm` or `pnpx` and not `npm` or `npx`.
+  - Use `just js_shadcn`, `just pnpm`, and `just js_lint` instead of executing these operations exactly. @just/javascript.just
 - Node libraries are not available
 - Use `lib/` for generic code, `utils/` for project utilities, `hooks/` for React hooks, and `helpers/` for page-specific helpers.
 - Prefer `function theName() {` over `const theName = () =>`

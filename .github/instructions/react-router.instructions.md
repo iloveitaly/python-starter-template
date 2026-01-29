@@ -3,6 +3,7 @@ applyTo: "web/app/routes/**/*.tsx"
 ---
 ## React Router
 
+
 - You are using the latest version of React Router (v7).
 - Always include the suffix `Page` when naming the default export of a route.
 - The primary export in a routes file should specify `loaderData` like `export default function RouteNamePage({ loaderData }: Route.ComponentProps)`. `loaderData` is the return value from `clientLoader`.

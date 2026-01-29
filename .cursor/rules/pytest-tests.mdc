@@ -1,9 +1,10 @@
 ---
-description:
+description: Pytest Tests
 globs: tests/**/*.py
 alwaysApply: false
 ---
 ## Pytest Tests
+
 
 - Look to @tests/factories.py to generate any required database state
   - For example, to create and persist a `Distribution` record `DistributionFactory.save()`

@@ -1,9 +1,10 @@
 ---
-description:
+description: Python Route Tests
 globs: tests/routes/**/*.py
 alwaysApply: false
 ---
 ## Python Route Tests
+
 
 - Polyfactory is the [factory](tests/factories.py) library in use. `ModelNameFactory.build()` is how you generate factories.
 - Use `assert_status(response)` instead of `assert response.status_code == status.HTTP_200_OK`
