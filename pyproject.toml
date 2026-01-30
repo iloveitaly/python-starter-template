@@ -107,6 +107,7 @@ dev = [
     "detect-shadowed-modules>=0.1.0",
     "generate-fastapi-typed-routes>=0.3.2",
     "react-router-routes>=0.4.0",
+    "pytest-playwright-artifacts>=0.1.0",
 ]
 
 # this eliminates the need for `editable_mode = "strict"` and other config that was previously required
@@ -224,3 +225,6 @@ rev = "exclude-tests"
 
 [tool.uv.sources.activemodel]
 git = "https://github.com/iloveitaly/activemodel.git"
+
+[tool.uv.sources.structlog-config]
+git = "https://github.com/iloveitaly/structlog-config.git"

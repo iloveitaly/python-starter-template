@@ -105,16 +105,16 @@ wheels = [
 
 [[package]]
 name = "alembic"
-version = "1.18.2"
+version = "1.18.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "mako" },
     { name = "sqlalchemy" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a7/93/07f5ba5d8e4f4049e864faa9d822bbbbfb6f3223a4ffb1376768ab9ee4b8/alembic-1.18.2.tar.gz", hash = "sha256:1c3ddb635f26efbc80b1b90c5652548202022d4e760f6a78d6d85959280e3684", size = 2048272, upload-time = "2026-01-28T21:23:30.914Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/79/41/ab8f624929847b49f84955c594b165855efd829b0c271e1a8cac694138e5/alembic-1.18.3.tar.gz", hash = "sha256:1212aa3778626f2b0f0aa6dd4e99a5f99b94bd25a0c1ac0bba3be65e081e50b0", size = 2052564, upload-time = "2026-01-29T20:24:15.124Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1a/60/ced4277ccf61f91eb03c4ac9f63b9567eb814f9ab1cd7835f00fbd5d0c14/alembic-1.18.2-py3-none-any.whl", hash = "sha256:18a5f6448af4864cc308aadf33eb37c0116da9a60fd9bb3f31ccb1b522b4a9b9", size = 261953, upload-time = "2026-01-28T21:23:32.508Z" },
+    { url = "https://files.pythonhosted.org/packages/45/8e/d79281f323e7469b060f15bd229e48d7cdd219559e67e71c013720a88340/alembic-1.18.3-py3-none-any.whl", hash = "sha256:12a0359bfc068a4ecbb9b3b02cf77856033abfdb59e4a5aca08b7eacd7b74ddd", size = 262282, upload-time = "2026-01-29T20:24:17.488Z" },
 ]
 
 [[package]]
@@ -2485,6 +2485,19 @@ wheels = [
 ]
 
 [[package]]
+name = "pytest-playwright-artifacts"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "playwright" },
+    { name = "structlog-config" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c8/f1/4e67bfa8c30b365847cc2f91d8ed1b1dbf9ea31b761dc27cef357a5afcfc/pytest_playwright_artifacts-0.1.0.tar.gz", hash = "sha256:b8eb437598dd054b4604b18fd0f88cfe20d607a4c8db2da9dd994c39d120d3d1", size = 5612, upload-time = "2026-01-29T19:14:17.094Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7a/e1/631dd27ff80c3ba4a8a0784a4cc40ea21c034a6dfb58e361dfe97c413e5d/pytest_playwright_artifacts-0.1.0-py3-none-any.whl", hash = "sha256:750392c2c76ee14f74cf8f39e9060da620cf6db1f24d137b061d410d254215c3", size = 7129, upload-time = "2026-01-29T19:14:16.32Z" },
+]
+
+[[package]]
 name = "pytest-playwright-visual-snapshot"
 version = "0.4.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2712,6 +2725,7 @@ dev = [
     { name = "pytest-github-actions-annotate-failures" },
     { name = "pytest-httpx" },
     { name = "pytest-playwright" },
+    { name = "pytest-playwright-artifacts" },
     { name = "pytest-playwright-visual-snapshot" },
     { name = "pytest-sugar" },
     { name = "pytest-timer", extra = ["termcolor"] },
@@ -2760,7 +2774,7 @@ requires-dist = [
     { name = "starlette-context", specifier = ">=0.3.6" },
     { name = "stripe", specifier = ">=12.1.0" },
     { name = "structlog", specifier = ">=24.4.0" },
-    { name = "structlog-config", extras = ["fastapi"] },
+    { name = "structlog-config", extras = ["fastapi"], git = "https://github.com/iloveitaly/structlog-config.git" },
     { name = "textcase", specifier = ">=0.4.0" },
     { name = "typeid-python", extras = ["cli"], specifier = ">=0.3.2" },
     { name = "typer", specifier = ">=0.14.0" },
@@ -2819,6 +2833,7 @@ dev = [
     { name = "pytest-github-actions-annotate-failures", specifier = ">=0.2.0" },
     { name = "pytest-httpx", specifier = ">=0.35.0" },
     { name = "pytest-playwright", specifier = ">=0.6.2" },
+    { name = "pytest-playwright-artifacts", specifier = ">=0.1.0" },
     { name = "pytest-playwright-visual-snapshot" },
     { name = "pytest-sugar", specifier = ">=1.0.0" },
     { name = "pytest-timer", extras = ["termcolor"], specifier = ">=1.0.0" },
@@ -3373,16 +3388,12 @@ wheels = [
 [[package]]
 name = "structlog-config"
 version = "0.8.0"
-source = { registry = "https://pypi.org/simple" }
+source = { git = "https://github.com/iloveitaly/structlog-config.git#4c790baefe1479153599f1cf76103744a3d90187" }
 dependencies = [
     { name = "fastapi-ipware" },
     { name = "orjson" },
     { name = "python-decouple-typed" },
     { name = "structlog" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/43/b0/6e1e870b8b32fa40585c9b77492ad6cefc92c1f3174b7d969683ebf12f8f/structlog_config-0.8.0.tar.gz", hash = "sha256:5666c1af6b1203e1ecf093ceca6552b1e5bc6472c18fdaa3467e8282c7577356", size = 18044, upload-time = "2026-01-20T23:44:52.779Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/ae/bf/a5bcfd8c3be22fcdb3455af04afd449909ea060efc6d2a4f25acd208dc33/structlog_config-0.8.0-py3-none-any.whl", hash = "sha256:6a48237830d30aaeb34c8ae9741842976c6eb0f531dd18a0459a4594c13bbada", size = 22661, upload-time = "2026-01-20T23:44:51.895Z" },
 ]
 
 [package.optional-dependencies]
@@ -3750,11 +3761,11 @@ wheels = [
 
 [[package]]
 name = "wcwidth"
-version = "0.5.0"
+version = "0.5.2"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/64/6e/62daec357285b927e82263a81f3b4c1790215bc77c42530ce4a69d501a43/wcwidth-0.5.0.tar.gz", hash = "sha256:f89c103c949a693bf563377b2153082bf58e309919dfb7f27b04d862a0089333", size = 246585, upload-time = "2026-01-27T01:31:44.942Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5f/3e/3d456efe55d2d5e7938b5f9abd68333dd8dceb14e829f51f9a8deed2217e/wcwidth-0.5.2.tar.gz", hash = "sha256:c022c39a02a0134d1e10810da36d1f984c79648181efcc70a389f4569695f5ae", size = 152817, upload-time = "2026-01-29T19:32:52.22Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f2/3e/45583b67c2ff08ad5a582d316fcb2f11d6cf0a50c7707ac09d212d25bc98/wcwidth-0.5.0-py3-none-any.whl", hash = "sha256:1efe1361b83b0ff7877b81ba57c8562c99cf812158b778988ce17ec061095695", size = 93772, upload-time = "2026-01-27T01:31:43.432Z" },
+    { url = "https://files.pythonhosted.org/packages/6d/72/da5a6f511a8267f962a08637464a70409736ac72f9f75b069e0e96d69b64/wcwidth-0.5.2-py3-none-any.whl", hash = "sha256:46912178a64217749bf3426b21e36e849fbc46e05c949407b3e364d9f7ffcadf", size = 90088, upload-time = "2026-01-29T19:32:50.592Z" },
 ]
 
 [[package]]
