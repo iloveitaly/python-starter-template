@@ -12,9 +12,9 @@ py_setup:
 	[ -d ".venv" ] || mise env
 
 	# don't include debugging-extras on CI
-  # note that the packages used on CI are different than production, which introduces some risk
-  # `--no-sources` would prevent local dev packages from being used, if you want to mirror prod in CI more closely
-  #   https://github.com/astral-sh/uv/issues/9258#issuecomment-2499541207
+	# note that the packages used on CI are different than production, which introduces some risk
+	# `--no-sources` would prevent local dev packages from being used, if you want to mirror prod in CI more closely
+	#   https://github.com/astral-sh/uv/issues/9258#issuecomment-2499541207
 	if [ -z "${CI:-}" ]; then \
 		uv sync --all-groups; \
 	else \
