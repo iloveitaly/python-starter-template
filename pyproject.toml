@@ -110,6 +110,12 @@ dev = [
     "pytest-playwright-artifacts>=0.1.0",
 ]
 
+# this configuration is VERY important! Without this `--no-editable` flag when building for production will
+# install the project package in the venv folder which changes the path that the application is operating out of and
+# causes the application code to be duplicated
+[tool.uv]
+package = false
+
 # this eliminates the need for `editable_mode = "strict"` and other config that was previously required
 [build-system]
 requires = ["uv_build>=0.9.0,<0.10.0"]
