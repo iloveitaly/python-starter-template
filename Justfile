@@ -88,7 +88,9 @@ update_from_upstream_template:
 		--exclude .localias.yaml \
 		--exclude .github/instructions \
 		--exclude .github/copilot-instructions.md \
-		--exclude .cursor/rules
+		--exclude .cursor/rules \
+		--exclude .gemini \
+		--exclude .opencode
 
 # do NOT allow for duplicate recipe names and variables otherwise this would get very complex
 import 'just/utils.just'
