@@ -13,17 +13,15 @@
   "tailwind-raw-reorder.tailwindConfigPath": "./web/tailwind.config.ts",
 
   // typescript / web projects
+  // note that launching cursor from a directory with the correct $PATH configuration does seem to impact the tsserver
+  // "typescript.tsserver.nodePath" should really point to the mise version...
   // the workspace typescript version does *not* seem to be used by default, you need to configure this
   "typescript.tsdk": "web/node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.tsserver.maxTsServerMemory": 8192,
   // TODO is this picking the exact right typescript version from the repo?
   "typescript.preferGoToSourceDefinition": true,
   "typescript.preferences.preferTypeOnlyAutoImports": true,
-  "typescript.surveys.enabled": false,
-  "typescript.experimental.updateImportsOnPaste": true,
-
-  // TODO unsure if this really works: https://stackoverflow.com/questions/53113031/how-to-see-a-fully-expanded-typescript-type-without-n-more-and
-  "typescript.experimental.expandableHover": true,
 
   "prettier.prettierPath": "web/node_modules/prettier",
   "prettier.ignorePath": "web/.prettierignore",
@@ -122,11 +120,11 @@
   },
 
   "[justfile]": {
-    "editor.insertSpaces": false,
-    "editor.detectIndentation": false,
-    "editor.tabSize": 2,
+    // "editor.tabSize": 2,
+    // "editor.insertSpaces": false,
+    "editor.detectIndentation": true,
     "editor.trimAutoWhitespace": true,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
     // "editor.defaultFormatter": "nefrob.vscode-just-syntax",
   },
 
