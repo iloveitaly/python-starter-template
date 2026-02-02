@@ -90,10 +90,12 @@ flightcontrol on AWS or something like that on azure
 
 ## pytest
 playwright: In config: trace = "on-first-retry"
+https://github.com/sash20m/playwright-ai-debugger
 stabalized scrolling https://grok.com/share/bGVnYWN5_22b6f3ac-a0dc-49d5-a92a-223d43834a70
 pytest-failure-tracker to track failures across test runs, if we combine this with locking
 
 ## dev
+assertion to ensure openapi.json is not empty
 https://honcho.readthedocs.io/en/latest/#why-did-you-port-foreman - py port of foreman
 if someone's completion system is not initialized, the bash direnv export thing will fail with `compdef not defined` sort of error
 `just direnv_export_docker '.env.production.frontend' --params` can still silently fail
