@@ -508,7 +508,7 @@ VITE_BUILD_COMMIT=-dirty node inspect web/node_modules/@react-router/dev/bin.js 
 
 ### Pytest Route Tests
 
-* Use `api_app.url_path_for` for all URL generation.
+* Use the typed route helpers in `app/generated/fastapi_typed_routes.py` for all URL generation.
 * Not specific to route tests, but be aware of `faker`. It can generate invalid random data (like invalid zip codes, which can cause issues with automated tests on geocoding systems).
 
 If you have separate domains used for app, api, etc you can build a fastapi client that sets the `Host` header to the correct domain:

@@ -1,0 +1,6 @@
+## Python Route Tests
+
+
+- Polyfactory is the [factory](tests/factories.py) library in use. `ModelNameFactory.build()` is how you generate factories.
+- Use `assert_status(response)` instead of `assert response.status_code == status.HTTP_200_OK`
+- Do not reference routes by raw strings. Instead, use the typed route helpers defined in `app/generated/fastapi_typed_routes.py`.
