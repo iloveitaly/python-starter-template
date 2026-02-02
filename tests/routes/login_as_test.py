@@ -2,7 +2,7 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from app.routes.admin import SESSION_KEY_LOGIN_AS_USER
-from app.server import api_app
+from app.generated.fastapi_typed_routes import api_app_url_path_for
 
 from app.models.user import User, UserRole
 
@@ -28,7 +28,7 @@ def test_non_admin_role(client: TestClient):
     _, _, clerk_user = get_clerk_dev_user()
 
     response = client.get(
-        api_app.url_path_for("user_list"),
+        api_app_url_path_for("user_list"),
         headers=clerk_authorization(clerk_user),
     )
 
@@ -45,7 +45,7 @@ def test_user_list(client: TestClient):
         User(email=f"test{i}@example.com", clerk_id=f"user_{i}").save()
 
     response = client.get(
-        api_app.url_path_for("user_list"),
+        api_app_url_path_for("user_list"),
         headers=clerk_authorization(clerk_admin),
     )
 
@@ -76,7 +76,7 @@ def test_login_as_authorized_good_credentials(client: TestClient):
     _user = User.find_or_create_by(clerk_id=clerk_user.id)
 
     response = client.post(
-        api_app.url_path_for("login_as_user", user_id=clerk_user.id),
+        api_app_url_path_for("login_as_user", user_id=clerk_user.id),
         headers=clerk_authorization(clerk_admin),
     )
 
@@ -87,7 +87,7 @@ def test_login_as_authorized_good_credentials(client: TestClient):
 
     # now that we are logged in, let's attempt to clear the session by passing ourselves as the login_as user
     response = client.post(
-        api_app.url_path_for("login_as_user", user_id=clerk_admin.id),
+        api_app_url_path_for("login_as_user", user_id=clerk_admin.id),
         headers=clerk_authorization(clerk_admin),
     )
 
@@ -107,7 +107,7 @@ def test_login_as_authorized_bad_credentials(client: TestClient):
 
     # attempt to login_as the non-admin user into the admin user
     response = client.post(
-        api_app.url_path_for("login_as_user", user_id=clerk_admin.id),
+        api_app_url_path_for("login_as_user", user_id=clerk_admin.id),
         headers=clerk_authorization(clerk_user),
     )
 
@@ -130,7 +130,7 @@ def test_login_as_reset_credentials(client: TestClient):
     _user = User.find_or_create_by(clerk_id=clerk_user.id)
 
     response = client.post(
-        api_app.url_path_for("login_as_user", user_id=clerk_user.id),
+        api_app_url_path_for("login_as_user", user_id=clerk_user.id),
         headers=clerk_authorization(clerk_admin),
     )
 
@@ -140,7 +140,7 @@ def test_login_as_reset_credentials(client: TestClient):
     # now that we are login_as, let's attempt to reset
 
     response = client.post(
-        api_app.url_path_for("login_as_user", user_id=clerk_admin.id),
+        api_app_url_path_for("login_as_user", user_id=clerk_admin.id),
         headers=clerk_authorization(clerk_admin),
     )
 
@@ -159,14 +159,14 @@ def test_login_as_user_route(client: TestClient):
     local_user = User.find_or_create_by(clerk_id=clerk_user.id)
 
     response = client.post(
-        api_app.url_path_for("login_as_user", user_id=clerk_user.id),
+        api_app_url_path_for("login_as_user", user_id=clerk_user.id),
         headers=clerk_authorization(clerk_admin),
     )
 
     assert response.status_code == status.HTTP_200_OK
 
     user_response = client.get(
-        api_app.url_path_for("application_data"),
+        api_app_url_path_for("application_data"),
         headers=clerk_authorization(clerk_admin),
     )
 
@@ -179,7 +179,7 @@ def test_normal_route_as_admin(client: TestClient):
     assert clerk_admin
 
     response = client.get(
-        api_app.url_path_for("application_data"),
+        api_app_url_path_for("application_data"),
         headers=clerk_authorization(clerk_admin),
     )
 

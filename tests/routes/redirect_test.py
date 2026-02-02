@@ -2,6 +2,7 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from app.server import api_app
+from app.generated.fastapi_typed_routes import api_app_url_path_for
 
 from tests.routes.utils import base_server_url
 
@@ -15,6 +16,6 @@ def test_https_redirection():
         api_app, base_url=base_server_url("http"), follow_redirects=False
     )
 
-    response = client.get(api_app.url_path_for("index"))
+    response = client.get(api_app_url_path_for("index"))
 
     assert response.status_code == status.HTTP_200_OK

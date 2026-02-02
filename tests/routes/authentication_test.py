@@ -1,20 +1,20 @@
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from app.server import api_app
+from app.generated.fastapi_typed_routes import api_app_url_path_for
 
 from tests.routes.utils import bearer_headers, get_valid_token
 
 
 def test_unauthorized_no_credentials(client: TestClient):
-    response = client.get(api_app.url_path_for("application_data"))
+    response = client.get(api_app_url_path_for("application_data"))
 
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
 def test_authorized_bad_credentials(client: TestClient):
     response = client.get(
-        api_app.url_path_for("application_data"),
+        api_app_url_path_for("application_data"),
         headers=bearer_headers("BAD_CREDS"),
     )
 
@@ -26,7 +26,7 @@ def test_authorized_good_credentials(client: TestClient):
     assert token_id
 
     response = client.get(
-        api_app.url_path_for("application_data"),
+        api_app_url_path_for("application_data"),
         headers=bearer_headers(token_id),
     )
 
