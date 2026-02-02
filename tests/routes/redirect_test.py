@@ -15,6 +15,6 @@ def test_https_redirection():
         api_app, base_url=base_server_url("http"), follow_redirects=False
     )
 
-    response = client.get(api_app.url_path_for("javascript_index"))
+    response = client.get(api_app.url_path_for("index"))
 
     assert response.status_code == status.HTTP_200_OK
