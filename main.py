@@ -56,9 +56,24 @@ def get_server_config():
     return config_args
 
 
+def check_fastapi_cli():
+    import fastapi_cli.cli
+
+    from app import log
+    from app.utils.patching import hash_function_code
+
+    if (
+        hash_function_code(fastapi_cli.cli._run)
+        != "d7e4dad43fc556d58b699fdf316eba558b75ece0d73f177176578c2ee8745f3b"
+    ):
+        log.warning("fastapi-cli internal _run function has changed, update main.py")
+
+
 # uvicorn will "rerun" this file in some way, so although we should be able to throw an exception when this condition
 # isn't met that ends up causing issues with how uvicorn is invoked.
 if __name__ == "__main__":
     import uvicorn
+
+    check_fastapi_cli()
 
     uvicorn.run(**get_server_config())
