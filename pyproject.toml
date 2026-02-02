@@ -30,7 +30,7 @@ dependencies = [
     "redis[hiredis]>=5.2.0",
     "sentry-sdk[fastapi,celery,openai,sqlalchemy]>=2.17.0",
     "sqlalchemy>=2.0.36",
-    "sqlmodel>=0.0.22",
+    "sqlmodel==0.0.31",
     "starlette-context>=0.3.6",
     "structlog>=24.4.0",
     "typeid-python[cli]>=0.3.2",
