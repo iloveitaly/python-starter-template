@@ -1,8 +1,12 @@
 # NOTE this should be used by your deployment system to read in secrets for production
 
-# TODO we shouldn't need to add this here since it's added into the production image
+# PYTHON_ENV is not set on the production image (non-standard ENV var), so it's important to set it here
 export PYTHON_ENV=production
 
+# Since `package=false` in pyproject.toml, we need to explicitly add the current directory to PYTHONPATH
+export PYTHONPATH=/app
+
+# default to log level info in production, can be overwritten by deployment system (dokku, railway, etc)
 export LOG_LEVEL=info
 
 # some systems, like dokku, will specify a port for you

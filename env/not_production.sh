@@ -28,6 +28,9 @@ export PLAYWRIGHT_BROWSERS_PATH=$TMP_DIRECTORY/ms-playwright
 export PYTHONPYCACHEPREFIX=$TMP_DIRECTORY/pycache
 export PYTHONDONTWRITEBYTECODE=0
 
+# Since `package=false` in pyproject.toml, we need to explicitly add the current directory to PYTHONPATH
+export PYTHONPATH=$ROOT_DIR
+
 # used for py tests, justfile recipes, and JS build
 # use an absolute path since this is run from within `web/`
 export OPENAPI_JSON_PATH=$ROOT_DIR/web/openapi.json
