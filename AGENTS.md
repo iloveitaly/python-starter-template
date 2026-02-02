@@ -101,52 +101,6 @@ op.execute(
 ```
 
 
-## Fastapi
-
-
-- When throwing a `HTTPException`, do not add a `detail=` and use a named status code (`status.HTTP_400_BAD_REQUEST`)
-- Do not return a `dict`, instead create a `class RouteNameResponse`
-  - Locate these classes right above the `def route_name():` function which uses them.
-- Use `Model.one` when a record must exist in order for the business logic to succeed.
-- Do not try/except `Model.one` when using a parameter from the request to pull a record. Let this exception bubble up.
-- Use `model_id: Annotated[TypeIDType, Path()]` to represent a model ID as a URL path parameter
-
-
-## Pytest Integration Tests
-
-
-- Look to tests/factories.py to generate any required database state
-  - Here's an example of how to create + persist a factory `DistributionFactory.build(domain=PYTHON_TEST_SERVER_HOST).save()`
-- Add the `server` factory to each test
-- Use the `faker` factory to generate emails, etc.
-- Don't add obvious `assert` descriptions
-- Do not use the `db_session` fixture here. Instead, use `with test_session():` if you need to setup complex database state
-- if a UI timeout is occuring, it could be because it cannot find a element because the rendering has changed. Check the failure screenshot and see if you can correct the test assertion.
-- The integration tests can take a very long time to run. Do not abort them if they are taking a long time.
-- Use `expect(page.get_by_text("Screening is fully booked")).to_be_visible()` instead of `expect(page.get_by_role("heading")).to_contain_text("Screening is fully booked")`. It's less brittle.
-- Do not use `client` fixtures in an integration test. Integration tests should only use the frontend of the website to interact with the application, not the API.
-- Use `with page.expect_response("https://example.com/resource") as response_info:` to assert against network activity.
-- Do not `next_button.evaluate("el => el.click()")` instead, just `locator.click()`. If this doesn't work, stop your work and let me know.
-- Only use `wait_for_loading(page)` if a `LONG_INTEGRATION_TEST_TIMEOUT` on an expectation does not work: `expect(page.get_by_text("Your Matched Doctors")).to_be_visible(timeout=LONG_INTEGRATION_TEST_TIMEOUT)`
-- Prefer fewer integration tests that cover more functionality. Unlike unit tests, where each test is designed to test a very particular piece of functionality, I want integration tests to cover entire workflows. It's preferred to add more steps to an integration test to test an entire workflow.
-- Prefer simple locators. If a `filter`, `or_`, etc is required to capture a button in multiple states it indicates something is wrong in the code.
-
-
-## Pytest Tests
-
-
-- Look to @tests/factories.py to generate any required database state
-  - For example, to create and persist a `Distribution` record `DistributionFactory.save()`
-  - If a factory doesn't exist for the model you are working with, create one.
-  - You can customize one or more params in a factory using `DistributionFactory.save(host="custom_host.com)`
-- Use the `faker` factory to generate emails, etc.
-- Do not mock or patch unless I instruct you to. Test as much of the application stack as possible in each test.
-- If you get lazy attribute errors, or need a database session to share across logic, use the `db_session` fixture to fix the issue.
-  - Note that when writing route tests a `db_session` is not needed for the logic inside of the route.
-- When testing Stripe, use the sandbox API. Never mock out Stripe interactions unless explicitly told to.
-- Omit obvious docstrings and comments.
-
-
 ## Python App
 
 
@@ -221,14 +175,6 @@ class Distribution(
 ```
 
 
-## Python Route Tests
-
-
-- Polyfactory is the [factory](tests/factories.py) library in use. `ModelNameFactory.build()` is how you generate factories.
-- Use `assert_status(response)` instead of `assert response.status_code == status.HTTP_200_OK`
-- Do not reference routes by raw strings. Instead of `client.get("/the/route/path")` use `client.get(api_app.url_path_for("route_method_name"))`
-
-
 ## Python
 
 
@@ -287,97 +233,6 @@ params = f.compact({"city": city, "stateCode": stateCode})
 
 * Use the `whenever` library for datetime + time instead of the stdlib date library. `Instant.now().format_iso()`
 * DateTime mutation should explicitly opt in to a specific timezone `SystemDateTime.now().add(days=-7)`
-
-
-## React Router
-
-
-- You are using the latest version of React Router (v7).
-- Always include the suffix `Page` when naming the default export of a route.
-- The primary export in a routes file should specify `loaderData` like `export default function RouteNamePage({ loaderData }: Route.ComponentProps)`. `loaderData` is the return value from `clientLoader`.
-- Use `href("/products/:id", { id: "abc123" })` to generate a url path for a route managed by the application.
-  - Look at [routes.ts](mdc:web/app/routes.ts) to determine what routes and path parameters exist.
-- Use `export async function clientLoader(loaderArgs: Route.ClientLoaderArgs)` to define a `clientLoader` on a route.
-- Do not define `Route.*` types, these are autogenerated and can be imported from `import type { Route } from "./+types/routeFileName"`
-- If URL parameters or query string values need to be checked before rendering the page, do this in a `clientLoader` and not in a `useEffect`
-- Never worry about generating types using `pnpm`
-- Use [`<AllMeta />`](web/app/components/shared/AllMeta.tsx) instead of MetaFunction or individual `<meta />` tags
-- Use the following pattern to reference query string values (i.e. `?theQueryStringParam=value`)
-
-```typescript
-const [searchParams, _setSearchParams] = useSearchParams()
-// searchParams contains the value of all query string parameters
-const queryStringValue = searchParams.get("theQueryStringParam")
-```
-
-### Loading Mock Data
-
-Don't load mock data in the component function with `useEffect`. Instead, load data in a `clientLoader`:
-
-```typescript
-// in mock.ts
-export async function getServerData(options: any) {
-  // ...
-}
-
-// in web/app/routes/**/*.ts
-export async function clientLoader(loaderArgs: Route.ClientLoaderArgs) {
-  // no error reporting is needed, this will be handled by the `getServerData`
-  // mock loading functions should return result in a `data` key
-  const { data } = await getServerData({
-    /* ... */
-  });
-
-  // the return result here is available in `loaderData`
-  return data;
-}
-```
-
-### How to Use `clientLoader`
-
-- `export async function clientLoader(loaderArgs: Route.ClientLoaderArgs) {`
-- Load any server data required for page load here, not in the component function.
-- Use `return redirect(href("/the/url"))` to redirect users
-- Use [getQueryParam](web/app/lib/utils.ts) to get query string variables
-- `throw new Response` if you need to mimic a 400, 500, etc error
-- `loaderArgs` and all sub-objects are all fully typed
-- `loaderArgs.params.id` to get URL parameters
-
-### Loading Backend Data
-
-- `~/configuration/client` re-exports all types and functions from `client/*`. Import from `~/configuration/client` instead of anything you find in the `client/` folder/package.
-- For each API endpoint, there's a fully typed async function that can be used to call it. Never attempt to call an API endpoint directly.
-  - Do not generate types for API parameters or responses. Reference the autogenerated types that are re-exported in `~/configuration/client`
-  - For instance, the `getSignedUrl` function in [web/client/sdk.gen.ts] has a `SignedUrlResponse` type in [web/client/types.gen.ts]
-  - This same type is used in the function signature, i.e. `type SignedUrlResponse = Awaited<ReturnType<typeof getSignedUrl>>["data"]`
-
-- When using an import from `~/configuration/client`:
-  - use `body:` for request params
-  - always `const { data, error } = await theCall()`
-
-`clientLoader` can only be used on initial page load within a route. If you need to load additional server data on component mount:
-
-```tsx
-import { useQuery } from "@tanstack/react-query"
-import {
-  // these options correspond to the server route
-  createCheckoutSessionOptions,
-  publicClient,
-} from "~/configuration/client"
-
-function TheComponent() {
-  const { data, error } = useQuery({
-    enabled: open,
-    ...createCheckoutSessionOptions({
-      // or `client` if authenticated
-      client: publicClient,
-      body: { /* API parameters here */ },
-    }),
-  })
-
-  // remember to display errors by checking `error`
-}
-```
 
 
 ## React

@@ -12,3 +12,4 @@ alwaysApply: false
 - Use `Model.one` when a record must exist in order for the business logic to succeed.
 - Do not try/except `Model.one` when using a parameter from the request to pull a record. Let this exception bubble up.
 - Use `model_id: Annotated[TypeIDType, Path()]` to represent a model ID as a URL path parameter
+- Use the typed route helpers in `app/generated/fastapi_typed_routes.py` for all URL generation.

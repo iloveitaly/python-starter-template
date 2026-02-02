@@ -110,6 +110,7 @@ globs: app/routes/**/*.py
 - Use `Model.one` when a record must exist in order for the business logic to succeed.
 - Do not try/except `Model.one` when using a parameter from the request to pull a record. Let this exception bubble up.
 - Use `model_id: Annotated[TypeIDType, Path()]` to represent a model ID as a URL path parameter
+- Use the typed route helpers in `app/generated/fastapi_typed_routes.py` for all URL generation.
 
 ## Pytest Integration Tests
 
@@ -226,7 +227,7 @@ globs: tests/routes/**/*.py
 
 - Polyfactory is the [factory](tests/factories.py) library in use. `ModelNameFactory.build()` is how you generate factories.
 - Use `assert_status(response)` instead of `assert response.status_code == status.HTTP_200_OK`
-- Do not reference routes by raw strings. Instead of `client.get("/the/route/path")` use `client.get(api_app.url_path_for("route_method_name"))`
+- Do not reference routes by raw strings. Instead, use the typed route helpers defined in `app/generated/fastapi_typed_routes.py`.
 
 ## Python
 
@@ -512,4 +513,3 @@ Here's how frontend code is organized in `web/app/`:
   - `ui/` reusable ShadCN UI components (buttons, forms, etc.).
   - `shared/` components shared across multiple pages.
   - create additional folders for route- or section-specific components.
-
