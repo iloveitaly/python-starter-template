@@ -161,14 +161,18 @@ def mount_public_directory(app: FastAPI):
         )
         return app
 
-    if not public_path.exists():
+    # it's possible for the public directory to exist, but the assets to not be built (if we've recently cleaned up all tmp directories)
+    # by testing if this exists, we also test to ensure the general public folder exists
+    public_asset_directory = public_path / "assets"
+
+    if not public_asset_directory.exists():
         raise Exception(
             f"Client assets do not exist {public_path}. Please run `just py_js-build`"
         )
 
     app.mount(
         "/assets",
-        GZipStaticFiles(directory=public_path / "assets", html=False),
+        GZipStaticFiles(directory=public_asset_directory, html=False),
         name="public",
     )
 
