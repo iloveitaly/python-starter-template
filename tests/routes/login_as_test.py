@@ -1,8 +1,8 @@
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from app.routes.admin import SESSION_KEY_LOGIN_AS_USER
 from app.generated.fastapi_typed_routes import api_app_url_path_for
+from app.routes.admin import SESSION_KEY_LOGIN_AS_USER
 
 from app.models.user import User, UserRole
 

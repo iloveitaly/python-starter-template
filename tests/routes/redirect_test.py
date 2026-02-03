@@ -1,8 +1,8 @@
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from app.server import api_app
 from app.generated.fastapi_typed_routes import api_app_url_path_for
+from app.server import api_app
 
 from tests.routes.utils import base_server_url
 
