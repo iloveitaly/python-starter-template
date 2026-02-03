@@ -56,6 +56,22 @@ def is_staging():
     return python_environment() == "staging"
 
 
+def is_preview():
+    """
+    Preview environments are distinct from staging in that they are throwaway environments tied to a single PR
+    """
+
+    return python_environment() == "preview"
+
+
+def is_productionish():
+    """
+    Is this environment production-like, meaning production, staging, or preview
+    """
+
+    return is_production() or is_staging() or is_preview()
+
+
 def is_development():
     return python_environment() == "development"
 

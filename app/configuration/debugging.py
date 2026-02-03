@@ -36,6 +36,7 @@ def configure_debugging():
     except ImportError:
         pass
 
+    # don't install these traps by default, they are generally just for debugging
     if config("PYTHON_DEBUG_TRAPS", default=False, cast=bool):
         from app.utils.debug import install_traps
 
