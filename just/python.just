@@ -83,8 +83,8 @@ py_lint +FILES=".":
 
 	if [ -n "${CI:-}" ]; then
 		# TODO I'm surprised that ruff doesn't auto detect github... need to double check on this
-		uv tool run ruff check --output-format=github {{FILES}} || exit_code=$?
-		uv tool run ruff format --check {{FILES}} || exit_code=$?
+		uv run ruff check --output-format=github {{FILES}} || exit_code=$?
+		uv run ruff format --check {{FILES}} || exit_code=$?
 		uvx detect-shadowed-modules@latest || exit_code=$?
 
 		uv run pyright {{FILES}} --outputjson > pyright_report.json || exit_code=$?
@@ -106,7 +106,7 @@ py_lint +FILES=".":
 		jq -r '(.ERRORS[] | "::\(if .severity == "HIGH" then "error" else "warning" end) file=\(.filename),line=\(.line_number),title=\(.id)::\(.message)"), (.WARNINGS[] | "::warning file=\(.filename),line=\(.line_number),title=\(.id)::\(.message)")' < j2link_report.json
 		rm j2link_report.json
 	else
-		uv tool run ruff check {{FILES}} || exit_code=$?
+		uv run ruff check {{FILES}} || exit_code=$?
 		uv run pyright {{FILES}} || exit_code=$?
 		uvx detect-shadowed-modules@latest || exit_code=$?
 		uv run j2lint --extension j2,html {{JINJA_TEMPLATE_DIR}}
@@ -128,8 +128,8 @@ py_lint +FILES=".":
 
 # automatically fix linting errors
 py_lint_fix:
-	uv tool run ruff check . --fix
-	uv tool run ruff format
+	uv run ruff check . --fix
+	uv run ruff format
 
 	uv run djlint --profile=jinja --reformat {{JINJA_TEMPLATE_DIR}}
 
