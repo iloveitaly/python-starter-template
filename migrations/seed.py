@@ -25,7 +25,11 @@ from app.models.user import User
 
 from tests.routes.utils import get_clerk_seed_user
 
-_, _, clerk_user = get_clerk_seed_user()
-user = User.find_or_create_by(clerk_id=clerk_user.id)
+try:
+    _, _, clerk_user = get_clerk_seed_user()
+    user = User.find_or_create_by(clerk_id=clerk_user.id)
+except Exception as e:
+    log.error("error creating clerk user, most likely a clerk authentication issue")
+    log.exception(e)
 
 log.info("seed complete")
