@@ -7,6 +7,7 @@ ignores:
   # linting
   - "@trivago/prettier-plugin-sort-imports"
   - prettier
+  - "prettier-plugin-tailwindcss"
   # referenced in eslint.config.js
   - "@typescript-eslint/eslint-plugin"
   # test
@@ -18,9 +19,9 @@ ignores:
   - "@tailwindcss/forms"
   - tw-animate-css
   - tailwindcss
+  - tw-animate-css
   # misc
-  - "@hey-api/client-fetch"
-  - "prettier-plugin-tailwindcss"
+  - "@sentry/vite-plugin"
   - "~"
 ignorePatterns:
   - playground.ts
