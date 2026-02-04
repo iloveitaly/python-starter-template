@@ -14,12 +14,11 @@ export default defineConfig({
       }
     : {},
   output: {
-    format: "prettier",
-    lint: "eslint",
     path: "client",
     // TODO https://github.com/ferdikoomen/openapi-typescript-codegen/issues/1252#issuecomment-2593462128
     // converts all openapi snake case attributes to camelCase, but does not translate the api request
     // case: "camelCase",
+    postProcess: ["eslint", "prettier"],
   },
   experimentalParser: true,
   plugins: [
