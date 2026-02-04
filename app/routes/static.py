@@ -33,6 +33,7 @@ from app.environments import (
     is_development,
     is_local_testing,
     is_production,
+    is_productionish,
     is_staging,
     python_environment,
 )
@@ -148,7 +149,7 @@ class GZipStaticFiles(StaticFiles):
 
 def mount_public_directory(app: FastAPI):
     # TODO should be extracted into another env var so it can be shared with JS
-    if is_production() or is_staging():
+    if is_productionish():
         public_path = root / "public"
     else:
         public_path = root / "web/build" / python_environment() / "client"

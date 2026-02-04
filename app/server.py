@@ -15,7 +15,7 @@ from app.routes.errors import register_exception_handlers
 from app.routes.utils.json_response import ORJSONSortedResponse
 from app.routes.utils.openapi import simplify_operation_ids
 
-from .environments import is_production
+from .environments import is_productionish
 from .routes.authenticated import authenticated_api_app
 from .routes.healthcheck import healthcheck_api_app
 from .routes.middleware import add_middleware
@@ -27,7 +27,7 @@ from .routes.unauthenticated_html import unauthenticated_html
 fast_api_args = {"version": BUILD_COMMIT}
 
 # disable API documentation in production
-if is_production():
+if is_productionish():
     fast_api_args = {
         "docs_url": None,
         "redoc_url": None,

@@ -39,7 +39,9 @@ def setup():
     root = get_root_path()
 
     # log configuration should go first, so any logging is properly outputted downstream
-    log = configure_logger(install_exception_hook=is_productionish())
+    log = configure_logger(
+        install_exception_hook=is_productionish(), json_logger=is_productionish()
+    )
 
     # explicitly order configuration execution in case there are dependencies
     configure_python()

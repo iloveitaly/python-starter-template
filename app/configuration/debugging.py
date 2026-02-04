@@ -4,11 +4,11 @@ Provide an entrypoint for configuring development tooling to make life easier
 
 from decouple import config
 
-from app.environments import is_production, is_staging
+from app.environments import is_productionish
 
 
 def configure_debugging():
-    if is_production() or is_staging():
+    if is_productionish():
         return
 
     # TODO can we prevent rich from installing syshook?
