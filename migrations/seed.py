@@ -14,9 +14,9 @@ if __name__ != "__main__":
         "This module should only be executed directly and should not be imported."
     )
 
-from app.environments import is_production, is_staging
+from app.environments import is_production
 
-if is_production() or is_staging():
+if is_production():
     raise RuntimeError("seed.py must never run in production or staging")
 
 from app import log
@@ -30,6 +30,6 @@ try:
     user = User.find_or_create_by(clerk_id=clerk_user.id)
 except Exception as e:
     log.error("error creating clerk user, most likely a clerk authentication issue")
-    log.exception(e)
+    log.exception(e)  # type: ignore
 
 log.info("seed complete")

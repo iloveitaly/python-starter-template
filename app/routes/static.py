@@ -32,9 +32,7 @@ from app import log, root
 from app.environments import (
     is_development,
     is_local_testing,
-    is_production,
     is_productionish,
-    is_staging,
     python_environment,
 )
 from app.utils.patching import hash_function_code
