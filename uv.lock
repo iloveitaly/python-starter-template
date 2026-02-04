@@ -119,15 +119,15 @@ wheels = [
 
 [[package]]
 name = "alembic-postgresql-enum"
-version = "1.8.0"
+version = "1.9.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "alembic" },
     { name = "sqlalchemy" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/58/04/e465cb5c051fb056b7fadda7667b3e1fb4d32d7f19533e3bbff071c73788/alembic_postgresql_enum-1.8.0.tar.gz", hash = "sha256:132cd5fdc4a2a0b6498f3d89ea1c7b2a5ddc3281ddd84edae7259ec4c0a215a0", size = 15858, upload-time = "2025-07-20T12:25:50.626Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/cb/69/1c9b6dbcb99d2eb1b59807fb6e14717d9686bfc567b2d2740cb1d1be055f/alembic_postgresql_enum-1.9.0.tar.gz", hash = "sha256:5ce76d0fca97e7e11b56ca416aa367aaaf308ff90f3ed5d38a6f160357bebecd", size = 18444, upload-time = "2026-02-04T18:25:55.477Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/77/80/4e6e841f9a0403b520b8f28650c2cdf5905e25bd4ff403b43daec580fed3/alembic_postgresql_enum-1.8.0-py3-none-any.whl", hash = "sha256:0e62833f8d1aca2c58fa09cae1d4a52472fb32d2dde32b68c84515fffcf401d5", size = 23697, upload-time = "2025-07-20T12:25:49.048Z" },
+    { url = "https://files.pythonhosted.org/packages/4d/d5/3a15fadb3468082a93c1752ad45a47a739d4fc482472d03d9ad73dc11937/alembic_postgresql_enum-1.9.0-py3-none-any.whl", hash = "sha256:308666d6f1b154ec4dd10b8599e606711bc7eff050f7fce2e77e435734da5d76", size = 27674, upload-time = "2026-02-04T18:25:53.915Z" },
 ]
 
 [[package]]
@@ -219,14 +219,14 @@ wheels = [
 
 [[package]]
 name = "beautiful-traceback"
-version = "0.4.0"
+version = "0.5.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorama" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/05/49/5a322c146cfae7b8b18a1de508703f96984b49b9308b295693d7c82ac812/beautiful_traceback-0.4.0.tar.gz", hash = "sha256:35059ed53beecae91be9202ed45ae817f8cc27580d580f8491842ab8679cc040", size = 14070, upload-time = "2026-01-28T18:02:37.762Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e6/29/910e8a289f9485d49711198c88c121bbc91acab2dd4da671415d6c43f66c/beautiful_traceback-0.5.0.tar.gz", hash = "sha256:7f7c3ef32c4c5d822ae5ccd9f1a57ba24049d6c1ea40a0df538b2122f93131f7", size = 15202, upload-time = "2026-02-04T20:50:51.479Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3f/75/f9ddacd0db9ade9063302ce49503b4821d2009212ab5390a8d5b8d6b7490/beautiful_traceback-0.4.0-py3-none-any.whl", hash = "sha256:fb3110350746887f2603ea3e6152fecfa1844fffb726c32e5ce883dfebfdc2e5", size = 17936, upload-time = "2026-01-28T18:02:36.44Z" },
+    { url = "https://files.pythonhosted.org/packages/4a/73/61114793610fed17701c114e0f85e8ec0aa7a4f4249c0d115fad6d0a0103/beautiful_traceback-0.5.0-py3-none-any.whl", hash = "sha256:c37825bae79bb8be9db7689055d8a870043924622a51cc6f27af3d3c0d0742c9", size = 19543, upload-time = "2026-02-04T20:50:47.977Z" },
 ]
 
 [[package]]
@@ -836,7 +836,7 @@ wheels = [
 
 [[package]]
 name = "fastapi"
-version = "0.128.0"
+version = "0.128.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "annotated-doc" },
@@ -844,9 +844,9 @@ dependencies = [
     { name = "starlette" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/52/08/8c8508db6c7b9aae8f7175046af41baad690771c9bcde676419965e338c7/fastapi-0.128.0.tar.gz", hash = "sha256:1cc179e1cef10a6be60ffe429f79b829dce99d8de32d7acb7e6c8dfdf7f2645a", size = 365682, upload-time = "2025-12-27T15:21:13.714Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f6/59/28bde150415783ff084334e3de106eb7461a57864cf69f343950ad5a5ddd/fastapi-0.128.1.tar.gz", hash = "sha256:ce5be4fa26d4ce6f54debcc873d1fb8e0e248f5c48d7502ba6c61457ab2dc766", size = 374260, upload-time = "2026-02-04T17:35:10.542Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5c/05/5cbb59154b093548acd0f4c7c474a118eda06da25aa75c616b72d8fcd92a/fastapi-0.128.0-py3-none-any.whl", hash = "sha256:aebd93f9716ee3b4f4fcfe13ffb7cf308d99c9f3ab5622d8877441072561582d", size = 103094, upload-time = "2025-12-27T15:21:12.154Z" },
+    { url = "https://files.pythonhosted.org/packages/1a/08/3953db1979ea131c68279b997c6465080118b407f0800445b843f8e164b3/fastapi-0.128.1-py3-none-any.whl", hash = "sha256:ee82146bbf91ea5bbf2bb8629e4c6e056c4fbd997ea6068501b11b15260b50fb", size = 103810, upload-time = "2026-02-04T17:35:08.02Z" },
 ]
 
 [package.optional-dependencies]

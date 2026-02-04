@@ -280,7 +280,7 @@ def dump_system_options():
                 soft, hard = resource.getrlimit(getattr(resource, limit))
                 limits[limit] = {"soft": soft, "hard": hard}
         options["resource_limits"] = limits
-    except (ImportError, AttributeError):
+    except ImportError, AttributeError:
         options["resource_limits"] = None
 
     # 13. Global Exception Handling

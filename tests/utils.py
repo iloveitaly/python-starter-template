@@ -33,8 +33,9 @@ def delete_all_clerk_users():
     _deleted_users = (
         clerk.users.list()
         | fp.filter(
-            lambda user: user.email_addresses[0].email_address
-            not in CLERK_ALL_USERS_TO_PRESERVE
+            lambda user: (
+                user.email_addresses[0].email_address not in CLERK_ALL_USERS_TO_PRESERVE
+            )
         )
         | fp.pluck_attr("id")
         | fp.lmap(lambda uid: clerk.users.delete(user_id=uid))
