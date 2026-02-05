@@ -12,13 +12,13 @@ runs:
         MISE_ENV: dev
       with:
         version: 2026.2.4
-    - shell: bash
-      run: just dev_generate
     # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
     - uses: tecolicom/actions-use-apt-tools@v1
       with:
         # TODO is there *really* not a backend for zsh in mise?
         tools: zsh libnss3-tools
+    - shell: bash
+      run: just dev_generate
     # without any additional options, this simply installs the latest version of the cli
     - uses: 1password/load-secrets-action@v2
     - uses: iloveitaly/github-action-direnv-load-and-mask@master
