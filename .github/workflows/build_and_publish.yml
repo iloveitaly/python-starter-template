@@ -54,6 +54,7 @@ jobs:
       - uses: iloveitaly/github-action-localias@master
         with:
           chrome: true
+          config: tmp/localias.yml
       - run: just up --fast
       - run: just py_setup
       - run: just py_lint
