@@ -17,8 +17,9 @@ runs:
       with:
         # TODO is there *really* not a backend for zsh in mise?
         tools: zsh libnss3-tools
+    # host config needs to be generated first, before direnv, then localias can be setup
     - shell: bash
-      run: just dev_generate
+      run: just dev_generate_hosts
     # without any additional options, this simply installs the latest version of the cli
     - uses: 1password/load-secrets-action@v2
     - uses: iloveitaly/github-action-direnv-load-and-mask@master
