@@ -17,15 +17,20 @@ runs:
       with:
         # TODO is there *really* not a backend for zsh in mise?
         tools: zsh libnss3-tools
+
     # host config needs to be generated first, before direnv, then localias can be setup
     - shell: bash
       run: just dev_generate_hosts
+
     # without any additional options, this simply installs the latest version of the cli
     - uses: 1password/load-secrets-action@v2
     - uses: iloveitaly/github-action-direnv-load-and-mask@master
       with:
         environment_allowlist: >
           DIRENV_DIR, PYTHON_TEST_SERVER_HOST, JAVASCRIPT_SERVER_HOST, VITE_PYTHON_URL, OPENAPI_JSON_PATH, TMP_DIRECTORY, PLAYWRIGHT_RESULT_DIRECTORY, TEST_RESULTS_DIRECTORY, VIRTUAL_ENV, PATH, PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY, TZ, VIRTUAL_ENV, PYTHONPYCACHEPREFIX, ROOT_DIR, PYTHON_SERVER_HOST
+
+    - shell: bash
+      run: just dev_generate_localias
 
     # cache node_modules
     - uses: actions/cache@v5
