@@ -62,11 +62,14 @@ def allowed_hosts(with_scheme: bool = False) -> list[str]:
     for host in raw_hosts:
         if not host:
             continue
-        if host.lower().startswith("http://"):
+
+        # only HTTPS is allowed; ignore any http:// entries
+        if host.lower().startswith("http://") or host.lower().startswith("https://"):
             log.warning(
-                "http scheme provided in allowed host, ignoring host", host=host
+                "scheme provided in ALLOWED_HOST_LIST, ignoring host", host=host
             )
             continue
+
         hosts_without_scheme.append(host)
 
     assert hosts_without_scheme, "at least a single allowed host is required"
