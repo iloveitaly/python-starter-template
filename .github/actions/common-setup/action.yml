@@ -6,13 +6,14 @@ runs:
   steps:
     # NOTE cannot run checkout in this local action, must be run by the parent action
     # mise can rarely get stuck installing. It normally takes < 10s to install, so this should never be more than a minute
+    # web/ has it's own mise config, but it's copied from the root mise config, so we don't need to worry about it
     - uses: jdx/mise-action@v3
       env:
         MISE_ENV: dev
       with:
         version: 2026.2.4
-        # TODO this will install packages in web *and* the parent, we need a way of specifying what group of packages to install across multiple folders
-        working_directory: web
+    - shell: bash
+      run: just dev_generate
     # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
     - uses: tecolicom/actions-use-apt-tools@v1
       with:
