@@ -6,13 +6,13 @@
 #     Docker does not like quotes in any of it's env files or vars.
 
 # use a non-standard port to avoid conflicts with other applications
-export PYTHON_SERVER_PORT=8200
-export PYTHON_TEST_SERVER_PORT=8201
-export PYTHON_TEST_SERVER_HOST=api-test.web.localhost
+# export PYTHON_SERVER_PORT=8200
+# export PYTHON_TEST_SERVER_PORT=8201
+# export PYTHON_TEST_SERVER_HOST=api-test.web.localhost
 
 # job monitoring configuration
 export FLOWER_PASSWORD=password
-export FLOWER_PORT=8205
+# export FLOWER_PORT=8205
 
 # output directory is used by CI and justfiles
 export TMP_DIRECTORY=$ROOT_DIR/tmp
@@ -36,15 +36,15 @@ export PYTHONPATH=$ROOT_DIR
 export OPENAPI_JSON_PATH=$ROOT_DIR/web/openapi.json
 
 # only applicable in development, javascript is bundled in the py container in prod
-export JAVASCRIPT_SERVER_PORT=8202
-export JAVASCRIPT_SERVER_HOST=web.localhost
+# export JAVASCRIPT_SERVER_PORT=8202
+# export JAVASCRIPT_SERVER_HOST=web.localhost
 
-export PYTHON_SERVER_HOST=api.web.localhost
+# export PYTHON_SERVER_HOST=api.web.localhost
 
 # TODO we could just choose to have the frontend logic add the protocol?
 # protocol is important, otherwise you'll get CORS errors in browser
-export VITE_PYTHON_URL="https://${PYTHON_SERVER_HOST}/"
-export VITE_APP_BASE_URL="https://${JAVASCRIPT_SERVER_HOST}/"
+# export VITE_PYTHON_URL="https://${PYTHON_SERVER_HOST}/"
+# export VITE_APP_BASE_URL="https://${JAVASCRIPT_SERVER_HOST}/"
 
 # default from address for the mailer system
 export EMAIL_FROM_ADDRESS="noreply@example.com"
@@ -90,7 +90,7 @@ export SESSION_SECRET_KEY=de76c21e-e79d-4ad8-8e89-80ec58c71997
 
 # block bad hosts in fastapi. not required for development, but helpful to keep prod vs dev consistent
 # in production, this is most likely only a single host but can support multiple hosts
-export ALLOWED_HOST_LIST="$JAVASCRIPT_SERVER_HOST,$PYTHON_TEST_SERVER_HOST,api.web.localhost"
+# export ALLOWED_HOST_LIST="$JAVASCRIPT_SERVER_HOST,$PYTHON_TEST_SERVER_HOST,api.web.localhost"
 
 # Some notes on 1Password usage here:
 #
