@@ -11,8 +11,10 @@ GENERATED_LOCALIAS_CONFIG := "tmp/localias.yml"
 GENERATED_HOST_ENV := "env/host.sh"
 
 # TODO should add an option to not run workers, this is overkill most of the time
+
 # run all dev-related code generation commands (hosts, localias, openapi, python)
-dev_generate: _dev_only dev_generate_hosts dev_generate_localias
+# we don't guard against _dev_only since this needs to be run to bootstrap the application
+dev_generate: _not_production dev_generate_hosts dev_generate_localias
 
 # start all of the services you need for development in a single terminal
 [script]
