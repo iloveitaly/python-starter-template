@@ -40,7 +40,9 @@ def setup():
 
     # log configuration should go first, so any logging is properly outputted downstream
     log = configure_logger(
-        install_exception_hook=is_productionish(), json_logger=is_productionish()
+        install_exception_hook=is_productionish(),
+        json_logger=is_productionish(),
+        finalize_configuration=True,
     )
 
     # explicitly order configuration execution in case there are dependencies
