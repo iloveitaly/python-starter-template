@@ -52,13 +52,14 @@ dependencies = [
 ]
 
 [dependency-groups]
+# helpful for debugging and development, but completely optional for the core dev loop
 debugging-extras = [
     "colorama>=0.4.6",
     "datamodel-code-generator>=0.26.3",
     "debugpy>=1.8.8",
     "docrepr>=0.2.0",
-    "funcy-pipe>=0.11.1",
     "httpdbg>=0.31.1",
+    "hunter>=3.9.0",
     "icecream>=2.1.4",
     "ipdb>=0.13.13",
     "ipython>=9.0.2",
@@ -66,9 +67,7 @@ debugging-extras = [
     "ipython-ctrlr-fzf>=0.2.1",
     "ipython-suggestions>=1.0.0",
     "ipythonclipboard>=1.0b2",
-    "jedi>=0.19.2",
     "pdbr[ipython]>=0.8.9",
-    "pipdeptree>=2.25.0",
     "pre-commit>=4.1.0",
     "psutil>=6.1.0",
     "pudb>=2024.1.3",

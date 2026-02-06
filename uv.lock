@@ -1218,6 +1218,24 @@ wheels = [
 ]
 
 [[package]]
+name = "hunter"
+version = "3.9.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "manhole", marker = "sys_platform != 'win32'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2c/48/f0fcd050e578354fe8680c63d2484a7b2c9e39728dba763815f688a3391d/hunter-3.9.0.tar.gz", hash = "sha256:d953a4a8087bb8a6746f06bd6b4dd7c61bc6c60a57012139618fea7aeca2ffe2", size = 656954, upload-time = "2025-08-22T22:13:17.893Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0b/43/0a793a149e2b3e068b3da97c8b6e1320dc56b80d0c57b039e4ea4ecfe402/hunter-3.9.0-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:c9ab1e6beada44028c259bc985b2fefff8bcbf94527302a9d7ab3f0bb9037978", size = 793533, upload-time = "2025-08-22T22:12:50.185Z" },
+    { url = "https://files.pythonhosted.org/packages/c2/6d/683f31517ba2c4749b45aa107e44334ab900f8470e10a75509a77ecea34f/hunter-3.9.0-cp314-cp314-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:50e514e37c8790081b8cbec8af2d978406f461f4b8be9256f451c01c5d635b84", size = 806590, upload-time = "2025-08-22T22:12:51.799Z" },
+    { url = "https://files.pythonhosted.org/packages/ae/b0/38e3af8e8f8d109ab51e0eb3387d8db7ce66b9c501dd5d88a89a88e364f8/hunter-3.9.0-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:810a003ddd2f69e1baf66fafee92779bc1edffbb3b34ae203cc99fefb9088379", size = 833251, upload-time = "2025-08-22T22:12:53.43Z" },
+    { url = "https://files.pythonhosted.org/packages/6a/d7/821b1304642a3489a129816fdf67a9b85ed2434f034ef535fd91e5f8dfad/hunter-3.9.0-cp314-cp314-musllinux_1_2_aarch64.whl", hash = "sha256:e23f9b9fd07d2547418d9ce126c05750026cd391767e6173d5fa25d22326edc8", size = 809136, upload-time = "2025-08-22T22:12:55.385Z" },
+    { url = "https://files.pythonhosted.org/packages/67/25/acbb88063edf220048babb75969a4ef8256704225e16546f0186613dad8e/hunter-3.9.0-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:c6ca3d6ab9b14ec9ae1e73b59856c9fe48e40a0237a907af45b6e7073da7fa5e", size = 841215, upload-time = "2025-08-22T22:12:57.763Z" },
+    { url = "https://files.pythonhosted.org/packages/b1/07/7c92d72d01d63add5ab982f281b4a862237ceef8966177229b27eaef7f3b/hunter-3.9.0-cp314-cp314-win32.whl", hash = "sha256:5f9f070e0cf9b11d4d8b8de6db2f76b2ec4d5f421e1312004494694c56276c41", size = 663333, upload-time = "2025-08-22T22:12:59.693Z" },
+    { url = "https://files.pythonhosted.org/packages/2e/2b/b6cd214d1f406fd225dceec54de04bb4b5465959ddf5fa2b950ac291cf19/hunter-3.9.0-cp314-cp314-win_amd64.whl", hash = "sha256:eb72322494ca2f49404665243124b569be33ca2e93559e258e05f11554b97b70", size = 691631, upload-time = "2025-08-22T22:13:01.511Z" },
+]
+
+[[package]]
 name = "icecream"
 version = "2.1.8"
 source = { git = "https://github.com/iloveitaly/icecream.git?rev=exclude-tests#2977c4c64276e25d7c094e72d1807fd57b370d22" }
@@ -1552,6 +1570,15 @@ wheels = [
 ]
 
 [[package]]
+name = "manhole"
+version = "1.8.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d1/5c/2d1cd4957237b4c46aa8cac77e81780bf4439035a7f83b0a620a0de21bbc/manhole-1.8.1.tar.gz", hash = "sha256:3668fdaf83b33c943db4e750e0c554e31c20f63338496895dd4d6410680d9c4b", size = 41058, upload-time = "2024-07-04T16:25:36.987Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/27/4f/70f87a63cc40f8f52ba5549c77f7f9e82a38e35d70f0b46a157eb5cabba8/manhole-1.8.1-py3-none-any.whl", hash = "sha256:35e4d051776fa375beb8a512994627a297ee16ee43618e8d4b9c486fe85b1729", size = 16347, upload-time = "2024-07-04T16:25:34.706Z" },
+]
+
+[[package]]
 name = "markdown-it-py"
 version = "4.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1853,28 +1880,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/53/26/c4188248bd5edaf543864fe4834aebe9c9cb4968b6f573ce014cc42d0720/pillow-12.1.0-cp314-cp314t-win32.whl", hash = "sha256:b17fbdbe01c196e7e159aacb889e091f28e61020a8abeac07b68079b6e626988", size = 6438703, upload-time = "2026-01-02T09:13:07.491Z" },
     { url = "https://files.pythonhosted.org/packages/b8/0e/69ed296de8ea05cb03ee139cee600f424ca166e632567b2d66727f08c7ed/pillow-12.1.0-cp314-cp314t-win_amd64.whl", hash = "sha256:27b9baecb428899db6c0de572d6d305cfaf38ca1596b5c0542a5182e3e74e8c6", size = 7182927, upload-time = "2026-01-02T09:13:09.841Z" },
     { url = "https://files.pythonhosted.org/packages/fc/f5/68334c015eed9b5cff77814258717dec591ded209ab5b6fb70e2ae873d1d/pillow-12.1.0-cp314-cp314t-win_arm64.whl", hash = "sha256:f61333d817698bdcdd0f9d7793e365ac3d2a21c1f1eb02b32ad6aefb8d8ea831", size = 2545104, upload-time = "2026-01-02T09:13:12.068Z" },
-]
-
-[[package]]
-name = "pip"
-version = "26.0.1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/48/83/0d7d4e9efe3344b8e2fe25d93be44f64b65364d3c8d7bc6dc90198d5422e/pip-26.0.1.tar.gz", hash = "sha256:c4037d8a277c89b320abe636d59f91e6d0922d08a05b60e85e53b296613346d8", size = 1812747, upload-time = "2026-02-05T02:20:18.702Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/de/f0/c81e05b613866b76d2d1066490adf1a3dbc4ee9d9c839961c3fc8a6997af/pip-26.0.1-py3-none-any.whl", hash = "sha256:bdb1b08f4274833d62c1aa29e20907365a2ceb950410df15fc9521bad440122b", size = 1787723, upload-time = "2026-02-05T02:20:16.416Z" },
-]
-
-[[package]]
-name = "pipdeptree"
-version = "2.30.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "packaging" },
-    { name = "pip" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/03/65/f1881a1b6c49e9c94a463f7c52a23cbadcb0e778418056c9f97cbfae4ede/pipdeptree-2.30.0.tar.gz", hash = "sha256:0f78fe4bcf36a72d0d006aee0f4e315146cb278e4c4d51621f370a3d6b8861c1", size = 42737, upload-time = "2025-11-12T04:16:20.315Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/90/3d/21d6b9a0d04c6aa48621d500af4648435e4b0906437c8474ddb188249436/pipdeptree-2.30.0-py3-none-any.whl", hash = "sha256:e08ee7eb8152c0d67aee308c8477a489ab0af1a4aafe988d9d2d9998f78a24a6", size = 34017, upload-time = "2025-11-12T04:16:18.835Z" },
 ]
 
 [[package]]
@@ -2682,8 +2687,8 @@ debugging-extras = [
     { name = "datamodel-code-generator" },
     { name = "debugpy" },
     { name = "docrepr" },
-    { name = "funcy-pipe" },
     { name = "httpdbg" },
+    { name = "hunter" },
     { name = "icecream" },
     { name = "ipdb" },
     { name = "ipython" },
@@ -2691,9 +2696,7 @@ debugging-extras = [
     { name = "ipython-ctrlr-fzf" },
     { name = "ipython-suggestions" },
     { name = "ipythonclipboard" },
-    { name = "jedi" },
     { name = "pdbr", extra = ["ipython"] },
-    { name = "pipdeptree" },
     { name = "pre-commit" },
     { name = "psutil" },
     { name = "pudb" },
@@ -2790,8 +2793,8 @@ debugging-extras = [
     { name = "datamodel-code-generator", specifier = ">=0.26.3" },
     { name = "debugpy", specifier = ">=1.8.8" },
     { name = "docrepr", specifier = ">=0.2.0" },
-    { name = "funcy-pipe", specifier = ">=0.11.1" },
     { name = "httpdbg", specifier = ">=0.31.1" },
+    { name = "hunter", specifier = ">=3.9.0" },
     { name = "icecream", git = "https://github.com/iloveitaly/icecream.git?rev=exclude-tests" },
     { name = "ipdb", git = "https://github.com/iloveitaly/ipdb?rev=support-executables" },
     { name = "ipython", specifier = ">=9.0.2" },
@@ -2799,9 +2802,7 @@ debugging-extras = [
     { name = "ipython-ctrlr-fzf", specifier = ">=0.2.1" },
     { name = "ipython-suggestions", specifier = ">=1.0.0" },
     { name = "ipythonclipboard", specifier = ">=1.0b2" },
-    { name = "jedi", specifier = ">=0.19.2" },
     { name = "pdbr", extras = ["ipython"], specifier = ">=0.8.9" },
-    { name = "pipdeptree", specifier = ">=2.25.0" },
     { name = "pre-commit", specifier = ">=4.1.0" },
     { name = "psutil", specifier = ">=6.1.0" },
     { name = "pudb", specifier = ">=2024.1.3" },
