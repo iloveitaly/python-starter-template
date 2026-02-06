@@ -1,8 +1,8 @@
-name: 'Common Setup'
+name: "Common Setup"
 description: "Internal action for common setup across jobs"
 # NOTE timeout-minutes *cannot* bet set within a action and must be set at the root level
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     # NOTE cannot run checkout in this local action, must be run by the parent action
     # mise can rarely get stuck installing. It normally takes < 10s to install, so this should never be more than a minute
@@ -27,7 +27,7 @@ runs:
     - uses: iloveitaly/github-action-direnv-load-and-mask@master
       with:
         environment_allowlist: >
-          DIRENV_DIR, PYTHON_TEST_SERVER_HOST, JAVASCRIPT_SERVER_HOST, VITE_PYTHON_URL, OPENAPI_JSON_PATH, TMP_DIRECTORY, PLAYWRIGHT_RESULT_DIRECTORY, TEST_RESULTS_DIRECTORY, VIRTUAL_ENV, PATH, PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY, TZ, VIRTUAL_ENV, PYTHONPYCACHEPREFIX, ROOT_DIR, PYTHON_SERVER_HOST
+          DIRENV_DIR, PYTHON_TEST_SERVER_HOST, JAVASCRIPT_SERVER_HOST, VITE_PYTHON_URL, OPENAPI_JSON_PATH, TMP_DIRECTORY, PLAYWRIGHT_RESULT_DIRECTORY, TEST_RESULTS_DIRECTORY, VIRTUAL_ENV, PATH, PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY, TZ, VIRTUAL_ENV, PYTHONPYCACHEPREFIX, ROOT_DIR, PYTHON_SERVER_HOST, DIRENV_DIR,PYTHON_TEST_SERVER_HOST,JAVASCRIPT_SERVER_HOST,VITE_PYTHON_URL,OPENAPI_JSON_PATH,TMP_DIRECTORY,PLAYWRIGHT_RESULT_DIRECTORY,TEST_RESULTS_DIRECTORY,PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY,TZ,PYTHONPYCACHEPREFIX,ROOT_DIR,PYTHON_SERVER_HOST
 
     - shell: bash
       run: just dev_generate_localias
