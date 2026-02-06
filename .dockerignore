@@ -2,6 +2,7 @@
 .devcontainer
 .github
 .git
+.gitignore
 .github
 .DS_Store
 .trunk
@@ -18,16 +19,18 @@ env/
 .ipython_history
 .coverage
 
-node_modules
+**/node_modules
 
 # TODO this may be a bad idea, but let's exclude this for now...
 /test
 /test_helpers
 
 /infra
+# keep the folder, ignore contents
 /tmp/*
 
 *.log
+
 
 Justfile
 /just
@@ -47,10 +50,10 @@ lefthook.yml
 /copier.yml
 /.copier
 
-# web code is built and bundled into the image separately
-/web
-
+################################
 # AI configuration
+################################
+
 AGENTS.md
 CLAUDE.md
 GEMINI.md
@@ -60,4 +63,13 @@ GEMINI.md
 commands.md
 instructions.md
 
-# NOTE .nixpacks must be added to the docker container! Do not ignore.
+################################
+# Web Ignores
+################################
+
+/web/client
+/web/build
+/web/.react-router
+/web/test
+/web/**/*.test.*
+test/
