@@ -42,7 +42,8 @@ def setup():
     log = configure_logger(
         install_exception_hook=is_productionish(),
         json_logger=is_productionish(),
-        finalize_configuration=True,
+        # prevents any additional reconfiguration, which could cause issues with tests/dev
+        finalize_configuration=is_productionish(),
     )
 
     # explicitly order configuration execution in case there are dependencies
