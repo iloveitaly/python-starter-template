@@ -27,7 +27,7 @@ runs:
     - uses: iloveitaly/github-action-direnv-load-and-mask@master
       with:
         environment_allowlist: >
-          PYTHON_SERVER_HOST, PYTHON_TEST_SERVER_HOST, JAVASCRIPT_SERVER_HOST, VITE_PYTHON_URL, PYTHONPYCACHEPREFIX
+          PYTHON_SERVER_HOST, PYTHON_TEST_SERVER_HOST, JAVASCRIPT_SERVER_HOST, VITE_PYTHON_URL, PYTHONPYCACHEPREFIX, ALLOWED_HOST_LIST
 
     - shell: bash
       run: just dev_generate_localias
