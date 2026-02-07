@@ -273,3 +273,31 @@ dev_generate_localias:
 	# job monitoring (flower)
 	${FLOWER_HOST}: ${FLOWER_PORT}
 	EOF
+
+# when a new worktree is created, we want to copy some of the generated files from the main repo
+[script]
+bootstrap_worktree:
+		git_common_dir=$(git rev-parse --git-common-dir 2>/dev/null)
+		current_dir=$(pwd)
+
+		# if we're not in a worktree, just exit
+		if [[ "$git_common_dir" == ".git" ]] || [[ "$git_common_dir" == "$current_dir/.git" ]]; then
+				echo "{{RED}}Not in a git worktree, skipping bootstrap{{NORMAL}}"
+				exit 0
+		fi
+
+		original_dir_path=$(dirname "$git_common_dir")
+
+		# copy a couple things from the main repo:
+		# - env/*.local.*
+		# - .ipython_history
+
+		cp "$original_dir_path/env/"*.local.* env/ || true
+		cp "$original_dir_path/.ipython_history" .
+
+		# may need some `.local.` customizations in order to generate
+		direnv allow .
+
+		just dev_generate_hosts
+
+		echo "Make sure to setup your database as well"
