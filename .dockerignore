@@ -1,3 +1,7 @@
+################################
+# Dev-only Secrets & Config
+################################
+
 .vscode
 .devcontainer
 .github
@@ -5,11 +9,42 @@
 .gitignore
 .github
 .DS_Store
-.trunk
 .editorconfig
-
 .envrc
 env/
+*.log
+docker-compose*.yml
+lefthook.yml
+.commitlintrc.yml
+.copier-answers.yml
+/copier.yml
+/.copier
+Justfile
+/just
+
+# infra configuration should be dev/CI only
+/infra
+
+# I like to scatter TODO files around the top-level to keep track of ideas
+/TODO*
+
+# readme and other top-level *.md shouldn't need to be included
+*.md
+
+# playground is for dev, dangerous to include anything like this in prod
+/playground
+
+# keep the folder, ignore contents
+/tmp/*
+
+# mise IS used in deployment, but only the top-level mise. Any of the env-specific mise config is NOT required for prod
+.config
+
+# NOTE /Procfile is intentionally not ignored, it can be used by some deployments (dokku)
+
+################################
+# Python Cruft
+################################
 
 **/__pycache__
 .ruff_cache
@@ -19,36 +54,18 @@ env/
 .ipython_history
 .coverage
 
-**/node_modules
-
-# TODO this may be a bad idea, but let's exclude this for now...
-/test
-/test_helpers
-
-/infra
-# keep the folder, ignore contents
-/tmp/*
-
-*.log
-
-
-Justfile
-/just
-/TODO*
-/README.md
-/playground*
+# we don't need python tests in prod
 /tests
 
-# NOTE /Procfile is intentionally not ignored, it can be used by some deployments (dokku)
+################################
+# Node/Web Ignores
+################################
 
-docker-compose*.yml
-lefthook.yml
-.localias.yaml
-.commitlintrc.yml
-.copier-answers.yml
-
-/copier.yml
-/.copier
+/web/client
+/web/build
+/web/.react-router
+/web/test
+**/node_modules
 
 ################################
 # AI configuration
@@ -60,16 +77,6 @@ GEMINI.md
 .opencode
 .gemini
 .cursor
+# .github is already ignored
 commands.md
 instructions.md
-
-################################
-# Web Ignores
-################################
-
-/web/client
-/web/build
-/web/.react-router
-/web/test
-/web/**/*.test.*
-test/
