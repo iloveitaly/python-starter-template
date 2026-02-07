@@ -54,7 +54,6 @@ dependencies = [
 [dependency-groups]
 # helpful for debugging and development, but completely optional for the core dev loop
 debugging-extras = [
-    "colorama>=0.4.6",
     "datamodel-code-generator>=0.26.3",
     "debugpy>=1.8.8",
     "docrepr>=0.2.0",
@@ -77,7 +76,6 @@ debugging-extras = [
     "rich>=13.9.4",
     "rpdb>=0.2.0",
     "sqlparse>=0.5.2",
-    "uv-development-toggle>=0.2.1",
 ]
 dev = [
     "covdefaults>=2.3.0",
@@ -233,3 +231,6 @@ git = "https://github.com/iloveitaly/activemodel.git"
 
 [tool.uv.sources.structlog-config]
 git = "https://github.com/iloveitaly/structlog-config.git"
+
+[tool.uv.sources.beautiful-traceback]
+git = "https://github.com/iloveitaly/beautiful-traceback.git"

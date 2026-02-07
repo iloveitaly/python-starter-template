@@ -1,9 +1,18 @@
+# your `env/dev.local.sh` should set MISE_ENV=dev,extras to include these tools
+
 [tools]
 "cargo:fastmod" = "latest"
+# combined with the ast-grep skill, this is a great tool for exploring codebases
 "cargo:ast-grep" = "latest"
 "cargo:commitlint-rs" = "latest"
 # ^ did not work, but this did: cargo binstall commitlint-rs
 "pipx:aiautocommit" = "latest"
+"pipx:uv-development-toggle" = "latest"
+# git hook manager
 "lefthook" = "latest"
 # not really an extra, since this is used on CI, but the CI version is installed/used via a GHA
 "1password-cli" = "latest"
+# great for docker image exploration
+"dive" = "latest"
+# for the VSC just extension
+"cargo:just-lsp" = "latest"

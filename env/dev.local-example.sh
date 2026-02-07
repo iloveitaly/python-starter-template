@@ -1,7 +1,7 @@
 # NOTE: rename to `.env.dev.local` and customize for your local development preferences
 
 # this enables configuration in `.config/mise.dev.toml`
-export MISE_ENV=dev
+export MISE_ENV=dev,extras
 
 # https://github.com/microsoft/pylance-release/blob/8a9161449fb8a2076f19681dabc3b7c93c7de1d7/USING_WITH_PYRIGHT.md?plain=1#L9
 export PYRIGHT_PYTHON_PYLANCE_VERSION=latest-release

@@ -220,13 +220,10 @@ wheels = [
 [[package]]
 name = "beautiful-traceback"
 version = "0.5.0"
-source = { registry = "https://pypi.org/simple" }
+source = { git = "https://github.com/iloveitaly/beautiful-traceback.git#e33193255839e214988e75bc8d6ceb5d56281764" }
 dependencies = [
     { name = "colorama" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/e6/29/910e8a289f9485d49711198c88c121bbc91acab2dd4da671415d6c43f66c/beautiful_traceback-0.5.0.tar.gz", hash = "sha256:7f7c3ef32c4c5d822ae5ccd9f1a57ba24049d6c1ea40a0df538b2122f93131f7", size = 15202, upload-time = "2026-02-04T20:50:51.479Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/4a/73/61114793610fed17701c114e0f85e8ec0aa7a4f4249c0d115fad6d0a0103/beautiful_traceback-0.5.0-py3-none-any.whl", hash = "sha256:c37825bae79bb8be9db7689055d8a870043924622a51cc6f27af3d3c0d0742c9", size = 19543, upload-time = "2026-02-04T20:50:47.977Z" },
+    { name = "structlog-config" },
 ]
 
 [[package]]
@@ -2683,7 +2680,6 @@ dependencies = [
 
 [package.dev-dependencies]
 debugging-extras = [
-    { name = "colorama" },
     { name = "datamodel-code-generator" },
     { name = "debugpy" },
     { name = "docrepr" },
@@ -2706,7 +2702,6 @@ debugging-extras = [
     { name = "rich" },
     { name = "rpdb" },
     { name = "sqlparse" },
-    { name = "uv-development-toggle" },
 ]
 dev = [
     { name = "covdefaults" },
@@ -2745,7 +2740,7 @@ requires-dist = [
     { name = "alembic", specifier = ">=1.14.0" },
     { name = "alembic-postgresql-enum", specifier = ">=1.6.1" },
     { name = "backoff", specifier = ">=2.2.1" },
-    { name = "beautiful-traceback", specifier = ">=0.3.0" },
+    { name = "beautiful-traceback", git = "https://github.com/iloveitaly/beautiful-traceback.git" },
     { name = "cachetools", specifier = ">=5.5.1" },
     { name = "celery", extras = ["redis"], specifier = ">=5.4.0" },
     { name = "celery-healthcheck", specifier = ">=0.1.1" },
@@ -2789,7 +2784,6 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 debugging-extras = [
-    { name = "colorama", specifier = ">=0.4.6" },
     { name = "datamodel-code-generator", specifier = ">=0.26.3" },
     { name = "debugpy", specifier = ">=1.8.8" },
     { name = "docrepr", specifier = ">=0.2.0" },
@@ -2812,7 +2806,6 @@ debugging-extras = [
     { name = "rich", specifier = ">=13.9.4" },
     { name = "rpdb", specifier = ">=0.2.0" },
     { name = "sqlparse", specifier = ">=0.5.2" },
-    { name = "uv-development-toggle", specifier = ">=0.2.1" },
 ]
 dev = [
     { name = "covdefaults", specifier = ">=2.3.0" },
@@ -3465,15 +3458,6 @@ wheels = [
 ]
 
 [[package]]
-name = "tomlkit"
-version = "0.14.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/c3/af/14b24e41977adb296d6bd1fb59402cf7d60ce364f90c890bd2ec65c43b5a/tomlkit-0.14.0.tar.gz", hash = "sha256:cf00efca415dbd57575befb1f6634c4f42d2d87dbba376128adb42c121b87064", size = 187167, upload-time = "2026-01-13T01:14:53.304Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/b5/11/87d6d29fb5d237229d67973a6c9e06e048f01cf4994dee194ab0ea841814/tomlkit-0.14.0-py3-none-any.whl", hash = "sha256:592064ed85b40fa213469f81ac584f67a4f2992509a7c3ea2d632208623a3680", size = 39310, upload-time = "2026-01-13T01:14:51.965Z" },
-]
-
-[[package]]
 name = "tornado"
 version = "6.5.4"
 source = { registry = "https://pypi.org/simple" }
@@ -3644,19 +3628,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/ca/b7/4c0f736ca824b3a25b15e8213d1bcfc15f8ac2ae48d1b445b310892dc4da/uuid6-2025.0.1.tar.gz", hash = "sha256:cd0af94fa428675a44e32c5319ec5a3485225ba2179eefcf4c3f205ae30a81bd", size = 13932, upload-time = "2025-07-04T18:30:35.186Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/3d/b2/93faaab7962e2aa8d6e174afb6f76be2ca0ce89fde14d3af835acebcaa59/uuid6-2025.0.1-py3-none-any.whl", hash = "sha256:80530ce4d02a93cdf82e7122ca0da3ebbbc269790ec1cb902481fa3e9cc9ff99", size = 6979, upload-time = "2025-07-04T18:30:34.001Z" },
-]
-
-[[package]]
-name = "uv-development-toggle"
-version = "0.6.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "rich" },
-    { name = "tomlkit" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/f0/ac/10f2e153e57dbe68e1ee36446a61128698a8a59554d1bb0b008966992874/uv_development_toggle-0.6.0.tar.gz", hash = "sha256:d035e2d9bb5596db9213b26d6483918f71b79de1361c1342757d2a9a039773a9", size = 19798, upload-time = "2025-04-19T14:34:02.282Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/a0/83/ed4375583fc2bacbeffcccce09fe0d31a96af366ed3fee008ae095e9d610/uv_development_toggle-0.6.0-py3-none-any.whl", hash = "sha256:8621b3683a16701c094259165f363a369d22aa9b1f44449b1c8541e27b165f7f", size = 7094, upload-time = "2025-04-19T14:34:01.094Z" },
 ]
 
 [[package]]
