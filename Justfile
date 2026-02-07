@@ -14,21 +14,19 @@
 #   and sort through really long lists of recipes.
 # * Scripts marked as `[macos]` should only run on dev machines. By default, this setup does not support non-macos
 #   dev machines.
+# * _ is currently being used a recipe namespace char, use `-` to separate words
+#   this will be improved later on: https://github.com/casey/just/issues/2442
+# * `pipefail` is important: without this option, a shell script can easily hide an error in a way that is hard to debug
+#   this will cause some extra frustration when developing scripts initially, but will make working with them more
+#   intuitive and less error prone over time.
 #
 #######################
-
-# _ is currently being used a recipe namespace char, use `-` to separate words
-# TODO this will be improved later on: https://github.com/casey/just/issues/2442
-
-# `pipefail` is important: without this option, a shell script can easily hide an error in a way that is hard to debug
-# this will cause some extra frustration when developing scripts initially, but will make working with them more
-# intuitive and less error prone over time.
 
 # zsh is the default shell under macos, let's mirror it everywhere
 set shell := ["zsh", "-ceuB", "-o", "pipefail"]
 
-# determines what shell to use for [script]
 # TODO can we force tracing and a custom PS4 prompt? Would be good to understand how Just handles echoing commands
+# determines what shell to use for [script]
 set script-interpreter := ["zsh", "-euB", "-o", "pipefail"]
 
 # avoid seeing comments in the output
@@ -44,55 +42,62 @@ PROJECT_NAME := "python-starter-template"
 EXECUTE_IN_TEST := "CI=true direnv exec ."
 
 default_message := """
-Explore these commands:
+Importand commands:
 
-- setup (and setup_debug if you are running into issues)
-- dev
+- setup and setup_debug
+- dev and dev_generate
 - {py,js}_{clean,test,lint,lint_fix,dev,generate}
 """
+
 default:
-	@echo "{{default_message}}"
+		@echo "{{ default_message }}"
 
 lint: js_lint py_lint db_lint
 
 clean: js_clean py_clean build_clean
-	rm -rf $TMP_DIRECTORY/* || true
-	mkdir -p $TMP_DIRECTORY
-	rm -rf .git/hooks/* || true
+		rm -rf $TMP_DIRECTORY/* || true
+		mkdir -p $TMP_DIRECTORY
+		rm -rf .git/hooks/* || true
 
 # destroy and rebuild py, js, db, etc
 nuke: js_nuke py_nuke db_nuke
 
+TEMPLATE_UPDATE_NOTICE := """
+Updating project from upstream template:
+
+- Update skips all javascript updates. View changes:
+	 glo -- web/ \":(exclude)web/package.json\" \":(exclude)web/pnpm*\" \":(exclude)web/mise.toml\"
+- Update skips .tool-versions updates
+- You'll need to manually review conflicts of which there will be many
+- 'incoming' change in a diff is the template changes
+"""
+
 # syncs the project with the upstream python-starter-template repo.
 update_from_upstream_template:
-	@echo "Updating project from upstream template. Remember:\n"
-	@echo "- Update skips all javascript updates. View changes:"
-	@echo "   glo -- web/ \":(exclude)web/package.json\" \":(exclude)web/pnpm*\" \":(exclude)web/mise.toml\""
-	@echo "- Update skips .tool-versions updates"
-	@echo "- You'll need to manually review conflicts of which there will be many"
-	@echo "- 'incoming' change in a diff is the template changes\n"
+		@just _banner_echo "Running Upgrade From Template"
 
-	@just _banner_echo "Running Upgrade From Template"
+		echo "{{ TEMPLATE_UPDATE_NOTICE }}"
 
-	uv tool run --with jinja2_shell_extension \
-		copier update@latest update \
-		--trust --skip-tasks --skip-answered --vcs-ref=HEAD \
-		--exclude web \
-		--exclude migrations/versions/ \
-		--exclude app/generated/ \
-		--exclude pyproject.toml \
-		--exclude uv.lock \
-		--exclude tests/integration/__snapshots__ \
-		--exclude .service-versions \
-		--exclude .tool-versions \
-		--exclude .localias.yaml \
-		--exclude .github/instructions \
-		--exclude .github/copilot-instructions.md \
-		--exclude .cursor/rules \
-		--exclude .gemini \
-		--exclude .opencode
+		uv tool run --with jinja2_shell_extension \
+			copier update@latest update \
+			--trust --skip-tasks --skip-answered --vcs-ref=HEAD \
+			--exclude web \
+			--exclude migrations/versions/ \
+			--exclude app/generated/ \
+			--exclude pyproject.toml \
+			--exclude uv.lock \
+			--exclude tests/integration/__snapshots__ \
+			--exclude .service-versions \
+			--exclude .tool-versions \
+			--exclude .github/instructions \
+			--exclude .github/copilot-instructions.md \
+			--exclude .cursor \
+			--exclude .gemini \
+			--exclude .claude \
+			--exclude .opencode
 
 # do NOT allow for duplicate recipe names and variables otherwise this would get very complex
+
 import 'just/utils.just'
 import 'just/database.just'
 import 'just/docker.just'
