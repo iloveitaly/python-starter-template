@@ -220,10 +220,9 @@ wheels = [
 [[package]]
 name = "beautiful-traceback"
 version = "0.5.0"
-source = { git = "https://github.com/iloveitaly/beautiful-traceback.git#e33193255839e214988e75bc8d6ceb5d56281764" }
+source = { git = "https://github.com/iloveitaly/beautiful-traceback.git#222d6dc8dbeee3d02a6d6cf4122e87e5a1cd72ec" }
 dependencies = [
     { name = "colorama" },
-    { name = "structlog-config" },
 ]
 
 [[package]]
@@ -3382,7 +3381,7 @@ wheels = [
 [[package]]
 name = "structlog-config"
 version = "0.10.0"
-source = { git = "https://github.com/iloveitaly/structlog-config.git#100bb34539bb04ef3461898595a19e87e5ef97fe" }
+source = { git = "https://github.com/iloveitaly/structlog-config.git#1d747bd2856101f38339590116357b2abc8c2686" }
 dependencies = [
     { name = "fastapi-ipware" },
     { name = "orjson" },
