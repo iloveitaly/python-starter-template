@@ -2472,6 +2472,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pytest-line-runner"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/4f/a1/60109a15e73a36a3049c95e57eba32025c7ed76c2160b8c0eb15f1c14ce6/pytest_line_runner-0.1.0.tar.gz", hash = "sha256:4510d4223436b006376e51c2418c452c52ec8f2570556d67f9df5e514d912077", size = 2948, upload-time = "2026-02-08T20:09:15.451Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/32/8a/7821b9bb8d00735261c34e2a03156a9c1b152fe8142bed3494611c81d9e9/pytest_line_runner-0.1.0-py3-none-any.whl", hash = "sha256:af0ff8c0edae89fda8a542da031949d888eff11b8ff0610a1bdf4133cfc5a087", size = 3856, upload-time = "2026-02-08T20:09:14.751Z" },
+]
+
+[[package]]
 name = "pytest-playwright"
 version = "0.7.2"
 source = { registry = "https://pypi.org/simple" }
@@ -2722,6 +2731,7 @@ dev = [
     { name = "pytest-cov" },
     { name = "pytest-github-actions-annotate-failures" },
     { name = "pytest-httpx" },
+    { name = "pytest-line-runner" },
     { name = "pytest-playwright" },
     { name = "pytest-playwright-artifacts" },
     { name = "pytest-playwright-visual-snapshot" },
@@ -2826,6 +2836,7 @@ dev = [
     { name = "pytest-cov", specifier = ">=6.0.0" },
     { name = "pytest-github-actions-annotate-failures", specifier = ">=0.2.0" },
     { name = "pytest-httpx", specifier = ">=0.35.0" },
+    { name = "pytest-line-runner", specifier = ">=0.1.0" },
     { name = "pytest-playwright", specifier = ">=0.6.2" },
     { name = "pytest-playwright-artifacts", specifier = ">=0.1.0" },
     { name = "pytest-playwright-visual-snapshot" },
