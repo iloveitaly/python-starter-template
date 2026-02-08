@@ -46,12 +46,14 @@ def setup():
         finalize_configuration=is_productionish(),
     )
 
+    # debug configuration is first so nice stack traces are in place as soon as possible
+    configure_debugging()
+
     # explicitly order configuration execution in case there are dependencies
     configure_python()
     configure_database()
     configure_openai()
     configure_sentry()
-    configure_debugging()
     configure_mailer()
     check_service_versions()
     configure_patches()
