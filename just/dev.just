@@ -300,4 +300,7 @@ bootstrap_worktree:
 
 		just dev_generate_hosts
 
+		just py_setup
+		just js_setup
+
 		echo "Make sure to setup your database as well"
