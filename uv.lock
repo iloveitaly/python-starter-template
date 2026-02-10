@@ -220,7 +220,7 @@ wheels = [
 [[package]]
 name = "beautiful-traceback"
 version = "0.5.0"
-source = { git = "https://github.com/iloveitaly/beautiful-traceback.git#222d6dc8dbeee3d02a6d6cf4122e87e5a1cd72ec" }
+source = { git = "https://github.com/iloveitaly/beautiful-traceback.git#0c1bf41fde1f2d4c4750b53cd1d944ca228feeeb" }
 dependencies = [
     { name = "colorama" },
 ]
@@ -836,7 +836,7 @@ wheels = [
 
 [[package]]
 name = "fastapi"
-version = "0.128.5"
+version = "0.128.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "annotated-doc" },
@@ -845,9 +845,9 @@ dependencies = [
     { name = "typing-extensions" },
     { name = "typing-inspection" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/02/d4/811e7283aaaa84f1e7bd55fb642b58f8c01895e4884a9b7628cb55e00d63/fastapi-0.128.5.tar.gz", hash = "sha256:a7173579fc162d6471e3c6fbd9a4b7610c7a3b367bcacf6c4f90d5d022cab711", size = 374636, upload-time = "2026-02-08T10:22:30.493Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a0/fc/af386750b3fd8d8828167e4c82b787a8eeca2eca5c5429c9db8bb7c70e04/fastapi-0.128.7.tar.gz", hash = "sha256:783c273416995486c155ad2c0e2b45905dedfaf20b9ef8d9f6a9124670639a24", size = 375325, upload-time = "2026-02-10T12:26:40.968Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e4/e0/511972dba23ee76c0e9d09d1ae95e916fc8ebce5322b2b8b65a481428b10/fastapi-0.128.5-py3-none-any.whl", hash = "sha256:bceec0de8aa6564599c5bcc0593b0d287703562c848271fca8546fd2c87bf4dd", size = 103677, upload-time = "2026-02-08T10:22:28.919Z" },
+    { url = "https://files.pythonhosted.org/packages/af/1a/f983b45661c79c31be575c570d46c437a5409b67a939c1b3d8d6b3ed7a7f/fastapi-0.128.7-py3-none-any.whl", hash = "sha256:6bd9bd31cb7047465f2d3fa3ba3f33b0870b17d4eaf7cdb36d1576ab060ad662", size = 103630, upload-time = "2026-02-10T12:26:39.414Z" },
 ]
 
 [package.optional-dependencies]
@@ -1740,7 +1740,7 @@ wheels = [
 
 [[package]]
 name = "openai"
-version = "2.17.0"
+version = "2.18.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
@@ -1752,9 +1752,9 @@ dependencies = [
     { name = "tqdm" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9c/a2/677f22c4b487effb8a09439fb6134034b5f0a39ca27df8b95fac23a93720/openai-2.17.0.tar.gz", hash = "sha256:47224b74bd20f30c6b0a6a329505243cb2f26d5cf84d9f8d0825ff8b35e9c999", size = 631445, upload-time = "2026-02-05T16:27:40.953Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9e/cb/f2c9f988a06d1fcdd18ddc010f43ac384219a399eb01765493d6b34b1461/openai-2.18.0.tar.gz", hash = "sha256:5018d3bcb6651c5aac90e6d0bf9da5cde1bdd23749f67b45b37c522b6e6353af", size = 632124, upload-time = "2026-02-09T21:42:18.017Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/44/97/284535aa75e6e84ab388248b5a323fc296b1f70530130dee37f7f4fbe856/openai-2.17.0-py3-none-any.whl", hash = "sha256:4f393fd886ca35e113aac7ff239bcd578b81d8f104f5aedc7d3693eb2af1d338", size = 1069524, upload-time = "2026-02-05T16:27:38.941Z" },
+    { url = "https://files.pythonhosted.org/packages/20/5f/8940e0641c223eaf972732b3154f2178a968290f8cb99e8c88582cde60ed/openai-2.18.0-py3-none-any.whl", hash = "sha256:538f97e1c77a00e3a99507688c878cda7e9e63031807ba425c68478854d48b30", size = 1069897, upload-time = "2026-02-09T21:42:16.4Z" },
 ]
 
 [[package]]
@@ -1803,11 +1803,11 @@ wheels = [
 
 [[package]]
 name = "parso"
-version = "0.8.5"
+version = "0.8.6"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d4/de/53e0bcf53d13e005bd8c92e7855142494f41171b34c2536b86187474184d/parso-0.8.5.tar.gz", hash = "sha256:034d7354a9a018bdce352f48b2a8a450f05e9d6ee85db84764e9b6bd96dafe5a", size = 401205, upload-time = "2025-08-23T15:15:28.028Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/81/76/a1e769043c0c0c9fe391b702539d594731a4362334cdf4dc25d0c09761e7/parso-0.8.6.tar.gz", hash = "sha256:2b9a0332696df97d454fa67b81618fd69c35a7b90327cbe6ba5c92d2c68a7bfd", size = 401621, upload-time = "2026-02-09T15:45:24.425Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/16/32/f8e3c85d1d5250232a5d3477a2a28cc291968ff175caeadaf3cc19ce0e4a/parso-0.8.5-py2.py3-none-any.whl", hash = "sha256:646204b5ee239c396d040b90f9e272e9a8017c630092bf59980beb62fd033887", size = 106668, upload-time = "2025-08-23T15:15:25.663Z" },
+    { url = "https://files.pythonhosted.org/packages/b6/61/fae042894f4296ec49e3f193aff5d7c18440da9e48102c3315e1bc4519a7/parso-0.8.6-py2.py3-none-any.whl", hash = "sha256:2c549f800b70a5c4952197248825584cb00f033b29c692671d3bf08bf380baff", size = 106894, upload-time = "2026-02-09T15:45:21.391Z" },
 ]
 
 [[package]]
@@ -1939,7 +1939,7 @@ dependencies = [
 
 [[package]]
 name = "posthog"
-version = "7.8.3"
+version = "7.8.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "backoff" },
@@ -1949,9 +1949,9 @@ dependencies = [
     { name = "six" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d1/ad/2f116cd9b83dc83ece4328a4efe0bcb80e5c2993837f89a788467d261da8/posthog-7.8.3.tar.gz", hash = "sha256:2b85e818bf818ac2768a890b772b7c12d4f909797226acd9327d66a319dbcf83", size = 167083, upload-time = "2026-02-06T13:16:22.938Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b0/10/8e74a5e997c8286f0b63c69da522e503b1ab11627217ab76a06c7b62d647/posthog-7.8.5.tar.gz", hash = "sha256:e4f3796ce18323d8e05139bf419a04d318ccc4ad77b210f4d9d7c7546aea4f35", size = 169117, upload-time = "2026-02-09T22:59:49.207Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e7/e5/5a4b060cbb9aa9defb8bfd55d15899b3146fece14147f4d66be80e81955a/posthog-7.8.3-py3-none-any.whl", hash = "sha256:1840796e4f7e14dd91ec5fdeb939712c3383fe9e758cfcdeb0317d8f30f7b901", size = 192528, upload-time = "2026-02-06T13:16:21.385Z" },
+    { url = "https://files.pythonhosted.org/packages/33/b3/59b61d4b90e2efd138abaa34d98c7a89a4a352850cc3a079a60a46780655/posthog-7.8.5-py3-none-any.whl", hash = "sha256:979d306f07e61a8e837746e5dc432aafc49827fecac91bd6c624dcf3a1967448", size = 194647, upload-time = "2026-02-09T22:59:47.744Z" },
 ]
 
 [[package]]
@@ -3025,16 +3025,16 @@ wheels = [
 
 [[package]]
 name = "rich-toolkit"
-version = "0.18.1"
+version = "0.19.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "rich" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/da/f1/bcfbde3ca38db54b5dcf7ee3d0caf3ed9133a169aec5a58ad9ec50ba12e8/rich_toolkit-0.18.1.tar.gz", hash = "sha256:bf104f1945a7252debeda7d7138118eaf848fff5ea81d9eda556cbc5f911122c", size = 192514, upload-time = "2026-02-01T10:56:31.857Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d4/d6/dbbfa77ced39d6321479ee3f689db0cc8692200eb8cf27fa39639dc85727/rich_toolkit-0.19.0.tar.gz", hash = "sha256:2cd1960e7538751d78203a118efad50e89e4102b63b4233ead5defb43251a13b", size = 193046, upload-time = "2026-02-09T19:26:15.841Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/da/43/6f9860c4bfb1f181c347941542a8955ce24b228f84550253765aa1854d53/rich_toolkit-0.18.1-py3-none-any.whl", hash = "sha256:04011a9751f4c2becdf44bd1aaff8562d4b00caf04f14e483a9873c15fbe3154", size = 32255, upload-time = "2026-02-01T10:56:33.071Z" },
+    { url = "https://files.pythonhosted.org/packages/d4/a4/e8093a6c4588e64eb0e6daad05da217de04a5efdf24bd6c337485d019eb5/rich_toolkit-0.19.0-py3-none-any.whl", hash = "sha256:f2997d6c3face4d10d775a5dd712b99fbcd7306083466557ddfa43e33cbf4d05", size = 32275, upload-time = "2026-02-09T19:26:16.823Z" },
 ]
 
 [[package]]
