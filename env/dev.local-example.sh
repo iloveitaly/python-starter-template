@@ -68,6 +68,9 @@ export PYRIGHT_PYTHON_PYLANCE_VERSION=latest-release
 # export PYTHONWARNINGS=""
 export PYTHONWARNINGS="ignore::DeprecationWarning,ignore:ResourceWarning"
 
+# spy on executions of specific functions
+# PYTHONHUNTER="module='structlog_config', function='configure_logger', action=StackPrinter" python main.py
+
 # not standard python, but used in many libraries. Adds color to output.
 # NO_COLOR is used to control our application logging color
 export PY_COLORS=1
