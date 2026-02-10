@@ -2502,14 +2502,10 @@ wheels = [
 [[package]]
 name = "pytest-playwright-artifacts"
 version = "0.1.0"
-source = { registry = "https://pypi.org/simple" }
+source = { git = "https://github.com/iloveitaly/pytest-playwright-artifacts.git#8734630caba959c9838eea76c03b994d6b3a4445" }
 dependencies = [
     { name = "playwright" },
-    { name = "structlog-config" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/c8/f1/4e67bfa8c30b365847cc2f91d8ed1b1dbf9ea31b761dc27cef357a5afcfc/pytest_playwright_artifacts-0.1.0.tar.gz", hash = "sha256:b8eb437598dd054b4604b18fd0f88cfe20d607a4c8db2da9dd994c39d120d3d1", size = 5612, upload-time = "2026-01-29T19:14:17.094Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/7a/e1/631dd27ff80c3ba4a8a0784a4cc40ea21c034a6dfb58e361dfe97c413e5d/pytest_playwright_artifacts-0.1.0-py3-none-any.whl", hash = "sha256:750392c2c76ee14f74cf8f39e9060da620cf6db1f24d137b061d410d254215c3", size = 7129, upload-time = "2026-01-29T19:14:16.32Z" },
+    { name = "structlog" },
 ]
 
 [[package]]
@@ -2842,7 +2838,7 @@ dev = [
     { name = "pytest-httpx", specifier = ">=0.35.0" },
     { name = "pytest-line-runner", specifier = ">=0.1.0" },
     { name = "pytest-playwright", specifier = ">=0.6.2" },
-    { name = "pytest-playwright-artifacts", specifier = ">=0.1.0" },
+    { name = "pytest-playwright-artifacts", git = "https://github.com/iloveitaly/pytest-playwright-artifacts.git" },
     { name = "pytest-playwright-visual-snapshot" },
     { name = "pytest-sugar", specifier = ">=1.0.0" },
     { name = "pytest-timer", extras = ["termcolor"], specifier = ">=1.0.0" },
