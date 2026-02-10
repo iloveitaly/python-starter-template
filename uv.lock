@@ -2502,9 +2502,10 @@ wheels = [
 [[package]]
 name = "pytest-playwright-artifacts"
 version = "0.1.0"
-source = { git = "https://github.com/iloveitaly/pytest-playwright-artifacts.git#8734630caba959c9838eea76c03b994d6b3a4445" }
+source = { git = "https://github.com/iloveitaly/pytest-playwright-artifacts.git#f528f4e7498d1726d5eb4b405162c5793f3e2a33" }
 dependencies = [
     { name = "playwright" },
+    { name = "pytest-plugin-utils" },
     { name = "structlog" },
 ]
 
@@ -2521,6 +2522,14 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/f4/30/f5318e5d63ef6183fc12b2e9b23b4f80f1d905364073e04a3cbbde241668/pytest_playwright_visual_snapshot-0.5.1.tar.gz", hash = "sha256:edc46f95ebb408d8b293e2a24ca07664ba4373294f0dd9f9d1170b06703aaf47", size = 7150, upload-time = "2026-02-05T13:01:38.358Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b6/41/54b75b950c2309c79a5d173f9e60b4eb0d19ddaea09573e71b3c572a9189/pytest_playwright_visual_snapshot-0.5.1-py3-none-any.whl", hash = "sha256:8487b7d88cd834bb1073a276a6cccadde856080e3da3a5da2a9ccea12a77c45a", size = 8246, upload-time = "2026-02-05T13:01:37.613Z" },
+]
+
+[[package]]
+name = "pytest-plugin-utils"
+version = "0.1.0"
+source = { git = "https://github.com/iloveitaly/pytest-plugin-utils.git#d2adea6720bdb95a71a97f2d19a1a8adb7568205" }
+dependencies = [
+    { name = "structlog-config" },
 ]
 
 [[package]]
