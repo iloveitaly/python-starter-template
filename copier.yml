@@ -79,6 +79,7 @@ _exclude:
   - tests/integration/__snapshots__
   - copier.yml
   - /playground
+  - /.gitleaksignore
 
 _tasks:
   - git init
