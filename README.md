@@ -516,7 +516,7 @@ Note that gpatch is GNU patch, [available through Homebrew](https://github.com/H
 ### GitLeaks Baseline
 
 ```shell
-gitleaks git --report-format json --report-path - | jq -r '.[].Fingerprint' > .gitleaksignore
+GIT_CONFIG_GLOBAL=/dev/null gitleaks git --report-format json --report-path - | jq -r '.[].Fingerprint' > .gitleaksignore
 ```
 
 ### Cookies & Sessions
