@@ -116,7 +116,7 @@ package = false
 
 # this eliminates the need for `editable_mode = "strict"` and other config that was previously required
 [build-system]
-requires = ["uv_build>=0.9.0,<0.10.0"]
+requires = ["uv_build>=0.10.0"]
 build-backend = "uv_build"
 
 # flat layout (default for app/ at root)
