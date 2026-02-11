@@ -16,6 +16,10 @@ GENERATED_HOST_ENV := "env/host.sh"
 # we don't guard against _dev_only since this needs to be run to bootstrap the application
 dev_generate: _not_production dev_generate_hosts dev_generate_localias
 
+dev_lint:
+	gitleaks detect --source . --report-path=- --report-format json --redact=20 --no-banner --gitleaks-ignore-path .
+	# TODO link justfiles too
+
 # start all of the services you need for development in a single terminal
 [script]
 dev: _dev_only localalias dev_kill

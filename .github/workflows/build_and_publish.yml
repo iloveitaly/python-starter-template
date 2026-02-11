@@ -54,6 +54,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/common-setup
         timeout-minutes: 2
+      - run: just dev_lint
       - uses: iloveitaly/github-action-localias@master
         with:
           chrome: true
