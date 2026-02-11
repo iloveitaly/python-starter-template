@@ -7,11 +7,11 @@
 just 1.46.0
 direnv 2.37.1
 
-uv 0.10.1
+uv 0.10.2
 python 3.14.3
 
 # language + package manager versions required for the web project
-pnpm 10.29.2
+pnpm 10.29.3
 
 # it's best to use a LTS version of node. Many packages (such as better-sqlite3) precompile binaries for LTS
 # node versions. Ensuring the right packages, etc are available during container creation for these packages is a pain.
