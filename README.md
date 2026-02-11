@@ -500,6 +500,19 @@ Here's how to use `debugger` statements within vite code:
 VITE_BUILD_COMMIT=-dirty node inspect web/node_modules/@react-router/dev/bin.js build
 ```
 
+### Pulling Patches in this Repo
+
+You can easily pull a change into this repo from project which uses this template.
+
+1. Add the changes to your git staging
+2. Generate the diff and apply it to the template project on your machine
+
+```shell
+g dc | pbcopy && zsh -c 'cd ~/Projects/python/python-starter-template && pbpaste | gpatch -p1'
+```
+
+Note that gpatch is GNU patch, [available through Homebrew](https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/g/gpatch.rb).
+
 ### GitLeaks Baseline
 
 ```shell
