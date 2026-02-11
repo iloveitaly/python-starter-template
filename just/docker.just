@@ -6,7 +6,7 @@
 [script]
 [arg("fast", long, help="skip waiting for healthy containers", value="false")]
 [arg("latest", long, help="pull latest images and recreate services", value="false")]
-up fast="false" latest="false": _dev_only
+up fast="false" latest="false": _not_production
 	# if images have already been pulled, this ensures the latest versions are pulled so they match with
 	# CI or other environments that are pulling fresh versions of the images
 	if [[ "{{latest}}" == "true" ]]; then
