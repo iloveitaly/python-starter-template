@@ -184,8 +184,12 @@ tests = ["tests"]
 
 # NOTE prefer conftest.py over toml configuration for pytest
 [tool.pytest.ini_options]
-# Not sure entirely why, but without tee-sys, the builtin fd-based log capture breaks on CI (but not locally)
-addopts = ["-p no:logging", "--import-mode=importlib"]
+addopts = [
+    "-p no:logging",
+    "--capture=no",
+    "--import-mode=importlib",
+    "--structlog-output=tmp/test-results/test-logs",
+]
 filterwarnings = [
     # avoid depreciation warnings causing spammy logs
     "ignore::DeprecationWarning",
