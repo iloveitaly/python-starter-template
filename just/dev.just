@@ -17,7 +17,9 @@ GENERATED_HOST_ENV := "env/host.sh"
 dev_generate: _not_production dev_generate_hosts dev_generate_localias
 
 dev_lint:
-	gitleaks detect --source . --report-path=- --report-format json --redact=20 --no-banner --gitleaks-ignore-path .
+	# `--log-level=debug` for debugging
+	# will report 0 commits scanned since it just outputs a massive diff and doesn't scan commits
+	gitleaks git --report-path=- --report-format json --redact=20 --no-banner
 	# TODO link justfiles too
 
 # start all of the services you need for development in a single terminal
