@@ -52,7 +52,7 @@ def install_coroutine_trap():
 
     kill -USR1 <pid>
 
-    Helpful for debugging deadlocks
+    Helpful for debugging deadlocks. Uses `print` to avoid device issues in sneaky environments.
     """
 
     import asyncio
@@ -79,7 +79,7 @@ def install_coroutine_trap():
 
     signal.signal(signal.SIGUSR1, dump_all_tasks)
 
-    print(f"installed USR1 signal handler on pid {os.getpid()}", file=sys.stderr)
+    print(f"installed USR1 signal handler pid={os.getpid()}", file=sys.stderr)
 
 
 def install_thread_trap():
@@ -105,7 +105,7 @@ def install_thread_trap():
 
     signal.signal(signal.SIGUSR2, dump_all_threads)
 
-    print(f"installed USR2 signal handler on pid {os.getpid()}", file=sys.stderr)
+    print(f"installed USR2 signal handler pid={os.getpid()}", file=sys.stderr)
 
 
 @contextmanager
