@@ -148,7 +148,11 @@ _mise_gha_version_sync: _dev_only
 # sync the parent/root pnpm + node version to the web subdirectory for railpack
 _mise_web_version_sync: _dev_only
 	# reads the current versions from the parent and applies them to the subdir
-	mise --cd {{WEB_DIR}} use node@$(mise current node) pnpm@$(mise current pnpm)
+	# `requested_version` is the EXACT version specification in the parent, which is important otherwise if they drift,
+	# mise will *not* use the older version and therefore the system node, etc would be used.
+	mise --cd {{WEB_DIR}} use \
+		node@$(mise list --current --json | jq -r '.node[0].requested_version') \
+		pnpm@$(mise list --current --json | jq -r '.pnpm[0].requested_version')
 	git add {{WEB_DIR}}/mise.toml
 
 JAVASCRIPT_PACKAGE_JSON := WEB_DIR / "package.json"
@@ -310,3 +314,26 @@ bootstrap_worktree:
 		just js_setup
 
 		echo "Make sure to setup your database as well"
+
+# Interactive Python Process Killer
+[script]
+py_signal:
+    # 1. Define command
+    list_cmd="lsof -a -d cwd -c python -t +d . 2>/dev/null | xargs ps -o pid,ppid,command -p 2>/dev/null | jc --ps | jq -r '.[] | \"\(.pid)\t\(.ppid)\t\(.command)\"' | column -t -s $'\t'"
+
+    # 2. Check for processes
+    if [[ -z "$(eval $list_cmd)" ]]; then
+        echo "No python processes found in $(pwd)"
+        exit 0
+    fi
+
+    # 3. Run FZF (Plain text only)
+    eval "$list_cmd" | \
+    fzf --header="ENTER:SIGTERM | ALT-ENT:SIGKILL | CTRL-T:Threads | CTRL-O:Coroutines" \
+        --border --padding=1,1 \
+        --border-label=" Python Process Manager " \
+        --reverse \
+        --bind "enter:execute(kill -15 {1})+change-border-label( Sent SIGTERM to PID {1} )+reload($list_cmd)" \
+        --bind "alt-enter:execute(kill -9 {1})+change-border-label( Sent SIGKILL to PID {1} )+reload($list_cmd)" \
+        --bind "ctrl-t:execute(kill -USR2 {1})+change-border-label( Sent USR2 to PID {1} )" \
+        --bind "ctrl-o:execute(kill -USR1 {1})+change-border-label( Sent USR1 to PID {1} )"
