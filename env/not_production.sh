@@ -22,12 +22,6 @@ export PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY=tests/integration/__snapshots__
 # without this, playwright will use a different browser path across linux and macos
 export PLAYWRIGHT_BROWSERS_PATH=$TMP_DIRECTORY/ms-playwright
 
-# caching bytecode saves ~1.5s on load time on a m2 max
-# as long as we can throw all of the cached file in another dir, it's worth it!
-# I don't like pyc files everywhere on production, which is why it's disabled by default in that env.
-export PYTHONPYCACHEPREFIX=$TMP_DIRECTORY/pycache
-export PYTHONDONTWRITEBYTECODE=0
-
 # Since `package=false` in pyproject.toml, we need to explicitly add the current directory to PYTHONPATH
 export PYTHONPATH=$ROOT_DIR
 
