@@ -218,23 +218,23 @@ WSL Debian/Ubuntu doesn't include some tools by default. Make sure yours has the
 ```
 
 <!-- TODO: try to make localias install with mise !-->
-For localias you will have to download a GitHub binary 
+For localias you will have to download a GitHub binary
 
 ```
   curl https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.43c3619/localias-linux-amd64
   chmod +x localias-linux-amd64
   sudo mv localias-linux-amd64 /usr/local/bin/localias
 
-  # verify 
+  # verify
   localias --version
 
   # make certs trusted
   localias debug cert --install
 ```
 
-Mise installation 
+Mise installation
 ```
-curl https://mise.run/bash | sh 
+curl https://mise.run/bash | sh
 ```
 
 #### Docker
@@ -498,6 +498,13 @@ Here's how to use `debugger` statements within vite code:
 
 ```shell
 VITE_BUILD_COMMIT=-dirty node inspect web/node_modules/@react-router/dev/bin.js build
+```
+
+### GitLeaks Baseline
+
+```shell
+gitleaks detect --source . --report-format json --report-path tmp/gitleaks-report.json --redact=20 --no-banner
+jq -r '.[].Fingerprint' tmp/gitleaks-report.json > .gitleaksignore
 ```
 
 ### Cookies & Sessions
