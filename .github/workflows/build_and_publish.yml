@@ -52,6 +52,9 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
+        with:
+          # we need the full history for gitleaks to work properly, otherwise it will just scan the latest commit which is not very useful
+          fetch-depth: 0
       - uses: ./.github/actions/common-setup
         timeout-minutes: 2
       - run: just dev_lint
