@@ -102,7 +102,7 @@ def start_js_build():
     global js_build_success
 
     if is_js_build_up_to_date():
-        log.info("JavaScript build is up to date. Skipping build.")
+        log.info("javascript build is up to date, skipping build")
         js_build_success = True
         return
 

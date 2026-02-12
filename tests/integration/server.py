@@ -25,7 +25,7 @@ from app.utils.debug import install_remote_debugger
 from app.utils.patching import hash_function_code
 
 from ..constants import PYTHON_TEST_SERVER_HOST
-from .javascript_build import start_js_build, wait_for_javascript_build
+from .javascript_build import wait_for_javascript_build
 
 PYTHON_SERVER_TEST_PORT = config("PYTHON_TEST_SERVER_PORT", cast=int)
 
@@ -194,13 +194,3 @@ def report_localias_status():
             "localias daemon is not running. Integration tests may fail.",
             output=result.stdout,
         )
-
-
-# run this file directly to start the server manually to debug test-only server issues
-if __name__ == "__main__":
-    # set PYTHON_ENV=test otherwise javascript build will not run
-    os.environ["PYTHON_ENV"] = "test"
-
-    start_js_build()
-    wait_for_javascript_build()
-    run_server()

@@ -168,6 +168,25 @@ py_test:
 		{{EXECUTE_IN_TEST}} uv run pytest tests/integration --verbosity=2 --cov-append {{PYTEST_COV_PARAMS}}
 	fi
 
+# run the development server for python, for debugging issues automatically running the development server
+py_test_dev:
+	#!/usr/bin/env python
+
+	import os
+
+	# this is structured as an inline py script so we can ensure that the right env is set before anything is imported
+	print(f"Test Domain: {{BLUE}}https://{os.environ["PYTHON_TEST_SERVER_HOST"]}{{NORMAL}}")
+
+	# set PYTHON_ENV=test otherwise javascript build will not run
+	os.environ["PYTHON_ENV"] = "test"
+
+	from tests.integration.javascript_build import start_js_build, wait_for_javascript_build
+	from tests.integration.server import run_server
+
+	start_js_build()
+	wait_for_javascript_build()
+	run_server()
+
 # regenerate all python generated files
 [doc("Optional flag: --watch")]
 py_generate *flag:
