@@ -1,4 +1,6 @@
-from playwright.sync_api import Locator, Page
+from math import floor
+
+from playwright.sync_api import Locator, Page, expect
 
 from app import log
 
@@ -13,9 +15,16 @@ from .server import home_url
 # TODO scroll to bottom?
 # page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
 
-# set_timeout
-# page.set_default_timeout(120_000)
-# page.set_default_navigation_timeout(120_000)
+
+def apply_playwright_timeouts(page: Page, timeout_ms: int) -> None:
+    """
+    CI is slower than local environments, so we need to increase the default timeouts for Playwright operations to avoid false negatives.
+    """
+
+    log.info("applying playwright timeouts", timeout_ms=timeout_ms)
+    page.set_default_timeout(timeout_ms)
+    page.set_default_navigation_timeout(timeout_ms)
+    expect.set_options(timeout=timeout_ms)
 
 
 def wait_for_loading(page: Page, timeout: int = 30000, extreme: bool = False):

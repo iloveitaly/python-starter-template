@@ -3,8 +3,13 @@ import re
 from pathlib import Path
 
 import pytest
+from playwright.sync_api import Page
 
 from app import log
+from app.environments import is_local_testing
+
+from tests.constants import LONG_INTEGRATION_TEST_TIMEOUT
+from tests.integration.utils import apply_playwright_timeouts
 
 from .javascript_build import start_js_build
 from .server import (  # noqa: F401
@@ -88,3 +93,17 @@ def pytest_keyboard_interrupt(excinfo):
     # if instance is not None:
     #     print("KeyboardInterrupt caught – stopping playwright...")
     #     instance.stop()
+
+
+def pytest_runtest_call(item):
+    if is_local_testing():
+        return
+
+    if "page" not in item.fixturenames:
+        return
+
+    page: Page = item.funcargs.get("page")
+    if page is None:
+        return
+
+    apply_playwright_timeouts(page=page, timeout_ms=LONG_INTEGRATION_TEST_TIMEOUT)
