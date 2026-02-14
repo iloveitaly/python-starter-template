@@ -154,10 +154,9 @@ exclude = [
     "tmp",
 ]
 # https://github.com/microsoft/pylance-release/blob/71dcf9409c5ba65f1138069ac80ae9e2122d7867/USING_WITH_PYRIGHT.md
-autoSearchPaths = false
-extraPaths = []                   # Include paths from PYTHONPATH env var and .env definition
+# the above documentation seems out of date: autoSearchPaths and extraPaths is deprecated
+extraPaths = []               # Include paths from PYTHONPATH env var and .env definition
 typeCheckingMode = "standard"
-reportShadowedImports = "warning"
 
 [tool.djlint]
 ignore = "H030,H031"
