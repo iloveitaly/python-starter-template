@@ -91,6 +91,8 @@ def pytest_configure(config: Config):
     config.option.enable_beautiful_traceback_local_stack_only = decouple_config(
         "BEAUTIFUL_TRACEBACK_LOCAL_ONLY", default=False, cast=bool
     )
+    # simplify pytest tracebacks by hiding useless internal pytest-y frames
+    config.option.beautiful_traceback_exclude_patterns = ["^_pytest/", "^pluggy/", "^playwright/"]
 
     # disable visual assertions when running locally
     config.option.playwright_visual_disable_snapshots = is_local_testing()
