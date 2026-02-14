@@ -1,5 +1,3 @@
-from math import floor
-
 from playwright.sync_api import Locator, Page, expect
 
 from app import log
