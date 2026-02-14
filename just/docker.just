@@ -2,10 +2,9 @@
 # Dev Container Management
 ##########################
 
-# Use --fast to avoid waiting until the containers are healthy, useful for CI runs
 [script]
-[arg("fast", long, help="skip waiting for healthy containers", value="false")]
-[arg("latest", long, help="pull latest images and recreate services", value="false")]
+[arg("fast", long, help="skip waiting for healthy containers, useful for CI runs", value="true")]
+[arg("latest", long, help="pull latest images and recreate services", value="true")]
 up fast="false" latest="false": _not_production
 	# if images have already been pulled, this ensures the latest versions are pulled so they match with
 	# CI or other environments that are pulling fresh versions of the images
@@ -16,7 +15,9 @@ up fast="false" latest="false": _not_production
 	# force a restart to pick up the latest pulled images
 	if [[ "{{latest}}" == "true" ]]; then
 		docker compose up -d --force-recreate {{ if fast == "true" { "" } else { "--wait" } }}
+
 		just py_cli write-versions
+		git add .service-versions.json
 	else
 		docker compose up -d {{ if fast == "true" { "" } else { "--wait" } }}
 	fi
