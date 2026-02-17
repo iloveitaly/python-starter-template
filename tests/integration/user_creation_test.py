@@ -1,7 +1,8 @@
 from playwright.sync_api import Page, expect
 
-from app.models.user import User
 from app.generated.react_router_routes import react_router_url
+
+from app.models.user import User
 
 from tests.constants import CLERK_DEV_USER_PASSWORD
 
