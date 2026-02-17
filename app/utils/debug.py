@@ -17,6 +17,10 @@ from logging import Logger
 from starlette.middleware.errors import ServerErrorMiddleware
 
 from app import log
+from app.environments import is_productionish
+
+if is_productionish():
+    log.warning("using debug logic not designed for production, in production!")
 
 
 def install_traps():

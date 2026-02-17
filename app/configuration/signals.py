@@ -1,23 +1,35 @@
+"""Signal chaining for process observability and graceful behavior.
+
+This module installs a chained signal handler that preserves prior signal
+behavior while allowing additional application handlers to be registered.
+
+Use:
+- call `configure_signals()` during startup to install chained handlers.
+- call `add_handler(sig, handler)` to append app-specific handlers.
+"""
+
 import faulthandler
-import inspect
 import os
 import signal
 from collections import defaultdict
+from collections.abc import Callable
 from types import FrameType
-from typing import Callable, Set
 
 import structlog
 
+from app.utils.lang import callable_file_line_reference
+
 log = structlog.get_logger()
 
-_handlers: dict[int, list[Callable]] = defaultdict(
-    list
-)  # sig -> list of user-added handlers
-_original_handlers: dict[int, Callable | int | None] = {}  # sig -> original handler
-_installed: Set[int] = set()  # signals with chained handler installed
+type SignalHandler = Callable[[int, FrameType | None], None]
+type OriginalSignalHandler = SignalHandler | int | None
+
+_handlers: dict[int, list[SignalHandler]] = defaultdict(list)
+_original_handlers: dict[int, OriginalSignalHandler] = {}
+_installed: set[int] = set()
 
 
-def add_handler(sig: int, handler: Callable[[int, FrameType | None], None]) -> None:
+def add_handler(sig: int, handler: SignalHandler) -> None:
     if sig not in _installed:
         _install_chained_handler(sig)
     _handlers[sig].append(handler)
@@ -77,7 +89,7 @@ def _install_chained_handler(sig: int) -> None:
     )
 
 
-def _log_existing_handler(sig: int, old_handler: Callable | int | None) -> None:
+def _log_existing_handler(sig: int, old_handler: OriginalSignalHandler) -> None:
     if old_handler in (
         signal.SIG_DFL,
         signal.SIG_IGN,
@@ -92,17 +104,16 @@ def _log_existing_handler(sig: int, old_handler: Callable | int | None) -> None:
     )
 
     if callable(old_handler):
-        try:
-            file = inspect.getfile(old_handler)
-            line = inspect.getsourcelines(old_handler)[1]
-            log.info("existing handler source", file=file, line=line)
-        except (OSError, TypeError) as error:
+        source_reference = callable_file_line_reference(old_handler)
+
+        if source_reference:
+            log.info("existing handler source", source_reference=source_reference)
+        else:
             log.info(
                 "could not retrieve source location for handler of signal",
                 signum=sig,
                 signal_name=_signal_name(sig),
                 sigcode=_sigcode(sig),
-                error=error,
                 old_handler=old_handler,
             )
 
@@ -135,6 +146,7 @@ def configure_signals() -> None:
     }
 
     if faulthandler.is_enabled():
+        # faulthandler already registers handlers for fatal signals, so we should avoid chaining to those signals to prevent interference
         catchable_sigs -= {
             signal.SIGSEGV,  # Segmentation fault (invalid memory access)
             signal.SIGFPE,  # Floating point exception (e.g., divide by zero)

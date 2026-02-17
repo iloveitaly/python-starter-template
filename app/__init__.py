@@ -5,6 +5,7 @@ It should run all configuration which requires any state (services, ENV, etc) so
 This ensures that a deploy does not go out which fails *after* the health probes succeed.
 """
 
+import os
 from pathlib import Path
 
 from structlog_config import LoggerWithContext, configure_logger
@@ -47,6 +48,8 @@ def setup():
     )
 
     # debug configuration is first so nice stack traces are in place as soon as possible
+    # signals must come first, otherwise we'll get warnings that signals are already in place
+    configure_signals()
     configure_debugging()
 
     # explicitly order configuration execution in case there are dependencies
@@ -58,12 +61,13 @@ def setup():
     check_service_versions()
     configure_patches()
     configure_posthog()
-    configure_signals()
 
     log.info(
         "application setup",
         environment=python_environment(),
         build=constants.BUILD_COMMIT,
+        # when the process is forked, it's helpful to determine what PID a log is coming from
+        pid=os.getpid(),
     )
 
     setattr(setup, "complete", True)

@@ -216,17 +216,23 @@ ngrok:
 PORT_RANGE_START := "8200"
 HOST_ENV_TEMPLATE := '''
 
+# use a non-standard port to avoid conflicts with other applications
 export PYTHON_SERVER_PORT=$(( ${START_PORT} + ${PORT_OFFSET} ))
 export PYTHON_TEST_SERVER_PORT=$(( ${START_PORT} + 1 + ${PORT_OFFSET} ))
 export JAVASCRIPT_SERVER_PORT=$(( ${START_PORT} + 2 + ${PORT_OFFSET} ))
 export FLOWER_PORT=$(( ${START_PORT} + 3 + ${PORT_OFFSET} ))
 
+# only applicable in development, javascript is bundled in the py container in prod
 export JAVASCRIPT_SERVER_HOST=${WORKTREE_PREFIX}${PROJECT_NAME}.localhost
 export PYTHON_SERVER_HOST=api.${WORKTREE_PREFIX}${PROJECT_NAME}.localhost
 export PYTHON_TEST_SERVER_HOST=api-test.${WORKTREE_PREFIX}${PROJECT_NAME}.localhost
 export FLOWER_HOST=flower.${WORKTREE_PREFIX}${PROJECT_NAME}.localhost
+
+# block bad hosts in fastapi. not required for development, but helpful to keep prod vs dev consistent
+# in production, this is most likely only a single host but can support multiple hosts
 export ALLOWED_HOST_LIST="${JAVASCRIPT_SERVER_HOST},${PYTHON_TEST_SERVER_HOST},${PYTHON_SERVER_HOST}"
 
+# protocol is important, otherwise you'll get CORS errors in the browser
 export VITE_PYTHON_URL="https://${PYTHON_SERVER_HOST}/"
 export VITE_APP_BASE_URL="https://${JAVASCRIPT_SERVER_HOST}/"
 '''

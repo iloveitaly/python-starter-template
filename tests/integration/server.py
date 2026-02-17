@@ -17,11 +17,11 @@ import uvicorn
 from decouple import config
 
 import main
-from app import log
 from app.environments import is_local_testing
 from app.server import api_app
 from app.utils.debug import install_remote_debugger
 from app.utils.patching import hash_function_code
+from tests.log import log
 
 from .javascript_build import wait_for_javascript_build
 
@@ -141,6 +141,8 @@ def server():
         pytest.exit(
             "server is already running, should be closed! Use `just dev_kill` to terminall all processes holding ports."
         )
+
+    log.info("starting server subprocess for integration tests")
 
     # NOTE this is a very important line! It forks an *entirely new* python process and does not inherit
     #      any state from the pytest setup. This means database sessions, redis connections, etc are entirely

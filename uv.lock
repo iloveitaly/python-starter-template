@@ -5,7 +5,7 @@ requires-python = ">=3.14"
 [[package]]
 name = "activemodel"
 version = "0.15.1"
-source = { git = "https://github.com/iloveitaly/activemodel.git#73636978069e5ea17533a2c0b1b6f804593fef31" }
+source = { git = "https://github.com/iloveitaly/activemodel.git#89a244e3334f53a3000dea27f099165e38b10382" }
 dependencies = [
     { name = "python-decouple-typed" },
     { name = "sqlmodel" },
@@ -220,7 +220,7 @@ wheels = [
 [[package]]
 name = "beautiful-traceback"
 version = "0.6.0"
-source = { git = "https://github.com/iloveitaly/beautiful-traceback.git#85d6a6a4030816e082b180bfad2b2828bff6b26e" }
+source = { git = "https://github.com/iloveitaly/beautiful-traceback.git#0aad0c3056fc898d4b5530b7b84c87cb2c396fd8" }
 dependencies = [
     { name = "colorama" },
 ]
@@ -902,7 +902,7 @@ standard = [
 
 [[package]]
 name = "fastapi-cloud-cli"
-version = "0.12.0"
+version = "0.13.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fastar" },
@@ -914,9 +914,9 @@ dependencies = [
     { name = "typer" },
     { name = "uvicorn", extra = ["standard"] },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1b/59/3def056ec8350df78a0786b7ca40a167cbf28ac26552ced4e19e1f83e872/fastapi_cloud_cli-0.12.0.tar.gz", hash = "sha256:c897d1d5e27f5b4148ed2601076785155ec8fb385a6a62d3e8801880f929629f", size = 38508, upload-time = "2026-02-13T19:39:57.877Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/de/0b/f07f4976784978ef159fd2e8f5c16f1f9d610578fb1fd976ff1315c11ea6/fastapi_cloud_cli-0.13.0.tar.gz", hash = "sha256:4d8f42337e8021c648f6cb0672de7d5b31b0fc7387a83d7b12f974600ac3f2fd", size = 38436, upload-time = "2026-02-17T05:18:19.033Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a3/6f/badabb5a21388b0af2b9cd0c2a5d81aaecfca57bf382872890e802eaed98/fastapi_cloud_cli-0.12.0-py3-none-any.whl", hash = "sha256:9c666c2ab1684cee48a5b0a29ac1ae0bd395b9a13bf6858448b4369ea68beda1", size = 27735, upload-time = "2026-02-13T19:39:58.705Z" },
+    { url = "https://files.pythonhosted.org/packages/b4/88/71a1e989d17b9edb483f32e28b7891ffdd3005271518c98ba6415987c430/fastapi_cloud_cli-0.13.0-py3-none-any.whl", hash = "sha256:874a9ed8dba34ec828f198c72de9f9a38de77ac1b15083d6bc3a4d772b0bc477", size = 27631, upload-time = "2026-02-17T05:18:18.094Z" },
 ]
 
 [[package]]
@@ -1957,7 +1957,7 @@ dependencies = [
 
 [[package]]
 name = "posthog"
-version = "7.8.6"
+version = "7.9.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "backoff" },
@@ -1967,9 +1967,9 @@ dependencies = [
     { name = "six" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/21/c9/a7c67c039f23f16a0b87d17561ba2a1c863b01f054a226c92437c539a7b6/posthog-7.8.6.tar.gz", hash = "sha256:6f67e18b5f19bf20d7ef2e1a80fa1ad879a5cd309ca13cfb300f45a8105968c4", size = 169304, upload-time = "2026-02-11T13:59:42.558Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/bd/eb/d74613a78c3a9c7944cf09ac8fc06c5b980e35a894fba70a10803e7e6814/posthog-7.9.0.tar.gz", hash = "sha256:064349f01b30742abb165f7c7c3fd5b3823e1f24749f3b344782f7aa8e1883da", size = 172123, upload-time = "2026-02-17T09:32:34.157Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/56/c7/41664398a838f52ddfc89141e4c38b88eaa01b9e9a269c5ac184bd8586c6/posthog-7.8.6-py3-none-any.whl", hash = "sha256:21809f73e8e8f09d2bc273b09582f1a9f997b66f51fc626ef5bd3c5bdffd8bcd", size = 194801, upload-time = "2026-02-11T13:59:41.26Z" },
+    { url = "https://files.pythonhosted.org/packages/08/1a/d7e9d614a2041d1f5dbc3723897702952f8c6d684998cb578a20656d97ef/posthog-7.9.0-py3-none-any.whl", hash = "sha256:56d6e57e7125044dcc98c86f711f77c1c91dfdbb26a55d6faf7ae64c0841a725", size = 197686, upload-time = "2026-02-17T09:32:32.956Z" },
 ]
 
 [[package]]
@@ -2166,11 +2166,11 @@ wheels = [
 
 [[package]]
 name = "pycountry"
-version = "24.6.1"
+version = "26.2.16"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/76/57/c389fa68c50590881a75b7883eeb3dc15e9e73a0fdc001cdd45c13290c92/pycountry-24.6.1.tar.gz", hash = "sha256:b61b3faccea67f87d10c1f2b0fc0be714409e8fcdcc1315613174f6466c10221", size = 6043910, upload-time = "2024-06-01T04:12:15.05Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/de/1d/061b9e7a48b85cfd69f33c33d2ef784a531c359399ad764243399673c8f5/pycountry-26.2.16.tar.gz", hash = "sha256:5b6027d453fcd6060112b951dd010f01f168b51b4bf8a1f1fc8c95c8d94a0801", size = 7711342, upload-time = "2026-02-17T03:42:52.367Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b1/ec/1fb891d8a2660716aadb2143235481d15ed1cbfe3ad669194690b0604492/pycountry-24.6.1-py3-none-any.whl", hash = "sha256:f1a4fb391cd7214f8eefd39556d740adcc233c778a27f8942c8dca351d6ce06f", size = 6335189, upload-time = "2024-06-01T04:11:49.711Z" },
+    { url = "https://files.pythonhosted.org/packages/9c/42/7703bd45b62fecd44cd7d3495423097e2f7d28bc2e99e7c1af68892ab157/pycountry-26.2.16-py3-none-any.whl", hash = "sha256:115c4baf7cceaa30f59a4694d79483c9167dbce7a9de4d3d571c5f3ea77c305a", size = 8044600, upload-time = "2026-02-17T03:42:49.777Z" },
 ]
 
 [[package]]
@@ -2520,7 +2520,7 @@ wheels = [
 [[package]]
 name = "pytest-playwright-artifacts"
 version = "0.1.0"
-source = { git = "https://github.com/iloveitaly/pytest-playwright-artifacts.git#864a22128a1415214577eec3b86f6af39c2a4a6e" }
+source = { git = "https://github.com/iloveitaly/pytest-playwright-artifacts.git#864d2fdc2f65fa1443346ac3ecd892878bd6baf8" }
 dependencies = [
     { name = "playwright" },
     { name = "pytest-plugin-utils" },
@@ -2545,7 +2545,7 @@ wheels = [
 [[package]]
 name = "pytest-plugin-utils"
 version = "0.1.0"
-source = { git = "https://github.com/iloveitaly/pytest-plugin-utils.git#cae8141fd56105d9481b05dd0a1117534fee551e" }
+source = { git = "https://github.com/iloveitaly/pytest-plugin-utils.git#247eabee7bf62b105f54c1e3c9cc0c44c2a4536d" }
 dependencies = [
     { name = "structlog-config" },
 ]
