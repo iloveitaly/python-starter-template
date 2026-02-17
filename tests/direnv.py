@@ -56,11 +56,11 @@ def direnv_ci_environment() -> dict[str, t.Any]:
 
 def direnv_state_sha() -> str:
     # Glob all .env* files and hash their modified times
-    env_files = sorted(glob.glob(".env*"))
+    env_files = sorted([".envrc"] + glob.glob("env/*"))
 
-    # make sure more than one file is found
-    if len(env_files) == 0:
-        raise ValueError("No .env* files found")
+    # make sure more than one file is found (envrc is assumed!)
+    if len(env_files) <= 1:
+        raise ValueError("No env files found")
 
     mtimes = "".join(str(os.path.getmtime(f)) for f in env_files)
     sha = hashlib.sha256(mtimes.encode()).hexdigest()
