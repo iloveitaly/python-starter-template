@@ -99,12 +99,21 @@ def run_migrations():
 
     from app import log
 
-    log.info("running alembic migrations")
+    engine = get_engine()
+
+    # the table name *could* be different than the connection url, but not for us!
+    log.info("running alembic migrations", database_name=engine.url.database)
 
     alembic_cfg = Config(get_root_path() / "alembic.ini")
     alembic_cfg.set_main_option("skip_logging_config", "true")
 
     def needs_migration():
+        """
+        In alembic, there isn't necessarily a single tip. This is why it's `heads` not `head`.
+
+        The alembic migration data model is a DAG, not a linked list, but in practice for us it should be a simple linked
+        list so we treat it as such.
+        """
         from alembic.runtime.migration import MigrationContext
         from alembic.script import ScriptDirectory
 
@@ -114,7 +123,15 @@ def run_migrations():
         with get_engine().connect() as conn:
             ctx = MigrationContext.configure(conn)
             current_heads = ctx.get_current_heads()
-            return set(current_heads) != set(heads)
+
+            if needs_migration := set(current_heads) != set(heads):
+                log.info("migrations needed", current_heads=current_heads, heads=heads)
+            else:
+                log.info(
+                    "no migrations needed", current_heads=current_heads, heads=heads
+                )
+
+            return needs_migration
 
     # it's possible for this command to run concurrently if run on container start, which is the only way in some
     # environments. When this occurs, we should wait to acquire a distributed migration lock.
@@ -124,6 +141,3 @@ def run_migrations():
 
     if needs_migration():
         command.upgrade(alembic_cfg, "head")
-        log.info("migrations applied")
-    else:
-        log.info("no migrations needed")
