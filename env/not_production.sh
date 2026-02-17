@@ -5,14 +5,11 @@
 #   - Do NOT include quotes in any of the values here. This will cause downstream issues when building containers.
 #     Docker does not like quotes in any of it's env files or vars.
 
-# use a non-standard port to avoid conflicts with other applications
-# export PYTHON_SERVER_PORT=8200
-# export PYTHON_TEST_SERVER_PORT=8201
-# export PYTHON_TEST_SERVER_HOST=api-test.web.localhost
+# the react router generator from py requires this to generate a full url
+export BASE_URL="https://${PYTHON_SERVER_HOST}"
 
 # job monitoring configuration
 export FLOWER_PASSWORD=password
-# export FLOWER_PORT=8205
 
 # output directory is used by CI and justfiles
 export TMP_DIRECTORY=$ROOT_DIR/tmp
@@ -28,17 +25,6 @@ export PYTHONPATH=$ROOT_DIR
 # used for py tests, justfile recipes, and JS build
 # use an absolute path since this is run from within `web/`
 export OPENAPI_JSON_PATH=$ROOT_DIR/web/openapi.json
-
-# only applicable in development, javascript is bundled in the py container in prod
-# export JAVASCRIPT_SERVER_PORT=8202
-# export JAVASCRIPT_SERVER_HOST=web.localhost
-
-# export PYTHON_SERVER_HOST=api.web.localhost
-
-# TODO we could just choose to have the frontend logic add the protocol?
-# protocol is important, otherwise you'll get CORS errors in browser
-# export VITE_PYTHON_URL="https://${PYTHON_SERVER_HOST}/"
-# export VITE_APP_BASE_URL="https://${JAVASCRIPT_SERVER_HOST}/"
 
 # default from address for the mailer system
 export EMAIL_FROM_ADDRESS="noreply@example.com"
