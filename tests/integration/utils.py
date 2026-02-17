@@ -3,12 +3,12 @@ from playwright.sync_api import Locator, Page, expect
 from app import log
 
 from app.models.user import User
+from app.generated.react_router_routes import react_router_url
 
 from tests.constants import LONG_INTEGRATION_TEST_TIMEOUT
 from tests.routes.utils import get_clerk_dev_user
 
 from .clerk import setup_clerk_testing_token
-from .server import home_url
 
 # TODO scroll to bottom?
 # page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
@@ -113,7 +113,7 @@ def login_as_dev_user(page: Page):
 
     setup_clerk_testing_token(page)
 
-    page.goto(home_url())
+    page.goto(react_router_url("/"))
 
     page.get_by_label("Email address").fill(username)
     page.get_by_role("button", name="Continue", exact=True).click()
@@ -148,7 +148,7 @@ def login_as_dev_user(page: Page):
     # current pages route is not the route that we started on. This will ensure that we've completed the login step and
     # have moved into the application.
     page.wait_for_url(
-        lambda url: url != home_url(), timeout=LONG_INTEGRATION_TEST_TIMEOUT
+        lambda url: url != react_router_url("/"), timeout=LONG_INTEGRATION_TEST_TIMEOUT
     )
 
     # only a single doctor should be created!

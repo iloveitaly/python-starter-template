@@ -15,7 +15,6 @@ import psutil
 import pytest
 import uvicorn
 from decouple import config
-from furl import furl
 
 import main
 from app.environments import is_local_testing
@@ -23,9 +22,7 @@ from app.server import api_app
 from app.utils.debug import install_remote_debugger
 from app.utils.patching import hash_function_code
 
-from tests.log import log
-
-from ..constants import PYTHON_TEST_SERVER_HOST
+from ..log import log
 from .javascript_build import wait_for_javascript_build
 
 PYTHON_SERVER_TEST_PORT = config("PYTHON_TEST_SERVER_PORT", cast=int)
@@ -170,11 +167,6 @@ def server():
         assert wait_for_termination(proc.pid)
 
     # TODO should we install a signal trap to ensure the server is killed?
-
-
-def home_url():
-    # TODO should we just use `base_server_url` instead?
-    return str(furl(scheme="https", host=PYTHON_TEST_SERVER_HOST))
 
 
 def report_localias_status():
