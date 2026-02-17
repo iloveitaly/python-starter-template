@@ -79,11 +79,12 @@ def wait_for_port(port: int, timeout: int = 30) -> bool:
     while time.time() - start_time < timeout:
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-                # localhost allows for ipv4 and ipv6 loopback
+                # without an explicit default, at least in WSL, the socket connection would hang indefinitely
                 sock.settimeout(1)
+                # localhost allows for ipv4 and ipv6 loopback
                 sock.connect(("localhost", port))
                 return True
-        except (ConnectionRefusedError, socket.timeout):
+        except ConnectionRefusedError, socket.timeout:
             log.debug("waiting for port")
             time.sleep(0.5)
 
