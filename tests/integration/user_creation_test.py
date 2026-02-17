@@ -1,6 +1,7 @@
 from playwright.sync_api import Page, expect
 
 from app.models.user import User
+from app.generated.react_router_routes import react_router_url
 
 from tests.constants import CLERK_DEV_USER_PASSWORD
 
@@ -8,7 +9,6 @@ from .clerk import (
     clerk_test_email,
     setup_clerk_testing_token,
 )
-from .server import home_url
 from .utils import login_as_dev_user, wait_for_loading
 
 
@@ -30,7 +30,7 @@ def test_signup(server, page: Page, assert_snapshot) -> None:
 
     test_email = clerk_test_email()
 
-    page.goto(home_url())
+    page.goto(react_router_url("/"))
 
     page.get_by_text("Sign up").click()
 
