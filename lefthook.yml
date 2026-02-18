@@ -11,7 +11,6 @@ prepare-commit-msg:
         LEFTHOOK: 0
         # ensures that LOG_LEVEL config of the current project does not interfere with aiautocommit
         LOG_LEVEL: info
-        OPENAI_LOG: warn
       skip:
         merge:
         rebase:
