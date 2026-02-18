@@ -33,7 +33,9 @@ pre-push:
   parallel: true
   commands:
     py_lint:
-      glob: "*.py"
+      glob:
+        - "*.py"
+        - "**/*.py"
       exclude: [".copier/*"]
       run: just py_lint {push_files}
     js_lint:
