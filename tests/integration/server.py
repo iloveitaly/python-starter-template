@@ -124,7 +124,7 @@ def run_server():
 
 
 @pytest.fixture
-def server():
+def server(file_descriptor_output_capture):
     """
     Spinning up the entire application for EACH TEST is extremely slow.
 
