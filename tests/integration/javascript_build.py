@@ -124,7 +124,7 @@ $ just py_js-build
 
     js_build_success = False
 
-    log.info("Starting Javascript Build...")
+    log.info("starting javascript build", command=PYTHON_JAVASCRIPT_BUILD_CMD)
 
     build_process = subprocess.Popen(
         PYTHON_JAVASCRIPT_BUILD_CMD,

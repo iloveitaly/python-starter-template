@@ -15,6 +15,7 @@ import psutil
 import pytest
 import uvicorn
 from decouple import config
+from structlog_config.pytest_plugin import configure_subprocess_capture
 
 import main
 from app.environments import is_local_testing
@@ -82,7 +83,7 @@ def wait_for_port(port: int, timeout: int = 30) -> bool:
                 # localhost allows for ipv4 and ipv6 loopback
                 sock.connect(("localhost", port))
                 return True
-        except ConnectionRefusedError, socket.timeout:
+        except (ConnectionRefusedError, socket.timeout):
             log.debug("waiting for port")
             time.sleep(0.5)
 
@@ -124,7 +125,7 @@ def run_server():
 
 
 @pytest.fixture
-def server(file_descriptor_output_capture):
+def server():
     """
     Spinning up the entire application for EACH TEST is extremely slow.
 
@@ -171,7 +172,7 @@ def server(file_descriptor_output_capture):
 
 def report_localias_status():
     """
-    For integration tests, we require localalias to be running in the background since we use https.
+    For integration tests, we require localias to be running in the background since we use https.
 
     TODO https://github.com/peterldowns/localias/issues/64
     """
@@ -179,7 +180,7 @@ def report_localias_status():
 
     command = ["localias", "status"]
 
-    # on GHA we need to run localalias on sudo
+    # on GHA we need to run localias on sudo
     if not is_local_testing():
         command.insert(0, "sudo")
 
