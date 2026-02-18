@@ -1,4 +1,5 @@
 ## python
+https://github.com/deepankarm/pyleak - neat thread leak detector
 https://github.com/fastapi/sqlmodel/pull/1345 - sa_type type fix so we can remove ignores.
 https://github.com/pjg11/micro-urlopen?referrer=grok.com - url open for micro
 https://docs.basedpyright.com/v1.36.0/benefits-over-pyright/baseline/ we should use this instead of pyright?
@@ -95,6 +96,7 @@ stabalized scrolling https://grok.com/share/bGVnYWN5_22b6f3ac-a0dc-49d5-a92a-223
 pytest-failure-tracker to track failures across test runs, if we combine this with locking
 
 ## dev
+maybe ipython history shouldn't be copied, but should instead use a ENV var to reference the original git dir ipython history
 assertion to ensure openapi.json is not empty
 https://honcho.readthedocs.io/en/latest/#why-did-you-port-foreman - py port of foreman
 if someone's completion system is not initialized, the bash direnv export thing will fail with `compdef not defined` sort of error
@@ -259,3 +261,7 @@ binding for paste as plain text
 - need environment variables before `just up`
 - `sudo apt install lsof` DNE on debian
 - on WSL you need to run `localias debug cert --install` so that certs are trusted
+
+## Preview envirionemnt
+
+* I should bundle my IPython customizations into the resulting production image so it has a consistent development environment for IPython.
