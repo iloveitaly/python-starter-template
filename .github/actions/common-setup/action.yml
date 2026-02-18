@@ -15,7 +15,8 @@ runs:
     # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
     - uses: tecolicom/actions-use-apt-tools@v1
       with:
-        # TODO is there *really* not a backend for zsh in mise?
+        # there is not a backend for zsh in mise, crazy!
+        # libnss3-tools is needed for localias to generate certs
         tools: zsh libnss3-tools
     # host config needs to be generated first, before direnv, then localias can be setup
     - shell: bash
