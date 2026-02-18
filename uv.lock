@@ -5,7 +5,7 @@ requires-python = ">=3.14"
 [[package]]
 name = "activemodel"
 version = "0.15.1"
-source = { git = "https://github.com/iloveitaly/activemodel.git#89a244e3334f53a3000dea27f099165e38b10382" }
+source = { git = "https://github.com/iloveitaly/activemodel.git#aa49256a020a430437a398cb9fe583c461800d1a" }
 dependencies = [
     { name = "python-decouple-typed" },
     { name = "sqlmodel" },
@@ -220,7 +220,7 @@ wheels = [
 [[package]]
 name = "beautiful-traceback"
 version = "0.6.0"
-source = { git = "https://github.com/iloveitaly/beautiful-traceback.git#0aad0c3056fc898d4b5530b7b84c87cb2c396fd8" }
+source = { git = "https://github.com/iloveitaly/beautiful-traceback.git#c7330d23004f5540219795a923227eba688a8b95" }
 dependencies = [
     { name = "colorama" },
 ]
@@ -1957,7 +1957,7 @@ dependencies = [
 
 [[package]]
 name = "posthog"
-version = "7.9.0"
+version = "7.9.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "backoff" },
@@ -1967,9 +1967,9 @@ dependencies = [
     { name = "six" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/bd/eb/d74613a78c3a9c7944cf09ac8fc06c5b980e35a894fba70a10803e7e6814/posthog-7.9.0.tar.gz", hash = "sha256:064349f01b30742abb165f7c7c3fd5b3823e1f24749f3b344782f7aa8e1883da", size = 172123, upload-time = "2026-02-17T09:32:34.157Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5b/8c/0b66a64bca61d927b7e3ddab564419213303ab9f2bce42036b894c3919d7/posthog-7.9.1.tar.gz", hash = "sha256:448fb0ec4d5cabb8967a36512b8a9aa50d1e46657913245031b41ca434ca9882", size = 172247, upload-time = "2026-02-17T16:59:40.345Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/08/1a/d7e9d614a2041d1f5dbc3723897702952f8c6d684998cb578a20656d97ef/posthog-7.9.0-py3-none-any.whl", hash = "sha256:56d6e57e7125044dcc98c86f711f77c1c91dfdbb26a55d6faf7ae64c0841a725", size = 197686, upload-time = "2026-02-17T09:32:32.956Z" },
+    { url = "https://files.pythonhosted.org/packages/78/47/9033ff9020f9b473e4f89b349f821c2ad053241cf2274693f838c9edbc7b/posthog-7.9.1-py3-none-any.whl", hash = "sha256:fe1c4869545f0bfaf458618f03875ea226f17ea23a94553e2e9d611dc77af722", size = 197851, upload-time = "2026-02-17T16:59:37.679Z" },
 ]
 
 [[package]]
@@ -3418,8 +3418,8 @@ wheels = [
 
 [[package]]
 name = "structlog-config"
-version = "0.10.0"
-source = { git = "https://github.com/iloveitaly/structlog-config.git#d19aa4dadead90f04a2fac8f832479d23f885927" }
+version = "0.11.0"
+source = { git = "https://github.com/iloveitaly/structlog-config.git#d69913e485e3025f7013abcc0e690f08ccba9f57" }
 dependencies = [
     { name = "fastapi-ipware" },
     { name = "orjson" },
