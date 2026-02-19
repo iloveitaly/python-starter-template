@@ -28,17 +28,16 @@ commit-msg:
       run: ! which commitlint > /dev/null
 
 
-# scripts cannot be to run Justfile recipes, they must reference a specific file
+# {push_files} are just the files that are going to be pushed, not all files unique to this branch that would be pushed if the push was fresh
+# this means that if someone just enables lefthook, or if the linter
 pre-push:
   parallel: true
   commands:
     py_lint:
-      glob:
-        - "*.py"
-        - "**/*.py"
-      exclude: [".copier/*"]
-      run: just py_lint {push_files}
+      run: just py_lint
     js_lint:
-      # TODO because of the subdirectory, passing the file list here does not work as well :/ Need to prefix with ../ or something.
-      # run: just js_lint {push_files}
       run: just js_lint
+
+# TODO detect database migrations from rebase
+# TODO detect uv.lock changes and rerun setup
+# TODO detect pnpm changes and rerun setup
