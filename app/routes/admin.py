@@ -13,7 +13,7 @@ from starlette import status
 from typeid import TypeID
 
 from app import log
-
+from app.errors import ImpossibleStateError
 from app.models.user import User, UserRole
 
 SESSION_KEY_LOGIN_AS_USER = "login_as_user"
@@ -22,7 +22,10 @@ SESSION_KEY_LOGIN_AS_USER = "login_as_user"
 def require_admin(request: Request):
     "Protect routes that require admin access"
 
-    if (admin_user := request.state.user) and admin_user.role != UserRole.admin:
+    if not (admin_user := getattr(request.state, "user", None)):
+        raise ImpossibleStateError("User not found in request state")
+
+    if admin_user.role != UserRole.admin:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
 
