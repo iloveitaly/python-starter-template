@@ -15,7 +15,6 @@ import psutil
 import pytest
 import uvicorn
 from decouple import config
-from structlog_config.pytest_plugin import configure_subprocess_capture
 
 import main
 from app.environments import is_local_testing
