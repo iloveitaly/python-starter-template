@@ -12,9 +12,10 @@ import glob
 import hashlib
 import json
 import os
-import subprocess
 import sys
 import typing as t
+
+from tests.utils import run_just_recipe
 
 from .constants import TMP_DIRECTORY
 from .log import log
@@ -32,19 +33,8 @@ def is_using_direnv() -> bool:
 
 
 def direnv_ci_environment() -> dict[str, t.Any]:
-    process_result = subprocess.run(
-        # NOTE very important command! This should filter PATH, and some other stuff
-        "just direnv_export_ci",
-        shell=True,
-        capture_output=True,
-        text=True,
-        # 30 second timeout, arbitrary
-        timeout=30,
-    )
-
-    process_result.check_returncode()  # Raises CalledProcessError if exit code is non-zero
-
-    raw_result = process_result.stdout
+    # NOTE very important command! This should filter PATH, and some other stuff
+    raw_result = run_just_recipe("direnv_export_ci", timeout=30)
 
     if not raw_result.strip():
         raise ValueError("Empty output from direnv export json command")
