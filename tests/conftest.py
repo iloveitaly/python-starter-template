@@ -37,7 +37,7 @@ from pytest import Config, FixtureRequest
 import app.models  # noqa: F401
 from app.celery import celery_app
 from app.configuration.redis import get_redis
-from app.environments import is_local_testing
+from app.environments import is_local_testing, is_wsl
 
 from .constants import TEST_RESULTS_DIRECTORY
 from .log import log
@@ -242,3 +242,17 @@ def httpx_breakpoint(httpx_mock):
 
     httpx_mock.should_mock = intercept
     return httpx_mock
+
+
+@pytest.fixture(scope="session")
+def browser_type_launch_args(browser_type_launch_args):
+    args = list(browser_type_launch_args.get("args", []))
+
+    # Auto-disable GPU if we detect we are inside WSL
+    # As GPU acceleration in WSL can be unstable and cause test failures,
+    # we disable it for better stability.
+    if is_wsl():
+        log.info("WSL detected: Disabling GPU for stability.")
+        args.append("--disable-gpu")
+
+    return {**browser_type_launch_args, "args": args}
