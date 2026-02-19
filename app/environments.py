@@ -1,4 +1,5 @@
 import os
+import platform
 import typing as t
 
 from decouple import config
@@ -96,3 +97,7 @@ def is_alembic_migration():
     """
 
     return os.environ.get("ALEMBIC_MIGRATION", "false").lower() == "true"
+
+
+def is_wsl():
+    return "microsoft" in platform.uname().release.lower()
