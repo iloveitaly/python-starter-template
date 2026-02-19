@@ -1,8 +1,15 @@
 import os
 import platform
+import sys
 import typing as t
 
 from decouple import config
+
+
+def is_macos():
+    "macos is only for development"
+
+    return sys.platform == "darwin"
 
 
 def python_environment():
@@ -22,7 +29,10 @@ def is_local_testing():
 
     # TODO sys.platform != "darwin"?
 
-    return is_testing() and config("CI", default=False, cast=bool) is False
+    return is_testing() and (
+        # a user or script could set CI=true locally, but we'll never be running in CI on macos
+        config("CI", default=False, cast=bool) is False or is_macos()
+    )
 
 
 def is_integration_testing():
@@ -100,4 +110,7 @@ def is_alembic_migration():
 
 
 def is_wsl():
+    """
+    wsl platform is reported as linux, so we need to check for the presence of WSL specific environment variables
+    """
     return "microsoft" in platform.uname().release.lower()
