@@ -14,6 +14,8 @@ prepare-commit-msg:
       skip:
         - merge
         - rebase
+        # works by asking Git directly for the location of its internal "sequencer" state, which modern Git uses for rebases, cherry-picks, and reverts.
+        - run: 'test -d "$(git rev-parse --git-path sequencer)"'
         # only run this if the tool exists
         - run: "! which aiautocommit"
 
