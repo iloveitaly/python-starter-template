@@ -4,28 +4,28 @@
 prepare-commit-msg:
   commands:
     aiautocommit:
-      run: aiautocommit commit --output-file "{1}"
       interactive: true
+      run: aiautocommit commit --output-file "{1}"
       env:
         # without this, lefthook will run in an infinite loop
-        LEFTHOOK: 0
+        # LEFTHOOK: "0"
         # ensures that LOG_LEVEL config of the current project does not interfere with aiautocommit
         LOG_LEVEL: info
       skip:
-        merge:
-        rebase:
+        - merge
+        - rebase
         # only run this if the tool exists
-        run: ! which aiautocommit > /dev/null
+        - run: "! which aiautocommit"
 
 # Use this to validate commit messages
 commit-msg:
   commands:
     commitlint:
       run: commitlint
-    skip:
-      # only run this if the tool exists, it's conditionally installed
-      # https://keisukeyamashita.github.io/commitlint-rs/
-      run: ! which commitlint > /dev/null
+      skip:
+        # only run this if the tool exists, it's conditionally installed
+        # https://keisukeyamashita.github.io/commitlint-rs/
+        - run: "! which commitlint > /dev/null"
 
 
 # {push_files} are just the files that are going to be pushed, not all files unique to this branch that would be pushed if the push was fresh
@@ -38,6 +38,27 @@ pre-push:
     js_lint:
       run: just js_lint
 
-# TODO detect database migrations from rebase
-# TODO detect uv.lock changes and rerun setup
-# TODO detect pnpm changes and rerun setup
+# post-merge: fires after git merge / git pull
+# post-rewrite: fires after git rebase / git commit --amend
+# Both detect dependency changes and warn; the hook name provides the context.
+.dependency_detection: &dependency_detection
+  files: "git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD"
+  commands:
+    detect_migrations:
+      glob: "migrations/versions/*"
+      run: printf '\033[31mmigration files changed, run just db_migrate\033[0m\n'
+    detect_uv_lock:
+      glob: "uv.lock"
+      run: printf '\033[31muv.lock changed, run just py_setup\033[0m\n'
+    detect_pnpm_lock:
+      glob: "web/pnpm-lock.yaml"
+      run: printf '\033[31mpnpm-lock.yaml changed, run just js_setup\033[0m\n'
+    detect_mise:
+      glob: "{.tool-versions,.config/**}"
+      run: printf '\033[31mmise config changed, run mise install\033[0m\n'
+
+post-merge:
+  <<: *dependency_detection
+
+post-rewrite:
+  <<: *dependency_detection
