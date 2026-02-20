@@ -822,6 +822,11 @@ LD_LIBRARY_PATH=/usr/lib apt-get install nano
 
 ## Related
 
+### Helpful Chrome Extensions
+
+* Fake Filler.
+* React Developer Tools.
+
 ### Other Templates
 
 Some other templates I ran across when developing this project:
