@@ -1,6 +1,7 @@
 [[tools.1password-cli]]
 version = "2.32.1"
 backend = "vfox:1password-cli"
+env = ["extras"]
 "platforms.linux-arm64" = { url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.32.1/op_linux_arm64_v2.32.1.zip"}
 "platforms.linux-x64" = { url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.32.1/op_linux_amd64_v2.32.1.zip"}
 "platforms.macos-arm64" = { url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.32.1/op_darwin_arm64_v2.32.1.zip"}
@@ -10,22 +11,27 @@ backend = "vfox:1password-cli"
 [[tools."cargo:ast-grep"]]
 version = "0.40.5"
 backend = "cargo:ast-grep"
+env = ["extras"]
 
 [[tools."cargo:commitlint-rs"]]
 version = "0.2.3"
 backend = "cargo:commitlint-rs"
+env = ["extras"]
 
 [[tools."cargo:fastmod"]]
 version = "0.4.4"
 backend = "cargo:fastmod"
+env = ["extras"]
 
 [[tools."cargo:just-lsp"]]
 version = "0.3.3"
 backend = "cargo:just-lsp"
+env = ["extras"]
 
 [[tools.dive]]
 version = "0.13.1"
 backend = "aqua:wagoodman/dive"
+env = ["extras"]
 "platforms.linux-arm64" = { checksum = "sha256:2fcd2cf20f634ccdb41efac44048b204bfc867c115641f37a7420693ed480a18", url = "https://github.com/wagoodman/dive/releases/download/v0.13.1/dive_0.13.1_linux_arm64.tar.gz"}
 "platforms.linux-x64" = { checksum = "sha256:0970549eb4a306f8825a84145a2534153badb4d7dcf3febd1967c706367c3d0e", url = "https://github.com/wagoodman/dive/releases/download/v0.13.1/dive_0.13.1_linux_amd64.tar.gz"}
 "platforms.macos-arm64" = { checksum = "sha256:38b7fa95a13e7f4d0b3060c875fe7427c2a0613ecff674bb45156eb34bca0b09", url = "https://github.com/wagoodman/dive/releases/download/v0.13.1/dive_0.13.1_darwin_arm64.tar.gz"}
@@ -35,6 +41,7 @@ backend = "aqua:wagoodman/dive"
 [[tools.fd]]
 version = "10.3.0"
 backend = "aqua:sharkdp/fd"
+env = ["dev"]
 "platforms.linux-arm64" = { checksum = "sha256:996b9b1366433b211cb3bbedba91c9dbce2431842144d925428ead0adf32020b", url = "https://github.com/sharkdp/fd/releases/download/v10.3.0/fd-v10.3.0-aarch64-unknown-linux-musl.tar.gz"}
 "platforms.linux-x64" = { checksum = "sha256:2b6bfaae8c48f12050813c2ffe1884c61ea26e750d803df9c9114550a314cd14", url = "https://github.com/sharkdp/fd/releases/download/v10.3.0/fd-v10.3.0-x86_64-unknown-linux-musl.tar.gz"}
 "platforms.macos-arm64" = { checksum = "sha256:0570263812089120bc2a5d84f9e65cd0c25e4a4d724c80075c357239c74ae904", url = "https://github.com/sharkdp/fd/releases/download/v10.3.0/fd-v10.3.0-aarch64-apple-darwin.tar.gz"}
@@ -44,6 +51,7 @@ backend = "aqua:sharkdp/fd"
 [[tools."github:gitleaks/gitleaks"]]
 version = "8.30.0"
 backend = "github:gitleaks/gitleaks"
+env = ["dev"]
 "platforms.linux-arm64" = { checksum = "sha256:b4cbbb6ddf7d1b2a603088cd03a4e3f7ce48ee7fd449b51f7de6ee2906f5fa2f", url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.0/gitleaks_8.30.0_linux_arm64.tar.gz", url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/321137500"}
 "platforms.linux-x64" = { checksum = "sha256:79a3ab579b53f71efd634f3aaf7e04a0fa0cf206b7ed434638d1547a2470a66e", url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.0/gitleaks_8.30.0_linux_x64.tar.gz", url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/321137328"}
 "platforms.macos-arm64" = { checksum = "sha256:b251ab2bcd4cd8ba9e56ff37698c033ebf38582b477d21ebd86586d927cf87e7", url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.0/gitleaks_8.30.0_darwin_arm64.tar.gz", url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/321137755"}
@@ -53,6 +61,7 @@ backend = "github:gitleaks/gitleaks"
 [[tools."github:peterldowns/localias"]]
 version = "3.0.0+commit.5d74685"
 backend = "github:peterldowns/localias"
+env = ["dev"]
 "platforms.linux-arm64" = { checksum = "sha256:9dc69245b8ec8ed7e7b98b8a1019b03ff3ba74afddb4d769d4e604a66eab094d", url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.5d74685/localias-linux-arm64", url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/277499122"}
 "platforms.linux-x64" = { checksum = "sha256:7155f30f1f00d591cdb30428ef2969d690c2dc748ba44d7e70a1a53ae00e4bb2", url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.5d74685/localias-linux-amd64", url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/277499181"}
 "platforms.macos-arm64" = { checksum = "sha256:63d14ed513023fca8d16049f9fb45a9dea75616af986fa0d0d7c245d10926ed3", url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.5d74685/localias-darwin-arm64", url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/277499108"}
@@ -61,6 +70,7 @@ backend = "github:peterldowns/localias"
 [[tools.jq]]
 version = "1.8.1"
 backend = "aqua:jqlang/jq"
+env = ["dev"]
 "platforms.linux-arm64" = { checksum = "sha256:6bc62f25981328edd3cfcfe6fe51b073f2d7e7710d7ef7fcdac28d4e384fc3d4", url = "https://github.com/jqlang/jq/releases/download/jq-1.8.1/jq-linux-arm64"}
 "platforms.linux-x64" = { checksum = "sha256:020468de7539ce70ef1bceaf7cde2e8c4f2ca6c3afb84642aabc5c97d9fc2a0d", url = "https://github.com/jqlang/jq/releases/download/jq-1.8.1/jq-linux-amd64"}
 "platforms.macos-arm64" = { checksum = "sha256:a9fe3ea2f86dfc72f6728417521ec9067b343277152b114f4e98d8cb0e263603", url = "https://github.com/jqlang/jq/releases/download/jq-1.8.1/jq-macos-arm64"}
@@ -70,6 +80,7 @@ backend = "aqua:jqlang/jq"
 [[tools.lefthook]]
 version = "2.1.1"
 backend = "aqua:evilmartians/lefthook"
+env = ["extras"]
 "platforms.linux-arm64" = { checksum = "sha256:46907f78fa64de6d47e4f4c6b80f9ad246a09c67262c00ba5a32c74217d7f5ea", url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.1/lefthook_2.1.1_Linux_aarch64.gz"}
 "platforms.linux-x64" = { checksum = "sha256:5d29942bb5954c59d67d8c37184411034e576ed2829e22b0a6d88bba934e4fbb", url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.1/lefthook_2.1.1_Linux_x86_64.gz"}
 "platforms.macos-arm64" = { checksum = "sha256:efe16a83824d2fc0f95719102045263b0f6d61d3c998442a12763c285f8b49bc", url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.1/lefthook_2.1.1_MacOS_arm64.gz"}
@@ -79,6 +90,7 @@ backend = "aqua:evilmartians/lefthook"
 [[tools.mprocs]]
 version = "0.8.3"
 backend = "aqua:pvolok/mprocs"
+env = ["dev"]
 "platforms.linux-arm64" = { checksum = "sha256:9f37932a810ce6074dc1040860904678230241a98aff8d69a787283716a26ac0", url = "https://github.com/pvolok/mprocs/releases/download/v0.8.3/mprocs-0.8.3-linux-aarch64-musl.tar.gz"}
 "platforms.linux-x64" = { checksum = "sha256:6351b0aa03a71df603df155fd3db4928a0f5caefd3de6b6371f0affff3cd82d0", url = "https://github.com/pvolok/mprocs/releases/download/v0.8.3/mprocs-0.8.3-linux-x86_64-musl.tar.gz"}
 "platforms.macos-arm64" = { checksum = "sha256:24fb7155879ddd1638405293ccbc41169cda927004e0808de8367620f645d381", url = "https://github.com/pvolok/mprocs/releases/download/v0.8.3/mprocs-0.8.3-darwin-aarch64.tar.gz"}
@@ -88,18 +100,22 @@ backend = "aqua:pvolok/mprocs"
 [[tools."pipx:aiautocommit"]]
 version = "0.14.0"
 backend = "pipx:aiautocommit"
+env = ["extras"]
 
 [[tools."pipx:jc"]]
 version = "1.25.6"
 backend = "pipx:jc"
+env = ["extras"]
 
 [[tools."pipx:uv-development-toggle"]]
 version = "0.6.3"
 backend = "pipx:uv-development-toggle"
+env = ["extras"]
 
 [[tools.watchexec]]
 version = "2.3.3"
 backend = "aqua:watchexec/watchexec"
+env = ["dev"]
 "platforms.linux-arm64" = { checksum = "sha256:45347d86979de6a9766f3cac3a3c863396a7c3cfd1853a9f2a920d4c402cbe40", url = "https://github.com/watchexec/watchexec/releases/download/v2.3.3/watchexec-2.3.3-aarch64-unknown-linux-gnu.tar.xz"}
 "platforms.linux-x64" = { checksum = "sha256:468d330b442fd766bb8e1d305b6be018a45bfbf950812d5f82430f0529416be0", url = "https://github.com/watchexec/watchexec/releases/download/v2.3.3/watchexec-2.3.3-x86_64-unknown-linux-musl.tar.xz"}
 "platforms.macos-arm64" = { checksum = "sha256:ab96b0ed8bd02828222f01a003c9efbd0f80facd7b884d716547083545531c90", url = "https://github.com/watchexec/watchexec/releases/download/v2.3.3/watchexec-2.3.3-aarch64-apple-darwin.tar.xz"}
@@ -109,6 +125,7 @@ backend = "aqua:watchexec/watchexec"
 [[tools.yq]]
 version = "4.52.4"
 backend = "aqua:mikefarah/yq"
+env = ["dev"]
 "platforms.linux-arm64" = { checksum = "sha256:4c2cc022a129be5cc1187959bb4b09bebc7fb543c5837b93001c68f97ce39a5d", url = "https://github.com/mikefarah/yq/releases/download/v4.52.4/yq_linux_arm64"}
 "platforms.linux-x64" = { checksum = "sha256:0c4d965ea944b64b8fddaf7f27779ee3034e5693263786506ccd1c120f184e8c", url = "https://github.com/mikefarah/yq/releases/download/v4.52.4/yq_linux_amd64"}
 "platforms.macos-arm64" = { checksum = "sha256:6bfa43a439936644d63c70308832390c8838290d064970eaada216219c218a13", url = "https://github.com/mikefarah/yq/releases/download/v4.52.4/yq_darwin_arm64"}
