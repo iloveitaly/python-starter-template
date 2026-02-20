@@ -40,8 +40,7 @@ def test_generated_files_match_just_py_generate():
     fastapi_original_content = fastapi_target_file.read_text()
     react_router_original_content = react_router_target_file.read_text()
 
-    # Run generation using Just
-    # This modifies the files in place
+    # This modifies the generated files in-place, so we can re-read them and make sure the content has not changed
     run_just_recipe("_py_generate")
 
     fastapi_new_content = fastapi_target_file.read_text()
