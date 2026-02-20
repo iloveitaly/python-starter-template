@@ -82,6 +82,12 @@ localias: _dev_only dev_generate_localias
 	just _banner_echo "Global Local Alias Configuration"
 	localias -c {{GLOBAL_LOCALIAS_CONFIG}} debug config --print
 
+# restart the localias daemon
+[script]
+localias_restart: _dev_only
+	localias -c {{GLOBAL_LOCALIAS_CONFIG}} stop || true
+	just localias
+
 # TODO This needs to work for multiple MIS or tool version files. We should also try to make this more generic so it works for a MIS or a tool version file.
 # TODO extract to my personal dotfiles as well
 # TODO should change the CURRENT_BASE for py and other x.x.y upgrades
