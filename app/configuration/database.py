@@ -21,7 +21,8 @@ def database_url():
     # some environments (dokku) specify the DATABASE_URL as postgres://
     url = url.replace("postgres://", "postgresql://")
 
-    assert url.startswith("postgresql")
+    assert url, "Database URL is empty"
+    assert url.startswith("postgresql"), "Database URL must start with postgresql"
 
     # sqlalchemy does *not* allow to specify the dialect of the DB outside of the url protocol
     # https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls
