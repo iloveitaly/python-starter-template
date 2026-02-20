@@ -1,3 +1,6 @@
+import shutil
+import subprocess
+
 import funcy_pipe as fp
 
 from app.configuration.clerk import clerk
@@ -40,3 +43,37 @@ def delete_all_clerk_users():
         | fp.pluck_attr("id")
         | fp.lmap(lambda uid: clerk.users.delete(user_id=uid))
     )
+
+
+def run_just_recipe(recipe: str, **kwargs) -> str:
+    """
+    Run a just recipe and ensure it succeeds.
+
+    Args:
+        recipe: The name of the just recipe to run.
+        **kwargs: Additional keyword arguments to pass to `subprocess.run`.
+
+    Returns:
+        The standard output of the command as a string.
+    """
+    # Check if 'just' is in path
+    if not shutil.which("just"):
+        # Fallback for environments without just in PATH (like some CIs or local dev)
+        # Assuming just is installed via some means, or skipping if not found
+        # But for this test, it's critical.
+        raise FileNotFoundError(
+            "just executable not found in PATH. Ensure just is installed and in PATH/setup is correct."
+        )
+
+    try:
+        result = subprocess.run(
+            ["just", recipe],
+            check=True,
+            capture_output=True,
+            text=True,
+            **kwargs,
+        )
+        return result.stdout
+    except subprocess.CalledProcessError as e:
+        # Capture stderr for debugging
+        raise RuntimeError(f"just {recipe} failed:\n{e.stderr}") from e
