@@ -14,6 +14,7 @@ from typeid import TypeID
 
 from app import log
 from app.errors import ImpossibleStateError
+
 from app.models.user import User, UserRole
 
 SESSION_KEY_LOGIN_AS_USER = "login_as_user"
@@ -22,7 +23,8 @@ SESSION_KEY_LOGIN_AS_USER = "login_as_user"
 def require_admin(request: Request):
     "Protect routes that require admin access"
 
-    if not (admin_user := getattr(request.state, "user", None)):
+    # if this dependency is used, we should assume that the user is already authenticated upstream
+    if not (admin_user := request.state.user):
         raise ImpossibleStateError("User not found in request state")
 
     if admin_user.role != UserRole.admin:
