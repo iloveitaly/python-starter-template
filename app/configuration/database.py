@@ -1,5 +1,6 @@
-import activemodel
 from app.env import env
+
+import activemodel
 from activemodel.session_manager import get_engine
 from sqlmodel import SQLModel
 

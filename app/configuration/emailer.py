@@ -13,8 +13,9 @@ import asyncio
 import markdown2
 from mailers import Email, Mailer
 from mailers.preprocessors.cssliner import css_inliner
-from app.env import env
 from mailers.preprocessors.remove_html_comments import remove_html_comments
+
+from app.env import env
 
 from ..templates import render_template
 

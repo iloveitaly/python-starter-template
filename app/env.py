@@ -1,6 +1,7 @@
 from environs import Env
 from marshmallow import ValidationError, missing
 
+
 class StrictEnv(Env):
     """Environs that automatically enforces stripped + non-empty strings by default."""
 

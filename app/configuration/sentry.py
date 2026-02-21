@@ -1,5 +1,6 @@
 import sentry_sdk
 import sentry_sdk.integrations
+
 from app.env import env
 
 from ..environments import is_job_monitor, is_production, python_environment

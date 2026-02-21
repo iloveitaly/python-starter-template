@@ -1,4 +1,5 @@
 from app.env import env
+
 from .environments import is_productionish
 
 NO_COLOR = env.bool("NO_COLOR", False)

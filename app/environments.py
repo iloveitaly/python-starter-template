@@ -1,7 +1,6 @@
 import os
 import platform
 import sys
-import typing as t
 
 from app.env import env
 

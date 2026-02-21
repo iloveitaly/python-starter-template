@@ -1,4 +1,3 @@
-from pathlib import Path
 
 from app.env import env
 
