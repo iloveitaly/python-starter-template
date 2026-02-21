@@ -2,12 +2,12 @@ import re
 
 from fastapi import FastAPI
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
-from app.env import env
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from structlog_config import fastapi_access_logger
 
 from app import log
+from app.env import env
 from app.environments import is_development
 
 from . import logging_context

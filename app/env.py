@@ -1,34 +1,43 @@
+"""
+All environment variables should be pulled from this file.
+
+- We want loud, obvious errors when a variable doesn't exist in production that should
+- Vars should be typed as strictly as possible
+- Vars should be sourced close to where they are used (this is why we aren't using pydantic-settings)
+
+This is a separate, simple module, to avoid circular imports.
+"""
+
 from environs import Env
 from marshmallow import ValidationError, missing
 
 
 class StrictEnv(Env):
-    """Environs that automatically enforces stripped + non-empty strings by default."""
+    """
+    Environs that automatically enforces stripped + non-empty strings by default.
+    """
 
     def str(self, name: str, default=missing, **kwargs):
-        # By default, we want strict validation (non-empty, stripped)
-        # If the user explicitly passes validate=None, we should disable strictness?
-        # The prompt said: `config('OPTIONAL', default='') env.str('OPTIONAL', default='', validate=None) validate=None bypasses strict rule`
+        """
+        Returns a string environment variable, enforcing strict validation unless 'validate' is explicitly provided.
 
-        # Current logic:
-        # if kwargs.get("validate") is None: (True if missing OR explicit None)
-        #   -> Adds strict validator.
-        # This means validate=None ADDS validation instead of removing it.
-
-        # Correct logic:
-        # If "validate" is NOT in kwargs, add strict validation.
-        # If "validate" IS in kwargs and is None, do NOTHING (allow empty).
-
+        If 'validate' is not in kwargs, adds a validator requiring non-empty, stripped strings.
+        If 'validate' is in kwargs (even None), disables strict validation.
+        """
         should_strip = False
 
         if "validate" not in kwargs:
             should_strip = True
+
             def _strict_validator(value):
                 if not isinstance(value, str):
                     value = str(value)
                 stripped = value.strip()
                 if not stripped:
-                    raise ValidationError(f"{name} must not be empty or whitespace-only")
+                    raise ValidationError(
+                        f"{name} must not be empty or whitespace-only"
+                    )
+
             kwargs["validate"] = _strict_validator
 
         # If validate IS in kwargs (even if None), we respect it.
