@@ -218,7 +218,7 @@ importers:
         version: 5.1.4(vite@7.3.1(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.31.1))
       '@vitest/coverage-v8':
         specifier: ^4.0.18
-        version: 4.0.18(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.6.3)(jiti@2.6.1)(lightningcss@1.31.1))
+        version: 4.0.18(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.7.0)(jiti@2.6.1)(lightningcss@1.31.1))
       eslint:
         specifier: ^10.0.1
         version: 10.0.1(jiti@2.6.1)
@@ -232,8 +232,8 @@ importers:
         specifier: ^17.3.0
         version: 17.3.0
       happy-dom:
-        specifier: ^20.6.3
-        version: 20.6.3
+        specifier: ^20.7.0
+        version: 20.7.0
       nock:
         specifier: ^14.0.11
         version: 14.0.11
@@ -260,7 +260,7 @@ importers:
         version: 4.5.0(rollup@4.53.3)(typescript@5.9.3)(vite@7.3.1(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.31.1))
       vitest:
         specifier: ^4.0.18
-        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.6.3)(jiti@2.6.1)(lightningcss@1.31.1)
+        version: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.7.0)(jiti@2.6.1)(lightningcss@1.31.1)
 
 packages:
 
@@ -3339,8 +3339,8 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
-  happy-dom@20.6.3:
-    resolution: {integrity: sha512-QAMY7d228dHs8gb9NG4SJ3OxQo4r+NGN8pOXGZ3SGfQf/XYuuYubrtZ25QVY2WoUQdskhRXSXb4R4mcRk+hV1w==}
+  happy-dom@20.7.0:
+    resolution: {integrity: sha512-hR/uLYQdngTyEfxnOoa+e6KTcfBFyc1hgFj/Cc144A5JJUuHFYqIEBDcD4FeGqUeKLRZqJ9eN9u7/GDjYEgS1g==}
     engines: {node: '>=20.0.0'}
 
   has-bigints@1.1.0:
@@ -7312,7 +7312,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/coverage-v8@4.0.18(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.6.3)(jiti@2.6.1)(lightningcss@1.31.1))':
+  '@vitest/coverage-v8@4.0.18(vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.7.0)(jiti@2.6.1)(lightningcss@1.31.1))':
     dependencies:
       '@bcoe/v8-coverage': 1.0.2
       '@vitest/utils': 4.0.18
@@ -7324,7 +7324,7 @@ snapshots:
       obug: 2.1.1
       std-env: 3.10.0
       tinyrainbow: 3.0.3
-      vitest: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.6.3)(jiti@2.6.1)(lightningcss@1.31.1)
+      vitest: 4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.7.0)(jiti@2.6.1)(lightningcss@1.31.1)
 
   '@vitest/expect@4.0.18':
     dependencies:
@@ -8401,7 +8401,7 @@ snapshots:
 
   graceful-fs@4.2.11: {}
 
-  happy-dom@20.6.3:
+  happy-dom@20.7.0:
     dependencies:
       '@types/node': 24.10.1
       '@types/whatwg-mimetype': 3.0.2
@@ -9910,7 +9910,7 @@ snapshots:
       jiti: 2.6.1
       lightningcss: 1.31.1
 
-  vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.6.3)(jiti@2.6.1)(lightningcss@1.31.1):
+  vitest@4.0.18(@opentelemetry/api@1.9.0)(@types/node@24.10.1)(happy-dom@20.7.0)(jiti@2.6.1)(lightningcss@1.31.1):
     dependencies:
       '@vitest/expect': 4.0.18
       '@vitest/mocker': 4.0.18(vite@7.3.1(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.31.1))
@@ -9935,7 +9935,7 @@ snapshots:
     optionalDependencies:
       '@opentelemetry/api': 1.9.0
       '@types/node': 24.10.1
-      happy-dom: 20.6.3
+      happy-dom: 20.7.0
     transitivePeerDependencies:
       - jiti
       - less
