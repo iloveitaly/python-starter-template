@@ -5,6 +5,14 @@
 # this is used for jinja + HTML linting, if you put templates elsewhere, you'll need to update this
 JINJA_TEMPLATE_DIR := "app/templates"
 
+# Shared shell configuration for verbose output with colors
+# PS4 is the prompt string used for execution tracing (set -x); we customize it with color to make debug output readable
+CONFIGURE_SHELL := """
+	setopt prompt_subst
+	export PS4='%F{green}+%f '
+	set -x
+"""
+
 # create venv and install packages
 py_setup:
 	# `mise env`` will generate a venv if it DNE
@@ -67,64 +75,15 @@ py_play:
 
 # TODO should have additional tool for workers and all server processes
 
+# TODO right now, this tool doesn't work with manual maps :/
+# TODO https://github.com/fpgmaas/deptry/issues/610#issue-2190147786
+# TODO https://github.com/fpgmaas/deptry/issues/740
+# uv tool run deptry --experimental-namespace-package . || exit_code=$?
+
 # run all linting operations and fail if any fail
-[script]
-py_lint +FILES=".":
+[parallel]
+py_lint +FILES=".": (_py_lint_ruff FILES) (_py_lint_pyright FILES) _py_lint_shadowed _py_lint_j2lint _py_lint_djlint
 	# + indicates one more arguments being required in Justfile syntax
-
-	# NOTE this is important: we want all operations to run instead of fail fast
-	set +e
-
-	# TODO we should either abstract this out or remove it...
-	# Define a more detailed colored PS4 without current directory so -x output is easier to read
-	setopt prompt_subst
-	export PS4='%F{green}+%f '
-	set -x
-
-	if [ -n "${CI:-}" ]; then
-		# TODO I'm surprised that ruff doesn't auto detect github... need to double check on this
-		uv run ruff check --output-format=github {{FILES}} || exit_code=$?
-		uv run ruff format --check {{FILES}} || exit_code=$?
-		uvx detect-shadowed-modules@latest || exit_code=$?
-
-		uv run pyright {{FILES}} --outputjson > pyright_report.json || exit_code=$?
-		# TODO this is a neat trick, we should use it in other places too + document
-		# https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/workflow-commands-for-github-actions#setting-a-warning-message
-		# https://github.com/jakebailey/pyright-action/blob/b7d7f8e5e5f195796c6f3f0b471a761a115d3b2c/src/main.ts#L62
-		jq -r \
-		--arg root "$GITHUB_WORKSPACE/" \
-		'
-			.generalDiagnostics[] |
-			.file as $file |
-			($file | sub("^\\Q\($root)\\E"; "")) as $rel_file |
-			"::\(.severity) file=\($rel_file),line=\(.range.start.line),endLine=\(.range.end.line),col=\(.range.start.character),endColumn=\(.range.end.character)::\($rel_file):\(.range.start.line): \(.message)"
-		' < pyright_report.json
-		rm pyright_report.json
-
-		# check jinja2 template language
-		uv run j2lint --extension j2,html {{JINJA_TEMPLATE_DIR}} --json > j2link_report.json || exit_code=$?
-		jq -r '(.ERRORS[] | "::\(if .severity == "HIGH" then "error" else "warning" end) file=\(.filename),line=\(.line_number),title=\(.id)::\(.message)"), (.WARNINGS[] | "::warning file=\(.filename),line=\(.line_number),title=\(.id)::\(.message)")' < j2link_report.json
-		rm j2link_report.json
-	else
-		uv run ruff check {{FILES}} || exit_code=$?
-		uv run pyright {{FILES}} || exit_code=$?
-		uvx detect-shadowed-modules@latest || exit_code=$?
-		uv run j2lint --extension j2,html {{JINJA_TEMPLATE_DIR}}
-	fi
-
-	# TODO should only run if {{FILES}} contains a template
-	# NOTE djlint does *not* check jinja syntax, only HTML. GH friendly output is automatically enabled.
-	uv run djlint {{JINJA_TEMPLATE_DIR}} --profile=jinja
-
-	# TODO right now, this tool doesn't work with manual maps :/
-	# TODO https://github.com/fpgmaas/deptry/issues/610#issue-2190147786
-	# TODO https://github.com/fpgmaas/deptry/issues/740
-	# uv tool run deptry --experimental-namespace-package . || exit_code=$?
-
-	if [[ -n "${exit_code:-}" ]]; then
-		echo "One or more commands failed"
-		exit 1
-	fi
 
 # automatically fix linting errors
 py_lint_fix:
@@ -146,10 +105,7 @@ PYTEST_COV_PARAMS := "--cov --cov-report=html:${TEST_RESULTS_DIRECTORY}/htmlcov"
 # run tests with the exact same environment that will be used on CI
 [script]
 py_test:
-	# Define a more detailed colored PS4 without current directory so -x output is easier to read
-	setopt prompt_subst
-	export PS4='%F{green}+%f '
-	set -x
+	{{CONFIGURE_SHELL}}
 
 	# TODO we don't need to see all of the details for this part of the build, since we are primarily testing javascript
 
@@ -266,3 +222,72 @@ py_spy:
 # consistent CLI entrypoint for the python app CLI
 py_cli *args:
 	uv run python -m app.cli {{args}}
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Internal Linting Recipes
+# ----------------------------------------------------------------------------------------------------------------------
+
+[script]
+_py_lint_ruff +FILES:
+	{{CONFIGURE_SHELL}}
+	if [ -n "${CI:-}" ]; then
+		# TODO I'm surprised that ruff doesn't auto detect github... need to double check on this
+		uv run ruff check --output-format=github {{FILES}}
+		uv run ruff format --check {{FILES}}
+	else
+		uv run ruff check {{FILES}}
+	fi
+
+[script]
+_py_lint_pyright +FILES:
+	{{CONFIGURE_SHELL}}
+	if [ -n "${CI:-}" ]; then
+		# We use a temporary file to avoid collisions if possible, but hardcoded name in original script suggests
+		# we can stick to it.
+
+		# Don't fail immediately on pyright error, so we can parse output
+		uv run pyright {{FILES}} --outputjson > pyright_report.json || pyright_status=$?
+
+		# TODO this is a neat trick, we should use it in other places too + document
+		# https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/workflow-commands-for-github-actions#setting-a-warning-message
+		# https://github.com/jakebailey/pyright-action/blob/b7d7f8e5e5f195796c6f3f0b471a761a115d3b2c/src/main.ts#L62
+		jq -r \
+		--arg root "$GITHUB_WORKSPACE/" \
+		'
+			.generalDiagnostics[] |
+			.file as $file |
+			($file | sub("^\\Q\($root)\\E"; "")) as $rel_file |
+			"::\(.severity) file=\($rel_file),line=\(.range.start.line),endLine=\(.range.end.line),col=\(.range.start.character),endColumn=\(.range.end.character)::\($rel_file):\(.range.start.line): \(.message)"
+		' < pyright_report.json
+		rm pyright_report.json
+
+		exit ${pyright_status:-0}
+	else
+		uv run pyright {{FILES}}
+	fi
+
+[script]
+_py_lint_shadowed:
+	{{CONFIGURE_SHELL}}
+	uvx detect-shadowed-modules@latest
+
+[script]
+_py_lint_j2lint:
+	{{CONFIGURE_SHELL}}
+	if [ -n "${CI:-}" ]; then
+		# check jinja2 template language
+		uv run j2lint --extension j2,html {{JINJA_TEMPLATE_DIR}} --json > j2link_report.json || j2_status=$?
+		jq -r '(.ERRORS[] | "::\(if .severity == "HIGH" then "error" else "warning" end) file=\(.filename),line=\(.line_number),title=\(.id)::\(.message)"), (.WARNINGS[] | "::warning file=\(.filename),line=\(.line_number),title=\(.id)::\(.message)")' < j2link_report.json
+		rm j2link_report.json
+		exit ${j2_status:-0}
+	else
+		uv run j2lint --extension j2,html {{JINJA_TEMPLATE_DIR}}
+	fi
+
+[script]
+_py_lint_djlint:
+	{{CONFIGURE_SHELL}}
+	# TODO should only run if FILES contains a template
+	# NOTE djlint does *not* check jinja syntax, only HTML. GH friendly output is automatically enabled.
+	uv run djlint {{JINJA_TEMPLATE_DIR}} --profile=jinja
