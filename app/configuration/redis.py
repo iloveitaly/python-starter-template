@@ -1,14 +1,14 @@
 import redis
-from decouple import config
 
+from app.env import env
 from ..environments import is_testing
 
 
 def redis_url():
     if is_testing():
-        return config("TEST_REDIS_URL", cast=str)
+        return env.str("TEST_REDIS_URL")
     else:
-        return config("REDIS_URL", cast=str)
+        return env.str("REDIS_URL")
 
 
 REDIS = None

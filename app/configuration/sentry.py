@@ -1,6 +1,6 @@
 import sentry_sdk
 import sentry_sdk.integrations
-from decouple import config
+from app.env import env
 
 from ..environments import is_job_monitor, is_production, python_environment
 
@@ -39,8 +39,8 @@ def configure_sentry(integrations=[]):
         return event
 
     sentry_sdk.init(
-        dsn=config("SENTRY_DSN", cast=str),
-        release=config("BUILD_COMMIT", cast=str),
+        dsn=env.str("SENTRY_DSN"),
+        release=env.str("BUILD_COMMIT"),
         environment=python_environment(),
         enable_tracing=True,
         traces_sample_rate=0.1,

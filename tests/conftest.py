@@ -30,8 +30,8 @@ from pathlib import Path
 
 import pytest
 from activemodel.pytest import database_reset_transaction, database_reset_truncate
-from decouple import config as decouple_config
 from pytest import Config, FixtureRequest
+from app.env import env
 
 # important to ensure model metadata is added to the application
 import app.models  # noqa: F401
@@ -68,7 +68,7 @@ def pytest_configure(config: Config):
     config.option.screenshot = "only-on-failure"
     config.option.tracing = "retain-on-failure"
     # TODO although output is a generic-sounding CLI option, it's specific to playwright
-    config.option.output = decouple_config("PLAYWRIGHT_RESULT_DIRECTORY", cast=str)
+    config.option.output = env.str("PLAYWRIGHT_RESULT_DIRECTORY")
 
     # this forces pretty-traceback to be used instead of the default pytest tb, which is absolutely terrible
     config.option.tbstyle = "native"
@@ -88,8 +88,8 @@ def pytest_configure(config: Config):
     # config.option.log_file_level = "DEBUG"
 
     config.option.enable_beautiful_traceback = True
-    config.option.enable_beautiful_traceback_local_stack_only = decouple_config(
-        "BEAUTIFUL_TRACEBACK_LOCAL_ONLY", default=False, cast=bool
+    config.option.enable_beautiful_traceback_local_stack_only = env.bool(
+        "BEAUTIFUL_TRACEBACK_LOCAL_ONLY", False
     )
     # simplify pytest tracebacks by hiding useless internal pytest-y frames
     config.option.beautiful_traceback_exclude_patterns = ["^_pytest/", "^pluggy/", "^playwright/"]
@@ -97,8 +97,8 @@ def pytest_configure(config: Config):
     # disable visual assertions when running locally
     config.option.playwright_visual_disable_snapshots = is_local_testing()
 
-    config.option.playwright_visual_snapshots_path = decouple_config(
-        "PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY", cast=Path
+    config.option.playwright_visual_snapshots_path = env.path(
+        "PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY"
     )
     config.option.playwright_visual_snapshot_failures_path = (
         TEST_RESULTS_DIRECTORY / "playwright_visual_snapshot_failures"
@@ -204,7 +204,7 @@ def datatabase_reset_transaction_for_standard_tests(request):
 
 @pytest.fixture
 def stripe_client():
-    return stripe.StripeClient(decouple_config("STRIPE_SECRET_KEY"))
+    return stripe.StripeClient(env.str("STRIPE_SECRET_KEY"))
 
 
 @pytest.fixture

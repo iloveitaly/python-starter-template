@@ -1,6 +1,5 @@
-from decouple import config
-
 import activemodel
+from app.env import env
 from activemodel.session_manager import get_engine
 from sqlmodel import SQLModel
 
@@ -14,9 +13,9 @@ def database_url():
     """
 
     if is_testing():
-        url = config("TEST_DATABASE_URL", cast=str)
+        url = env.str("TEST_DATABASE_URL")
     else:
-        url = config("DATABASE_URL", cast=str)
+        url = env.str("DATABASE_URL")
 
     # some environments (dokku) specify the DATABASE_URL as postgres://
     url = url.replace("postgres://", "postgresql://")

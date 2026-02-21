@@ -4,8 +4,7 @@ Provide an entrypoint for configuring development tooling to make life easier
 
 import sys
 
-from decouple import config
-
+from app.env import env
 from app.environments import is_productionish
 from app.utils.lang import callable_file_line_reference
 
@@ -32,9 +31,7 @@ def configure_debugging():
         import beautiful_traceback
 
         beautiful_traceback.install(
-            local_stack_only=config(
-                "BEAUTIFUL_TRACEBACK_LOCAL_ONLY", default=False, cast=bool
-            ),
+            local_stack_only=env.bool("BEAUTIFUL_TRACEBACK_LOCAL_ONLY", False),
             # don't allow rich, or anyone else, to override our excepthook
             only_hook_if_default_excepthook=False,
         )
@@ -42,7 +39,7 @@ def configure_debugging():
         pass
 
     # don't install these traps by default, they are generally just for debugging
-    if config("PYTHON_DEBUG_TRAPS", default=False, cast=bool):
+    if env.bool("PYTHON_DEBUG_TRAPS", False):
         from app.utils.debug import install_traps
 
         install_traps()

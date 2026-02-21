@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from decouple import config
+from app.env import env
 
 CLERK_DEV_USER_PASSWORD = "clerk-development-123"
 
@@ -23,12 +23,12 @@ CLERK_ALL_USERS_TO_PRESERVE = [
     CLERK_DEV_SEED_EMAIL,
 ]
 
-TMP_DIRECTORY = config("TMP_DIRECTORY", cast=Path)
+TMP_DIRECTORY = env.path("TMP_DIRECTORY")
 
 # this entire folder is uploaded as an artifact
-TEST_RESULTS_DIRECTORY = config("TEST_RESULTS_DIRECTORY", cast=Path)
+TEST_RESULTS_DIRECTORY = env.path("TEST_RESULTS_DIRECTORY")
 
-PYTHON_TEST_SERVER_HOST = config("PYTHON_TEST_SERVER_HOST", cast=str)
+PYTHON_TEST_SERVER_HOST = env.str("PYTHON_TEST_SERVER_HOST")
 
 LONG_INTEGRATION_TEST_TIMEOUT = 15_000
 "indicates that a particular part of a integration test may need a while to resolve"

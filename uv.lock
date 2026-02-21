@@ -816,6 +816,19 @@ wheels = [
 ]
 
 [[package]]
+name = "environs"
+version = "14.6.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "marshmallow" },
+    { name = "python-dotenv" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/fb/c7/94f97e6e74482a50b5fc798856b6cc06e8d072ab05a0b74cb5d87bd0d065/environs-14.6.0.tar.gz", hash = "sha256:ed2767588deb503209ffe4dd9bb2b39311c2e4e7e27ce2c64bf62ca83328d068", size = 35563, upload-time = "2026-02-20T04:02:08.869Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/97/a8/c070e1340636acb38d4e6a7e45c46d168a462b48b9b3257e14ca0e5af79b/environs-14.6.0-py3-none-any.whl", hash = "sha256:f8fb3d6c6a55872b0c6db077a28f5a8c7b8984b7c32029613d44cef95cfc0812", size = 17205, upload-time = "2026-02-20T04:02:07.299Z" },
+]
+
+[[package]]
 name = "executing"
 version = "2.2.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1645,6 +1658,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/fb/df/5bd7a48c256faecd1d36edc13133e51397e41b73bb77e1a69deab746ebac/markupsafe-3.0.3-cp314-cp314t-win32.whl", hash = "sha256:915c04ba3851909ce68ccc2b8e2cd691618c4dc4c4232fb7982bca3f41fd8c3d", size = 14819, upload-time = "2025-09-27T18:37:26.285Z" },
     { url = "https://files.pythonhosted.org/packages/1a/8a/0402ba61a2f16038b48b39bccca271134be00c5c9f0f623208399333c448/markupsafe-3.0.3-cp314-cp314t-win_amd64.whl", hash = "sha256:4faffd047e07c38848ce017e8725090413cd80cbc23d86e55c587bf979e579c9", size = 15426, upload-time = "2025-09-27T18:37:27.316Z" },
     { url = "https://files.pythonhosted.org/packages/70/bc/6f1c2f612465f5fa89b95bead1f44dcb607670fd42891d8fdcd5d039f4f4/markupsafe-3.0.3-cp314-cp314t-win_arm64.whl", hash = "sha256:32001d6a8fc98c8cb5c947787c5d08b0a50663d139f1305bac5885d98d9b40fa", size = 14146, upload-time = "2025-09-27T18:37:28.327Z" },
+]
+
+[[package]]
+name = "marshmallow"
+version = "4.2.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/f9/03/261af5efb3d3ce0e2db3fd1e11dc5a96b74a4fb76e488da1c845a8f12345/marshmallow-4.2.2.tar.gz", hash = "sha256:ba40340683a2d1c15103647994ff2f6bc2c8c80da01904cbe5d96ee4baa78d9f", size = 221404, upload-time = "2026-02-04T15:47:03.401Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/aa/70/bb89f807a6a6704bdc4d6f850d5d32954f6c1965e3248e31455defdf2f30/marshmallow-4.2.2-py3-none-any.whl", hash = "sha256:084a9466111b7ec7183ca3a65aed758739af919fedc5ebdab60fb39d6b4dc121", size = 48454, upload-time = "2026-02-04T15:47:02.013Z" },
 ]
 
 [[package]]
@@ -2680,6 +2702,7 @@ dependencies = [
     { name = "celery-types" },
     { name = "clerk-backend-api" },
     { name = "css-inline" },
+    { name = "environs" },
     { name = "facebook-business" },
     { name = "fastapi", extra = ["standard"] },
     { name = "flower" },
@@ -2696,7 +2719,6 @@ dependencies = [
     { name = "posthog" },
     { name = "psycopg", extra = ["binary"] },
     { name = "pydantic", extra = ["email", "timezone"] },
-    { name = "python-decouple-typed" },
     { name = "redis", extra = ["hiredis"] },
     { name = "sentry-sdk", extra = ["celery", "fastapi", "openai", "sqlalchemy"] },
     { name = "sqlalchemy" },
@@ -2785,6 +2807,7 @@ requires-dist = [
     { name = "celery-types", specifier = ">=0.23.0" },
     { name = "clerk-backend-api", specifier = ">=3.3.1" },
     { name = "css-inline", specifier = ">=0.14.3" },
+    { name = "environs", specifier = ">=14.0.0" },
     { name = "facebook-business", specifier = ">=23.0.1" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.3" },
     { name = "flower", git = "https://github.com/iloveitaly/flower?rev=custom" },
@@ -2801,7 +2824,6 @@ requires-dist = [
     { name = "posthog", specifier = ">=3.7.0" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.2.3" },
     { name = "pydantic", extras = ["email", "timezone"] },
-    { name = "python-decouple-typed", specifier = ">=3.11.0" },
     { name = "redis", extras = ["hiredis"], specifier = ">=5.2.0" },
     { name = "sentry-sdk", extras = ["fastapi", "celery", "openai", "sqlalchemy"], specifier = ">=2.17.0" },
     { name = "sqlalchemy", specifier = ">=2.0.36" },

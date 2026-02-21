@@ -11,9 +11,9 @@ Simple email interface:
 import asyncio
 
 import markdown2
-from decouple import config
 from mailers import Email, Mailer
 from mailers.preprocessors.cssliner import css_inliner
+from app.env import env
 from mailers.preprocessors.remove_html_comments import remove_html_comments
 
 from ..templates import render_template
@@ -22,8 +22,8 @@ _mailer: Mailer | None = None
 
 
 def configure_mailer():
-    SMTP_URL = config("SMTP_URL", cast=str)
-    EMAIL_FROM_ADDRESS = config("EMAIL_FROM_ADDRESS", cast=str)
+    SMTP_URL = env.str("SMTP_URL")
+    EMAIL_FROM_ADDRESS = env.str("EMAIL_FROM_ADDRESS")
 
     global _mailer
 
