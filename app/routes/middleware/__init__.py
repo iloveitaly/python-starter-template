@@ -1,8 +1,8 @@
 import re
 
-from decouple import config
 from fastapi import FastAPI
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from app.env import env
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from structlog_config import fastapi_access_logger
@@ -12,9 +12,9 @@ from app.environments import is_development
 
 from . import logging_context
 
-SESSION_SECRET_KEY = config("SESSION_SECRET_KEY", cast=str)
+SESSION_SECRET_KEY = env.str("SESSION_SECRET_KEY")
 
-ALLOWED_HOST_LIST = config("ALLOWED_HOST_LIST", cast=str)
+ALLOWED_HOST_LIST = env.str("ALLOWED_HOST_LIST")
 """
 This is a very important configuration option:
 
@@ -155,7 +155,7 @@ def add_middleware(app: FastAPI):
         # same_site="Lax", is defined by default
     )
 
-    if is_development() and config("FASTAPI_DEBUG", cast=bool, default=False):
+    if is_development() and env.bool("FASTAPI_DEBUG", False):
         from app.utils.debug import PdbMiddleware
 
         # TODO should conditionally include this dependending on set_trace, and fix the stdin/stdout

@@ -1,11 +1,11 @@
 import posthog
-from decouple import config
 
+from app.env import env
 from app.environments import is_production
 
 posthog_client = posthog.Posthog(
-    project_api_key=config("POSTHOG_SECRET_KEY"),
-    host=config("POSTHOG_HOST", default="https://us.i.posthog.com"),
+    project_api_key=env.str("POSTHOG_SECRET_KEY"),
+    host=env.str("POSTHOG_HOST", "https://us.i.posthog.com"),
     # don't use Sentry *and* posthog for error tracking!
     enable_exception_autocapture=False,
     # there is no builtin fastapi integration for exceptions!

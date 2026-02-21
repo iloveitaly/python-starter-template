@@ -14,17 +14,17 @@ import re
 import time
 from typing import Literal
 
-from decouple import config
 from facebook_business.adobjects.adspixel import AdsPixel
 from facebook_business.api import FacebookAdsApi
+from app.env import env
 from fastapi import BackgroundTasks, Request
 from pydantic import BaseModel
 from structlog_config.fastapi_access_logger import client_ip_from_request
 
 from app import log
 
-META_PIXEL_ID = config("META_PIXEL_ID", cast=str)
-META_PIXEL_KEY = config("META_PIXEL_KEY", cast=str)
+META_PIXEL_ID = env.str("META_PIXEL_ID")
+META_PIXEL_KEY = env.str("META_PIXEL_KEY")
 
 # tests can set this without relying on an environment variable
 TEST_EVENT_CODE_OVERRIDE: str | None = None

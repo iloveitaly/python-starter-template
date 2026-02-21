@@ -3,7 +3,7 @@ import platform
 import sys
 import typing as t
 
-from decouple import config
+from app.env import env
 
 
 def is_macos():
@@ -13,7 +13,7 @@ def is_macos():
 
 
 def python_environment():
-    return t.cast(str, config("PYTHON_ENV", default="development", cast=str)).lower()
+    return env.str("PYTHON_ENV", "development").lower()
 
 
 def is_testing():
@@ -31,7 +31,7 @@ def is_local_testing():
 
     return is_testing() and (
         # a user or script could set CI=true locally, but we'll never be running in CI on macos
-        config("CI", default=False, cast=bool) is False or is_macos()
+        env.bool("CI", False) is False or is_macos()
     )
 
 
@@ -91,7 +91,7 @@ def is_job_monitor():
     "is this the production flower application"
     # TODO should use a ENV var for app name, rather than hardcoding; how we determine & store container names needs to be refactored
     # TODO this is an azure-specific ENV var, we should use a more generic one?
-    return config("CONTAINER_APP_NAME", default="", cast=str) == "prod-jmon"
+    return env.str("CONTAINER_APP_NAME", "") == "prod-jmon"
 
 
 def is_pytest():
