@@ -1,6 +1,9 @@
 # https://lefthook.dev/configuration/
 # Full list of hooks: https://git-scm.com/docs/githooks
 
+output:
+  - failure
+
 prepare-commit-msg:
   commands:
     aiautocommit:
