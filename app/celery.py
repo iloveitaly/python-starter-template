@@ -1,4 +1,6 @@
 import asyncio
+import multiprocessing
+import os
 from datetime import timedelta
 
 import celery_healthcheck
@@ -115,13 +117,16 @@ def receiver_setup_logging(
     pass
 
 
+def _bind_worker_process_context():
+    log.local(
+        worker_id=multiprocessing.current_process().name,
+        pid=os.getpid(),
+    )
+
+
 @signals.worker_process_init.connect
 def worker_process_init_setup_logging(**kwargs):
-    # TODO should add PID and worker ID to the log content, we want the `WARNING/ForkPoolWorker-8` ID in the logs
-    #      https://github.com/celery/celery/discussions/9378
-    # might need to grab this from? https://pypi.org/project/setproctitle/#history
-    # log.local(celery_pid=sender.pid)
-    pass
+    _bind_worker_process_context()
 
 
 # tag all jobs with the job name (module path) and uuid for the task
@@ -129,6 +134,7 @@ def worker_process_init_setup_logging(**kwargs):
 def on_task_prerun(sender, task_id, task, args, kwargs, **_kwargs):
     "https://github.com/hynek/structlog/issues/287#issuecomment-991182054"
     log.clear()
+    _bind_worker_process_context()
     log.local(task_id=task_id, task_name=task.name)
 
 
@@ -136,6 +142,7 @@ def on_task_prerun(sender, task_id, task, args, kwargs, **_kwargs):
 @signals.task_postrun.connect
 def on_task_postrun(sender, task_id, task, args, kwargs, retval, state, **_kwargs):
     log.clear()
+    _bind_worker_process_context()
 
 
 @signals.worker_shutdown.connect
