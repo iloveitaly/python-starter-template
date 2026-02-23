@@ -1,8 +1,5 @@
 """
-Factories to quickly generate both test and dev data.
-
-Polyfactory is powerful, but dangerous. Make sure you understand the nuances of how it works with pydantic
-models.
+Factories for the User model.
 """
 
 from polyfactory import Ignore, Use
