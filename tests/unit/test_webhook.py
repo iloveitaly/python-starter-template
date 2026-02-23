@@ -25,7 +25,7 @@ def test_queue_webhook_skips_when_no_endpoint(monkeypatch):
 
     TestWebhook(
         type="order.created",
-        id=random_fake_object_id,
+        id=random_fake_object_id,  # type: ignore
     ).queue_webhook()
 
     assert WebhookEvent.count() == 0
@@ -49,12 +49,13 @@ def test_queue_webhook_enqueues_and_processes_success(
     # since sync_celery is used, the webhook will be processed eagerly
     TestWebhook(
         type="order.created",
-        id=random_fake_object_id,
+        id=random_fake_object_id,  # type: ignore
     ).queue_webhook()
 
     assert WebhookEvent.count() == 1
 
     webhook = WebhookEvent.first()
+    assert webhook is not None
 
     assert webhook.destination == webhook_endpoint
     assert webhook.type == "order.created"
@@ -81,7 +82,7 @@ def test_process_webhook_skips_if_already_succeeded(monkeypatch, httpx_mock):
 
     webhook_data = TestWebhook(
         type="order.created",
-        id=random_fake_object_id,
+        id=random_fake_object_id,  # type: ignore
     )
 
     event = WebhookEvent.from_webhook_data(webhook_data, webhook_endpoint)
@@ -112,7 +113,7 @@ def test_process_webhook_records_json_response_payload(
 
     webhook_data = TestWebhook(
         type="order.created",
-        id=random_fake_object_id,
+        id=random_fake_object_id,  # type: ignore
     )
 
     event = WebhookEvent.from_webhook_data(webhook_data, webhook_endpoint)
@@ -144,7 +145,7 @@ def test_process_webhook_records_empty_dict_for_non_json_response(
 
     webhook_data = TestWebhook(
         type="order.created",
-        id=random_fake_object_id,
+        id=random_fake_object_id,  # type: ignore
     )
 
     event = WebhookEvent.from_webhook_data(webhook_data, webhook_endpoint)
@@ -177,7 +178,7 @@ def test_process_webhook_handles_empty_response_body(
 
     webhook_data = TestWebhook(
         type="order.created",
-        id=random_fake_object_id,
+        id=random_fake_object_id,  # type: ignore
     )
 
     event = WebhookEvent.from_webhook_data(webhook_data, webhook_endpoint)
@@ -210,7 +211,7 @@ def test_process_webhook_errors_on_invalid_host(httpx_mock, sync_celery, monkeyp
 
     webhook_data = TestWebhook(
         type="order.created",
-        id=random_fake_object_id,
+        id=random_fake_object_id,  # type: ignore
     )
 
     event = WebhookEvent.from_webhook_data(webhook_data, webhook_endpoint)
