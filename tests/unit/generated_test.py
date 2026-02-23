@@ -6,7 +6,7 @@ from app.generated import fastapi_typed_routes, react_router_routes
 from app.server import authenticated_api_app
 from app.utils.openapi import generate_openapi_schema
 
-from tests.utils import run_just_recipe
+from tests.direnv import run_just_recipe
 
 
 def test_openapi_schema_matches_generated_file():
