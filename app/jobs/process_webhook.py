@@ -17,7 +17,6 @@ def perform(event_id: TypeIDType) -> None:
     event: WebhookEvent = WebhookEvent.one(event_id)
 
     # TODO this is problematic as it can flood the queues with rate limit retries since there is not delay when it's put back on the queue
-    # TODO we should extract the domain from the distribution
     # if not domain_limiter.hit("gohighlevel"):
     #     # TODO we should end up hitting this limit in some way?
     #     log.info("rate limit exceeded", domain="gohighlevel")
@@ -30,7 +29,6 @@ def perform(event_id: TypeIDType) -> None:
             "webhook already processed",
             event_id=event.id,
             destination=event.destination,
-            # distribution_id=event.distribution_id,
             event_type=event.type,
             skipped=True,
         )
@@ -40,7 +38,6 @@ def perform(event_id: TypeIDType) -> None:
         "POST webhook",
         event_id=event.id,
         destination=event.destination,
-        # distribution_id=event.distribution_id,
         event_type=event.type,
         timeout=DEFAULT_WEBHOOK_TIMEOUT,
     )
@@ -72,7 +69,6 @@ def perform(event_id: TypeIDType) -> None:
         "process webhook end",
         event_id=event.id,
         destination=event.destination,
-        # distribution_id=event.distribution_id,
         event_type=event.type,
         status_code=response.status_code,
     )

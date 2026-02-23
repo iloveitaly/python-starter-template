@@ -15,6 +15,7 @@ from pydantic import BaseModel as PydanticBaseModel
 
 import app.jobs.process_webhook
 from app import log
+from app.constants import WEBHOOK_ENDPOINT
 
 import sqlalchemy as sa
 from activemodel import BaseModel
@@ -27,10 +28,6 @@ WebhookTypesType = Literal["order.created"]
 
 # convert the literal types into a nice array that we can use
 WebhookTypes: list[str] = list(get_args(WebhookTypesType))
-
-# Fallback webhook endpoint used when no distribution endpoint is available.
-# Keep at module level so it can be easily changed or exported later.
-DEFAULT_WEBHOOK_ENDPOINT = "https://example.com/webhook"
 
 
 class WebhookBase(PydanticBaseModel):
@@ -52,7 +49,14 @@ class WebhookBase(PydanticBaseModel):
         """
         assert self.type in WebhookTypes, f"Invalid webhook type: {self.type}"
 
-        event = WebhookEvent.from_webhook_data(self)
+        # only queue a webhook if the global endpoint is configured
+        if not WEBHOOK_ENDPOINT:
+            log.info(
+                "webhook skipped, no WEBHOOK_ENDPOINT configured", event_type=self.type
+            )
+            return
+
+        event = WebhookEvent.from_webhook_data(self, WEBHOOK_ENDPOINT)
 
         log.info(
             "queuing webhook",
@@ -96,12 +100,14 @@ class WebhookEvent(BaseModel, TimestampsMixin, TypeIDMixin("wh"), table=True):
     "JSON body received from the destination as the POST response payload"
 
     @classmethod
-    def from_webhook_data(cls, webhook_data: WebhookBase) -> "WebhookEvent":
+    def from_webhook_data(
+        cls, webhook_data: WebhookBase, webhook_endpoint: str
+    ) -> "WebhookEvent":
         """
         Create a new WebhookEvent record from webhook data.
         """
         return cls(
-            destination=DEFAULT_WEBHOOK_ENDPOINT,
+            destination=webhook_endpoint,
             type=webhook_data.type,
             payload=webhook_data.payload(),
             originating_id=webhook_data.id.uuid,

@@ -14,3 +14,5 @@ if is_productionish():
     BUILD_COMMIT = env.str("BUILD_COMMIT")
 else:
     BUILD_COMMIT = "dev"
+
+WEBHOOK_ENDPOINT = env.str("WEBHOOK_ENDPOINT", default=None, validate=None)
