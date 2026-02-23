@@ -1,7 +1,17 @@
-import os
+import detect_shadowed_modules
 import sys
 
-import stripe
+if shadowed_modules := detect_shadowed_modules.find_conflicts():
+    print(
+        "\033[93m"
+        "Shadowed modules detected! This can lead to unexpected behavior during test runs.\n"
+        f"{shadowed_modules}"
+        "\033[0m",
+        file=sys.__stderr__,
+        flush=True,
+    )
+
+import os
 
 # When running locally, switching to the full-blown CI environment is a pain.
 # To make it quick & easy to run tests, we force the environment to test and load cached CI environment variables (if we can).
@@ -12,7 +22,9 @@ if os.getenv("PYTHON_ENV", "development") != "test":
         "PYTHON_ENV is not set to 'test', forcing.\n\n"
         "Additional variables may set in 'env/test.sh' and required to run tests.\n\n"
         "Consider using `just py_test`"
-        "\033[0m"
+        "\033[0m",
+        file=sys.__stderr__,
+        flush=True
     )
 
     os.environ["PYTHON_ENV"] = "test"
@@ -27,6 +39,7 @@ if os.getenv("PYTHON_ENV", "development") != "test":
 
 import multiprocessing
 from pathlib import Path
+import stripe
 
 import pytest
 from activemodel.pytest import database_reset_transaction, database_reset_truncate
@@ -41,7 +54,8 @@ from app.environments import is_local_testing, is_wsl
 
 from .constants import TEST_RESULTS_DIRECTORY
 from .log import log
-# add any local plugins here
+
+# add any local plugins here, ex:
 # pytest_plugins = ["tests.plugins.improved_playwright_failures"]
 pytest_plugins = []
 
@@ -69,9 +83,6 @@ def pytest_configure(config: Config):
     config.option.tracing = "retain-on-failure"
     # TODO although output is a generic-sounding CLI option, it's specific to playwright
     config.option.output = env.str("PLAYWRIGHT_RESULT_DIRECTORY")
-
-    # this forces pretty-traceback to be used instead of the default pytest tb, which is absolutely terrible
-    config.option.tbstyle = "native"
 
     # must be session to align with playwright expectations
     config.option.asyncio_mode = "auto"
@@ -106,6 +117,12 @@ def pytest_configure(config: Config):
     config.option.playwright_visual_snapshot_masks = [
         '[data-clerk-component="UserButton"]',
     ]
+
+    if not config.option.playwright_artifacts_output:
+        config.option.playwright_artifacts_output = TEST_RESULTS_DIRECTORY / "playwright-artifacts"
+    else:
+        # TODO remove print in the future, still trying to understand exactly when/how these options are set
+        print("playwright artifacts output directory:", config.option.playwright_artifacts_output)
 
     config.option.activemodel_preserve_tables = [
         "alembic_version",

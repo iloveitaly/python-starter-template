@@ -6,16 +6,18 @@ However, it's easier to just run `pytest` and never think about environment vari
 
 - This logic should only be run *locally* when running tests
 - The application should NOT be started before this is run, otherwise it won't work properly
+- This means, this file should be very careful about imports: keep this file self-contained as much as possible and DO NOT
+  import any code which imports `app` in this file.
 """
 
 import glob
 import hashlib
 import json
 import os
+import shutil
+import subprocess
 import sys
 import typing as t
-
-from tests.utils import run_just_recipe
 
 from .constants import TMP_DIRECTORY
 from .log import log
@@ -30,6 +32,27 @@ def is_using_direnv() -> bool:
     """
 
     return "DIRENV_FILE" in os.environ
+
+
+def run_just_recipe(recipe: str, **kwargs) -> str:
+    """
+    Run a just recipe, should be used sparingly, but useful in getting the project state into the correct spot and
+    connecting to the javascript frontend build process.
+    """
+    if not shutil.which("just"):
+        raise FileNotFoundError(
+            "just executable not found in PATH. Ensure just is installed and in PATH/setup is correct."
+        )
+
+    result = subprocess.run(
+        ["just", recipe],
+        check=True,
+        capture_output=True,
+        text=True,
+        **kwargs,
+    )
+
+    return result.stdout
 
 
 def direnv_ci_environment() -> dict[str, t.Any]:
@@ -94,7 +117,7 @@ def load_ci_environment():
 
     assert "app" not in sys.modules, (
         "app not be imported before environment is set. "
-        "this is probably caused a recently-created import in conftest.py that should be reordered."
+        "this is probably caused a recently-created import in conftest.py or tests/direnv.py that should be reordered."
     )
 
     sha = direnv_state_sha()
@@ -115,7 +138,8 @@ def load_ci_environment():
 
     # if it doesn't exist, let's load the env state and write it to the file
     ci_environment = direnv_ci_environment()
-    # compare with the current environment and only include the delta
+
+    # compare the generated CI env with the current environment and only include the delta in our state file
     filtered_ci_environment = {
         k: v for k, v in ci_environment.items() if os.environ.get(k) != v
     }

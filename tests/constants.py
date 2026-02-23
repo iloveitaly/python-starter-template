@@ -1,5 +1,10 @@
+"""
+Make sure this file does not depend on `app`.
 
-from app.env import env
+This is why `environs` is used instead of our custom stricter env module.
+"""
+
+from environs import env
 
 CLERK_DEV_USER_PASSWORD = "clerk-development-123"
 

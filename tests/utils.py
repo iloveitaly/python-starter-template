@@ -1,7 +1,3 @@
-import shutil
-import subprocess
-
-import funcy_pipe as fp
 from tenacity import retry, stop_after_attempt
 
 from app.configuration.clerk import clerk
@@ -38,20 +34,3 @@ def delete_all_clerk_users():
     for user in clerk.users.list():
         if user.email_addresses[0].email_address not in CLERK_ALL_USERS_TO_PRESERVE:
             clerk.users.delete(user_id=user.id)
-
-
-def run_just_recipe(recipe: str, **kwargs) -> str:
-    if not shutil.which("just"):
-        raise FileNotFoundError(
-            "just executable not found in PATH. Ensure just is installed and in PATH/setup is correct."
-        )
-
-    result = subprocess.run(
-        ["just", recipe],
-        check=True,
-        capture_output=True,
-        text=True,
-        **kwargs,
-    )
-
-    return result.stdout
