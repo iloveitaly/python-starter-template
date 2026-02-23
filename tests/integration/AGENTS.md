@@ -1,7 +1,7 @@
 ## Pytest Integration Tests
 
 
-- Look to tests/factories.py to generate any required database state
+- Look to tests/factories/ to generate any required database state
   - Here's an example of how to create + persist a factory `DistributionFactory.build(domain=PYTHON_TEST_SERVER_HOST).save()`
 - Add the `server` factory to each test
 - Use the `faker` factory to generate emails, etc.

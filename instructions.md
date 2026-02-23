@@ -116,7 +116,7 @@ globs: app/routes/**/*.py
 
 globs: tests/integration/**/*.py
 
-- Look to tests/factories.py to generate any required database state
+- Look to tests/factories/ to generate any required database state
   - Here's an example of how to create + persist a factory `DistributionFactory.build(domain=PYTHON_TEST_SERVER_HOST).save()`
 - Add the `server` factory to each test
 - Use the `faker` factory to generate emails, etc.
@@ -136,7 +136,7 @@ globs: tests/integration/**/*.py
 
 globs: tests/**/*.py
 
-- Look to @tests/factories.py to generate any required database state
+- Look to @tests/factories/ to generate any required database state
   - For example, to create and persist a `Distribution` record `DistributionFactory.save()`
   - If a factory doesn't exist for the model you are working with, create one.
   - You can customize one or more params in a factory using `DistributionFactory.save(host="custom_host.com)`
@@ -225,7 +225,7 @@ class Distribution(
 
 globs: tests/routes/**/*.py
 
-- Polyfactory is the [factory](tests/factories.py) library in use. `ModelNameFactory.build()` is how you generate factories.
+- Polyfactory is the [factory](tests/factories/) library in use. `ModelNameFactory.build()` is how you generate factories.
 - Use `assert_status(response)` instead of `assert response.status_code == status.HTTP_200_OK`
 - Do not reference routes by raw strings. Instead, use the typed route helpers defined in `app/generated/fastapi_typed_routes.py`.
 
