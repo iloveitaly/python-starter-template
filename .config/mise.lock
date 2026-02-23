@@ -9,7 +9,7 @@ env = ["extras"]
 "platforms.windows-x64" = { url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.32.1/op_windows_amd64_v2.32.1.zip"}
 
 [[tools."cargo:ast-grep"]]
-version = "0.40.5"
+version = "0.41.0"
 backend = "cargo:ast-grep"
 env = ["extras"]
 
