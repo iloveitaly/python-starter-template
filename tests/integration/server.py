@@ -14,7 +14,7 @@ import time
 import psutil
 import pytest
 import uvicorn
-from decouple import config
+from app.env import env
 from structlog_config.pytest_plugin import configure_subprocess_capture
 
 import main
@@ -26,7 +26,7 @@ from app.utils.patching import hash_function_code
 from ..log import log
 from .javascript_build import wait_for_javascript_build
 
-PYTHON_SERVER_TEST_PORT = config("PYTHON_TEST_SERVER_PORT", cast=int)
+PYTHON_SERVER_TEST_PORT = env.int("PYTHON_TEST_SERVER_PORT")
 
 _server_subprocess = None
 
@@ -107,7 +107,7 @@ def run_server():
     # NOTE: if this hash changes, it means the server configuration in `main.py` has changed
     #       and we should verify that this file also needs to be updated.
     actual_hash = hash_function_code(main.get_server_config)
-    expected_hash = "15120fdfd7c0c323ac8bbe8fca7e78fc4865171e802f22b9df9a838eed838db1"
+    expected_hash = "610dd471da603ccbc601a4d443f5dd311ac6edfa783effa16d984342e8b3f0f9"
     assert actual_hash == expected_hash, (
         f"main.py config has changed. New hash: {actual_hash}"
     )

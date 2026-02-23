@@ -1,8 +1,7 @@
 import json
 from pathlib import Path
 
-from decouple import config
-
+from app.env import env
 from app.generated import fastapi_typed_routes, react_router_routes
 from app.server import authenticated_api_app
 from app.utils.openapi import generate_openapi_schema
@@ -11,9 +10,7 @@ from tests.utils import run_just_recipe
 
 
 def test_openapi_schema_matches_generated_file():
-    generated_schema_path = config(
-        "OPENAPI_JSON_PATH", default="web/openapi.json", cast=str
-    )
+    generated_schema_path = env.str("OPENAPI_JSON_PATH", default="web/openapi.json")
     assert generated_schema_path
 
     # Read the file content

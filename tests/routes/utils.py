@@ -7,11 +7,11 @@ from cachetools import LRUCache, cached
 from clerk_backend_api import CreateSessionRequestBody, RequestState
 from clerk_backend_api import User as ClerkUser
 from clerk_backend_api.security import AuthStatus
-from decouple import config as decouple_config
 from fastapi import Request
 from httpx import Response
 
 from app.configuration.clerk import clerk
+from app.env import env
 
 from app.models.user import User, UserRole
 
@@ -39,7 +39,7 @@ def base_server_url(protocol: t.Literal["http", "https"] = "https"):
     `https` requires that localias is setup, otherwise http (or some other SSL mechanism) must be used.
     """
 
-    url = decouple_config("VITE_PYTHON_URL", cast=str).strip()
+    url = env.str("VITE_PYTHON_URL")
 
     # Remove any existing protocol
     if url.startswith(("http://", "https://")):

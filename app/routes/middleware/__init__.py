@@ -14,7 +14,7 @@ from . import logging_context
 
 SESSION_SECRET_KEY = env.str("SESSION_SECRET_KEY")
 
-ALLOWED_HOST_LIST = env.str("ALLOWED_HOST_LIST")
+ALLOWED_HOST_LIST = env.list("ALLOWED_HOST_LIST")
 """
 This is a very important configuration option:
 
@@ -56,7 +56,7 @@ def allowed_hosts(with_scheme: bool = False) -> list[str]:
       values with a regex to allow any port for development hosts.
     """
 
-    raw_hosts = [host.strip() for host in ALLOWED_HOST_LIST.split(",")]
+    raw_hosts = list(ALLOWED_HOST_LIST)
 
     hosts_without_scheme: list[str] = []
     for host in raw_hosts:

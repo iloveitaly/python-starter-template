@@ -15,7 +15,7 @@ Some notes:
 
 
 def get_server_config():
-    from decouple import config
+    from app.env import env
 
     from app.environments import is_development
 
@@ -33,7 +33,7 @@ def get_server_config():
             ],
         }
 
-    PORT = config("PORT", cast=int)
+    PORT = env.int("PORT")
 
     # TODO we should tune this and have it pulled from env
     # workers=2,
