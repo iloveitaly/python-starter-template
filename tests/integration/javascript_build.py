@@ -11,7 +11,6 @@ In CI, the javascript assets are built before running any tests. Locally, we ass
 and automatically kick off a build for you.
 """
 
-import os
 import subprocess
 import threading
 import time
@@ -36,20 +35,20 @@ PYTHON_JAVASCRIPT_BUILD_CMD = ["just", "py_js-build"]
 def get_latest_mtime(directory):
     matches = parse_gitignore(directory / ".gitignore")
 
-    latest = 0
+    latest = 0.0
     inspected_files = []
 
-    for root_dir, dirs, files in os.walk(directory):
-        if matches(root_dir):
+    for root_path, dirs, files in directory.walk():
+        if matches(str(root_path)):
             dirs[:] = []
             continue
 
         for file in files:
-            file_path = os.path.join(root_dir, file)
+            file_path = root_path / file
 
-            if not matches(file_path):
-                latest = max(latest, os.path.getmtime(file_path))
-                inspected_files.append(file_path)
+            if not matches(str(file_path)):
+                latest = max(latest, file_path.stat().st_mtime)
+                inspected_files.append(str(file_path))
 
     log.debug(
         "files checked for javascript build",
@@ -61,8 +60,10 @@ def get_latest_mtime(directory):
 def is_js_build_up_to_date():
     if not BUILD_STATE_FILE.exists():
         return False
-    build_mtime = os.path.getmtime(BUILD_STATE_FILE)
+
+    build_mtime = BUILD_STATE_FILE.stat().st_mtime
     web_latest_mtime = get_latest_mtime(root / "web")
+
     return web_latest_mtime <= build_mtime
 
 

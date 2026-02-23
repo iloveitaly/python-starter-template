@@ -1,4 +1,3 @@
-
 from app.env import env
 
 CLERK_DEV_USER_PASSWORD = "clerk-development-123"
