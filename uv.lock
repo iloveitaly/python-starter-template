@@ -2586,23 +2586,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pytest-timer"
-version = "1.0.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "pytest" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/b1/f7/bc223798d5cccf2f03ed224a6fdceae005d06ae33fbd302741da9eb9e95a/pytest-timer-1.0.0.tar.gz", hash = "sha256:c65a36970e4425c0fd43bdf63b60359b353382632b08418c7c25918ec18a3829", size = 5812, upload-time = "2023-12-26T22:21:42.447Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/91/48/486b6ff8b910852affeab5b628910f8faa861450a37c21c19902b798ebda/pytest_timer-1.0.0-py3-none-any.whl", hash = "sha256:60f16a6d98dd5e8ce3e57ece829592f6e081e18be9f1b20e5bc93e5e7196b065", size = 5331, upload-time = "2023-12-26T22:21:40.947Z" },
-]
-
-[package.optional-dependencies]
-termcolor = [
-    { name = "termcolor" },
-]
-
-[[package]]
 name = "python-crfsuite"
 version = "0.9.12"
 source = { registry = "https://pypi.org/simple" }
@@ -2785,7 +2768,6 @@ dev = [
     { name = "pytest-playwright-artifacts" },
     { name = "pytest-playwright-visual-snapshot" },
     { name = "pytest-sugar" },
-    { name = "pytest-timer", extra = ["termcolor"] },
     { name = "react-router-routes" },
     { name = "ruff" },
     { name = "squawk-cli" },
@@ -2890,7 +2872,6 @@ dev = [
     { name = "pytest-playwright-artifacts", git = "https://github.com/iloveitaly/pytest-playwright-artifacts.git" },
     { name = "pytest-playwright-visual-snapshot" },
     { name = "pytest-sugar", specifier = ">=1.0.0" },
-    { name = "pytest-timer", extras = ["termcolor"], specifier = ">=1.0.0" },
     { name = "react-router-routes", specifier = ">=0.4.0" },
     { name = "ruff", specifier = ">=0.7.1" },
     { name = "squawk-cli", specifier = ">=2.33.2" },
