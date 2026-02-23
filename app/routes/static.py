@@ -76,6 +76,9 @@ It's critical to `copy()` these headers. If they aren't copied for each request,
 to mutate them in a way that causes future requests to fail. This occurred for us specifically around content ranges.
 """
 
+# TODO remove the file extension from the pattern once we are comfortable with this logic
+VITE_HASH_PATTERN = re.compile(r".+-[A-Za-z0-9_-]{8}\.(?:js|css|png|webp)(?:\.gz)?$")
+
 
 class GZipStaticFiles(StaticFiles):
     """
@@ -140,9 +143,7 @@ class GZipStaticFiles(StaticFiles):
         """
 
         filename = os.path.basename(path)
-        # TODO remove the file extension from the pattern once we are comfortable with this logic
-        pattern = r".+-[A-Za-z0-9_-]{8}\.(?:js|css|png|webp)(?:\.gz)?$"
-        return bool(re.match(pattern, filename))
+        return bool(VITE_HASH_PATTERN.match(filename))
 
 
 def mount_public_directory(app: FastAPI):
