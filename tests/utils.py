@@ -35,16 +35,9 @@ def delete_all_clerk_users():
     if not is_testing():
         raise RuntimeError("cannot delete dev users outside of testing")
 
-    _deleted_users = (
-        clerk.users.list()
-        | fp.filter(
-            lambda user: (
-                user.email_addresses[0].email_address not in CLERK_ALL_USERS_TO_PRESERVE
-            )
-        )
-        | fp.pluck_attr("id")
-        | fp.lmap(lambda uid: clerk.users.delete(user_id=uid))
-    )
+    for user in clerk.users.list():
+        if user.email_addresses[0].email_address not in CLERK_ALL_USERS_TO_PRESERVE:
+            clerk.users.delete(user_id=user.id)
 
 
 def run_just_recipe(recipe: str, **kwargs) -> str:
