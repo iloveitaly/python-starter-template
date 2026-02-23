@@ -16,7 +16,6 @@ Some notes:
 
 def get_server_config():
     from app.env import env
-
     from app.environments import is_development
 
     additional_args = {}

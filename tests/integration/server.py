@@ -14,10 +14,10 @@ import time
 import psutil
 import pytest
 import uvicorn
-from app.env import env
 from structlog_config.pytest_plugin import configure_subprocess_capture
 
 import main
+from app.env import env
 from app.environments import is_local_testing
 from app.server import api_app
 from app.utils.debug import install_remote_debugger

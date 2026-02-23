@@ -2,6 +2,7 @@ import shutil
 import subprocess
 
 import funcy_pipe as fp
+from tenacity import retry, stop_after_attempt
 
 from app.configuration.clerk import clerk
 from app.environments import is_testing
@@ -12,7 +13,6 @@ from tests.constants import (
 )
 
 from .log import log
-from tenacity import retry, stop_after_attempt
 
 
 def get_public_ip_address() -> str | None:
