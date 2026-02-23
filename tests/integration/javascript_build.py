@@ -14,7 +14,6 @@ and automatically kick off a build for you.
 import os
 import subprocess
 import threading
-import time
 
 import pytest
 from gitignore_parser import parse_gitignore
@@ -24,7 +23,8 @@ from app.environments import is_local_testing
 
 from tests.log import log
 
-js_build_success = None
+_build_done = threading.Event()
+_build_process: subprocess.Popen | None = None
 
 # Build state file, the mtime is used to trigger new js builds
 BUILD_STATE_FILE = root / "tmp" / ".js_build_success"
@@ -34,6 +34,8 @@ PYTHON_JAVASCRIPT_BUILD_CMD = ["just", "py_js-build"]
 
 
 def get_latest_mtime(directory):
+    "ignoring gitignore, get the latest modified time of the files in the directory"
+
     matches = parse_gitignore(directory / ".gitignore")
 
     latest = 0
@@ -59,8 +61,11 @@ def get_latest_mtime(directory):
 
 
 def is_js_build_up_to_date():
+    "naive function to check if the latest modified time of the web/ directory matches the last time we built the frontend"
+
     if not BUILD_STATE_FILE.exists():
         return False
+
     build_mtime = os.path.getmtime(BUILD_STATE_FILE)
     web_latest_mtime = get_latest_mtime(root / "web")
     return web_latest_mtime <= build_mtime
@@ -72,25 +77,16 @@ def wait_for_javascript_build():
     if not is_local_testing():
         return
 
-    if js_build_success is None:
-        raise RuntimeError("JavaScript build has not been started")
+    log.info("checking if javascript build has finished")
 
-    log.info("Checking if JavaScript build has finished...")
+    timed_out = not _build_done.wait(timeout=60)
+    if timed_out:
+        raise TimeoutError("JavaScript build did not complete within timeout period")
 
-    # arbitrary timeout of 1 minute, may need to adjust as build becomes more complex
-    timeout = 60 * 1
-    start = time.time()
+    if _build_process is not None and _build_process.returncode != 0:
+        raise RuntimeError("JavaScript build failed")
 
-    while not js_build_success:
-        if time.time() - start > timeout:
-            raise TimeoutError(
-                "JavaScript build did not complete within timeout period"
-            )
-
-        log.info("Waiting for JavaScript build to finish...")
-        time.sleep(1)
-
-    log.info("JavaScript build finished successfully")
+    log.info("javascript build finished successfully")
 
 
 def start_js_build():
@@ -99,11 +95,9 @@ def start_js_build():
     if not is_local_testing():
         return
 
-    global js_build_success
-
     if is_js_build_up_to_date():
         log.info("javascript build is up to date, skipping build")
-        js_build_success = True
+        _build_done.set()
         return
 
     print(
@@ -122,11 +116,13 @@ $ just py_js-build
 """
     )
 
-    js_build_success = False
-
     log.info("starting javascript build", command=PYTHON_JAVASCRIPT_BUILD_CMD)
 
-    build_process = subprocess.Popen(
+    global _build_process
+
+    # run_just_recipe uses subprocess.run which blocks; we need the build to run
+    # concurrently with test collection, so we use Popen + a daemon thread instead.
+    _build_process = subprocess.Popen(
         PYTHON_JAVASCRIPT_BUILD_CMD,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -134,19 +130,21 @@ $ just py_js-build
     )
 
     def monitor_javascript_build():
-        global js_build_success
-        stdout, stderr = build_process.communicate()
+        assert _build_process
+        stdout, stderr = _build_process.communicate()
 
-        if build_process.returncode != 0:
+        if _build_process.returncode != 0:
             log.error(
-                "Javascript build failed:\nSTDOUT:\n%s\n\nSTDERR:\n%s", stdout, stderr
+                "javascript build failed",
+                stdout=stdout,
+                stderr=stderr,
             )
-            js_build_success = False
+            _build_done.set()
             pytest.exit("JavaScript build failed")
         else:
-            log.info("Javascript Build finished")
-            BUILD_STATE_FILE.touch()  # Update build state on success
-            js_build_success = True
+            log.info("javascript build finished")
+            BUILD_STATE_FILE.touch()
+            _build_done.set()
 
     # spin up a separate thread to monitor the build process
     threading.Thread(target=monitor_javascript_build, daemon=True).start()
