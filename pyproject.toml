@@ -8,7 +8,6 @@ dependencies = [
     "aiosmtplib>=3.0.2",
     "alembic>=1.14.0",
     "alembic-postgresql-enum>=1.6.1",
-    "backoff>=2.2.1",
     "cachetools>=5.5.1",
     "celery-once>=3.0.1",
     "celery[redis]>=5.4.0",
@@ -49,6 +48,7 @@ dependencies = [
     "usaddress>=0.5.16",
     "facebook-business>=23.0.1",
     "beautiful-traceback>=0.3.0",
+    "tenacity>=9.1.4",
 ]
 
 [dependency-groups]

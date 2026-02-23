@@ -12,6 +12,7 @@ from tests.constants import (
 )
 
 from .log import log
+from tenacity import retry, stop_after_attempt
 
 
 def get_public_ip_address() -> str | None:
@@ -25,6 +26,7 @@ def get_public_ip_address() -> str | None:
     return get_cached_public_ip()
 
 
+@retry(stop=stop_after_attempt(3))
 def delete_all_clerk_users():
     "clerk dev instances can hold a max of ~100 users, in order to avoid hitting that limit, we delete all users except for the dev users"
 
