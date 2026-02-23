@@ -18,6 +18,8 @@ unauthenticated_html = APIRouter(
 )
 
 
+# NOTE important to NOT use `async` for methods which perform sync IO, it's better to use non-async functions since they will then
+#      be run in a threadpool and much better performance
 @unauthenticated_html.get("/hello")
-async def index():
+def index():
     return render_template("routes/index.html", {"date": datetime.now()})
