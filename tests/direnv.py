@@ -93,7 +93,8 @@ def load_ci_environment():
         return
 
     assert "app" not in sys.modules, (
-        "app modules should not be imported before environment is set"
+        "app not be imported before environment is set. "
+        "this is probably caused a recently-created import in conftest.py that should be reordered."
     )
 
     sha = direnv_state_sha()
