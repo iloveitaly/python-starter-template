@@ -8,16 +8,18 @@ All environment variables should be pulled from this file.
 This is a separate, simple module, to avoid circular imports.
 """
 
+import typing
+
 from environs import Env
 from marshmallow import ValidationError, missing
 
 
-class StrictEnv(Env):
-    """
-    Environs that automatically enforces stripped + non-empty strings by default.
-    """
+def _make_strict_str() -> typing.Any:
+    """Mirrors environs' own _field2method pattern: return Any so the class-level
+    FieldMethod[str] annotation from the parent is preserved for type checkers."""
+    _parent_str = Env.__dict__["str"]
 
-    def str(self, name: str, default=missing, **kwargs):
+    def method(self, name: str, default=missing, **kwargs):
         """
         Returns a string environment variable, enforcing strict validation unless 'validate' is explicitly provided.
 
@@ -43,12 +45,22 @@ class StrictEnv(Env):
         # If validate IS in kwargs (even if None), we respect it.
         # If validate=None passed, marshmallow does no validation.
 
-        val = super().str(name, default=default, **kwargs)
+        val = _parent_str(self, name, default=default, **kwargs)
 
         if should_strip and isinstance(val, str):
             return val.strip()
 
         return val
+
+    return method
+
+
+class StrictEnv(Env):
+    """
+    Environs that automatically enforces stripped + non-empty strings by default.
+    """
+
+    str = _make_strict_str()
 
 
 env = StrictEnv()
