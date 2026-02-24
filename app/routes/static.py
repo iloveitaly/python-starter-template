@@ -29,11 +29,10 @@ from starlette.datastructures import Headers
 from starlette.types import Scope
 
 from app import log, root
+from app.constants import JAVASCRIPT_CLIENT_BUILD_DIR
 from app.environments import (
     is_development,
     is_local_testing,
-    is_productionish,
-    python_environment,
 )
 from app.utils.patching import hash_function_code
 
@@ -146,11 +145,7 @@ class GZipStaticFiles(StaticFiles):
 
 
 def mount_public_directory(app: FastAPI):
-    # TODO should be extracted into another env var so it can be shared with JS
-    if is_productionish():
-        public_path = root / "public"
-    else:
-        public_path = root / "web/build" / python_environment() / "client"
+    public_path = root / JAVASCRIPT_CLIENT_BUILD_DIR
 
     # in development, a separate py & js server will be used, if the development build DNE that's fine
     if not public_path.exists() and (is_development() or is_local_testing()):

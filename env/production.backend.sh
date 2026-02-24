@@ -29,3 +29,4 @@ op_inject_source <<'EOF'
 export SENTRY_DSN='op://${OP_VAULT_UID}/l6tqzu6znjffvpux53uiloftli/backend-dsn'
 export SESSION_SECRET_KEY="op://${OP_VAULT_UID}/oi7yjtezhbmtpxzc72eqsl4pse/password"
 EOF
+export JAVASCRIPT_CLIENT_BUILD_DIR="public"

@@ -90,3 +90,4 @@ export VITE_POSTHOG_KEY="public-key"
 EOF
 
 export CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLIC_KEY
+export JAVASCRIPT_CLIENT_BUILD_DIR="web/build/development/client"
