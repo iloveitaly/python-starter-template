@@ -14,7 +14,7 @@ backend = "cargo:ast-grep"
 env = ["extras"]
 
 [[tools."cargo:commitlint-rs"]]
-version = "0.2.3"
+version = "0.2.4"
 backend = "cargo:commitlint-rs"
 env = ["extras"]
 
