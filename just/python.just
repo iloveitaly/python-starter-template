@@ -5,6 +5,8 @@
 # this is used for jinja + HTML linting, if you put templates elsewhere, you'll need to update this
 JINJA_TEMPLATE_DIR := "app/templates"
 
+WATCHEXEC_APP_PY := "watchexec -e py --ignore 'tests/' --ignore 'migrations/' --ignore 'playground/' -- "
+
 # create venv and install packages
 py_setup:
 	# `mise env`` will generate a venv if it DNE
@@ -188,11 +190,12 @@ py_test_dev:
 	run_server()
 
 # regenerate all python generated files
-[doc("Optional flag: --watch")]
-py_generate *flag:
-	if {{ if flag == "--watch" { "true" } else { "false" } }}; then; \
-		watchexec -e py --ignore 'tests/' --ignore 'migrations/' --ignore 'playground/' -- just _py_generate; \
-	else; \
+[arg("watch", long, help="run in watch mode", value="true")]
+py_generate watch="false":
+	# j py_js-build, we really need to make sure this is built *first* otherwise the 
+	if [[ "{{watch}}" == "true" ]]; then \
+		{{WATCHEXEC_APP_PY}} just _py_generate; \
+	else \
 		just _py_generate; \
 	fi
 

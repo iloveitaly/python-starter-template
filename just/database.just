@@ -132,14 +132,14 @@ db_downgrade_last:
 
 # TODO I don't think we really want to migrate the database automatically. Instead, want this to be an independent command that we can call inside the reset and other operations.
 # add seed data to dev and test
-db_seed: _not_production db_migrate
+db_seed *args: _not_production db_migrate
 	@just _banner_echo "Seeding Database"
 
 	# you WILL get errors at this stage if you have SQLModel mutations that do not have an associated migration
 	# and if you rely on them within your seeding process
-	uv run python migrations/seed.py
+	uv run python migrations/seed.py {{args}}
 
-	[ -n "${CI:-}" ] || (just _banner_echo "Seeding Test Database" && {{EXECUTE_IN_TEST}} uv run python migrations/seed.py)
+	[ -n "${CI:-}" ] || (just _banner_echo "Seeding Test Database" && {{EXECUTE_IN_TEST}} uv run python migrations/seed.py {{args}})
 
 # TODO you can't preview what the migration will look like before naming it?
 # generate migration based on the current state of the database
