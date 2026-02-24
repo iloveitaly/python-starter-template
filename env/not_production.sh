@@ -26,9 +26,6 @@ export PYTHONPATH=$ROOT_DIR
 # use an absolute path since this is run from within `web/`
 export OPENAPI_JSON_PATH=$ROOT_DIR/web/openapi.json
 
-# must match the react-router.config.js generated build path
-export JAVASCRIPT_CLIENT_BUILD_DIR="web/build/development/client"
-
 # default from address for the mailer system
 export EMAIL_FROM_ADDRESS="noreply@example.com"
 
