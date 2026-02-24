@@ -189,6 +189,7 @@ tests = ["tests"]
 # NOTE prefer conftest.py over toml configuration for pytest
 [tool.pytest.ini_options]
 addopts = [
+    # disable all of default log capture: structlog does this for us
     "-p no:logging",
     "--capture=no",
     "--import-mode=importlib",
@@ -200,9 +201,14 @@ filterwarnings = [
     # raise level of these errors
     "error:RuntimeWarning",
 ]
+
 # by default, pytest seems to hijack many logs and output them to the terminal
 # this is nice if you don't have a custom login like we do
 testpaths = "tests"
+
+# if there are specific directories that contain other projects that you want to skip, add them here
+# norecursedirs = ["pypi"]
+
 # TODO would love if we could move this to conftest.py and put in the artifact folder
 debug_file = "tmp/pytestdebug.log"
 # TODO right now this option does not enable us to get it directly
