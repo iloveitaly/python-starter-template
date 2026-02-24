@@ -13,15 +13,8 @@ import time
 
 import psutil
 import pytest
-import uvicorn
-from structlog_config.pytest_plugin import configure_subprocess_capture
-
-import main
 from app.env import env
 from app.environments import is_github_actions
-from app.server import api_app
-from app.utils.debug import install_remote_debugger
-from app.utils.patching import hash_function_code
 
 from ..log import log
 from .javascript_build import wait_for_javascript_build
@@ -90,45 +83,6 @@ def wait_for_port(port: int, timeout: int = 30) -> bool:
     return False
 
 
-def run_server():
-    """
-    This method is small and dangerous.
-
-    It runs in a fork. Depending on your system, how that process fork is constructed is different, which can lead to
-    surprising behavior (like the transaction database cleaner not working). This is why we need to run
-    """
-
-    print("before subprocess capture")
-
-    # this MUST be run first, even the remote debugging installation will trigger app/__init__ to run and output logs
-    configure_subprocess_capture()
-
-    # the server does NOT have access to stdin, so let's use a piped debugging server
-    install_remote_debugger()
-
-    # set a environment variable to indicate that we are running this server for integration tests
-    os.environ["PYTEST_INTEGRATION_TESTING"] = "true"
-
-    # NOTE: if this hash changes, it means the server configuration in `main.py` has changed
-    #       and we should verify that this file also needs to be updated.
-    actual_hash = hash_function_code(main.get_server_config)
-    expected_hash = "a5bd757d26473d74a6381571e99d9ccf39873311c11d4b54bf7669143609d4ce"
-    assert actual_hash == expected_hash, (
-        f"main.py config has changed. New hash: {actual_hash}"
-    )
-
-    uvicorn.run(
-        api_app,
-        port=PYTHON_SERVER_TEST_PORT,
-        # NOTE important to ensure structlog controls logging in production
-        log_config=None,
-        # a custom access logger is implemted which plays nicely with structlog
-        access_log=False,
-        # paranoid settings!
-        reload=False,
-    )
-
-
 @pytest.fixture
 def server():
     """
@@ -141,6 +95,8 @@ def server():
     """
 
     from multiprocessing import Process
+
+    from tests.integration.subprocess_server import run_server
 
     # defensively code against multiprocessing coding errors
     if wait_for_port(PYTHON_SERVER_TEST_PORT, 1):
