@@ -18,6 +18,7 @@ import shutil
 import subprocess
 import sys
 import typing as t
+from pathlib import Path
 
 from .constants import TMP_DIRECTORY
 from .log import log
@@ -75,7 +76,7 @@ def direnv_state_sha() -> str:
     if len(env_files) <= 1:
         raise ValueError("No env files found")
 
-    mtimes = "".join(str(os.path.getmtime(f)) for f in env_files)
+    mtimes = "".join(str(Path(f).stat().st_mtime) for f in env_files)
     sha = hashlib.sha256(mtimes.encode()).hexdigest()
 
     log.info("env files inspected for direnv state", env_files=env_files)
