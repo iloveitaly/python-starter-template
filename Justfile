@@ -19,6 +19,7 @@
 # * `pipefail` is important: without this option, a shell script can easily hide an error in a way that is hard to debug
 #   this will cause some extra frustration when developing scripts initially, but will make working with them more
 #   intuitive and less error prone over time.
+# * do NOT allow for duplicate recipe names and variables otherwise this would get very complex
 #
 #######################
 
@@ -52,31 +53,42 @@ Importand commands:
 default:
 		@echo "{{ default_message }}"
 
+# run automatic fix operations for all linters
+[parallel]
+fix: js_lint-fix py_lint_fix
+
+# run all linters
+[parallel]
 lint: js_lint py_lint db_lint
 
+# nicely clean all build artifacts and caches
 clean: js_clean py_clean build_clean
+
+# aggressively destroy everything and rebuild it
+nuke: js_nuke py_nuke db_nuke
 		rm -rf $TMP_DIRECTORY/* || true
 		mkdir -p $TMP_DIRECTORY
+
 		rm -rf .git/hooks/* || true
 
-# destroy and rebuild py, js, db, etc
-nuke: js_nuke py_nuke db_nuke
 
 TEMPLATE_UPDATE_NOTICE := """
-Updating project from upstream template:
+This project is being updated using the python copier tool with the upstream template.
 
-- Update skips all javascript updates. View changes:
-	 glo -- web/ \":(exclude)web/package.json\" \":(exclude)web/pnpm*\" \":(exclude)web/mise.toml\"
+However, there are some changes which are not automatically applied:
+
+- Update skips all javascript updates. View significant changes:
+	 git log -- web/ \":(exclude)web/package.json\" \":(exclude)web/pnpm*\" \":(exclude)web/mise.toml\"
 - Update skips .tool-versions updates
 - You'll need to manually review conflicts of which there will be many
-- 'incoming' change in a diff is the template changes
+	- 'incoming' change in a diff is the template changes.
 """
 
 # syncs the project with the upstream python-starter-template repo.
 update_from_upstream_template:
 		@just _banner_echo "Running Upgrade From Template"
 
-		echo "{{ TEMPLATE_UPDATE_NOTICE }}"
+		@echo "{{ TEMPLATE_UPDATE_NOTICE }}"
 
 		uv tool run --with jinja2_shell_extension \
 			copier update@latest update \
@@ -96,7 +108,7 @@ update_from_upstream_template:
 			--exclude .claude \
 			--exclude .opencode
 
-# do NOT allow for duplicate recipe names and variables otherwise this would get very complex
+		# TODO maybe rerun autogen?
 
 import 'just/utils.just'
 import 'just/database.just'
