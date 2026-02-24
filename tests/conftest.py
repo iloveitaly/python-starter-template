@@ -64,6 +64,23 @@ log.info("multiprocess start method", start_method=multiprocessing.get_start_met
 
 # NOTE this runs on any pytest invocation, even if no tests are run
 def pytest_configure(config: Config):
+    """
+    # Why pytest_configure vs toml/ini
+
+    Defining global configuration like `playwright_console_ignore` here in `conftest.py`
+    instead of `pyproject.toml` is technically a Pytest anti-pattern because it mutates
+    the config object after parsing, which breaks CLI overrides and `pytest --showconfig`.
+
+    However, we are intentionally doing this to:
+
+    1. Keep application-specific test logic closer to the test code.
+    2. Allow static analysis and linting of this configuration.
+    3. Prevent `pyproject.toml` from getting cluttered with app-specific regex strings.
+
+    To mitigate the CLI breakage, you can *append* to an existing option rather than
+    blindly overwriting them.
+    """
+
     # TODO huh, maybe we should use anyio instead?
     # TODO pretty sure this doesn't actually work to disable plugins
     # anyio is installed by some other packages and it's plugin is discovered automatically, we disable it in favor of asyncio
