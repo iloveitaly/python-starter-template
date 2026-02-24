@@ -1,4 +1,5 @@
 import asyncio
+from datetime import timedelta
 from multiprocessing import current_process
 
 import celery_healthcheck
@@ -209,22 +210,7 @@ celery_app.conf.beat_schedule = {
         "schedule": timedelta(seconds=2),
     },
     "sync_clerk": {
-        "task": "app.jobs.sync_clerk.perform",
+        "task": "app.jobs.clerk_sync.perform",
         "schedule": crontab(minute="0", hour="0"),
     },
 }
-
-# from app.configuration.database import clear_engine
-# @task_prerun.connect
-# def on_task_init(*args, **kwargs):
-#     """
-#     Without this, the database connection becomes corrupted and causes SSL-related failures:
-
-#     https://github.com/celery/celery/issues/1564
-#     https://github.com/celery/celery/issues/3238
-#     https://stackoverflow.com/questions/45215596/flask-and-celery-on-heroku-sqlalchemy-exc-databaseerror-psycopg2-databaseerro
-#     """
-
-#     log.info("task init, clearing database engine")
-
-#     clear_engine()
