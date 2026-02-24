@@ -138,6 +138,11 @@ force-exclude = true
 
 [tool.pyright]
 exclude = [
+    # standard excludes that get wiped out with this custom configuration
+    "**/node_modules",
+    "**/__pycache__",
+    "**/.*",
+
     ".venv",
     # exclude our local package clones
     "pypi",
@@ -145,6 +150,7 @@ exclude = [
     "web/node_modules",
     # migrations are autogen'd
     "migrations/versions",
+    "migrations/seed.py",
     "playground.py",
 
     # don't make playing less fun and force types
