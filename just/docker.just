@@ -17,7 +17,7 @@ up fast="false" latest="false": _not_production
 		docker compose up -d --force-recreate {{ if fast == "true" { "" } else { "--wait" } }}
 
 		just py_cli write-versions
-		git add .service-versions.json
+		git add .service-versions
 	else
 		docker compose up -d {{ if fast == "true" { "" } else { "--wait" } }}
 	fi
