@@ -1,12 +1,15 @@
 import asyncio
-from datetime import timedelta
+from multiprocessing import current_process
 
 import celery_healthcheck
 from celery import Celery, signals
 from celery.app.task import Task
 from celery.schedules import crontab
+from celery_once import QueueOnce
 
+from activemodel import SessionManager
 from activemodel.celery import register_celery_typeid_encoder
+from activemodel.session_manager import global_session
 
 from . import log, root
 from .configuration.redis import redis_url
@@ -18,7 +21,31 @@ Task.__class_getitem__ = classmethod(lambda cls, *args, **kwargs: cls)  # type: 
 register_celery_typeid_encoder()
 
 
-class BaseTaskWithRetry(Task):
+class DBSessionTask(Task):
+    """
+    Base task class that ensures a database session is available to the task.
+    """
+
+    abstract = True
+
+    def __call__(self, *args, **kwargs):
+        with global_session():
+            return super().__call__(*args, **kwargs)
+
+
+class QueueOnceWithDBSessionTask(QueueOnce):
+    """
+    queue-once subclass that ensures a database session is available to the task.
+    """
+
+    abstract = True
+
+    def __call__(self, *args, **kwargs):
+        with global_session():
+            return super().__call__(*args, **kwargs)
+
+
+class BaseTaskWithRetry(DBSessionTask):
     """
     Base task class with extended retry capabilities. The default retry sequence is very fast, we use a longer
     retry sequence in case an external system is down.
@@ -32,14 +59,18 @@ class BaseTaskWithRetry(Task):
                               which means any exception will trigger a retry.
         max_retries (int): Maximum number of retry attempts. Default is 20.
         retry_backoff (bool): Whether to use exponential backoff. Default is True.
-        retry_backoff_max (int): Maximum backoff time in seconds. Default is 700.
+        retry_backoff_max (int): Maximum backoff time in seconds.
         retry_jitter (bool): Whether to add random jitter to backoff. Default is True.
     """
+
+    # prevents this from being registered as a task
+    abstract = True
 
     autoretry_for = (Exception,)
     max_retries = 20
     retry_backoff = True
-    retry_backoff_max = 700
+    # 12 hr max, takes ~10 backoffs to reach max
+    retry_backoff_max = 12 * 60 * 60
     retry_jitter = True
 
     # TODO should probably add a CM for the database session here...
@@ -66,6 +97,19 @@ celery_app = Celery(
     redbeat_redis_url=redis_url(),  # type: ignore
     task_cls=BaseTaskWithRetry,
 )
+
+
+@signals.worker_process_init.connect(weak=False)
+def init_worker(**kwargs):
+    # Ensure engine is created per process
+    SessionManager.get_instance().get_engine()
+
+
+@signals.worker_process_shutdown.connect
+def shutdown_worker(**kwargs):
+    # Dispose engine pool per process
+    SessionManager.get_instance().get_engine().dispose()
+
 
 # ensures all job classes are available to celery and avoids circular imports
 # that would be caused by adding them as a top-level import
@@ -129,7 +173,13 @@ def worker_process_init_setup_logging(**kwargs):
 def on_task_prerun(sender, task_id, task, args, kwargs, **_kwargs):
     "https://github.com/hynek/structlog/issues/287#issuecomment-991182054"
     log.clear()
-    log.local(task_id=task_id, task_name=task.name)
+    log.local(
+        celery_task_id=task_id,
+        celery_task_name=task.name,
+        # TODO unsure of perf penalty of this...
+        celery_process_name=current_process().name,
+        celery_process_pid=current_process().pid,
+    )
 
 
 # TODO below should be cleaned up and is probably overkill, need to determine exactly which one we should use
