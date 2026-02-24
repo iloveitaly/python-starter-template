@@ -19,6 +19,10 @@ def is_testing():
     return python_environment() == "test"
 
 
+def is_github_actions():
+    return env.bool("GITHUB_ACTIONS", False)
+
+
 def is_local_testing():
     """
     Are tests being run outside of a CI environment?
@@ -26,11 +30,9 @@ def is_local_testing():
     For determining when to auto-build javascript assets when running integration tests locally
     """
 
-    # TODO sys.platform != "darwin"?
-
     return is_testing() and (
         # a user or script could set CI=true locally, but we'll never be running in CI on macos
-        env.bool("CI", False) is False or is_macos()
+        env.bool("CI", False) is False or is_macos() or is_wsl()
     )
 
 

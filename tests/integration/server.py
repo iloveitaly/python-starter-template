@@ -18,7 +18,7 @@ from structlog_config.pytest_plugin import configure_subprocess_capture
 
 import main
 from app.env import env
-from app.environments import is_local_testing
+from app.environments import is_github_actions, is_local_testing
 from app.server import api_app
 from app.utils.debug import install_remote_debugger
 from app.utils.patching import hash_function_code
@@ -107,7 +107,7 @@ def run_server():
     # NOTE: if this hash changes, it means the server configuration in `main.py` has changed
     #       and we should verify that this file also needs to be updated.
     actual_hash = hash_function_code(main.get_server_config)
-    expected_hash = "610dd471da603ccbc601a4d443f5dd311ac6edfa783effa16d984342e8b3f0f9"
+    expected_hash = "a5bd757d26473d74a6381571e99d9ccf39873311c11d4b54bf7669143609d4ce"
     assert actual_hash == expected_hash, (
         f"main.py config has changed. New hash: {actual_hash}"
     )
@@ -182,8 +182,8 @@ def report_localias_status():
 
     command = ["localias", "status"]
 
-    # on GHA we need to run localias on sudo
-    if not is_local_testing():
+    # localias must run on sudo on GHA
+    if is_github_actions():
         command.insert(0, "sudo")
 
     result = subprocess.run(command, capture_output=True, text=True)
