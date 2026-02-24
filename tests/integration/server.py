@@ -98,6 +98,8 @@ def run_server():
     surprising behavior (like the transaction database cleaner not working). This is why we need to run
     """
 
+    print("before subprocess capture")
+
     # this MUST be run first, even the remote debugging installation will trigger app/__init__ to run and output logs
     configure_subprocess_capture()
 
