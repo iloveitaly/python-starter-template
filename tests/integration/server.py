@@ -18,7 +18,7 @@ from structlog_config.pytest_plugin import configure_subprocess_capture
 
 import main
 from app.env import env
-from app.environments import is_github_actions, is_local_testing
+from app.environments import is_github_actions
 from app.server import api_app
 from app.utils.debug import install_remote_debugger
 from app.utils.patching import hash_function_code
