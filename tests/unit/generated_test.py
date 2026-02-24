@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+import pytest
+
 from app.env import env
 from app.generated import fastapi_typed_routes, react_router_routes
 from app.server import authenticated_api_app
@@ -19,9 +21,10 @@ def test_openapi_schema_matches_generated_file():
     # Use our utility function instead of direct call
     current_schema = generate_openapi_schema(authenticated_api_app)
 
-    assert current_schema == generated_schema, (
-        "OpenAPI schema from FastAPI doesn't match the generated file. Run:\njust js_generate-openapi"
-    )
+    if current_schema != generated_schema:
+        pytest.fail(
+            "OpenAPI schema from FastAPI doesn't match the generated file. Run:\njust js_generate-openapi"
+        )
 
 
 def test_generated_files_match_just_py_generate():
