@@ -98,6 +98,9 @@ def run_server():
     surprising behavior (like the transaction database cleaner not working). This is why we need to run
     """
 
+    # this MUST be run first, even the remote debugging installation will trigger app/__init__ to run and output logs
+    configure_subprocess_capture()
+
     # the server does NOT have access to stdin, so let's use a piped debugging server
     install_remote_debugger()
 
@@ -111,8 +114,6 @@ def run_server():
     assert actual_hash == expected_hash, (
         f"main.py config has changed. New hash: {actual_hash}"
     )
-
-    configure_subprocess_capture()
 
     uvicorn.run(
         api_app,
