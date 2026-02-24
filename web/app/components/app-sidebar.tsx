@@ -19,7 +19,7 @@ import {
 } from "~/components/ui/sidebar"
 import { Switch } from "~/components/ui/switch"
 
-import { UserButton } from "@clerk/clerk-react"
+import { UserButton } from "~/configuration/clerk"
 
 // This is sample data
 const data = {

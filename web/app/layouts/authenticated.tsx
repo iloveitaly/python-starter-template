@@ -11,7 +11,7 @@ import {
   SignedOut,
   useAuth,
   useUser,
-} from "@clerk/clerk-react"
+} from "~/configuration/clerk"
 
 // This layout assumes the user is authenticated. Any clientLoaders making authenticated
 // requests will run an additional check and redirect the user to the login page if it fails.

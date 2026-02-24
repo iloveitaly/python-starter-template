@@ -3,7 +3,7 @@ import { Navigate, href } from "react-router"
 
 import posthog from "posthog-js"
 
-import { useClerk } from "@clerk/clerk-react"
+import { useClerk } from "~/configuration/clerk"
 
 export default function LogoutRedirect() {
   const { signOut } = useClerk()

@@ -7,9 +7,9 @@ import withSentryProvider from "./sentry"
 import withTanstackQueryProvider from "./tanstack-query"
 
 const PROVIDERS: ((app: React.ComponentType) => JSX.Element)[] = [
-  withPostHogProvider,
+//  withPostHogProvider,
   withClerkProvider,
-  withSentryProvider,
+//  withSentryProvider,
   withTanstackQueryProvider,
 ]
 

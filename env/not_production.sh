@@ -98,15 +98,15 @@ export ALLOWED_HOST_LIST="$JAVASCRIPT_SERVER_HOST,$PYTHON_TEST_SERVER_HOST,api.w
 # - `inject` is much faster than individually sourcing keys with `op read`, which is why we have this wonky heredoc format
 # - Env var values should be in the format of "op://${OP_VAULT_UID}/epctgojloj7legp7h62zktshha/sandbox-clerk-secret-key"
 
-op_inject_source <<'EOF'
-export CLERK_PRIVATE_KEY="op://${OP_VAULT_UID}/f5k2z5od2bmbibupey4fze6koi/sandbox-clerk-secret-key"
-export OPENAI_API_KEY="api-key"
-export SENTRY_DSN="backend-dsn"
-export POSTHOG_SECRET_KEY="secret-key"
+# op_inject_source <<'EOF'
+# export CLERK_PRIVATE_KEY="op://${OP_VAULT_UID}/f5k2z5od2bmbibupey4fze6koi/sandbox-clerk-secret-key"
+# export OPENAI_API_KEY="api-key"
+# export SENTRY_DSN="backend-dsn"
+# export POSTHOG_SECRET_KEY="secret-key"
 
-export VITE_SENTRY_DSN="frontend-dsn"
-export VITE_CLERK_PUBLIC_KEY="op://${OP_VAULT_UID}/f5k2z5od2bmbibupey4fze6koi/sandbox-clerk-public-key"
-export VITE_POSTHOG_KEY="public-key"
-EOF
+# export VITE_SENTRY_DSN="frontend-dsn"
+# export VITE_CLERK_PUBLIC_KEY="op://${OP_VAULT_UID}/f5k2z5od2bmbibupey4fze6koi/sandbox-clerk-public-key"
+# export VITE_POSTHOG_KEY="public-key"
+# EOF
 
-export CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLIC_KEY
+# export CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLIC_KEY
