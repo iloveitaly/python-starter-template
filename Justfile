@@ -73,22 +73,25 @@ nuke: js_nuke py_nuke db_nuke
 
 
 TEMPLATE_UPDATE_NOTICE := """
-This project is being updated using the python copier tool with the upstream template.
+This project was just updated using the python copier tool with the upstream template (github reference in @.copier-answers.yml).
 
 However, there are some changes which are not automatically applied:
 
 - Update skips all javascript updates. View significant changes:
 	 git log -- web/ \":(exclude)web/package.json\" \":(exclude)web/pnpm*\" \":(exclude)web/mise.toml\"
 - Update skips .tool-versions updates
+- Some important project configuration like pyproject.toml
 - You'll need to manually review conflicts of which there will be many
 	- 'incoming' change in a diff is the template changes.
+
+Look at the upstream template, focusing on what is skipped by the automatic update, and manually apply important changes from the upstream template.
+
+Pass this prompt off to an LLM to handle it for you :)
 """
 
 # syncs the project with the upstream python-starter-template repo.
 update_from_upstream_template:
 		@just _banner_echo "Running Upgrade From Template"
-
-		@echo "{{ TEMPLATE_UPDATE_NOTICE }}"
 
 		uv tool run --with jinja2_shell_extension \
 			copier update@latest update \
@@ -107,6 +110,8 @@ update_from_upstream_template:
 			--exclude .gemini \
 			--exclude .claude \
 			--exclude .opencode
+
+		@echo "{{ TEMPLATE_UPDATE_NOTICE }}"
 
 		# TODO maybe rerun autogen?
 
