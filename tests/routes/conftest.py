@@ -44,7 +44,11 @@ def loud_client(faker):
 
 @pytest.fixture
 def authenticated_client():
-    "mocks out the clerk authentication and returns a static response"
+    """
+    Mocks out the clerk authentication and returns a static auth response.
+
+    Useful for hitting authenticated routes without needing to sign the auth through clerk.
+    """
 
     from app.routes.authenticated import authenticate_clerk_request_middleware
     from app.server import api_app
