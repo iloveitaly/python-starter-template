@@ -21,6 +21,9 @@ export PYRIGHT_PYTHON_PYLANCE_VERSION=latest-release
 # debug pytest internals
 # export PYTEST_DEBUG=1
 
+# debug watchfiles internals
+# export WATCHFILES_DEBUG=1
+
 # redirect logs to a file for inspection
 # export PYTHON_LOG_PATH=
 
