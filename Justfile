@@ -105,6 +105,7 @@ update_from_upstream_template:
 			--exclude .service-versions \
 			--exclude .tool-versions \
 			--exclude .github/instructions \
+			--exclude .github/prompts \
 			--exclude .github/copilot-instructions.md \
 			--exclude .cursor \
 			--exclude .gemini \
