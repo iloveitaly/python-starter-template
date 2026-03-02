@@ -820,6 +820,16 @@ apt-get update
 LD_LIBRARY_PATH=/usr/lib apt-get install nano
 ```
 
+#### `PYTHONOPTIMIZE`
+
+This environment variable (or the `-O` / `-OO` CLI flags) tells the Python interpreter to run in an optimized mode. It does three things:
+
+* Strips `assert` statements from compiled bytecode.
+* Removes any code under `if __debug__:` blocks.
+* Strips docstrings (if using `-OO` or `PYTHONOPTIMIZE=2`).
+
+This is not enabled on this application. I don't dev working differently than production and any of the benefits are marginal at best.
+
 ## Related
 
 ### Helpful Chrome Extensions
