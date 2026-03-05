@@ -161,12 +161,12 @@ py_test:
 		just _banner_echo "Building Javascript for Integration Tests"
 		just py_js-build
 		just _banner_echo "Running Non-Integration Tests"
-		uv run pytest . --verbosity=2 --ignore tests/integration {{PYTEST_COV_PARAMS}}
+		uv run pytest . --verbosity=2 --ignore tests/integration -n auto {{PYTEST_COV_PARAMS}}
 		just _banner_echo "Running Integration"
 		uv run pytest tests/integration --verbosity=2 --cov-append {{PYTEST_COV_PARAMS}}
 	else
 		# when not running in CI, JS is built automatically
-		{{EXECUTE_IN_TEST}} uv run pytest . --verbosity=2 --ignore tests/integration {{PYTEST_COV_PARAMS}}
+		{{EXECUTE_IN_TEST}} uv run pytest . --verbosity=2 --ignore tests/integration -n auto {{PYTEST_COV_PARAMS}}
 		{{EXECUTE_IN_TEST}} uv run pytest tests/integration --verbosity=2 --cov-append {{PYTEST_COV_PARAMS}}
 	fi
 
