@@ -766,10 +766,16 @@ I tried both RQ and Celery, and looked at other job queue systems, before landin
 
 #### Celery
 
-* Job scheduling is handled in the same process as job execution, which is a terrible idea in large-scale systems.
-* `celery-types` contains a bunch of type stubs that fix most of the typing issues
-* Spawn is not natively supported and fork has been depreciated https://github.com/celery/celery/issues/6036#issuecomment-1151224775
-* `job_function.__wrapped__` is how to grab the original undecorated method to call manually in a console
+* We use redis for the celery backend since it's more well supported than postgresql and separates background jobs from online database load, which I like.
+* Job scheduling is handled in the same process as job execution, which is a terrible idea in large-scale systems. You should change this
+  if you have a scaling application.
+* `celery-types` contains a bunch of type stubs that fix most of the typing issues. It's crazy that celery is not fully typed yet.
+* [Spawn is not natively supported](https://github.com/celery/celery/issues/6036#issuecomment-1151224775) and fork has been depreciated
+* `job_function.__wrapped__` is how to grab the original undecorated method to call manually in a console.
+* Flower is the best job monitoring service, but there's a bunch of obvious features missing and it's hard to understand how to use.
+* `celery-healthcheck` adds a simple http server which exposes a healthcheck
+* `celery-redbeat` uses redis for job scheduling instead of a separate SQLite DB (which is the default)
+* `LOG_LEVEL=CRITICAL celery -A app.celery.celery_app events` is useful for monitoring active tasks celery workers are consuming.
 
 #### RQ
 
