@@ -112,6 +112,11 @@ version = "0.6.3"
 backend = "pipx:uv-development-toggle"
 env = ["extras"]
 
+[[tools.redis]]
+version = "8.6.1"
+backend = "vfox:mise-plugins/vfox-redis"
+env = ["extras"]
+
 [[tools.watchexec]]
 version = "2.5.0"
 backend = "aqua:watchexec/watchexec"
