@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Changed
+- Refactored testing factories to be structured as individual model-specific files within a `tests/factories/` directory instead of a single monolithic file.
 - Migrated environment configuration from `python-decouple` to `environs` (v14.x) with a custom `StrictEnv` implementation.
 - **Breaking Change:** Environment variables are now strictly validated by default. Empty or whitespace-only strings will raise a `ValidationError` unless `validate=None` is explicitly passed.
 - **Migration Guide:**
