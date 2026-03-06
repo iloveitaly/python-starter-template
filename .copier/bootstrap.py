@@ -81,14 +81,7 @@ replacements = {
             r"^PYTHON_PRODUCTION_IMAGE_NAME :=.*$",
             f'PYTHON_PRODUCTION_IMAGE_NAME := "{copier_answers["production_image_name"]}"',
         ),
-    ],
-    ".localias.yaml": [
-        (
-            r"web\.localhost",
-            f'{copier_answers["project_slug"]}.localhost',
-        ),
     ]
-
 }
 
 replace_lines_in_files(replacements)
