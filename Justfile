@@ -100,7 +100,7 @@ update_from_upstream_template:
 			--exclude migrations/versions/ \
 			--exclude app/generated/ \
 			--exclude pyproject.toml \
-			--exclude uv.lock \
+			--exclude uv.lock mise.lock \
 			--exclude tests/integration/__snapshots__ \
 			--exclude .service-versions \
 			--exclude .tool-versions \
