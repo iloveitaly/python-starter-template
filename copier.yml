@@ -88,8 +88,6 @@ _tasks:
   - git commit -m "🎉 Initial commit"
   - ["{{ _copier_python }}", .copier/bootstrap.py]
   - "git add -A && git commit -m 'build: default template values updated'"
-  - ["{{ _copier_python }}", .copier/pick_unique_ports.py]
-  - "git add -A && git commit -m 'build: selected random ports'"
   - "command -v direnv >/dev/null 2>&1 && direnv allow ."
 
 # although it's annoying to have the .copier-answers.yml file in the root, it allows `copier update`
