@@ -1,6 +1,9 @@
 # https://lefthook.dev/configuration/
 # Full list of hooks: https://git-scm.com/docs/githooks
 
+# debug hooks with:
+# LEFTHOOK_VERBOSE=1 lefthook run pre-push --force
+
 output:
   - failure
 
