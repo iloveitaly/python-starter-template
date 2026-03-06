@@ -31,7 +31,7 @@ def configure_debugging():
         import beautiful_traceback
 
         beautiful_traceback.install(
-            local_stack_only=env.bool("BEAUTIFUL_TRACEBACK_LOCAL_ONLY", False),
+            local_stack_only=env.bool("BEAUTIFUL_TRACEBACK_LOCAL_STACK_ONLY", False),
             # don't allow rich, or anyone else, to override our excepthook
             only_hook_if_default_excepthook=False,
         )

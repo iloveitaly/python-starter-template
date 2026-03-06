@@ -65,7 +65,7 @@ export PYRIGHT_PYTHON_PYLANCE_VERSION=latest-release
 # export DEBUG_FILE="tmp/playwright_debug.log"
 
 # shorter stack with only local frames
-# export PRETTY_TRACEBACK_LOCAL_ONLY=True
+# export BEAUTIFUL_TRACEBACK_LOCAL_STACK_ONLY=True
 
 # suppress or expand py warnings
 # export PYTHONWARNINGS=""
