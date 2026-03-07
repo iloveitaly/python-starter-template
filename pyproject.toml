@@ -209,8 +209,6 @@ testpaths = "tests"
 # if there are specific directories that contain other projects that you want to skip, add them here
 # norecursedirs = ["pypi"]
 
-# TODO would love if we could move this to conftest.py and put in the artifact folder
-debug_file = "tmp/pytestdebug.log"
 # TODO right now this option does not enable us to get it directly
 asyncio_default_test_loop_scope = "function"
 asyncio_default_fixture_loop_scope = "function"
