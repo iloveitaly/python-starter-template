@@ -117,7 +117,7 @@ def pytest_configure(config: Config):
 
     config.option.enable_beautiful_traceback = True
     config.option.enable_beautiful_traceback_local_stack_only = env.bool(
-        "BEAUTIFUL_TRACEBACK_LOCAL_ONLY", False
+        "BEAUTIFUL_TRACEBACK_LOCAL_STACK_ONLY", False
     )
     # simplify pytest tracebacks by hiding useless internal pytest-y frames
     config.option.beautiful_traceback_exclude_patterns = ["^_pytest/", "^pluggy/", "^playwright/"]
