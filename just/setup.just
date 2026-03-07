@@ -46,6 +46,11 @@ setup: _dev_only requirements && py_setup up db_seed js_setup
 		echo "Edit '{{CYAN}}env/all.local.sh{{NORMAL}}' to your liking."; \
 	fi
 
+	@if [ ! -f .config/mise.local.toml ]; then \
+		cp .config/mise.local.toml-template .config/mise.local.toml; \
+		echo "Edit '{{CYAN}}.config/mise.local.toml{{NORMAL}}' to your liking."; \
+	fi
+
 	@echo 'If you are using localias, run `{{CYAN}}just localias{{NORMAL}}` to start the daemon'
 
 # if a dev is having trouble with their environment, this outputs all the versions + debugging information of core tools which could be causing the problem

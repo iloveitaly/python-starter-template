@@ -1,0 +1,8 @@
+[env]
+# add paths to override default tooling, helpful when hacking on a cli dependency
+# note that this can be problematic if you have binaries which override with mise. Mise will most likely force its
+# bin/ dirs for those binaries first.
+# _.path = [
+#     "~/Projects/go/localias/bin/",
+#     "~/Projects/deployment/nixpacks/target/release/",
+# ]
