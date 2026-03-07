@@ -11,9 +11,10 @@ In CI, the javascript assets are built before running any tests. Locally, we ass
 and automatically kick off a build for you.
 """
 
-import os
 import subprocess
 import threading
+
+from pathlib import Path
 
 import pytest
 from gitignore_parser import parse_gitignore
@@ -41,17 +42,20 @@ def get_latest_mtime(directory):
     latest = 0
     inspected_files = []
 
-    for root_dir, dirs, files in os.walk(directory):
-        if matches(root_dir):
+    # Path.walk is available in Python 3.12+
+    for root_dir, dirs, files in directory.walk():
+        # gitignore_parser expects a path, it might work with Path objects but casting to string is safer
+        # ensuring compatibility if the library uses string methods internally
+        if matches(str(root_dir)):
             dirs[:] = []
             continue
 
         for file in files:
-            file_path = os.path.join(root_dir, file)
+            file_path = root_dir / file
 
-            if not matches(file_path):
-                latest = max(latest, os.path.getmtime(file_path))
-                inspected_files.append(file_path)
+            if not matches(str(file_path)):
+                latest = max(latest, file_path.stat().st_mtime)
+                inspected_files.append(str(file_path))
 
     log.debug(
         "files checked for javascript build",
@@ -66,7 +70,7 @@ def is_js_build_up_to_date():
     if not BUILD_STATE_FILE.exists():
         return False
 
-    build_mtime = os.path.getmtime(BUILD_STATE_FILE)
+    build_mtime = BUILD_STATE_FILE.stat().st_mtime
     web_latest_mtime = get_latest_mtime(root / "web")
     return web_latest_mtime <= build_mtime
 
