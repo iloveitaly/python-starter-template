@@ -186,7 +186,7 @@ _js_sync-engine-versions: _dev_only
 # upgrade mise, language versions, and essential packages
 tooling_upgrade: _dev_only && _mise_upgrade _mise_web_version_sync _js_sync-engine-versions _mise_gha_version_sync
 	mise self-update --yes
-	mise upgrade
+	mise upgrade --local
 
 # upgrade everything: all packages on all languages, tooling, etc
 upgrade: _dev_only tooling_upgrade js_upgrade py_upgrade
