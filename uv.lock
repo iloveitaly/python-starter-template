@@ -1370,6 +1370,15 @@ wheels = [
 ]
 
 [[package]]
+name = "ipython-copy"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/58/5b/3aca8bba9e70b796bddfb81d26801d14caf1f892ac6973ce9a731518a67e/ipython_copy-0.1.0.tar.gz", hash = "sha256:7748167f68251ecc95c1bd03cf06c19c65e5c6dcf960dc326b2de3689baf46cc", size = 4907, upload-time = "2026-03-06T20:59:00.28Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0f/8f/5235c12eb57b098f0e4aeedd06c36bb496339c1bd33a669db323ea4c5c5d/ipython_copy-0.1.0-py3-none-any.whl", hash = "sha256:62fc693bfc417ba443b47bdbdabeaf2c70c99cc5950dc1402fd1423e149ded80", size = 5476, upload-time = "2026-03-06T20:58:59.556Z" },
+]
+
+[[package]]
 name = "ipython-ctrlr-fzf"
 version = "0.2.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1416,19 +1425,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/3d/4b/36e0fb6f34d2996ba73d45dddcf9fc6015ed5e5629bafdfc330ebcabdea0/ipython_suggestions-1.0.3.tar.gz", hash = "sha256:19a7de6e66a9dbc00484ddf3036a09a5a0d91fca82e861ae21b2174b5b1268d2", size = 15268, upload-time = "2025-06-26T09:43:27.348Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/bf/14/f5f18170bad0f528842d9f7e2d06d97e7d30e5d952ceb14119db0181be8e/ipython_suggestions-1.0.3-py3-none-any.whl", hash = "sha256:b65c270e16617d05fdf83302f9b15d51d0c8dec867e742b82c09df5513fac369", size = 15754, upload-time = "2025-06-26T09:43:26.083Z" },
-]
-
-[[package]]
-name = "ipythonclipboard"
-version = "1.0b2"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "ipython" },
-    { name = "pyperclip" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/eb/02/f74dc8562d29d066cc5fb7b955ec02c29e50ea96624f1923a309d3215234/IPythonClipboard-1.0b2.tar.gz", hash = "sha256:c4fc101708f160a796e7add2d9da5a7fa7df956e6de6655f6f49d085d48d765f", size = 4576, upload-time = "2020-06-22T01:16:08.612Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/79/b9/32c91a1c2481474a53b32981ffba90d4f2572b7ed79fd2066695e147dccc/IPythonClipboard-1.0b2-py3-none-any.whl", hash = "sha256:23c0cf68cec472652f029f01839c4edb6967b50a3b4d4a76b9395232f63c2ee0", size = 5557, upload-time = "2020-06-22T01:16:07.534Z" },
 ]
 
 [[package]]
@@ -2334,15 +2330,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pyperclip"
-version = "1.11.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/e8/52/d87eba7cb129b81563019d1679026e7a112ef76855d6159d24754dbd2a51/pyperclip-1.11.0.tar.gz", hash = "sha256:244035963e4428530d9e3a6101a1ef97209c6825edab1567beac148ccc1db1b6", size = 12185, upload-time = "2025-09-26T14:40:37.245Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/df/80/fc9d01d5ed37ba4c42ca2b55b4339ae6e200b456be3a1aaddf4a9fa99b8c/pyperclip-1.11.0-py3-none-any.whl", hash = "sha256:299403e9ff44581cb9ba2ffeed69c7aa96a008622ad0c46cb575ca75b5b84273", size = 11063, upload-time = "2025-09-26T14:40:36.069Z" },
-]
-
-[[package]]
 name = "pyreadline3"
 version = "3.5.4"
 source = { registry = "https://pypi.org/simple" }
@@ -2742,9 +2729,9 @@ debugging-extras = [
     { name = "ipdb" },
     { name = "ipython" },
     { name = "ipython-autoimport" },
+    { name = "ipython-copy" },
     { name = "ipython-ctrlr-fzf" },
     { name = "ipython-suggestions" },
-    { name = "ipythonclipboard" },
     { name = "pdbr", extra = ["ipython"] },
     { name = "pre-commit" },
     { name = "psutil" },
@@ -2846,9 +2833,9 @@ debugging-extras = [
     { name = "ipdb", git = "https://github.com/iloveitaly/ipdb?rev=support-executables" },
     { name = "ipython", specifier = ">=9.0.2" },
     { name = "ipython-autoimport" },
+    { name = "ipython-copy" },
     { name = "ipython-ctrlr-fzf", specifier = ">=0.2.1" },
     { name = "ipython-suggestions", specifier = ">=1.0.0" },
-    { name = "ipythonclipboard", specifier = ">=1.0b2" },
     { name = "pdbr", extras = ["ipython"], specifier = ">=0.8.9" },
     { name = "pre-commit", specifier = ">=4.1.0" },
     { name = "psutil", specifier = ">=6.1.0" },
