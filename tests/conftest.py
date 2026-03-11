@@ -46,6 +46,12 @@ from activemodel.pytest import database_reset_transaction, database_reset_trunca
 from pytest import Config, FixtureRequest
 from app.env import env
 
+from tests.concurrent_tests import configure_xdist_worker_environment, setup_xdist_worker_databases
+
+# Configure environment for xdist workers *before* any other imports or setup
+# This ensures that when the app is initialized, it connects to the correct database
+configure_xdist_worker_environment()
+
 # important to ensure model metadata is added to the application
 import app.models  # noqa: F401
 from app.celery import celery_app
@@ -149,6 +155,11 @@ def pytest_configure(config: Config):
 
 def pytest_sessionstart(session):
     "only executes once if a test is run, at the beginning of the test suite execution"
+
+    # Only run global cleanup in the master process, not in xdist workers
+    if hasattr(session.config, "workerinput"):
+        return
+
     from .utils import delete_all_clerk_users
 
     # without this, the clerk dev instance will get cluttered and throw errors
@@ -156,6 +167,13 @@ def pytest_sessionstart(session):
 
     # clear out any previous cruft in this DB, which is why...
     database_reset_truncate(pytest_config=session.config)
+
+    # Handle xdist worker database setup if we're running with xdist
+    # config.option.numprocesses is set by -n/--numprocesses
+    num_processes = getattr(session.config.option, "numprocesses", None)
+
+    if num_processes:
+        setup_xdist_worker_databases(num_processes)
 
 
 @pytest.fixture(scope="function")
