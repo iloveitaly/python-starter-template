@@ -50,7 +50,7 @@ setup: _dev_only requirements && py_setup up db_seed js_setup
 
 # if a dev is having trouble with their environment, this outputs all the versions + debugging information of core tools which could be causing the problem
 setup_debug:
-	echo $PATH
+	@just _banner_echo "Versions"
 	uname -m
 	zsh --version
 	# mise installs everything else
@@ -61,3 +61,15 @@ setup_debug:
 	command -v sw_vers >/dev/null 2>&1 && sw_vers -productVersion || echo "sw_vers not found"
 	if command -v op >/dev/null 2>&1; then op --version; fi
 	direnv exec . zsh -c 'env'
+
+	@just _banner_echo "PATH Configuration"
+	# watch out for mise shims in the path, they can cause ordering problems when `mise exec` is used
+
+	@echo "\n{{CYAN}}Current PATH{{NORMAL}}"
+	echo $PATH
+
+	@echo "\n{{CYAN}}mise exec env *without* subshell execution{{NORMAL}}"
+	mise exec -C web -- env | grep '^PATH=' | cut -d= -f2-
+
+	@echo "\n{{CYAN}}mise exec env *with* subshell execution{{NORMAL}}"
+	mise exec -C web -- zsh -c 'echo $PATH'
