@@ -2,7 +2,6 @@
 lockfile = true
 pipx.uvx = true
 
-[env]
 # this can be done through direnv, but we intentionally manage all PATH mutations through mise to avoid
 # conflicts between the bash hooks across different tools.
-_.python.venv = { path = ".venv", create = true }
+python.uv_venv_auto = "create|source"
