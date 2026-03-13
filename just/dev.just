@@ -20,7 +20,8 @@ dev_lint:
 
 # start all of the services you need for development in a single terminal
 [script]
-dev: _dev_only localias dev_kill
+[arg("open", long, help="open the development site in the browser", value="true")]
+dev open="false": _dev_only localias dev_kill
 	just _banner_echo "Starting dev services"
 
 	# TODO we should think about the worker command a bit more...should we use the same exact command? should we generate vs hardcode?
@@ -54,6 +55,47 @@ dev_kill: _dev_only
 			echo "No processes found on port $port"
 		fi
 	done
+
+# open the development site in the browser and perform basic health checks before opening the browser
+[script]
+dev_open: _dev_only
+	if [[ -z "${JAVASCRIPT_SERVER_HOST:-}" ]]; then
+		echo "{{RED}}error: JAVASCRIPT_SERVER_HOST is not set.{{NORMAL}}"
+		echo "Try running '{{CYAN}}just dev_generate{{NORMAL}}' first."
+		exit 1
+	fi
+
+	# check if the domain resolves to an IP, if not issue with localias
+	if ! python -c "import socket; socket.gethostbyname('${JAVASCRIPT_SERVER_HOST}')" >/dev/null 2>&1; then
+		echo "{{RED}}error: ${JAVASCRIPT_SERVER_HOST} does not resolve to an IP.{{NORMAL}}"
+		echo "This usually indicates an issue with {{CYAN}}localias{{NORMAL}}."
+		echo "Try running '{{CYAN}}just localias{{NORMAL}}' to start or reload the daemon."
+		exit 1
+	fi
+
+	# check if domain returns a reasonable error code (doesn't have to be 200, just not something from caddy like 502)
+	# --retry 15 will retry on 502 (Bad Gateway) and other transient errors.
+	# --retry-all-errors ensures it retries even on connection failures.
+	# `000` indicates a connection failure, we force to true to avoid failing the entire script
+	echo "{{CYAN}}Checking if ${JAVASCRIPT_SERVER_HOST} is up and running...{{NORMAL}}"
+	status_code=$(curl -s -o /dev/null -w "%{http_code}" \
+		--max-time 2 \
+		--retry 15 \
+		--retry-delay 2 \
+		--retry-all-errors \
+		"https://${JAVASCRIPT_SERVER_HOST}" || true)
+
+	if [[ "$status_code" == "502" ]] || [[ "$status_code" == "000" ]]; then
+		echo "{{RED}}error: ${JAVASCRIPT_SERVER_HOST} is not ready ($status_code).{{NORMAL}}"
+		echo "This usually means the dev server is not running or Caddy cannot reach it."
+		echo "Run {{CYAN}}just dev{{NORMAL}} and check the output for any errors."
+		exit 1
+	fi
+
+	echo "{{GREEN}}Success: ${JAVASCRIPT_SERVER_HOST} is up and running! Opening...{{NORMAL}}"
+
+	# python's webbrowser module respects the BROWSER env var as a colon-separated hint list
+	BROWSER="google-chrome:chrome:google-chrome-stable" python -m webbrowser "https://${JAVASCRIPT_SERVER_HOST}"
 
 # this is currently the default global config path
 GLOBAL_LOCALIAS_CONFIG := "~/.config/localias.yaml"
