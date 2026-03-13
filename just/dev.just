@@ -34,9 +34,15 @@ dev open="false": _dev_only localias dev_kill
 	js_dev: just js_dev
 	py_generate: just py_generate --watch
 	openapi: just js_generate-openapi --watch
+	db_seed: just db_seed --safe
 	EOF
 
-	mprocs --procfile={{GENERATED_PROCFILE}}
+	if [[ "{{open}}" == "true" ]]; then
+		echo "dev_open: just dev_open" >> {{GENERATED_PROCFILE}}
+	fi
+
+	mkdir -p $TMP_DIRECTORY/mprocs
+	mprocs --procfile=tmp/Procfile --log-dir=$TMP_DIRECTORY/mprocs
 
 # kill all processes bound to server ports
 [script]
