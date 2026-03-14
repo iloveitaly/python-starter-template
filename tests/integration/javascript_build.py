@@ -22,6 +22,7 @@ from app import root
 from app.environments import is_local_testing
 
 from tests.log import log
+from tests.raw_utils import banner
 
 _build_done = threading.Event()
 _build_process: subprocess.Popen | None = None
@@ -100,20 +101,12 @@ def start_js_build():
         _build_done.set()
         return
 
-    print(
-        """
-\033[91m
-!!! IMPORTANT !!!
-
-You are running an integration test outside the CI=true environment.
-
-If you are iterating on the frontend as well, your build is most likely out of date.
-A new Javascript build has been automatically kicked off for you. To run one manually, execute:
-
-$ just py_js-build
-
-\033[0m
-"""
+    banner(
+        "!!! IMPORTANT !!!\n\n"
+        "You are running an integration test outside the CI=true environment.\n\n"
+        "If you are iterating on the frontend as well, your build is most likely out of date.\n"
+        "A new Javascript build has been automatically kicked off for you. To run one manually, execute:\n\n"
+        "$ `just py_js-build`"
     )
 
     log.info("starting javascript build", command=PYTHON_JAVASCRIPT_BUILD_CMD)
