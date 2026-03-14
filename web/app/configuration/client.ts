@@ -1,4 +1,4 @@
-// the autogen'd client from the python's openapi.json is configured here
+// the autogen'd client from the python's OPENAPI_JSON_PATH is configured here
 import posthog from "posthog-js"
 
 import { isDevelopment, requireEnv } from "~/utils/environment"

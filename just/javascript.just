@@ -33,7 +33,7 @@ js_nuke: js_clean js_setup
 # run all javascript linters, optionally include a list of files to check
 js_lint +FILES=".":
 	# TODO support GITHUB_ACTIONS/CI formatting
-	{{_pnpm}} prettier --check {{FILES}}
+	bash -c 'trap "rm -f {{WEB_DIR}}/.prettierignore.tmp" EXIT; cat {{WEB_DIR}}/.prettierignore > {{WEB_DIR}}/.prettierignore.tmp && echo "$(basename "${OPENAPI_JSON_PATH:-openapi.json}")" >> {{WEB_DIR}}/.prettierignore.tmp && {{_pnpm}} prettier --ignore-path .prettierignore.tmp --check {{FILES}}'
 
 	{{_pnpm}} eslint --cache --cache-location ./node_modules/.cache/eslint {{FILES}}
 
@@ -41,7 +41,7 @@ js_lint +FILES=".":
 
 # automatically fix linting errors
 js_lint-fix:
-	{{_pnpm}} prettier --write .
+	bash -c 'trap "rm -f {{WEB_DIR}}/.prettierignore.tmp" EXIT; cat {{WEB_DIR}}/.prettierignore > {{WEB_DIR}}/.prettierignore.tmp && echo "$(basename "${OPENAPI_JSON_PATH:-openapi.json}")" >> {{WEB_DIR}}/.prettierignore.tmp && {{_pnpm}} prettier --ignore-path .prettierignore.tmp --write .'
 	{{_pnpm}} eslint --cache --cache-location ./node_modules/.cache/eslint . --fix
 
 # run tests in the exact same environment that will be used on CI

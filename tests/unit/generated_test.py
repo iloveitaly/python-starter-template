@@ -12,7 +12,7 @@ from tests.direnv import run_just_recipe
 
 
 def test_openapi_schema_matches_generated_file():
-    generated_schema_path = env.str("OPENAPI_JSON_PATH", default="web/openapi.json")
+    generated_schema_path = env.str("OPENAPI_JSON_PATH")
     assert generated_schema_path
 
     # Read the file content

@@ -97,7 +97,7 @@ pytest-failure-tracker to track failures across test runs, if we combine this wi
 
 ## dev
 maybe ipython history shouldn't be copied, but should instead use a ENV var to reference the original git dir ipython history
-assertion to ensure openapi.json is not empty
+assertion to ensure OPENAPI_JSON_PATH is not empty
 https://honcho.readthedocs.io/en/latest/#why-did-you-port-foreman - py port of foreman
 if someone's completion system is not initialized, the bash direnv export thing will fail with `compdef not defined` sort of error
 `just direnv_export_docker '.env.production.frontend' --params` can still silently fail
