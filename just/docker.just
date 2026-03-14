@@ -16,6 +16,8 @@ up fast="false" latest="false": _not_production
 	if [[ "{{latest}}" == "true" ]]; then
 		docker compose up -d --force-recreate {{ if fast == "true" { "" } else { "--wait" } }}
 
+		just db_migrate
+
 		just py_cli write-versions
 		git add .service-versions
 	else

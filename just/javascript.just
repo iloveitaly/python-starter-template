@@ -5,7 +5,7 @@
 WEB_DIR := "web"
 
 # `mise exec` to the version specified in the web/ directory is used
-_pnpm := "cd " + WEB_DIR + " && mise exec -- pnpm ${PNPM_GLOBAL_FLAGS:-}"
+_pnpm := f"mise exec -C {{WEB_DIR}} -- pnpm ${PNPM_GLOBAL_FLAGS:-}"
 
 # pnpm alias to avoid having to make sure you are in the right directory
 pnpm +PNPM_CMD:
@@ -88,6 +88,8 @@ js_upgrade:
 	{{_pnpm}} dlx update-browserslist-db@latest
 
 	cd {{WEB_DIR}} && git add package.json pnpm-lock.yaml
+
+# TODO should just use `js_generate`
 
 # generate a typescript client from the openapi spec
 [doc("Optional flag: --watch")]
