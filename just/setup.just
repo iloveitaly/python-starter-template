@@ -47,7 +47,7 @@ setup: _dev_only requirements && py_setup up db_seed js_setup
 	fi
 
 	@if [ ! -f .config/mise.local.toml ]; then \
-		cp .config/mise.local-example.toml .config/mise.local.toml; \
+		cp .config/mise.local-example.toml .config/mise.dev.local.toml; \
 		echo "Edit '{{CYAN}}.config/mise.local.toml{{NORMAL}}' to your liking."; \
 	fi
 

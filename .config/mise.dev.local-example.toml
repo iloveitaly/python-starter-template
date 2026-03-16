@@ -1,0 +1,13 @@
+# `.local.toml` doesn't override *all* other mise config, check `mise doctor` to inspect how the config stack works
+# i.e. `mise.dev.local.toml` will override `mise.dev.toml` and `mise.toml` but `mise.local.toml` will not override `mise.dev.toml`
+# for this reason, we recommend using `mise.dev.local.toml` for your local overrides
+
+[tools]
+# "cargo:https://github.com/pvolok/mprocs" = { version = "branch:master", crate = "mprocs" }
+# "cargo:https://github.com/pvolok/mprocs" = { version = "rev:cee995e7b2a6e118722c3a581e47a1a7b6904c6a", crate = "mprocs" }
+
+[env]
+# add paths to override default tooling, helpful when hacking on a cli dependency
+# note that this can be problematic if you have binaries which override with mise. Mise will most likely force its
+# bin/ dirs for those binaries first.
+# _.path = ["/Users/mike/Projects/productivity/mprocs/target/debug", "/Users/mike/Projects/devprod/lefthook", "/Users/mike/Projects/worktrees/railpack/custom/bin"]
