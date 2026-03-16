@@ -26,7 +26,7 @@ url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.32.1/op_darwin_amd64_v2.32
 url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.32.1/op_windows_amd64_v2.32.1.zip"
 
 [[tools."cargo:ast-grep"]]
-version = "0.41.1"
+version = "0.42.0"
 backend = "cargo:ast-grep"
 
 [[tools."cargo:commitlint-rs"]]
@@ -38,7 +38,7 @@ version = "0.4.4"
 backend = "cargo:fastmod"
 
 [[tools."cargo:just-lsp"]]
-version = "0.3.4"
+version = "0.4.0"
 backend = "cargo:just-lsp"
 
 [[tools.dive]]
