@@ -187,6 +187,7 @@ _mise_upgrade target_dir="": _dev_only
 	mise install
 
 	git add .tool-versions
+	git add .config/mise*.lock
 
 # sync the mise version to github actions yaml
 _mise_gha_version_sync: _dev_only
@@ -203,7 +204,7 @@ _mise_web_version_sync: _dev_only
 	mise --cd {{WEB_DIR}} use \
 		node@$(mise list --current --json | jq -r '.node[0].requested_version') \
 		pnpm@$(mise list --current --json | jq -r '.pnpm[0].requested_version')
-	git add {{WEB_DIR}}/mise.toml
+	git add {{WEB_DIR}}/mise.{toml,lock}
 
 JAVASCRIPT_PACKAGE_JSON := WEB_DIR / "package.json"
 
