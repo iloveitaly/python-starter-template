@@ -195,14 +195,16 @@ build_shell: build
 build_shell-exec:
 	docker exec -it $(docker ps -q --filter "ancestor={{PYTHON_IMAGE_TAG}}") bash -l
 
-# TODO https://discord.com/channels/1106380155536035840/1318603119990538340/1318603119990538340
 # run the container locally, as if it were in production (against production DB, resources, etc)
-build_run-as-production procname="api" image_name=PYTHON_IMAGE_TAG:
+build_run-as-production procname="web" image_name=PYTHON_IMAGE_TAG:
 	# NOTE that resources are limited to a production-like environment, change if your production requirements are different
 	docker run -p ${JAVASCRIPT_SERVER_PORT}:80 \
 		--memory=1g --cpus=2 \
 		$(just direnv_export_docker "env/production.backend.sh" --params) \
 		--platform {{BUILD_PLATFORM}} \
+		--env DATABASE_URL="${DATABASE_URL}" \
+		--env REDIS_URL="${REDIS_URL}" \
+		--env PORT=8210 \
 		"{{image_name}}" \
 		"$(just _extract_proc "{{procname}}")"
 
