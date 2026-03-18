@@ -1,14 +1,12 @@
 import detect_shadowed_modules
 import sys
+from tests.raw_utils import banner
 
 if shadowed_modules := detect_shadowed_modules.find_conflicts():
-    print(
-        "\033[93m"
+    banner(
         "Shadowed modules detected! This can lead to unexpected behavior during test runs.\n"
-        f"{shadowed_modules}"
-        "\033[0m",
-        file=sys.__stderr__,
-        flush=True,
+        f"{shadowed_modules}",
+        color="yellow",
     )
 
 import os
@@ -17,14 +15,10 @@ import os
 # To make it quick & easy to run tests, we force the environment to test and load cached CI environment variables (if we can).
 # This will not be the same as CI, but it's closer and faster for devprod. It should never run on CI!
 if os.getenv("PYTHON_ENV", "development") != "test":
-    print(
-        "\033[91m"
+    banner(
         "PYTHON_ENV is not set to 'test', forcing.\n\n"
-        "Additional variables may set in 'env/test.sh' and required to run tests.\n\n"
-        "Consider using `just py_test`"
-        "\033[0m",
-        file=sys.__stderr__,
-        flush=True
+        "Additional variables may be set in 'env/test.sh' and required to run tests.\n\n"
+        "Consider using `just py_test`",
     )
 
     os.environ["PYTHON_ENV"] = "test"
