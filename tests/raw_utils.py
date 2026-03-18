@@ -5,7 +5,9 @@ or before the app module is loaded.
 """
 
 import sys
+
 from termcolor import colored
+
 
 def banner(text, color="red", file=sys.__stderr__, flush=True):
     # Split text into lines, preserving empty lines, but strip leading/trailing newlines
