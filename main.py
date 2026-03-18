@@ -34,9 +34,6 @@ def get_server_config():
 
     PORT = env.int("PORT")
 
-    # TODO we should tune this and have it pulled from env
-    # workers=2,
-
     config_args = {
         # a import path is required for dev, so we use that for prod as well
         "app": "app.server:api_app",
