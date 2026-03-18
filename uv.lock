@@ -219,8 +219,8 @@ wheels = [
 
 [[package]]
 name = "beautiful-traceback"
-version = "0.7.0"
-source = { git = "https://github.com/iloveitaly/beautiful-traceback.git#90f0a6e056e377853709e31e1efb9ca05c01f7d7" }
+version = "0.8.0"
+source = { git = "https://github.com/iloveitaly/beautiful-traceback.git#3be4586222146ca3cd10e8be72a710993dfae1bf" }
 dependencies = [
     { name = "colorama" },
     { name = "pytest-plugin-utils" },
@@ -3445,7 +3445,7 @@ wheels = [
 [[package]]
 name = "structlog-config"
 version = "0.12.0"
-source = { git = "https://github.com/iloveitaly/structlog-config.git#27f8af9595cc7fa467428e4d2439091f8c62c791" }
+source = { git = "https://github.com/iloveitaly/structlog-config.git#b5734ef56549009b7fe1eee1ebf29ee28f105154" }
 dependencies = [
     { name = "orjson" },
     { name = "pytest-plugin-utils" },
