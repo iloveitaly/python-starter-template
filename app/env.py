@@ -11,7 +11,7 @@ This is a separate, simple module, to avoid circular imports.
 import typing
 
 from environs import Env
-from marshmallow import ValidationError, missing
+from marshmallow import ValidationError
 
 
 def _make_strict_str() -> typing.Any:
@@ -19,7 +19,7 @@ def _make_strict_str() -> typing.Any:
     FieldMethod[str] annotation from the parent is preserved for type checkers."""
     _parent_str = Env.__dict__["str"]
 
-    def method(self, name: str, default=missing, **kwargs):
+    def method(self, name: str, default=..., **kwargs):
         """
         Returns a string environment variable, enforcing strict validation unless 'validate' is explicitly provided.
 
