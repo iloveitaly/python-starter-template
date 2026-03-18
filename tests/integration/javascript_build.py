@@ -102,11 +102,10 @@ def start_js_build():
         return
 
     banner(
-        "!!! IMPORTANT !!!\n\n"
         "You are running an integration test outside the CI=true environment.\n\n"
         "If you are iterating on the frontend as well, your build is most likely out of date.\n"
-        "A new Javascript build has been automatically kicked off for you. To run one manually, execute:\n\n"
-        "$ `just py_js-build`"
+        "A new Javascript build has been automatically kicked off for you.\n\n"
+        "Run a build manually using `just py_js-build`"
     )
 
     log.info("starting javascript build", command=PYTHON_JAVASCRIPT_BUILD_CMD)
