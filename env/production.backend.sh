@@ -20,6 +20,9 @@ export ALLOWED_HOST_LIST=app.domain.com,api.domain.com
 # number of processes to run concurrency in the celery worker pool
 export CELERY_WORKER_CONCURRENCY=5
 
+# number of uvicorn workers to run for the web server
+export WEB_CONCURRENCY=1
+
 # TODO swap these out for real values, will not complain on build if they exist and are fake
 export OPENAI_API_KEY="fake"
 export CLERK_PRIVATE_KEY="fake"
