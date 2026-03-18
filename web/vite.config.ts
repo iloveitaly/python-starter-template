@@ -14,9 +14,6 @@ import tailwindcss from "@tailwindcss/vite"
 
 const JAVASCRIPT_SERVER_PORT = process.env.JAVASCRIPT_SERVER_PORT
 
-// helpful for early development: disables sentry, build commits, etc and enables more simple deployment
-const SIMPLE_DEPLOYMENT = true
-
 function getModePlugins(config: ConfigEnv): PluginOption[] {
   // when `typegen` is run, the import.meta.* vars are not set
   // additionally, typegen runs `react-router build` under the hood, which sets the mode to production by default
@@ -26,10 +23,16 @@ function getModePlugins(config: ConfigEnv): PluginOption[] {
 
   if (viteAndNodeAreProduction) {
     const SENTRY_AUTH_TOKEN = process.env.SENTRY_AUTH_TOKEN
-    const VITE_BUILD_COMMIT = process.env.VITE_BUILD_COMMIT
+    let VITE_BUILD_COMMIT = process.env.VITE_BUILD_COMMIT
+
+    const RAILWAY_GIT_COMMIT_SHA = process.env.RAILWAY_GIT_COMMIT_SHA
+
+    if (!VITE_BUILD_COMMIT && RAILWAY_GIT_COMMIT_SHA) {
+      VITE_BUILD_COMMIT = process.env.VITE_BUILD_COMMIT = RAILWAY_GIT_COMMIT_SHA
+    }
 
     // fine for sentry to have auth under a CI build being used for integration testing
-    if (!SENTRY_AUTH_TOKEN && !SIMPLE_DEPLOYMENT) {
+    if (!SENTRY_AUTH_TOKEN) {
       const CI = process.env.CI
 
       if (!VITE_BUILD_COMMIT) {
@@ -47,7 +50,7 @@ function getModePlugins(config: ConfigEnv): PluginOption[] {
       // a docker container and do not inherit CI and other ENV vars, so although it's built in a CI environment
       // the CI environment variables are not set, which is what we are concerned about here.
 
-      if (!CI && !SIMPLE_DEPLOYMENT && !VITE_BUILD_COMMIT.endsWith("-dirty")) {
+      if (!CI && !VITE_BUILD_COMMIT.endsWith("-dirty")) {
         throw new Error("Missing SENTRY_AUTH_TOKEN. Include to fix build.")
       }
 
@@ -56,31 +59,31 @@ function getModePlugins(config: ConfigEnv): PluginOption[] {
 
     return [
       // only check env vars when building for production, some ENV are only available in prod
-      !SIMPLE_DEPLOYMENT && checkEnv(),
+      checkEnv(),
       viteCompression(),
 
       // Put the Sentry vite plugin after all other plugins
-      SENTRY_AUTH_TOKEN &&
-        !SIMPLE_DEPLOYMENT &&
-        sentryReactRouter(
-          {
-            // real component names in errors
-            reactComponentAnnotation: { enabled: true },
+      SENTRY_AUTH_TOKEN
+        ? sentryReactRouter(
+            {
+              // real component names in errors
+              reactComponentAnnotation: { enabled: true },
 
-            // TODO unsure if this is required
-            org: process.env.SENTRY_ORG,
-            project: process.env.SENTRY_PROJECT,
+              // TODO unsure if this is required
+              org: process.env.SENTRY_ORG,
+              project: process.env.SENTRY_PROJECT,
 
-            // Auth tokens can be obtained from https://ORG_NAME.sentry.io/settings/auth-tokens/new-token/
-            authToken: process.env.SENTRY_AUTH_TOKEN,
+              // Auth tokens can be obtained from https://ORG_NAME.sentry.io/settings/auth-tokens/new-token/
+              authToken: process.env.SENTRY_AUTH_TOKEN,
 
-            release: {
-              name: VITE_BUILD_COMMIT,
+              release: {
+                name: VITE_BUILD_COMMIT,
+              },
             },
-          },
-          config,
-        ),
-    ].filter((item) => item !== undefined && item !== null && item !== "")
+            config,
+          )
+        : undefined,
+    ].filter((item) => item !== undefined && item !== null)
   }
 
   // this will fail when building prod, so we have to force when we are building dev
@@ -113,7 +116,14 @@ export default defineConfig((config) => ({
     // if the port is in use, fail loudly
     strictPort: true,
     // use the same port every time so localias is happy
-    port: parseInt(JAVASCRIPT_SERVER_PORT),
+    port: JAVASCRIPT_SERVER_PORT
+      ? Number.parseInt(JAVASCRIPT_SERVER_PORT, 10)
+      : undefined,
+    watch: {
+      // TODO the server restarts aggressively with the dev watcher enabled, we can exclude some of the
+      // client generation folders: https://grok.com/share/bGVnYWN5_ab1e4a1e-3fab-4a92-a6e9-164b1fb4f95c
+      // ignored: ["**/folder_to_exclude/**"],
+    },
   },
   plugins: [
     // needs to go first, and needs to be conditional!
