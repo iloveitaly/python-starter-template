@@ -162,7 +162,7 @@ def mount_public_directory(app: FastAPI):
 
     if not public_asset_directory.exists():
         raise Exception(
-            f"Client assets do not exist {public_path}. Please run `just py_js-build`"
+            f"Client assets do not exist '{public_asset_directory}'. Please run `just py_js-build`"
         )
 
     app.mount(
@@ -204,6 +204,8 @@ def mount_public_directory(app: FastAPI):
                 public_path / "index.html",
                 headers=HTML_NOCACHE_HEADERS.copy(),
             )
+
+        # if an abs path to to a public/ file (like robots.txt) is specified by the request, that file will be served directly
 
         args = {}
 
