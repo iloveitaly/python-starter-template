@@ -362,7 +362,7 @@ bootstrap_worktree:
 
 		cp "$original_dir_path/env/"*.local.* env/ || true
 		cp "$original_dir_path/.ipython_history" .
-		cp "$original_dir_path/.config/mise.local.toml" .config/mise.local.toml
+		cp "$original_dir_path/.config/mise*local.toml" .config/
 
 		# may need some `.local.` customizations in order to generate
 		direnv allow .
