@@ -156,7 +156,7 @@ def table_exists(model: type[SQLModel]) -> bool:
 
 
 # TODO look into merging into AM upstream
-def is_database_empty() -> bool:
+def is_database_empty(exclude: list[type[SQLModel]] = []) -> bool:
     """
     Check if any table in the database has records using Model.count().
 
@@ -172,6 +172,10 @@ def is_database_empty() -> bool:
         all_models.extend(model.__subclasses__())
 
     for model_cls in all_models:
+        if model_cls in exclude:
+            log.info("skipping table in empty check", table=model_cls.__tablename__)
+            continue
+
         # TODO there's not to be a better way to do this?
         # Only check classes that are actual tables
         if not getattr(model_cls, "__tablename__", None):
