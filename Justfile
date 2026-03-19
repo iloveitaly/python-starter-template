@@ -98,20 +98,10 @@ update_from_upstream_template:
 			--trust --skip-tasks --skip-answered --vcs-ref=HEAD \
 			--exclude web \
 			--exclude migrations/versions/ \
-			--exclude app/generated/ \
 			--exclude pyproject.toml \
 			--exclude uv.lock \
-			--exclude mise.lock \
-			--exclude tests/integration/__snapshots__ \
 			--exclude .service-versions \
-			--exclude .tool-versions \
-			--exclude .github/instructions \
-			--exclude .github/prompts \
-			--exclude .github/copilot-instructions.md \
-			--exclude .cursor \
-			--exclude .gemini \
-			--exclude .claude \
-			--exclude .opencode
+			--exclude .tool-versions
 
 		@echo "{{ TEMPLATE_UPDATE_NOTICE }}"
 

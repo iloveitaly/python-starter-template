@@ -81,6 +81,16 @@ _exclude:
   - /playground
   - /.gitleaksignore
   - /local.md
+  - /tests/integration/__snapshots__
+  - '**/*mise*lock*'
+  - /app/generated/
+  - /.cursor/
+  - /.gemini/
+  - /.claude/
+  - /.opencode/
+  - /.github/instructions/
+  - /.github/prompts/
+  - /.github/copilot-instructions.md
 
 _tasks:
   - git init
