@@ -24,11 +24,12 @@ def get_server_config():
         additional_args = {
             "reload": True,
             "reload_excludes": [
-                # git + venv are automatically excluded
-                "web/node_modules/*",
-                "tmp/*",
-                "web/*",
-                "tests/*",
+                # Provide literal directory names, no wildcards
+                "tmp",
+                "web",  # This automatically covers web/node_modules
+                "tests",
+                ".venv",  # Good to be explicit if it lives in the root
+                ".git",
             ],
         }
 
