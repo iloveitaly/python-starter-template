@@ -872,19 +872,19 @@ wheels = [
 
 [[package]]
 name = "faker"
-version = "40.11.0"
+version = "40.11.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/94/dc/b68e5378e5a7db0ab776efcdd53b6fe374b29d703e156fd5bb4c5437069e/faker-40.11.0.tar.gz", hash = "sha256:7c419299103b13126bd02ec14bd2b47b946edb5a5eedf305e66a193b25f9a734", size = 1957570, upload-time = "2026-03-13T14:36:11.844Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/fa/e5/b16bf568a2f20fe7423282db4a4059dbcadef70e9029c1c106836f8edd84/faker-40.11.1.tar.gz", hash = "sha256:61965046e79e8cfde4337d243eac04c0d31481a7c010033141103b43f603100c", size = 1957415, upload-time = "2026-03-23T14:05:50.233Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b1/fa/a86c6ba66f0308c95b9288b1e3eaccd934b545646f63494a86f1ec2f8c8e/faker-40.11.0-py3-none-any.whl", hash = "sha256:0e9816c950528d2a37d74863f3ef389ea9a3a936cbcde0b11b8499942e25bf90", size = 1989457, upload-time = "2026-03-13T14:36:09.792Z" },
+    { url = "https://files.pythonhosted.org/packages/fc/ec/3c4b78eb0d2f6a81fb8cc9286745845bff661e6815741eff7a6ac5fcc9ea/faker-40.11.1-py3-none-any.whl", hash = "sha256:3af3a213ba8fb33ce6ba2af7aef2ac91363dae35d0cec0b2b0337d189e5bee2a", size = 1989484, upload-time = "2026-03-23T14:05:48.793Z" },
 ]
 
 [[package]]
 name = "fastapi"
-version = "0.135.1"
+version = "0.135.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "annotated-doc" },
@@ -893,9 +893,9 @@ dependencies = [
     { name = "typing-extensions" },
     { name = "typing-inspection" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e7/7b/f8e0211e9380f7195ba3f3d40c292594fd81ba8ec4629e3854c353aaca45/fastapi-0.135.1.tar.gz", hash = "sha256:d04115b508d936d254cea545b7312ecaa58a7b3a0f84952535b4c9afae7668cd", size = 394962, upload-time = "2026-03-01T18:18:29.369Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c4/73/5903c4b13beae98618d64eb9870c3fac4f605523dd0312ca5c80dadbd5b9/fastapi-0.135.2.tar.gz", hash = "sha256:88a832095359755527b7f63bb4c6bc9edb8329a026189eed83d6c1afcf419d56", size = 395833, upload-time = "2026-03-23T14:12:41.697Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e4/72/42e900510195b23a56bde950d26a51f8b723846bfcaa0286e90287f0422b/fastapi-0.135.1-py3-none-any.whl", hash = "sha256:46e2fc5745924b7c840f71ddd277382af29ce1cdb7d5eab5bf697e3fb9999c9e", size = 116999, upload-time = "2026-03-01T18:18:30.831Z" },
+    { url = "https://files.pythonhosted.org/packages/8f/ea/18f6d0457f9efb2fc6fa594857f92810cadb03024975726db6546b3d6fcf/fastapi-0.135.2-py3-none-any.whl", hash = "sha256:0af0447d541867e8db2a6a25c23a8c4bd80e2394ac5529bd87501bbb9e240ca5", size = 117407, upload-time = "2026-03-23T14:12:43.284Z" },
 ]
 
 [package.optional-dependencies]
@@ -1389,15 +1389,15 @@ wheels = [
 
 [[package]]
 name = "ipython-copy"
-version = "0.1.1"
+version = "0.1.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ipython" },
     { name = "pyperclip" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/93/e6/4f9bda87a6d70a448a2d877dd2a4aad8e642dc17e934b289cce55603475a/ipython_copy-0.1.1.tar.gz", hash = "sha256:44f018e2c4f23405dfa88f073bcd41437054eebcfe83b785a9bf65ff0a972580", size = 4944, upload-time = "2026-03-10T14:04:09.939Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/04/77/7731498de49ad08f100d082ee8272d29a44b54113b07e28329118e0818d1/ipython_copy-0.1.2.tar.gz", hash = "sha256:02722b5e0c3189178964c0ccf354301f3f14c10b0e41adcad0f9987333aa463b", size = 4946, upload-time = "2026-03-23T17:33:19.981Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a9/1c/fcf7f56459232b0d4ad742d4b48e3f7fd73b4ee0ac3269fa321af15e5f3a/ipython_copy-0.1.1-py3-none-any.whl", hash = "sha256:fa3ea5ff371c89235cd55cc1f4546dad1ebfe1a4b89a569672dbabc266154f4f", size = 5491, upload-time = "2026-03-10T14:04:10.677Z" },
+    { url = "https://files.pythonhosted.org/packages/8c/79/3554f4ea233bd888e345da3a9bc7c7a55452d624931181a27df57a88ac8b/ipython_copy-0.1.2-py3-none-any.whl", hash = "sha256:cf3eff93d79cd62f8b6de3f1c731975965a608803e7b05c2ccbe1a31da0f77af", size = 5485, upload-time = "2026-03-23T17:33:18.969Z" },
 ]
 
 [[package]]
@@ -2469,16 +2469,16 @@ wheels = [
 
 [[package]]
 name = "pytest-cov"
-version = "7.0.0"
+version = "7.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "coverage" },
     { name = "pluggy" },
     { name = "pytest" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5e/f7/c933acc76f5208b3b00089573cf6a2bc26dc80a8aece8f52bb7d6b1855ca/pytest_cov-7.0.0.tar.gz", hash = "sha256:33c97eda2e049a0c5298e91f519302a1334c26ac65c1a483d6206fd458361af1", size = 54328, upload-time = "2025-09-09T10:57:02.113Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b1/51/a849f96e117386044471c8ec2bd6cfebacda285da9525c9106aeb28da671/pytest_cov-7.1.0.tar.gz", hash = "sha256:30674f2b5f6351aa09702a9c8c364f6a01c27aae0c1366ae8016160d1efc56b2", size = 55592, upload-time = "2026-03-21T20:11:16.284Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ee/49/1377b49de7d0c1ce41292161ea0f721913fa8722c19fb9c1e3aa0367eecb/pytest_cov-7.0.0-py3-none-any.whl", hash = "sha256:3b8e9558b16cc1479da72058bdecf8073661c7f57f7d3c5f22a1c23507f2d861", size = 22424, upload-time = "2025-09-09T10:57:00.695Z" },
+    { url = "https://files.pythonhosted.org/packages/9d/7a/d968e294073affff457b041c2be9868a40c1c71f4a35fcc1e45e5493067b/pytest_cov-7.1.0-py3-none-any.whl", hash = "sha256:a0461110b7865f9a271aa1b51e516c9a95de9d696734a2f71e3e78f46e1d4678", size = 22876, upload-time = "2026-03-21T20:11:14.438Z" },
 ]
 
 [[package]]
@@ -2559,8 +2559,8 @@ wheels = [
 
 [[package]]
 name = "pytest-playwright-artifacts"
-version = "0.3.0"
-source = { git = "https://github.com/iloveitaly/pytest-playwright-artifacts.git#9f646b63d6008076095c26debf811019e50d494d" }
+version = "0.3.1"
+source = { git = "https://github.com/iloveitaly/pytest-playwright-artifacts.git#cb9361aa5cbfc84a76b40550738b8657d9015fc9" }
 dependencies = [
     { name = "playwright" },
     { name = "pytest-plugin-utils" },
@@ -2584,8 +2584,12 @@ wheels = [
 
 [[package]]
 name = "pytest-plugin-utils"
-version = "0.1.0"
-source = { git = "https://github.com/iloveitaly/pytest-plugin-utils.git#5b6da6f9110b40ef2ff0017bc2493122a8ae4b06" }
+version = "0.2.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/bf/c9/f0f9f8a19f94b0048d02ff1d1df76927d1fdda39e3ba8c23654dd0b917cd/pytest_plugin_utils-0.2.0.tar.gz", hash = "sha256:80dd6b769dc97753d9989192ce163b16cb070dc711a906a2141cc5c2ddad96df", size = 6463, upload-time = "2026-03-23T22:43:57.389Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fa/67/acf88425740327489441fd8bc4d5787f38fd3b9e829abab47ed0d743277d/pytest_plugin_utils-0.2.0-py3-none-any.whl", hash = "sha256:bd1fad6854b4fd3de687195e6c3c95c429192507ae8ed8d67fc580fcb18bc254", size = 7544, upload-time = "2026-03-23T22:43:56.358Z" },
+]
 
 [[package]]
 name = "pytest-sugar"
@@ -3398,14 +3402,14 @@ wheels = [
 
 [[package]]
 name = "starlette"
-version = "0.52.1"
+version = "1.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c4/68/79977123bb7be889ad680d79a40f339082c1978b5cfcf62c2d8d196873ac/starlette-0.52.1.tar.gz", hash = "sha256:834edd1b0a23167694292e94f597773bc3f89f362be6effee198165a35d62933", size = 2653702, upload-time = "2026-01-18T13:34:11.062Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/81/69/17425771797c36cded50b7fe44e850315d039f28b15901ab44839e70b593/starlette-1.0.0.tar.gz", hash = "sha256:6a4beaf1f81bb472fd19ea9b918b50dc3a77a6f2e190a12954b25e6ed5eea149", size = 2655289, upload-time = "2026-03-22T18:29:46.779Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/81/0d/13d1d239a25cbfb19e740db83143e95c772a1fe10202dda4b76792b114dd/starlette-0.52.1-py3-none-any.whl", hash = "sha256:0029d43eb3d273bc4f83a08720b4912ea4b071087a3b48db01b7c839f7954d74", size = 74272, upload-time = "2026-01-18T13:34:09.188Z" },
+    { url = "https://files.pythonhosted.org/packages/0b/c9/584bc9651441b4ba60cc4d557d8a547b5aff901af35bda3a4ee30c819b82/starlette-1.0.0-py3-none-any.whl", hash = "sha256:d3ec55e0bb321692d275455ddfd3df75fff145d009685eb40dc91fc66b03d38b", size = 72651, upload-time = "2026-03-22T18:29:45.111Z" },
 ]
 
 [[package]]
@@ -3444,8 +3448,8 @@ wheels = [
 
 [[package]]
 name = "structlog-config"
-version = "0.12.1"
-source = { git = "https://github.com/iloveitaly/structlog-config.git#2d63708767b862c7e6b2269e56f2091b35b01fcd" }
+version = "0.12.2"
+source = { git = "https://github.com/iloveitaly/structlog-config.git#76563b80b5f07d40eae5891cae8cdb2dbfbd3e74" }
 dependencies = [
     { name = "orjson" },
     { name = "pytest-plugin-utils" },
