@@ -43,7 +43,7 @@ deploy $DOKKU_HOST=HOST:
 
 	# env must be passed as arguments, not via stdin
 	# we avoid a restart since the from-image will restart the app
-	# note that variables are NOT unset when this is run, so we need to unset them manually
+	# note that variables are NOT unset when this is run, so we need to unset thpem manually
 	dokku {{DOKKU_APP_OPTION}} config:set --encoded --no-restart \
 		$(just direnv_export_docker "env/production.backend.sh" --dokku)
 
@@ -81,6 +81,10 @@ dokku_import_production_database: dokku_dump_production db_reset_schema
 
 	just _banner_echo "Running production migration script"
 	uv run python migrations/sanitize_production.py
+
+# open a interactive shell on the production machine
+dokku_shell:
+	just dokku run
 
 # TODO pull the port config stuff from the other infra config stuff
 # dokku letsencrypt:set app-name email mike@mikebian.co
