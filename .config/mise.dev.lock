@@ -29,43 +29,43 @@ checksum = "sha256:b2816e506390a89941c63c9187d58a3cc10e9a55f2ef0685f9ea0eccaf7c9
 url = "https://github.com/sharkdp/fd/releases/download/v10.4.2/fd-v10.4.2-x86_64-pc-windows-msvc.zip"
 
 [[tools."github:gitleaks/gitleaks"]]
-version = "8.30.0"
+version = "8.30.1"
 backend = "github:gitleaks/gitleaks"
 
 [tools."github:gitleaks/gitleaks"."platforms.linux-arm64"]
-checksum = "sha256:b4cbbb6ddf7d1b2a603088cd03a4e3f7ce48ee7fd449b51f7de6ee2906f5fa2f"
-url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.0/gitleaks_8.30.0_linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/321137500"
+checksum = "sha256:e4a487ee7ccd7d3a7f7ec08657610aa3606637dab924210b3aee62570fb4b080"
+url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/378332057"
 
 [tools."github:gitleaks/gitleaks"."platforms.linux-arm64-musl"]
-checksum = "sha256:b4cbbb6ddf7d1b2a603088cd03a4e3f7ce48ee7fd449b51f7de6ee2906f5fa2f"
-url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.0/gitleaks_8.30.0_linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/321137500"
+checksum = "sha256:e4a487ee7ccd7d3a7f7ec08657610aa3606637dab924210b3aee62570fb4b080"
+url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/378332057"
 
 [tools."github:gitleaks/gitleaks"."platforms.linux-x64"]
-checksum = "sha256:79a3ab579b53f71efd634f3aaf7e04a0fa0cf206b7ed434638d1547a2470a66e"
-url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.0/gitleaks_8.30.0_linux_x64.tar.gz"
-url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/321137328"
+checksum = "sha256:551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
+url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz"
+url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/378332058"
 
 [tools."github:gitleaks/gitleaks"."platforms.linux-x64-musl"]
-checksum = "sha256:79a3ab579b53f71efd634f3aaf7e04a0fa0cf206b7ed434638d1547a2470a66e"
-url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.0/gitleaks_8.30.0_linux_x64.tar.gz"
-url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/321137328"
+checksum = "sha256:551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
+url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz"
+url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/378332058"
 
 [tools."github:gitleaks/gitleaks"."platforms.macos-arm64"]
-checksum = "sha256:b251ab2bcd4cd8ba9e56ff37698c033ebf38582b477d21ebd86586d927cf87e7"
-url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.0/gitleaks_8.30.0_darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/321137755"
+checksum = "sha256:b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/378332059"
 
 [tools."github:gitleaks/gitleaks"."platforms.macos-x64"]
-checksum = "sha256:ca221d012d247080c2f6f61f4b7a83bffa2453806b0c195c795bbe9a8c775ed5"
-url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.0/gitleaks_8.30.0_darwin_x64.tar.gz"
-url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/321137635"
+checksum = "sha256:dfe101a4db2255fc85120ac7f3d25e4342c3c20cf749f2c20a18081af1952709"
+url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_darwin_x64.tar.gz"
+url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/378332053"
 
 [tools."github:gitleaks/gitleaks"."platforms.windows-x64"]
-checksum = "sha256:54fe94f644b832dd08e8c3a5915efb3bfa862386d59fb27ca0792cb687a83573"
-url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.0/gitleaks_8.30.0_windows_x64.zip"
-url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/321137330"
+checksum = "sha256:d29144deff3a68aa93ced33dddf84b7fdc26070add4aa0f4513094c8332afc4e"
+url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_windows_x64.zip"
+url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/378333178"
 
 [[tools."github:peterldowns/localias"]]
 version = "3.0.0+commit.5d74685"
@@ -134,36 +134,36 @@ checksum = "sha256:23cb60a1354eed6bcc8d9b9735e8c7b388cd1fdcb75726b93bc299ef22dd9
 url = "https://github.com/jqlang/jq/releases/download/jq-1.8.1/jq-windows-amd64.exe"
 
 [[tools.mprocs]]
-version = "0.8.3"
+version = "0.9.2"
 backend = "aqua:pvolok/mprocs"
 
 [tools.mprocs."platforms.linux-arm64"]
-checksum = "sha256:9f37932a810ce6074dc1040860904678230241a98aff8d69a787283716a26ac0"
-url = "https://github.com/pvolok/mprocs/releases/download/v0.8.3/mprocs-0.8.3-linux-aarch64-musl.tar.gz"
+checksum = "sha256:6f99a6b9c43005da4d85f8180f8f0e24a01558ec43ad83a568d13f5d5287451a"
+url = "https://github.com/pvolok/mprocs/releases/download/v0.9.2/mprocs-0.9.2-linux-aarch64-musl.tar.gz"
 
 [tools.mprocs."platforms.linux-arm64-musl"]
-checksum = "sha256:9f37932a810ce6074dc1040860904678230241a98aff8d69a787283716a26ac0"
-url = "https://github.com/pvolok/mprocs/releases/download/v0.8.3/mprocs-0.8.3-linux-aarch64-musl.tar.gz"
+checksum = "sha256:6f99a6b9c43005da4d85f8180f8f0e24a01558ec43ad83a568d13f5d5287451a"
+url = "https://github.com/pvolok/mprocs/releases/download/v0.9.2/mprocs-0.9.2-linux-aarch64-musl.tar.gz"
 
 [tools.mprocs."platforms.linux-x64"]
-checksum = "sha256:6351b0aa03a71df603df155fd3db4928a0f5caefd3de6b6371f0affff3cd82d0"
-url = "https://github.com/pvolok/mprocs/releases/download/v0.8.3/mprocs-0.8.3-linux-x86_64-musl.tar.gz"
+checksum = "sha256:3d8ded4213813211d210bb26b306812d935a3631439569e4fabd0015792f622b"
+url = "https://github.com/pvolok/mprocs/releases/download/v0.9.2/mprocs-0.9.2-linux-x86_64-musl.tar.gz"
 
 [tools.mprocs."platforms.linux-x64-musl"]
-checksum = "sha256:6351b0aa03a71df603df155fd3db4928a0f5caefd3de6b6371f0affff3cd82d0"
-url = "https://github.com/pvolok/mprocs/releases/download/v0.8.3/mprocs-0.8.3-linux-x86_64-musl.tar.gz"
+checksum = "sha256:3d8ded4213813211d210bb26b306812d935a3631439569e4fabd0015792f622b"
+url = "https://github.com/pvolok/mprocs/releases/download/v0.9.2/mprocs-0.9.2-linux-x86_64-musl.tar.gz"
 
 [tools.mprocs."platforms.macos-arm64"]
-checksum = "sha256:24fb7155879ddd1638405293ccbc41169cda927004e0808de8367620f645d381"
-url = "https://github.com/pvolok/mprocs/releases/download/v0.8.3/mprocs-0.8.3-darwin-aarch64.tar.gz"
+checksum = "sha256:da01dc3bdbf7b5be79d8229a8d7b4319cf72949d4c177bc1c0c1e4f626578681"
+url = "https://github.com/pvolok/mprocs/releases/download/v0.9.2/mprocs-0.9.2-darwin-aarch64.tar.gz"
 
 [tools.mprocs."platforms.macos-x64"]
-checksum = "sha256:57d0d26e81600d3450797b1df7de4e61f957b9a2d46be6592c96ff1312e7b362"
-url = "https://github.com/pvolok/mprocs/releases/download/v0.8.3/mprocs-0.8.3-darwin-x86_64.tar.gz"
+checksum = "sha256:8a34b54a324662e2703ce57e40e0303d7175c668860f8a88150802cebe6581a8"
+url = "https://github.com/pvolok/mprocs/releases/download/v0.9.2/mprocs-0.9.2-darwin-x86_64.tar.gz"
 
 [tools.mprocs."platforms.windows-x64"]
-checksum = "sha256:48cf149106f0f153a827a32d318417d362a34acf1bf6eb8e85c99ed64d6bfcdf"
-url = "https://github.com/pvolok/mprocs/releases/download/v0.8.3/mprocs-0.8.3-windows-x86_64.zip"
+checksum = "sha256:7fbbe8d9633ae5e8da8032fb733ba36c2f7ab337a4f001913cb26d020bdac03f"
+url = "https://github.com/pvolok/mprocs/releases/download/v0.9.2/mprocs-0.9.2-windows-x86_64.zip"
 
 [[tools.watchexec]]
 version = "2.5.0"
