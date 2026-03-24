@@ -23,9 +23,9 @@ setup_dokku_remote: _dev_only
 		git remote add dokku dokku@{{HOST}}:{{DOKKU_APP}}; \
 	fi
 
-	# TODO can we install via mise?
-	# install dokku cli via homebrew
-	brew install dokku
+	# TODO on non-macos machines, we could just install the script as a binary file, but we'll leave this until later
+	# right now, we can't install this via mise
+	brew install infra/dokku/Justfile
 
 setup_dokku: setup_dokku_unregistry setup_dokku_remote
 
