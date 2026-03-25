@@ -26,5 +26,5 @@ def generate_openapi_schema(app: FastAPI | APIRouter) -> dict:
         routes=app.routes,
         # TODO If we are hosting the OpenAPI spec on a separate domain than the API is hosted on, then we must specify servers to point it to a, uh, different endpoint to hit.
         #      However, if the domain is the same, then we don't need to add this and retool will hit the same domain
-        # servers=[{"url": "https://screening.triumphoftheheart.com"}],
+        # servers=[{"url": "https://your.domain.com"}],
     )
