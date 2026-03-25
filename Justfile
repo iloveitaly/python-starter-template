@@ -79,7 +79,7 @@ However, there are some changes which are not automatically applied:
 
 - Update skips all javascript updates. View significant changes:
 	 git log -- web/ \":(exclude)web/package.json\" \":(exclude)web/pnpm*\" \":(exclude)web/mise.toml\"
-- Update skips .tool-versions updates
+- Update skips .config/mise.toml updates
 - Some important project configuration like pyproject.toml
 - You'll need to manually review conflicts of which there will be many
 	- 'incoming' change in a diff is the template changes.
@@ -101,7 +101,7 @@ update_from_upstream_template:
 			--exclude pyproject.toml \
 			--exclude uv.lock \
 			--exclude .service-versions \
-			--exclude .tool-versions
+			--exclude .config/mise.toml
 
 		@echo "{{ TEMPLATE_UPDATE_NOTICE }}"
 

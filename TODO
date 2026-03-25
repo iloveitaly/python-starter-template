@@ -90,15 +90,16 @@ can kamal work with a registry with container?
 flightcontrol on AWS or something like that on azure
 
 ## pytest
+https://grok.com/share/bGVnYWN5_cb18bbf9-92c4-47d3-a698-b5d6f1107180 reenable debug logging
 playwright: In config: trace = "on-first-retry"
 https://github.com/sash20m/playwright-ai-debugger
 stabalized scrolling https://grok.com/share/bGVnYWN5_22b6f3ac-a0dc-49d5-a92a-223d43834a70
 pytest-failure-tracker to track failures across test runs, if we combine this with locking
 
 ## dev
+figure out how to mise install redis cli, maybe use a docker image instead? mise `redis` causes compilation in some cases
 maybe ipython history shouldn't be copied, but should instead use a ENV var to reference the original git dir ipython history
 assertion to ensure openapi.json is not empty
-https://honcho.readthedocs.io/en/latest/#why-did-you-port-foreman - py port of foreman
 if someone's completion system is not initialized, the bash direnv export thing will fail with `compdef not defined` sort of error
 `just direnv_export_docker '.env.production.frontend' --params` can still silently fail
 https://grok.com/share/bGVnYWN5_74eae3f3-cd3f-4465-9a8d-f7d4fc0faf45 prevent py analysis from picking up seed, console, etc files
@@ -118,7 +119,6 @@ https://github.com/astral-sh/uv/issues/9258#issuecomment-2488597047 - looks like
 autogen'd localalias based on ENV port config, use local
 switch to binstall and see if this becomes a binary distribution https://github.com/yukihirop/ultraman/issues/58
 look into devenv, maybe a replacement for some of the setup here? https://github.com/getsentry/sentry/blob/master/devenv/sync.py
-only look at local .tool-versions instead of the entire system
 mermaid postgres integrated into readme https://github.com/bastiensun/pg-mermaid
 add some mermaid diagrams to the readme https://raw.githubusercontent.com/devrishik/medical-record-copilot/bc450aa523ba65e3b5a254f422696725512f8c30/README.md
 

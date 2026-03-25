@@ -144,7 +144,8 @@ If you despise dev productivity tooling you can avoid using:
 Here's what you need to do:
 
 1. Make sure you have `just` installed. You'll need this.
-2. Make sure you install the [right versions](./.tool-versions) of python, node, and pnpm.
+2. Make sure you install versions compatible with [the repo mise config](./.config/mise.toml).
+  Version precision in that file is intentional and controls how far `mise upgrade --local` will advance each tool.
 3. Make sure you setup redis + postgres locally in whatever way you want and set the `DATABASE_URL` and `REDIS_URL` variables to match your setup.
 4. Instead of using `just dev` you'll need to run `just js_dev` and `just py_dev` in separate terminals.
 5. Get a `.env` file you can just `source` using your terminal

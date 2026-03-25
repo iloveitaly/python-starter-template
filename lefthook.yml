@@ -62,7 +62,7 @@ pre-push:
       glob: "web/pnpm-lock.yaml"
       run: printf '\033[31mpnpm-lock.yaml changed, run just js_setup\033[0m\n'
     detect_mise:
-      glob: "{.tool-versions,.config/**}"
+      glob: "{.config/**,web/mise.toml,infra/mise.toml}"
       run: printf '\033[31mmise config changed, run mise install\033[0m\n'
 
 post-merge:

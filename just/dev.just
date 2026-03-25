@@ -132,63 +132,6 @@ localias_restart: _dev_only
 	localias -c {{GLOBAL_LOCALIAS_CONFIG}} stop || true
 	just localias
 
-# TODO This needs to work for multiple MIS or tool version files. We should also try to make this more generic so it works for a MIS or a tool version file.
-# TODO extract to my personal dotfiles as well
-# TODO should change the CURRENT_BASE for py and other x.x.y upgrades
-[script]
-_mise_upgrade target_dir="": _dev_only
-	if [[ -n "{{target_dir}}" ]]; then
-		cd "{{target_dir}}"
-	fi
-
-	# Get current tools and versions only from paths within this repo
-	TOOLS=("${(@f)$(mise list --current --json | jq -r --arg PWD "$PWD" '
-		to_entries
-		| map(select((.value[0].source.path // "") | startswith($PWD + "/.tool-versions")))
-		| from_entries
-		| keys[]
-	')}")
-
-	minor_updates_only=("python" "node")
-
-	for TOOL in $TOOLS; do
-			CURRENT=$(mise list --current --json | jq -r --arg TOOL "$TOOL" --arg PWD "$PWD" '
-				to_entries
-				| map(select((.value[0].source.path // "") | startswith($PWD + "/")))
-				| from_entries
-				| .[$TOOL][0].version
-			')
-			echo "Current version of $TOOL: $CURRENT"
-
-			# do not automatically update a major version for python
-			if (( ${minor_updates_only[(I)$TOOL]} )); then
-					# Extract major.minor version
-					CURRENT_BASE=$(echo "$CURRENT" | cut -d. -f1,2)
-					echo "Current base version of $TOOL: $CURRENT_BASE"
-
-					# Get latest version matching current major.minor
-					LATEST=$(mise ls-remote "$TOOL" | grep -E "^${CURRENT_BASE}\.[0-9]+$" | sort -V | tail -n1)
-			else
-					# Extract major version
-					CURRENT_BASE=$(echo "$CURRENT" | cut -d. -f1)
-					echo "Current base version of $TOOL: $CURRENT_BASE"
-
-					# Get latest version matching current major version
-					LATEST=$(mise ls-remote "$TOOL" | grep -E "^${CURRENT_BASE}\.[0-9.]+$" | sort -V | tail -n1)
-			fi
-
-			if [[ -n $LATEST && $CURRENT != $LATEST ]]; then
-					sed -i '' "s/^$TOOL .*/$TOOL $LATEST/" .tool-versions
-					echo "Updated $TOOL: $CURRENT -> $LATEST"
-			fi
-	done
-
-	# TODO https://discord.com/channels/1066429325269794907/1314301006992900117/1316773799688933406
-	mise install
-
-	git add .tool-versions
-	git add .config/mise*.lock
-
 # sync the mise version to github actions yaml
 _mise_gha_version_sync: _dev_only
 	mise_version=$(mise --version | awk '{print $1}') && \
@@ -199,7 +142,7 @@ _mise_gha_version_sync: _dev_only
 # sync the parent/root pnpm + node version to the web subdirectory for railpack
 _mise_web_version_sync: _dev_only
 	# reads the current versions from the parent and applies them to the subdir
-	# `requested_version` is the EXACT version specification in the parent, which is important otherwise if they drift,
+	# `requested_version` is the exact version expression in the parent, which is important otherwise if they drift,
 	# mise will *not* use the older version and therefore the system node, etc would be used.
 	mise --cd {{WEB_DIR}} use \
 		node@$(mise list --current --json | jq -r '.node[0].requested_version') \
@@ -208,7 +151,7 @@ _mise_web_version_sync: _dev_only
 
 JAVASCRIPT_PACKAGE_JSON := WEB_DIR / "package.json"
 
-# update package.json engines to match the current versions in .tool-versions
+# update package.json engines to match the current version expressions in .config/mise.toml
 [script]
 _js_sync-engine-versions: _dev_only
 	NODE_VERSION=$(mise list --current --json | jq -r ".node[0].requested_version")
@@ -233,9 +176,11 @@ _js_sync-engine-versions: _dev_only
 	mv "$tmp_package" "{{JAVASCRIPT_PACKAGE_JSON}}"
 
 # upgrade mise, language versions, and essential packages
-tooling_upgrade: _dev_only && _mise_upgrade _mise_web_version_sync _js_sync-engine-versions _mise_gha_version_sync
+# version precision in .config/mise.toml controls how far `mise upgrade --local` advances each tool.
+tooling_upgrade: _dev_only && _mise_web_version_sync _js_sync-engine-versions _mise_gha_version_sync
 	mise self-update --yes
 	mise upgrade --local
+	git add .config/mise.toml .config/mise*.lock "{{JAVASCRIPT_PACKAGE_JSON}}"
 
 # upgrade everything: all packages on all languages, tooling, etc
 upgrade: _dev_only tooling_upgrade js_upgrade py_upgrade
