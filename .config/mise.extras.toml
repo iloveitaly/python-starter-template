@@ -12,12 +12,10 @@
 "lefthook" = "latest"
 # not really an extra, since this is used on CI, but the CI version is installed/used via a GHA
 # TODO locking 1password-cli for a bug: https://1password-devs.slack.com/archives/C037XTZ9RA6/p1774371236398399
-"1password-cli" = "2.32"
+"1password-cli" = "latest"
 # great for docker image exploration
 "dive" = "latest"
 # for the VSC just extension
 "cargo:just-lsp" = "latest"
 # for some of the python process inspection/kill utilities
 "pipx:jc" = "latest"
-# for redis-cli, to connect to a remote redis instance via the cli
-"redis" = "latest"
