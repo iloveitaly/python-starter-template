@@ -4,6 +4,7 @@ These functions are safe to import and use before the environment is fully initi
 or before the app module is loaded.
 """
 
+import shutil
 import sys
 
 from termcolor import colored
@@ -16,7 +17,9 @@ def banner(text, color="red", file=sys.__stderr__, flush=True):
     if not lines:
         return
 
-    width = max((len("# " + line) for line in lines), default=0)
+    message_width = max((len("# " + line) for line in lines), default=0)
+    terminal_width = shutil.get_terminal_size(fallback=(80, 24)).columns
+    width = min(message_width, terminal_width)
 
     print(colored("#" * width, color), file=file, flush=flush)
     for line in lines:

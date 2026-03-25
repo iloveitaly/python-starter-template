@@ -1,11 +1,14 @@
+import pprint
+
 import detect_shadowed_modules
 import sys
 from tests.raw_utils import banner
 
+# shadowed modules have been the cause of many lost hours, I prefer to be obnoxious about notifying myself about them
 if shadowed_modules := detect_shadowed_modules.find_conflicts():
     banner(
-        "Shadowed modules detected! This can lead to unexpected behavior during test runs.\n"
-        f"{shadowed_modules}",
+        "Shadowed modules detected! This can lead to unexpected behavior!\n\n"
+        f"{pprint.pformat(shadowed_modules)}",
         color="yellow",
     )
 
