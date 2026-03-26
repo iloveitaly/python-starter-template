@@ -17,6 +17,7 @@ def configure_debugging():
     # set configuration to be used in prod when rendering JSON exceptions to the logs
     beautiful_traceback.configure(
         local_stack_only=env.bool("BEAUTIFUL_TRACEBACK_LOCAL_ONLY", False),
+        show_aliases=False,
     )
 
     if is_productionish():
