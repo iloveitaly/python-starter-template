@@ -46,7 +46,7 @@ def run_server():
     from app.env import env
     from app.server import api_app
     from app.utils.debug import install_remote_debugger
-    from app.utils.patching import hash_function_code
+    from tests.assertions import assert_main_server_config_is_stable
 
     # set a environment variable to indicate that we are running this server for integration tests
     os.environ["PYTEST_INTEGRATION_TESTING"] = "true"
@@ -54,13 +54,7 @@ def run_server():
     # the server does NOT have access to stdin, so let's use a piped debugging server
     install_remote_debugger()
 
-    # NOTE: if this hash changes, it means the server configuration in `main.py` has changed
-    #       and we should verify that this file also needs to be updated.
-    actual_hash = hash_function_code(main.get_server_config)
-    expected_hash = "8ffa786c74c8a426fabb9b695889b6d3ad4d2b465249c0f06716171098ef0b50"
-    assert actual_hash == expected_hash, (
-        f"main.py config has changed. New hash: {actual_hash}"
-    )
+    assert_main_server_config_is_stable()
 
     uvicorn.run(
         api_app,
