@@ -61,7 +61,7 @@ jobs:
       - uses: iloveitaly/github-action-localias@master
         with:
           chrome: true
-      - run: just up --fast
+      - run: just docker_up --fast
       - run: just py_setup
       - run: just py_lint
       - run: just db_migrate

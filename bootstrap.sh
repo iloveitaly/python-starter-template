@@ -38,4 +38,4 @@ eval "$(just --completions $(basename "$SHELL"))"
 
 EOF
 
-# just up w/docker login information?
+# just docker_up w/docker login information?
