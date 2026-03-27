@@ -28,6 +28,45 @@ url = "https://github.com/sharkdp/fd/releases/download/v10.4.2/fd-v10.4.2-aarch6
 checksum = "sha256:b2816e506390a89941c63c9187d58a3cc10e9a55f2ef0685f9ea0eccaf7c98c8"
 url = "https://github.com/sharkdp/fd/releases/download/v10.4.2/fd-v10.4.2-x86_64-pc-windows-msvc.zip"
 
+[[tools."github:chmln/sd"]]
+version = "1.1.0"
+backend = "github:chmln/sd"
+
+[tools."github:chmln/sd"."platforms.linux-arm64"]
+checksum = "sha256:ec8c93c0533ff21f4851d11566808d4082544baf063d9b96ea77c27e98b7cd99"
+url = "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/chmln/sd/releases/assets/362325535"
+
+[tools."github:chmln/sd"."platforms.linux-arm64-musl"]
+checksum = "sha256:ec8c93c0533ff21f4851d11566808d4082544baf063d9b96ea77c27e98b7cd99"
+url = "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/chmln/sd/releases/assets/362325535"
+
+[tools."github:chmln/sd"."platforms.linux-x64"]
+checksum = "sha256:3613eca74cd686739bb5a6d68319aa56c747e7315274d02323a2ca2b1c5d82d2"
+url = "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/chmln/sd/releases/assets/362325296"
+
+[tools."github:chmln/sd"."platforms.linux-x64-musl"]
+checksum = "sha256:02f00f4777d43e8e95b7b8d49e1a0d6e502fed4b8e79c1c8b8063857a30caa2e"
+url = "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/chmln/sd/releases/assets/362325321"
+
+[tools."github:chmln/sd"."platforms.macos-arm64"]
+checksum = "sha256:4bd3c09226376ca0a1d69589c91e86276fae36c5fbaaee669afce583f6682030"
+url = "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/chmln/sd/releases/assets/362325451"
+
+[tools."github:chmln/sd"."platforms.macos-x64"]
+checksum = "sha256:1fca1e9c91813a8aac6821063c923107ba0f66a83309e095edcd3b202f67f97e"
+url = "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/chmln/sd/releases/assets/362325430"
+
+[tools."github:chmln/sd"."platforms.windows-x64"]
+checksum = "sha256:59837c2e7c911099aca1cc46b663bcdc5a949fd3e9fbbaf34fc73e5d5d71007c"
+url = "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/chmln/sd/releases/assets/362325573"
+
 [[tools."github:gitleaks/gitleaks"]]
 version = "8.30.1"
 backend = "github:gitleaks/gitleaks"
@@ -201,6 +240,30 @@ url = "https://github.com/watchexec/watchexec/releases/download/v2.5.0/watchexec
 version = "4.52.5"
 backend = "aqua:mikefarah/yq"
 
+[tools.yq."platforms.linux-arm64"]
+checksum = "sha256:90fa510c50ee8ca75544dbfffed10c88ed59b36834df35916520cddc623d9aaa"
+url = "https://github.com/mikefarah/yq/releases/download/v4.52.5/yq_linux_arm64"
+
+[tools.yq."platforms.linux-arm64-musl"]
+checksum = "sha256:90fa510c50ee8ca75544dbfffed10c88ed59b36834df35916520cddc623d9aaa"
+url = "https://github.com/mikefarah/yq/releases/download/v4.52.5/yq_linux_arm64"
+
+[tools.yq."platforms.linux-x64"]
+checksum = "sha256:75d893a0d5940d1019cb7cdc60001d9e876623852c31cfc6267047bc31149fa9"
+url = "https://github.com/mikefarah/yq/releases/download/v4.52.5/yq_linux_amd64"
+
+[tools.yq."platforms.linux-x64-musl"]
+checksum = "sha256:75d893a0d5940d1019cb7cdc60001d9e876623852c31cfc6267047bc31149fa9"
+url = "https://github.com/mikefarah/yq/releases/download/v4.52.5/yq_linux_amd64"
+
 [tools.yq."platforms.macos-arm64"]
 checksum = "sha256:45a12e64d4bd8a31c72ee1b889e81f1b1110e801baad3d6f030c111db0068de0"
 url = "https://github.com/mikefarah/yq/releases/download/v4.52.5/yq_darwin_arm64"
+
+[tools.yq."platforms.macos-x64"]
+checksum = "sha256:6e399d1eb466860c3202d231727197fdce055888c5c7bec6964156983dd1559d"
+url = "https://github.com/mikefarah/yq/releases/download/v4.52.5/yq_darwin_amd64"
+
+[tools.yq."platforms.windows-x64"]
+checksum = "sha256:47594981f3848a4b4447494adeca9555f908f7cf0a89c4da3fd0243a4631da1c"
+url = "https://github.com/mikefarah/yq/releases/download/v4.52.5/yq_windows_amd64.exe"

@@ -116,28 +116,3 @@ backend = "pipx:jc"
 [[tools."pipx:uv-development-toggle"]]
 version = "0.6.3"
 backend = "pipx:uv-development-toggle"
-
-[[tools.redis]]
-version = "8.6.2"
-backend = "vfox:mise-plugins/vfox-redis"
-
-[tools.redis."platforms.linux-arm64"]
-url = "https://download.redis.io/releases/redis-8.6.2.tar.gz"
-
-[tools.redis."platforms.linux-arm64-musl"]
-url = "https://download.redis.io/releases/redis-8.6.2.tar.gz"
-
-[tools.redis."platforms.linux-x64"]
-url = "https://download.redis.io/releases/redis-8.6.2.tar.gz"
-
-[tools.redis."platforms.linux-x64-musl"]
-url = "https://download.redis.io/releases/redis-8.6.2.tar.gz"
-
-[tools.redis."platforms.macos-arm64"]
-url = "https://download.redis.io/releases/redis-8.6.2.tar.gz"
-
-[tools.redis."platforms.macos-x64"]
-url = "https://download.redis.io/releases/redis-8.6.2.tar.gz"
-
-[tools.redis."platforms.windows-x64"]
-url = "https://download.redis.io/releases/redis-8.6.2.tar.gz"
