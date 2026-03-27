@@ -42,10 +42,10 @@ def run_server():
     # this MUST be run first, even the remote debugging installation will trigger app/__init__ to run and output logs
     configure_subprocess_capture()
 
-    import main
     from app.env import env
     from app.server import api_app
     from app.utils.debug import install_remote_debugger
+
     from tests.assertions import assert_main_server_config_is_stable
 
     # set a environment variable to indicate that we are running this server for integration tests
