@@ -17,6 +17,7 @@ dev_lint:
 	# will report 0 commits scanned since it just outputs a massive diff and doesn't scan commits
 	GIT_CONFIG_GLOBAL=/dev/null gitleaks git --report-path=- --report-format json --redact=20 --no-banner
 	# TODO link justfiles too
+	# GIT_CONFIG_GLOBAL=/dev/null gitleaks git --report-format json --report-path - | jq -r '.[].Fingerprint' | sort -t ':' -k2 > .gitleaksignore
 
 # start all of the services you need for development in a single terminal
 [script]
@@ -141,12 +142,15 @@ _mise_gha_version_sync: _dev_only
 
 # sync the parent/root pnpm + node version to the web subdirectory for railpack
 _mise_web_version_sync: _dev_only
-	# reads the current versions from the parent and applies them to the subdir
-	# `requested_version` is the exact version expression in the parent, which is important otherwise if they drift,
-	# mise will *not* use the older version and therefore the system node, etc would be used.
+	# reads the current versions from the parent and applies them to the subdir.
+	# `requested_version` is the exact version expression in the parent. Now that we have lockfiles, we want to use the
+	# resolved version so that the web/ lockfiles stay in sync with the parent.
+
 	mise --cd {{WEB_DIR}} use \
-		node@$(mise list --current --json | jq -r '.node[0].requested_version') \
-		pnpm@$(mise list --current --json | jq -r '.pnpm[0].requested_version')
+		node@$(mise list --current --json | jq -r '.node[0].version') \
+		pnpm@$(mise list --current --json | jq -r '.pnpm[0].version')
+	mise --cd {{WEB_DIR}} lock
+
 	git add {{WEB_DIR}}/mise.{toml,lock}
 
 JAVASCRIPT_PACKAGE_JSON := WEB_DIR / "package.json"
@@ -154,8 +158,8 @@ JAVASCRIPT_PACKAGE_JSON := WEB_DIR / "package.json"
 # update package.json engines to match the current version expressions in .config/mise.toml
 [script]
 _js_sync-engine-versions: _dev_only
-	NODE_VERSION=$(mise list --current --json | jq -r ".node[0].requested_version")
-	PNPM_VERSION=$(mise list --current --json | jq -r ".pnpm[0].requested_version")
+	NODE_VERSION=$(mise list --current --json | jq -r ".node[0].version")
+	PNPM_VERSION=$(mise list --current --json | jq -r ".pnpm[0].version")
 
 	# jq does not have edit in place
 	# https://stackoverflow.com/questions/36565295/jq-to-replace-text-directly-on-file-like-sed-i
