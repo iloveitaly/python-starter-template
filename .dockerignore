@@ -43,10 +43,8 @@ Justfile
 # keep the folder, ignore contents
 /tmp/*
 
-# mise IS used in deployment, but only the top-level mise. Any of the env-specific mise config is NOT required for prod
-.config
-
-# NOTE /Procfile is intentionally not ignored, it can be used by some deployments (dokku)
+# NOTE .config/ is intentionally included as it contains prod (and other) mise configuration
+# NOTE /Procfile is intentionally included, it can be used by some deployments (dokku)
 
 ################################
 # Python Cruft
