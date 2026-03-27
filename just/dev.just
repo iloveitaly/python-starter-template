@@ -179,8 +179,12 @@ _js_sync-engine-versions: _dev_only
 # version precision in .config/mise.toml controls how far `mise upgrade --local` advances each tool.
 tooling_upgrade: _dev_only && _mise_web_version_sync _js_sync-engine-versions _mise_gha_version_sync
 	mise self-update --yes
+
+	# if mise introduces a bug, it's hard for another developer to understand that are running into
+	# issues because of this bug, so we force users to update their mise version to the latest master
 	mise_version=$(mise --version | awk '{print $1}') && \
 		sd '^min_version = ".*"$' "min_version = \"$mise_version\"" .config/mise.toml
+
 	mise upgrade --local
 	git add .config/mise.toml .config/mise*.lock "{{JAVASCRIPT_PACKAGE_JSON}}"
 
