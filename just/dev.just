@@ -187,10 +187,10 @@ tooling_upgrade: _dev_only && _mise_web_version_sync _js_sync-engine-versions _m
 	# if mise introduces a bug, it's hard for another developer to understand that are running into
 	# issues because of this bug, so we force users to update their mise version to the latest master
 	mise_version=$(mise --version | awk '{print $1}') && \
-		sd '^min_version = ".*"$' "min_version = \"$mise_version\"" .config/mise.toml
+		sd '^min_version = ".*"$' "min_version = \"$mise_version\"" .config/mise.dev.toml
 
 	mise upgrade --local
-	git add .config/mise*{toml,lock} "{{JAVASCRIPT_PACKAGE_JSON}}"
+	git add .config/mise*{toml,lock} "{{JAVASCRIPT_PACKAGE_JSON}}" || true
 
 # upgrade everything: all packages on all languages, tooling, etc
 upgrade: _dev_only tooling_upgrade js_upgrade py_upgrade
