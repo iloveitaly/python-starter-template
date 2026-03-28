@@ -1221,11 +1221,11 @@ wheels = [
 
 [[package]]
 name = "httpdbg"
-version = "2.1.5"
+version = "2.1.6"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/e0/38/b0baca0ca28825b87da1ae2a4232e8e81529ec2b2aca574288faac82e3ad/httpdbg-2.1.5.tar.gz", hash = "sha256:36b19cf80669f419759a5ecfd07c3076dc5111ef40c3b92cb78f92e869fbf098", size = 80681, upload-time = "2025-11-23T14:50:06.659Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8c/47/69b5ceb2bbd03657b0a1458d8f3fdccd331d05bfa139569e6f293a2c4353/httpdbg-2.1.6.tar.gz", hash = "sha256:7f0925718faa0c94f5855075b168dc95bb16f9cd6826eb8449c8af9e720ea42b", size = 80616, upload-time = "2026-03-28T11:04:27.488Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0e/bf/e4f7eb84ae3739e0138ce2e1892d99c5192355739c8403d5c572c599e5ac/httpdbg-2.1.5-py3-none-any.whl", hash = "sha256:57e353b4cefb37b4f6862b5b3e6c0e9da92999e94dc54fd393c9143b6644e89e", size = 88161, upload-time = "2025-11-23T14:50:05.223Z" },
+    { url = "https://files.pythonhosted.org/packages/13/a8/6d101e4d58563e8647fe010a5ae61ba41ceb61e2abd789170573599d7d43/httpdbg-2.1.6-py3-none-any.whl", hash = "sha256:e3d5be9cd5eeb262b77e4faf113c356b7da127bb848b3360c99e394bb2dc9590", size = 87938, upload-time = "2026-03-28T11:04:26.035Z" },
 ]
 
 [[package]]
@@ -1568,11 +1568,11 @@ wheels = [
 
 [[package]]
 name = "json5"
-version = "0.13.0"
+version = "0.14.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/77/e8/a3f261a66e4663f22700bc8a17c08cb83e91fbf086726e7a228398968981/json5-0.13.0.tar.gz", hash = "sha256:b1edf8d487721c0bf64d83c28e91280781f6e21f4a797d3261c7c828d4c165bf", size = 52441, upload-time = "2026-01-01T19:42:14.99Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/9c/4b/6f8906aaf67d501e259b0adab4d312945bb7211e8b8d4dcc77c92320edaa/json5-0.14.0.tar.gz", hash = "sha256:b3f492fad9f6cdbced8b7d40b28b9b1c9701c5f561bef0d33b81c2ff433fefcb", size = 52656, upload-time = "2026-03-27T22:50:48.108Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d7/9e/038522f50ceb7e74f1f991bf1b699f24b0c2bbe7c390dd36ad69f4582258/json5-0.13.0-py3-none-any.whl", hash = "sha256:9a08e1dd65f6a4d4c6fa82d216cf2477349ec2346a38fd70cc11d2557499fbcc", size = 36163, upload-time = "2026-01-01T19:42:13.962Z" },
+    { url = "https://files.pythonhosted.org/packages/b8/42/cf027b4ac873b076189d935b135397675dac80cb29acb13e1ab86ad6c631/json5-0.14.0-py3-none-any.whl", hash = "sha256:56cf861bab076b1178eb8c92e1311d273a9b9acea2ccc82c276abf839ebaef3a", size = 36271, upload-time = "2026-03-27T22:50:47.073Z" },
 ]
 
 [[package]]
@@ -3445,7 +3445,7 @@ wheels = [
 [[package]]
 name = "structlog-config"
 version = "0.12.2"
-source = { git = "https://github.com/iloveitaly/structlog-config.git#76563b80b5f07d40eae5891cae8cdb2dbfbd3e74" }
+source = { git = "https://github.com/iloveitaly/structlog-config.git#ac2fd779297ad5522bd01d50bfaf666ccbf6e9a1" }
 dependencies = [
     { name = "orjson" },
     { name = "pytest-plugin-utils" },
