@@ -37,17 +37,25 @@ ci_last_failed-download output-dir="false":
     mkdir -p "$downloaded_test_results_directory"
 
     failed_run_id=$(just _gha_last_failed_run_id)
+    failed_run_created_at=$(gh run view "$failed_run_id" --json createdAt --jq '.createdAt')
+    failed_run_date="${failed_run_created_at%%T*}"
 
     # helpful to download to unique folder for two reasons:
     #   1. easier to match up to web GHA view
     #   2. eliminates risk of gh-cli erroring out bc the directory already exists
-    failed_run_target_directory="${downloaded_test_results_directory}/${failed_run_id}"
+    failed_run_target_directory="${downloaded_test_results_directory}/${failed_run_date}-${failed_run_id}"
     rm -rf "$failed_run_target_directory"
 
     # the structure of the downloaded files here is tricky and dependent on the input paths (whether they exist or not)
-    # `tmp/gha-artifacts/21836083821/tmp/test-results/` is the dir-path you most likely want
+    # `tmp/gha-artifacts/2026-01-02-21836083821/tmp/test-results/` is the dir-path you most likely want
     # `--name` is required in order for the name of test artifact not to be included in the path
     gh run download --dir "$failed_run_target_directory" --name test-results $failed_run_id
+
+    flattened_test_results_directory="${failed_run_target_directory}/tmp/test-results"
+    if [[ -d "$flattened_test_results_directory" ]]; then
+        find "$flattened_test_results_directory" -mindepth 1 -maxdepth 1 -exec mv {} "$failed_run_target_directory"/ \;
+        rm -rf "${failed_run_target_directory}/tmp"
+    fi
 
     # output a clean path to the downloaded artifacts, for use in other scripts
     if [[ "{{ output-dir }}" == "true" ]]; then

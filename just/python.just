@@ -192,7 +192,7 @@ py_test_dev:
 # regenerate all python generated files
 [arg("watch", long, help="run in watch mode", value="true")]
 py_generate watch="false":
-	# j py_js-build, we really need to make sure this is built *first* otherwise the 
+	# j py_js-build, we really need to make sure this is built *first* otherwise the
 	if [[ "{{watch}}" == "true" ]]; then \
 		{{WATCHEXEC_APP_PY}} just _py_generate; \
 	else \
@@ -217,28 +217,29 @@ _py_generate:
 		--output app/generated/fastapi_typed_routes.py
 
 # open playwright trace viewer on last trace zip. --remote to download last failed remote trace
-py_playwright_view_trace remote="": _dev_only
+[arg("remote", long, help="download last failed remote trace", value="true")]
+py_playwright_view_trace remote="false": _dev_only
 		mkdir -p ${PLAYWRIGHT_RESULT_DIRECTORY}
 
-		# helpful to download to unique folder for two reasons: (a) easier to match up to web GHA view and (b) eliminates risk of gh-cli erroring out bc the directory already exists
-		if [ "{{remote}}" = "--remote" ]; then \
-				failed_run_id=$(just _gha_last_failed_run_id) && \
-				mkdir -p ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id} && \
-				gh run --dir ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id} download $failed_run_id; \
-				echo "{{BLUE}}Downloaded remote GHA run to ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id}{{NORMAL}}"; \
+		if [ "{{remote}}" = "true" ]; then \
+			$(just ci_last_failed-download --output-dir) && \
+			if [ -d "${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id}/test-results/tmp/test-results" ]; then \
+				mv ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id}/test-results/tmp/test-results/* ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id}/ && \
+				rm -rf ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id}/test-results; \
+			fi; \
+			echo "{{BLUE}}Downloaded remote GHA run to ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id}{{NORMAL}}"; \
 		fi
 
-		# NOTE it's insane, but fd does not have a "find last modified file"
+		# NOTE it's insane, but fd does not have a "find last modified file", so we have this insane command to grab the last modified trace zip
 		# https://github.com/sharkdp/fd/issues/196
 		uv run playwright show-trace $(fd --no-ignore-vcs . ${PLAYWRIGHT_RESULT_DIRECTORY} -e zip -t f --exec-batch stat -f '%m %N' | sort -n | tail -1 | cut -f2- -d" ")
 
-# download the visual snapshots from the last failed playwright run, useful for updating non-macos screenshot versions
+# download failed integration test debugging data from the last failed CI run, useful for updating non-macos screenshot versions and debugging integration tests
+[script]
 py_playwright_visual-download: _dev_only
-	failed_run_id=$(just _gha_last_failed_run_id) && \
-		rm -rf ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id} && \
-		mkdir -p ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id} && \
-		gh run --dir ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id} download $failed_run_id && \
-		cp -R ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id}/test-results/${PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY}/ ${PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY}/
+	artifacts_directory=$(just ci_last_failed-download --output-dir)
+	snapshots_directory=$artifacts_directory/${PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY}/
+	cp -R $snapshots_directory ${PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY}/
 
 # open chromium to record playwright interactions for integration tests and dump them to a file
 [script]
