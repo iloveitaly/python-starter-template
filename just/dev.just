@@ -190,7 +190,7 @@ tooling_upgrade: _dev_only && _mise_web_version_sync _js_sync-engine-versions _m
 		sd '^min_version = ".*"$' "min_version = \"$mise_version\"" .config/mise.toml
 
 	mise upgrade --local
-	git add .config/mise.toml .config/mise*.lock "{{JAVASCRIPT_PACKAGE_JSON}}"
+	git add .config/mise*{toml,lock} "{{JAVASCRIPT_PACKAGE_JSON}}"
 
 # upgrade everything: all packages on all languages, tooling, etc
 upgrade: _dev_only tooling_upgrade js_upgrade py_upgrade
