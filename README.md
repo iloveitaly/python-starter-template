@@ -503,14 +503,53 @@ VITE_BUILD_COMMIT=-dirty node inspect web/node_modules/@react-router/dev/bin.js 
 
 ### Pulling Patches in this Repo
 
-You can easily pull a change into this repo from project which uses this template.
+You can pull a change into this repo from a project which uses this template. This enables you to improve aspects of
+the template in your project and then pull improvements back. This is how this entire template was created.
 
 1. Add the changes to your git staging
 2. Generate the diff and apply it to the template project on your machine
 
+[Here's a shell script](https://github.com/iloveitaly/dotfiles/blob/d3efbe95b44f2d26572e769f36084823eb5f307c/.git-functions#L688-L725) that I use for this. I use the same script for [my LLM prompts](https://github.com/iloveitaly/llm-ide-rules) as well.
+
 ```shell
-g dc | pbcopy && zsh -c 'cd ~/Projects/python/python-starter-template && pbpaste | gpatch -p1'
-```
+# Usage: git-staging-to-upstream-template [target-repo]
+#
+# Description:
+#   Writes the current staged diff to a plain Git patch and applies it to another
+#   repository. If no target repo is provided, it falls back to the starter template.
+git-staging-to-upstream-template() {
+  local default_target_repo="$HOME/Projects/python/python-starter-template"
+  local patch_file
+  local target_repo="${1:-$default_target_repo}"
+  local status
+
+  if [[ ! -d "$target_repo" ]]; then
+    echo "Target repo not found: $target_repo"
+    return 1
+  fi
+
+  patch_file=$(mktemp /tmp/staging-to-upstream-template.XXXXXX.patch) || return 1
+
+  # Force Git's built-in patch output so external diff tools and pretty diff filters
+  # cannot produce output that `git apply` rejects.
+  git \
+    --no-pager \
+    -c diff.external= \
+    -c interactive.diffFilter= \
+    -c pager.diff=false \
+    diff --no-ext-diff --cached --binary --full-index > "$patch_file" || {
+      rm -f "$patch_file"
+      return 1
+    }
+
+  # Use `git -C` instead of `cd` so shell hooks like direnv do not run just to
+  # target the template repository.
+  git -C "$target_repo" apply -p1 "$patch_file"
+  status=$?
+  # Always remove the temp patch file, regardless of whether apply succeeded.
+  rm -f "$patch_file"
+  return $status
+}```
 
 Note that gpatch is GNU patch, [available through Homebrew](https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/g/gpatch.rb).
 
