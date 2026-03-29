@@ -189,8 +189,9 @@ tooling_upgrade: _dev_only && _mise_web_version_sync _js_sync-engine-versions _m
 	mise_version=$(mise --version | awk '{print $1}') && \
 		sd '^min_version = ".*"$' "min_version = \"$mise_version\"" .config/mise.dev.toml
 
+	# zsh extended global allows us to write very fancy globs; the one below omits the `.local` overrides
 	mise upgrade --local
-	git add .config/mise*{toml,lock} "{{JAVASCRIPT_PACKAGE_JSON}}" || true
+	git add .config/mise*~(*/|*).local*(toml|lock) "{{JAVASCRIPT_PACKAGE_JSON}}"
 
 # upgrade everything: all packages on all languages, tooling, etc
 upgrade: _dev_only tooling_upgrade js_upgrade py_upgrade
@@ -325,7 +326,7 @@ bootstrap_worktree:
 
 		cp "$original_dir_path/env/"*.local.* env/ || true
 		cp "$original_dir_path/.ipython_history" .
-		cp "$original_dir_path/.config/mise*local.toml" .config/
+		cp "$original_dir_path/.config/mise*local.toml" .config/ || true
 
 		# may need some `.local.` customizations in order to generate
 		direnv allow .

@@ -24,11 +24,11 @@
 #######################
 
 # zsh is the default shell under macos, let's mirror it everywhere
-set shell := ["zsh", "-ceuB", "-o", "pipefail"]
+set shell := ["zsh", "-ceuB", "-o", "pipefail", "-o", "extended_glob"]
 
 # TODO can we force tracing and a custom PS4 prompt? Would be good to understand how Just handles echoing commands
 # determines what shell to use for [script]
-set script-interpreter := ["zsh", "-euB", "-o", "pipefail"]
+set script-interpreter := ["zsh", "-euB", "-o", "pipefail", "-o", "extended_glob"]
 
 # avoid seeing comments in the output
 set ignore-comments := true
