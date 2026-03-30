@@ -280,7 +280,7 @@ Here's how frontend code is organized in `web/app/`:
 ### Python Test Code Organization
 
 * `tests/**/utils.py` is for test-specific code that is not a fixture or a factory.
-* `tests/factories/` all factories should go here.
+* `app/factories/` is the single source of truth for factories used by tests, local playground code, and dev seeding helpers.
 * `tests/**/assertions.py` all custom `assert_*` functions should go here.
 * `tests/**/conftest.py` is for test-specific fixtures. This is the only place you should put fixtures.
 * `tests/{commands,routes,jobs,models}/` map to corresponding application categories under `app/`.
@@ -323,6 +323,13 @@ I tried both [factoryboy](https://factoryboy.readthedocs.io/en/stable/index.html
 * Type inference. It looks at the types defined on the pydantic model (including sqlmodel!) and generates correct values for you. This is really nice.
 
 There are some significant gaps in functionality, but the maintainers [have been open to contributions.](https://github.com/litestar-org/polyfactory/pulls?q=is%3Apr+author%3Ailoveitaly)
+
+Factories live in `app/factories/`. The intent is that the same factory implementations can be reused by tests, the interactive playground, and seed data generation. 
+Seed data generation should be able to be easily run against a `productionish` environment (staging, preview, etc).
+
+`app.factories` is guarded against production imports.
+
+For correct type hints, prefer direct imports such as `from app.factories.user import UserFactory` instead of wildcard imports from the package root.
 
 ### Python Debugging Extras
 
