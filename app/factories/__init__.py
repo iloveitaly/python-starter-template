@@ -21,7 +21,9 @@ from app.environments import is_productionish
 from app.setup import modules_in_folder
 
 if is_productionish():
-    raise RuntimeError("app.factories must not be imported in production-like environments")
+    raise RuntimeError(
+        "app.factories must not be imported in production-like environments"
+    )
 
 for module_name in modules_in_folder(Path(__file__).parent, __package__):
     log.debug("auto importing", model=module_name)
