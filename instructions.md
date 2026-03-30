@@ -16,6 +16,7 @@ Coding instructions for all programming languages:
 - Do not install missing system packages! Instead, ask me to install them for you.
 - If terminal commands are failing because of missing variables or commands which are unrelated to your current task, stop your work and let me know.
 - Don't worry about fixing lint errors or running lint scripts unless I specifically ask you to.
+- When implementing workarounds for tooling limitations (like using `Any` for unresolvable types) or handling non-obvious edge cases, always add a brief inline comment explaining the technical reasoning.
 
 Use line breaks to organize code into logical groups. Instead of:
 
@@ -41,6 +42,9 @@ session_id = client_secret_id.split("_secret")[0]
 Pay careful attention to these instructions when running tests, generating database migrations, or otherwise figuring out how to operate this project:
 
 - Run `just --list` to see all available pre-written workflow development commands.
+- **IMPORTANT:** Never manually set environment variables that are required. You can set optional variables for debugging, but any missing required environment variables is an error that should be reported and you should stop your work immediately.
+- **NEVER** git commit changes. Always let me run any git commands which are not read-only.
+- Do not worry about cleaning up the environment. This is done automatically.
 - Run python code with `uv run python`
 - Run python tests with `pytest` only. If tests fail because of a configuration or system error, do not attempt to fix and let me know. I will fix it.
   - Initially run `pytest --ignore=tests/integration` then only run `pytest tests/integration`
@@ -112,11 +116,18 @@ globs: app/routes/**/*.py
 - Use `model_id: Annotated[TypeIDType, Path()]` to represent a model ID as a URL path parameter
 - Use the typed route helpers in `app/generated/fastapi_typed_routes.py` for all URL generation.
 
+## Justfiles
+
+globs: just/*.just
+
+- Never use `just_executable()` to reference the executable for `just`. If `just` DNE, then something is wrong adn you should stop your work and let me know.
+- You should not have to mutate `$PATH`. If you cannot find an expected binary, stop your work and let me know.
+
 ## Pytest Integration Tests
 
 globs: tests/integration/**/*.py
 
-- Look to tests/factories/ to generate any required database state
+- Look to app/factories/ to generate any required database state
   - Here's an example of how to create + persist a factory `DistributionFactory.build(domain=PYTHON_TEST_SERVER_HOST).save()`
 - Add the `server` factory to each test
 - Use the `faker` factory to generate emails, etc.
@@ -131,12 +142,16 @@ globs: tests/integration/**/*.py
 - Only use `wait_for_loading(page)` if a `LONG_INTEGRATION_TEST_TIMEOUT` on an expectation does not work: `expect(page.get_by_text("Your Matched Doctors")).to_be_visible(timeout=LONG_INTEGRATION_TEST_TIMEOUT)`
 - Prefer fewer integration tests that cover more functionality. Unlike unit tests, where each test is designed to test a very particular piece of functionality, I want integration tests to cover entire workflows. It's preferred to add more steps to an integration test to test an entire workflow.
 - Prefer simple locators. If a `filter`, `or_`, etc is required to capture a button in multiple states it indicates something is wrong in the code.
+- Use `react_router_url` to generate the frontend url path and do not set `base_url`.
+- **Enforce Clean Consoles:** End all Playwright tests with assert_no_console_errors(request).
+  - **Test-Specific Ignores:** If a test triggers an expected error pass a regex to the ignore parameter and add a comment explaining why.
+  - **Global Ignores:** For app-wide expected errors (e.g., tracking libraries), add the ignore pattern to `conftest.py` rather than individual tests. Scope to the particular file if possible.
 
 ## Pytest Tests
 
 globs: tests/**/*.py
 
-- Look to @tests/factories/ to generate any required database state
+- Look first to `app.factories.*` instead of `app.models.*` to generate any required database state
   - For example, to create and persist a `Distribution` record `DistributionFactory.save()`
   - If a factory doesn't exist for the model you are working with, create one.
   - You can customize one or more params in a factory using `DistributionFactory.save(host="custom_host.com)`
@@ -225,7 +240,7 @@ class Distribution(
 
 globs: tests/routes/**/*.py
 
-- Polyfactory is the [factory](tests/factories/) library in use. `ModelNameFactory.build()` is how you generate factories.
+- Polyfactory is the [factory](app/factories/) library in use. `ModelNameFactory.build()` is how you generate factories.
 - Use `assert_status(response)` instead of `assert response.status_code == status.HTTP_200_OK`
 - Do not reference routes by raw strings. Instead, use the typed route helpers defined in `app/generated/fastapi_typed_routes.py`.
 
@@ -237,6 +252,7 @@ When writing Python:
 
 * Assume the latest python, version 3.13.
 * Prefer Pathlib methods (including read and write methods, like `read_text`) over `os.path`, `open`, `write`, etc.
+* Prefer docstr to multi-line comments at the top of a function or file.
 * Use Pydantic models over dataclass or a typed dict.
 * Use SQLAlchemy for generating any SQL queries.
 * Use `click` for command line argument parsing.
@@ -248,6 +264,8 @@ When writing Python:
 * Never edit or create any files in `migrations/versions/`
 * Place all comments on dedicated lines immediately above the code statements they describe. Avoid inline comments appended to the end of code lines.
 * Do not `try/catch` raw `Exceptions` unless explicitly told to. Prefer to let exceptions raise and cause an explicit error.
+* Always make an explicit copy before mutating a dictionary that you did not create in the current narrow scope.
+* **IMPORTANT** never edit app/generated/ files. These are autogenerated.
 
 ### Package Management
 
@@ -513,3 +531,11 @@ Here's how frontend code is organized in `web/app/`:
   - `ui/` reusable ShadCN UI components (buttons, forms, etc.).
   - `shared/` components shared across multiple pages.
   - create additional folders for route- or section-specific components.
+
+### Dates & Times
+
+* Always use the ISO 8601 format when sending dates in an API request.
+* Use `Temporal` for any date or time manipulation. You can assume it's available in the browser.
+* DateTime objects should always be converted to UTC before included in any API request. Never send a timestamp with the user's timezone.
+* Unless otherwise specified, do not shift server-provided times based on the user's timezone.
+
