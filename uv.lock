@@ -5,7 +5,7 @@ requires-python = ">=3.14"
 [[package]]
 name = "activemodel"
 version = "0.18.0"
-source = { git = "https://github.com/iloveitaly/activemodel.git#607c2c1b6fc1925bc8028978ac29d601c42afb90" }
+source = { git = "https://github.com/iloveitaly/activemodel.git#362f2c0f8eee1bd065d4597e09f882c93c5cfe5b" }
 dependencies = [
     { name = "python-decouple-typed" },
     { name = "sqlmodel" },
@@ -856,7 +856,7 @@ wheels = [
 
 [[package]]
 name = "facebook-business"
-version = "25.0.0"
+version = "25.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -865,21 +865,21 @@ dependencies = [
     { name = "requests" },
     { name = "six" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d8/bb/1d0afa283f08d0b9b3853b550e8c26c5c0d5ff012ef67b7a2992a093db3c/facebook_business-25.0.0.tar.gz", hash = "sha256:cb4209999b650c0c11cd75e4eb9fdb9d4ad659f1c8cf8da69b7f405fc81421c6", size = 684318, upload-time = "2026-03-10T17:14:53.017Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b3/6b/a688b34b6029b620fefba1d0fa51a81ed7da56cc5168122132fc0709c27f/facebook_business-25.0.1.tar.gz", hash = "sha256:9bfb0e7cce998085d3aab8259535b3838ee4404a489baef73525d719a0e8bf4d", size = 685697, upload-time = "2026-03-30T16:41:17.566Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/78/35/997621476d70afc92c96ed5034828f34cef5a506bc41b0c902bcedb952cb/facebook_business-25.0.0-py3-none-any.whl", hash = "sha256:ef8ff19d2357eb804ba07c842515d8d8d2f4d74a9c9e6b1d3f521d6327531d61", size = 1430837, upload-time = "2026-03-10T17:14:50.543Z" },
+    { url = "https://files.pythonhosted.org/packages/e8/be/8e199fa0083b3054104406d0860f14c78c8a7ef92db145d996cb3cde91c3/facebook_business-25.0.1-py3-none-any.whl", hash = "sha256:a0ca91d268e0cc4460c48db92b26663a30e0f6ebbb269deb067010d99dff046c", size = 1446165, upload-time = "2026-03-30T16:41:16.136Z" },
 ]
 
 [[package]]
 name = "faker"
-version = "40.11.1"
+version = "40.12.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/fa/e5/b16bf568a2f20fe7423282db4a4059dbcadef70e9029c1c106836f8edd84/faker-40.11.1.tar.gz", hash = "sha256:61965046e79e8cfde4337d243eac04c0d31481a7c010033141103b43f603100c", size = 1957415, upload-time = "2026-03-23T14:05:50.233Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/66/c1/f8224fe97fea2f98d455c22438c1b09b10e14ef2cb95ae4f7cec9aa59659/faker-40.12.0.tar.gz", hash = "sha256:58b5a9054c367bd5fb2e948634105364cc570e78a98a8e5161a74691c45f158f", size = 1962003, upload-time = "2026-03-30T18:00:56.596Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fc/ec/3c4b78eb0d2f6a81fb8cc9286745845bff661e6815741eff7a6ac5fcc9ea/faker-40.11.1-py3-none-any.whl", hash = "sha256:3af3a213ba8fb33ce6ba2af7aef2ac91363dae35d0cec0b2b0337d189e5bee2a", size = 1989484, upload-time = "2026-03-23T14:05:48.793Z" },
+    { url = "https://files.pythonhosted.org/packages/2b/5c/39452a6b6aa76ffa518fa7308e1975b37e9ba77caa6172a69d61e7180221/faker-40.12.0-py3-none-any.whl", hash = "sha256:6238a4058a8b581892e3d78fe5fdfa7568739e1c8283e4ede83f1dde0bfc1a3b", size = 1994601, upload-time = "2026-03-30T18:00:54.804Z" },
 ]
 
 [[package]]
