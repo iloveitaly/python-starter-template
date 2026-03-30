@@ -8,6 +8,14 @@ backend = "asdf:direnv"
 version = "1.48.1"
 backend = "ubi:casey/just"
 
+[[tools.node]]
+version = "24.14.1"
+backend = "core:node"
+
+[[tools.pnpm]]
+version = "10.33.0"
+backend = "aqua:pnpm/pnpm"
+
 [[tools.python]]
 version = "3.14.3"
 backend = "core:python"
