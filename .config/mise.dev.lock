@@ -208,9 +208,33 @@ url = "https://github.com/pvolok/mprocs/releases/download/v0.9.2/mprocs-0.9.2-wi
 version = "2.5.1"
 backend = "aqua:watchexec/watchexec"
 
+[tools.watchexec."platforms.linux-arm64"]
+checksum = "sha256:217e564946fec9911279c455e174e938d497480792a342c28712e50346cc0140"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.5.1/watchexec-2.5.1-aarch64-unknown-linux-gnu.tar.xz"
+
+[tools.watchexec."platforms.linux-arm64-musl"]
+checksum = "sha256:217e564946fec9911279c455e174e938d497480792a342c28712e50346cc0140"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.5.1/watchexec-2.5.1-aarch64-unknown-linux-gnu.tar.xz"
+
+[tools.watchexec."platforms.linux-x64"]
+checksum = "sha256:9efabd08de720c1ee7e57b487fe11904f0966828e76146e2b5ea5deee90626be"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.5.1/watchexec-2.5.1-x86_64-unknown-linux-musl.tar.xz"
+
+[tools.watchexec."platforms.linux-x64-musl"]
+checksum = "sha256:9efabd08de720c1ee7e57b487fe11904f0966828e76146e2b5ea5deee90626be"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.5.1/watchexec-2.5.1-x86_64-unknown-linux-musl.tar.xz"
+
 [tools.watchexec."platforms.macos-arm64"]
 checksum = "sha256:c5e405dd1109940b2510398d2182990c1be59063b94e11d7ace9c7b435cb1df1"
 url = "https://github.com/watchexec/watchexec/releases/download/v2.5.1/watchexec-2.5.1-aarch64-apple-darwin.tar.xz"
+
+[tools.watchexec."platforms.macos-x64"]
+checksum = "sha256:bb74bf33286ff7f31dd8e763e017fbc0418360d88baefd35bc57d662d28394e2"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.5.1/watchexec-2.5.1-x86_64-apple-darwin.tar.xz"
+
+[tools.watchexec."platforms.windows-x64"]
+checksum = "sha256:aa448c2704ca1a37ce0f1fc75381d9a411946dd293cf6236293f549426a577f7"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.5.1/watchexec-2.5.1-x86_64-pc-windows-msvc.zip"
 
 [[tools.yq]]
 version = "4.52.5"

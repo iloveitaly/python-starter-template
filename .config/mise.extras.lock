@@ -113,6 +113,10 @@ backend = "pipx:aiautocommit"
 version = "1.25.6"
 backend = "pipx:jc"
 
+[[tools."pipx:llm-ide-rules"]]
+version = "0.12.0"
+backend = "pipx:llm-ide-rules"
+
 [[tools."pipx:uv-development-toggle"]]
 version = "0.6.3"
 backend = "pipx:uv-development-toggle"
