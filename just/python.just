@@ -48,6 +48,9 @@ py_clean:
 	# TODO should remove pnpm global cache:   pnpm store path
 	# rm -rf $(pnpm store path)
 
+# remove all visual snapshots, useful when you want to repull the latest screenshots from CI and possibly remove unnecessary ones
+py_clean_visual_snapshots:
+	find tests -type d -name __snapshots__ -exec rm -rf {} +
 
 # rebuild the venv from scratch
 py_nuke: py_clean py_setup
