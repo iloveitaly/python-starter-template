@@ -90,13 +90,30 @@ def run_migrations_online() -> None:
         cpu_count = (os.cpu_count() or 1) * 2
 
         with context.begin_transaction():
-            # TODO a better solution here is prob defining a migration user, and then setting defaults on that user
-            # to separate devops-type stuff from the application layer
+            """
+            This is not standard Alembic code and is very tricky and took a lot of time to get this working properly.
 
-            # https://github.com/sqlalchemy/alembic/issues/633
-            # https://github.com/uc-cdis/fence/blob/cc2d0c966ffb8b3270531cfe88f4cdb3f3ee7972/migrations/env.py#L88
-            # https://github.com/khulnasoft-lab/AiEXEC/blob/67e11c8b0e9f1d15b9a48db5c16b8f0a99f45d3c/api/base/aiexec/alembic/env.py#L88-L89
-            # https://grok.com/share/bGVnYWN5_4a00f21a-78fe-4d8e-b412-f84ffa58659c
+            EDIT AT YOUR OWN RISK!
+
+            - The entire goal of this code is to (a) increase resource allocation so larger migrations run faster and actually complete and
+              (b) ensure that only a single instance of the migration runs at a time, even if multiple containers start at the same time and run this code concurrently.
+            - Take a look at app/configuration/database.py to understand the cases where this is important
+            - If the container is killed, it's possible for the lock to not be released. You may need to manually release the lock
+              or wait for the timeout window.
+            -
+
+            References:
+
+            - https://github.com/sqlalchemy/alembic/issues/633
+            - https://github.com/uc-cdis/fence/blob/cc2d0c966ffb8b3270531cfe88f4cdb3f3ee7972/migrations/env.py#L88
+            - https://github.com/khulnasoft-lab/AiEXEC/blob/67e11c8b0e9f1d15b9a48db5c16b8f0a99f45d3c/api/base/aiexec/alembic/env.py#L88-L89
+            - https://grok.com/share/bGVnYWN5_4a00f21a-78fe-4d8e-b412-f84ffa58659c
+
+            """
+
+            # TODO a better solution here is prob defining a migration user, and then setting defaults on that user
+            # TODO the mem values here should be adjusted based on the machine
+
             connection.execute(text(f"""
             -- migrations shouldn't take more than 10m
             SET lock_timeout = '10min';

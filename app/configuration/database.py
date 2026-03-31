@@ -62,6 +62,50 @@ def create_db_and_tables():
     SQLModel.metadata.create_all(get_engine())
 
 
+def get_alembic_config():
+    """
+    Build the Alembic config used for migration checks and upgrades."
+
+    This is used (a) to run production migrations and (b) run migration assertions in tests.
+    """
+
+    from alembic.config import Config
+
+    alembic_cfg = Config(get_root_path() / "alembic.ini")
+    alembic_cfg.set_main_option("skip_logging_config", "true")
+    return alembic_cfg
+
+
+def needs_alembic_migration() -> bool:
+    """
+    Return whether the connected database is behind the checked-in Alembic heads.
+
+    Alembic tracks a DAG of revisions, so we compare all current heads rather than
+    assuming a single linear tip. However, our application should only ever use a single linear tip.
+    """
+
+    from alembic.runtime.migration import MigrationContext
+    from alembic.script import ScriptDirectory
+
+    from app import log
+
+    script_dir = ScriptDirectory.from_config(get_alembic_config())
+    heads = script_dir.get_heads()
+
+    with get_engine().connect() as conn:
+        ctx = MigrationContext.configure(conn)
+        current_heads = ctx.get_current_heads()
+
+    needs_migration = set(current_heads) != set(heads)
+
+    if needs_migration:
+        log.info("migrations needed", current_heads=current_heads, heads=heads)
+    else:
+        log.info("no migrations needed", current_heads=current_heads, heads=heads)
+
+    return needs_migration
+
+
 def run_migrations():
     """
     Run migrations within the current process.
@@ -98,7 +142,6 @@ def run_migrations():
     """
 
     from alembic import command
-    from alembic.config import Config
 
     from app import log
 
@@ -107,43 +150,19 @@ def run_migrations():
     # the table name *could* be different than the connection url, but not for us!
     log.info("running alembic migrations", database_name=engine.url.database)
 
-    alembic_cfg = Config(get_root_path() / "alembic.ini")
-    alembic_cfg.set_main_option("skip_logging_config", "true")
-
-    def needs_migration():
-        """
-        In alembic, there isn't necessarily a single tip. This is why it's `heads` not `head`.
-
-        The alembic migration data model is a DAG, not a linked list, but in practice for us it should be a simple linked
-        list so we treat it as such.
-        """
-        from alembic.runtime.migration import MigrationContext
-        from alembic.script import ScriptDirectory
-
-        script_dir = ScriptDirectory.from_config(alembic_cfg)
-        heads = script_dir.get_heads()
-
-        with get_engine().connect() as conn:
-            ctx = MigrationContext.configure(conn)
-            current_heads = ctx.get_current_heads()
-
-            if needs_migration := set(current_heads) != set(heads):
-                log.info("migrations needed", current_heads=current_heads, heads=heads)
-            else:
-                log.info(
-                    "no migrations needed", current_heads=current_heads, heads=heads
-                )
-
-            return needs_migration
-
-    # it's possible for this command to run concurrently if run on container start, which is the only way in some
-    # environments. When this occurs, we should wait to acquire a distributed migration lock.
+    # It's possible for this command to run concurrently if run on container start, which is the only way in some
+    # production environments. When this occurs, we should wait to acquire a distributed migration lock before running migrations
+    # to avoid running the same migration at the same time. This is not done automatically by Alembic.
+    #
+    # The distributed lock is *not* managed by redis, but instead we use a built-in distributed lock functionality in Postgres.
+    # This is implemented in the migrations/env.py file, so that however alembic migrations are run the same locking functionality is used.
+    #
     # Ideally, we would know that the migration succeeded on the other box, but that would require digging in to the
-    # Alembic internals, and it's easier just to run the migrations again which will result in a noop if another container
-    # already executed the migrations.
+    # Alembic internals, and it's easier just to run the migrations again here, which will result in a noop if another container
+    # already executed the migrations. This is why we just `command.upgrade` after checking if migrations should be run.
 
-    if needs_migration():
-        command.upgrade(alembic_cfg, "head")
+    if needs_alembic_migration():
+        command.upgrade(get_alembic_config(), "head")
 
 
 # TODO remove once this exists upstream in ActiveModel
