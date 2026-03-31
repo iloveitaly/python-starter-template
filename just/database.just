@@ -66,6 +66,7 @@ db_reset_head: _dev_only db_reset_schema db_migrate db_migrate_head db_seed
 db_destroy: _dev_only db_reset db_migrate db_seed
 
 db_lint:
+	# ensures no additional migrations are needed
 	uv run alembic check
 
 	# TODO there's also a more advanced github integration, but seems a bit cleaner:
