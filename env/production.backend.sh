@@ -15,6 +15,8 @@ export LOG_LEVEL=info
 export SMTP_URL=smtp://fake_host.com:1025
 # TODO should add automatically replacing these domains with real values to bootstrap script
 export EMAIL_FROM_ADDRESS=hello@domain.com
+
+export BASE_URL=https://app.domain.com/
 export ALLOWED_HOST_LIST=app.domain.com,api.domain.com
 
 # number of processes to run concurrency in the celery worker pool
