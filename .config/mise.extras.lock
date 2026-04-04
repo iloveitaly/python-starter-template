@@ -26,7 +26,7 @@ url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.33.1/op_darwin_amd64_v2.33
 url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.33.1/op_windows_amd64_v2.33.1.zip"
 
 [[tools."cargo:ast-grep"]]
-version = "0.42.0"
+version = "0.42.1"
 backend = "cargo:ast-grep"
 
 [[tools."cargo:commitlint-rs"]]
@@ -106,7 +106,7 @@ checksum = "sha256:f76f1a38e7e918c772bfb03071ca7cf9b87b51b6b56d8332dcf391f99841f
 url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.4/lefthook_2.1.4_Windows_x86_64.gz"
 
 [[tools."pipx:aiautocommit"]]
-version = "0.19.0"
+version = "0.20.0"
 backend = "pipx:aiautocommit"
 
 [[tools."pipx:jc"]]
