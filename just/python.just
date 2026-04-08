@@ -221,21 +221,25 @@ _py_generate:
 
 # open playwright trace viewer on last trace zip. --remote to download last failed remote trace
 [arg("remote", long, help="download last failed remote trace", value="true")]
+[script]
 py_playwright_view_trace remote="false": _dev_only
-		mkdir -p ${PLAYWRIGHT_RESULT_DIRECTORY}
-
-		if [ "{{remote}}" = "true" ]; then \
-			$(just ci_last_failed-download --output-dir) && \
-			if [ -d "${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id}/test-results/tmp/test-results" ]; then \
-				mv ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id}/test-results/tmp/test-results/* ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id}/ && \
-				rm -rf ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id}/test-results; \
-			fi; \
-			echo "{{BLUE}}Downloaded remote GHA run to ${PLAYWRIGHT_RESULT_DIRECTORY}/${failed_run_id}{{NORMAL}}"; \
+		if [ "{{remote}}" = "true" ]; then
+			gha_artifact_dir=$(just ci_last_failed-download --output-dir)
+			playwright_directory="${gha_artifact_dir}/playwright"
+			echo "{{BLUE}}Downloaded remote GHA run to ${gha_artifact_dir}{{NORMAL}}";
+		else
+			playwright_directory="${PLAYWRIGHT_RESULT_DIRECTORY}"
 		fi
+
+		all_traces=$(fd --no-ignore-vcs --extension=zip --type=file . ${playwright_directory} --exec-batch stat -f '%m %N' | sort -n)
+
+		echo "{{BLUE}}All traces:{{NORMAL}}"
+		echo "$all_traces" | cut -f2- -d" "
 
 		# NOTE it's insane, but fd does not have a "find last modified file", so we have this insane command to grab the last modified trace zip
 		# https://github.com/sharkdp/fd/issues/196
-		uv run playwright show-trace $(fd --no-ignore-vcs . ${PLAYWRIGHT_RESULT_DIRECTORY} -e zip -t f --exec-batch stat -f '%m %N' | sort -n | tail -1 | cut -f2- -d" ")
+		echo "{{YELLOW}}Opening most recent trace:{{NORMAL}}"
+		uv run playwright show-trace $(echo "$all_traces" | tail -1 | cut -f2- -d" ")
 
 # download failed integration test debugging data from the last failed CI run, useful for updating non-macos screenshot versions and debugging integration tests
 [script]
