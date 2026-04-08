@@ -5,7 +5,7 @@ version = "2.37.1"
 backend = "asdf:direnv"
 
 [[tools.just]]
-version = "1.48.1"
+version = "1.49.0"
 backend = "ubi:casey/just"
 
 [[tools.python]]
@@ -48,5 +48,5 @@ url = "https://github.com/astral-sh/python-build-standalone/releases/download/20
 provenance = "github-attestations"
 
 [[tools.uv]]
-version = "0.11.3"
+version = "0.11.4"
 backend = "asdf:uv"

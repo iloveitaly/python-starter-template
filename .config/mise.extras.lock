@@ -38,7 +38,7 @@ version = "0.4.4"
 backend = "cargo:fastmod"
 
 [[tools."cargo:just-lsp"]]
-version = "0.4.0"
+version = "0.4.1"
 backend = "cargo:just-lsp"
 
 [[tools.dive]]
@@ -74,36 +74,43 @@ checksum = "sha256:3e764ff28c7b89f4da679deac80483249fbbae3a1d512c103d54609eec090
 url = "https://github.com/wagoodman/dive/releases/download/v0.13.1/dive_0.13.1_windows_amd64.zip"
 
 [[tools.lefthook]]
-version = "2.1.4"
+version = "2.1.5"
 backend = "aqua:evilmartians/lefthook"
 
 [tools.lefthook."platforms.linux-arm64"]
-checksum = "sha256:68f563d14ff2d24539c2c09cfab32895081282a52d08da14f14268de851e7144"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.4/lefthook_2.1.4_Linux_aarch64.gz"
+checksum = "sha256:0823d67541e34d4530d678a9492dba8e1edcfc19cbdbc6d28014cb97a8522c36"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.5/lefthook_2.1.5_Linux_aarch64.gz"
+provenance = "github-attestations"
 
 [tools.lefthook."platforms.linux-arm64-musl"]
-checksum = "sha256:68f563d14ff2d24539c2c09cfab32895081282a52d08da14f14268de851e7144"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.4/lefthook_2.1.4_Linux_aarch64.gz"
+checksum = "sha256:0823d67541e34d4530d678a9492dba8e1edcfc19cbdbc6d28014cb97a8522c36"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.5/lefthook_2.1.5_Linux_aarch64.gz"
+provenance = "github-attestations"
 
 [tools.lefthook."platforms.linux-x64"]
-checksum = "sha256:991a11fb98c853dbecf7de3fe7f4b5648872f4279ac2b50ef3302f0a058c99bd"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.4/lefthook_2.1.4_Linux_x86_64.gz"
+checksum = "sha256:0faf5a547afbcedc3f2e9bef46053a73bcbfc2478e47d39bde30784e08f97190"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.5/lefthook_2.1.5_Linux_x86_64.gz"
+provenance = "github-attestations"
 
 [tools.lefthook."platforms.linux-x64-musl"]
-checksum = "sha256:991a11fb98c853dbecf7de3fe7f4b5648872f4279ac2b50ef3302f0a058c99bd"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.4/lefthook_2.1.4_Linux_x86_64.gz"
+checksum = "sha256:0faf5a547afbcedc3f2e9bef46053a73bcbfc2478e47d39bde30784e08f97190"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.5/lefthook_2.1.5_Linux_x86_64.gz"
+provenance = "github-attestations"
 
 [tools.lefthook."platforms.macos-arm64"]
-checksum = "sha256:41fa330710344f66683edb2ee19dfd531e9469bebf7c89ef8e201263565c12ad"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.4/lefthook_2.1.4_MacOS_arm64.gz"
+checksum = "sha256:f3aeef5fc287c6619a2f043ce3199e514bfc0639739be393a3759dd4470ee292"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.5/lefthook_2.1.5_MacOS_arm64.gz"
+provenance = "github-attestations"
 
 [tools.lefthook."platforms.macos-x64"]
-checksum = "sha256:1b59f28e460577150b0b5c1fb1a3cc3868fb4cee9c76900daa85ba99ca37b4a1"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.4/lefthook_2.1.4_MacOS_x86_64.gz"
+checksum = "sha256:27e48734de8f632e64fff07e8ae9f82514713b9f77e7bf91d8925ef1ea59a901"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.5/lefthook_2.1.5_MacOS_x86_64.gz"
+provenance = "github-attestations"
 
 [tools.lefthook."platforms.windows-x64"]
-checksum = "sha256:f76f1a38e7e918c772bfb03071ca7cf9b87b51b6b56d8332dcf391f99841f561"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.4/lefthook_2.1.4_Windows_x86_64.gz"
+checksum = "sha256:bf14d028984d24a72887f4f73d8899f5879c11786f4ba79a81c676fb3cefce1e"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.5/lefthook_2.1.5_Windows_x86_64.gz"
+provenance = "github-attestations"
 
 [[tools."pipx:aiautocommit"]]
 version = "0.20.0"
@@ -118,5 +125,5 @@ version = "0.12.0"
 backend = "pipx:llm-ide-rules"
 
 [[tools."pipx:uv-development-toggle"]]
-version = "0.6.3"
+version = "0.6.4"
 backend = "pipx:uv-development-toggle"
