@@ -28,5 +28,5 @@ class UserActionAuditData(PydanticBaseModel):
         return cls(
             ip_address=ip_address(client_ip),
             build_version=BUILD_COMMIT,
-            timestamp=Instant.now().to_system_tz().py_datetime(),
+            timestamp=Instant.now().to_system_tz().to_stdlib(),
         )
