@@ -5,12 +5,7 @@ import { usePostHog } from "posthog-js/react"
 
 import AdminBar from "~/components/AdminBar"
 
-import {
-  RedirectToSignIn,
-  Show,
-  useAuth,
-  useUser,
-} from "@clerk/react"
+import { RedirectToSignIn, Show, useAuth, useUser } from "@clerk/react"
 
 // This layout assumes the user is authenticated. Any clientLoaders making authenticated
 // requests will run an additional check and redirect the user to the login page if it fails.
