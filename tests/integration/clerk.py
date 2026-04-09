@@ -91,9 +91,11 @@ def is_publishable_key(key: str) -> bool:
         PUBLISHABLE_KEY_TEST_PREFIX
     )
 
-    has_valid_postfix = base64_decode(
-        key.split("_")[2] if len(key.split("_")) > 2 else ""
-    ).decode("utf-8").endswith("$")
+    has_valid_postfix = (
+        base64_decode(key.split("_")[2] if len(key.split("_")) > 2 else "")
+        .decode("utf-8")
+        .endswith("$")
+    )
 
     return has_valid_prefix and has_valid_postfix
 
@@ -219,4 +221,3 @@ def teardown_clerk_testing_token(
         frontend_api_url = parsed_result.frontend_api
 
     page.unroute(f"https://{frontend_api_url}/v1/**")
-

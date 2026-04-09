@@ -1,4 +1,3 @@
-import base64
 import json
 import typing as t
 
@@ -162,6 +161,7 @@ def distribution_headers(distribution) -> dict[str, str]:
 def decode_cookie(response: Response):
     "decode a signed cookie into a dict for inspection and assertion"
     from app.routes.middleware import SESSION_SECRET_KEY
+
     from tests.utils import starlette_session_decode
 
     signer = itsdangerous.Signer(SESSION_SECRET_KEY)

@@ -1,7 +1,16 @@
 import base64
-import typing as t
 
 from tenacity import retry, stop_after_attempt
+
+from app.configuration.clerk import clerk
+from app.environments import is_testing
+from app.utils.geolocation import get_cached_public_ip
+
+from tests.constants import (
+    CLERK_ALL_USERS_TO_PRESERVE,
+)
+
+from .log import log
 
 
 def base64_decode(original_b64_string: str | bytes, url_safe: bool = False) -> bytes:
@@ -35,17 +44,6 @@ def starlette_session_decode(decoded_signed_value: bytes) -> bytes:
         data = data.split(b".")[0]
 
     return base64_decode(data, url_safe=True)
-
-
-from app.configuration.clerk import clerk
-from app.environments import is_testing
-from app.utils.geolocation import get_cached_public_ip
-
-from tests.constants import (
-    CLERK_ALL_USERS_TO_PRESERVE,
-)
-
-from .log import log
 
 
 def get_public_ip_address() -> str | None:
