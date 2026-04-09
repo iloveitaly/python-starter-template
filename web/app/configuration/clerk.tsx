@@ -1,5 +1,6 @@
-import { ClerkProvider } from "@clerk/clerk-react"
+import { ClerkProvider } from "@clerk/react"
 import { loadClerkJsScript } from "@clerk/shared/loadClerkJsScript"
+import type { LoadedClerk } from "@clerk/shared/types"
 import { invariant } from "@epic-web/invariant"
 
 // required in prod and dev
@@ -26,7 +27,9 @@ This whole situation isn't great. Here's what is happening:
 */
 
 export async function getClient() {
-  if (!window.Clerk) {
+  const windowWithClerk = window as Window & { Clerk?: LoadedClerk }
+
+  if (!windowWithClerk.Clerk) {
     // recommended officially here:
     // https://clerk.com/docs/references/sdk/frontend-only#call-window-clerk-load
     await loadClerkJsScript({
@@ -34,9 +37,9 @@ export async function getClient() {
     })
   }
 
-  invariant(window.Clerk, "Clerk should be defined")
+  invariant(windowWithClerk.Clerk, "Clerk should be defined")
 
-  const clerk = window.Clerk
+  const clerk = windowWithClerk.Clerk
 
   if (!clerk.loaded) {
     await clerk.load()

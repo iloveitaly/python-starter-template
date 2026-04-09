@@ -7,11 +7,10 @@ import AdminBar from "~/components/AdminBar"
 
 import {
   RedirectToSignIn,
-  SignedIn,
-  SignedOut,
+  Show,
   useAuth,
   useUser,
-} from "@clerk/clerk-react"
+} from "@clerk/react"
 
 // This layout assumes the user is authenticated. Any clientLoaders making authenticated
 // requests will run an additional check and redirect the user to the login page if it fails.
@@ -43,14 +42,14 @@ function PosthogIdentity() {
 export default function AuthenticatedLayout() {
   return (
     <>
-      <SignedIn>
+      <Show when="signed-in">
         <PosthogIdentity />
         <AdminBar />
         <Outlet />
-      </SignedIn>
-      <SignedOut>
+      </Show>
+      <Show when="signed-out">
         <RedirectToSignIn />
-      </SignedOut>
+      </Show>
     </>
   )
 }

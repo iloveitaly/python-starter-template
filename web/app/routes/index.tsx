@@ -1,17 +1,17 @@
 import { Navigate, href } from "react-router"
 
-import { SignIn, SignedIn, SignedOut } from "@clerk/clerk-react"
+import { Show, SignIn } from "@clerk/react"
 
 // redirect users to the correct page based on their authentication status
-export default function LoginRedirect() {
+export default function LoginRedirectPage() {
   return (
     <div className="mt-[10%] flex min-h-screen justify-center">
-      <SignedIn>
+      <Show when="signed-in">
         <Navigate to={href("/home")} />
-      </SignedIn>
-      <SignedOut>
+      </Show>
+      <Show when="signed-out">
         <SignIn />
-      </SignedOut>
+      </Show>
     </div>
   )
 }
