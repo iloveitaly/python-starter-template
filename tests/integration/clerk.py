@@ -30,6 +30,8 @@ from clerk_backend_api import Clerk
 from playwright.sync_api import Page
 from whenever import Instant
 
+from tests.utils import base64_decode
+
 logger = logging.getLogger(__name__)
 
 
@@ -91,7 +93,7 @@ def is_publishable_key(key: str) -> bool:
 
     has_valid_postfix = base64_decode(
         key.split("_")[2] if len(key.split("_")) > 2 else ""
-    ).endswith("$")
+    ).decode("utf-8").endswith("$")
 
     return has_valid_prefix and has_valid_postfix
 
@@ -108,7 +110,7 @@ def parse_publishable_key(
         "development" if key.startswith(PUBLISHABLE_KEY_TEST_PREFIX) else "production"
     )
 
-    frontend_api = base64_decode(key.split("_")[2])[:-1]
+    frontend_api = base64_decode(key.split("_")[2]).decode("utf-8")[:-1]
 
     if proxy_url:
         frontend_api = proxy_url
@@ -218,16 +220,3 @@ def teardown_clerk_testing_token(
 
     page.unroute(f"https://{frontend_api_url}/v1/**")
 
-
-def base64_decode(original_b64_string: str) -> str:
-    """
-    Decode a base64 encoded string, using the most appropriate method available.
-
-    Py is touchy about having the right amount of whitespace in the input, so we add padding:
-    https://stackoverflow.com/questions/2941995/python-ignore-incorrect-padding-error-when-base64-decoding
-    """
-    import base64
-
-    b64_string = original_b64_string + "=" * ((4 - len(original_b64_string) % 4) % 4)
-
-    return base64.b64decode(b64_string).decode("utf-8")

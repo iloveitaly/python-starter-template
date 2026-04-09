@@ -162,6 +162,7 @@ def distribution_headers(distribution) -> dict[str, str]:
 def decode_cookie(response: Response):
     "decode a signed cookie into a dict for inspection and assertion"
     from app.routes.middleware import SESSION_SECRET_KEY
+    from tests.utils import starlette_session_decode
 
     signer = itsdangerous.Signer(SESSION_SECRET_KEY)
     encrypted_cookie_value = response.cookies.get("session")
@@ -170,5 +171,5 @@ def decode_cookie(response: Response):
         return {}
 
     decoded = signer.unsign(encrypted_cookie_value)
-    session_data = json.loads(base64.b64decode(decoded))
+    session_data = json.loads(starlette_session_decode(decoded))
     return session_data
