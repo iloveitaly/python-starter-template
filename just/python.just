@@ -107,14 +107,14 @@ py_lint +FILES=".":
 		rm pyright_report.json
 
 		# check jinja2 template language
-		uv run j2lint --extension j2,html {{JINJA_TEMPLATE_DIR}} --json > j2link_report.json || exit_code=$?
+		uv run j2lint --extensions j2,html {{JINJA_TEMPLATE_DIR}} --json > j2link_report.json || exit_code=$?
 		jq -r '(.ERRORS[] | "::\(if .severity == "HIGH" then "error" else "warning" end) file=\(.filename),line=\(.line_number),title=\(.id)::\(.message)"), (.WARNINGS[] | "::warning file=\(.filename),line=\(.line_number),title=\(.id)::\(.message)")' < j2link_report.json
 		rm j2link_report.json
 	else
 		uv run ruff check {{FILES}} || exit_code=$?
 		uv run pyright {{FILES}} || exit_code=$?
 		uvx detect-shadowed-modules@latest || exit_code=$?
-		uv run j2lint --extension j2,html {{JINJA_TEMPLATE_DIR}}
+		uv run j2lint --extensions j2,html {{JINJA_TEMPLATE_DIR}} || exit_code=$?
 	fi
 
 	# TODO should only run if {{FILES}} contains a template
