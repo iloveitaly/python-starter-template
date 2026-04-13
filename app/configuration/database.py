@@ -4,6 +4,8 @@ import activemodel
 from activemodel import BaseModel
 from activemodel.session_manager import get_engine
 from sqlalchemy import inspect
+from sqlalchemy.ext.compiler import compiles
+from sqlalchemy.types import Integer
 from sqlmodel import SQLModel
 
 from ..environments import is_development, is_testing
@@ -39,6 +41,11 @@ def configure_database():
     The only configuration passed to active model, for now this project is tightly coupled
     so the defaults are exactly what we want.
     """
+
+    # no reason BIGINT shouldn't be the default, this satisfies the squawk errors
+    @compiles(Integer, "postgresql")
+    def compile_bigint(type_, compiler, **kw):
+        return "BIGINT"
 
     # initialize before running migrations since the migration may need to use the database
     # for standard schema mutations, this should not occur, but if we interact with SQLModel using the session helpers
