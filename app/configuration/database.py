@@ -42,11 +42,6 @@ def configure_database():
     so the defaults are exactly what we want.
     """
 
-    # no reason BIGINT shouldn't be the default, this satisfies the squawk errors
-    @compiles(Integer, "postgresql")
-    def compile_bigint(type_, compiler, **kw):
-        return "BIGINT"
-
     # initialize before running migrations since the migration may need to use the database
     # for standard schema mutations, this should not occur, but if we interact with SQLModel using the session helpers
     # we need to have this set in order to use those (at least, for now).
