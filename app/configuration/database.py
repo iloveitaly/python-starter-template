@@ -4,8 +4,6 @@ import activemodel
 from activemodel import BaseModel
 from activemodel.session_manager import get_engine
 from sqlalchemy import inspect
-from sqlalchemy.ext.compiler import compiles
-from sqlalchemy.types import Integer
 from sqlmodel import SQLModel
 
 from ..environments import is_development, is_testing
