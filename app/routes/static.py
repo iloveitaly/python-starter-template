@@ -19,8 +19,8 @@ There are some nuances we need to consider:
 """
 
 import mimetypes
-import os
 import re
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
@@ -112,7 +112,7 @@ class GZipStaticFiles(StaticFiles):
                 gz_path = full_path + ".gz"
 
                 # not all assets have a gzip version
-                if os.path.exists(gz_path):
+                if Path(gz_path).exists():
                     content_type, _ = mimetypes.guess_type(full_path)
                     headers = GZIP_HEADERS.copy()
 
@@ -141,7 +141,7 @@ class GZipStaticFiles(StaticFiles):
         We detect this 8 character hash in the file name"
         """
 
-        filename = os.path.basename(path)
+        filename = Path(path).name
         return bool(VITE_HASH_PATTERN.match(filename))
 
 
