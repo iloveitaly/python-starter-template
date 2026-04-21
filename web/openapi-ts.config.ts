@@ -1,4 +1,4 @@
-import { defaultPlugins, defineConfig } from "@hey-api/openapi-ts"
+import { defineConfig } from "@hey-api/openapi-ts"
 
 const { OPENAPI_JSON_PATH, TEST_RESULTS_DIRECTORY: TMP_DIRECTORY } = process.env
 
@@ -18,12 +18,11 @@ export default defineConfig({
     // TODO https://github.com/ferdikoomen/openapi-typescript-codegen/issues/1252#issuecomment-2593462128
     // converts all openapi snake case attributes to camelCase, but does not translate the api request
     // case: "camelCase",
-    postProcess: ["eslint", "prettier"],
+    postProcess: ["prettier"],
   },
-  experimentalParser: true,
   plugins: [
     "@hey-api/client-fetch",
-    ...defaultPlugins,
+    "@hey-api/sdk",
     // https://github.com/hey-api/openapi-ts/issues/1571
     {
       identifierCase: "preserve",
