@@ -6,7 +6,7 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
-    "module": "ESNext",
+    "module": "ES2022",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "target": "ES2022",
@@ -14,11 +14,11 @@
     "allowJs": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
     "paths": {
       "~/*": ["./app/*"],
       "@/*": ["./app/*"]
     },
+    "verbatimModuleSyntax": true,
     "noEmit": true,
     "rootDirs": [".", ".react-router/types/"]
   }
