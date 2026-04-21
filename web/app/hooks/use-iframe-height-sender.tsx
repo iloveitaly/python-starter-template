@@ -10,7 +10,7 @@
  * - Fallback to wildcard origin if referrer cannot be determined
  */
 import { useEffect } from "react"
-import { ComponentType } from "react"
+import { type ComponentType } from "react"
 
 import { debounce } from "~/lib/utils"
 

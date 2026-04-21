@@ -1,7 +1,7 @@
 /**
  * Originally, we were using loglevel. tslog is typescript-by-default, has JSON support, and is a bit more modern.
  */
-import { ILogObj, Logger } from "tslog"
+import { type ILogObj, Logger } from "tslog"
 
 // ILogLevel
 import { isProduction } from "~/utils/environment"

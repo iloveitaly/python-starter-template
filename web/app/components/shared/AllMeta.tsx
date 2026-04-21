@@ -24,7 +24,7 @@
  *
  * @module AllMeta
  */
-import React, { ReactNode, createContext, useContext } from "react"
+import React, { type ReactNode, createContext, useContext } from "react"
 
 // Type definitions, based on vite-plugin-open-graph with audio added for completeness
 interface Options {

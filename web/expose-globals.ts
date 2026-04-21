@@ -6,7 +6,7 @@
  * https://github.com/remix-run/react-router/issues/12352
  */
 import fs from "fs"
-import { Plugin } from "vite"
+import { type Plugin } from "vite"
 
 import path from "path"
 
