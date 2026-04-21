@@ -72,7 +72,7 @@ nuke: js_nuke py_nuke db_nuke
 		rm -rf .git/hooks/* || true
 
 
-TEMPLATE_UPDATE_NOTICE := """
+TEMPLATE_UPDATE_NOTICE := '''
 This project was just updated using the python copier tool with the upstream template (github reference in @.copier-answers.yml).
 
 However, there are some changes which are not automatically applied:
@@ -87,7 +87,7 @@ However, there are some changes which are not automatically applied:
 Look at the upstream template, focusing on what is skipped by the automatic update, and manually apply important changes from the upstream template.
 
 Pass this prompt off to an LLM to handle it for you :)
-"""
+'''
 
 # syncs the project with the upstream python-starter-template repo.
 update_from_upstream_template:
