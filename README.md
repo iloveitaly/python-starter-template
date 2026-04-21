@@ -324,7 +324,7 @@ I tried both [factoryboy](https://factoryboy.readthedocs.io/en/stable/index.html
 
 There are some significant gaps in functionality, but the maintainers [have been open to contributions.](https://github.com/litestar-org/polyfactory/pulls?q=is%3Apr+author%3Ailoveitaly)
 
-Factories live in `app/factories/`. The intent is that the same factory implementations can be reused by tests, the interactive playground, and seed data generation. 
+Factories live in `app/factories/`. The intent is that the same factory implementations can be reused by tests, the interactive playground, and seed data generation.
 Seed data generation should be able to be easily run against a `productionish` environment (staging, preview, etc).
 
 `app.factories` is guarded against production imports.
@@ -852,6 +852,10 @@ worker: rq worker --with-scheduler -w rq.worker.SpawnWorker
 * TablePlus via Set App is a great database workbench
 * `httpie` has a great desktop app for API testing
 * Raycast + UUID extension is great for helping with type IDs
+
+### Data Model / ORM
+
+* You should use `BigInt` instead of `int` for field types
 
 ## Production
 
