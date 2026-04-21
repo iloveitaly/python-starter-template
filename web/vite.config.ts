@@ -4,7 +4,6 @@ import { checkEnv } from "vite-plugin-check-env"
 import viteCompression from "vite-plugin-compression"
 import devtoolsJson from "vite-plugin-devtools-json"
 import svgr from "vite-plugin-svgr"
-import Terminal from "vite-plugin-terminal"
 
 import { invariant } from "@epic-web/invariant"
 import { reactRouter } from "@react-router/dev/vite"
@@ -91,13 +90,14 @@ function getModePlugins(config: ConfigEnv): PluginOption[] {
     "Missing JAVASCRIPT_SERVER_PORT environment variable. Include to run build.",
   )
 
-  return [Terminal(), devtoolsJson()]
+  return [devtoolsJson()]
 }
 
 // test configuration is done via vitest.config.ts, this is only for the build system
 export default defineConfig((config) => ({
   // TODO need to disable .env file loading https://discord.com/channels/804011606160703521/1307442221288656906
   // build.outDir is ignored and buildDirectory in react-router.config.ts is used instead
+  devtools: true,
   build: {
     // option required for Sentry sourcemap upload
     sourcemap: true,
@@ -119,6 +119,7 @@ export default defineConfig((config) => ({
     tsconfigPaths: true,
   },
   server: {
+    forwardConsole: true,
     // by default, vite will only listen on ipv6 loopback!
     // there does not seem to be an easy way to listen on ipv4 & ipv6
     // https://caddy.community/t/reverse-proxy-only-looking-to-ipv4-loopback/26345
