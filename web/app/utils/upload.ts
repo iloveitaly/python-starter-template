@@ -7,6 +7,7 @@ import { publicClient } from "~/configuration/client"
  * secure, time-limited access to your storage provider (e.g., S3, Google Cloud Storage).
  * The backend implementation should verify the user's permissions and return a valid signed URL.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getSignedUrl = async (_args: any): Promise<any> => {
   console.warn("getSignedUrl called. This is a mock implementation.")
   return {
