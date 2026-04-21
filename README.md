@@ -351,6 +351,7 @@ General recommendations for naming things throughout the system:
 * Since `tests/` is in the top-level of the project, `__init__.py` is required.
 * All fixtures should go in `conftest.py`. Importing fixtures externally [could break in future versions.](https://docs.pytest.org/en/7.4.x/how-to/fixtures.html#using-fixtures-from-other-projects)
 * Transactional database cleaning is used for all non-integration tests.
+* `assert actual == expected` is the standard assertion idiom to ensure pytest diffs are intuitive.
 
 ### Pytest Formatting
 
