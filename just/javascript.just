@@ -122,4 +122,4 @@ js_shadcn *arguments:
 	{{_pnpm}} dlx shadcn@latest {{arguments}}
 
 js_shadcn_upgrade:
-	just js_shadcn diff
+	just js_shadcn add -y --overwrite $(for file in {{WEB_DIR}}/app/components/ui/*.tsx; do basename "$file" .tsx; done)
