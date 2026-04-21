@@ -101,12 +101,19 @@ export default defineConfig((config) => ({
   build: {
     // option required for Sentry sourcemap upload
     sourcemap: true,
-    minify: "esbuild",
+    // Using OXC for faster builds.
+    minify: "oxc",
+    /*
+    // NOTE: Switched to OXC minifier for performance. OXC does not currently support 'drop' for console/debugger.
+    // If we need to re-enable console stripping, switch back to minify: "esbuild".
+    //
     // annoying to have to worry about removing these, and we don't have our standard logging
     // https://github.com/vitejs/vite/discussions/7920
+    minify: "esbuild",
     esbuild: {
       drop: ["console", "debugger"],
     },
+    */
   },
   resolve: {
     tsconfigPaths: true,
