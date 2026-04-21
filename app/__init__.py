@@ -15,7 +15,6 @@ from .configuration.database import configure_database, run_migrations
 from .configuration.debugging import configure_debugging
 from .configuration.emailer import configure_mailer
 from .configuration.lang import configure_python
-from .configuration.openai import configure_openai
 from .configuration.patches import configure_patches
 from .configuration.posthog import configure_posthog
 from .configuration.sentry import configure_sentry
@@ -55,7 +54,6 @@ def setup():
     # explicitly order configuration execution in case there are dependencies
     configure_python()
     configure_database()
-    configure_openai()
     configure_sentry()
     configure_mailer()
     check_service_versions()

@@ -26,7 +26,6 @@ export CELERY_WORKER_CONCURRENCY=5
 export WEB_CONCURRENCY=1
 
 # TODO swap these out for real values, will not complain on build if they exist and are fake
-export OPENAI_API_KEY="fake"
 export CLERK_PRIVATE_KEY="fake"
 
 # TODO we need to document these further, and maybe autogenerate some of the secrets?
