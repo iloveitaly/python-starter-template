@@ -110,5 +110,5 @@ class WebhookEvent(BaseModel, TimestampsMixin, TypeIDMixin("wh"), table=True):
             destination=webhook_endpoint,
             type=webhook_data.type,
             payload=webhook_data.payload(),
-            originating_id=webhook_data.id.uuid,
+            originating_id=str(webhook_data.id.uuid),
         ).save()
