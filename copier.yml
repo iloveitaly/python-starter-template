@@ -16,7 +16,7 @@ _message_before_copy: |
 _message_after_copy: |
   Next steps:
 
-    1. Configure all 1p secret references in '.env*' (rg 'op://' --hidden)
+    1. Configure all 1p secret references in 'env/*' (rg 'op://' --hidden)
     2. Run 'just setup' or 'just setup --extras'
     3. Run 'just py_dev' to start a dev server
     4. Take a look at recommended shell hooks, etc specified in the readme.
