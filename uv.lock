@@ -1358,7 +1358,7 @@ dependencies = [
 
 [[package]]
 name = "ipython"
-version = "9.12.0"
+version = "9.13.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorama", marker = "sys_platform == 'win32'" },
@@ -1368,13 +1368,14 @@ dependencies = [
     { name = "matplotlib-inline" },
     { name = "pexpect", marker = "sys_platform != 'emscripten' and sys_platform != 'win32'" },
     { name = "prompt-toolkit" },
+    { name = "psutil" },
     { name = "pygments" },
     { name = "stack-data" },
     { name = "traitlets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/3a/73/7114f80a8f9cabdb13c27732dce24af945b2923dcab80723602f7c8bc2d8/ipython-9.12.0.tar.gz", hash = "sha256:01daa83f504b693ba523b5a407246cabde4eb4513285a3c6acaff11a66735ee4", size = 4428879, upload-time = "2026-03-27T09:42:45.312Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/cd/c4/87cda5842cf5c31837c06ddb588e11c3c35d8ece89b7a0108c06b8c9b00a/ipython-9.13.0.tar.gz", hash = "sha256:7e834b6afc99f020e3f05966ced34792f40267d64cb1ea9043886dab0dde5967", size = 4430549, upload-time = "2026-04-24T12:24:55.221Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/59/22/906c8108974c673ebef6356c506cebb6870d48cedea3c41e949e2dd556bb/ipython-9.12.0-py3-none-any.whl", hash = "sha256:0f2701e8ee86e117e37f50563205d36feaa259d2e08d4a6bc6b6d74b18ce128d", size = 625661, upload-time = "2026-03-27T09:42:42.831Z" },
+    { url = "https://files.pythonhosted.org/packages/b9/86/3060e8029b7cc505cce9a0137431dda81d0a3fde93a8f0f50ee0bf37a795/ipython-9.13.0-py3-none-any.whl", hash = "sha256:57f9d4639e20818d328d287c7b549af3d05f12486ea8f2e7f73e52a36ec4d201", size = 627274, upload-time = "2026-04-24T12:24:53.038Z" },
 ]
 
 [[package]]
@@ -3420,15 +3421,15 @@ wheels = [
 
 [[package]]
 name = "stripe"
-version = "15.0.1"
+version = "15.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "requests" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/90/b4/bd4baf56cfb9ec7ee66b0d33611e196afaabd12ddcc2322f29449649ec5f/stripe-15.0.1.tar.gz", hash = "sha256:3c04e8cc9ec8d9542f9dd998e2a4361dbe3d0b6150ca17d3f352546cf22c5565", size = 1490326, upload-time = "2026-04-01T23:52:21.218Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/45/26/5d6f5f5beae6f1ff78213e2e6f4fbd431518dcd98733cdd39fb4ba0d01d3/stripe-15.1.0.tar.gz", hash = "sha256:24bd3b6bd0969a4841bd4d7681556a9e35e46c414a07c8590a225fbd5a878450", size = 1501673, upload-time = "2026-04-24T00:18:58.612Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e4/ee/4537ba64d6c2f8bc58667f4381429c804bbc2e854b5857337cbc39add620/stripe-15.0.1-py3-none-any.whl", hash = "sha256:0a525e4550b5bf7fb44ff682266b9d46cfb38dd6f1f97a85d361c452f69e6b4b", size = 2132160, upload-time = "2026-04-01T23:52:18.647Z" },
+    { url = "https://files.pythonhosted.org/packages/d8/4e/fd9cb74ddf1e61fb6241e2f6799a81ef99bf6cf2e94f8812ee1cd5458e5d/stripe-15.1.0-py3-none-any.whl", hash = "sha256:bdfb556be08662a41833e6403607ebf12e0062cae4f9b93e2b89b6ba926d7c82", size = 2143199, upload-time = "2026-04-24T00:18:56.027Z" },
 ]
 
 [[package]]
@@ -3654,11 +3655,11 @@ wheels = [
 
 [[package]]
 name = "tzdata"
-version = "2026.1"
+version = "2026.2"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/19/f5/cd531b2d15a671a40c0f66cf06bc3570a12cd56eef98960068ebbad1bf5a/tzdata-2026.1.tar.gz", hash = "sha256:67658a1903c75917309e753fdc349ac0efd8c27db7a0cb406a25be4840f87f98", size = 197639, upload-time = "2026-04-03T11:25:22.002Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ba/19/1b9b0e29f30c6d35cb345486df41110984ea67ae69dddbc0e8a100999493/tzdata-2026.2.tar.gz", hash = "sha256:9173fde7d80d9018e02a662e168e5a2d04f87c41ea174b139fbef642eda62d10", size = 198254, upload-time = "2026-04-24T15:22:08.651Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b0/70/d460bd685a170790ec89317e9bd33047988e4bce507b831f5db771e142de/tzdata-2026.1-py2.py3-none-any.whl", hash = "sha256:4b1d2be7ac37ceafd7327b961aa3a54e467efbdb563a23655fbfe0d39cfc42a9", size = 348952, upload-time = "2026-04-03T11:25:20.313Z" },
+    { url = "https://files.pythonhosted.org/packages/ce/e4/dccd7f47c4b64213ac01ef921a1337ee6e30e8c6466046018326977efd95/tzdata-2026.2-py2.py3-none-any.whl", hash = "sha256:bbe9af844f658da81a5f95019480da3a89415801f6cc966806612cc7169bffe7", size = 349321, upload-time = "2026-04-24T15:22:05.876Z" },
 ]
 
 [[package]]
