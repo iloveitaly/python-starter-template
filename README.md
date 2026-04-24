@@ -924,3 +924,7 @@ Great for grepping and investigating patterns.
 #### Javascript/Remix/React Router
 
 * https://github.com/vercel/ai-chatbot
+
+### Error Tracking (Sentry)
+
+If you add OpenAI functionality back to this project, ensure you add the `openai` extra to the `sentry-sdk` dependency in `pyproject.toml` (e.g., `"sentry-sdk[fastapi,celery,sqlalchemy,openai]>=X.X.X"`). This ensures OpenAI API requests are tracked properly in Sentry.

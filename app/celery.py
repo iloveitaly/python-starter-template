@@ -52,7 +52,7 @@ class BaseTaskWithRetry(DBSessionTask):
     retry sequence in case an external system is down.
 
     This class extends the Celery Task class to implement a slower retry sequence,
-    which is useful when dealing with external systems (like openai) that might be temporarily down
+    which is useful when dealing with external systems (like external API) that might be temporarily down
     or rate limited.
 
     Attributes:

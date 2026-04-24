@@ -80,7 +80,6 @@ export SESSION_SECRET_KEY=de76c21e-e79d-4ad8-8e89-80ec58c71997
 
 op_inject_source <<'EOF'
 export CLERK_PRIVATE_KEY="op://${OP_VAULT_UID}/f5k2z5od2bmbibupey4fze6koi/sandbox-clerk-secret-key"
-export OPENAI_API_KEY="api-key"
 export SENTRY_DSN="backend-dsn"
 export POSTHOG_SECRET_KEY="secret-key"
 
