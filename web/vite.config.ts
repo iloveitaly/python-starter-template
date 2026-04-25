@@ -97,10 +97,12 @@ function getModePlugins(config: ConfigEnv): PluginOption[] {
 export default defineConfig((config) => ({
   // TODO need to disable .env file loading https://discord.com/channels/804011606160703521/1307442221288656906
   // build.outDir is ignored and buildDirectory in react-router.config.ts is used instead
-  devtools: true,
+  // devtools are not HMR overlays, this is for debugging a full build
+  devtools:
+    config.mode === "production" && process.env.ENABLE_VITE_DEVTOOLS === "true",
   build: {
     // option required for Sentry sourcemap upload
-    sourcemap: true,
+    sourcemap: "hidden",
     // Using OXC for faster builds.
     minify: "oxc",
     /*
