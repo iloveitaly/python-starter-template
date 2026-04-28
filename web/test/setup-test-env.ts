@@ -17,12 +17,13 @@ nock.enableNetConnect((host: string) => {
 })
 
 // Keep this explicit PostHog stub for stability across environment/runtime differences.
-nock(/posthog\.com/)
-  .persist()
-  .get(/.*/)
-  .reply(200, "")
+function mockGetRequests(hostPattern: RegExp) {
+  nock(hostPattern).persist().get(/.*/).reply(200, "")
+}
 
-expect.extend(matchers)
+for (const hostPattern of [/facebook\.(net|com)/, /posthog\.com/]) {
+  mockGetRequests(hostPattern)
+}
 
 afterEach(() => {
   cleanup()
