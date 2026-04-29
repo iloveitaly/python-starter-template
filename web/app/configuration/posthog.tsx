@@ -11,7 +11,7 @@ import React from "react"
 
 import posthog from "posthog-js"
 
-import { isDevelopment, isTesting, requireEnv } from "~/utils/environment"
+import { isProduction, requireEnv } from "~/utils/environment"
 
 import { isDebugEnabled } from "./logging"
 import { PostHogProvider } from "@posthog/react"
@@ -25,7 +25,7 @@ if (typeof window !== "undefined") {
   posthog.init(POSTHOG_KEY, {
     api_host:
       import.meta.env["VITE_POSTHOG_HOST"] ?? "https://us.i.posthog.com",
-    defaults: "2025-05-24",
+    defaults: "2026-01-30",
     debug: isDebugEnabled(),
     // or 'always' to create profiles for anonymous users as well
     person_profiles: "identified_only",
@@ -36,20 +36,25 @@ if (typeof window !== "undefined") {
     custom_campaign_params: [
       // Rewardful referral code params
       "via",
+      // TODO pretty sure this was just a generic param I added that we should probably remove
       "referral",
     ],
     // copied from the react router example, unsure if these are the best settings
     capture_pageview: "history_change",
     capture_pageleave: true,
+    // https://posthog.com/tutorials/multiple-environments#opt-out-of-capturing-on-initialization
+    loaded: function (ph) {
+      if (!isProduction()) {
+        ph.opt_out_capturing()
+        ph.set_config({ disable_session_recording: true })
+      }
+    },
   })
 }
 
 export default function withPostHogProvider(Component: React.ComponentType) {
-  // integration tests run within a production node context, so this will be enabled when running integration tests
-  if (isDevelopment() || isTesting()) {
-    return Component
-  }
-
+  // we intentionally do NOT disable this functionality in specific environments
+  // instead, we just disable capturing and session recording in non-production environments. This allows us to test that the provider is working and that events are being sent without polluting our production data with test events.
   return function WithPostHogProviderWrapper(
     props: React.ComponentProps<typeof Component>,
   ) {

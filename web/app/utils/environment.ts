@@ -3,24 +3,24 @@
  * variables on execution. This is because environment detection is used within vite, which does not run in the same
  * environment as the rest of the application.
  *
+ * This application is by default an SPA, so a build for an integration test will present as a production mode within
+ * the javascript environment.
+ *
  * TODO we should consider duplicating the environment code in the vite setup instead of worrying about this here
  */
 import { invariant } from "@epic-web/invariant"
 
 export function environmentName() {
+  // https://vite.dev/guide/env-and-mode#modes
   return import.meta.env.MODE.toLowerCase()
-}
-
-export function isDevelopment() {
-  return environmentName() === "development"
 }
 
 export function isProduction() {
   return environmentName() === "production"
 }
 
-export function isStaging() {
-  return environmentName() === "staging"
+export function isDevelopment() {
+  return environmentName() === "development"
 }
 
 export function isTesting() {
