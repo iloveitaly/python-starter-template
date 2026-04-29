@@ -3,7 +3,7 @@ This test suite intentionally does not use factory models. This is to avoid test
 around when webhooks should be fired and instead focus the testing on the core webhook logic.
 """
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime, timezone
 
 import httpx
 import pytest
@@ -86,7 +86,7 @@ def test_process_webhook_skips_if_already_succeeded(monkeypatch, httpx_mock):
     )
 
     event = WebhookEvent.from_webhook_data(webhook_data, webhook_endpoint)
-    event.succeeded_at = datetime.now(timezone.utc)
+    event.succeeded_at = datetime.now(UTC)
     event.save()
 
     # httpx.post should not be called when already succeeded, so no mock needed

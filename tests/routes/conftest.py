@@ -78,7 +78,7 @@ def authenticated_api_client():
 
 
 @pytest.fixture
-async def aclient() -> t.AsyncGenerator[AsyncClient, None]:
+async def aclient() -> t.AsyncGenerator[AsyncClient]:
     from app.server import api_app
 
     async with AsyncClient(

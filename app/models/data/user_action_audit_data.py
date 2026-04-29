@@ -22,7 +22,7 @@ class UserActionAuditData(PydanticBaseModel):
     timestamp: datetime
 
     @classmethod
-    def from_request(cls, request: "Request") -> "UserActionAuditData":
+    def from_request(cls, request: Request) -> UserActionAuditData:
         client_ip = fastapi_access_logger.client_ip_from_request(request) or "0.0.0.0"
 
         return cls(

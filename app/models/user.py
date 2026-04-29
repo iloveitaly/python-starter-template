@@ -6,7 +6,7 @@ Mirrors this model: https://clerk.com/docs/reference/backend-api/tag/Users#opera
 # https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/GetOrganization
 
 from datetime import datetime
-from enum import Enum
+from enum import Enum, StrEnum
 
 from typeid import TypeID
 
@@ -23,7 +23,7 @@ CLERK_OBJECT_PREFIX = "user"
 API_KEY_PREFIX = "sk_live"
 
 
-class UserRole(str, Enum):
+class UserRole(StrEnum):
     normal = "normal"
     admin = "admin"
 

@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class SetupClerkTestingTokenOptions:
-    frontend_api_url: Optional[str] = None
+    frontend_api_url: str | None = None
 
 
 TESTING_TOKEN_PARAM = "__clerk_testing_token"
@@ -101,10 +101,10 @@ def is_publishable_key(key: str) -> bool:
 
 
 def parse_publishable_key(
-    key: Optional[str],
-    domain: Optional[str] = None,
-    proxy_url: Optional[str] = None,
-) -> Optional[PublishableKey]:
+    key: str | None,
+    domain: str | None = None,
+    proxy_url: str | None = None,
+) -> PublishableKey | None:
     if not key or not is_publishable_key(key):
         return None
 

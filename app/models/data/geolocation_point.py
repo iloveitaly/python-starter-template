@@ -20,14 +20,14 @@ class GeolocationPoint(PydanticBaseModel):
     state: str | None = None
 
     @classmethod
-    def from_tuple(cls, tuple: tuple[float, float]) -> "GeolocationPoint":
+    def from_tuple(cls, tuple: tuple[float, float]) -> GeolocationPoint:
         return cls(
             lat=tuple[1],
             lon=tuple[0],
         )
 
     @model_validator(mode="after")
-    def validate_coordinates(self) -> "GeolocationPoint":
+    def validate_coordinates(self) -> GeolocationPoint:
         if not (-90.0 <= self.lat <= 90.0):
             raise ValueError("Latitude must be within [-90, 90]")
         if not (-180.0 <= self.lon <= 180.0):

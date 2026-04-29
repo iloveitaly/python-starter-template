@@ -3,7 +3,7 @@ Let's make working with async utils fun
 """
 
 import asyncio
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 
 
 async def merge_iterables(*iterables):
@@ -33,7 +33,7 @@ async def merge_iterables(*iterables):
                 pass
 
 
-async def ensure_single_result[T](async_iterator: AsyncGenerator[T, None]) -> T:
+async def ensure_single_result[T](async_iterator: AsyncGenerator[T]) -> T:
     """
     Ensures an async iterator yields exactly one result. If no results, `StopAsyncIteration` is raised.
     """
@@ -45,7 +45,7 @@ async def ensure_single_result[T](async_iterator: AsyncGenerator[T, None]) -> T:
         return first_result
 
 
-async def ensure_single_or_none[T](async_iterator: AsyncGenerator[T, None]) -> T | None:
+async def ensure_single_or_none[T](async_iterator: AsyncGenerator[T]) -> T | None:
     """
     Ensures an async iterator yields a single, or no, results.
     """

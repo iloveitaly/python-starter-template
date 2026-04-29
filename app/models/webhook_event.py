@@ -102,7 +102,7 @@ class WebhookEvent(BaseModel, TimestampsMixin, TypeIDMixin("wh"), table=True):
     @classmethod
     def from_webhook_data(
         cls, webhook_data: WebhookBase, webhook_endpoint: str
-    ) -> "WebhookEvent":
+    ) -> WebhookEvent:
         """
         Create a new WebhookEvent record from webhook data.
         """
