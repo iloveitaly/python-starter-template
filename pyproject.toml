@@ -169,7 +169,7 @@ ignore = "H030,H031"
 
 [tool.ruff.lint]
 extend-select = ["I"]
-select = ["ISC"]
+select = ["ISC", "UP"]
 
 [tool.ruff.lint.isort]
 section-order = [
