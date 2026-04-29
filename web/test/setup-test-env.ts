@@ -6,24 +6,24 @@ import * as matchers from "@testing-library/jest-dom/matchers"
 import "@testing-library/jest-dom/vitest"
 import { cleanup } from "@testing-library/react"
 
-// happy-dom blocks external <script src="..."> execution by default, which prevents SDK bundles
-// like PostHog/Clerk from loading in tests.
-//
-// nock is still useful as a second layer: it blocks accidental external HTTP calls (fetch/xhr/http)
-// so tests remain deterministic even if runtime behavior changes.
+// without nock, posthog and other services will attempt to load and cause tests to be flakey
 nock.disableNetConnect()
 nock.enableNetConnect((host: string) => {
   return host.startsWith("127.0.0.1") || host.startsWith("localhost")
 })
 
-// Keep this explicit PostHog stub for stability across environment/runtime differences.
-function mockGetRequests(hostPattern: RegExp) {
-  nock(hostPattern).persist().get(/.*/).reply(200, "")
+function mockGetRequests(hostPattern: RegExp | string) {
+  nock(hostPattern as string)
+    .persist()
+    .get(/.*/)
+    .reply(200, "")
 }
 
-for (const hostPattern of [/facebook\.(net|com)/, /posthog\.com/]) {
+for (const hostPattern of [/facebook\.(net|com)/]) {
   mockGetRequests(hostPattern)
 }
+
+expect.extend(matchers)
 
 afterEach(() => {
   cleanup()
