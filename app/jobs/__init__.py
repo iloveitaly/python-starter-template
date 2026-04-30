@@ -15,7 +15,7 @@ for module_name in modules_in_folder(Path(__file__).parent, __package__):
     module = importlib.import_module(module_name)
 
     # validate that the module has a 'perform' method, this is a convention in this folder
-    if not hasattr(module, "perform") or not callable(getattr(module, "perform")):
+    if not hasattr(module, "perform") or not callable(module.perform):
         raise AttributeError(
             f"Module {module_name} must have a callable 'perform' method"
         )

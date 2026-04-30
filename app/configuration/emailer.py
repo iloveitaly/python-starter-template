@@ -65,11 +65,13 @@ def mail(
     to: str,
     subject: str,
     template_path: str,
-    context: dict = {},
+    context: dict | None = None,
     from_address: str | None = None,
     cc: list[str] | None = None,
     bcc: list[str] | None = None,
 ):
+    if context is None:
+        context = {}
     assert _mailer
 
     if "subject" not in context:

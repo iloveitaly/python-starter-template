@@ -175,12 +175,15 @@ def table_exists(model: type[SQLModel]) -> bool:
 
 
 # TODO look into merging into AM upstream
-def is_database_empty(exclude: list[type[SQLModel]] = []) -> bool:
+def is_database_empty(exclude: list[type[SQLModel]] | None = None) -> bool:
     """
     Check if any table in the database has records using Model.count().
 
     Useful for detecting an empty database state to run operations such as seeding, etc.
     """
+
+    if exclude is None:
+        exclude = []
 
     from app import log
 

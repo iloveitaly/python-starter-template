@@ -25,8 +25,8 @@ def authenticate_api_request_middleware(
 ):
     try:
         token_as_typeid = TypeID.from_string(token)
-    except TypeIDException:
-        raise UNAUTHORIZED_EXCEPTION
+    except TypeIDException as err:
+        raise UNAUTHORIZED_EXCEPTION from err
 
     if token_as_typeid.prefix != API_KEY_PREFIX:
         raise UNAUTHORIZED_EXCEPTION

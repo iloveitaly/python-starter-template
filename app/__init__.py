@@ -31,8 +31,12 @@ root: Path
 log: LoggerWithContext
 
 
+_setup_complete = False
+
+
 def setup():
-    if getattr(setup, "complete", False):
+    global _setup_complete
+    if _setup_complete:
         return
 
     global root, log
@@ -70,7 +74,7 @@ def setup():
         pid=os.getpid(),
     )
 
-    setattr(setup, "complete", True)
+    _setup_complete = True
 
     # run migrations *after* setup is marked as complete, in case any migration logic depends on setup being complete
     # TODO I wonder if this will cause issues with the system not picking up on required DB changes? We will see
