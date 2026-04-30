@@ -6,10 +6,13 @@ from app.env import env
 from ..environments import is_job_monitor, is_production, python_environment
 
 
-def configure_sentry(integrations=[]):
+def configure_sentry(integrations=None):
     """
     - Sentry used to support posthog, but it doesn't anymore: https://github.com/PostHog/posthog-python/pull/262
     """
+
+    if integrations is None:
+        integrations = []
 
     from app import log
 
