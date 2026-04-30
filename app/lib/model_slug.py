@@ -1,50 +1,53 @@
-"""Helpers for deriving unique URL slugs for SQLModel rows."""
+"""
+Generate a URL slug segment from a SQLmodel row.
+"""
 
-from typing import Protocol
+from typing import Any, Protocol
 
 from slugify import slugify
 
+import sqlmodel as sm
 from activemodel.query_wrapper import QueryWrapper
+from activemodel.session_manager import get_session
 
 
-class SluggableModel(Protocol):
+class _SluggableModel(Protocol):
+    # SQLModel fields are regular Python values on instances, but SQLAlchemy
+    # descriptors on the model class. Pyright cannot represent that dual shape.
+    id: Any
+    slug: Any
+
     @property
-    def id(self) -> object: ...
-
-    @property
-    def name(self) -> str: ...
-
-    @property
-    def slug(self) -> str: ...
+    def name(self) -> str | None: ...
 
     @classmethod
     def where(cls, *conditions: object) -> QueryWrapper: ...
 
-
-def _slug_row_exists(
-    model_cls: type[SluggableModel], candidate: str, instance_id: object
-) -> bool:
-    slug_column = getattr(model_cls, "slug")
-    id_column = getattr(model_cls, "id")
-
-    query = model_cls.where(slug_column == candidate, id_column != instance_id)
-    return query.exists()
+    def is_new(self) -> bool: ...
 
 
-def generate_slug(instance: SluggableModel) -> str | None:
+def _slug_row_exists(instance: _SluggableModel, candidate: str) -> bool:
+    model_cls = instance.__class__
+    conditions = [model_cls.slug == candidate]
+    if not instance.is_new():
+        conditions.append(model_cls.id != instance.id)
+
+    query = model_cls.where(*conditions)
+    with get_session() as session:
+        # without this, pending objects in the current session will be INSERT'd first
+        with session.no_autoflush:
+            return bool(session.scalar(sm.select(sm.exists(query.target))))
+
+
+def generate_slug(instance: _SluggableModel) -> str | None:
+    """Return a unique slug from `name`, or `None` when nothing should be assigned.
+
+    Returns `None` if a slug cannot be generated.
     """
-    Generate a unique slug for the given instance.
-
-    None is returned if the instance has a non-blank slug or name.
-    """
-    if instance.slug.strip():
-        return instance.slug
-
-    name = instance.name.strip()
+    name = (instance.name or "").strip()
     if not name:
         return None
 
-    model_cls = type(instance)
     base = slugify(name)
     if not base:
         return None
@@ -52,7 +55,7 @@ def generate_slug(instance: SluggableModel) -> str | None:
     candidate = base
     suffix = 2
 
-    while _slug_row_exists(model_cls, candidate, instance.id):
+    while _slug_row_exists(instance, candidate):
         candidate = f"{base}-{suffix}"
         suffix += 1
 
