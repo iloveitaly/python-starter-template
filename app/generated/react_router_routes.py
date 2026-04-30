@@ -11,7 +11,7 @@ import logging
 import os
 import re
 from collections.abc import Mapping
-from typing import Literal, NotRequired, TypedDict, overload
+from typing import Literal, overload
 from urllib.parse import quote, urlencode
 
 logger = logging.getLogger("react_router_routes.generated")

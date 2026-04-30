@@ -6,7 +6,7 @@ Mirrors this model: https://clerk.com/docs/reference/backend-api/tag/Users#opera
 # https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/GetOrganization
 
 from datetime import datetime
-from enum import Enum, StrEnum
+from enum import StrEnum
 
 from typeid import TypeID
 

@@ -23,7 +23,6 @@ import logging
 import os
 import re
 from dataclasses import dataclass
-from typing import Optional
 from urllib.parse import parse_qs, urlencode, urlparse
 
 from clerk_backend_api import Clerk

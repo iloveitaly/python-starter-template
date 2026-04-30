@@ -3,7 +3,7 @@ This test suite intentionally does not use factory models. This is to avoid test
 around when webhooks should be fired and instead focus the testing on the core webhook logic.
 """
 
-from datetime import UTC, datetime, timezone
+from datetime import UTC, datetime
 
 import httpx
 import pytest
