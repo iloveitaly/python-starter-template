@@ -1,0 +1,33 @@
+extend-exclude = [
+    "playground",
+    "playground.py",
+    "migrations/env.py",
+    "migrations/versions/*.py",
+    "tests/conftest.py",
+    ".copier",
+    "tmp",
+]
+force-exclude = true
+
+[lint]
+extend-select = ["I", "ISC", "UP", "C4", "B"]
+
+[lint.per-file-ignores]
+"app/routes/**" = ["B008"]
+
+[lint.isort]
+section-order = [
+    # https://docs.astral.sh/ruff/settings/#lint_isort_section-order
+    "future",
+    "standard-library",
+    "third-party",
+    "first-party",
+    # custom ordering
+    "orm",
+    "tests",
+    "local-folder",
+]
+
+[lint.isort.sections]
+orm = ["sqlmodel", "activemodel", "sqlalchemy", "app.models.*"]
+tests = ["tests"]
