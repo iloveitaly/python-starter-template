@@ -2003,18 +2003,17 @@ dependencies = [
 
 [[package]]
 name = "posthog"
-version = "7.13.1"
+version = "7.13.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "backoff" },
     { name = "distro" },
-    { name = "python-dateutil" },
     { name = "requests" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2a/09/ecc82b5ba5876164a3807adcc5101466da1e4416600075bdbd2071327457/posthog-7.13.1.tar.gz", hash = "sha256:5e53c57db076807530bbec5634c96673ceae8e8e58b99c983af26f02bb4759aa", size = 194124, upload-time = "2026-04-24T19:08:32.56Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/77/54/9c117beaa96519077cae355263712d705e560e8ee7ca4a35373438d1f4d2/posthog-7.13.2.tar.gz", hash = "sha256:a9fc322518bc7f42e24501a0df1072aa60bad6fba759cbe388d167b7e054b052", size = 195555, upload-time = "2026-04-30T09:01:26.08Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/83/bf/eafd5e7508b03264b7deb4db6563c4a2830de7114e01ccbf369756b779d1/posthog-7.13.1-py3-none-any.whl", hash = "sha256:fc0f4b4a8878957e1ea8d319b2e4038b66a19625837f59b020cddaaf59fce982", size = 228291, upload-time = "2026-04-24T19:08:30.822Z" },
+    { url = "https://files.pythonhosted.org/packages/e9/8b/ec789af64ef3d85816a5c4ac8fe1e3c74d6e3bb9675c1325e3b1de4ddb14/posthog-7.13.2-py3-none-any.whl", hash = "sha256:e8ea9a7fa740b453533a76c0f3300b16120a3c27c19ab417cf0e69bb8c210fb6", size = 229762, upload-time = "2026-04-30T09:01:24.144Z" },
 ]
 
 [[package]]
@@ -2971,16 +2970,16 @@ wheels = [
 
 [[package]]
 name = "react-router-routes"
-version = "0.4.1"
+version = "0.4.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jinja2" },
     { name = "structlog-config" },
     { name = "typer" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ff/8f/ada48462eda2ef5fac9c228ac344358299be96d2f3298fcf895243dd688f/react_router_routes-0.4.1.tar.gz", hash = "sha256:79bcde2ba99f7bc80fda0a8d1ce84b87322082bd46e181b29cf35e88aba6ce8c", size = 6448, upload-time = "2026-01-28T17:18:13.445Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/03/3d/f70da3e647d1a15ff658d42e6c34119cbef8f04d89d65cbcf2970d0c5a30/react_router_routes-0.4.2.tar.gz", hash = "sha256:71da7100ee7e2a6a0baedc20fa9e83a983e5eacf1b18469e2ac0fd60fc1bd234", size = 6856, upload-time = "2026-04-29T22:11:01.987Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c2/3a/b5b7c102411d9a63dfd8c10d60ea412fad791c665a96323ed0af53e7416c/react_router_routes-0.4.1-py3-none-any.whl", hash = "sha256:21a77a631f1d5ec663d62d01320d98b18ecb0d07ad59688648cc2e36cd08cfbf", size = 7734, upload-time = "2026-01-28T17:18:12.302Z" },
+    { url = "https://files.pythonhosted.org/packages/ab/2e/d668bfb1002c72848d3e5de3d86f4428a49d0911963de7c73c4fe2e136a6/react_router_routes-0.4.2-py3-none-any.whl", hash = "sha256:86710bdedaa6c69aa560fd0845ad6b1869b9657042353ee9dbd80ec5d680152c", size = 7952, upload-time = "2026-04-29T22:11:01.142Z" },
 ]
 
 [[package]]
