@@ -91,7 +91,7 @@ py_lint +FILES=".":
 		uv run ruff check --output-format=github {{FILES}} || exit_code=$?
 		uv run ruff format --check {{FILES}} || exit_code=$?
 		uvx detect-shadowed-modules@latest || exit_code=$?
-		ast-grep scan --error --filter '^py-' || exit_code=$?
+		ast-grep scan --error --filter '^py-' --format github || exit_code=$?
 
 		uv run pyright {{FILES}} --outputjson > pyright_report.json || exit_code=$?
 		# TODO this is a neat trick, we should use it in other places too + document
