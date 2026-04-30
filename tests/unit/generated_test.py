@@ -23,6 +23,7 @@ def test_openapi_schema_matches_generated_file():
     current_schema = generate_openapi_schema(authenticated_api_app)
 
     if current_schema != generated_schema:
+        # Use pytest.fail instead of assert to avoid verbose diff output for large generated files
         pytest.fail(
             "OpenAPI schema from FastAPI doesn't match the generated file. Run:\njust js_generate-openapi"
         )
@@ -47,10 +48,14 @@ def test_generated_files_match_just_py_generate():
     fastapi_new_content = fastapi_target_file.read_text()
     react_router_new_content = react_router_target_file.read_text()
 
-    assert fastapi_new_content == fastapi_original_content, (
-        "FastAPI typed routes do not match the generated file. Run:\njust py_generate"
-    )
+    if fastapi_new_content != fastapi_original_content:
+        # Use pytest.fail instead of assert to avoid verbose diff output for large generated files
+        pytest.fail(
+            "FastAPI typed routes do not match the generated file. Run:\njust py_generate"
+        )
 
-    assert react_router_new_content == react_router_original_content, (
-        "React router routes do not match the generated file. Run:\njust py_generate"
-    )
+    if react_router_new_content != react_router_original_content:
+        # Use pytest.fail instead of assert to avoid verbose diff output for large generated files
+        pytest.fail(
+            "React router routes do not match the generated file. Run:\njust py_generate"
+        )
