@@ -1,0 +1,8 @@
+id: py-no-future-imports
+language: python
+severity: error
+message: "Do not use __future__ imports."
+files:
+  - "app/**/*.py"
+rule:
+  pattern: from __future__ import $$$REST

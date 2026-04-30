@@ -44,6 +44,9 @@ Justfile
 /tmp/*
 
 # NOTE .config/ is intentionally included as it contains prod (and other) mise configuration
+# ast-grep is dev/CI only
+sgconfig.yml
+.config/ast-grep
 # NOTE /Procfile is intentionally included, it can be used by some deployments (dokku)
 
 ################################

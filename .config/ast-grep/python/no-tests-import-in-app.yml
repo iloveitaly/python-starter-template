@@ -1,0 +1,13 @@
+id: py-no-tests-import-in-app
+language: python
+severity: error
+message: "Code under app/ must not import from the tests package."
+files:
+  - "app/**/*.py"
+rule:
+  any:
+    - pattern: from $MOD import $$$REST
+    - pattern: import $MOD
+constraints:
+  MOD:
+    regex: '^tests(\..*)?$'
