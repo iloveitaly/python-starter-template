@@ -112,6 +112,7 @@ py_lint +FILES=".":
 		rm j2link_report.json
 	else
 		uv run ruff check {{FILES}} || exit_code=$?
+		uv run ruff format --check {{FILES}} || exit_code=$?
 		uv run pyright {{FILES}} || exit_code=$?
 		uvx detect-shadowed-modules@latest || exit_code=$?
 		uv run j2lint --extensions j2,html {{JINJA_TEMPLATE_DIR}} || exit_code=$?
