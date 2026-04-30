@@ -1,0 +1,24 @@
+[tool.pytest.ini_options]
+addopts = [
+    # disable all of default log capture: structlog does this for us
+    "-p no:logging",
+    "--capture=no",
+    "--import-mode=importlib",
+    "--structlog-output=tmp/test-results/test-logs",
+]
+filterwarnings = [
+    # avoid depreciation warnings causing spammy logs
+    "ignore::DeprecationWarning",
+    # raise level of these errors
+    "error:RuntimeWarning",
+]
+
+# by default, pytest seems to hijack many logs and output them to the terminal
+testpaths = "tests"
+
+# if there are specific directories that contain other projects that you want to skip, add them here
+norecursedirs = ["tmp", "pypi"]
+
+# TODO right now this option does not enable us to get it directly
+asyncio_default_test_loop_scope = "function"
+asyncio_default_fixture_loop_scope = "function"
