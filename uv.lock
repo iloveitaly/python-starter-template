@@ -1223,11 +1223,11 @@ wheels = [
 
 [[package]]
 name = "httpdbg"
-version = "2.1.6"
+version = "2.1.7"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/8c/47/69b5ceb2bbd03657b0a1458d8f3fdccd331d05bfa139569e6f293a2c4353/httpdbg-2.1.6.tar.gz", hash = "sha256:7f0925718faa0c94f5855075b168dc95bb16f9cd6826eb8449c8af9e720ea42b", size = 80616, upload-time = "2026-03-28T11:04:27.488Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/b5/a2/5ccf3dab272bf8b07b5211da5748bec75b231d7c3471afd8f7f2a399289d/httpdbg-2.1.7.tar.gz", hash = "sha256:6ee7db35ad4d5d71cc75b1d5088567e4f71a65b987dfd934c8ac7d1d6cb6cc26", size = 80657, upload-time = "2026-05-01T10:34:34.343Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/13/a8/6d101e4d58563e8647fe010a5ae61ba41ceb61e2abd789170573599d7d43/httpdbg-2.1.6-py3-none-any.whl", hash = "sha256:e3d5be9cd5eeb262b77e4faf113c356b7da127bb848b3360c99e394bb2dc9590", size = 87938, upload-time = "2026-03-28T11:04:26.035Z" },
+    { url = "https://files.pythonhosted.org/packages/35/c4/46ab6052e3cae4489087b3c8bda83bc8b4911a126339cdd249f72fb6ab30/httpdbg-2.1.7-py3-none-any.whl", hash = "sha256:e29578bfdca82361805adc19938e64fcabcf5029a9c9783757b1ffac2a4dc2f8", size = 87966, upload-time = "2026-05-01T10:34:32.707Z" },
 ]
 
 [[package]]
@@ -2853,7 +2853,7 @@ debugging-extras = [
     { name = "datamodel-code-generator", specifier = ">=0.26.3" },
     { name = "debugpy", specifier = ">=1.8.8" },
     { name = "docrepr", specifier = ">=0.2.0" },
-    { name = "httpdbg", specifier = ">=0.31.1" },
+    { name = "httpdbg", specifier = ">=2.1.7" },
     { name = "hunter", specifier = ">=3.9.0" },
     { name = "icecream", git = "https://github.com/iloveitaly/icecream.git?rev=exclude-tests" },
     { name = "ipdb", git = "https://github.com/iloveitaly/ipdb?rev=support-executables" },
