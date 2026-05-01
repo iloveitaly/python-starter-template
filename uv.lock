@@ -2807,7 +2807,7 @@ requires-dist = [
     { name = "alembic-postgresql-enum", specifier = ">=1.6.1" },
     { name = "beautiful-traceback", git = "https://github.com/iloveitaly/beautiful-traceback.git" },
     { name = "cachetools", specifier = ">=5.5.1" },
-    { name = "celery", extras = ["redis"], specifier = ">=5.4.0" },
+    { name = "celery", extras = ["redis"], specifier = ">=5.6.3" },
     { name = "celery-healthcheck", specifier = ">=0.1.1" },
     { name = "celery-once", specifier = ">=3.0.1" },
     { name = "celery-redbeat", specifier = ">=2.3.2" },
