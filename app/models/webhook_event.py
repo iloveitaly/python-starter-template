@@ -12,6 +12,7 @@ from typing import Literal, get_args
 from uuid import UUID
 
 from pydantic import BaseModel as PydanticBaseModel
+from typeid import TypeID
 
 import app.jobs.process_webhook
 from app import log
@@ -26,7 +27,7 @@ from sqlmodel import Field
 
 WebhookTypesType = Literal["order.created"]
 
-# convert the literal types into a nice array that we can use
+# convert the literal types into a nice array that we can use for runtime checks
 WebhookTypes: list[str] = list(get_args(WebhookTypesType))
 
 
@@ -36,7 +37,7 @@ class WebhookBase(PydanticBaseModel):
     """
 
     type: WebhookTypesType
-    id: TypeIDType
+    id: TypeID
 
     def payload(self) -> dict:
         "generates a JSON of the more complex data payload model structure in your subclass"
@@ -93,7 +94,9 @@ class WebhookEvent(BaseModel, TimestampsMixin, TypeIDMixin("wh"), table=True):
     )
     "timestamp when delivery last succeeded (used to prevent resends)"
 
-    originating_id: UUID | None = Field(default=None, index=True)
+    originating_id: UUID | None = Field(
+        default=None, index=True, sa_type=TypeIDType.raw()
+    )
     "identifier of the domain object this event refers to, if any"
 
     response_payload: dict | None = Field(sa_type=JSONB, default=None)
@@ -110,5 +113,5 @@ class WebhookEvent(BaseModel, TimestampsMixin, TypeIDMixin("wh"), table=True):
             destination=webhook_endpoint,
             type=webhook_data.type,
             payload=webhook_data.payload(),
-            originating_id=webhook_data.id.uuid,
+            originating_id=webhook_data.id,
         ).save()
