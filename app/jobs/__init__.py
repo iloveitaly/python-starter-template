@@ -1,4 +1,6 @@
 """
+Auto-import all jobs from one entrypoint.
+
 For celery to properly pick up on all tasks they must all be imported when celery starts.
 
 It's easier for us to auto-import all of them here, so Celery just needs to import app.jobs
@@ -14,7 +16,7 @@ for module_name in modules_in_folder(Path(__file__).parent, __package__):
     log.debug("auto importing", job=module_name)
     module = importlib.import_module(module_name)
 
-    # validate that the module has a 'perform' method, this is a convention in this folder
+    # enforce that each module has a 'perform' method
     if not hasattr(module, "perform") or not callable(module.perform):
         raise AttributeError(
             f"Module {module_name} must have a callable 'perform' method"
