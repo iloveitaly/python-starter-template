@@ -1,6 +1,20 @@
 import re
+import time
+from contextlib import contextmanager
 
 from fastapi import status
+
+
+@contextmanager
+def assert_executes_under(seconds: float, label: str = ""):
+    "simple performance assertion"
+
+    start = time.perf_counter()
+    yield
+    elapsed = time.perf_counter() - start
+    assert elapsed < seconds, (
+        f"{label or 'block'} took {elapsed:.3f}s, expected under {seconds}s"
+    )
 
 
 def assert_matches(regex, string):
