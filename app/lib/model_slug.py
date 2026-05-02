@@ -6,9 +6,7 @@ from typing import Any, Protocol
 
 from slugify import slugify
 
-import sqlmodel as sm
 from activemodel.query_wrapper import QueryWrapper
-from activemodel.session_manager import get_session
 
 
 class _SluggableModel(Protocol):
@@ -32,11 +30,7 @@ def _slug_row_exists(instance: _SluggableModel, candidate: str) -> bool:
     if not instance.is_new():
         conditions.append(model_cls.id != instance.id)
 
-    query = model_cls.where(*conditions)
-    with get_session() as session:
-        # without this, pending objects in the current session will be INSERT'd first
-        with session.no_autoflush:
-            return bool(session.scalar(sm.select(sm.exists(query.target))))
+    return model_cls.where(*conditions).no_autoflush().exists()
 
 
 def generate_slug(instance: _SluggableModel) -> str | None:
