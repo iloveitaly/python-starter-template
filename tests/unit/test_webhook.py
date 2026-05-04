@@ -62,7 +62,8 @@ def test_queue_webhook_enqueues_and_processes_success(
     assert webhook.succeeded_at is not None
     assert webhook.failed_at is None
     assert webhook.response_payload == {"status": "received"}
-    assert webhook.originating_id == random_fake_object_id.uuid
+    # str is intentional here: the UUID types used between these are *not* the same
+    assert str(webhook.originating_id) == str(random_fake_object_id.uuid)
     assert webhook.payload == {
         "type": "order.created",
         "id": str(random_fake_object_id),
