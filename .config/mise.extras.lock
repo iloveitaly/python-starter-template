@@ -25,10 +25,6 @@ url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.34.0/op_darwin_amd64_v2.34
 [tools.1password-cli."platforms.windows-x64"]
 url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.34.0/op_windows_amd64_v2.34.0.zip"
 
-[[tools."cargo:ast-grep"]]
-version = "0.42.1"
-backend = "cargo:ast-grep"
-
 [[tools."cargo:commitlint-rs"]]
 version = "0.2.4"
 backend = "cargo:commitlint-rs"
@@ -38,7 +34,7 @@ version = "0.4.4"
 backend = "cargo:fastmod"
 
 [[tools."cargo:just-lsp"]]
-version = "0.4.3"
+version = "0.4.4"
 backend = "cargo:just-lsp"
 
 [[tools.dive]]
