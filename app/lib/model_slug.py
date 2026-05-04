@@ -1,5 +1,7 @@
 """
 Generate a URL slug segment from a SQLmodel row.
+
+This is not actively used within the template; there are no automated tests for this.
 """
 
 from typing import Any, Protocol
