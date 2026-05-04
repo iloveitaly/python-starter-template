@@ -211,6 +211,8 @@ binding for paste as plain text
 ```
 
 ## javascript
+- [ ] implement devtools https://devtools.vite.dev/guide/
+- [ ] biome instead of prettier and eslint? https://biomejs.dev
 - [ ] https://perfectionist.dev and https://github.com/azat-io/eslint-plugin-perfectionist
 - [ ] can't run two tanstack dev servers at once https://github.com/TanStack/devtools/issues/198 https://github.com/TanStack/query/issues/9932
 - [ ] do i need this? eslint-config-prettier
@@ -258,7 +260,7 @@ binding for paste as plain text
 - WSL uses bash by default. You have to install zsh for Just
 - mise install
 - need to skip brew package install on `just setup`
-- need environment variables before `just up`
+- need environment variables before `just docker_up`
 - `sudo apt install lsof` DNE on debian
 - on WSL you need to run `localias debug cert --install` so that certs are trusted
 
