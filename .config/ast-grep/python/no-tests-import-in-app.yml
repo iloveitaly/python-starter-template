@@ -4,6 +4,7 @@ severity: error
 message: "Code under app/ must not import from the tests package."
 files:
   - "app/**/*.py"
+  - "migrations/**/*.py"
 rule:
   any:
     - pattern: from $MOD import $$$REST
