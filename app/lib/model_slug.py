@@ -6,7 +6,10 @@ from typing import Any, Protocol
 
 from slugify import slugify
 
-from activemodel.query_wrapper import QueryWrapper
+
+class _WhereResult(Protocol):
+    def no_autoflush(self) -> _WhereResult: ...
+    def exists(self) -> bool: ...
 
 
 class _SluggableModel(Protocol):
@@ -19,7 +22,7 @@ class _SluggableModel(Protocol):
     def name(self) -> str | None: ...
 
     @classmethod
-    def where(cls, *conditions: object) -> QueryWrapper: ...
+    def where(cls, *conditions: object) -> _WhereResult: ...
 
     def is_new(self) -> bool: ...
 

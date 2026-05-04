@@ -108,4 +108,3 @@ def test_generate_slug_excludes_saved_row_from_slug_search():
 
     assert generate_slug(Row()) == "acme"
     assert len(Row.conditions) == 2
-
