@@ -7,7 +7,7 @@ Coding instructions for all programming languages:
 - Prefer `continue` within a loop vs nested if statements.
 - Prefer smaller functions over larger functions. Break up logic into smaller chunks with well-named functions.
 - Prefer constants with separators: `10_000` is preferred to `10000` (or `10_00` over `1000` in the case of a integer representing cents).
-- Only add comments if the code is not self-explanatory. Do not add obvious code comments.
+- Only add comments if the code is not self-explanatory. Do not add obvious comments.
 - Do not remove existing comments.
 - When I ask you to write code, prioritize simplicity and legibility over covering all edge cases, handling all errors, etc.
 - When a particular need can be met with a mature, reasonably adopted and maintained package, I would prefer to use that package rather than engineering my own solution.
@@ -37,22 +37,21 @@ session_id = client_secret_id.split("_secret")[0]
 
 **DO NOT FORGET**: keep your responses short, dense, and without fluff. I am a senior, well-educated software engineer, and hate long explanations.
 
-### Import Developer Workflow Rules
+### Important Workflow Rules
 
 Pay careful attention to these instructions when running tests, generating database migrations, or otherwise figuring out how to operate this project:
 
-- Run `just --list` to see all available pre-written workflow development commands.
+- Run `just` to understand the more important workflow commands.
+  - Run `just --list` to see all available pre-written workflow development commands.
 - **IMPORTANT:** Never manually set environment variables that are required. You can set optional variables for debugging, but any missing required environment variables is an error that should be reported and you should stop your work immediately.
 - **NEVER** git commit changes. Always let me run any git commands which are not read-only.
 - Do not worry about cleaning up the environment. This is done automatically.
 - Run python code with `uv run python`
-- Run python tests with `pytest` only. If tests fail because of a configuration or system error, do not attempt to fix and let me know. I will fix it.
+- Use `pytest` to run tests. If tests fail because of a configuration, environment, or system error: let me know and stop working.
   - Initially run `pytest --ignore=tests/integration` then only run `pytest tests/integration`
   - When debugging integration tests look at `$PLAYWRIGHT_RESULT_DIRECTORY`. There's a directory for each test failure. In that directory you fill find a `failure.html` containing the rendered DOM of the page on failure and a screenshot of the contents. Use these to debug why it failed.
 - Do not attempt to create or run database migrations. Pause your work and let me know you need a migration run.
   - If you receive errors about missing migrations, missing tables, database connectivity, etc, stop your work and let me know.
-
-Look at @local.md
 
 ## Alembic Migrations
 
@@ -113,7 +112,7 @@ globs: app/routes/**/*.py
   - Locate these classes right above the `def route_name():` function which uses them.
 - Use `Model.one` when a record must exist in order for the business logic to succeed.
 - Do not try/except `Model.one` when using a parameter from the request to pull a record. Let this exception bubble up.
-- Use `model_id: Annotated[TypeIDType, Path()]` to represent a model ID as a URL path parameter
+- Use `model_id: Annotated[TypeID, Path()]` to represent a model ID as a URL path parameter
 - Use the typed route helpers in `app/generated/fastapi_typed_routes.py` for all URL generation.
 
 ## Justfiles
@@ -127,8 +126,8 @@ globs: just/*.just
 
 globs: tests/integration/**/*.py
 
-- Look to app/factories/ to generate any required database state
-  - Here's an example of how to create + persist a factory `DistributionFactory.build(domain=PYTHON_TEST_SERVER_HOST).save()`
+- Look to `app/factories/` to generate any required database state
+  - Here's an example of how to create + persist a factory `DistributionFactory.save(domain=PYTHON_TEST_SERVER_HOST)`
 - Add the `server` factory to each test
 - Use the `faker` factory to generate emails, etc.
 - Don't add obvious `assert` descriptions
@@ -140,12 +139,94 @@ globs: tests/integration/**/*.py
 - Use `with page.expect_response("https://example.com/resource") as response_info:` to assert against network activity.
 - Do not `next_button.evaluate("el => el.click()")` instead, just `locator.click()`. If this doesn't work, stop your work and let me know.
 - Only use `wait_for_loading(page)` if a `LONG_INTEGRATION_TEST_TIMEOUT` on an expectation does not work: `expect(page.get_by_text("Your Matched Doctors")).to_be_visible(timeout=LONG_INTEGRATION_TEST_TIMEOUT)`
+  - `LONG_INTEGRATION_TEST_TIMEOUT` should only be used as a last resort. If you have many of these in a test, let me know and I will debug it.
 - Prefer fewer integration tests that cover more functionality. Unlike unit tests, where each test is designed to test a very particular piece of functionality, I want integration tests to cover entire workflows. It's preferred to add more steps to an integration test to test an entire workflow.
 - Prefer simple locators. If a `filter`, `or_`, etc is required to capture a button in multiple states it indicates something is wrong in the code.
 - Use `react_router_url` to generate the frontend url path and do not set `base_url`.
-- **Enforce Clean Consoles:** End all Playwright tests with assert_no_console_errors(request).
-  - **Test-Specific Ignores:** If a test triggers an expected error pass a regex to the ignore parameter and add a comment explaining why.
-  - **Global Ignores:** For app-wide expected errors (e.g., tracking libraries), add the ignore pattern to `conftest.py` rather than individual tests. Scope to the particular file if possible.
+- End all Playwright tests with `from pytest_playwright_artifacts import assert_no_console_errors` and `assert_no_console_errors(request)` (capture is the plugin's `playwright_console_logging` fixture).
+  - Test-Specific Ignores: Pass `ignore=[...]` to `assert_no_console_errors` per `pytest-playwright-artifacts` (regex strings, compiled patterns, or `{"file": "...", "message": "..."}` dicts); add a comment explaining why.
+  - Global Ignores: Use `playwright_console_ignore` under `[tool.pytest.ini_options]` in `pyproject.toml` (see `pytest-playwright-artifacts` README).
+
+### Example Integration Test
+
+Below is an example test. Notice the following:
+
+- Code comments are used to describe the key user steps that are being tested
+- We avoid long timeouts or wait commands
+- Fixtures and factories are generated at the beginning of the test
+- We assert against database state after each major user action
+- Some of the comments (i.e. comments on included fixtures) are included for instructional purposes only and should not be included in the tests you write
+
+```python
+from pytest_playwright_artifacts import assert_no_console_errors
+
+
+def test_streaming_checkout_creates_user_and_links_order(
+    # this fixture ensures that the underlying python server is started
+    server,
+    faker,
+    page: Page,
+    # if you need to create objects (like factories) tied to a common session, include this fixture
+    db_truncate_session,
+    # for asserting against the console logs
+    request: FixtureRequest,
+) -> None:
+    distribution = DistributionWithWebhooksFactory.save()
+    test_email = clerk_test_email()
+
+    # 1) Run through streaming checkout
+    page.goto(react_router_url("/streaming"))
+
+    page.get_by_placeholder("your@email.com").first.fill(test_email)
+    page.get_by_placeholder("your@email.com").last.fill(test_email)
+
+    # Check TOS
+    page.get_by_role("checkbox").last.check()
+
+    fill_stripe_checkout(page)
+
+    # 2) Complete checkout
+    # the stripe checkout form will expand and cause the purchase button to move below the screen
+    safely_scroll_then_click(page.get_by_role("button", name="Complete Purchase"))
+
+    expect(page.get_by_role("heading", name="You're ready to watch!")).to_be_visible()
+    page.get_by_role("link", name="Login & Start Watching").click()
+
+    # 3) Assert against database and Clerk state
+
+    # One StreamingOrder should be created for this distribution and email
+    assert StreamingOrder.count() == 1
+    streaming_order = StreamingOrder.get(email=test_email)
+    assert streaming_order
+
+    assert streaming_order.status.value == "completed"
+    assert streaming_order.user_id is not None
+
+    # 4) Login to the app via the Clerk login page
+    clerk_login_and_verify(page, test_email)
+
+    expect(page.get_by_text("Triumph of the Heart").first).to_be_visible()
+
+    # 5) Play the video
+    page.get_by_role("button").filter(has_text="Play").click()
+
+    # wait for the page to completely load
+    wait_for_loading(page)
+
+    expect(page.get_by_text("Triumph of the Heart").first).to_be_visible()
+    expect(page.get_by_text("Play")).not_to_be_visible()
+
+    assert_no_console_errors(
+        request,
+        ignore=[
+            {
+              # if there are console errors specific to the project, exclude them here. Match to the specific URL if you can.
+              "file": r"https://iframe.cloudflarestream.com/.*",
+              "message": "the server responded with a status of 403",
+            }
+        ],
+    )
+```
 
 ## Pytest Tests
 
@@ -155,12 +236,49 @@ globs: tests/**/*.py
   - For example, to create and persist a `Distribution` record `DistributionFactory.save()`
   - If a factory doesn't exist for the model you are working with, create one.
   - You can customize one or more params in a factory using `DistributionFactory.save(host="custom_host.com)`
-- Use the `faker` factory to generate emails, etc.
+- Use `faker` factory to generate emails, etc.
 - Do not mock or patch unless I instruct you to. Test as much of the application stack as possible in each test.
 - If you get lazy attribute errors, or need a database session to share across logic, use the `db_session` fixture to fix the issue.
   - Note that when writing route tests a `db_session` is not needed for the logic inside of the route.
 - When testing Stripe, use the sandbox API. Never mock out Stripe interactions unless explicitly told to.
-- Omit obvious docstrings and comments.
+- Omit obvious docstrs and comments. Add comments for non-obvious but easy-to-miss lines that are key to what the test is checking.
+- If a docstring needs formatting, use markdown. Use Google Style.
+
+### Example Test
+
+Below is an example test, you'll notice the following:
+
+- Docstr is omitted since the purpose of the test is obvious
+- Comment about the `county` is added since it's the main point of the test
+- Newline between test setup, functionality under test, and assertions against result
+- `api_app_url_path_for` helper is used instead of hardcoded routes
+
+```python
+from app.generated.fastapi_typed_routes import api_app_url_path_for
+import json
+
+def test_calculate_quote_unknown_county(client):
+    payload = {
+        "subscriber": {"age": 35, "gender": "M"},
+        # fake county to ensure error is thrown
+        "county": "NotACounty",
+    }
+
+    response = client.post(
+        api_app_url_path_for("composite_quote"),
+        json=payload,
+    )
+
+    assert_status(response, status.HTTP_422_UNPROCESSABLE_ENTITY)
+```
+
+### File Structure
+
+* If there's more than a handful of tests in a folder, you should probably create subfolders.
+* File name should be related to the file or primary class / functionality the test is covering. Do not add a component to the test name that exists in the test file path.
+  * Example: `app/routes/unauthenticated/quote.py` should be `tests/routes/unauthenticated/quote_test.py`
+* `tests/routes/{unauthenticated,authenticated}` and a handful of top-level test files for fastapi API route testing.
+* `tests/integration/` for browser tests
 
 ## Python App
 
@@ -179,15 +297,59 @@ globs: **/*.py
   - Should not be used on the queuing system
   - A `perform` function that is the main entry point for the command.
   - Look at existing commands for examples of how to structure the command.
-  - Use `TypeIDType` for any parameters that are IDs of models.
+  - Use `TypeID` for any parameters that are IDs of models.
 - Files within `app/jobs/` should have:
   - Are designed for use on the queuing system.
   - A `perform` function that is the main entry point for the job.
   - Look at existing jobs for examples of how to structure the job.
-  - Use `TypeIDType | str` for any parameters that are IDs of models.
+  - Use `TypeID | str` for any parameters that are IDs of models.
 - When referencing a command, use the full-qualified name, e.g. `app.commands.transcript_deletion.perform`.
 - When queuing a job or `perform`ing it in a test, use the full-qualified name, e.g. `app.jobs.transcript_deletion.perform`.
 - `app/cli/` is for scripts or CLI tools that are specific to the application.
+
+### Factories
+
+globs: app/factories/**/.py
+
+* Each model should get it's own file under app/factories/model_name.py
+* `ActiveModelFactory` (which is a polyfactory subclass) should be used.
+* Use `BaseFactory.__faker__` to generate more specific fake data for important fields (used in routes, etc)
+* Prefer `slug = BaseFactory.__faker__.unique.slug` to `slug = Use(lambda: BaseFactory.__faker__.unique.slug())`
+
+#### Factory Example
+
+```python
+class ScreeningFactory(ActiveModelFactory[Screening]):
+    funding_goal = lambda: BaseFactory.__faker__.random_int(
+        min=0, max=2000_00
+    )
+
+    ticket_price = DEFAULT_TICKET_PRICE
+    status = ScreeningStatus.active
+
+    # always None
+    funding_ending_at = None
+
+    # pick entry from a fixed list
+    zip_code = lambda: BaseFactory.__faker__.random_element(elements=REAL_ZIP_CODES)
+
+    host_name = BaseFactory.__faker__.name
+    host_description = lambda: BaseFactory.__faker__.paragraph(nb_sentences=2)
+
+    # this method runs before the model is persisted to the database
+    @classmethod
+    def post_build(cls, model):
+      # if the user does not pass in a important relationship during creation, you can generate a factory fallback
+        if not model.distribution_id:
+            model.distribution_id = DistributionFactory.save().id
+
+        return model.save()
+
+    # runs after the model is persisted to the database
+    @classmethod
+    def post_save(cls, model):
+        return model.save()
+```
 
 ### Database & ORM
 
@@ -213,9 +375,11 @@ Example:
 
 ```python
 class Distribution(
-    BaseModel, TimestampsMixin, SoftDeletionMixin, TypeIDMixin("dst"), table=True
+    BaseModel, TimestampsMixin, SoftDeletionMixin, table=True
 ):
     """Triple-quoted strings for multi-line class docstring"""
+
+    id: TypeID[Literal["dst"]] = TypeIDPrimaryKey("dst")
 
     date_field_with_comment: datetime | None = None
     "use a string under the field to add a comment about the field"
@@ -227,7 +391,7 @@ class Distribution(
     optional_field: str | None = None
 
     # here's how relationships are constructed
-    doctor_id: TypeIDType = Doctor.foreign_key()
+    doctor_id: TypeID = Doctor.foreign_key()
     doctor: Doctor = Relationship()
 
     @computed_field
@@ -266,6 +430,7 @@ When writing Python:
 * Do not `try/catch` raw `Exceptions` unless explicitly told to. Prefer to let exceptions raise and cause an explicit error.
 * Always make an explicit copy before mutating a dictionary that you did not create in the current narrow scope.
 * **IMPORTANT** never edit app/generated/ files. These are autogenerated.
+* Never use `from __future__`
 
 ### Package Management
 
@@ -538,4 +703,3 @@ Here's how frontend code is organized in `web/app/`:
 * Use `Temporal` for any date or time manipulation. You can assume it's available in the browser.
 * DateTime objects should always be converted to UTC before included in any API request. Never send a timestamp with the user's timezone.
 * Unless otherwise specified, do not shift server-provided times based on the user's timezone.
-
