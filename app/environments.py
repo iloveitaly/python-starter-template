@@ -1,5 +1,8 @@
+import logging
 import platform
 import sys
+
+import structlog
 
 from app.env import env, loose_env
 
@@ -55,8 +58,8 @@ def is_debug_logging():
     Useful for automatically enabling debug mode in various external libraries
     """
 
-    # TODO need to implement with the latest structlog stuff
-    pass
+    # effective level will return the level of the logger, taking into account the parent loggers
+    return logging.getLogger().getEffectiveLevel() <= logging.DEBUG
 
 
 def is_production():

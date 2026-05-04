@@ -9,28 +9,29 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from app import log
 
+security = HTTPBearer()
+
 
 class AuthenticateClerkRequest:
     """
     Protect a route or specific route:
 
+    >>> from app.configuration.clerk import clerk
     >>> protected_router = APIRouter(
     >>>    prefix="/protected",
-    >>>    dependencies=[Depends(AuthenticateRequest("clerk_secret_key"))],
+    >>>    dependencies=[Depends(AuthenticateClerkRequest(clerk))],
     >>> )
 
     Originally sourced from: https://github.com/clerk/clerk-sdk-python/issues/49
     """
 
-    def __init__(self, clerk_secret_key: str):
-        self.clerk_secret_key = clerk_secret_key
-        # self.sdk.sdk_configuration contains most of the core configuration
-        self.sdk = Clerk(bearer_auth=clerk_secret_key)
+    def __init__(self, clerk: Clerk):
+        self.sdk = clerk
 
     async def __call__(
         self,
         request: Request,
-        credentials: HTTPAuthorizationCredentials | None = Depends(HTTPBearer()),
+        credentials: HTTPAuthorizationCredentials | None = Depends(security),
     ) -> RequestState:
         if not credentials:
             raise HTTPException(
