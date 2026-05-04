@@ -4,6 +4,7 @@ All environment variables should be pulled from this file.
 - We want loud, obvious errors when a variable doesn't exist in production that should
 - Vars should be typed as strictly as possible
 - Vars should be sourced close to where they are used (this is why we aren't using pydantic-settings)
+- If a consumer wants an ENV to be optional, they should use `loose_env`.
 
 This is a separate, simple module, to avoid circular imports.
 """
