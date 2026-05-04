@@ -9,7 +9,6 @@ Example payload:
 
 from datetime import datetime
 from typing import Literal, get_args
-from uuid import UUID
 
 from pydantic import BaseModel as PydanticBaseModel
 from typeid import TypeID
@@ -94,8 +93,8 @@ class WebhookEvent(BaseModel, TimestampsMixin, TypeIDMixin("wh"), table=True):
     )
     "timestamp when delivery last succeeded (used to prevent resends)"
 
-    originating_id: UUID | None = Field(
-        default=None, index=True, sa_type=TypeIDType.raw()
+    originating_id: TypeID | None = Field(
+        default=None, index=True, sa_type=TypeIDType.raw()  # type: ignore[arg-type]
     )
     "identifier of the domain object this event refers to, if any"
 
