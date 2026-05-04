@@ -63,4 +63,32 @@ class StrictEnv(Env):
     str = _make_strict_str()
 
 
+def _make_loose_method(method_name: str) -> typing.Any:
+    """Mirrors environs' own _field2method pattern: return Any so FieldMethod[T] annotations are preserved."""
+    parent_method = Env.__dict__[method_name]
+
+    def method(self, name: str, default=..., **kwargs):
+        if default is ...:
+            default = None
+        return parent_method(self, name, default=default, **kwargs)
+
+    return method
+
+
+class LooseEnv(Env):
+    """
+    Environs where missing variables return None by default with no strict validation.
+
+    Use `loose_env` for optional variables. Use `env` (StrictEnv) for required ones.
+    """
+
+    str = _make_loose_method("str")
+    bool = _make_loose_method("bool")
+    int = _make_loose_method("int")
+
+
 env = StrictEnv()
+"Use for required environment variables — raises if missing or empty."
+
+loose_env = LooseEnv()
+"Use for optional environment variables — returns None if missing."

@@ -6,10 +6,10 @@ weird bugs between dev, prod, ci, etc.
 """
 
 import multiprocessing
-import os
 import sys
 from pathlib import Path
 
+from app.env import loose_env
 from app.environments import is_production
 
 
@@ -23,7 +23,7 @@ def configure_python():
 
     inspect_python_runtime()
 
-    if "TZ" not in os.environ:
+    if loose_env.str("TZ") is None:
         log.warning("TZ not set, update your environment configuration")
 
     try:
@@ -45,7 +45,11 @@ def configure_python():
             existing_method=multiprocessing.get_start_method(),
         )
 
-    if is_production() and "PYTHONBREAKPOINT" not in os.environ and sys.breakpointhook:
+    if (
+        is_production()
+        and loose_env.str("PYTHONBREAKPOINT") is None
+        and sys.breakpointhook
+    ):
         sys.breakpointhook = None
         log.info("disabling python breakpoints in production environment")
 
@@ -71,12 +75,14 @@ def inspect_python_runtime() -> None:
     in_venv = (
         real_prefix is not None
         or sys.base_prefix != sys.prefix
-        or os.environ.get("VIRTUAL_ENV") is not None
+        or loose_env.str("VIRTUAL_ENV") is not None
     )
 
     if not in_venv:
         env_var_keys = ["VIRTUAL_ENV", "PATH", "PYTHONPATH"]
-        env_vars = {key: os.environ.get(key) for key in env_var_keys}
+        env_vars = {
+            key: loose_env.str(key) for key in env_var_keys
+        }
 
         log.warning(
             "not using a virtual environment",

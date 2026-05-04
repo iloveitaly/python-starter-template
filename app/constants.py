@@ -1,4 +1,4 @@
-from app.env import env
+from app.env import env, loose_env
 
 from .environments import is_productionish, python_environment
 
@@ -26,5 +26,5 @@ if is_productionish():
 else:
     BUILD_COMMIT = "dev"
 
-WEBHOOK_ENDPOINT = env.str("WEBHOOK_ENDPOINT", default=None, validate=None)
+WEBHOOK_ENDPOINT = loose_env.str("WEBHOOK_ENDPOINT")
 "can remove if the webhook system isn't used"

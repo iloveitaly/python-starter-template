@@ -1,8 +1,7 @@
-import os
 import platform
 import sys
 
-from app.env import env
+from app.env import env, loose_env
 
 
 def is_macos():
@@ -46,7 +45,7 @@ def is_integration_testing():
     This is helpful for enabling additional integrations which you don't want enabled during
     unit tests or local development. For instance, Posthog integration.
     """
-    return is_testing() and "PYTEST_INTEGRATION_TESTING" in os.environ
+    return is_testing() and env.bool("PYTEST_INTEGRATION_TESTING", False)
 
 
 def is_debug_logging():
@@ -99,7 +98,7 @@ def is_pytest():
     """
     PYTEST_CURRENT_TEST is set by pytest to indicate the current test being run
     """
-    return "PYTEST_CURRENT_TEST" in os.environ
+    return loose_env.str("PYTEST_CURRENT_TEST") is not None
 
 
 def is_alembic_migration():
@@ -107,7 +106,7 @@ def is_alembic_migration():
     Returns True if the code is running inside an active Alembic migration process.
     """
 
-    return os.environ.get("ALEMBIC_MIGRATION", "false").lower() == "true"
+    return env.bool("ALEMBIC_MIGRATION", False)
 
 
 def is_wsl():
