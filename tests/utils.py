@@ -6,9 +6,7 @@ from app.configuration.clerk import clerk
 from app.environments import is_testing
 from app.utils.geolocation import get_cached_public_ip
 
-from tests.constants import (
-    CLERK_ALL_USERS_TO_PRESERVE,
-)
+from app.factories.constants import CLERK_ALL_USERS_TO_PRESERVE
 
 from .log import log
 

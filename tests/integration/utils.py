@@ -1,12 +1,12 @@
 from playwright.sync_api import Locator, Page, expect
 
 from app import log
+from app.factories.clerk import get_clerk_dev_user
 from app.generated.react_router_routes import react_router_url
 
 from app.models.user import User
 
 from tests.constants import LONG_INTEGRATION_TEST_TIMEOUT
-from tests.routes.utils import get_clerk_dev_user
 
 from .clerk import setup_clerk_testing_token
 

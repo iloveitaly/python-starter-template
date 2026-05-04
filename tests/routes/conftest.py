@@ -4,12 +4,8 @@ import pytest
 from fastapi.testclient import TestClient
 from httpx import ASGITransport, AsyncClient
 
-from tests.routes.utils import (
-    MockAuthenticateRequest,
-    base_server_url,
-    bearer_headers,
-    get_valid_token,
-)
+from tests.routes.clerk import MockAuthenticateRequest, get_valid_token
+from tests.routes.utils import base_server_url, bearer_headers
 
 
 @pytest.fixture

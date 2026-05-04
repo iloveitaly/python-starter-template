@@ -1,17 +1,14 @@
 from fastapi import status
 from fastapi.testclient import TestClient
 
+from app.factories.clerk import get_clerk_admin_user, get_clerk_dev_user
 from app.generated.fastapi_typed_routes import api_app_url_path_for
 from app.routes.admin import SESSION_KEY_LOGIN_AS_USER
 
 from app.models.user import User, UserRole
 
-from tests.routes.utils import (
-    decode_cookie,
-    get_clerk_admin_user,
-    get_clerk_dev_user,
-    get_valid_token,
-)
+from tests.routes.clerk import get_valid_token
+from tests.routes.utils import decode_cookie
 
 
 def clerk_authorization(clerk_user):

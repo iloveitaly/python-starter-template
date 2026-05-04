@@ -5,7 +5,7 @@ from app.generated.fastapi_typed_routes import api_app_url_path_for
 
 from app.models.user import User
 
-from tests.routes.utils import get_valid_token
+from tests.routes.clerk import get_valid_token
 
 
 def test_unauthorized_no_credentials(client: TestClient):

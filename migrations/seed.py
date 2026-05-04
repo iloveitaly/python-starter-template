@@ -1,7 +1,6 @@
 """
 Seed development, test, and preview databases with data that is mostly realistic.
 
-- This is only file outside of tests/ that should import from that module (factories, constants, etc).
 - Will refuse to run in production or staging.
 - This file is excluded from pyright, so it's not imported from.
 - `--safe` option exists to only run if the DB is empty. This is helpful when running automatically (via `just dev`) to
@@ -21,10 +20,9 @@ import sys
 from app import log
 from app.configuration.database import is_database_empty
 from app.environments import is_production, is_staging
+from app.factories.clerk import get_clerk_seed_user
 
 from app.models.user import User
-
-from tests.routes.utils import get_clerk_seed_user
 
 
 def check_safe_seeding():

@@ -5,10 +5,10 @@ Factories for the User model.
 from polyfactory import Use
 from typeid import TypeID
 
+from app.factories.clerk import get_clerk_dev_user
+
 from activemodel.pytest.factories import ActiveModelFactory
 from app.models.user import CLERK_OBJECT_PREFIX, User
-
-from tests.routes.utils import get_clerk_dev_user
 
 
 class UserFactory(ActiveModelFactory[User]):

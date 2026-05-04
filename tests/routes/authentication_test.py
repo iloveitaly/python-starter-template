@@ -3,7 +3,8 @@ from fastapi.testclient import TestClient
 
 from app.generated.fastapi_typed_routes import api_app_url_path_for
 
-from tests.routes.utils import bearer_headers, get_valid_token
+from tests.routes.clerk import get_valid_token
+from tests.routes.utils import bearer_headers
 
 
 def test_unauthorized_no_credentials(client: TestClient):
