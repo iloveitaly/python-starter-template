@@ -14,7 +14,7 @@ import inspect
 from pathlib import Path
 
 from app import log
-from app.environments import is_production, is_productionish
+from app.environments import is_production
 from app.setup import modules_in_folder
 
 if is_production():

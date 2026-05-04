@@ -2,8 +2,6 @@ import logging
 import platform
 import sys
 
-import structlog
-
 from app.env import env, loose_env
 
 

@@ -94,7 +94,9 @@ class WebhookEvent(BaseModel, TimestampsMixin, TypeIDMixin("wh"), table=True):
     "timestamp when delivery last succeeded (used to prevent resends)"
 
     originating_id: TypeID | None = Field(
-        default=None, index=True, sa_type=TypeIDType.raw()  # type: ignore[arg-type]
+        default=None,
+        index=True,
+        sa_type=TypeIDType.raw(),  # type: ignore[arg-type]
     )
     "identifier of the domain object this event refers to, if any"
 

@@ -4,9 +4,8 @@ from tenacity import retry, stop_after_attempt
 
 from app.configuration.clerk import clerk
 from app.environments import is_testing
-from app.utils.geolocation import get_cached_public_ip
-
 from app.factories.constants import CLERK_ALL_USERS_TO_PRESERVE
+from app.utils.geolocation import get_cached_public_ip
 
 from .log import log
 

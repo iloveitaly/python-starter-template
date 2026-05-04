@@ -7,7 +7,7 @@ from pydantic import BaseModel
 
 from activemodel.session_manager import aglobal_session
 
-from ..configuration.clerk import CLERK_PRIVATE_KEY, clerk
+from ..configuration.clerk import clerk
 from .admin import admin_api_app
 from .dependencies.clerk import AuthenticateClerkRequest
 from .dependencies.login_as import login_as

@@ -80,9 +80,7 @@ def inspect_python_runtime() -> None:
 
     if not in_venv:
         env_var_keys = ["VIRTUAL_ENV", "PATH", "PYTHONPATH"]
-        env_vars = {
-            key: loose_env.str(key) for key in env_var_keys
-        }
+        env_vars = {key: loose_env.str(key) for key in env_var_keys}
 
         log.warning(
             "not using a virtual environment",
