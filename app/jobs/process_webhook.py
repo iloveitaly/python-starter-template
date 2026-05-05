@@ -56,13 +56,13 @@ def perform(event_id: TypeIDType) -> None:
         response.raise_for_status()
         event.response_payload = response.json()
     except Exception:
-        event.failed_at = Instant.now().to_stdlib()
+        event.failed_at = Instant.now()
         event.save()
         raise
 
     # success
     event.failed_at = None
-    event.succeeded_at = Instant.now().to_stdlib()
+    event.succeeded_at = Instant.now()
     event.save()
 
     log.info(

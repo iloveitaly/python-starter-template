@@ -1,4 +1,4 @@
-from datetime import datetime
+from whenever import Instant
 
 import sentry_sdk
 from fastapi import HTTPException, Request, status
@@ -18,9 +18,9 @@ def inject_user_record(request: Request):
     user = User.upsert(
         data={
             "clerk_id": clerk_id,
-            "last_active_at": datetime.now(),
+            "last_active_at": Instant.now(),
             # upsert does not automatically update timestamps
-            "updated_at": datetime.now(),
+            "updated_at": Instant.now(),
         },
         unique_by="clerk_id",
     )

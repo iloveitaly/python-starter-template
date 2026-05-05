@@ -19,7 +19,7 @@ async def healthcheck():
 async def active_user_status():
     "check if users have logged in within the last day"
 
-    last_24_hours = Instant.now().subtract(hours=24).to_stdlib()
+    last_24_hours = Instant.now().subtract(hours=24)
     active_users = User.where(User.last_active_at > last_24_hours).count()  # type: ignore
 
     if active_users == 0:

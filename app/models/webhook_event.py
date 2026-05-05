@@ -7,7 +7,7 @@ Example payload:
 >>> to_json(StreamingOrder.sample().webhook("streaming_order.created").model_json_schema())
 """
 
-from datetime import datetime
+from whenever import Instant
 from typing import Literal, get_args
 
 from pydantic import BaseModel as PydanticBaseModel
@@ -23,6 +23,7 @@ from activemodel.mixins import TimestampsMixin, TypeIDMixin
 from activemodel.types import TypeIDType
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Field
+
 
 WebhookTypesType = Literal["order.created"]
 
@@ -68,7 +69,9 @@ class WebhookBase(PydanticBaseModel):
         app.jobs.process_webhook.queue(event.id)
 
 
-class WebhookEvent(BaseModel, TimestampsMixin, TypeIDMixin("wh"), table=True):
+class WebhookEvent(
+    BaseModel, TimestampsMixin, TypeIDMixin("wh"), table=True
+):
     """Represents an outbound webhook queued for delivery."""
 
     destination: str
@@ -81,16 +84,10 @@ class WebhookEvent(BaseModel, TimestampsMixin, TypeIDMixin("wh"), table=True):
     payload: dict = Field(sa_type=JSONB)
     "JSON body sent to destination as the POST request payload"
 
-    failed_at: datetime | None = Field(
-        default=None,
-        sa_type=sa.DateTime(timezone=True),  # type: ignore
-    )
+    failed_at: Instant | None = None
     "timestamp of the last failed delivery attempt"
 
-    succeeded_at: datetime | None = Field(
-        default=None,
-        sa_type=sa.DateTime(timezone=True),  # type: ignore
-    )
+    succeeded_at: Instant | None = None
     "timestamp when delivery last succeeded (used to prevent resends)"
 
     originating_id: TypeID | None = Field(

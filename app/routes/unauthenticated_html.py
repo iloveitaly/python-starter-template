@@ -2,7 +2,7 @@
 Unauthenticated HTML routes.
 """
 
-from datetime import datetime
+from whenever import Instant
 
 from fastapi import APIRouter, Depends
 
@@ -22,4 +22,4 @@ unauthenticated_html = APIRouter(
 #      be run in a threadpool and much better performance
 @unauthenticated_html.get("/hello")
 def index():
-    return render_template("routes/index.html", {"date": datetime.now()})
+    return render_template("routes/index.html", {"date": Instant.now()})

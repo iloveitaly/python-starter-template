@@ -4,7 +4,6 @@ Marketing opt-in, and other related functions generally require some sort of aud
 This is a simple data structure to capture this from a fastapi request and stick it in a JSONB column.
 """
 
-from datetime import datetime
 from ipaddress import ip_address
 
 from fastapi import Request
@@ -13,13 +12,11 @@ from pydantic import IPvAnyAddress
 from structlog_config import fastapi_access_logger
 from whenever import Instant
 
-from app.constants import BUILD_COMMIT
-
 
 class UserActionAuditData(PydanticBaseModel):
     ip_address: IPvAnyAddress
     build_version: str
-    timestamp: datetime
+    timestamp: Instant
 
     @classmethod
     def from_request(cls, request: Request) -> UserActionAuditData:
@@ -28,5 +25,5 @@ class UserActionAuditData(PydanticBaseModel):
         return cls(
             ip_address=ip_address(client_ip),
             build_version=BUILD_COMMIT,
-            timestamp=Instant.now().to_system_tz().to_stdlib(),
+            timestamp=Instant.now(),
         )

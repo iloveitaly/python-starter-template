@@ -5,7 +5,7 @@ Mirrors this model: https://clerk.com/docs/reference/backend-api/tag/Users#opera
 # TODO should we create an organization?
 # https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/GetOrganization
 
-from datetime import datetime
+from whenever import Instant
 from enum import StrEnum
 
 from typeid import TypeID
@@ -15,6 +15,7 @@ from activemodel import BaseModel
 from activemodel.mixins import SoftDeletionMixin, TimestampsMixin, TypeIDMixin
 from activemodel.types import TypeIDType
 from sqlmodel import Column, Field
+
 
 # NOTE usr_ is used for non-clerk prefix to avoid confusion
 CLERK_OBJECT_PREFIX = "user"
@@ -41,10 +42,7 @@ class User(
     role: UserRole = Field(default=UserRole.normal)
     "role of the user, primarily to support superuser switching"
 
-    last_active_at: datetime | None = Field(
-        default=None,
-        sa_type=sa.DateTime(timezone=True),  # type: ignore
-    )
+    last_active_at: Instant | None = None
     "last time the user had an active session"
 
     api_key: TypeIDType | None = Field(
