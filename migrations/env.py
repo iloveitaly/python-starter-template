@@ -26,6 +26,7 @@ if config.get_main_option("skip_logging_config") != "true" and config.config_fil
 
 import alembic_postgresql_enum
 from sqlmodel import SQLModel
+from app import log
 from app.models import *
 from app.configuration.database import database_url
 
