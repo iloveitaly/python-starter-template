@@ -24,7 +24,7 @@ async def active_user_status():
 
     if active_users == 0:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
         )
 
     return {"status": "ok"}

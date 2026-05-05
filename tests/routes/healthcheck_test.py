@@ -18,4 +18,4 @@ async def test_user_status(aclient):
     response = await aclient.get(api_app_url_path_for("active_user_status"))
 
     # should error since there are no users
-    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_CONTENT
