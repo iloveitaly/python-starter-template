@@ -12,6 +12,8 @@ from pydantic import IPvAnyAddress
 from structlog_config import fastapi_access_logger
 from whenever import Instant
 
+from app.constants import BUILD_COMMIT
+
 
 class UserActionAuditData(PydanticBaseModel):
     ip_address: IPvAnyAddress
