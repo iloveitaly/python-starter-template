@@ -4,19 +4,17 @@ Commands are distinct from jobs: jobs are designed to be run by celery, commands
 Auto-imports all modules in the commands directory and subdirectories and validates that each module has a 'perform' method.
 """
 
-import importlib
-from pathlib import Path
+from types import ModuleType
 
-from app import log
-from app.setup import modules_in_folder
+from app.setup import autoimport_submodules
 
-for module_name in modules_in_folder(Path(__file__).parent, __package__):
-    log.debug("auto importing", command=module_name)
 
-    module = importlib.import_module(module_name)
-
+def _validate_command_module(module_name: str, module: ModuleType) -> None:
     # validate that the module has a 'perform' method, this is a convention in this folder
     if not hasattr(module, "perform") or not callable(module.perform):
         raise AttributeError(
             f"Module {module_name} must have a callable 'perform' method"
         )
+
+
+autoimport_submodules(on_import=_validate_command_module)

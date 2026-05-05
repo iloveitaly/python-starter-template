@@ -4,13 +4,7 @@ For alembic to properly pick up on all model metadata all models must be importe
 This imports all models in the current directory and subdirectories.
 """
 
-import importlib
-from pathlib import Path
+from app.setup import autoimport_submodules
 
-from app import log
-
-from ..setup import modules_in_folder
-
-for module_name in modules_in_folder(Path(__file__).parent, __package__):
-    log.debug("auto importing", model=module_name)
-    importlib.import_module(module_name)
+# Import all model modules so metadata is registered for migrations
+autoimport_submodules()

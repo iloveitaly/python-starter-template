@@ -6,18 +6,17 @@ For celery to properly pick up on all tasks they must all be imported when celer
 It's easier for us to auto-import all of them here, so Celery just needs to import app.jobs
 """
 
-import importlib
-from pathlib import Path
+from types import ModuleType
 
-from app import log
-from app.setup import modules_in_folder
+from app.setup import autoimport_submodules
 
-for module_name in modules_in_folder(Path(__file__).parent, __package__):
-    log.debug("auto importing", job=module_name)
-    module = importlib.import_module(module_name)
 
+def _validate_job_module(module_name: str, module: ModuleType) -> None:
     # enforce that each module has a 'perform' method
     if not hasattr(module, "perform") or not callable(module.perform):
         raise AttributeError(
             f"Module {module_name} must have a callable 'perform' method"
         )
+
+
+autoimport_submodules(on_import=_validate_job_module)
