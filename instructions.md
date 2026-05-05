@@ -269,7 +269,7 @@ def test_calculate_quote_unknown_county(client):
         json=payload,
     )
 
-    assert_status(response, status.HTTP_422_UNPROCESSABLE_ENTITY)
+    assert_status(response, status.HTTP_422_UNPROCESSABLE_CONTENT)
 ```
 
 ### File Structure
