@@ -5,11 +5,11 @@ requires-python = ">=3.14"
 [[package]]
 name = "activemodel"
 version = "0.21.0"
-source = { git = "https://github.com/iloveitaly/activemodel.git#19dde680bc34a3ee246c529b48c568199ac9aca8" }
+source = { git = "https://github.com/iloveitaly/activemodel.git#886fee2fd426deb9a57787c844b678ba665532ab" }
 dependencies = [
     { name = "sqlmodel" },
-    { name = "textcase" },
     { name = "typeid-python" },
+    { name = "whenever" },
 ]
 
 [[package]]
@@ -219,7 +219,7 @@ wheels = [
 [[package]]
 name = "beautiful-traceback"
 version = "0.9.0"
-source = { git = "https://github.com/iloveitaly/beautiful-traceback.git#2a759c9988f88b08379bc343b2eba1d6670df9d7" }
+source = { git = "https://github.com/iloveitaly/beautiful-traceback.git#333da45ae37d2bedd6d33d8b17a60bd97f8e5f2a" }
 dependencies = [
     { name = "colorama" },
     { name = "pytest-plugin-utils" },
@@ -1800,7 +1800,7 @@ wheels = [
 
 [[package]]
 name = "openai"
-version = "2.33.0"
+version = "2.34.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
@@ -1812,9 +1812,9 @@ dependencies = [
     { name = "tqdm" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f0/ee/d056c82f63c05f06baac0cffb4a90952d8274f90c49dfe244f20497b9bbd/openai-2.33.0.tar.gz", hash = "sha256:f850c435e2a4685bba3295bd54912dd26315d9c1b7733068186134d6e0599f9a", size = 693254, upload-time = "2026-04-28T14:04:42.428Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/7b/89/f1e78f5f828f4e97a6ebca8f45c6b35667da12b074ac490dc8362b882279/openai-2.34.0.tar.gz", hash = "sha256:828b4efcbb126352c2b5eb97d33ae890c92a71ab72511aefc1b7fe64aeccb07b", size = 759556, upload-time = "2026-05-04T17:34:08.721Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/7d/32/37734d769bc8b42e4938785313cc05aade6cb0fa72479d3220a0d61a4e78/openai-2.33.0-py3-none-any.whl", hash = "sha256:03ac37d70e8c9e3a8124214e3afa785e2cbc12e627fbd98177a086ef2fd87ad5", size = 1162695, upload-time = "2026-04-28T14:04:40.482Z" },
+    { url = "https://files.pythonhosted.org/packages/f2/40/f090499f10514515081d09cb9da09f25b821eb20497e9423afe4f07b4ecf/openai-2.34.0-py3-none-any.whl", hash = "sha256:c996a71b1a210f3569844572ad4c609307e978515fb76877cf449b72596e549e", size = 1316535, upload-time = "2026-05-04T17:34:06.773Z" },
 ]
 
 [[package]]
@@ -2561,7 +2561,7 @@ wheels = [
 [[package]]
 name = "pytest-playwright-artifacts"
 version = "0.3.1"
-source = { git = "https://github.com/iloveitaly/pytest-playwright-artifacts.git#7a654ba5ce9cf6101b93c7b8fdc82f843354187e" }
+source = { git = "https://github.com/iloveitaly/pytest-playwright-artifacts.git#1ee44b95d852f2aa332f9ea8ce6097bee244c2cc" }
 dependencies = [
     { name = "playwright" },
     { name = "pytest-plugin-utils" },
@@ -2581,11 +2581,11 @@ dependencies = [
 
 [[package]]
 name = "pytest-plugin-utils"
-version = "0.3.0"
+version = "0.4.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/2a/35/7c400aae4d43b6b3829ff6debd876f7c8275ddf8b53a303067d825f34199/pytest_plugin_utils-0.3.0.tar.gz", hash = "sha256:1676ed31ea9e7fa30b7ee9664d02fec4ddf96df691c1279f24ed9042a48af48e", size = 7791, upload-time = "2026-03-26T13:37:19.349Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/7d/da/c91592e11f2837a12d4696b4004d15dc67502e44163cd9478a961386eb77/pytest_plugin_utils-0.4.0.tar.gz", hash = "sha256:d40e100d88ae15599ed67780531e502a159e23c3484795bbf4e45c0468520cc4", size = 8188, upload-time = "2026-05-04T16:43:23.753Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/25/47/1906bc96d9803589b7e75c8660c38fb228924e4e569d1acb4fc5c69c5242/pytest_plugin_utils-0.3.0-py3-none-any.whl", hash = "sha256:08946450df8ecdea5d778c1208a2e55c558984e295fe79fe41606cbc68b46529", size = 8859, upload-time = "2026-03-26T13:37:18.314Z" },
+    { url = "https://files.pythonhosted.org/packages/7e/aa/282377aa29a1eb83dd3e39433b29eabdba295ce9b8ae7f2332b1d6b64f63/pytest_plugin_utils-0.4.0-py3-none-any.whl", hash = "sha256:06c786c7bbaaabad6ad1d513d731511f3feb829514ec0978be41a43351de5017", size = 9277, upload-time = "2026-05-04T16:43:24.46Z" },
 ]
 
 [[package]]
@@ -3440,8 +3440,8 @@ wheels = [
 
 [[package]]
 name = "structlog-config"
-version = "0.12.4"
-source = { git = "https://github.com/iloveitaly/structlog-config.git#c90eb91c247e0c5986f654a9f8c3e529c9c41d93" }
+version = "0.13.0"
+source = { git = "https://github.com/iloveitaly/structlog-config.git#1eda3731bbda908f62260d45f37009600c51ca14" }
 dependencies = [
     { name = "orjson" },
     { name = "pytest-plugin-utils" },
@@ -3791,7 +3791,7 @@ wheels = [
 
 [[package]]
 name = "virtualenv"
-version = "21.3.0"
+version = "21.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "distlib" },
@@ -3799,9 +3799,9 @@ dependencies = [
     { name = "platformdirs" },
     { name = "python-discovery" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/3f/8b/6331f7a7fe70131c301106ec1e7cf23e2501bf7d4ca3636805801ca191bb/virtualenv-21.3.0.tar.gz", hash = "sha256:733750db978ec95c2d8eb4feadaa57091002bce404cb39ba69899cf7bd28944e", size = 7614069, upload-time = "2026-04-27T17:05:58.927Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ec/0d/915c02c94d207b85580eb09bffab54438a709e7288524094fe781da526c2/virtualenv-21.3.1.tar.gz", hash = "sha256:c2305bc1fddeec40699b8370d13f8d431b0701f00ce895061ce493aeded4426b", size = 7613791, upload-time = "2026-05-05T01:34:31.402Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4b/eb/03bfb1299d4c4510329e470f13f9a4ce793df7fcb5a2fd3510f911066f61/virtualenv-21.3.0-py3-none-any.whl", hash = "sha256:4d28ee41f6d9ec8f1f00cd472b9ffbcedda1b3d3b9a575b5c94a2d004fd51bd7", size = 7594690, upload-time = "2026-04-27T17:05:55.468Z" },
+    { url = "https://files.pythonhosted.org/packages/b1/4f/f71e641e504111a5a74e3a20bc52d01bd86788b22699dd3fee1c63253cf6/virtualenv-21.3.1-py3-none-any.whl", hash = "sha256:d1a71cf58f2f9228fff23a1f6ec15d39785c6b32e03658d104974247145edd35", size = 7594539, upload-time = "2026-05-05T01:34:28.98Z" },
 ]
 
 [[package]]
