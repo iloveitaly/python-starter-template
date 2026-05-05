@@ -7,23 +7,21 @@ Example payload:
 >>> to_json(StreamingOrder.sample().webhook("streaming_order.created").model_json_schema())
 """
 
-from whenever import Instant
 from typing import Literal, get_args
 
 from pydantic import BaseModel as PydanticBaseModel
 from typeid import TypeID
+from whenever import Instant
 
 import app.jobs.process_webhook
 from app import log
 from app.constants import WEBHOOK_ENDPOINT
 
-import sqlalchemy as sa
 from activemodel import BaseModel
 from activemodel.mixins import TimestampsMixin, TypeIDMixin
 from activemodel.types import TypeIDType
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Field
-
 
 WebhookTypesType = Literal["order.created"]
 
@@ -69,9 +67,7 @@ class WebhookBase(PydanticBaseModel):
         app.jobs.process_webhook.queue(event.id)
 
 
-class WebhookEvent(
-    BaseModel, TimestampsMixin, TypeIDMixin("wh"), table=True
-):
+class WebhookEvent(BaseModel, TimestampsMixin, TypeIDMixin("wh"), table=True):
     """Represents an outbound webhook queued for delivery."""
 
     destination: str

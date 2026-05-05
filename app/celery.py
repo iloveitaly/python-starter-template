@@ -1,8 +1,8 @@
 import asyncio
-from datetime import timedelta
 from multiprocessing import current_process
 
 import celery_healthcheck
+import whenever
 from celery import Celery, signals
 from celery.app.task import Task
 from celery.schedules import crontab
@@ -207,7 +207,7 @@ celery_app.conf.beat_schedule = {
     "example_normal": {
         "task": "app.jobs.sync.perform",
         # can run sub-minute schedules
-        "schedule": timedelta(seconds=2),
+        "schedule": whenever.seconds(2).to_stdlib(),
     },
     "sync_clerk": {
         "task": "app.jobs.clerk_sync.perform",

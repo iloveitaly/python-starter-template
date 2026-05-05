@@ -3,12 +3,11 @@ This test suite intentionally does not use factory models. This is to avoid test
 around when webhooks should be fired and instead focus the testing on the core webhook logic.
 """
 
-from whenever import Instant
-
 import httpx
 import pytest
 from celery.exceptions import Retry
 from typeid import TypeID
+from whenever import Instant
 
 import app.jobs.process_webhook
 

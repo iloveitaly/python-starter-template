@@ -1,8 +1,7 @@
-from whenever import Instant
-
 import sentry_sdk
 from fastapi import HTTPException, Request, status
 from starlette_context import context
+from whenever import Instant
 
 from app.models.user import User
 

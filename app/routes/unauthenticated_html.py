@@ -2,9 +2,8 @@
 Unauthenticated HTML routes.
 """
 
-from whenever import Instant
-
 from fastapi import APIRouter, Depends
+from whenever import Instant
 
 from app.templates import render_template
 
