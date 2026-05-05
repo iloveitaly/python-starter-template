@@ -59,6 +59,8 @@ def run_migrations_offline() -> None:
 
     """
     url = config.get_main_option("sqlalchemy.url")
+
+    # literal_binds=True is for offline mode to generate valid raw SQL scripts with actual values instead of parameterized placeholders
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -85,7 +87,8 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection,
+            target_metadata=target_metadata
         )
 
         cpu_count = (os.cpu_count() or 1) * 2
