@@ -19,9 +19,9 @@ import sys
 
 from app import log
 from app.environments import is_production, is_staging
-from activemodel.utils import is_database_empty
 from app.factories.clerk import get_clerk_seed_user
 
+from activemodel.utils import is_database_empty
 from app.models.user import User
 
 
