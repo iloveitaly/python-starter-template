@@ -1,4 +1,4 @@
-[tool.pytest.ini_options]
+[pytest]
 addopts = [
     # disable all of default log capture: structlog does this for us
     "-p no:logging",
@@ -14,7 +14,7 @@ filterwarnings = [
 ]
 
 # by default, pytest seems to hijack many logs and output them to the terminal
-testpaths = "tests"
+testpaths = ["tests"]
 
 # if there are specific directories that contain other projects that you want to skip, add them here
 norecursedirs = ["tmp", "pypi"]
