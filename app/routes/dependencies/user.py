@@ -17,9 +17,9 @@ def inject_user_record(request: Request):
     user = User.upsert(
         data={
             "clerk_id": clerk_id,
-            "last_active_at": Instant.now(),
+            "last_active_at": Instant.now().to_system_tz(),
             # upsert does not automatically update timestamps
-            "updated_at": Instant.now(),
+            "updated_at": Instant.now().to_system_tz(),
         },
         unique_by="clerk_id",
     )

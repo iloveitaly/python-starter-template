@@ -8,7 +8,7 @@ Mirrors this model: https://clerk.com/docs/reference/backend-api/tag/Users#opera
 from enum import StrEnum
 
 from typeid import TypeID
-from whenever import Instant
+from whenever import Instant, ZonedDateTime
 
 from activemodel import BaseModel
 from activemodel.mixins import SoftDeletionMixin, TimestampsMixin, TypeIDMixin
@@ -40,7 +40,7 @@ class User(
     role: UserRole = Field(default=UserRole.normal)
     "role of the user, primarily to support superuser switching"
 
-    last_active_at: Instant | None = None
+    last_active_at: ZonedDateTime | None = None
     "last time the user had an active session"
 
     api_key: TypeIDType | None = Field(
