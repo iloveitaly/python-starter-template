@@ -8,7 +8,7 @@ Mirrors this model: https://clerk.com/docs/reference/backend-api/tag/Users#opera
 from enum import StrEnum
 
 from typeid import TypeID
-from whenever import Instant, ZonedDateTime
+from whenever import ZonedDateTime
 
 from activemodel import BaseModel
 from activemodel.mixins import SoftDeletionMixin, TimestampsMixin, TypeIDMixin
