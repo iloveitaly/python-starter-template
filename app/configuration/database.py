@@ -1,9 +1,7 @@
 from app.env import env
 
 import activemodel
-from activemodel import BaseModel
 from activemodel.session_manager import get_engine
-from sqlalchemy import inspect
 from sqlmodel import SQLModel
 
 from ..environments import is_development, is_testing
@@ -163,53 +161,3 @@ def run_migrations():
 
     if needs_alembic_migration():
         command.upgrade(get_alembic_config(), "head")
-
-
-# TODO remove once this exists upstream in ActiveModel
-def table_exists(model: type[SQLModel]) -> bool:
-    """
-    Check if the table for the given model exists in the database.
-    """
-    engine = get_engine()
-    return inspect(engine).has_table(str(model.__tablename__))
-
-
-# TODO look into merging into AM upstream
-def is_database_empty(exclude: list[type[SQLModel]] | None = None) -> bool:
-    """
-    Check if any table in the database has records using Model.count().
-
-    Useful for detecting an empty database state to run operations such as seeding, etc.
-    """
-
-    if exclude is None:
-        exclude = []
-
-    from app import log
-
-    # TODO should try the new fp typed stuff here
-    # Get all subclasses recursively
-    all_models = BaseModel.__subclasses__()
-    for model in all_models:
-        all_models.extend(model.__subclasses__())
-
-    for model_cls in all_models:
-        if model_cls in exclude:
-            log.info("skipping table in empty check", table=model_cls.__tablename__)
-            continue
-
-        # TODO there's not to be a better way to do this?
-        # Only check classes that are actual tables
-        if not getattr(model_cls, "__tablename__", None):
-            continue
-
-        count = model_cls.count()
-        if count > 0:
-            log.warning(
-                "table is not empty",
-                table=model_cls.__tablename__,
-                record_count=count,
-            )
-            return False
-
-    return True
