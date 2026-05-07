@@ -18,7 +18,6 @@ authenticate_clerk_request_middleware = AuthenticateClerkRequest(clerk)
 
 authenticated_api_app = APIRouter(
     prefix="/internal/v1",
-    # TODO unclear what the tags are used for...
     tags=["private"],
     # think of dependencies as middleware
     dependencies=[
@@ -44,4 +43,5 @@ class AppData(BaseModel, extra="forbid"):
 
 @authenticated_api_app.get("/")
 def application_data(request: Request) -> AppData:
+    "example route to return the user ID that is attached to the request containing a clerk login"
     return AppData(user_id=str(request.state.user.id))

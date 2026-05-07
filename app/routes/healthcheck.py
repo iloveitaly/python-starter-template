@@ -6,7 +6,7 @@ from whenever import Instant
 
 from app.models.user import User
 
-healthcheck_api_app = APIRouter()
+healthcheck_api_app = APIRouter(tags=["private"])
 
 
 @healthcheck_api_app.get("/healthcheck")

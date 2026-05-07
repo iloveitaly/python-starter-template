@@ -10,6 +10,7 @@ from app.templates import render_template
 from activemodel.session_manager import aglobal_session
 
 unauthenticated_html = APIRouter(
+    tags=["private"],
     dependencies=[
         # NOTE this line could not be more important, look at the underlying implementation!
         Depends(aglobal_session),

@@ -1,7 +1,6 @@
 import json
 
 import typer
-from fastapi.routing import APIRoute
 
 # disable rich tracebacks in favor of beautiful_traceback
 app = typer.Typer(pretty_exceptions_enable=False)
@@ -39,56 +38,76 @@ def write_versions():
 
 @app.command()
 def dump_openapi(
-    app_target: str = "api_app",
-    list_apps: bool = typer.Option(
+    tag: str | None = typer.Argument(
+        None,
+        help="Filter routes by tag (in addition to always excluding 'private')",
+    ),
+    list_tags: bool = typer.Option(
         False,
-        "--list-apps",
-        help="List available FastAPI app targets and exit",
+        "--list-tags",
+        help="List available (non-private) tags and exit",
     ),
 ):
     """
-    Dump OpenAPI schema for the specified app target.
+    Dump OpenAPI schema, excluding routes tagged 'private'.
+
+    We tried generating by route object, but this caused COMMON_ERROR_RESPONSES (the app-level 400/401/etc
+    response definitions) to be hidden from the api spec. This is why we use the tagged approach.
     """
     import importlib
-    import json
 
-    from app.utils.openapi import generate_openapi_schema
+    from fastapi.openapi.utils import get_openapi
+    from fastapi.routing import APIRoute
 
-    # Dynamically get the target app from app.server module
     server_module = importlib.import_module("app.server")
+    parent_app = server_module.api_app
 
-    def is_fastapi_app(name):
-        if name.startswith("_"):
-            return False
+    public_routes = [
+        r
+        for r in parent_app.router.routes
+        if isinstance(r, APIRoute) and "private" not in (r.tags or [])
+    ]
 
-        obj = getattr(server_module, name)
-        return hasattr(obj, "routes")
-
-    available_apps = [name for name in dir(server_module) if is_fastapi_app(name)]
-
-    if list_apps:
-        typer.echo(
-            "Available FastAPI app targets:\n"
-            + "\n".join(f"- {n}" for n in available_apps)
-        )
+    if list_tags:
+        available_tags = sorted({str(t) for r in public_routes for t in (r.tags or [])})
+        if available_tags:
+            typer.echo(
+                "Available tags:\n" + "\n".join(f"- {t}" for t in available_tags)
+            )
+        else:
+            typer.echo("No tags available — all public routes are untagged.")
         return
 
-    if app_target not in available_apps:
+    filtered_routes = (
+        [r for r in public_routes if tag in (r.tags or [])]
+        if tag is not None
+        else public_routes
+    )
+
+    if tag is not None and not filtered_routes:
+        available_tags = sorted({str(t) for r in public_routes for t in (r.tags or [])})
         typer.echo(
-            f"Error: '{app_target}' not found.\n\nAvailable FastAPI app targets:\n"
-            + "\n".join(f"- {n}" for n in available_apps)
+            f"Error: no routes found with tag '{tag}'.\n\nAvailable tags:\n"
+            + "\n".join(f"- {t}" for t in available_tags)
         )
         raise typer.Exit(1)
 
-    target_app = getattr(server_module, app_target)
-    openapi = generate_openapi_schema(target_app)
+    schema = get_openapi(
+        title=parent_app.title,
+        version=parent_app.version,
+        openapi_version=parent_app.openapi_version,
+        description=parent_app.description or "",
+        routes=filtered_routes,
+    )
 
-    typer.echo(json.dumps(openapi))
+    typer.echo(json.dumps(schema))
 
 
 @app.command()
 def routes():
     "output list of routes available in the application"
+
+    from fastapi.routing import APIRoute
 
     from app.server import api_app
 
