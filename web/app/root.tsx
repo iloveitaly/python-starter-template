@@ -23,6 +23,13 @@ import "./app.css"
 
 import { AllMeta, MetaProvider } from "@/components/shared/AllMeta"
 
+/**
+ * This component provides application-wide default metadata via a MetaProvider and renders
+ * the initial set of SEO/social tags using AllMeta.
+ *
+ * Individual pages or routes can override these defaults by rendering their own <AllMeta />
+ * component with custom props.
+ */
 function MetaLinks() {
   const defaultSocialOptions = {
     basic: {
