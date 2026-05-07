@@ -142,8 +142,8 @@ export function AllMeta(props: AllMetaProps) {
   }
 
   // Render function to generate tags based on merged options
-  const renderTags = (options: Options): JSX.Element[] => {
-    const elements: JSX.Element[] = []
+  const renderTags = (options: Options): React.ReactElement[] => {
+    const elements: React.ReactElement[] = []
     const { basic, twitter, facebook } = options
 
     // Basic tags

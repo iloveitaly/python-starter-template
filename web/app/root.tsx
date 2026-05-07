@@ -21,6 +21,24 @@ import PageNotFound from "@/components/shared/PageNotFound"
 import * as Sentry from "@sentry/react"
 import "./app.css"
 
+import { AllMeta, MetaProvider } from "@/components/shared/AllMeta"
+
+function MetaLinks() {
+  const defaultSocialOptions = {
+    basic: {
+      title: "Health Insurance Selection",
+      description:
+        "Compare and select the best health insurance plans for your employees.",
+    },
+  }
+
+  return (
+    <MetaProvider defaults={defaultSocialOptions}>
+      <AllMeta />
+    </MetaProvider>
+  )
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -29,6 +47,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
+        <MetaLinks />
       </head>
       <body>
         {children}
