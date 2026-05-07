@@ -147,6 +147,7 @@ def register_exception_handlers(app: FastAPI):
         assert isinstance(exc, sqlalchemy.exc.NoResultFound)
 
         # TODO looks like the model and requested ID are NOT attached to the error, which is a bummer :/
+        # TODO I should inspect the error logs for this, it really should contain the request ID
         log.info("NoResultFound transformed by fastapi")
         log.debug("NoResultFound traceback", exc_info=exc)
 
@@ -160,22 +161,24 @@ def register_exception_handlers(app: FastAPI):
             ).model_dump(exclude_none=True),
         )
 
-    # https://github.com/fastapi/fastapi/issues/3361
     @app.exception_handler(RequestValidationError)
     async def pydantic_validation_exception_handler(
         request: Request, exc: RequestValidationError
     ) -> JSONResponse:
-        """Format request validation errors using the standard ErrorResponse shape.
+        """
+        Format request validation errors (pydantic validation errors) using the standard ErrorResponse shape.
 
         Pydantic's structured errors are passed through in `details.errors` so
         frontends can map failures to specific fields without parsing strings.
         `jsonable_encoder` strips non-serializable objects that pydantic v2
         sometimes embeds in error context.
+
+        Lifted from https://github.com/fastapi/fastapi/issues/3361
         """
         errors = jsonable_encoder(exc.errors())
 
-        # with the fastapi access logger in place,
-        log.warning(
+        # with the fastapi access logger in place, this contains the request ID so it can be correlated with a request
+        log.info(
             "validation_error",
             code="VALIDATION_ERROR",
             error_count=len(errors),
@@ -197,7 +200,8 @@ def register_exception_handlers(app: FastAPI):
     async def app_client_error_handler(
         request: Request, exc: ClientError
     ) -> JSONResponse:
-        """Catch ClientError and format it as a standardized JSON response.
+        """
+        Catch ClientError and format it as a standardized JSON response.
 
         Emits a log at the level configured on the exception so
         client errors are queryable. `internal_details` is included in the log but
