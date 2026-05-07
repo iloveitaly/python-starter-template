@@ -23,8 +23,18 @@ def configure_python():
 
     inspect_python_runtime()
 
+    # prefer intentional timezone configuration
     if loose_env.str("TZ") is None:
         log.warning("TZ not set, update your environment configuration")
+
+    # prefer UTC for consistent server behavior
+    if time.timezone != 0 or time.daylight != 0:
+        log.warning(
+            "timezone not UTC",
+            tzname=time.tzname,
+            timezone=time.timezone,
+            daylight=time.daylight,
+        )
 
     try:
         # this is not the default as of py 3.13 on all platforms, but `fork` is deprecated
