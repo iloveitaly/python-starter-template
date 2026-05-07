@@ -92,9 +92,9 @@ js_upgrade:
 # TODO should just use `js_generate`
 
 # generate a typescript client from the openapi spec
-[doc("Optional flag: --watch")]
-js_generate-openapi *flag:
-	if {{ if flag == "--watch" { "true" } else { "false" } }}; then; \
+[arg("watch", long, help="regenerate openapi spec and client on file changes", value="true")]
+js_generate-openapi watch="false":
+	if [[ "{{watch}}" == "true" ]]; then; \
 		{{WATCHEXEC_APP_PY}} just _js_generate-openapi; \
 	else; \
 		just _js_generate-openapi; \
@@ -103,8 +103,7 @@ js_generate-openapi *flag:
 _js_generate-openapi:
 	# you may want to customize the application target, depending on you are structuring your frontend code
 	# jq is here to pretty print the output
-	LOG_LEVEL=error just py_cli dump-openapi \
-		--app-target authenticated_api_app \
+	PYTHON_LOG_PATH=stderr just py_cli dump-openapi \
 		| jq -r . > "$OPENAPI_JSON_PATH"
 
 	# generate the js client with the latest openapi spec

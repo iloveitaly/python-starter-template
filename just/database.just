@@ -74,7 +74,7 @@ db_lint:
 
 	# TODO don't fail on warnings https://github.com/sbdchd/squawk/issues/348
 	# TODO remove rule exclusion when https://github.com/sbdchd/squawk/issues/392 is fixed
-	LOG_LEVEL=error uv run alembic upgrade head --sql | \
+	PYTHON_LOG_PATH=stderr uv run alembic upgrade head --sql | \
 		squawk --reporter=json \
 			--exclude=prefer-text-field --pg-version=$(jq -r '.postgres' .service-versions); \
 
