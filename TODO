@@ -1,20 +1,17 @@
 ## python
+https://github.com/simonw/research/tree/main/tre-python-binding#readme is there a drop in regex replacement that is much faster?
 https://github.com/deepankarm/pyleak - neat thread leak detector
-https://github.com/fastapi/sqlmodel/pull/1345 - sa_type type fix so we can remove ignores.
-https://github.com/pjg11/micro-urlopen?referrer=grok.com - url open for micro
+https://github.com/fastapi/sqlmodel/pull/1345 - sa_type type fix so we can remove ignores. Update once it's merged.
 https://docs.basedpyright.com/v1.36.0/benefits-over-pyright/baseline/ we should use this instead of pyright?
 better configuration py module: autoload and call configure() if it exists
-custom default fastapi error handler https://grok.com/share/bGVnYWN5_fe5638b4-5f0b-4cca-afe6-369468eb5f2e
+custom default fastapi 500 error handler https://grok.com/share/bGVnYWN5_fe5638b4-5f0b-4cca-afe6-369468eb5f2e
 watch out for frozen dataclasses in excpetions https://grok.com/share/bGVnYWN5_914c248a-4efc-4b24-b05e-2deb11197554
 pydantic doesn't render JSON schema in a way that retool likes https://github.com/pydantic/pydantic/issues/7161
 https://github.com/gotcha/ipdb/blob/5b5c8683e2a3ac7fddc4013d3863c8086e23a639/ipdb/stdout.py#L9-L11 maybe this will fix some of our stdout issues?
-should consume react router routes and only respond to those routes in the static glob
+should consume react router routes and only respond to those routes in glob tied to the static host route
 limit FE dynamic routes to generated react router routes
 https://github.com/jd/tenacity - use this instead of backoff
 https://github.com/astral-sh/ty?tab=readme-ov-file - new type checker, after it is out of beta
-https://github.com/procrastinate-org/procrastinate - another pg-based job queue
-https://github.com/janbjorge/PgQueuer - another job queue
-https://tkte.ch/chancy/ look into this job queue?
 I think we should adopt a `lib/` for any code that, in a perfect world, should be extracted out into a library.
 https://grok.com/share/bGVnYWN5_8e8c1718-b3dc-4b32-95a3-61b85ab2be3e figure out how to limit threads that the async pool uses via an ENV var, useful for avoiding complex py-spy dumps in development
 https://github.com/pydantic/pydantic-extra-types
@@ -45,7 +42,13 @@ exception group processor? https://github.com/apache/airflow/blob/4280b83977cd5a
 we should lint against this `from migrations.seed import PYTHON_SERVER_HOST`, seed should only be executed directly
 ipython in prod + dokku outputs logs directly to stdout https://stackoverflow.com/questions/11833654/log-ipython-output
 
-## fastapi
+### job queue
+
+https://github.com/procrastinate-org/procrastinate - another pg-based job queue
+https://github.com/janbjorge/PgQueuer - another job queue
+https://tkte.ch/chancy/ look into this job queue?
+
+### fastapi
 https://pypi.org/project/apiexception/ - better logging of API error types
 https://github.com/long2ice/fastapi-cache need a caching tool that I trust, ask to take over this one and make it more maintained.
 
