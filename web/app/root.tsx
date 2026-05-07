@@ -16,12 +16,11 @@ import { Loader2 } from "lucide-react"
 
 import { type Route } from "./+types/root"
 
+import { AllMeta, MetaProvider } from "@/components/shared/AllMeta"
 import PageNotFound from "@/components/shared/PageNotFound"
 
 import * as Sentry from "@sentry/react"
 import "./app.css"
-
-import { AllMeta, MetaProvider } from "@/components/shared/AllMeta"
 
 /**
  * This component provides application-wide default metadata via a MetaProvider and renders
