@@ -16,5 +16,5 @@ unauthenticated_api = APIRouter(
 
 
 @unauthenticated_api.get("/ping")
-def create_payment():
+def unauthenticated_ping():
     return {"status": "ok"}
