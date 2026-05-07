@@ -16,10 +16,6 @@ def api_app_url_path_for(name: Literal["application_data"], **path_params) -> st
 
 
 @overload
-def api_app_url_path_for(name: Literal["create_payment"], **path_params) -> str: ...
-
-
-@overload
 def api_app_url_path_for(name: Literal["external_api_ping"], **path_params) -> str: ...
 
 
@@ -41,6 +37,12 @@ def api_app_url_path_for(name: Literal["javascript_index"], **path_params) -> st
 
 @overload
 def api_app_url_path_for(name: Literal["login_as_user"], **path_params) -> str: ...
+
+
+@overload
+def api_app_url_path_for(
+    name: Literal["unauthenticated_ping"], **path_params
+) -> str: ...
 
 
 @overload

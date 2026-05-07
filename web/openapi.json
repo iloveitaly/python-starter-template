@@ -1,59 +1,15 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "APIRouter API",
+    "title": "FastAPI",
     "version": "0.1.0"
   },
   "paths": {
-    "/internal/v1/admin/users": {
+    "/external/v1/ping": {
       "get": {
-        "tags": [
-          "private"
-        ],
-        "summary": "User List",
-        "operationId": "user_list",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserListResponse"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ]
-      }
-    },
-    "/internal/v1/admin/login_as/{user_id}": {
-      "post": {
-        "tags": [
-          "private"
-        ],
-        "summary": "Login As User",
-        "operationId": "login_as_user",
-        "security": [
-          {
-            "HTTPBearer": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "User Id"
-            }
-          }
-        ],
+        "summary": "External Api Ping",
+        "description": "basic uptime + API authentication check",
+        "operationId": "external_api_ping",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -63,33 +19,72 @@
               }
             }
           },
-          "422": {
-            "description": "Validation Error",
+          "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/internal/v1/": {
-      "get": {
-        "tags": [
-          "private"
-        ],
-        "summary": "Application Data",
-        "operationId": "application_data",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
+          },
+          "401": {
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AppData"
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -97,85 +92,111 @@
         },
         "security": [
           {
-            "HTTPBearer": []
+            "OAuth2PasswordBearer": []
           }
         ]
+      }
+    },
+    "/unauthenticated/ping": {
+      "get": {
+        "summary": "Unauthenticated Ping",
+        "operationId": "unauthenticated_ping",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
   "components": {
     "schemas": {
-      "AppData": {
+      "ErrorDetail": {
         "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
           "message": {
             "type": "string",
-            "title": "Message",
-            "default": "Hello From Internal Python"
+            "title": "Message"
           },
-          "user_id": {
-            "type": "string",
-            "title": "User Id"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "user_id"
-        ],
-        "title": "AppData"
-      },
-      "HTTPValidationError": {
-        "properties": {
-          "detail": {
-            "items": {
-              "$ref": "#/components/schemas/ValidationError"
-            },
-            "type": "array",
-            "title": "Detail"
-          }
-        },
-        "type": "object",
-        "title": "HTTPValidationError"
-      },
-      "UserListResponse": {
-        "properties": {
-          "current_user": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/UserSwitchData"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "users": {
-            "items": {
-              "$ref": "#/components/schemas/UserSwitchData"
-            },
-            "type": "array",
-            "title": "Users"
-          }
-        },
-        "type": "object",
-        "required": [
-          "current_user",
-          "users"
-        ],
-        "title": "UserListResponse"
-      },
-      "UserSwitchData": {
-        "properties": {
-          "clerk_id": {
-            "type": "string",
-            "title": "Clerk Id"
-          },
-          "id": {
-            "type": "string",
-            "format": "typeid",
-            "title": "Id"
-          },
-          "email": {
+          "param": {
             "anyOf": [
               {
                 "type": "string"
@@ -184,62 +205,52 @@
                 "type": "null"
               }
             ],
-            "title": "Email"
+            "title": "Param"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Details"
           }
         },
         "type": "object",
         "required": [
-          "clerk_id",
-          "id",
-          "email"
+          "code",
+          "message"
         ],
-        "title": "UserSwitchData"
+        "title": "ErrorDetail",
+        "description": "Standard error payload returned to clients.\n\nShape loosely follows Stripe: machine-readable `code`, human-readable\n`message`, optional `param` pointing at the offending field, and an\noptional `details` bag for structured context."
       },
-      "ValidationError": {
+      "ErrorResponse": {
         "properties": {
-          "loc": {
-            "items": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "type": "array",
-            "title": "Location"
-          },
-          "msg": {
-            "type": "string",
-            "title": "Message"
-          },
-          "type": {
-            "type": "string",
-            "title": "Error Type"
-          },
-          "input": {
-            "title": "Input"
-          },
-          "ctx": {
-            "type": "object",
-            "title": "Context"
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetail"
           }
         },
         "type": "object",
         "required": [
-          "loc",
-          "msg",
-          "type"
+          "error"
         ],
-        "title": "ValidationError"
+        "title": "ErrorResponse",
+        "description": "Envelope wrapping `ErrorDetail` under an `error` key.\n\nThe wrapper gives error responses a stable shape (`{\"error\": {...}}`)\nthat clients can discriminate on, and leaves room to add sibling\ntop-level fields later (e.g., `request_id`, `meta`) without a\nbreaking change."
       }
     },
     "securitySchemes": {
-      "HTTPBearer": {
-        "type": "http",
-        "scheme": "bearer"
+      "OAuth2PasswordBearer": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "scopes": {},
+            "tokenUrl": "token"
+          }
+        }
       }
     }
   }
