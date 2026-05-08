@@ -1,17 +1,16 @@
 import httpx
+from typeid import TypeID
 from whenever import Instant
 
 from app import log
 from app.celery import BaseTaskWithRetry, celery_app
 from app.constants import BUILD_COMMIT
 
-from activemodel.types import TypeIDType
-
 DEFAULT_WEBHOOK_TIMEOUT = 30
 
 
 @celery_app.task(base=BaseTaskWithRetry)
-def perform(event_id: TypeIDType) -> None:
+def perform(event_id: TypeID) -> None:
     from app.models.webhook_event import WebhookEvent
 
     event: WebhookEvent = WebhookEvent.one(event_id)

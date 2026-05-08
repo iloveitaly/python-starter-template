@@ -18,7 +18,11 @@ from app import log
 from app.constants import WEBHOOK_ENDPOINT
 
 from activemodel import BaseModel
-from activemodel.mixins import TimestampsMixin, TypeIDMixin
+from activemodel.mixins import (
+    TimestampsMixin,
+    TypeIDField,
+    TypeIDPrimaryKey,
+)
 from activemodel.types import TypeIDType
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Field
@@ -67,8 +71,10 @@ class WebhookBase(PydanticBaseModel):
         app.jobs.process_webhook.queue(event.id)
 
 
-class WebhookEvent(BaseModel, TimestampsMixin, TypeIDMixin("wh"), table=True):
+class WebhookEvent(BaseModel, TimestampsMixin, table=True):
     """Represents an outbound webhook queued for delivery."""
+
+    id: TypeIDField[Literal["wh"]] = TypeIDPrimaryKey("wh")
 
     destination: str
     "HTTP endpoint that will receive the webhook POST"

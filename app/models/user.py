@@ -6,12 +6,18 @@ Mirrors this model: https://clerk.com/docs/reference/backend-api/tag/Users#opera
 # https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/GetOrganization
 
 from enum import StrEnum
+from typing import Literal
 
 from typeid import TypeID
 from whenever import ZonedDateTime
 
 from activemodel import BaseModel
-from activemodel.mixins import SoftDeletionMixin, TimestampsMixin, TypeIDMixin
+from activemodel.mixins import (
+    SoftDeletionMixin,
+    TimestampsMixin,
+    TypeIDField,
+    TypeIDPrimaryKey,
+)
 from activemodel.types import TypeIDType
 from sqlmodel import Column, Field
 
@@ -28,9 +34,9 @@ class UserRole(StrEnum):
 
 
 # usr vs user is intentionally used to differentiate from the clerk model, which also uses a prefix ID
-class User(
-    BaseModel, TimestampsMixin, SoftDeletionMixin, TypeIDMixin("usr"), table=True
-):
+class User(BaseModel, TimestampsMixin, SoftDeletionMixin, table=True):
+    id: TypeIDField[Literal["usr"]] = TypeIDPrimaryKey("usr")
+
     clerk_id: str = Field(unique=True, index=True)
     "external ID of the user in Clerk"
 
@@ -43,7 +49,7 @@ class User(
     last_active_at: ZonedDateTime | None = None
     "last time the user had an active session"
 
-    api_key: TypeIDType | None = Field(
+    api_key: TypeID | None = Field(
         sa_column=Column(
             TypeIDType(API_KEY_PREFIX), nullable=True, unique=True, index=True
         ),
