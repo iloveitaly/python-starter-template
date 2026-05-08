@@ -3,6 +3,7 @@ TODO need to move to a better place
 
 Pydantic doesn't have great solutions for lists of objects
 """
+
 from pydantic import BaseModel, TypeAdapter
 
 
