@@ -46,12 +46,15 @@ default_message := """
 Importand commands:
 
 - setup and setup_debug
-- dev and dev_generate
+- dev and generate
 - {py,js}_{clean,test,lint,lint_fix,dev,generate}
 """
 
 default:
 		@echo "{{ default_message }}"
+
+# run all generation commands in the correct order
+generate: dev_generate py_generate js_generate
 
 # run automatic fix operations for all linters
 [parallel]

@@ -8,7 +8,7 @@ GENERATED_HOST_ENV := "env/host.sh"
 
 # TODO should add an option to not run workers, this is overkill most of the time
 
-# run all dev-related code generation commands (hosts, localias, openapi, python)
+# run all dev-related code generation commands (hosts, localias)
 # we don't guard against _dev_only since this needs to be run to bootstrap the application
 dev_generate: _not_production dev_generate_hosts dev_generate_localias
 
@@ -34,7 +34,7 @@ dev open="false": _dev_only localias dev_kill
 	py_scheduler: watchexec -r -e py --ignore '{web,tests,tmp,playground}/**' -- $(yq '.scheduler' Procfile --output-format yaml)
 	js_dev: just js_dev
 	py_generate: just py_generate --watch
-	openapi: just js_generate-openapi --watch
+	openapi: just js_generate --watch
 	db_seed: just db_seed --safe
 	EOF
 

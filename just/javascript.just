@@ -89,18 +89,16 @@ js_upgrade:
 
 	cd {{WEB_DIR}} && git add package.json pnpm-lock.yaml
 
-# TODO should just use `js_generate`
-
 # generate a typescript client from the openapi spec
 [arg("watch", long, help="regenerate openapi spec and client on file changes", value="true")]
-js_generate-openapi watch="false":
+js_generate watch="false":
 	if [[ "{{watch}}" == "true" ]]; then; \
-		{{WATCHEXEC_APP_PY}} just _js_generate-openapi; \
+		{{WATCHEXEC_APP_PY}} just _js_generate; \
 	else; \
-		just _js_generate-openapi; \
+		just _js_generate; \
 	fi
 
-_js_generate-openapi:
+_js_generate:
 	# you may want to customize the application target, depending on you are structuring your frontend code
 	# jq is here to pretty print the output
 	PYTHON_LOG_PATH=stderr just py_cli dump-openapi \
