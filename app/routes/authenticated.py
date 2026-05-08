@@ -18,7 +18,6 @@ authenticate_clerk_request_middleware = AuthenticateClerkRequest(clerk)
 
 authenticated_api_app = APIRouter(
     prefix="/internal/v1",
-    tags=["private"],
     # think of dependencies as middleware
     dependencies=[
         # NOTE this line could not be more important, look at the underlying implementation!
