@@ -1,0 +1,94 @@
+{
+  "$schema": "https://schema.railpack.com",
+  "deploy": {
+    // uv requires git for git-sourced dependencies
+    "aptPackages": ["git"]
+  },
+  "steps": {
+    "build": {
+      // TODO right now, all of the variables from the all of the other steps get merged together
+      "inputs": ["...", { "step": "spa:build", "include": ["public"] }],
+      "exclude": [
+        // SPA assets are copied to public/ in the previous step, so we can ignore the web/ folder completely
+        "web"
+      ]
+    },
+    "spa:install": {
+      "caches": ["pnpm-install"],
+      "inputs": [
+        {
+          "step": "packages:mise"
+        },
+        { "include": ["web"], "local": true }
+        // "."
+      ],
+      "commands": [
+        {
+          "cmd": "sh -c 'cd web && pnpm install --frozen-lockfile --prefer-offline'"
+        }
+      ],
+      "variables": {
+        // default configuration
+        "CI": "true",
+        "NODE_ENV": "production",
+        "NPM_CONFIG_FUND": "false",
+        "NPM_CONFIG_PRODUCTION": "false",
+        "NPM_CONFIG_UPDATE_NOTIFIER": "false",
+        "PNPM_HOME": "/pnpm"
+      },
+      // without this, the output from this step gets merged into the final image
+      "deployOutputs": []
+    },
+    "spa:build": {
+      "caches": ["node-modules", "vite", "react-router"],
+      "inputs": [
+        {
+          "step": "spa:install"
+        },
+        // { "include": ["."], "local": true }
+        "."
+      ],
+      "commands": [
+        {
+          "cmd": "sh -c 'cd web && pnpm run build'"
+        },
+        { "cmd": "cp -RT web/build/production/client/ public/" }
+      ],
+      // include build secrets in the build process so sentry properly references the latest git sha for uploading source maps
+      "secrets": ["*"],
+      "variables": {
+        // default configuration
+        "CI": "true",
+        "NODE_ENV": "production",
+        "NPM_CONFIG_FUND": "false",
+        "NPM_CONFIG_PRODUCTION": "false",
+        "NPM_CONFIG_UPDATE_NOTIFIER": "false",
+        "PNPM_HOME": "/pnpm"
+        // additional variables
+        // "BUILD_COMMIT": "f478048a7c792f39596f1693f4d23e42fdd55812-dirty",
+        // "VITE_BUILD_COMMIT": "f478048a7c792f39596f1693f4d23e42fdd55812-dirty"
+        // "BUILD_CREATED_AT": "2026-01-31T19:22:32Z",
+        // "BUILD_DESCRIPTION": "style: apply consistent formatting and line wrapping in web files"
+      },
+      "deployOutputs": []
+    }
+  },
+  "caches": {
+    "pnpm-install": {
+      "directory": "/pnpm/store",
+      "type": "shared"
+    },
+    "node-modules": {
+      "directory": "/app/node_modules/.cache",
+      "type": "shared"
+    },
+    "react-router": {
+      "directory": "/app/.react-router",
+      "type": "shared"
+    },
+    "vite": {
+      "directory": "/app/node_modules/.vite",
+      "type": "shared"
+    }
+  }
+}
