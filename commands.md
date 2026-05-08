@@ -60,7 +60,7 @@ class PendingOrderRequest(BaseModel):
 def create_pending_order(
     data: PendingOrderRequest,
     distribution: Distribution = Depends(get_distribution_by_host),
-) -> TypeIDType:
+) -> TypeID:
     """
     Right before we pass off the user to Stripe, we save all order information.
 
@@ -124,7 +124,7 @@ def complete_ticket_purchase(
 def ticket_purchase_status(
     request: Request,
     stripe_checkout_session_id: str = Query(),
-    screening_id: TypeIDType = Query(),
+    screening_id: TypeID = Query(),
 ) -> str:
     stripe_client = distribution.stripe_client()
     stripe_session = stripe_client.v1.checkout.sessions.retrieve(
