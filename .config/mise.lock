@@ -33,78 +33,78 @@ checksum = "sha256:cc5149eabd53779ce1e7bdc5401643622d0c7e6800ade18928a767e940bb0
 url = "https://nodejs.org/dist/v24.15.0/node-v24.15.0-win-x64.zip"
 
 [[tools.pnpm]]
-version = "11.0.8"
+version = "11.1.0"
 backend = "aqua:pnpm/pnpm"
 
 [tools.pnpm."platforms.linux-arm64"]
-checksum = "sha256:4393edba64b8c874123b8fca85fa940cc5224a392650993e5e84909dfaf80f9f"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.0.8/pnpm-linux-arm64.tar.gz"
+checksum = "sha256:bd1e1fbe6a850994f3e02a71b7ac928fc5544f3414cd880bd0e8f49e721a447e"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.1.0/pnpm-linux-arm64.tar.gz"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.linux-arm64-musl"]
-checksum = "sha256:3e2af32322c039b55c8eecae911fcd29febf2a4cbf50cfd4860770001131b232"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.0.8/pnpm-linux-arm64-musl.tar.gz"
+checksum = "sha256:971f8b4c364b0e9b5173696a2eff5f284deb12f973702930c7316e71b418d37b"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.1.0/pnpm-linux-arm64-musl.tar.gz"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.linux-x64"]
-checksum = "sha256:ac9fed9acf78cb9eacf3b6e7964e34dc196e93c2aad2ed3540fe5ef5c2effaeb"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.0.8/pnpm-linux-x64.tar.gz"
+checksum = "sha256:f8da71d8f9440b31d3a62edb2d910e7c4148b32767d8f203a514db82ea7dbe5f"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.1.0/pnpm-linux-x64.tar.gz"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.linux-x64-musl"]
-checksum = "sha256:a5070cfda413b6fcda3a501fc6b0b1c57309ee590eadc8ba51f05e3a2b24195f"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.0.8/pnpm-linux-x64-musl.tar.gz"
+checksum = "sha256:75c11bfc33de1d6eed6e4a493d73536fa6fb53c60fcb616d751998a82883aab2"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.1.0/pnpm-linux-x64-musl.tar.gz"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.macos-arm64"]
-checksum = "sha256:d988a3824d9ffd6f74eb9d9d703d24b7a42630dacfa7de375b8becef0706295c"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.0.8/pnpm-darwin-arm64.tar.gz"
+checksum = "sha256:b903516ec352ce699f5db0fe3a9180762e4eeb07f99883288850bf542e8812df"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.1.0/pnpm-darwin-arm64.tar.gz"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.windows-x64"]
-checksum = "sha256:19c4a2d675920adf02a6614c2055a44393a221c5ba914708489be396e1763bd1"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.0.8/pnpm-win32-x64.zip"
+checksum = "sha256:0e21b395e7a8cf064be1058d29714a6756bbb464e51264aba0cbdc23c8419fec"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.1.0/pnpm-win32-x64.zip"
 provenance = "github-attestations"
 
 [[tools.python]]
-version = "3.14.4"
+version = "3.14.5"
 backend = "core:python"
 
 [tools.python."platforms.linux-arm64"]
-checksum = "sha256:b8b597fdb2f8dccdc502c11947b60a4b65eb6bce79cfa60c7ccf9b6e8352c60a"
-url = "https://github.com/astral-sh/python-build-standalone/releases/download/20260414/cpython-3.14.4+20260414-aarch64-unknown-linux-gnu-install_only_stripped.tar.gz"
+checksum = "sha256:bea1aa66159eaf97ade1225e40b7060d709154da961aa37792bb8066d8f6af49"
+url = "https://github.com/astral-sh/python-build-standalone/releases/download/20260510/cpython-3.14.5+20260510-aarch64-unknown-linux-gnu-install_only_stripped.tar.gz"
 provenance = "github-attestations"
 
 [tools.python."platforms.linux-arm64-musl"]
-checksum = "sha256:a10687b226e0941632569836bc1d8fa6353a8e3e8424316467ca9cdf220b983d"
-url = "https://github.com/astral-sh/python-build-standalone/releases/download/20260414/cpython-3.14.4+20260414-aarch64-unknown-linux-musl-install_only_stripped.tar.gz"
+checksum = "sha256:011e29568c2a6ed64938fba0793ca6225c99bc4d804143a26875b5f9ee3fc7fa"
+url = "https://github.com/astral-sh/python-build-standalone/releases/download/20260510/cpython-3.14.5+20260510-aarch64-unknown-linux-musl-install_only_stripped.tar.gz"
 provenance = "github-attestations"
 
 [tools.python."platforms.linux-x64"]
-checksum = "sha256:fe9a9c32d13870af632cbac3dfc7528ae53597e94472aa4c7d6a42e8166136cd"
-url = "https://github.com/astral-sh/python-build-standalone/releases/download/20260414/cpython-3.14.4+20260414-x86_64-unknown-linux-gnu-install_only_stripped.tar.gz"
+checksum = "sha256:dc10977b0db3bef1ee2275107fde6fe9c148135b556fa352e83c6baa67d17ed6"
+url = "https://github.com/astral-sh/python-build-standalone/releases/download/20260510/cpython-3.14.5+20260510-x86_64-unknown-linux-gnu-install_only_stripped.tar.gz"
 provenance = "github-attestations"
 
 [tools.python."platforms.linux-x64-musl"]
-checksum = "sha256:d6005226cd24e780630626232c7a63243d4885fdf975dcf930a0758a0759ce14"
-url = "https://github.com/astral-sh/python-build-standalone/releases/download/20260414/cpython-3.14.4+20260414-x86_64-unknown-linux-musl-install_only_stripped.tar.gz"
+checksum = "sha256:6bc02ce4575e5d5379f4533f3d3f77acfdfd5ccd9c4edf790fcdd84578a1df01"
+url = "https://github.com/astral-sh/python-build-standalone/releases/download/20260510/cpython-3.14.5+20260510-x86_64-unknown-linux-musl-install_only_stripped.tar.gz"
 provenance = "github-attestations"
 
 [tools.python."platforms.macos-arm64"]
-checksum = "sha256:6f304f4ec30854611f23316578302235fb517cd970519ecdd11a8c4db87fd843"
-url = "https://github.com/astral-sh/python-build-standalone/releases/download/20260414/cpython-3.14.4+20260414-aarch64-apple-darwin-install_only_stripped.tar.gz"
+checksum = "sha256:1bb0b3d45448dfe7e916dc62144cfd7d7a611dc6ccf05b8bb71662cc5c2a1ad2"
+url = "https://github.com/astral-sh/python-build-standalone/releases/download/20260510/cpython-3.14.5+20260510-aarch64-apple-darwin-install_only_stripped.tar.gz"
 provenance = "github-attestations"
 
 [tools.python."platforms.macos-x64"]
-checksum = "sha256:d51250a32fa5d9f0799c7bcb71720c27b10a3afd4a7de288120f96085d508a5a"
-url = "https://github.com/astral-sh/python-build-standalone/releases/download/20260414/cpython-3.14.4+20260414-x86_64-apple-darwin-install_only_stripped.tar.gz"
+checksum = "sha256:38662e526797db4e90b3381706b96821979fece0b536ac14b5c4e1a97e0590d5"
+url = "https://github.com/astral-sh/python-build-standalone/releases/download/20260510/cpython-3.14.5+20260510-x86_64-apple-darwin-install_only_stripped.tar.gz"
 provenance = "github-attestations"
 
 [tools.python."platforms.windows-x64"]
-checksum = "sha256:a976991dcd085c1bb5d9a8084823a6bc8b7f9b079d8c432574a6ddd68c3a6fe1"
-url = "https://github.com/astral-sh/python-build-standalone/releases/download/20260414/cpython-3.14.4+20260414-x86_64-pc-windows-msvc-install_only_stripped.tar.gz"
+checksum = "sha256:4d26ade49e9571ccb3bd1a88cfc72c52b11a9a9f6e204a57f38592aed137566a"
+url = "https://github.com/astral-sh/python-build-standalone/releases/download/20260510/cpython-3.14.5+20260510-x86_64-pc-windows-msvc-install_only_stripped.tar.gz"
 provenance = "github-attestations"
 
 [[tools.uv]]
-version = "0.11.11"
+version = "0.11.13"
 backend = "asdf:uv"

@@ -49,50 +49,50 @@ checksum = "sha256:cc5149eabd53779ce1e7bdc5401643622d0c7e6800ade18928a767e940bb0
 url = "https://nodejs.org/dist/v24.15.0/node-v24.15.0-win-x64.zip"
 
 [[tools.pnpm]]
-version = "11.0.8"
+version = "11.1.0"
 backend = "aqua:pnpm/pnpm"
 
 [tools.pnpm."platforms.linux-arm64"]
-checksum = "sha256:4393edba64b8c874123b8fca85fa940cc5224a392650993e5e84909dfaf80f9f"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.0.8/pnpm-linux-arm64.tar.gz"
+checksum = "sha256:bd1e1fbe6a850994f3e02a71b7ac928fc5544f3414cd880bd0e8f49e721a447e"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.1.0/pnpm-linux-arm64.tar.gz"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.linux-arm64-musl"]
-checksum = "sha256:3e2af32322c039b55c8eecae911fcd29febf2a4cbf50cfd4860770001131b232"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.0.8/pnpm-linux-arm64-musl.tar.gz"
+checksum = "sha256:971f8b4c364b0e9b5173696a2eff5f284deb12f973702930c7316e71b418d37b"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.1.0/pnpm-linux-arm64-musl.tar.gz"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.linux-x64"]
-checksum = "sha256:ac9fed9acf78cb9eacf3b6e7964e34dc196e93c2aad2ed3540fe5ef5c2effaeb"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.0.8/pnpm-linux-x64.tar.gz"
+checksum = "sha256:f8da71d8f9440b31d3a62edb2d910e7c4148b32767d8f203a514db82ea7dbe5f"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.1.0/pnpm-linux-x64.tar.gz"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.linux-x64-baseline"]
-checksum = "sha256:ac9fed9acf78cb9eacf3b6e7964e34dc196e93c2aad2ed3540fe5ef5c2effaeb"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.0.8/pnpm-linux-x64.tar.gz"
+checksum = "sha256:f8da71d8f9440b31d3a62edb2d910e7c4148b32767d8f203a514db82ea7dbe5f"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.1.0/pnpm-linux-x64.tar.gz"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.linux-x64-musl"]
-checksum = "sha256:a5070cfda413b6fcda3a501fc6b0b1c57309ee590eadc8ba51f05e3a2b24195f"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.0.8/pnpm-linux-x64-musl.tar.gz"
+checksum = "sha256:75c11bfc33de1d6eed6e4a493d73536fa6fb53c60fcb616d751998a82883aab2"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.1.0/pnpm-linux-x64-musl.tar.gz"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:a5070cfda413b6fcda3a501fc6b0b1c57309ee590eadc8ba51f05e3a2b24195f"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.0.8/pnpm-linux-x64-musl.tar.gz"
+checksum = "sha256:75c11bfc33de1d6eed6e4a493d73536fa6fb53c60fcb616d751998a82883aab2"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.1.0/pnpm-linux-x64-musl.tar.gz"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.macos-arm64"]
-checksum = "sha256:d988a3824d9ffd6f74eb9d9d703d24b7a42630dacfa7de375b8becef0706295c"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.0.8/pnpm-darwin-arm64.tar.gz"
+checksum = "sha256:b903516ec352ce699f5db0fe3a9180762e4eeb07f99883288850bf542e8812df"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.1.0/pnpm-darwin-arm64.tar.gz"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.windows-x64"]
-checksum = "sha256:19c4a2d675920adf02a6614c2055a44393a221c5ba914708489be396e1763bd1"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.0.8/pnpm-win32-x64.zip"
+checksum = "sha256:0e21b395e7a8cf064be1058d29714a6756bbb464e51264aba0cbdc23c8419fec"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.1.0/pnpm-win32-x64.zip"
 provenance = "github-attestations"
 
 [tools.pnpm."platforms.windows-x64-baseline"]
-checksum = "sha256:19c4a2d675920adf02a6614c2055a44393a221c5ba914708489be396e1763bd1"
-url = "https://github.com/pnpm/pnpm/releases/download/v11.0.8/pnpm-win32-x64.zip"
+checksum = "sha256:0e21b395e7a8cf064be1058d29714a6756bbb464e51264aba0cbdc23c8419fec"
+url = "https://github.com/pnpm/pnpm/releases/download/v11.1.0/pnpm-win32-x64.zip"
 provenance = "github-attestations"
