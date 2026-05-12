@@ -167,7 +167,11 @@ def mount_public_directory(app: FastAPI):
 
     app.mount(
         "/assets",
-        GZipStaticFiles(directory=public_asset_directory, html=False),
+        GZipStaticFiles(
+            directory=public_asset_directory,
+            # serve index.html for all folders in the public directory
+            html=False,
+        ),
         name="public",
     )
 
