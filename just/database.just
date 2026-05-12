@@ -21,11 +21,12 @@ db_up: _dev_only
 
 # TODO may need to run `docker rm $(docker ps -aq)` as well
 # TODO docker down does not exit 1 if it partially failed
+
 # turn off the database *and* completely remove the data
 db_down: _dev_only
 	docker compose down --volumes postgres
 
-# completely destroy the dev and test databases, destroying the containers and rebuilding them
+# destroy dev and test databases, nuking containers and rebuilding them
 db_reset_hard: _dev_only db_down db_up db_migrate db_seed
 
 # this is a very aggressive termination SQL which terminates all DB connections and immediately drops schema
@@ -56,14 +57,16 @@ db_reset_schema: _dev_only
 	{{DOCKER_POSTGRES}} psql $TEST_DATABASE_URL -c "{{DB_TERMINATE_AND_RESET_SCHEMA}}"
 
 # destroys all data in the dev and test databases, leaves the containers running
-db_reset: _dev_only db_reset_schema db_migrate db_seed
+db_reset: _dev_only db_reset_schema db_migrate
+	@if uv run alembic check; then \
+		just db_migrate; \
+	else \
+		just _banner_echo "alembic check failed, skipping db_migrate, generate database migration"; \
+	fi
 
 # TODO can we do something in SQLModel to sync new columns to the DB as well
 # wipe, migrate, and set database state to the latest (head) model configuration. Do not use in production, always use migrations
 db_reset_head: _dev_only db_reset_schema db_migrate db_migrate_head db_seed
-
-# destroy and rebuild the database from the ground up, without mutating migrations or recreating database containers (unlike nuke)
-db_destroy: _dev_only db_reset db_migrate db_seed
 
 db_lint:
 	# ensures no additional migrations are needed
