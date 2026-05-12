@@ -13,6 +13,10 @@ env/host.sh
 mise.*local.toml
 mise.*local.lock
 
+# don't commit any ssh key components
+*.pem
+*.pub
+
 # TODO this should really be redirected to a tmp/ directory
 .coverage
 
@@ -28,10 +32,12 @@ mise.*local.lock
 .terraform/
 # this contains secrets!
 terraform.tfstate*
+.terraform.tfstate*
 # keep `.terraform.lock.hcl`, it's like a package manager lock file
 
 # AI agent local state
 .claude/settings.local.json
+.claude/tmp/
 .cursor/screenshots/
 lefthook-local.yml
 
