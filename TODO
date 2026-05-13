@@ -42,11 +42,47 @@ exception group processor? https://github.com/apache/airflow/blob/4280b83977cd5a
 we should lint against this `from migrations.seed import PYTHON_SERVER_HOST`, seed should only be executed directly
 ipython in prod + dokku outputs logs directly to stdout https://stackoverflow.com/questions/11833654/log-ipython-output
 
+### pydantic
+
+input data objects should not contain logic that could cause a custom exception. If it does, any try...except within the route will not be used. This also introduces logic that is executed before the core route logic comes into play, which feels odd.
+
 ### job queue
 
 https://github.com/procrastinate-org/procrastinate - another pg-based job queue
 https://github.com/janbjorge/PgQueuer - another job queue
 https://tkte.ch/chancy/ look into this job queue?
+https://hatchet.run
+https://github.com/rq/rq
+
+Requirements, in order of importance:
+
+* must be reasonably popular (>1k stars, well maintained, recent commits, recent releases, etc)
+* must work on macos and linux
+  * ARM and x86
+* must use spawn not fork for any process creation
+* must have a dashboard or clean pg tables for monitoring
+  * easily view number of pending jobs
+  * times a job was retried
+  * last exception for failed jobs
+* retries
+  * must allow for exponential backoff
+  * must allow for conditional retries (i.e. infinite retries on certain exception types)
+  * max retries
+* must allow for sync execution with a database (no async postgres logic)
+* support exactly-one jobs (i.e. for crons)
+* cron/schedule jobs
+* modern py typing support
+* if a container is killed while a job is running, the job should not be lost.
+* healthcheck HTTP url (for deployment checks)
+* sentry integration
+* ability to set thread-local or process state before job execution. I want to set log context that is held throughout the entire
+* lifecycle hook to clear log state, and other "global" state on job completion
+* scaling / deployment
+  * prefer to scale via forked processes, or at least have the option to instead of threads to avoid memory leak issues.
+* pytest
+  * ability to run the job queue full-stack
+  * ability to inspect the job queue state and assert against it in tests
+
 
 ### fastapi
 https://pypi.org/project/apiexception/ - better logging of API error types
