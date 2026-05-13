@@ -846,7 +846,7 @@ Here's the Procfile command that worked for RQ:
 worker: rq worker --with-scheduler -w rq.worker.SpawnWorker
 ```
 
-[I've left some of the configuration around](./app/rq.py) in case you want to try it out.
+[I've left some of the configuration around](https://github.com/iloveitaly/python-starter-template/commit/3fbfee3d443deb4b8244aae1ff0786c6d43010b4) in case you want to try it out.
 
 ### App Recommendations
 
