@@ -20,12 +20,11 @@ from app.env import env
 from ..templates import render_template
 
 _mailer: Mailer | None = None
+SMTP_URL = env.str("SMTP_URL")
+EMAIL_FROM_ADDRESS = env.str("EMAIL_FROM_ADDRESS")
 
 
 def configure_mailer():
-    SMTP_URL = env.str("SMTP_URL")
-    EMAIL_FROM_ADDRESS = env.str("EMAIL_FROM_ADDRESS")
-
     global _mailer
 
     _mailer = Mailer(

@@ -54,7 +54,7 @@ from .log import log
 
 # add any local plugins here, ex:
 # pytest_plugins = ["tests.plugins.improved_playwright_failures"]
-pytest_plugins = []
+pytest_plugins = ["tests.mailpit"]
 
 log.info("multiprocess start method", start_method=multiprocessing.get_start_method())
 
@@ -122,7 +122,7 @@ def pytest_configure(config: Config):
     ]
 
     # disable visual assertions when running locally
-    config.option.playwright_visual_disable_snapshots = is_local_testing()
+    # config.option.playwright_visual_disable_snapshots = is_local_testing()
 
     config.option.playwright_visual_snapshots_path = env.path(
         "PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY"
