@@ -1,0 +1,20 @@
+TOFU_GLOBAL_OPTIONS := ""
+
+# setup tofu providers
+tofu_init:
+    tofu {{ TOFU_GLOBAL_OPTIONS }} init
+
+# upgrade tofu provider version
+tofu_upgrade:
+    tofu init -upgrade
+
+# init each run to make sure latest package versions are pulled
+tofu_apply:
+    tofu {{ TOFU_GLOBAL_OPTIONS }} apply
+
+tofu_output:
+    tofu {{ TOFU_GLOBAL_OPTIONS }} output -json
+
+# opentofu repl, helpful for inspecting
+tofu_play:
+    tofu {{ TOFU_GLOBAL_OPTIONS }} console
