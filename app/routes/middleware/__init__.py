@@ -2,6 +2,8 @@ import re
 
 from fastapi import FastAPI
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from secure import Secure
+from secure.middleware import SecureASGIMiddleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from structlog_config import fastapi_access_logger
@@ -162,5 +164,8 @@ def add_middleware(app: FastAPI):
         # app.add_middleware(PdbrMiddleware, debug=True)
 
         app.add_middleware(PdbMiddleware, debug=True)
+
+    secure_headers = Secure.with_default_headers()
+    app.add_middleware(SecureASGIMiddleware, secure=secure_headers)
 
     return app
