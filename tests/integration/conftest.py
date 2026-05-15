@@ -67,6 +67,16 @@ def pytest_configure(config):
     start_js_build()
     report_localias_status()
 
+    # mask clerk components to avoid visual regression failures
+    # https://github.com/iloveitaly/pytest-playwright-visual-snapshot
+    config.option.playwright_visual_snapshot_masks = [
+        ".cl-rootBox",
+        ".cl-userButtonPopoverCard",
+        ".cl-portal",
+        # clerk uses random classes sometimes, but data attributes are more stable
+        "[data-clerk-component]",
+    ]
+
 
 def pytest_keyboard_interrupt(excinfo):
     log.info("KeyboardInterrupt caught: stopping server...")
