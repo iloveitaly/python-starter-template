@@ -130,6 +130,18 @@ wheels = [
 ]
 
 [[package]]
+name = "alembic-squawk"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/de/03/e01ef79a5c0e335469337849f85601160f2fc928bdac2ce6796b24e27c9d/alembic_squawk-0.1.0.tar.gz", hash = "sha256:59748a9700e364e2a2211051c6302812a1e1071caaac0c297dc4de2f3c6c68ca", size = 6695, upload-time = "2026-05-14T20:53:14.221Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/05/65/c1854d3e82135fa9a727cf69a51efc6d74b3885f719a6c57f143a7e84468/alembic_squawk-0.1.0-py3-none-any.whl", hash = "sha256:dbddcb430343d1c029c3173f58a44c0d4cf99609e4eb191fb0af4848eca87470", size = 8072, upload-time = "2026-05-14T20:53:14.902Z" },
+]
+
+[[package]]
 name = "amqp"
 version = "5.3.1"
 source = { registry = "https://pypi.org/simple" }
@@ -2770,6 +2782,7 @@ debugging-extras = [
     { name = "sqlparse" },
 ]
 dev = [
+    { name = "alembic-squawk" },
     { name = "covdefaults" },
     { name = "coverage" },
     { name = "deptry" },
@@ -2877,6 +2890,7 @@ debugging-extras = [
     { name = "sqlparse", specifier = ">=0.5.2" },
 ]
 dev = [
+    { name = "alembic-squawk", specifier = ">=0.1.0" },
     { name = "covdefaults", specifier = ">=2.3.0" },
     { name = "coverage", specifier = ">=7.6.7" },
     { name = "deptry", specifier = ">=0.20.0" },
