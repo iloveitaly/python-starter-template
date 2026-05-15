@@ -55,9 +55,11 @@ client.setConfig({
 })
 
 /**
- * Public client for use in public routes
+ * API client for use in public (unauthenticated) routes.
  *
- * Usage: `await endpointName({ client: publicClient })`
+ * Designed for use *outside* of a clientLoader (within a component's body), since it does not throw on HTTP errors.
+ *
+ * Usage: `await generatedEndpointName({ client: publicClient })`
  */
 export const publicClient = createClient({
   baseUrl: VITE_PYTHON_URL,
@@ -65,10 +67,17 @@ export const publicClient = createClient({
   // explicitly excluding any authentication configuration
 })
 
-// this loader checks the response codes and throws specific type of errors that will render different error pages
-// this should be used in any clientLoaders
+/**
+ * API client for use in authenticated routes within a clientLoader
+ *
+ * this loader checks the response codes and throws specific type of errors that will render different error pages.
+ * this should be used in any clientLoaders
+ *
+ * Usage: `await generatedEndpointName({ client: publicClientLoader })`
+ */
 export const publicClientLoader = createClient({
   baseUrl: VITE_PYTHON_URL,
+
   // explicitly exclude any authentication configuration
 })
 
