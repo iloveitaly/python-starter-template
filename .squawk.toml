@@ -1,0 +1,13 @@
+# https://squawkhq.com/docs/rules
+excluded_rules = [
+    # these are configured in alembic for the entirety of the session
+    "require-timeout-settings",
+    # We perform intentional column removals during refactoring
+    "ban-drop-column",
+    # We occasionally remove legacy tables as the schema evolves
+    "ban-drop-table",
+    # NOT NULL fields are marginally more performant and sqlalchemy autogens them by default, so we allowing them for now
+    "adding-not-nullable-field",
+    # TODO we should remove this once we patch the default in sqlalchemy/sqlmodel
+    "prefer-bigint-over-int",
+]
