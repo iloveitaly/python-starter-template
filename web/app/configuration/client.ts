@@ -38,10 +38,13 @@ client.setConfig({
   // automatically set bearer auth when requested
   auth: async () => {
     const client = await getClient()
-    invariant(client && client.session, "Clerk client and session should exist")
+    invariant(
+      client && client.session,
+      "Clerk client and session should exist when attempting an authenticated API call",
+    )
 
     const token = await client.session.getToken()
-    invariant(token, "token should exist")
+    invariant(token, "token should exist if a session exists")
 
     // at this point, some sort of authenticated route is being called, so there is user information
     // it is possible for other actions to occur before this, but they should be inconsequential and
