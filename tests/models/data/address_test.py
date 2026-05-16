@@ -3,12 +3,12 @@ from pydantic import ValidationError
 
 from app.models.data.address import Address
 
-VALID_ADDRESS = dict(
-    address1="200 E Colfax Ave",
-    city="Denver",
-    state_code="CO",
-    postal_code="80203",
-)
+VALID_ADDRESS = {
+    "address1": "200 E Colfax Ave",
+    "city": "Denver",
+    "state_code": "CO",
+    "postal_code": "80203",
+}
 
 
 ####################
@@ -25,7 +25,7 @@ VALID_ADDRESS = dict(
     ],
 )
 def test_state_input_forms(state_in, expected_code, expected_name):
-    addr = Address(state=state_in)
+    addr = Address.model_validate({"state": state_in})
 
     assert addr.state_code == expected_code
     assert addr.state == expected_name
@@ -39,7 +39,7 @@ def test_state_code_lowercase_is_uppercased():
 
 def test_state_code_wins_over_state():
     # state_code takes precedence; state="California" is discarded
-    addr = Address(state="California", state_code="CO")
+    addr = Address.model_validate({"state": "California", "state_code": "CO"})
 
     assert addr.state_code == "CO"
     assert addr.state == "Colorado"
@@ -47,7 +47,7 @@ def test_state_code_wins_over_state():
 
 def test_unknown_state_raises():
     with pytest.raises(ValueError, match="Unknown US state"):
-        Address(state="Atlantis")
+        Address.model_validate({"state": "Atlantis"})
 
 
 def test_invalid_state_code_pattern_raises():
@@ -136,7 +136,9 @@ def test_normalized_preserves_zip_plus_four():
 
 
 def test_normalized_two_line_street_preserved():
-    addr = Address(**{**VALID_ADDRESS, "address1": "200 E Colfax Ave", "address2": "Suite 100"})
+    addr = Address(
+        **{**VALID_ADDRESS, "address1": "200 E Colfax Ave", "address2": "Suite 100"}
+    )
     normalized = addr.normalized()
 
     assert normalized.address1 == "200 E Colfax Ave"
@@ -166,10 +168,44 @@ def test_normalized_missing_postal_code_raises():
 
 def test_normalized_zip_state_mismatch_raises():
     # CO zip (80203) does not match CA
-    addr = Address(address1="200 E Colfax Ave", city="Los Angeles", state_code="CA", postal_code="80203")
+    addr = Address(
+        address1="200 E Colfax Ave",
+        city="Los Angeles",
+        state_code="CA",
+        postal_code="80203",
+    )
 
     with pytest.raises(ValueError, match="Incomplete or invalid US address"):
         addr.normalized()
+
+
+###############
+# from_string
+###############
+
+
+def test_from_string_full_address():
+    addr = Address.from_string("200 E Colfax Ave, Denver, CO 80203")
+
+    assert addr.address1 == "200 E Colfax Ave"
+    assert addr.city == "Denver"
+    assert addr.state_code == "CO"
+    assert addr.postal_code == "80203"
+
+
+def test_from_string_empty_components_are_none():
+    # usaddress returns "" for missing fields; from_string must convert to None
+    addr = Address.from_string("Denver, CO")
+
+    assert addr.postal_code is None
+    assert addr.address1 is None
+
+
+def test_from_string_state_resolves_to_code():
+    addr = Address.from_string("200 E Colfax Ave, Denver, Colorado 80203")
+
+    assert addr.state_code == "CO"
+    assert addr.state == "Colorado"
 
 
 ######################
