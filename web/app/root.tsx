@@ -32,9 +32,8 @@ import "./app.css"
 function MetaLinks() {
   const defaultSocialOptions = {
     basic: {
-      title: "Health Insurance Selection",
-      description:
-        "Compare and select the best health insurance plans for your employees.",
+      title: "My App",
+      description: "A full-stack Python and React application template.",
     },
   }
 

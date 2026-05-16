@@ -1,5 +1,4 @@
 import * as inflection from "inflection"
-import { type MetaFunction } from "react-router"
 
 import type { Route } from "./+types/home"
 
@@ -22,18 +21,8 @@ import { applicationData } from "~/configuration/client"
 
 import { SiReact } from "@icons-pack/react-simple-icons"
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Starter Application Template" },
-    {
-      name: "description",
-      content: "Welcome to Starter Application Template",
-    },
-  ]
-}
-
 export async function clientLoader(_loader_args: Route.ClientLoaderArgs) {
-  // this route is authenticated
+  // route is authenticated and will include the clerk authentication token
   const { data } = await applicationData()
 
   // TODO need idiomatic error handling here
