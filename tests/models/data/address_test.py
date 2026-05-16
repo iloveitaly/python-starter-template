@@ -208,6 +208,105 @@ def test_from_string_state_resolves_to_code():
     assert addr.state == "Colorado"
 
 
+####################
+# validate_address
+####################
+
+
+def test_validate_address_returns_empty_for_valid():
+    assert Address(**VALID_ADDRESS).validate_address() == []
+
+
+def test_validate_address_missing_street():
+    addr = Address(city="Denver", state_code="CO", postal_code="80203")
+    errors = addr.validate_address()
+
+    assert any(e["loc"] == ("address1",) for e in errors)
+
+
+def test_validate_address_missing_city():
+    addr = Address(address1="200 E Colfax Ave", state_code="CO", postal_code="80203")
+    errors = addr.validate_address()
+
+    assert any(e["loc"] == ("city",) for e in errors)
+
+
+def test_validate_address_missing_postal_code():
+    addr = Address(address1="200 E Colfax Ave", city="Denver", state_code="CO")
+    errors = addr.validate_address()
+
+    assert any(e["loc"] == ("postal_code",) for e in errors)
+
+
+def test_validate_address_zip_state_mismatch():
+    addr = Address(
+        address1="200 E Colfax Ave",
+        city="Los Angeles",
+        state_code="CA",
+        postal_code="80203",
+    )
+    errors = addr.validate_address()
+
+    assert any(e["loc"] == ("postal_code",) for e in errors)
+
+
+def test_validate_address_error_dict_shape():
+    addr = Address(address1="200 E Colfax Ave", city="Denver", state_code="CO")
+    errors = addr.validate_address()
+
+    assert errors
+    entry = errors[0]
+    assert entry.keys() == {"type", "loc", "msg", "input"}
+    # input should reflect the actual field value on the instance
+    field_name = entry["loc"][0]
+    assert entry["input"] == getattr(addr, field_name, None)
+
+
+######################################
+# Real-world address integration tests
+######################################
+
+REAL_ADDRESSES = [
+    ("1600 Pennsylvania Ave NW", "Washington", "DC", "20500"),
+    ("350 Fifth Ave", "New York", "NY", "10118"),
+    ("233 S Wacker Dr", "Chicago", "IL", "60606"),
+    ("400 Broad St", "Seattle", "WA", "98109"),
+    ("300 Alamo Plaza", "San Antonio", "TX", "78205"),
+    # Pentagon ZIP 20301 is a special USPS-only ZIP that fails i18naddress validation
+    ("1101 Wilson Blvd", "Arlington", "VA", "22209"),
+    ("520 Chestnut St", "Philadelphia", "PA", "19106"),
+    ("13000 SD-244", "Keystone", "SD", "57751"),
+    ("4059 Mt Lee Dr", "Los Angeles", "CA", "90068"),
+    ("11 N 4th St", "St. Louis", "MO", "63102"),
+]
+
+REAL_ADDRESS_STRINGS = [
+    "1600 Pennsylvania Ave NW, Washington, DC 20500",
+    "350 Fifth Ave, New York, NY 10118",
+    "233 S Wacker Dr, Chicago, IL 60606",
+    "400 Broad St, Seattle, WA 98109",
+    "300 Alamo Plaza, San Antonio, TX 78205",
+    "1101 Wilson Blvd, Arlington, VA 22209",
+    "520 Chestnut St, Philadelphia, PA 19106",
+    "13000 SD-244, Keystone, SD 57751",
+    "4059 Mt Lee Dr, Los Angeles, CA 90068",
+    "11 N 4th St, St. Louis, MO 63102",
+]
+
+
+@pytest.mark.parametrize("address1,city,state,postal_code", REAL_ADDRESSES)
+def test_real_address_validates(address1, city, state, postal_code):
+    addr = Address(address1=address1, city=city, state_code=state, postal_code=postal_code)
+    assert addr.validate_address() == []
+
+
+@pytest.mark.parametrize("address_str", REAL_ADDRESS_STRINGS)
+def test_real_address_from_string(address_str):
+    addr = Address.from_string(address_str)
+
+    assert addr.state_code is not None
+
+
 ######################
 # Whitespace stripping
 ######################
