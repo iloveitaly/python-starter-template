@@ -1,7 +1,7 @@
 from typing import Any, Self
 
 import us
-from i18naddress import InvalidAddress, format_address, normalize_address
+from i18naddress import InvalidAddressError, format_address, normalize_address
 from pydantic import BaseModel, ConfigDict, Field, computed_field, model_validator
 
 
@@ -49,19 +49,19 @@ class Address(BaseModel):
     )
 
     address1: str | None = None
-    """First street line."""
+    "First street line."
 
     address2: str | None = None
-    """Second street line (suite, apt, etc.)."""
+    "Second street line (suite, apt, etc.)."
 
     city: str | None = None
-    """City."""
+    "City."
 
     state_code: str | None = Field(default=None, pattern=r"^[A-Z]{2}$")
-    """Two-letter US state code. Also settable via `state=` (see class docstring)."""
+    "Two-letter US state code. Also settable via `state=` (see class docstring)."
 
     postal_code: str | None = None
-    """ZIP or ZIP+4."""
+    "ZIP or ZIP+4."
 
     @model_validator(mode="before")
     @classmethod
@@ -131,7 +131,7 @@ class Address(BaseModel):
         """
         try:
             clean = normalize_address(self._as_i18n_dict())
-        except InvalidAddress as e:
+        except InvalidAddressError as e:
             raise ValueError(f"Incomplete or invalid US address: {e.errors}") from e
 
         street_lines = (clean.get("street_address") or "").splitlines()
