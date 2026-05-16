@@ -4,43 +4,33 @@ import us
 from i18naddress import InvalidAddressError, format_address, normalize_address
 from pydantic import BaseModel, ConfigDict, Field, computed_field, model_validator
 
+from app.utils.address import parse_address
+
 
 class Address(BaseModel):
-    """
-    US postal address with flexible state input and derived state name.
+    """US postal address with flexible state input and derived state name.
 
-    State input
-    -----------
-    The canonical stored field is `state_code` (two-letter, uppercase). For
-    convenience, callers may pass `state=` at construction with any form the
+    **State input:** The canonical stored field is `state_code` (two-letter,
+    uppercase). Callers may pass `state=` at construction with any form the
     `us` package recognizes:
 
-        Address(state="Colorado")    # full name
-        Address(state="colorado")    # case-insensitive
-        Address(state="CO")          # 2-letter code
-        Address(state="Colo.")       # AP-style abbreviation
-        Address(state_code="co")     # also works; gets uppercased
+        Address(state="Colorado")   # full name
+        Address(state="colorado")   # case-insensitive
+        Address(state="CO")         # 2-letter code
+        Address(state_code="co")    # also works; gets uppercased
 
-    All of the above yield `state_code="CO"` and `state="Colorado"`.
+    If both `state` and `state_code` are provided, `state_code` wins and
+    `state` is discarded. Unknown state input raises `ValueError`.
 
-    Precedence: if both `state` and `state_code` are provided, `state_code`
-    wins and `state` is discarded. Unknown state input raises `ValueError`
-    at construction.
+    **Computed fields:** `state` (full name) and `formatted_address` are
+    derived from `state_code` and the other stored fields. Both appear in
+    `model_dump()` output. `Address(**addr.model_dump())` round-trips
+    correctly because the pre-validator drops the incoming `state` when
+    `state_code` is already set.
 
-    Computed fields
-    ---------------
-    `state` (full name) and `formatted_address` are computed from
-    `state_code` and the other stored fields. Both appear in `model_dump()`
-    output. `Address(**addr.model_dump())` round-trips correctly: the
-    pre-validator drops the incoming `state` because `state_code` is
-    already set.
-
-    Validation vs. normalization
-    ----------------------------
-    Construction only validates the state token; it does NOT require a
-    complete address. Call `normalized()` to enforce US postal completeness
-    (street, city, state, ZIP) and to receive a new instance with library-
-    corrected fields. The original instance is never mutated.
+    **Normalization:** Construction only validates the state token; it does
+    NOT require a complete address. Call `normalized()` to enforce US postal
+    completeness and receive a new instance with library-corrected fields.
     """
 
     model_config = ConfigDict(
@@ -62,6 +52,21 @@ class Address(BaseModel):
 
     postal_code: str | None = None
     "ZIP or ZIP+4."
+
+    @classmethod
+    def from_string(cls, address_str: str) -> Self:
+        """Parse a free-form US address string into an `Address`.
+
+        Args:
+            address_str: Free-form US address string, e.g. `"123 Main St, Denver, CO 80203"`.
+        """
+        parsed = parse_address(address_str)
+        return cls(
+            address1=parsed.get("address1") or None,
+            city=parsed.get("city") or None,
+            state=parsed.get("state") or None,
+            postal_code=parsed.get("postalCode") or None,
+        )
 
     @model_validator(mode="before")
     @classmethod
@@ -121,13 +126,12 @@ class Address(BaseModel):
         return formatted.replace("\n", ", ") if formatted else None
 
     def normalized(self) -> Self:
-        """
-        Return a new `Address` with library-corrected fields (uppercased
-        state, hyphenated ZIP+4, etc.). Does not mutate self.
+        """Return a new `Address` with library-corrected fields. Does not mutate self.
 
-        Raises `ValueError` if the address is incomplete or invalid per US
-        postal rules — i.e. missing street, city, state, or ZIP, or a ZIP
-        that does not match the state.
+        Raises:
+            ValueError: If the address is incomplete or invalid per US postal
+                rules (missing street, city, state, or ZIP, or a ZIP that does
+                not match the state).
         """
         try:
             clean = normalize_address(self._as_i18n_dict())
