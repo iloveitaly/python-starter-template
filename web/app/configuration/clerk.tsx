@@ -2,11 +2,7 @@ import { requireEnv } from "~/utils/environment"
 
 import { ClerkProvider } from "@clerk/react"
 import { loadClerkJsScript } from "@clerk/shared/loadClerkJsScript"
-import type {
-  BrowserClerk,
-  HeadlessBrowserClerk,
-  LoadedClerk,
-} from "@clerk/shared/types"
+import type { BrowserClerk, HeadlessBrowserClerk } from "@clerk/shared/types"
 import { invariant } from "@epic-web/invariant"
 
 declare global {
@@ -37,9 +33,7 @@ This whole situation isn't great. Here's what is happening:
 */
 
 export async function getClient() {
-  const windowWithClerk = window as Window & { Clerk?: LoadedClerk }
-
-  if (!windowWithClerk.Clerk) {
+  if (!window.Clerk) {
     // recommended officially here:
     // https://clerk.com/docs/references/sdk/frontend-only#call-window-clerk-load
     await loadClerkJsScript({
@@ -47,9 +41,9 @@ export async function getClient() {
     })
   }
 
-  invariant(windowWithClerk.Clerk, "Clerk should be defined")
+  invariant(window.Clerk, "Clerk should be defined")
 
-  const clerk = windowWithClerk.Clerk
+  const clerk = window.Clerk
 
   if (!clerk.loaded) {
     // https://clerk.com/docs/js-frontend/reference/objects/clerk#load
