@@ -1,18 +1,28 @@
+import { requireEnv } from "~/utils/environment"
+
 import { ClerkProvider } from "@clerk/react"
 import { loadClerkJsScript } from "@clerk/shared/loadClerkJsScript"
-import type { LoadedClerk } from "@clerk/shared/types"
+import type {
+  BrowserClerk,
+  HeadlessBrowserClerk,
+  LoadedClerk,
+} from "@clerk/shared/types"
 import { invariant } from "@epic-web/invariant"
 
-// required in prod and dev
-const CLERK_PUBLIC_KEY = import.meta.env.VITE_CLERK_PUBLIC_KEY
-invariant(CLERK_PUBLIC_KEY, "Missing Clerk Public Key")
+declare global {
+  interface Window {
+    Clerk?: BrowserClerk | HeadlessBrowserClerk
+  }
+}
+
+const CLERK_PUBLIC_KEY = requireEnv("VITE_CLERK_PUBLIC_KEY")
 
 /*
 This whole situation isn't great. Here's what is happening:
 
 - The ClerkProvider is a React component that wraps the entire app. It looks like it hits the Clerk API
-  but should also set window.Clerk. However, the clientLoaders seem to be loaded before the providers
-  (at least sometimes) so we need to load the clerk client in a way that will play well with the provider
+  but should also set window.Clerk. However, the `clientLoader`s load before providers/react components
+  (at least sometimes).We need to load the clerk client in a way that will play well with the provider
   to avoid additional API calls to Clerk.
 
 - There's not an easy way to do this. This insane `loadClerkJsScript` function is the only way I've found.
@@ -42,6 +52,7 @@ export async function getClient() {
   const clerk = windowWithClerk.Clerk
 
   if (!clerk.loaded) {
+    // https://clerk.com/docs/js-frontend/reference/objects/clerk#load
     await clerk.load()
   }
 
