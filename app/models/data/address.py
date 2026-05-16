@@ -61,12 +61,14 @@ class Address(BaseModel):
             address_str: Free-form US address string, e.g. `"123 Main St, Denver, CO 80203"`.
         """
         parsed = parse_address(address_str)
-        return cls.model_validate({
-            "address1": parsed.get("address1") or None,
-            "city": parsed.get("city") or None,
-            "state": parsed.get("state") or None,
-            "postal_code": parsed.get("postalCode") or None,
-        })
+        return cls.model_validate(
+            {
+                "address1": parsed.get("address1") or None,
+                "city": parsed.get("city") or None,
+                "state": parsed.get("state") or None,
+                "postal_code": parsed.get("postalCode") or None,
+            }
+        )
 
     @model_validator(mode="before")
     @classmethod
