@@ -15,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
+  email: z.email("Invalid email address"),
 })
 
 export default function FormPage() {
@@ -31,6 +31,9 @@ export default function FormPage() {
   return (
     <div className="mx-auto mt-10 max-w-md">
       <h1 className="mb-6 text-2xl font-bold">Basic Form</h1>
+      <p className="mb-6">
+        Let's demonstrate how to use a react-hook-form with a python backend.
+      </p>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
