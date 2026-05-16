@@ -17,6 +17,7 @@ Coding instructions for all programming languages:
 - If terminal commands are failing because of missing variables or commands which are unrelated to your current task, stop your work and let me know.
 - Don't worry about fixing lint errors or running lint scripts unless I specifically ask you to.
 - When implementing workarounds for tooling limitations (like using `Any` for unresolvable types) or handling non-obvious edge cases, always add a brief inline comment explaining the technical reasoning.
+- Reserve exact-width `#`-box section separators for long files requiring organization, though they should not be necessary in the large majority of cases (separate files is generally better).
 
 Use line breaks to organize code into logical groups. Instead of:
 
@@ -417,6 +418,8 @@ When writing Python:
 * Assume the latest python, version 3.13.
 * Prefer Pathlib methods (including read and write methods, like `read_text`) over `os.path`, `open`, `write`, etc.
 * Prefer docstr to multi-line comments at the top of a function or file.
+* If a docstr does not span multiple lines, do not use triple-quoted strings.
+* Do not create `__init__` files unless specifically instructed
 * Use Pydantic models over dataclass or a typed dict.
 * Use SQLAlchemy for generating any SQL queries.
 * Use `click` for command line argument parsing.
