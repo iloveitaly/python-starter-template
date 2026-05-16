@@ -4,6 +4,7 @@ import { Outlet } from "react-router"
 import { usePostHog } from "posthog-js/react"
 
 import AdminBar from "~/components/AdminBar"
+import withClerkProvider from "~/configuration/clerk"
 
 import { RedirectToSignIn, Show, useAuth, useUser } from "@clerk/react"
 
@@ -34,7 +35,7 @@ function PosthogIdentity() {
   return null
 }
 
-export default function AuthenticatedLayout() {
+export function AuthenticatedLayout() {
   return (
     <>
       <Show when="signed-in">
@@ -48,3 +49,6 @@ export default function AuthenticatedLayout() {
     </>
   )
 }
+
+// you can add the clerk provider to `configuration/index.ts` if you want it available globally
+export default withClerkProvider(AuthenticatedLayout)

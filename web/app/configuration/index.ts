@@ -1,5 +1,4 @@
 // should be imported *first* before any other application logic
-import withClerkProvider from "./clerk"
 import "./client"
 import "./logging"
 import withPostHogProvider from "./posthog"
@@ -8,7 +7,6 @@ import withTanstackQueryProvider from "./tanstack-query"
 
 const PROVIDERS: ((app: React.ComponentType) => JSX.Element)[] = [
   withPostHogProvider,
-  withClerkProvider,
   withSentryProvider,
   withTanstackQueryProvider,
 ]
