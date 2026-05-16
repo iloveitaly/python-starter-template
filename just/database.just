@@ -76,10 +76,13 @@ db_lint:
 	# https://squawkhq.com/docs/github_app
 
 	# TODO don't fail on warnings https://github.com/sbdchd/squawk/issues/348
-	# TODO remove rule exclusion when https://github.com/sbdchd/squawk/issues/392 is fixed
-	PYTHON_LOG_PATH=stderr uv run alembic upgrade head --sql | \
-		squawk --reporter=json \
-			--exclude=prefer-text-field --pg-version=$(jq -r '.postgres' .service-versions); \
+	PYTHON_LOG_PATH=stderr uv run alembic-squawk --out-dir $TMP_DIRECTORY/db-lint
+
+	# the generated SQL is not wrapped in a transaction, but the entire migration will be
+	squawk --assume-in-transaction --pg-version=$(jq -r '.postgres' .service-versions) $TMP_DIRECTORY/db-lint/*.sql
+
+	# old method, sourced from the full SQL dump via alembic
+	# PYTHON_LOG_PATH=stderr uv run alembic upgrade head --sql | squawk
 
 # open the database in the default macos GUI
 db_open: _dev_only
