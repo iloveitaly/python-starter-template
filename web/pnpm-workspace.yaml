@@ -4,6 +4,13 @@ allowBuilds:
   core-js: true
   esbuild: true
   protobufjs: true
+minimumReleaseAgeExclude:
+  - '@hey-api/openapi-ts@0.97.2'
+  - '@hey-api/shared@0.4.4'
+  - '@posthog/core@1.29.3'
+  - '@posthog/types@1.374.0'
+  - date-fns@4.2.1
+  - posthog-js@1.374.0
 onlyBuiltDependencies:
   - '@clerk/shared'
   - '@sentry/cli'
