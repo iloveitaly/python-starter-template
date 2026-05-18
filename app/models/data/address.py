@@ -95,7 +95,9 @@ class Address(BaseModel):
         normalized = state_in.strip()
         # us.states.lookup covers the 50 states + territories but not DC;
         # fall back to a direct module attribute for two-letter codes (e.g. "DC")
-        match = us.states.lookup(normalized) or getattr(us.states, normalized.upper(), None)
+        match = us.states.lookup(normalized) or getattr(
+            us.states, normalized.upper(), None
+        )
         if match is None:
             raise ValueError(f"Unknown US state: {state_in!r}")
         data["state_code"] = match.abbr
@@ -107,7 +109,9 @@ class Address(BaseModel):
         """Full state name derived from `state_code` (e.g. 'Colorado')."""
         if not self.state_code:
             return None
-        match = us.states.lookup(self.state_code) or getattr(us.states, self.state_code, None)
+        match = us.states.lookup(self.state_code) or getattr(
+            us.states, self.state_code, None
+        )
         return match.name if match else None
 
     def _as_i18n_dict(self) -> dict[str, str]:
@@ -155,12 +159,14 @@ class Address(BaseModel):
             errors = []
             for i18n_field, reason in e.errors.items():
                 our_field = field_map.get(i18n_field) or i18n_field
-                errors.append({
-                    "type": reason,
-                    "loc": (our_field,),
-                    "msg": reason,
-                    "input": getattr(self, our_field, None),
-                })
+                errors.append(
+                    {
+                        "type": reason,
+                        "loc": (our_field,),
+                        "msg": reason,
+                        "input": getattr(self, our_field, None),
+                    }
+                )
             return errors
 
         return []

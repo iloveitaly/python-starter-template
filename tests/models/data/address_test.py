@@ -296,7 +296,9 @@ REAL_ADDRESS_STRINGS = [
 
 @pytest.mark.parametrize("address1,city,state,postal_code", REAL_ADDRESSES)
 def test_real_address_validates(address1, city, state, postal_code):
-    addr = Address(address1=address1, city=city, state_code=state, postal_code=postal_code)
+    addr = Address(
+        address1=address1, city=city, state_code=state, postal_code=postal_code
+    )
     assert addr.validate_address() == []
 
 
