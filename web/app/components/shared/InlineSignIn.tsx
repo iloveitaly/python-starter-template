@@ -3,7 +3,7 @@
  */
 import { SignIn } from "@clerk/react"
 
-function InlineSignIn() {
+export default function InlineSignIn() {
   return (
     <div className="relative min-h-screen">
       {/* Background Image with Gradient Overlay */}
