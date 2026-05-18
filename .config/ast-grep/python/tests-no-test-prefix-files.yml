@@ -1,0 +1,8 @@
+id: py-tests-no-test-prefix-files
+language: python
+severity: error
+message: "Test files must use the `*_test.py` suffix, not the `test_*.py` prefix. Rename this file."
+files:
+  - "tests/**/test_*.py"
+rule:
+  kind: module

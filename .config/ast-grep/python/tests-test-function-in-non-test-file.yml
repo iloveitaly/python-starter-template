@@ -1,0 +1,16 @@
+id: py-tests-test-function-in-non-test-file
+language: python
+severity: error
+message: "Test functions (named *_test) must live in a file whose path contains `_test`. Rename the file to `*_test.py` or rename the function."
+files:
+  - "tests/**/*.py"
+ignores:
+  - "tests/**/*_test.py"
+  - "tests/**/conftest.py"
+rule:
+  pattern: |
+    def $NAME($$$ARGS):
+      $$$BODY
+constraints:
+  NAME:
+    regex: '.*_test$'
