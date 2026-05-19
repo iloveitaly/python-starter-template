@@ -18,6 +18,14 @@ def configure_debugging():
     beautiful_traceback.configure(
         local_stack_only=env.bool("BEAUTIFUL_TRACEBACK_LOCAL_ONLY", False),
         show_aliases=False,
+        exclude_patterns=[
+            # sentry internals can be long and generally useless
+            r"^sentry_sdk/",
+            r"^playwright/",
+            # pytest internals don't add any value
+            r"^_pytest/",
+            r"^pluggy/",
+        ],
     )
 
     if is_productionish():
