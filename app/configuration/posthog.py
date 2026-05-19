@@ -1,7 +1,7 @@
 import posthog
 
 from app.env import env
-from app.environments import is_production
+from app.environments import is_debug_logging, is_production
 
 
 # TODO we should have an automated test for this, probably using an integration test, where posthog is NOT disabled
@@ -32,8 +32,8 @@ def configure_posthog():
     pass
 
 
-# TODO tie into python debug logic
-# posthog.debug = True
+if is_debug_logging():
+    posthog.debug = True
 
 # A/B test
 # variant = posthog.get_feature_flag("experiment-feature-flag-key", "user_distinct_id")
