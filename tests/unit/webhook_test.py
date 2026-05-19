@@ -10,6 +10,7 @@ from typeid import TypeID
 from whenever import Instant
 
 import app.jobs.process_webhook
+from app.jobs.process_webhook import WebhookDeliveryError
 
 from app.models.webhook_event import WebhookBase, WebhookEvent
 
@@ -218,7 +219,7 @@ def test_process_webhook_errors_on_invalid_host(httpx_mock, sync_celery, monkeyp
 
     # TODO we should really use a separate worker to test the retry stuff
     # retries don't operate when in sync mode
-    with pytest.raises(httpx.ConnectError):
+    with pytest.raises(WebhookDeliveryError):
         app.jobs.process_webhook.perform(event.id)
 
     # event updated to failed by the webhook processing

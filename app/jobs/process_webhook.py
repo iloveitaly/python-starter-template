@@ -9,11 +9,17 @@ from app.constants import BUILD_COMMIT
 DEFAULT_WEBHOOK_TIMEOUT = 30
 
 
+class WebhookDeliveryError(Exception):
+    """Raised when a webhook delivery attempt fails."""
+
+    pass
+
+
 @celery_app.task(base=BaseTaskWithRetry)
 def perform(event_id: TypeID) -> None:
     from app.models.webhook_event import WebhookEvent
 
-    event: WebhookEvent = WebhookEvent.one(event_id)
+    event = WebhookEvent.one(event_id)
 
     # TODO this is problematic as it can flood the queues with rate limit retries since there is not delay when it's put back on the queue
     # if not domain_limiter.hit("gohighlevel"):
@@ -54,12 +60,12 @@ def perform(event_id: TypeID) -> None:
 
         response.raise_for_status()
         event.response_payload = response.json()
-    except Exception:
+    except Exception as exception:
         event.failed_at = Instant.now()
         event.save()
-        raise
 
-    # success
+        raise WebhookDeliveryError() from exception
+
     event.failed_at = None
     event.succeeded_at = Instant.now()
     event.save()
