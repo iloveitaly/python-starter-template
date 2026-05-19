@@ -3,12 +3,21 @@ import posthog
 from app.env import env
 from app.environments import is_production
 
+
+# TODO we should have an automated test for this, probably using an integration test, where posthog is NOT disabled
+def posthog_error_handler(error, batch):
+    from app import log
+
+    log.warning("posthog error", error=error, batch=batch)
+
+
 posthog_client = posthog.Posthog(
     project_api_key=env.str("POSTHOG_SECRET_KEY"),
     host=env.str("POSTHOG_HOST", "https://us.i.posthog.com"),
     # don't use Sentry *and* posthog for error tracking!
     enable_exception_autocapture=False,
     # there is no builtin fastapi integration for exceptions!
+    on_error=posthog_error_handler,
 )
 
 if not is_production():
