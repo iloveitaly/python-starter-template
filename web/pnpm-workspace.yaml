@@ -4,6 +4,7 @@ allowBuilds:
   core-js: true
   esbuild: true
   protobufjs: true
+  '@tailwindcss/oxide': true
 minimumReleaseAgeExclude:
   - '@hey-api/openapi-ts@0.97.2'
   - '@hey-api/shared@0.4.4'
@@ -33,10 +34,4 @@ minimumReleaseAgeExclude:
   - postcss@8.5.15
   - posthog-js@1.374.2
   - typescript-eslint@8.59.4
-onlyBuiltDependencies:
-  - '@clerk/shared'
-  - '@sentry/cli'
-  - '@tailwindcss/oxide'
-  - core-js
-  - esbuild
-  - protobufjs
+engineStrict: true
