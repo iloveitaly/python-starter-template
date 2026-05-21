@@ -1,9 +1,9 @@
 import { Navigate, href } from "react-router"
 
 import { Show, SignIn } from "@clerk/react"
+import withClerkProvider from "~/configuration/clerk"
 
-// redirect users to the correct page based on their authentication status
-export default function LoginRedirectPage() {
+function LoginRedirectPage() {
   return (
     <div className="mt-[10%] flex min-h-screen justify-center">
       <Show when="signed-in">
@@ -15,3 +15,5 @@ export default function LoginRedirectPage() {
     </div>
   )
 }
+
+export default withClerkProvider(LoginRedirectPage)
