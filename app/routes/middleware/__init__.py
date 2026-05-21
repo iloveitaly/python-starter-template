@@ -166,18 +166,10 @@ def add_middleware(app: FastAPI):
         app.add_middleware(PdbMiddleware, debug=True)
 
     secure_headers = Secure.with_default_headers()
-    csp = next(
-        h for h in secure_headers.headers_list if isinstance(h, ContentSecurityPolicy)
-    )
-    # TODO: tighten CSP to specific domains once third-party services (PostHog, Clerk, Sentry) are stable
-    # RR injects inline scripts; https: allows third-party scripts (PostHog, Clerk, etc.)
-    csp.script_src("'self'", "'unsafe-inline'", "https:")
-    # https: allows third-party API connections (PostHog, Clerk, Sentry, etc.)
-    csp.connect_src("'self'", "https:")
-    # clerk uses blob: workers; script-src is used as worker-src fallback so must be set explicitly
-    csp.worker_src("'self'", "blob:")
-    # clerk loads images from img.clerk.com
-    csp.img_src("'self'", "data:", "https:")
+    # TODO: add a proper CSP policy once third-party services (PostHog, Clerk, Sentry) are mapped out
+    secure_headers.headers_list[:] = [
+        h for h in secure_headers.headers_list if not isinstance(h, ContentSecurityPolicy)
+    ]
 
     app.add_middleware(SecureASGIMiddleware, secure=secure_headers)
 
