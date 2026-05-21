@@ -19,3 +19,13 @@ def dump_json_list[T: BaseModel](items: list[T], model: type[T] | None = None) -
             return b"[]"
         model = type(items[0])
     return TypeAdapter(list[model]).dump_json(items)
+
+
+def dump_python_list[T: BaseModel](items: list[T], model: type[T] | None = None) -> list[dict]:
+    """Serialize a list of models to a list of dicts. Infers `model` from `items[0]` if omitted."""
+    if model is None:
+        if not items:
+            return []
+        model = type(items[0])
+    return TypeAdapter(list[model]).dump_python(items)
+
