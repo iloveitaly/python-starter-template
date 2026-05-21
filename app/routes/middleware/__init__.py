@@ -169,8 +169,11 @@ def add_middleware(app: FastAPI):
     csp = next(
         h for h in secure_headers.headers_list if isinstance(h, ContentSecurityPolicy)
     )
-    # RR injects inline scripts
-    csp.script_src("'self'", "'unsafe-inline'")
+    # TODO: tighten CSP to specific domains once third-party services (PostHog, Clerk, Sentry) are stable
+    # RR injects inline scripts; https: allows third-party scripts (PostHog, Clerk, etc.)
+    csp.script_src("'self'", "'unsafe-inline'", "https:")
+    # https: allows third-party API connections (PostHog, Clerk, Sentry, etc.)
+    csp.connect_src("'self'", "https:")
 
     app.add_middleware(SecureASGIMiddleware, secure=secure_headers)
 
