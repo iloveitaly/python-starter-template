@@ -174,6 +174,10 @@ def add_middleware(app: FastAPI):
     csp.script_src("'self'", "'unsafe-inline'", "https:")
     # https: allows third-party API connections (PostHog, Clerk, Sentry, etc.)
     csp.connect_src("'self'", "https:")
+    # clerk uses blob: workers; script-src is used as worker-src fallback so must be set explicitly
+    csp.worker_src("'self'", "blob:")
+    # clerk loads images from img.clerk.com
+    csp.img_src("'self'", "data:", "https:")
 
     app.add_middleware(SecureASGIMiddleware, secure=secure_headers)
 
