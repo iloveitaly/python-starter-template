@@ -166,7 +166,9 @@ def add_middleware(app: FastAPI):
         app.add_middleware(PdbMiddleware, debug=True)
 
     secure_headers = Secure.with_default_headers()
-    csp = next(h for h in secure_headers.headers_list if isinstance(h, ContentSecurityPolicy))
+    csp = next(
+        h for h in secure_headers.headers_list if isinstance(h, ContentSecurityPolicy)
+    )
     # RR injects inline scripts
     csp.script_src("'self'", "'unsafe-inline'")
 
