@@ -2,7 +2,7 @@ import re
 
 from fastapi import FastAPI
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
-from secure import Secure
+from secure import ContentSecurityPolicy, Secure
 from secure.middleware import SecureASGIMiddleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
@@ -166,6 +166,10 @@ def add_middleware(app: FastAPI):
         app.add_middleware(PdbMiddleware, debug=True)
 
     secure_headers = Secure.with_default_headers()
+    csp = next(h for h in secure_headers.headers_list if isinstance(h, ContentSecurityPolicy))
+    # RR injects inline scripts
+    csp.script_src("'self'", "'unsafe-inline'")
+
     app.add_middleware(SecureASGIMiddleware, secure=secure_headers)
 
     return app
