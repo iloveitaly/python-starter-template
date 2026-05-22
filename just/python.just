@@ -279,4 +279,4 @@ py_spy:
 # avoid using the app entrypoint shortcut to avoid having to modify the name across different projects
 # consistent CLI entrypoint for the python app CLI
 py_cli *args:
-	uv run python -m app.cli {{args}}
+	PYTHON_LOG_PATH=stderr uv run python -m app.cli {{args}}

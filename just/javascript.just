@@ -101,7 +101,7 @@ js_generate watch="false":
 _js_generate:
 	# you may want to customize the application target, depending on you are structuring your frontend code
 	# jq is here to pretty print the output
-	PYTHON_LOG_PATH=stderr just py_cli dump-openapi \
+	just py_cli dump-openapi \
 		| jq -r . > "$OPENAPI_JSON_PATH"
 
 	# generate the js client with the latest openapi spec
