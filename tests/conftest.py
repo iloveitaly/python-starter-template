@@ -118,7 +118,8 @@ def pytest_configure(config: Config):
     config.option.beautiful_traceback_exclude_patterns = [
         "^_pytest/",
         "^pluggy/",
-        "^playwright/"
+        "^playwright/",
+        "^sentry_sdk/",
     ]
 
     # disable visual assertions when running locally
