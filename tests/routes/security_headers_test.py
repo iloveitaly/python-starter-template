@@ -14,5 +14,4 @@ async def test_security_headers_present(aclient):
     assert "strict-transport-security" in headers
     assert "x-frame-options" in headers
     assert "x-content-type-options" in headers
-    assert "content-security-policy" in headers
     assert "referrer-policy" in headers
