@@ -1,7 +1,8 @@
 import { Navigate, href } from "react-router"
 
-import { Show, SignIn } from "@clerk/react"
 import withClerkProvider from "~/configuration/clerk"
+
+import { Show, SignIn } from "@clerk/react"
 
 function LoginRedirectPage() {
   return (
