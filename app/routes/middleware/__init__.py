@@ -166,11 +166,13 @@ def add_middleware(app: FastAPI):
         app.add_middleware(PdbMiddleware, debug=True)
 
     secure_headers = Secure.with_default_headers()
+    # default CSP blocks RR7 from rendering content
     # TODO: add a proper CSP policy once third-party services (PostHog, Clerk, Sentry) are mapped out
-    secure_headers.headers_list[:] = [
-        h for h in secure_headers.headers_list if not isinstance(h, ContentSecurityPolicy)
+    secure_headers.headers_list = [
+        h
+        for h in secure_headers.headers_list
+        if not isinstance(h, ContentSecurityPolicy)
     ]
-
     app.add_middleware(SecureASGIMiddleware, secure=secure_headers)
 
     return app
