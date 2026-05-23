@@ -67,5 +67,5 @@ def pytest_runtest_teardown(item: pytest.Function, nextitem: pytest.Item | None)
 
 
 @pytest.fixture
-def page(context: BrowserContext) -> Generator[Page, None, None]:
+def page(context: BrowserContext) -> Generator[Page]:
     yield context.new_page()
