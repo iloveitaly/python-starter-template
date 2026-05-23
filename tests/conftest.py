@@ -2,7 +2,7 @@ import pprint
 
 import detect_shadowed_modules
 import sys
-from tests.raw_utils import banner
+from tests.raw_utils import banner, autoload_pytest_plugins_list
 
 # shadowed modules have been the cause of many lost hours, I prefer to be obnoxious about notifying myself about them
 if shadowed_modules := detect_shadowed_modules.find_conflicts():
@@ -52,9 +52,8 @@ from app.environments import is_local_testing, is_wsl
 from .constants import TEST_RESULTS_DIRECTORY
 from .log import log
 
-# add any local plugins here, ex:
-# pytest_plugins = ["tests.plugins.improved_playwright_failures"]
-pytest_plugins = ["tests.mailpit"]
+# add any local plugins here, ex: ["tests.plugins.improved_playwright_failures"]
+pytest_plugins = autoload_pytest_plugins_list("plugins")
 
 log.info("multiprocess start method", start_method=multiprocessing.get_start_method())
 
