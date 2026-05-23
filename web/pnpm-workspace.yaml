@@ -5,7 +5,4 @@ allowBuilds:
   esbuild: true
   protobufjs: true
   '@tailwindcss/oxide': true
-
-# npm-check-updates does NOT respect the default (as of pnpm 11 and ncu 22.2.0)
-minimumReleaseAge: 1440
 engineStrict: true
