@@ -80,14 +80,15 @@ js_play:
 
 # interactively upgrade all js packages
 js_upgrade:
-	{{_pnpm}} dlx npm-check-updates --interactive
+	# 1d is the default pnpm 11 config
+	{{_pnpm}} dlx npm-check-updates@latest --interactive --cooldown 1d
 
 	# intentionally without lockfile so it's updated
 	{{_pnpm}} install
 
 	{{_pnpm}} dlx update-browserslist-db@latest
 
-	cd {{WEB_DIR}} && git add package.json pnpm-lock.yaml
+	cd {{WEB_DIR}} && git add package.json pnpm-*.yaml
 
 # generate a typescript client from the openapi spec
 [arg("watch", long, help="regenerate openapi spec and client on file changes", value="true")]
