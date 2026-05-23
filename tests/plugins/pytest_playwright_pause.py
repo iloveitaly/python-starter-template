@@ -9,6 +9,7 @@ Playwright inspector.
 """
 
 from collections.abc import Generator
+from typing import cast
 
 import pytest
 from playwright.sync_api import BrowserContext, Page
@@ -53,8 +54,8 @@ def pytest_runtest_teardown(item: pytest.Function, nextitem: pytest.Item | None)
     runs all fixture teardowns normally.
     """
     if _playwright_pause_enabled(item.config) and "page" in item.funcargs:
-        context: BrowserContext | None = item.funcargs.get("context")
-        page: Page = item.funcargs["page"]
+        context = cast(BrowserContext | None, item.funcargs.get("context"))
+        page = cast(Page, item.funcargs["page"])
 
         if context:
             context.set_default_timeout(0)
