@@ -43,6 +43,7 @@ services:
     restart: unless-stopped
     ports:
       - ${CI:+1025}:1025
+      - ${CI:+8025}:8025
     volumes:
       - mailpit_data:/data
     environment:

@@ -14,7 +14,7 @@ def default_mailpit_api_url() -> str:
     if not hostname:
         raise ValueError("SMTP_URL must include a hostname for Mailpit tests")
 
-    return f"https://{hostname}/api/v1"
+    return f"http://{hostname}:8025/api/v1"
 
 
 class MailpitClient:
