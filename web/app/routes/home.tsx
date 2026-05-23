@@ -18,6 +18,7 @@ import {
   SidebarTrigger,
 } from "~/components/ui/sidebar"
 import { applicationData } from "~/configuration/client"
+import { BASE_URL } from "~/utils/constants"
 
 import { SiReact } from "@icons-pack/react-simple-icons"
 
@@ -38,6 +39,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
   const placeholderCount = 24
   return (
     <SidebarProvider
+      className="h-svh overflow-hidden"
       style={
         {
           "--sidebar-width": "350px",
@@ -45,7 +47,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
       }
     >
       <AppSidebar />
-      <SidebarInset>
+      <SidebarInset className="overflow-y-auto">
         <header className="bg-background sticky top-0 flex shrink-0 items-center gap-2 border-b p-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
@@ -70,6 +72,12 @@ export default function Page({ loaderData }: Route.ComponentProps) {
             <span className="text-muted-foreground ml-2 text-sm">
               {placeholderCount} {inflection.pluralize("message")}
             </span>
+          </div>
+          <div className="text-muted-foreground text-sm">
+            API base:{" "}
+            <a href={BASE_URL} className="text-blue-link font-mono">
+              {BASE_URL}
+            </a>
           </div>
           {loaderData && loaderData.message}
           {Array.from({ length: 24 }).map((_, index) => (
