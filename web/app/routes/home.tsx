@@ -18,7 +18,7 @@ import {
   SidebarTrigger,
 } from "~/components/ui/sidebar"
 import { applicationData } from "~/configuration/client"
-import { BASE_URL } from "~/utils/constants"
+import { absHref } from "~/utils/url"
 
 import { SiReact } from "@icons-pack/react-simple-icons"
 
@@ -74,9 +74,9 @@ export default function Page({ loaderData }: Route.ComponentProps) {
             </span>
           </div>
           <div className="text-muted-foreground text-sm">
-            API base:{" "}
-            <a href={BASE_URL} className="text-blue-link font-mono">
-              {BASE_URL}
+            Shareable link:{" "}
+            <a href={absHref("/form")} className="text-blue-link font-mono">
+              {absHref("/form")}
             </a>
           </div>
           {loaderData && loaderData.message}
