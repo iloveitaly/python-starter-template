@@ -1,8 +1,12 @@
 import pprint
 
 import detect_shadowed_modules
+import pytest
 import sys
 from tests.raw_utils import banner, autoload_pytest_plugins_list
+
+# must be registered before the module is first imported
+pytest.register_assert_rewrite("tests.integration.utils")
 
 # shadowed modules have been the cause of many lost hours, I prefer to be obnoxious about notifying myself about them
 if shadowed_modules := detect_shadowed_modules.find_conflicts():
