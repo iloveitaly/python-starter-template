@@ -11,7 +11,43 @@ import time
 from pathlib import Path
 
 from app.env import loose_env
-from app.environments import is_production
+from app.environments import is_macos, is_production
+
+
+def install_system_certificates():
+    """
+    Make Python's TLS stack trust the macOS keychain.
+
+    Why: Locally-installed root CAs (OrbStack, mkcert, corporate MITM
+    proxies) live in the macOS keychain. Python's `ssl` module and
+    everything built on it (`requests`, `httpx`, `urllib3`, `aiohttp`)
+    ignore the keychain and verify against certifi's bundled roots, so
+    `requests.get("https://x.orb.local")` fails with SSLCertVerificationError
+    even though curl and the browser work fine.
+
+    Why not env vars: `REQUESTS_CA_BUNDLE` *replaces* certifi rather than
+    merging, so it requires a hand-maintained union bundle that goes stale
+    on every certifi upgrade. `SSL_CERT_FILE` is read by Go, Ruby, libcurl,
+    and more — setting it in your shell breaks TLS across your whole
+    toolchain if the bundle ever has a problem. Both are ambient state
+    affecting every process in the shell, not just code that needs it.
+
+    Why truststore: Wraps macOS Security.framework in an `ssl.SSLContext`,
+    monkey-patches `ssl` so every TLS library in *this process* uses the
+    keychain. No env vars, no bundle, no blast radius. New keychain roots
+    work immediately. It's the default HTTPS verifier in pip 24.2+.
+
+    On Linux this is a no-op — stdlib already uses OpenSSL's default paths,
+    which is what truststore would fall back to anyway.
+
+    Call once at startup, before any library caches an SSLContext.
+    """
+    if not is_macos():
+        return
+
+    import truststore
+
+    truststore.inject_into_ssl()
 
 
 def configure_python():
@@ -22,6 +58,7 @@ def configure_python():
     """
     from app import log
 
+    install_system_certificates()
     inspect_python_runtime()
 
     # prefer intentional timezone configuration
