@@ -40,7 +40,7 @@ from app.utils.patching import hash_function_code
 # https://github.com/encode/starlette/commit/bc3b4002e241353d96e1ad18d8c6b5fc4f8463df
 assert (
     hash_function_code(StaticFiles.lookup_path)
-    == "a3ebf7850a8389fc2d8328d7322745f233879bc300ab5cc1bd2a52a5e1710815"
+    == "3d07bc7f0fe742eb7a2b9c85517c3607dc3161cba865dbeec8b23f05b22dcbfb"
 )
 
 HTML_NOCACHE_HEADERS = {
