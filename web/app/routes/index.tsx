@@ -1,10 +1,8 @@
 import { Navigate, href } from "react-router"
 
-import withClerkProvider from "~/configuration/clerk"
-
 import { Show, SignIn } from "@clerk/react"
 
-function LoginRedirectPage() {
+export default function LoginRedirectPage() {
   return (
     <div className="mt-[10%] flex min-h-screen justify-center">
       <Show when="signed-in">
@@ -16,5 +14,3 @@ function LoginRedirectPage() {
     </div>
   )
 }
-
-export default withClerkProvider(LoginRedirectPage)
