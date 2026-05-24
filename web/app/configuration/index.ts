@@ -1,7 +1,7 @@
 // should be imported *first* before any other application logic
+import withClerkProvider from "./clerk"
 import "./client"
 import "./logging"
-import withClerkProvider from "./clerk"
 import withPostHogProvider from "./posthog"
 import withSentryProvider from "./sentry"
 import withTanstackQueryProvider from "./tanstack-query"
