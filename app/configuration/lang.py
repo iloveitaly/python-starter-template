@@ -5,6 +5,7 @@ This file is meant to align python configuration options across versions to avoi
 weird bugs between dev, prod, ci, etc.
 """
 
+import locale
 import multiprocessing
 import sys
 import time
@@ -59,6 +60,7 @@ def configure_python():
     from app import log
 
     install_system_certificates()
+    inspect_lang()
     inspect_python_runtime()
 
     # prefer intentional timezone configuration
@@ -100,6 +102,37 @@ def configure_python():
     ):
         sys.breakpointhook = None
         log.info("disabling python breakpoints in production environment")
+
+
+def inspect_lang() -> None:
+    """
+    Inspect the process locale configuration without mutating it.
+    """
+
+    from app import log
+
+    current_locale = locale.getlocale()
+    current_lc_ctype = locale.getlocale(locale.LC_CTYPE)
+    preferred_encoding = locale.getpreferredencoding(False)
+
+    locale_unset = current_locale == (None, None)
+    lc_ctype_unset = current_lc_ctype == (None, None)
+    utf8_encoding = preferred_encoding.casefold() == "utf-8"
+
+    if locale_unset or lc_ctype_unset or not utf8_encoding:
+        log.warning(
+            "python locale may be misconfigured",
+            current_locale=current_locale,
+            current_lc_ctype=current_lc_ctype,
+            preferred_encoding=preferred_encoding,
+        )
+    else:
+        log.info(
+            "python locale inspected",
+            current_locale=current_locale,
+            current_lc_ctype=current_lc_ctype,
+            preferred_encoding=preferred_encoding,
+        )
 
 
 def inspect_python_runtime() -> None:

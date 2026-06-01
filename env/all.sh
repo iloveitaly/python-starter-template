@@ -15,3 +15,5 @@ export PYTHONSAFEPATH=1
 export PYTHONIOENCODING='UTF-8'
 # without this, the timezone will change depending on the container/environment
 export TZ=UTC
+# requires this locale to be included in the container
+export LANG=en_US.UTF-8
