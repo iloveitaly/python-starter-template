@@ -2927,7 +2927,7 @@ requires-dist = [
     { name = "python-slugify", specifier = ">=8.0.4" },
     { name = "redis", extras = ["hiredis"], specifier = ">=5.2.0" },
     { name = "secure", specifier = ">=2.0.1" },
-    { name = "sentry-sdk", extras = ["fastapi", "celery", "openai", "sqlalchemy"], specifier = ">=2.17.0" },
+    { name = "sentry-sdk", extras = ["fastapi", "celery", "openai", "sqlalchemy"], specifier = ">=2.61.1" },
     { name = "sqlalchemy", specifier = ">=2.0.36" },
     { name = "sqlmodel", specifier = ">=0.0.31" },
     { name = "starlette-context", specifier = ">=0.3.6" },
