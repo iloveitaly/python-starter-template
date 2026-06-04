@@ -1,5 +1,10 @@
 TOFU_GLOBAL_OPTIONS := ""
 
+# check current azure subscription
+debug:
+	az account show
+	op item list
+
 # setup tofu providers
 tofu_init:
     tofu {{ TOFU_GLOBAL_OPTIONS }} init
