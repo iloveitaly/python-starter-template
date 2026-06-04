@@ -249,6 +249,7 @@ py_playwright_view_trace remote="false": _dev_only
 py_playwright_visual-download: _dev_only
 	artifacts_directory=$(just ci_last_failed-download --output-dir)
 	snapshots_directory=$artifacts_directory/${PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY}/
+	mkdir -p $PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY
 	cp -R $snapshots_directory ${PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY}/
 
 # open chromium to record playwright interactions for integration tests and dump them to a file
