@@ -101,6 +101,7 @@ update_from_upstream_template:
 			--trust --skip-tasks --skip-answered --vcs-ref=HEAD \
 			--exclude web \
 			--exclude migrations/versions/ \
+			--exclude infra/ \
 			--exclude pyproject.toml \
 			--exclude uv.lock \
 			--exclude .service-versions \
