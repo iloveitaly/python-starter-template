@@ -1,0 +1,17 @@
+#cloud-config
+
+runcmd:
+  # 1. Check for a filesystem on LUN 0; format to ext4 ONLY if it is empty
+  - blkid /dev/disk/azure/scsi1/lun0 || mkfs.ext4 /dev/disk/azure/scsi1/lun0
+
+  # 2. Ensure the target mount directory exists
+  - mkdir -p /mnt/docker-data
+
+  # 3. Extract the UUID of the newly formatted LUN 0 disk
+  - UUID=$(blkid -s UUID -o value /dev/disk/azure/scsi1/lun0)
+
+  # 4. Add the UUID to fstab if it is not already present (ensures safe re-runs)
+  - grep -q "$UUID" /etc/fstab || echo "UUID=$UUID /mnt/docker-data ext4 defaults,nofail 0 2" >> /etc/fstab
+
+  # 5. Apply the mount
+  - mount -a
