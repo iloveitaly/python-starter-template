@@ -71,3 +71,11 @@ provider "azurerm" {
     # skip_provider_registration = true
   }
 }
+
+# resource group where all service-related resources are stored
+resource "azurerm_resource_group" "main" {
+  # TOOD should the name contain the environment definition?
+  name     = local.name
+  location = local.location
+  tags     = var.tags
+}
