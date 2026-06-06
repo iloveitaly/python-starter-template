@@ -1,4 +1,5 @@
 import * as inflection from "inflection"
+import { Temporal } from "temporal-polyfill"
 
 import type { Route } from "./+types/home"
 
@@ -33,6 +34,10 @@ export async function clientLoader(_loader_args: Route.ClientLoaderArgs) {
 
   return data
 }
+
+const demoTimestamp = Temporal.Instant.from("2025-06-06T18:30:00Z")
+  .toZonedDateTimeISO("UTC")
+  .toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })
 
 export default function Page({ loaderData }: Route.ComponentProps) {
   // placeholder count for the demo tiles below
@@ -78,6 +83,9 @@ export default function Page({ loaderData }: Route.ComponentProps) {
             <a href={absHref("/form")} className="text-blue-link font-mono">
               {absHref("/form")}
             </a>
+          </div>
+          <div className="text-muted-foreground text-sm">
+            Example timestamp: {demoTimestamp}
           </div>
           {loaderData && loaderData.message}
           {Array.from({ length: 24 }).map((_, index) => (
