@@ -161,6 +161,9 @@ importers:
       tailwindcss:
         specifier: ^4.3.0
         version: 4.3.0
+      temporal-polyfill:
+        specifier: ^0.3.2
+        version: 0.3.2
       tslog:
         specifier: ^4.10.2
         version: 4.10.2
@@ -4538,6 +4541,12 @@ packages:
   tapable@2.3.3:
     resolution: {integrity: sha512-uxc/zpqFg6x7C8vOE7lh6Lbda8eEL9zmVm/PLeTPBRhh1xCgdWaQ+J1CUieGpIfm2HdtsUpRv+HshiasBMcc6A==}
     engines: {node: '>=6'}
+
+  temporal-polyfill@0.3.2:
+    resolution: {integrity: sha512-TzHthD/heRK947GNiSu3Y5gSPpeUDH34+LESnfsq8bqpFhsB79HFBX8+Z834IVX68P3EUyRPZK5bL/1fh437Eg==}
+
+  temporal-spec@0.3.1:
+    resolution: {integrity: sha512-B4TUhezh9knfSIMwt7RVggApDRJZo73uZdj8AacL2mZ8RP5KtLianh2MXxL06GN9ESYiIsiuoLQhgVfwe55Yhw==}
 
   timezone-mock@1.4.2:
     resolution: {integrity: sha512-RgPQkSrARNHBnchuFpjrYf97uWgEaseCXK2asSeGcgUzRUO3cBR9Zu0uO1z2Eyi/TQsQtHIvQLi0br30COHWUA==}
@@ -9548,6 +9557,12 @@ snapshots:
   tailwindcss@4.3.0: {}
 
   tapable@2.3.3: {}
+
+  temporal-polyfill@0.3.2:
+    dependencies:
+      temporal-spec: 0.3.1
+
+  temporal-spec@0.3.1: {}
 
   timezone-mock@1.4.2: {}
 
