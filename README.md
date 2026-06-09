@@ -760,12 +760,6 @@ Here are the devprod principles this project adheres to:
 * Prefer more devprod scripts to less. This creates more noise, but it's easier to cut out noise over time than invent the wheel or waste
   time trying to find that magic shell command to fix an issue.
 
-### Deployment
-
-* Containers should be used instead of proprietary build systems (Heroku, etc).
-* Ability to build production-identical containers locally for debugging
-* Container building and registry storage should be handled on CI. This reduces vendor lock in.
-
 ### Procfile
 
 The good old Procfile is still used in this repo. I like Procfiles, they are a great way to define exactly what the main production
@@ -887,6 +881,24 @@ This environment variable (or the `-O` / `-OO` CLI flags) tells the Python inter
 * Strips docstrings (if using `-OO` or `PYTHONOPTIMIZE=2`).
 
 This is not enabled on this application. I don't dev working differently than production and any of the benefits are marginal at best.
+
+## Deployment
+
+* Containers should be used instead of proprietary build systems (Heroku, etc).
+* Ability to build production-identical containers locally for debugging
+* Container building and registry storage should be handled on CI. This reduces vendor lock in.
+
+### Dokku-based Deployment Process
+
+* Build container
+* Push to remove registry
+* Update production secrets based on current direnv-style files in `env/`
+* Trigger a release using the new image tag based on the commit sha
+
+### 1Password SSH Integration
+
+* Edit `~/.config/1Password/ssh/agent.toml` and add the 1Password vault that contains the server SSH key. You'll also have to make sure that SSH services are enabled.
+* Download the desktop client, do not use the web client.
 
 ## Related
 
