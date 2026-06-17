@@ -227,36 +227,36 @@ url = "https://github.com/jqlang/jq/releases/download/jq-1.8.1/jq-windows-amd64.
 provenance = "github-attestations"
 
 [[tools.mprocs]]
-version = "0.9.3"
+version = "0.9.5"
 backend = "aqua:pvolok/mprocs"
 
 [tools.mprocs."platforms.linux-arm64"]
-checksum = "sha256:4dc49de7898021f520eab0a27d9be48ec10c8e02d793790fdbef6f1709e90b97"
-url = "https://github.com/pvolok/mprocs/releases/download/v0.9.3/mprocs-0.9.3-linux-aarch64-musl.tar.gz"
+checksum = "sha256:f4295f1b080ea405e4b607d466b20ca469466e7708e7c6c7b451557e033b2449"
+url = "https://github.com/pvolok/mprocs/releases/download/v0.9.5/mprocs-0.9.5-linux-aarch64-musl.tar.gz"
 
 [tools.mprocs."platforms.linux-arm64-musl"]
-checksum = "sha256:4dc49de7898021f520eab0a27d9be48ec10c8e02d793790fdbef6f1709e90b97"
-url = "https://github.com/pvolok/mprocs/releases/download/v0.9.3/mprocs-0.9.3-linux-aarch64-musl.tar.gz"
+checksum = "sha256:f4295f1b080ea405e4b607d466b20ca469466e7708e7c6c7b451557e033b2449"
+url = "https://github.com/pvolok/mprocs/releases/download/v0.9.5/mprocs-0.9.5-linux-aarch64-musl.tar.gz"
 
 [tools.mprocs."platforms.linux-x64"]
-checksum = "sha256:82151de3378ca323fffdd5251a64b27e56fc17a02baba7b01852d71673263391"
-url = "https://github.com/pvolok/mprocs/releases/download/v0.9.3/mprocs-0.9.3-linux-x86_64-musl.tar.gz"
+checksum = "sha256:12d741fa1fae8f27d4d33c2f8abb2740f83ce71efa9c50f0a107383c5d9fa5fd"
+url = "https://github.com/pvolok/mprocs/releases/download/v0.9.5/mprocs-0.9.5-linux-x86_64-musl.tar.gz"
 
 [tools.mprocs."platforms.linux-x64-musl"]
-checksum = "sha256:82151de3378ca323fffdd5251a64b27e56fc17a02baba7b01852d71673263391"
-url = "https://github.com/pvolok/mprocs/releases/download/v0.9.3/mprocs-0.9.3-linux-x86_64-musl.tar.gz"
+checksum = "sha256:12d741fa1fae8f27d4d33c2f8abb2740f83ce71efa9c50f0a107383c5d9fa5fd"
+url = "https://github.com/pvolok/mprocs/releases/download/v0.9.5/mprocs-0.9.5-linux-x86_64-musl.tar.gz"
 
 [tools.mprocs."platforms.macos-arm64"]
-checksum = "sha256:37b35b15c9642707de4f134edc9de4f124b6610ec900b79f332807d54ba32f27"
-url = "https://github.com/pvolok/mprocs/releases/download/v0.9.3/mprocs-0.9.3-darwin-aarch64.tar.gz"
+checksum = "sha256:18dff745b3bce0606b1ba90ae75a0eb7979cb61b22b04b5bc5fdf4aea1003b8f"
+url = "https://github.com/pvolok/mprocs/releases/download/v0.9.5/mprocs-0.9.5-darwin-aarch64.tar.gz"
 
 [tools.mprocs."platforms.macos-x64"]
-checksum = "sha256:a2aa66d99691644f120ad2f0d74a7b026ce8610822cc8e15b71acee2a77915de"
-url = "https://github.com/pvolok/mprocs/releases/download/v0.9.3/mprocs-0.9.3-darwin-x86_64.tar.gz"
+checksum = "sha256:04ce337c6c1975cd6336ddc63c3c70b08bd080270fde8fa79d17cd14739ceecb"
+url = "https://github.com/pvolok/mprocs/releases/download/v0.9.5/mprocs-0.9.5-darwin-x86_64.tar.gz"
 
 [tools.mprocs."platforms.windows-x64"]
-checksum = "sha256:206115bd9586974eb0fcc06a50399f865860521e1d4c8ab86477130bbd6ed893"
-url = "https://github.com/pvolok/mprocs/releases/download/v0.9.3/mprocs-0.9.3-windows-x86_64.zip"
+checksum = "sha256:52be8a524f6616793734f06b6d1146e9b874a2c9742d2327998703b9d3d8cd99"
+url = "https://github.com/pvolok/mprocs/releases/download/v0.9.5/mprocs-0.9.5-windows-x86_64.zip"
 
 [[tools.watchexec]]
 version = "2.5.1"
