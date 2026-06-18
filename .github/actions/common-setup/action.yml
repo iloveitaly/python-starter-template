@@ -7,9 +7,7 @@ runs:
     # NOTE cannot run checkout in this local action, must be run by the parent action
     # mise can rarely get stuck installing. It normally takes < 10s to install, so this should never be more than a minute
     # web/ has it's own mise config, but it's copied from the root mise config, so we don't need to worry about it
-    - uses: jdx/mise-action@v3
-      env:
-        MISE_ENV: dev
+    - uses: jdx/mise-action@v4
       with:
         version: 2026.6.11
     # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
