@@ -34,7 +34,7 @@
         "NPM_CONFIG_FUND": "false",
         "NPM_CONFIG_PRODUCTION": "false",
         "NPM_CONFIG_UPDATE_NOTIFIER": "false",
-        "PNPM_HOME": "/pnpm"
+        "PNPM_HOME": "/opt/pnpm"
       },
       // without this, the output from this step gets merged into the final image
       "deployOutputs": []
@@ -63,7 +63,8 @@
         "NPM_CONFIG_FUND": "false",
         "NPM_CONFIG_PRODUCTION": "false",
         "NPM_CONFIG_UPDATE_NOTIFIER": "false",
-        "PNPM_HOME": "/pnpm"
+        "PNPM_HOME": "/opt/pnpm",
+        "PNPM_STORE": "/opt/pnpm/store"
         // additional variables
         // "BUILD_COMMIT": "f478048a7c792f39596f1693f4d23e42fdd55812-dirty",
         // "VITE_BUILD_COMMIT": "f478048a7c792f39596f1693f4d23e42fdd55812-dirty"
@@ -75,7 +76,7 @@
   },
   "caches": {
     "pnpm-install": {
-      "directory": "/pnpm/store",
+      "directory": "/opt/pnpm/store",
       "type": "shared"
     },
     "node-modules": {
