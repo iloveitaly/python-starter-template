@@ -113,7 +113,7 @@ def routes():
 
     for route in api_app.routes:
         if isinstance(route, APIRoute):
-            methods = sorted(route.methods)
+            methods = sorted(route.methods or ())
             method = ", ".join(methods)
             typer.echo(f"{method}   {route.path}    {route.name}")
         else:
