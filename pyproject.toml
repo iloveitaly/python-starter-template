@@ -53,6 +53,8 @@ dependencies = [
     "secure>=2.0.1",
     "google-i18n-address>=3.1.1",
     "us>=3.2.0",
+    "radar-mapping-api>=0.2.0",
+    "apple-maps-api",
 ]
 
 [dependency-groups]
@@ -169,6 +171,7 @@ omit = ["tests/*", "migrations/*"]
 [tool.uv.sources]
 flower = { git = "https://github.com/iloveitaly/flower", rev = "custom" }
 ipdb = { git = "https://github.com/iloveitaly/ipdb", rev = "support-executables" }
+apple-maps-api = { git = "https://github.com/iloveitaly/python-apple-maps-api" }
 
 [tool.uv.sources.djlint]
 git = "https://github.com/iloveitaly/djLint.git"

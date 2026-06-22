@@ -191,6 +191,18 @@ wheels = [
 ]
 
 [[package]]
+name = "apple-maps-api"
+version = "0.1.0"
+source = { git = "https://github.com/iloveitaly/python-apple-maps-api#0248e231d9c5d6e7d2a0d957d51a6346806dfed2" }
+dependencies = [
+    { name = "funcy" },
+    { name = "httpx" },
+    { name = "pydantic" },
+    { name = "pyjwt", extra = ["crypto"] },
+    { name = "tenacity" },
+]
+
+[[package]]
 name = "argcomplete"
 version = "3.6.3"
 source = { registry = "https://pypi.org/simple" }
@@ -2455,6 +2467,11 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/a3/5e/ecf12fdb62546d64385c158514e9b2b671f7832108ef2ecd2020ce0af2d1/pyjwt-2.13.0-py3-none-any.whl", hash = "sha256:66adcc2aff09b3f1bbd95fc1e1577df8ac8723c978552fd43304c8a290ac5728", size = 31274, upload-time = "2026-05-21T19:54:35.362Z" },
 ]
 
+[package.optional-dependencies]
+crypto = [
+    { name = "cryptography" },
+]
+
 [[package]]
 name = "pyperclip"
 version = "1.11.0"
@@ -2799,6 +2816,7 @@ dependencies = [
     { name = "aiosmtplib" },
     { name = "alembic" },
     { name = "alembic-postgresql-enum" },
+    { name = "apple-maps-api" },
     { name = "beautiful-traceback" },
     { name = "cachetools" },
     { name = "celery", extra = ["redis"] },
@@ -2827,6 +2845,7 @@ dependencies = [
     { name = "psycopg", extra = ["binary"] },
     { name = "pydantic", extra = ["email", "timezone"] },
     { name = "python-slugify" },
+    { name = "radar-mapping-api" },
     { name = "redis", extra = ["hiredis"] },
     { name = "secure" },
     { name = "sentry-sdk", extra = ["celery", "fastapi", "openai", "sqlalchemy"] },
@@ -2910,6 +2929,7 @@ requires-dist = [
     { name = "aiosmtplib", specifier = ">=3.0.2" },
     { name = "alembic", specifier = ">=1.14.0" },
     { name = "alembic-postgresql-enum", specifier = ">=1.6.1" },
+    { name = "apple-maps-api", git = "https://github.com/iloveitaly/python-apple-maps-api" },
     { name = "beautiful-traceback", git = "https://github.com/iloveitaly/beautiful-traceback.git" },
     { name = "cachetools", specifier = ">=5.5.1" },
     { name = "celery", extras = ["redis"], specifier = ">=5.4.0" },
@@ -2938,6 +2958,7 @@ requires-dist = [
     { name = "psycopg", extras = ["binary"], specifier = ">=3.2.3" },
     { name = "pydantic", extras = ["email", "timezone"] },
     { name = "python-slugify", specifier = ">=8.0.4" },
+    { name = "radar-mapping-api", specifier = ">=0.2.0" },
     { name = "redis", extras = ["hiredis"], specifier = ">=5.2.0" },
     { name = "secure", specifier = ">=2.0.1" },
     { name = "sentry-sdk", extras = ["fastapi", "celery", "openai", "sqlalchemy"], specifier = ">=2.17.0" },
@@ -3080,6 +3101,20 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/da/92/1446574745d74df0c92e6aa4a7b0b3130706a4142b2d1a5869f2eaa423c6/pyyaml-6.0.3-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:16249ee61e95f858e83976573de0f5b2893b3677ba71c9dd36b9cf8be9ac6d65", size = 829923, upload-time = "2025-09-25T21:32:54.537Z" },
     { url = "https://files.pythonhosted.org/packages/f0/7a/1c7270340330e575b92f397352af856a8c06f230aa3e76f86b39d01b416a/pyyaml-6.0.3-cp314-cp314t-win_amd64.whl", hash = "sha256:4ad1906908f2f5ae4e5a8ddfce73c320c2a1429ec52eafd27138b7f1cbe341c9", size = 174062, upload-time = "2025-09-25T21:32:55.767Z" },
     { url = "https://files.pythonhosted.org/packages/f1/12/de94a39c2ef588c7e6455cfbe7343d3b2dc9d6b6b2f40c4c6565744c873d/pyyaml-6.0.3-cp314-cp314t-win_arm64.whl", hash = "sha256:ebc55a14a21cb14062aa4162f906cd962b28e2e9ea38f9b4391244cd8de4ae0b", size = 149341, upload-time = "2025-09-25T21:32:56.828Z" },
+]
+
+[[package]]
+name = "radar-mapping-api"
+version = "0.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "httpx" },
+    { name = "pydantic" },
+    { name = "tenacity" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/73/c2/c0acbdef714dbe5339a1520222181018357e7b216630b12b26a7fa4a28ab/radar_mapping_api-0.2.0.tar.gz", hash = "sha256:9d4d422d7c650557d4bef9fb33ecf9e6d3d71ee5e5badee8fb197d008db66000", size = 7550, upload-time = "2026-02-20T18:49:27.579Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/67/82/4350f84accaa5404809bb9584a9def42f0fb9c0f797a92e1ced6aade612b/radar_mapping_api-0.2.0-py3-none-any.whl", hash = "sha256:775024068f4ea224eb8ddddeb3d85585ac619ecc0a0561c7e21f7bd928187879", size = 9175, upload-time = "2026-02-20T18:49:26.536Z" },
 ]
 
 [[package]]
