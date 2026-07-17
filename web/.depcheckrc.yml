@@ -10,6 +10,8 @@ ignores:
   - "prettier-plugin-tailwindcss"
   # referenced in eslint.config.js
   - "@typescript-eslint/eslint-plugin"
+  # native TS 7 `tsc` only; `typescript` is aliased to TS 6 for typescript-eslint
+  - typescript-7
   # test
   - "@vitest/coverage-v8"
   # shadcn / styling
