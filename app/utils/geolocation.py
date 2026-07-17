@@ -5,13 +5,19 @@ Geolocation utility functions for resolving IP addresses to geographic locations
 import httpx
 
 from app import log, root
+from app.environments import is_productionish
 
 
 def get_cached_public_ip() -> str | None:
     """
-    Get the public IP address of the current machine, caching it in tmp/public-ip.
-    Useful for development and testing to simulate a real client IP.
+    Public IP for this machine, cached in tmp/public-ip. Dev/test only (None if productionish).
+
+    Uncached fetches use checkip.amazonaws.com, which returns plain text: ``203.0.113.1\\n``.
     """
+    if is_productionish():
+        log.warning("get_cached_public_ip is not available in production-ish environments")
+        return None
+
     cache_file = root / "tmp/public-ip"
 
     if cache_file.exists():
