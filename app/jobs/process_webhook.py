@@ -1,4 +1,4 @@
-import httpx
+import httpx2
 from typeid import TypeID
 from whenever import Instant
 
@@ -48,7 +48,7 @@ def perform(event_id: TypeID) -> None:
     )
 
     try:
-        response = httpx.post(
+        response = httpx2.post(
             event.destination,
             json=event.payload,
             headers={

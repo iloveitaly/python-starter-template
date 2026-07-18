@@ -2,7 +2,7 @@
 Geolocation utility functions for resolving IP addresses to geographic locations.
 """
 
-import httpx
+import httpx2
 
 from app import log, root
 from app.environments import is_productionish
@@ -25,7 +25,7 @@ def get_cached_public_ip() -> str | None:
 
     try:
         # use a reliable external service to get the public IP
-        response = httpx.get("https://checkip.amazonaws.com", timeout=5.0)
+        response = httpx2.get("https://checkip.amazonaws.com", timeout=5.0)
         response.raise_for_status()
         ip = response.text.strip()
 

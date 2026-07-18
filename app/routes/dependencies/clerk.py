@@ -2,7 +2,7 @@
 Attempting to upstream at: https://github.com/clerk/clerk-sdk-python/pull/65/files
 """
 
-import httpx
+import httpx2
 from clerk_backend_api import AuthenticateRequestOptions, Clerk, RequestState
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
@@ -38,8 +38,8 @@ class AuthenticateClerkRequest:
                 status_code=status.HTTP_401_UNAUTHORIZED, detail="Not Authenticated"
             )
 
-        # Convert FastAPI request headers to httpx format
-        httpx_request = httpx.Request(
+        # Convert FastAPI request headers to a Requestish (headers mapping)
+        httpx_request = httpx2.Request(
             method=request.method,
             url=str(request.url),
             headers=request.headers,
