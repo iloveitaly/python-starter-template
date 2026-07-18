@@ -1,7 +1,7 @@
 from collections.abc import Iterator
 from urllib.parse import urlparse
 
-import httpx
+import httpx2
 import pytest
 
 from app.configuration.emailer import SMTP_URL
@@ -28,7 +28,7 @@ class MailpitClient:
     """
 
     def __init__(self, base_url: str | None = None):
-        self._client = httpx.Client(base_url=base_url or default_mailpit_api_url())
+        self._client = httpx2.Client(base_url=base_url or default_mailpit_api_url())
 
     def __enter__(self):
         return self

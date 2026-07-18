@@ -2,7 +2,7 @@ import json
 import typing as t
 
 import itsdangerous
-from httpx import Response
+from httpx2 import Response
 
 from app.env import env
 

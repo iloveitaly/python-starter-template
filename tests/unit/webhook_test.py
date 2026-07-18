@@ -3,7 +3,7 @@ This test suite intentionally does not use factory models. This is to avoid test
 around when webhooks should be fired and instead focus the testing on the core webhook logic.
 """
 
-import httpx
+import httpx2
 import pytest
 from celery.exceptions import Retry
 from typeid import TypeID
@@ -90,7 +90,7 @@ def test_process_webhook_skips_if_already_succeeded(monkeypatch, httpx_mock):
     event.succeeded_at = Instant.now()
     event.save()
 
-    # httpx.post should not be called when already succeeded, so no mock needed
+    # httpx2.post should not be called when already succeeded, so no mock needed
     app.jobs.process_webhook.perform(event.id)
     assert len(httpx_mock.get_requests()) == 0
 
@@ -202,7 +202,7 @@ def test_process_webhook_errors_on_invalid_host(httpx_mock, sync_celery, monkeyp
     monkeypatch.setattr("app.models.webhook_event.WEBHOOK_ENDPOINT", webhook_endpoint)
 
     httpx_mock.add_exception(
-        httpx.ConnectError("Connection failed"), method="POST", url=webhook_endpoint
+        httpx2.ConnectError("Connection failed"), method="POST", url=webhook_endpoint
     )
 
     random_fake_object_id = TypeID(prefix="ob")

@@ -247,12 +247,12 @@ def stripe_client():
 @pytest.fixture
 def httpx_breakpoint(httpx_mock):
     """
-    Debug fixture for pytest-httpx that pauses at every HTTP request interception.
+    Debug fixture for httpx2-pytest that pauses at every HTTP request interception.
 
     Usage:
         def test_something(httpx_breakpoint):
             # Your test code here
-            # When httpx makes a request, you'll hit a breakpoint
+            # When httpx2 makes a request, you'll hit a breakpoint
             # and can inspect the request object
 
     Based on: https://til.simonwillison.net/pytest/pytest-httpx-debug
@@ -261,7 +261,7 @@ def httpx_breakpoint(httpx_mock):
         from pprint import pprint
         import json
 
-        print(f"\nHTTPX Request Intercepted:")
+        print(f"\nHTTPX2 Request Intercepted:")
         print(f"URL: {request.url}")
 
         if request.content:
