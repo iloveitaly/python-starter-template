@@ -21,7 +21,7 @@ def install_system_certificates():
 
     Why: Locally-installed root CAs (OrbStack, mkcert, corporate MITM
     proxies) live in the macOS keychain. Python's `ssl` module and
-    everything built on it (`requests`, `httpx`, `urllib3`, `aiohttp`)
+    everything built on it (`requests`, `httpx`, `httpx2`, `urllib3`, `aiohttp`)
     ignore the keychain and verify against certifi's bundled roots, so
     `requests.get("https://x.orb.local")` fails with SSLCertVerificationError
     even though curl and the browser work fine.
