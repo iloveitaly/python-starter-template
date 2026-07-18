@@ -1401,6 +1401,19 @@ wheels = [
 ]
 
 [[package]]
+name = "httpx2-pytest"
+version = "1.0.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "httpx2" },
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/1c/c9/bc6405b80e0d8a2b0e155aa9976864a79a96fef5478c564cc0d89d23cb86/httpx2_pytest-1.0.1.tar.gz", hash = "sha256:e5d36bbac673bae6e11d3520e74bd360c3e392b56270efcb95f1d5369cbd1ec1", size = 59136, upload-time = "2026-05-22T15:02:54.982Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/46/ef/e9b6fb576f1f518f68e9f9cce9776870452ae2b8cfbba53b4127701b9a55/httpx2_pytest-1.0.1-py3-none-any.whl", hash = "sha256:09ff3365101508c5b311301c6ee8e1a96dbb676028b19e00da66199d2e759a99", size = 20975, upload-time = "2026-05-22T15:02:54.007Z" },
+]
+
+[[package]]
 name = "humanize"
 version = "4.16.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2706,19 +2719,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pytest-httpx"
-version = "0.36.2"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "httpx" },
-    { name = "pytest" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/4e/42/f53c58570e80d503ade9dd42ce57f2915d14bcbe25f6308138143950d1d6/pytest_httpx-0.36.2.tar.gz", hash = "sha256:05a56527484f7f4e8c856419ea379b8dc359c36801c4992fdb330f294c690356", size = 57683, upload-time = "2026-04-09T13:57:19.837Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/1e/55/1fa65f8e4fceb19dd6daa867c162ad845d547f6058cd92b4b02384a44777/pytest_httpx-0.36.2-py3-none-any.whl", hash = "sha256:d42ebd5679442dc7bfb0c48e0767b6562e9bc4534d805127b0084171886a5e22", size = 20315, upload-time = "2026-04-09T13:57:18.587Z" },
-]
-
-[[package]]
 name = "pytest-line-runner"
 version = "0.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2897,6 +2897,7 @@ dependencies = [
     { name = "funcy-pipe" },
     { name = "furl" },
     { name = "google-i18n-address" },
+    { name = "httpx2" },
     { name = "ipython" },
     { name = "ipython-playground" },
     { name = "itsdangerous" },
@@ -2964,6 +2965,7 @@ dev = [
     { name = "flexmock" },
     { name = "generate-fastapi-typed-routes" },
     { name = "gitignore-parser" },
+    { name = "httpx2-pytest" },
     { name = "ipython" },
     { name = "j2lint" },
     { name = "polyfactory" },
@@ -2975,7 +2977,6 @@ dev = [
     { name = "pytest-celery-utils" },
     { name = "pytest-cov" },
     { name = "pytest-github-actions-annotate-failures" },
-    { name = "pytest-httpx" },
     { name = "pytest-line-runner" },
     { name = "pytest-playwright" },
     { name = "pytest-playwright-artifacts" },
@@ -3010,6 +3011,7 @@ requires-dist = [
     { name = "funcy-pipe", specifier = ">=0.11.1" },
     { name = "furl", specifier = ">=2.1.4" },
     { name = "google-i18n-address", specifier = ">=3.1.1" },
+    { name = "httpx2", specifier = ">=2.7.0" },
     { name = "ipython", specifier = ">=8.28.0" },
     { name = "ipython-playground", git = "https://github.com/iloveitaly/ipython-playground.git" },
     { name = "itsdangerous", specifier = ">=2.2.0" },
@@ -3077,6 +3079,7 @@ dev = [
     { name = "flexmock", specifier = ">=0.12.2" },
     { name = "generate-fastapi-typed-routes", specifier = ">=0.3.2" },
     { name = "gitignore-parser", specifier = ">=0.1.11" },
+    { name = "httpx2-pytest", specifier = ">=1.0.0" },
     { name = "ipython", specifier = ">=8.28.0" },
     { name = "j2lint", specifier = ">=1.2.0" },
     { name = "polyfactory", git = "https://github.com/iloveitaly/polyfactory.git?rev=custom" },
@@ -3088,7 +3091,6 @@ dev = [
     { name = "pytest-celery-utils", specifier = ">=0.1.2" },
     { name = "pytest-cov", specifier = ">=6.0.0" },
     { name = "pytest-github-actions-annotate-failures", specifier = ">=0.2.0" },
-    { name = "pytest-httpx", specifier = ">=0.35.0" },
     { name = "pytest-line-runner", specifier = ">=0.1.0" },
     { name = "pytest-playwright", specifier = ">=0.6.2" },
     { name = "pytest-playwright-artifacts", git = "https://github.com/iloveitaly/pytest-playwright-artifacts.git" },
