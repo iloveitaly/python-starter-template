@@ -43,7 +43,7 @@ env:
   # localias is started by a GHA, so we need to point it to our customized config file
   LOCALIAS_CONFIGFILE: tmp/localias.yml
 
-  # dev mise config includes various CLI tooling required for just to run
+  # dev tools must be installed in CI as well
   MISE_ENV: dev
 
 jobs:
