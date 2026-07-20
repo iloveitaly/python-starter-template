@@ -53,7 +53,9 @@ export async function getClient() {
   // protect users from hitting the internal API if they aren't authenticated
   if (!clerk.user) {
     await clerk.redirectToSignIn()
-    return
+    // redirectToSignIn resolves before the browser navigation completes; block forever
+    // so callers never proceed to fire an unauthenticated request or render an error page
+    await new Promise(() => {})
   }
 
   return clerk
@@ -62,6 +64,10 @@ export async function getClient() {
 export default function withClerkProvider(Component: React.ComponentType) {
   return (props: React.ComponentProps<typeof Component>) => (
     <ClerkProvider
+      // hand the already-loaded instance to the provider so IsomorphicClerk reuses it
+      // instead of hotloading clerk-js again and re-calling `.load()` (extra API call)
+      // https://github.com/clerk/javascript/issues/8569
+      Clerk={window.Clerk}
       publishableKey={CLERK_PUBLIC_KEY}
       signInFallbackRedirectUrl="/"
       signUpFallbackRedirectUrl="/"
