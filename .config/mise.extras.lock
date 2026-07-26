@@ -33,10 +33,6 @@ backend = "cargo:commitlint-rs"
 version = "0.4.4"
 backend = "cargo:fastmod"
 
-[[tools."cargo:just-lsp"]]
-version = "0.4.8"
-backend = "cargo:just-lsp"
-
 [[tools.dive]]
 version = "0.13.1"
 backend = "aqua:wagoodman/dive"
@@ -75,6 +71,45 @@ url_api = "https://api.github.com/repos/wagoodman/dive/releases/assets/241842456
 checksum = "sha256:3e764ff28c7b89f4da679deac80483249fbbae3a1d512c103d54609eec09086a"
 url = "https://github.com/wagoodman/dive/releases/download/v0.13.1/dive_0.13.1_windows_amd64.zip"
 url_api = "https://api.github.com/repos/wagoodman/dive/releases/assets/241842460"
+
+[[tools."github:terror/just-lsp"]]
+version = "0.4.8"
+backend = "github:terror/just-lsp"
+
+[tools."github:terror/just-lsp"."platforms.linux-arm64"]
+checksum = "sha256:5da6310f0a97c23f7d60bb4719da8f8b9390fcd94ce72e9da9abd973a1408c43"
+url = "https://github.com/terror/just-lsp/releases/download/0.4.8/just-lsp-0.4.8-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/471907137"
+
+[tools."github:terror/just-lsp"."platforms.linux-arm64-musl"]
+checksum = "sha256:74fdf902829b1fe6ae2d377f9235472312165902eeb62c10e566ca3ef90a1680"
+url = "https://github.com/terror/just-lsp/releases/download/0.4.8/just-lsp-0.4.8-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/471907224"
+
+[tools."github:terror/just-lsp"."platforms.linux-x64"]
+checksum = "sha256:f8cddf24c93c697c8e35323e787a25486778b82fa881ad8af511fc6571b95ad2"
+url = "https://github.com/terror/just-lsp/releases/download/0.4.8/just-lsp-0.4.8-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/471906973"
+
+[tools."github:terror/just-lsp"."platforms.linux-x64-musl"]
+checksum = "sha256:161f2b0b6f5c9ea328414623b1a5aa65d12831605681d1afd8feb02aff1d4c61"
+url = "https://github.com/terror/just-lsp/releases/download/0.4.8/just-lsp-0.4.8-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/471907164"
+
+[tools."github:terror/just-lsp"."platforms.macos-arm64"]
+checksum = "sha256:fd6792887e42c7cbf48d24e949d2b144eb99574c6588f8f20f5224c6db52ebb0"
+url = "https://github.com/terror/just-lsp/releases/download/0.4.8/just-lsp-0.4.8-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/471907065"
+
+[tools."github:terror/just-lsp"."platforms.macos-x64"]
+checksum = "sha256:cbe8ea96947fa690dfb59955672d33ff3630416d0d651181e8259b733583738e"
+url = "https://github.com/terror/just-lsp/releases/download/0.4.8/just-lsp-0.4.8-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/471906945"
+
+[tools."github:terror/just-lsp"."platforms.windows-x64"]
+checksum = "sha256:4c1626b667f8816da7f0e4c2c23d45a97aab63a5f8685e1a68df5b469f0ef1c5"
+url = "https://github.com/terror/just-lsp/releases/download/0.4.8/just-lsp-0.4.8-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/471908038"
 
 [[tools.lefthook]]
 version = "2.1.10"
