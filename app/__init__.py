@@ -87,4 +87,4 @@ setup()
 
 # after configuration is complete, import all models and commands to ensure there are no startup issues
 # NOTE jobs are excluded since they are not required in all process types
-from . import commands, models  # noqa: F401, E402
+from . import commands, models  # noqa: F401

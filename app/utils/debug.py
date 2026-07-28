@@ -1,5 +1,4 @@
 # type: ignore
-# ruff: noqa: F401, F821
 
 """
 Should not be used in production. Helpful debugging tools for async code and other things.
@@ -7,7 +6,7 @@ Should not be used in production. Helpful debugging tools for async code and oth
 Types are ignored since not all of the packages are included as dependencies
 """
 
-import pdb
+import pdb  # noqa: T100
 import traceback
 import types
 from contextlib import ContextDecorator, contextmanager
@@ -78,7 +77,7 @@ def install_coroutine_trap():
                 name = task.get_name()
                 print(f"task {name}:", file=sys.stderr)
                 asyncio.Task.print_stack(task, file=sys.stderr)
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001 - best-effort debug dump
                 print(f"error dumping task: {e}", file=sys.stderr)
 
     signal.signal(signal.SIGUSR1, dump_all_tasks)
@@ -178,7 +177,7 @@ def memray_profile(log: Logger | None = None, live: bool = False):
         }
 
     if log:
-        log.warn("starting memray tracker", tracker_args)
+        log.warning("starting memray tracker: %s", tracker_args)
     else:
         print("starting memray tracker", file=sys.stderr)
 
@@ -186,10 +185,8 @@ def memray_profile(log: Logger | None = None, live: bool = False):
         yield
 
     if log:
-        log.warn("memory tracing complete")
+        log.warning("memory tracing complete")
     else:
-        print("memory tracing complete", file=sys.stderr)
-        print("memory tracing complete", file=sys.stderr)
         print("memory tracing complete", file=sys.stderr)
 
 
