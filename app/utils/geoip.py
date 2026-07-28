@@ -71,7 +71,7 @@ def lookup_ip_location(ip: str) -> GeoIPLocation | None:
     except httpx2.TimeoutException:
         log.warning("geoip lookup timed out", ip=ip, timeout=GEOIP_TIMEOUT_SECONDS)
         return None
-    except Exception as e:
+    except (httpx2.HTTPError, ValueError) as e:
         log.warning("geoip lookup failed", ip=ip, error=str(e))
         return None
 

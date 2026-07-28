@@ -34,6 +34,6 @@ def get_cached_public_ip() -> str | None:
         cache_file.write_text(ip)
 
         return ip
-    except Exception as e:
+    except (httpx2.HTTPError, OSError) as e:
         log.warning("failed to fetch public IP", error=str(e))
         return None
