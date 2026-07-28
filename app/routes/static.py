@@ -21,6 +21,7 @@ There are some nuances we need to consider:
 import mimetypes
 import os
 import re
+from typing import ClassVar
 
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
@@ -86,7 +87,7 @@ class GZipStaticFiles(StaticFiles):
     - Detects a content-based hash in the file path and adds the CDN headers to the response for reverse proxy caching
     """
 
-    CDN_HEADERS = {
+    CDN_HEADERS: ClassVar[dict[str, str]] = {
         # these are carefully defined headers for asset caching when using a CDN / reverse proxy. This allows cloudflare
         # to cache assets with a content-based hash without hitting the origin server.
         #
@@ -161,7 +162,7 @@ def mount_public_directory(app: FastAPI):
     public_asset_directory = public_path / "assets"
 
     if not public_asset_directory.exists():
-        raise Exception(
+        raise RuntimeError(
             f"Client assets do not exist '{public_asset_directory}'. Please run `just py_js-build`"
         )
 

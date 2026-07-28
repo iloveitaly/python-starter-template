@@ -10,5 +10,3 @@ class ImpossibleStateError(Exception):
     It's useful to have as a distinct exception type to make (a) them easier to identify in Sentry and (b)
     self-document the case in-code.
     """
-
-    pass

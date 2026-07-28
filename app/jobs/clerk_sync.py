@@ -3,6 +3,8 @@ Loop through all Users in our DB, retrieve the associated Clerk user,
 and update the User record's email column from the Clerk data.
 """
 
+from clerk_backend_api.models import ClerkBaseError
+
 from app import log
 from app.celery import celery_app
 from app.configuration.clerk import clerk
@@ -20,7 +22,7 @@ def perform() -> None:
     for user in User.all():
         try:
             clerk_user = clerk.users.get(user_id=user.clerk_id)
-        except Exception:
+        except ClerkBaseError:
             log.warning("no clerk user found for user", user=user)
             continue
 

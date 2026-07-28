@@ -12,8 +12,6 @@ DEFAULT_WEBHOOK_TIMEOUT = 30
 class WebhookDeliveryError(Exception):
     """Raised when a webhook delivery attempt fails."""
 
-    pass
-
 
 @celery_app.task(base=BaseTaskWithRetry)
 def perform(event_id: TypeID) -> None:
