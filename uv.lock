@@ -5,7 +5,7 @@ requires-python = ">=3.14"
 [[package]]
 name = "activemodel"
 version = "0.24.1"
-source = { git = "https://github.com/iloveitaly/activemodel.git#1768ac779b8ace3e1b54fa286d312b5b1d316e1e" }
+source = { git = "https://github.com/iloveitaly/activemodel.git#b7bf3bceefe3df9fecbf71b5f67025a0467068ae" }
 dependencies = [
     { name = "sqlmodel" },
     { name = "typeid-python" },
@@ -193,7 +193,7 @@ wheels = [
 [[package]]
 name = "apple-maps-api"
 version = "0.2.0"
-source = { git = "https://github.com/iloveitaly/python-apple-maps-api#dd90bd8bb3dc5536568abc9f4912396a0c17d604" }
+source = { git = "https://github.com/iloveitaly/python-apple-maps-api#62b0319dbabffaaef50a234a3656ec0093e1bdcd" }
 dependencies = [
     { name = "funcy" },
     { name = "httpx2" },
@@ -250,7 +250,7 @@ wheels = [
 [[package]]
 name = "beautiful-traceback"
 version = "0.9.0"
-source = { git = "https://github.com/iloveitaly/beautiful-traceback.git#36d376e02b3fe5b2e5efee81a315d73ae3d79aa5" }
+source = { git = "https://github.com/iloveitaly/beautiful-traceback.git#d4c342e62ad5220d8496c3f5a2f8eb111b46baa1" }
 dependencies = [
     { name = "colorama" },
     { name = "pytest-plugin-utils" },
@@ -356,7 +356,7 @@ sdist = { url = "https://files.pythonhosted.org/packages/07/ff/af718344bfa9e0e25
 
 [[package]]
 name = "celery-redbeat"
-version = "2.4.1"
+version = "2.4.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "celery" },
@@ -364,9 +364,9 @@ dependencies = [
     { name = "redis" },
     { name = "tenacity" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/82/1e/7d8b7836c70f28050c29516daf50ba39cea1db34fb40c716369b4f69e28a/celery_redbeat-2.4.1.tar.gz", hash = "sha256:c429ae50de25475e07c31e06261da6f6b7b8179f7e35f13060bafe6f7d3bf3ec", size = 34361, upload-time = "2026-07-16T13:07:48.516Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/03/13/9aefb6cb39266b28ab2b2a8f24382fd7d82399e20578c5ba2238e63c4445/celery_redbeat-2.4.2.tar.gz", hash = "sha256:a590fef7ef39d7e4511174ce8bafe310e07ef6cdf84a240cd311946815bd90bb", size = 36671, upload-time = "2026-07-27T01:28:09.389Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3f/ac/77932885b36f32c10038c7392b889c27fd8b19ffd2305132c43b7e10d593/celery_redbeat-2.4.1-py2.py3-none-any.whl", hash = "sha256:4acf9e93c370bea2af93396e711f06445831954237af6c75176b7949027e9fc2", size = 15968, upload-time = "2026-07-16T13:07:47.324Z" },
+    { url = "https://files.pythonhosted.org/packages/11/3d/bb4adef34e7691ebd2e80c1e8df1fb3f3bf43b388de714219ac6a580a4d2/celery_redbeat-2.4.2-py2.py3-none-any.whl", hash = "sha256:4124d221a798ad983df0874bfa0d2e9beca41ca9ef91e92d073770bb193da000", size = 16526, upload-time = "2026-07-27T01:28:08.164Z" },
 ]
 
 [[package]]
@@ -953,7 +953,7 @@ wheels = [
 
 [[package]]
 name = "fastapi"
-version = "0.140.0"
+version = "0.140.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "annotated-doc" },
@@ -962,9 +962,9 @@ dependencies = [
     { name = "typing-extensions" },
     { name = "typing-inspection" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/0d/fb/fd7671137d9fa3df1d93a2f5111eb982709201724b29f211e4beb2d58688/fastapi-0.140.0.tar.gz", hash = "sha256:f338951b82fd74ca8f843163aec43ea1a1ce84d515415a50fa98fa25572a5544", size = 420968, upload-time = "2026-07-24T21:16:41.187Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/50/8e/38f68681027334d7d841190b38f3635874114f1f337c950878969970524c/fastapi-0.140.8.tar.gz", hash = "sha256:c166580b6a1f96d0feda536830dbaef56962f66e9a3a87054c34906b6339390b", size = 422608, upload-time = "2026-07-28T10:31:25.838Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/eb/76/6d9e25ad88da9d3ff744bcdbec4736e38c2288611d43f673a5d9bfa27c07/fastapi-0.140.0-py3-none-any.whl", hash = "sha256:e951c0a0d9540bf5d9a2a9e078fd415da2ab7e312d435139e7d9e2e7fe9f0b23", size = 130863, upload-time = "2026-07-24T21:16:42.89Z" },
+    { url = "https://files.pythonhosted.org/packages/d0/46/965f78a06fbbfb7ff072f592fb9b28e99022f77a50a9104206763132040a/fastapi-0.140.8-py3-none-any.whl", hash = "sha256:66d65922ff010d99548db624beec4d705f731c29e58a163207f5a0a83974a3d1", size = 131097, upload-time = "2026-07-28T10:31:24.422Z" },
 ]
 
 [package.optional-dependencies]
@@ -1971,7 +1971,7 @@ wheels = [
 
 [[package]]
 name = "openai"
-version = "2.48.0"
+version = "2.49.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
@@ -1983,9 +1983,9 @@ dependencies = [
     { name = "tqdm" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2a/ae/d4d1835488c0350424009dac5095b9a3e173bee12fd2e421ee27e2142c42/openai-2.48.0.tar.gz", hash = "sha256:231b1e7661dda14574986c2f71451e9d584b7fe69e0ee6480e12ed090b48fc16", size = 1093427, upload-time = "2026-07-23T20:15:50.402Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d3/9a/275bee8349b766906741223b98c668fcd4e17e1982a87597778743b4156f/openai-2.49.0.tar.gz", hash = "sha256:80f934333b5b83cef2fde9af7151dacaa72e150f43f92b7675f7647ca6157f48", size = 1080973, upload-time = "2026-07-27T22:51:40.014Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b5/2a/dcb891114e303c4379d4a498f10222e33eee540bcef4e1e493bd0af2b242/openai-2.48.0-py3-none-any.whl", hash = "sha256:c98df30aaaf93c51979f64d3e7c5b76464f8be0173368266229eb8fe6bd30f2c", size = 1648520, upload-time = "2026-07-23T20:15:48.052Z" },
+    { url = "https://files.pythonhosted.org/packages/b1/ca/53357e460a1172e831ecbe43dd0c37342b7211a1eb09f4cf21a412adbbdf/openai-2.49.0-py3-none-any.whl", hash = "sha256:b694201eaa42a1ccf2aa125fe29458150108fb22df1abfb55d7188599da81d8c", size = 1648589, upload-time = "2026-07-27T22:51:38Z" },
 ]
 
 [[package]]
@@ -2187,7 +2187,7 @@ dependencies = [
 
 [[package]]
 name = "posthog"
-version = "7.29.0"
+version = "7.31.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "backoff" },
@@ -2195,9 +2195,9 @@ dependencies = [
     { name = "requests" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d3/09/43ae0e27bafe031d307921cdeadcd3af8a7370c887177df7c43cfd903adf/posthog-7.29.0.tar.gz", hash = "sha256:673f201e2d204f0664bb0cec86f8adfca97ba3a94488fb7857bb11c4a35fb017", size = 360483, upload-time = "2026-07-23T15:26:28.225Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ca/95/5d50c6add73aad334dcb7f1d5c63c8e24ec22582190076e292cc03dfc294/posthog-7.31.0.tar.gz", hash = "sha256:f9c705e906d5d096589bfcf2ade4ad0c884db37d4e25cc3e73c18a59e2206b2f", size = 387357, upload-time = "2026-07-27T18:36:41.336Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ac/4a/01c3e9f44a2f167977b5fafc9ba5b4ed5a027881da4b2ee1f4987a621758/posthog-7.29.0-py3-none-any.whl", hash = "sha256:8269afec8439e0177fd9d660b88d0a580497b617ee6aa213850ae9244ad46111", size = 429592, upload-time = "2026-07-23T15:26:26.343Z" },
+    { url = "https://files.pythonhosted.org/packages/c6/c2/67e7d8d0c2223a911668cf47cda45d2eb643b480da2f412d5f808c527f58/posthog-7.31.0-py3-none-any.whl", hash = "sha256:d9f2c383c768d9fd723a83614ed14e0ccba28d7f80602a04e271925d9439f515", size = 460486, upload-time = "2026-07-27T18:36:39.596Z" },
 ]
 
 [[package]]
@@ -2236,14 +2236,14 @@ wheels = [
 
 [[package]]
 name = "prompt-toolkit"
-version = "3.0.52"
+version = "3.0.53"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "wcwidth" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a1/96/06e01a7b38dce6fe1db213e061a4602dd6032a8a97ef6c1a862537732421/prompt_toolkit-3.0.52.tar.gz", hash = "sha256:28cde192929c8e7321de85de1ddbe736f1375148b02f2e17edd840042b1be855", size = 434198, upload-time = "2025-08-27T15:24:02.057Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/7d/ea/39b988c938f75cb75d7045b5c69f8bfed47ee2152c8837fb403de29d6fb8/prompt_toolkit-3.0.53.tar.gz", hash = "sha256:9ec8a0ad96d5c56148b3f914aa79c1564c3fde5d2e6b876e7bc327e353cf8fa6", size = 435492, upload-time = "2026-07-26T20:56:14.758Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/84/03/0d3ce49e2505ae70cf43bc5bb3033955d2fc9f932163e84dc0779cc47f48/prompt_toolkit-3.0.52-py3-none-any.whl", hash = "sha256:9aac639a3bbd33284347de5ad8d68ecc044b91a762dc39b7c21095fcd6a19955", size = 391431, upload-time = "2025-08-27T15:23:59.498Z" },
+    { url = "https://files.pythonhosted.org/packages/54/6f/84908cad2d6aa5144abcf7b42709fe4fdb459bc640ec7ac5786e7693dabc/prompt_toolkit-3.0.53-py3-none-any.whl", hash = "sha256:01c0891d7f9237d5e339f7d3e42cdae80b7534abb1c7c0e3352efba6231492f2", size = 392288, upload-time = "2026-07-26T20:56:12.512Z" },
 ]
 
 [[package]]
@@ -2755,7 +2755,7 @@ dependencies = [
 [[package]]
 name = "pytest-playwright-visual-snapshot"
 version = "0.5.1"
-source = { git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git#88be9e1e2e11a5440cb36daf12aaa69367cd61ee" }
+source = { git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git#9e379270d499e7e4fb839eecd677c1e7b21528b5" }
 dependencies = [
     { name = "pillow" },
     { name = "pixelmatch" },
@@ -3792,14 +3792,14 @@ wheels = [
 
 [[package]]
 name = "tqdm"
-version = "4.69.1"
+version = "4.70.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/dd/84/da0e5038228fa34dfd77c5026b173ed035d2a3ba31f1077590c013de2bff/tqdm-4.69.1.tar.gz", hash = "sha256:2be21080a0ce17e902c2f1baeb6a74bf551b67bbdfa4bc0109fad471d0b4cb0d", size = 793046, upload-time = "2026-07-24T14:22:02.08Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/21/3b/6c24bec5be5e743ffd99576daa5cc077722fc7d5bbc00bd133fa0c698dc6/tqdm-4.70.0.tar.gz", hash = "sha256:55b0b0dbd97462d06ebee91e4dac24ed4d4702be82b24f07e6c1d27e08cea220", size = 795438, upload-time = "2026-07-27T11:33:15.271Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/01/50/5817619a0fca56aff06383dbfde7ae017b3ca383915b3f1e4713164273cf/tqdm-4.69.1-py3-none-any.whl", hash = "sha256:0a654b96f7a2660cceb615b56f307ec2bef96c515409014a429a561981ab52b4", size = 675452, upload-time = "2026-07-24T14:22:00.048Z" },
+    { url = "https://files.pythonhosted.org/packages/f9/1c/01bfd571a64e7f270e6bab5e33777debe0edc56759233ce84f27dec92d14/tqdm-4.70.0-py3-none-any.whl", hash = "sha256:7f585706bfddbdebf89daac705b2dfcc16890130727d3197ca62c732b4310953", size = 80184, upload-time = "2026-07-27T11:33:13.167Z" },
 ]
 
 [[package]]

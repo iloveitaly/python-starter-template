@@ -21,14 +21,14 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       '@hookform/resolvers':
-        specifier: ^5.4.3
-        version: 5.4.3(@standard-schema/spec@1.1.0)(react-hook-form@7.83.0(react@19.2.8))(valibot@1.4.2(@typescript/typescript6@6.0.2))(zod@4.4.3)
+        specifier: ^5.5.7
+        version: 5.5.7(@standard-schema/spec@1.1.0)(react-hook-form@7.83.0(react@19.2.8))(valibot@1.4.2(@typescript/typescript6@6.0.2))(zod@4.4.3)
       '@icons-pack/react-simple-icons':
         specifier: ^13.13.0
         version: 13.13.0(react@19.2.8)
       '@posthog/react':
         specifier: ^1.10.3
-        version: 1.10.3(@types/react@19.2.17)(posthog-js@1.407.2)(react@19.2.8)
+        version: 1.10.3(@types/react@19.2.17)(posthog-js@1.407.3)(react@19.2.8)
       '@radix-ui/react-avatar':
         specifier: ^1.2.6
         version: 1.2.6(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -126,14 +126,14 @@ importers:
         specifier: ^1.13.9
         version: 1.13.9
       lucide-react:
-        specifier: ^1.26.0
-        version: 1.26.0(react@19.2.8)
+        specifier: ^1.27.0
+        version: 1.27.0(react@19.2.8)
       postcss:
         specifier: ^8.5.23
         version: 8.5.23
       posthog-js:
-        specifier: ^1.407.2
-        version: 1.407.2
+        specifier: ^1.407.3
+        version: 1.407.3
       ramda:
         specifier: ^0.32.0
         version: 0.32.0
@@ -178,7 +178,7 @@ importers:
         version: typescript@7.0.2
       vite:
         specifier: ^8.1.5
-        version: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+        version: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
       vite-plugin-compression:
         specifier: ^0.5.1
         version: 0.5.1(vite@8.1.5)
@@ -217,8 +217,8 @@ importers:
         specifier: ^8.65.0
         version: 8.65.0(@typescript-eslint/parser@8.65.0(@typescript/typescript6@6.0.2)(eslint@10.8.0(jiti@2.7.0)))(@typescript/typescript6@6.0.2)(eslint@10.8.0(jiti@2.7.0))
       '@vitejs/devtools':
-        specifier: ^0.4.8
-        version: 0.4.8(@typescript/typescript6@6.0.2)(crossws@0.4.10(srvx@0.11.15))(srvx@0.11.15)(valibot@1.4.2(@typescript/typescript6@6.0.2))(vite@8.1.5)
+        specifier: ^0.4.9
+        version: 0.4.9(@typescript/typescript6@6.0.2)(crossws@0.4.10(srvx@0.11.15))(srvx@0.11.15)(valibot@1.4.2(@typescript/typescript6@6.0.2))(vite@8.1.5)
       '@vitejs/plugin-react':
         specifier: ^6.0.4
         version: 6.0.4(vite@8.1.5)
@@ -235,8 +235,8 @@ importers:
         specifier: ^7.1.1
         version: 7.1.1(eslint@10.8.0(jiti@2.7.0))
       globals:
-        specifier: ^17.7.0
-        version: 17.7.0
+        specifier: ^17.8.0
+        version: 17.8.0
       happy-dom:
         specifier: ^20.11.1
         version: 20.11.1
@@ -257,7 +257,7 @@ importers:
         version: 8.65.0(@typescript/typescript6@6.0.2)(eslint@10.8.0(jiti@2.7.0))
       vite-node:
         specifier: ^6.0.0
-        version: 6.0.0(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+        version: 6.0.0(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
       vite-plugin-check-env:
         specifier: 1.2.17
         version: 1.2.17(vite@8.1.5)
@@ -842,8 +842,8 @@ packages:
   '@hey-api/types@0.1.4':
     resolution: {integrity: sha512-thWfawrDIP7wSI9ioT13I5soaaqB5vAPIiZmgD8PbeEVKNrkonc0N/Sjj97ezl7oQgusZmaNphGdMKipPO6IBg==}
 
-  '@hookform/resolvers@5.4.3':
-    resolution: {integrity: sha512-jtS1DEvkT1ql8ImIDQL+UmkhEnDmt3Bp7Yt4q5XQpc0JiQ8b8+I7yT/KQze4gw9Ocmi9xa9ef6zxifizPgdp3A==}
+  '@hookform/resolvers@5.5.7':
+    resolution: {integrity: sha512-CyPCYV8/KlXfEXLWj8HHHhVsR/IZ6Ckm3b/a4fWtO/lRnRK1huqncb8LlAWrmpPRsse5glF5aVuDRMHEr3UGag==}
     peerDependencies:
       '@sinclair/typebox': '>=0.25.24'
       '@standard-schema/spec': ^1.0.0
@@ -866,7 +866,7 @@ packages:
       react-hook-form: ^7.55.0
       superstruct: '>=0.12.0'
       typanion: ^3.3.2
-      valibot: ^1.0.0 || ^1.0.0-beta.4 || ^1.0.0-rc
+      valibot: '>=0.31.0 || ^1.0.0-beta.4 || ^1.0.0-rc'
       vest: '>=3.0.0'
       yup: ^1.0.0
       zod: ^3.25.0 || ^4.0.0
@@ -1038,8 +1038,8 @@ packages:
   '@oxc-project/types@0.139.0':
     resolution: {integrity: sha512-r9gHphtCs+1M7J0pw6Sn/hh/Wpa/iQrOOkrNAlVLF/gHq+/CJmHIWKKUUhdWjcD6CIa8idarspCsASiXCXvFUw==}
 
-  '@posthog/browser-common@0.2.1':
-    resolution: {integrity: sha512-FTVPsRw6GBKWvFwN26TNIQNNYPR9FsUj+B+CKhk/ht63IRzn4yYFtFOjcmW+bfXvNHuRADs6APbZ6Haz1kpoAw==}
+  '@posthog/browser-common@0.2.2':
+    resolution: {integrity: sha512-4NHumu2lx7pMeucDLfXnDmeP5CV2oVWY8jBpXBwBUjoYwkQxB7Z3A6q9oDydw+/iSAGl6MaPqW9gsnRK8AvqLA==}
 
   '@posthog/core@1.45.1':
     resolution: {integrity: sha512-tLtvzomavb2PPWdGYKsusyIzIeL2Px47v348Smibkay7sMy/83TyPk+Ptsp2NdeOgJsbuwSxWkR2+XA0aSCAaA==}
@@ -2639,19 +2639,19 @@ packages:
     peerDependencies:
       valibot: ^1.4.0
 
-  '@vitejs/devtools-kit@0.4.8':
-    resolution: {integrity: sha512-Vg00qggV/qiNAgJytEI0GlMiY0emELrUSW7Esx0OJw9xStjmfU1MBGWBUyU1AVlVdiRjvVQ7KfMvbCkC/04H7w==}
+  '@vitejs/devtools-kit@0.4.9':
+    resolution: {integrity: sha512-uI1Gk4rfc6qCAK+5m5o3d5HCNVPpnGYi+RlGnLuWn6j9XNcvuP1MiZrgEMyXvpbQHEN3N4mcfUswIPc8XnBvsg==}
     peerDependencies:
       vite: '*'
 
-  '@vitejs/devtools@0.4.8':
-    resolution: {integrity: sha512-NTGz5U44yeuLD5gkYD1rdmAA72ajVaaUXbg/96hEnZD/UDazjSXBG5Csq1KArV5VbG8dyC+gXFALu5DoNSS9bg==}
+  '@vitejs/devtools@0.4.9':
+    resolution: {integrity: sha512-Q9ju+eLFn/ge1nkgVUhAU0Yfu7lEITApK7f4r6z71sYRcTqIMqksMC/qimyAiz4/rQyL7WNj2hTFMIeYT7wolQ==}
     hasBin: true
     peerDependencies:
-      '@vitejs/devtools-oxc': ^0.4.8
-      '@vitejs/devtools-rolldown': ^0.4.8
-      '@vitejs/devtools-vite': ^0.4.8
-      '@vitejs/devtools-vitest': ^0.4.8
+      '@vitejs/devtools-oxc': ^0.4.9
+      '@vitejs/devtools-rolldown': ^0.4.9
+      '@vitejs/devtools-vite': ^0.4.9
+      '@vitejs/devtools-vitest': ^0.4.9
       vite: '*'
     peerDependenciesMeta:
       '@vitejs/devtools-oxc':
@@ -2869,8 +2869,8 @@ packages:
     resolution: {integrity: sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==}
     engines: {node: 18 || 20 || >=22}
 
-  baseline-browser-mapping@2.11.1:
-    resolution: {integrity: sha512-HYXq73DDpCtNzOmrFsm9eSwCvWCql0RzqjpDzXN9EadiLJ4DNat0nsZ/Bzmy+Ud12mb4/zKDY0cQ805ZzN+i0A==}
+  baseline-browser-mapping@2.11.4:
+    resolution: {integrity: sha512-s4+sLr9mZ/CyqeRritFeYV/Zx73OAtmaHn6kkBS1XRoJn1hrg3xIDUcpicAEX68tkcIN0iBCgti31C8zxtkhsQ==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
@@ -3551,8 +3551,8 @@ packages:
     resolution: {integrity: sha512-Wjlyrolmm8uDpm/ogGyXZXb1Z+Ca2B8NbJwqBVg0axK9GbBeoS7yGV6vjXnYdGm6X53iehEuxxbyiKp8QmN4Vw==}
     engines: {node: 18 || 20 || >=22}
 
-  globals@17.7.0:
-    resolution: {integrity: sha512-Czmyns5dUsq4seFBR/Kdydhmo8y9kC79hiSkPn0YcGtNnYWnrgt0vjrSjx9tspoDGWm2CMarffRuLjM4xUz8xg==}
+  globals@17.8.0:
+    resolution: {integrity: sha512-Zz/LMDZScFmkakeL2cTHzf+PbWKdpU3uclqkZT7TjDG58j5WPt0PpA+n9uPI24fZtlw07q0OtEi84K+umsRzqQ==}
     engines: {node: '>=18'}
 
   globalthis@1.0.4:
@@ -3996,8 +3996,8 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
-  lucide-react@1.26.0:
-    resolution: {integrity: sha512-raglYVR2+VkMfJL158krjVmE+rV5ST2lzA/KQm1FRSjMHT4MnWaegHxoVEpmc2So3nOEhp9oGejJwAPX8MoAjg==}
+  lucide-react@1.27.0:
+    resolution: {integrity: sha512-rJicGl/3Fly/E0rOH1YmPZ6e49JCnKknh1ox1vpHnkfjujAkKA6sqUZvH3MTAaXXjgexyUwgNwTJzTtYuAFYJw==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -4299,8 +4299,8 @@ packages:
     resolution: {integrity: sha512-g50586zr4bZmwFiTlflMu8E0bDTb5I5gertgwAKmsdUlTQIhZtunzUlD1WSzwcVWPoAVpsrA6vlfCD7oXvRwgg==}
     engines: {node: ^10 || ^12 || >=14}
 
-  posthog-js@1.407.2:
-    resolution: {integrity: sha512-5deTvXopn+NJWEmCUw8Ix/ms3cv2+60WJ73Vgbvu2wSkZY/FIj2uqAgCnq7IewGpGC+tH7CAbPYFzH6hw8eW1w==}
+  posthog-js@1.407.3:
+    resolution: {integrity: sha512-b9Kc7HVN6nh+xsh1JrcLYHv9bbYLwYUM9belJtNVUFZSJWWfFcZRJJP6L+KeanAeu2VxSFSpioVA39pjjolv4A==}
 
   powershell-utils@0.1.0:
     resolution: {integrity: sha512-dM0jVuXJPsDN6DvRpea484tCUaMiXWjuCn++HGTqUWzGDjv5tZkEZldAJ/UMlqRYGFrD/etByo4/xOuC/snX2A==}
@@ -5559,7 +5559,7 @@ snapshots:
       devframe: 0.7.14(@typescript/typescript6@6.0.2)(cac@7.0.0)(srvx@0.11.15)
       nostics: 1.2.0
     optionalDependencies:
-      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
     transitivePeerDependencies:
       - valibot
 
@@ -5570,7 +5570,7 @@ snapshots:
       devframe: 0.7.14(@typescript/typescript6@6.0.2)(cac@7.0.0)(srvx@0.11.15)
       nostics: 1.2.0
     optionalDependencies:
-      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
 
   '@devframes/plugin-terminals@0.7.14(@typescript/typescript6@6.0.2)(devframe@0.7.14(@typescript/typescript6@6.0.2)(cac@7.0.0)(srvx@0.11.15))(vite@8.1.5)':
     dependencies:
@@ -5581,7 +5581,7 @@ snapshots:
       valibot: 1.4.2(@typescript/typescript6@6.0.2)
       zigpty: 0.2.1
     optionalDependencies:
-      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
     transitivePeerDependencies:
       - typescript
 
@@ -5782,7 +5782,7 @@ snapshots:
 
   '@hey-api/types@0.1.4': {}
 
-  '@hookform/resolvers@5.4.3(@standard-schema/spec@1.1.0)(react-hook-form@7.83.0(react@19.2.8))(valibot@1.4.2(@typescript/typescript6@6.0.2))(zod@4.4.3)':
+  '@hookform/resolvers@5.5.7(@standard-schema/spec@1.1.0)(react-hook-form@7.83.0(react@19.2.8))(valibot@1.4.2(@typescript/typescript6@6.0.2))(zod@4.4.3)':
     dependencies:
       '@standard-schema/utils': 0.3.0
       react-hook-form: 7.83.0(react@19.2.8)
@@ -5908,7 +5908,7 @@ snapshots:
 
   '@oxc-project/types@0.139.0': {}
 
-  '@posthog/browser-common@0.2.1':
+  '@posthog/browser-common@0.2.2':
     dependencies:
       '@posthog/core': 1.45.1
       '@posthog/types': 1.398.0
@@ -5917,9 +5917,9 @@ snapshots:
     dependencies:
       '@posthog/types': 1.398.0
 
-  '@posthog/react@1.10.3(@types/react@19.2.17)(posthog-js@1.407.2)(react@19.2.8)':
+  '@posthog/react@1.10.3(@types/react@19.2.17)(posthog-js@1.407.3)(react@19.2.8)':
     dependencies:
-      posthog-js: 1.407.2
+      posthog-js: 1.407.3
       react: 19.2.8
     optionalDependencies:
       '@types/react': 19.2.17
@@ -6502,7 +6502,7 @@ snapshots:
       semver: 7.8.5
       tinyglobby: 0.2.17
       valibot: 1.4.2(@typescript/typescript6@6.0.2)
-      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
     optionalDependencies:
       '@react-router/serve': 8.3.0(@typescript/typescript6@6.0.2)(react-router@8.3.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))
       typescript: '@typescript/typescript6@6.0.2'
@@ -7056,7 +7056,7 @@ snapshots:
       '@tailwindcss/node': 4.3.3
       '@tailwindcss/oxide': 4.3.3
       tailwindcss: 4.3.3
-      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
 
   '@tanstack/devtools-client@0.0.5':
     dependencies:
@@ -7103,7 +7103,7 @@ snapshots:
       chalk: 5.6.2
       launch-editor: 2.13.2
       picomatch: 4.0.4
-      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -7413,7 +7413,7 @@ snapshots:
     dependencies:
       valibot: 1.4.2(@typescript/typescript6@6.0.2)
 
-  '@vitejs/devtools-kit@0.4.8(@typescript/typescript6@6.0.2)(cac@7.0.0)(srvx@0.11.15)(vite@8.1.5)':
+  '@vitejs/devtools-kit@0.4.9(@typescript/typescript6@6.0.2)(cac@7.0.0)(srvx@0.11.15)(vite@8.1.5)':
     dependencies:
       '@devframes/hub': 0.7.14(devframe@0.7.14(@typescript/typescript6@6.0.2)(cac@7.0.0)(srvx@0.11.15))
       '@devframes/json-render': 0.7.14(@devframes/hub@0.7.14(devframe@0.7.14(@typescript/typescript6@6.0.2)(cac@7.0.0)(srvx@0.11.15)))(devframe@0.7.14(@typescript/typescript6@6.0.2)(cac@7.0.0)(srvx@0.11.15))
@@ -7422,20 +7422,20 @@ snapshots:
       mlly: 1.8.2
       nostics: 1.2.0
       nypm: 0.6.8
-      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
     transitivePeerDependencies:
       - '@modelcontextprotocol/sdk'
       - cac
       - srvx
       - typescript
 
-  '@vitejs/devtools@0.4.8(@typescript/typescript6@6.0.2)(crossws@0.4.10(srvx@0.11.15))(srvx@0.11.15)(valibot@1.4.2(@typescript/typescript6@6.0.2))(vite@8.1.5)':
+  '@vitejs/devtools@0.4.9(@typescript/typescript6@6.0.2)(crossws@0.4.10(srvx@0.11.15))(srvx@0.11.15)(valibot@1.4.2(@typescript/typescript6@6.0.2))(vite@8.1.5)':
     dependencies:
       '@devframes/hub': 0.7.14(devframe@0.7.14(@typescript/typescript6@6.0.2)(cac@7.0.0)(srvx@0.11.15))
       '@devframes/plugin-inspect': 0.7.14(devframe@0.7.14(@typescript/typescript6@6.0.2)(cac@7.0.0)(srvx@0.11.15))(valibot@1.4.2(@typescript/typescript6@6.0.2))(vite@8.1.5)
       '@devframes/plugin-messages': 0.7.14(@devframes/hub@0.7.14(devframe@0.7.14(@typescript/typescript6@6.0.2)(cac@7.0.0)(srvx@0.11.15)))(devframe@0.7.14(@typescript/typescript6@6.0.2)(cac@7.0.0)(srvx@0.11.15))(vite@8.1.5)
       '@devframes/plugin-terminals': 0.7.14(@typescript/typescript6@6.0.2)(devframe@0.7.14(@typescript/typescript6@6.0.2)(cac@7.0.0)(srvx@0.11.15))(vite@8.1.5)
-      '@vitejs/devtools-kit': 0.4.8(@typescript/typescript6@6.0.2)(cac@7.0.0)(srvx@0.11.15)(vite@8.1.5)
+      '@vitejs/devtools-kit': 0.4.9(@typescript/typescript6@6.0.2)(cac@7.0.0)(srvx@0.11.15)(vite@8.1.5)
       birpc: 4.0.0
       cac: 7.0.0
       devframe: 0.7.14(@typescript/typescript6@6.0.2)(cac@7.0.0)(srvx@0.11.15)
@@ -7445,7 +7445,7 @@ snapshots:
       nostics: 1.2.0
       obug: 2.1.4
       pathe: 2.0.3
-      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
       vue: 3.5.40(@typescript/typescript6@6.0.2)
     transitivePeerDependencies:
       - '@modelcontextprotocol/sdk'
@@ -7457,7 +7457,7 @@ snapshots:
   '@vitejs/plugin-react@6.0.4(vite@8.1.5)':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
-      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
 
   '@vitest/coverage-v8@4.1.10(vitest@4.1.10)':
     dependencies:
@@ -7488,7 +7488,7 @@ snapshots:
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
 
   '@vitest/pretty-format@4.1.10':
     dependencies:
@@ -7726,7 +7726,7 @@ snapshots:
 
   balanced-match@4.0.4: {}
 
-  baseline-browser-mapping@2.11.1: {}
+  baseline-browser-mapping@2.11.4: {}
 
   basic-auth@2.0.1:
     dependencies:
@@ -7763,7 +7763,7 @@ snapshots:
 
   browserslist@4.28.5:
     dependencies:
-      baseline-browser-mapping: 2.11.1
+      baseline-browser-mapping: 2.11.4
       caniuse-lite: 1.0.30001806
       electron-to-chromium: 1.5.389
       node-releases: 2.0.50
@@ -7771,7 +7771,7 @@ snapshots:
 
   browserslist@4.28.6:
     dependencies:
-      baseline-browser-mapping: 2.11.1
+      baseline-browser-mapping: 2.11.4
       caniuse-lite: 1.0.30001806
       electron-to-chromium: 1.5.389
       node-releases: 2.0.51
@@ -8527,7 +8527,7 @@ snapshots:
       minipass: 7.1.3
       path-scurry: 2.0.2
 
-  globals@17.7.0: {}
+  globals@17.8.0: {}
 
   globalthis@1.0.4:
     dependencies:
@@ -8935,7 +8935,7 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-react@1.26.0(react@19.2.8):
+  lucide-react@1.27.0(react@19.2.8):
     dependencies:
       react: 19.2.8
 
@@ -9223,9 +9223,9 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  posthog-js@1.407.2:
+  posthog-js@1.407.3:
     dependencies:
-      '@posthog/browser-common': 0.2.1
+      '@posthog/browser-common': 0.2.2
       '@posthog/core': 1.45.1
       '@posthog/types': 1.398.0
       core-js: 3.49.0
@@ -9385,7 +9385,7 @@ snapshots:
       react-hotkeys-hook: 5.3.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       react-router: 8.3.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       react-tooltip: 5.30.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
     optionalDependencies:
       '@biomejs/cli-darwin-arm64': 2.4.15
       '@rollup/rollup-darwin-arm64': 4.60.4
@@ -9940,13 +9940,13 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite-node@6.0.0(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0):
+  vite-node@6.0.0(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0):
     dependencies:
       cac: 7.0.0
       es-module-lexer: 2.1.0
       obug: 2.1.3
       pathe: 2.0.3
-      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
     transitivePeerDependencies:
       - '@types/node'
       - '@vitejs/devtools'
@@ -9963,34 +9963,34 @@ snapshots:
 
   vite-plugin-check-env@1.2.17(vite@8.1.5):
     dependencies:
-      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
 
   vite-plugin-compression@0.5.1(vite@8.1.5):
     dependencies:
       chalk: 4.1.2
       debug: 4.4.3
       fs-extra: 10.1.0
-      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
     transitivePeerDependencies:
       - supports-color
 
   vite-plugin-devtools-json@1.1.0(vite@8.1.5):
     dependencies:
       uuid: 14.0.1
-      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
 
   vite-plugin-svgr@5.2.0(@typescript/typescript6@6.0.2)(rollup@4.60.4)(vite@8.1.5):
     dependencies:
       '@rollup/pluginutils': 5.3.0(rollup@4.60.4)
       '@svgr/core': 8.1.0(@typescript/typescript6@6.0.2)
       '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(@typescript/typescript6@6.0.2))
-      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
     transitivePeerDependencies:
       - rollup
       - supports-color
       - typescript
 
-  vite@8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0):
+  vite@8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0):
     dependencies:
       lightningcss: 1.32.0
       picomatch: 4.0.5
@@ -9999,7 +9999,7 @@ snapshots:
       tinyglobby: 0.2.17
     optionalDependencies:
       '@types/node': 25.9.1
-      '@vitejs/devtools': 0.4.8(@typescript/typescript6@6.0.2)(crossws@0.4.10(srvx@0.11.15))(srvx@0.11.15)(valibot@1.4.2(@typescript/typescript6@6.0.2))(vite@8.1.5)
+      '@vitejs/devtools': 0.4.9(@typescript/typescript6@6.0.2)(crossws@0.4.10(srvx@0.11.15))(srvx@0.11.15)(valibot@1.4.2(@typescript/typescript6@6.0.2))(vite@8.1.5)
       esbuild: 0.27.7
       fsevents: 2.3.3
       jiti: 2.7.0
@@ -10024,7 +10024,7 @@ snapshots:
       tinyexec: 1.2.4
       tinyglobby: 0.2.17
       tinyrainbow: 3.1.0
-      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.8)(esbuild@0.27.7)(jiti@2.7.0)
+      vite: 8.1.5(@types/node@25.9.1)(@vitejs/devtools@0.4.9)(esbuild@0.27.7)(jiti@2.7.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@opentelemetry/api': 1.9.1
