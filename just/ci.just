@@ -4,6 +4,10 @@
 
 GHA_YML_NAME := "build_and_publish.yml"
 
+# if you use an interactive pager, this can cause scripts to stop working
+
+export GH_PAGER := "cat"
+
 # TODO should we scope these requests via `--branch "$(git branch --show-current)"`
 
 _gha_running_run_id:
@@ -12,8 +16,8 @@ _gha_running_run_id:
 _gha_last_failed_run_id:
     # NOTE this is tied to the name of the yml!
     branch=$(git branch --show-current) && \
-    	gh run list --branch "$branch" --status=failure --workflow={{ GHA_YML_NAME }} \
-    	--json databaseId --jq '.[0].databaseId'
+    gh run list --branch "$branch" --status=failure --workflow={{ GHA_YML_NAME }} \
+    --json databaseId --jq '.[0].databaseId'
 
 # rerun last failed CI run
 ci_rerun:
@@ -57,11 +61,19 @@ ci_last_failed-download output-dir="false":
         rm -rf "${failed_run_target_directory}/tmp"
     fi
 
+    if [[ "$failed_run_target_directory" == "$PWD" ]]; then
+        display_failed_run_target_directory="."
+    elif [[ "$failed_run_target_directory" == "$PWD"/* ]]; then
+        display_failed_run_target_directory="${failed_run_target_directory#$PWD/}"
+    else
+        display_failed_run_target_directory="$failed_run_target_directory"
+    fi
+
     # output a clean path to the downloaded artifacts, for use in other scripts
     if [[ "{{ output-dir }}" == "true" ]]; then
-    	echo "${failed_run_target_directory}"
+        echo "${display_failed_run_target_directory}"
     else
-    	echo "{{ BLUE }}Downloaded artifacts to ${failed_run_target_directory}{{ NORMAL }}"
+        echo "{{ BLUE }}Downloaded artifacts to ${display_failed_run_target_directory}{{ NORMAL }}"
     fi
 
 # cancel all currently running CI jobs
@@ -71,9 +83,9 @@ ci_running-cancel:
 # live tail currently running ci job
 ci_watch-running *flag:
     if {{ if flag == "--web" { "true" } else { "false" } }}; then \
-    	gh run view --web $(just _gha_running_run_id); \
+        gh run view --web $(just _gha_running_run_id); \
     else \
-    	gh run watch $(just _gha_running_run_id); \
+        gh run watch $(just _gha_running_run_id); \
     fi
 
 # very destructive action: deletes all workflow run logs, useful for cleaning up sensitive data leaks
@@ -81,6 +93,6 @@ ci_watch-running *flag:
 ci_wipe_run_logs:
     REPO=$(gh repo view --json name --jq '.name') && \
     OWNER=$(gh repo view --json owner --jq '.owner.login') && \
-    	gh api repos/$OWNER/$REPO/actions/workflows --paginate --jq '.workflows[] | .id' | \
-    	xargs -I{} gh api repos/$OWNER/$REPO/actions/workflows/{}/runs --paginate --jq '.workflow_runs[].id' | \
-    		xargs -I{} gh api -X DELETE /repos/$OWNER/$REPO/actions/runs/{}
+    gh api repos/$OWNER/$REPO/actions/workflows --paginate --jq '.workflows[] | .id' | \
+    xargs -I{} gh api repos/$OWNER/$REPO/actions/workflows/{}/runs --paginate --jq '.workflow_runs[].id' | \
+    xargs -I{} gh api -X DELETE /repos/$OWNER/$REPO/actions/runs/{}
