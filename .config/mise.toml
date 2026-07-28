@@ -20,6 +20,7 @@ node = "24"
 [settings]
 lockfile = true
 pipx.uvx = true
+gpg_verify = true
 
 # don't install new versions right away: avoid unnecessary entropy
 # this also matches the min release age that railpack uses
@@ -28,3 +29,6 @@ minimum_release_age = "14d"
 # this can be done through direnv, but we intentionally manage all PATH mutations through mise to avoid
 # conflicts between the bash hooks across different tools.
 python.uv_venv_auto = "create|source"
+
+[settings.node]
+verify = true
