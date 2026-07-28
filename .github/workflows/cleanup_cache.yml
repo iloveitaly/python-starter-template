@@ -1,0 +1,80 @@
+# Keeps Actions cache storage from filling up (this repo's mise caches alone are
+# ~230MB each). Without cleanup, PR-scoped caches linger until GitHub's eviction
+# policy thrashing starts deleting useful default-branch caches.
+#
+# Based on GitHub's recommended PR-close cleanup:
+# https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manage-caches
+#
+# Two complementary triggers:
+# 1. PR-close — delete caches scoped to the closed PR (merge + head refs)
+# 2. Weekly / manual — delete caches not accessed in the last 7 days
+name: Cleanup Actions Cache
+
+on:
+  pull_request:
+    types: [closed]
+  schedule:
+    # Sundays at 04:00 UTC — outside CI peak hours
+    - cron: "0 4 * * 0"
+  workflow_dispatch: {}
+
+jobs:
+  pr-cleanup:
+    name: PR cache cleanup
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - name: Delete caches for closed PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PR_REF: refs/pull/${{ github.event.pull_request.number }}/merge
+          BRANCH_REF: refs/heads/${{ github.event.pull_request.head.ref }}
+        run: |
+          set +e
+          for BRANCH in "$PR_REF" "$BRANCH_REF"; do
+            echo "Fetching caches for $BRANCH"
+            cache_ids=$(gh cache list --ref "$BRANCH" --limit 100 --json id --jq '.[].id')
+            for cache_id in $cache_ids; do
+              echo "Deleting cache $cache_id ($BRANCH)"
+              gh cache delete "$cache_id"
+            done
+          done
+          echo "Done"
+
+  stale-cleanup:
+    name: Stale cache cleanup
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - name: Delete caches not accessed in 7 days
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          # caches unused for this many days are deleted
+          MAX_AGE_DAYS: "7"
+        run: |
+          set +e
+          cutoff=$(date -u -d "$MAX_AGE_DAYS days ago" +%Y-%m-%dT%H:%M:%SZ)
+          echo "Deleting caches last accessed before $cutoff"
+
+          # --limit 100 is the gh CLI max; page via API if this repo ever exceeds it
+          caches=$(gh cache list --limit 100 --json id,key,ref,lastAccessedAt,sizeInBytes)
+          echo "$caches" | jq -c --arg cutoff "$cutoff" '
+            .[] | select(.lastAccessedAt < $cutoff)
+          ' | while read -r cache; do
+            id=$(echo "$cache" | jq -r .id)
+            key=$(echo "$cache" | jq -r .key)
+            ref=$(echo "$cache" | jq -r .ref)
+            size_mb=$(echo "$cache" | jq -r '.sizeInBytes / 1048576 | floor')
+            last=$(echo "$cache" | jq -r .lastAccessedAt)
+            echo "Deleting $id (${size_mb}MB) last=$last ref=$ref key=$key"
+            gh cache delete "$id"
+          done
+          echo "Done"
