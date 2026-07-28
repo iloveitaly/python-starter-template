@@ -50,7 +50,7 @@ def test_authorized_api_credentials(client: TestClient):
 
     response = client.get(
         api_app_url_path_for("external_api_ping"),
-        headers={"Authorization": f"Bearer {user.api_key}"},  # noqa: S104
+        headers={"Authorization": f"Bearer {user.api_key}"},
     )
 
     assert response.status_code == status.HTTP_200_OK

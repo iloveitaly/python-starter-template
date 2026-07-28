@@ -26,7 +26,6 @@ _server_subprocess = None
 
 
 def terminate_server():
-    global _server_subprocess
     if _server_subprocess:
         _server_subprocess.terminate()
 
@@ -120,7 +119,7 @@ def server():
 
     # since the server is run a daemon in another process, we need to wait until the port is ready
     if not wait_for_port(PYTHON_SERVER_TEST_PORT):
-        raise Exception("server failed to start")
+        raise RuntimeError("server failed to start")
 
     try:
         wait_for_javascript_build()
@@ -146,7 +145,7 @@ def report_localias_status():
     if is_github_actions():
         command.insert(0, "sudo")
 
-    result = subprocess.run(command, capture_output=True, text=True)
+    result = subprocess.run(command, capture_output=True, text=True, check=False)
     log.debug("localias Status", output=result.stdout)
 
     if "daemon running" not in result.stdout:

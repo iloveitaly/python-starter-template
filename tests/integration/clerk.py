@@ -86,8 +86,8 @@ def is_publishable_key(key: str) -> bool:
     if not key:
         return False
 
-    has_valid_prefix = key.startswith(PUBLISHABLE_KEY_LIVE_PREFIX) or key.startswith(
-        PUBLISHABLE_KEY_TEST_PREFIX
+    has_valid_prefix = key.startswith(
+        (PUBLISHABLE_KEY_LIVE_PREFIX, PUBLISHABLE_KEY_TEST_PREFIX)
     )
 
     has_valid_postfix = (
@@ -138,12 +138,13 @@ def setup_clerk_testing_token(page: Page, frontend_api_url: str | None = None):
             "CLERK_FAPI"
         )
 
-    if not frontend_api_url and (
-        clerk_publishable_key := os.environ.get("CLERK_PUBLISHABLE_KEY")
+    if (
+        not frontend_api_url
+        and (clerk_publishable_key := os.environ.get("CLERK_PUBLISHABLE_KEY"))
+        and (parsed_publishable_key := parse_publishable_key(clerk_publishable_key))
     ):
         # the publishable key non-static component is base64 encoded version of the frontend api url
-        if parsed_publishable_key := parse_publishable_key(clerk_publishable_key):
-            frontend_api_url = parsed_publishable_key.frontend_api
+        frontend_api_url = parsed_publishable_key.frontend_api
 
     if not frontend_api_url:
         raise ValueError("Frontend API URL or valid publishable key is required")

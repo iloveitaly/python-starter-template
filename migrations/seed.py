@@ -53,7 +53,7 @@ check_safe_seeding()
 try:
     _, _, clerk_user = get_clerk_seed_user()
     user = User.find_or_create_by(clerk_id=clerk_user.id)
-except Exception as e:
+except Exception as e:  # noqa: BLE001 - seed should not abort on clerk/auth setup issues
     log.error("error creating clerk user, most likely a clerk authentication issue")
     log.exception(e)  # type: ignore
 

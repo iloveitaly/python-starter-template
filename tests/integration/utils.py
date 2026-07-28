@@ -1,4 +1,6 @@
+from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import Locator, Page, expect
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 
 from app import log
 from app.factories.clerk import get_clerk_dev_user
@@ -98,7 +100,7 @@ def wait_for_loading(page: Page, timeout: int = 30000, extreme: bool = False):
             page.wait_for_function(
                 "() => window._reactLoadingComplete === true", timeout=timeout
             )
-        except Exception as e:
+        except PlaywrightTimeoutError as e:
             log.warning(f"React and animation loading check timed out: {e}")
 
     # Brief pause for any final renders
@@ -106,7 +108,7 @@ def wait_for_loading(page: Page, timeout: int = 30000, extreme: bool = False):
 
 
 def login_as_dev_user(page: Page):
-    username, password, user = get_clerk_dev_user()
+    username, password, _user = get_clerk_dev_user()
 
     # paranoid testing to ensure database cleaning is working
     assert User.count() == 0
@@ -136,9 +138,9 @@ def login_as_dev_user(page: Page):
         # we need to ensure the loading states are reset before moving on, otherwise we won't be on the next page when
         # so we wait for the OTP field to dissapear
         otp_input.wait_for(state="detached", timeout=LONG_INTEGRATION_TEST_TIMEOUT)
-    except Exception:
-        # TODO we should have a more scoped exception here
-        pass
+    except PlaywrightTimeoutError, PlaywrightError:
+        # OTP step is optional depending on clerk configuration
+        log.debug("clerk OTP step skipped or timed out")
 
     wait_for_loading(page)
 
