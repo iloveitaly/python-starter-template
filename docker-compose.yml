@@ -14,7 +14,7 @@ services:
     ports:
       - ${CI:+5432}:5432
     volumes:
-      - app_postgres_data:/var/lib/postgresql/
+      - app_postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       # Use a 24-hour interval trick to disable ongoing background healthchecks after the container reaches a healthy state.
@@ -60,6 +60,26 @@ services:
       MP_DATABASE: /data/mailpit.db
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+  # port 8080
+  # IP geolocation JSON API (MaxMind GeoLite2)
+  # https://github.com/observabilitystack/geoip-api
+  geoip:
+    image: ghcr.io/observabilitystack/geoip-api:latest
+    restart: unless-stopped
+    ports:
+      - ${CI:+8080}:8080
+    healthcheck:
+      # Image ships with curl and /actuator/health
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health"]
+      # Use a 24-hour interval trick to disable ongoing background healthchecks after the container reaches a healthy state.
+      # This reduces local CPU overhead from pinging the container repeatedly during development.
+      interval: 24h
+      # Rapid checks every second during initial boot
+      start_interval: 1s
+      start_period: 15s
+      timeout: 5s
+      retries: 5
 
 volumes:
   mailpit_data:

@@ -13,6 +13,7 @@ export LOG_LEVEL=info
 # export PORT=80
 
 export SMTP_URL=smtp://fake_host.com:1025
+export GEOIP_BASE_URL=http://geoip.internal:8080/
 # TODO should add automatically replacing these domains with real values to bootstrap script
 export EMAIL_FROM_ADDRESS=hello@domain.com
 

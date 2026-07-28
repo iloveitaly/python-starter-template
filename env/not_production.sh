@@ -41,6 +41,7 @@ if [ -z "${DATABASE_HOST:-}" ] && [ -z "${REDIS_HOST:-}" ] && [ -z "${SMTP_HOST:
   REDIS_HOST=redis.${SERVICES_HOST}
   DATABASE_HOST=postgres.${SERVICES_HOST}
   SMTP_HOST=mailpit.${SERVICES_HOST}
+  GEOIP_HOST=geoip.${SERVICES_HOST}
 fi
 
 # names are important here: pg_isready and docker configuration requires these
@@ -52,6 +53,7 @@ export POSTGRES_DB=development
 export REDIS_URL=redis://${REDIS_HOST}:6379/1
 export DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DATABASE_HOST}:5432/development
 export SMTP_URL=smtp://${SMTP_HOST}:1025
+export GEOIP_BASE_URL=http://${GEOIP_HOST}:8080/
 
 #######################
 # Secrets
