@@ -17,10 +17,14 @@ services:
       - app_postgres_data:/var/lib/postgresql/
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
-      interval: 2s
+      # Use a 24-hour interval trick to disable ongoing background healthchecks after the container reaches a healthy state.
+      # This reduces local CPU overhead from pinging the container repeatedly during development.
+      interval: 24h
+      # Rapid checks every second during initial boot
+      start_interval: 1s
+      start_period: 10s
       timeout: 5s
-      retries: 12
-      start_period: 1s
+      retries: 3
 
   # port 6379
   redis:
@@ -31,8 +35,13 @@ services:
       - ${CI:+6379}:6379
     healthcheck:
       test: ["CMD-SHELL", "redis-cli ping"]
-      interval: 2s
-      timeout: 5s
+      # Use a 24-hour interval trick to disable ongoing background healthchecks after the container reaches a healthy state.
+      # This reduces local CPU overhead from pinging the container repeatedly during development.
+      interval: 24h
+      # Rapid checks every second during initial boot
+      start_interval: 1s
+      start_period: 5s
+      timeout: 3s
       retries: 3
 
   # SMTP sinkhole for easily viewing email in development

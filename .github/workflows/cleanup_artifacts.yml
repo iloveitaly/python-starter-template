@@ -1,0 +1,25 @@
+# Prune old GitHub Actions artifacts so they don't eat storage quota.
+# Uses https://github.com/iloveitaly/gh-clean-artifacts
+#
+# Defaults keep recent artifacts; --limit caps total retained size in MB.
+name: Cleanup GHA Artifacts
+
+on:
+  schedule:
+    # Run daily at midnight
+    - cron: "0 0 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: write
+    steps:
+      - name: Run Cleanup
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh extension install iloveitaly/gh-clean-artifacts
+          gh clean-artifacts --repo "${{ github.repository }}" --limit 200

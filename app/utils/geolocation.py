@@ -15,7 +15,9 @@ def get_cached_public_ip() -> str | None:
     Uncached fetches use checkip.amazonaws.com, which returns plain text: ``203.0.113.1\\n``.
     """
     if is_productionish():
-        log.warning("get_cached_public_ip is not available in production-ish environments")
+        log.warning(
+            "get_cached_public_ip is not available in production-ish environments"
+        )
         return None
 
     cache_file = root / "tmp/public-ip"

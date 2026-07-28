@@ -11,6 +11,7 @@ from pydantic import BaseModel
 
 from app import log
 from app.env import env
+
 from app.models.data.geolocation_point import GeolocationPoint
 
 GEOIP_BASE_URL = env.str("GEOIP_BASE_URL")
