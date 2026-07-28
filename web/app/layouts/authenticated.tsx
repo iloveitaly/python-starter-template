@@ -4,8 +4,9 @@ import { Outlet } from "react-router"
 import { usePostHog } from "posthog-js/react"
 
 import AdminBar from "~/components/AdminBar"
+import { LoadingSpinner } from "~/components/shared/loading-spinner"
 
-import { RedirectToSignIn, Show, useAuth, useUser } from "@clerk/react"
+import { ClerkLoading, RedirectToSignIn, Show, useAuth, useUser } from "@clerk/react"
 
 // This layout assumes the user is authenticated. Any clientLoaders making authenticated
 // requests will run an additional check and redirect the user to the login page if it fails.
@@ -37,6 +38,11 @@ function PosthogIdentity() {
 export function AuthenticatedLayout() {
   return (
     <>
+      <ClerkLoading>
+        <div className="flex h-screen w-screen items-center justify-center">
+          <LoadingSpinner />
+        </div>
+      </ClerkLoading>
       <Show when="signed-in">
         <PosthogIdentity />
         <AdminBar />

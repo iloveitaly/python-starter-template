@@ -23,9 +23,11 @@ export function LoadingSpinner({
 
   return (
     <div className={cn("flex items-center justify-center py-8", className)}>
-      <Loader2
-        className={cn("animate-spin text-blue-600", iconSizes[iconSize])}
-      />
+      {/* animate the wrapper div, not the SVG: will-change promotes it to a compositor
+        layer so the spin keeps running while the main thread is blocked (e.g. clerk-js parsing) */}
+      <div className="animate-spin will-change-transform">
+        <Loader2 className={cn("text-blue-600", iconSizes[iconSize])} />
+      </div>
       {showText && (
         <span className="text-muted-foreground pl-3 text-sm sm:text-base">
           {message}
