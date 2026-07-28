@@ -3,6 +3,8 @@
 ignores:
   - isbot
   - react-router-devtools
+  # required by react-router-devtools (imports vite-node/client+server; not declared as a peer)
+  - vite-node
   - react-icons
   # linting
   - "@trivago/prettier-plugin-sort-imports"
