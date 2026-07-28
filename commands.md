@@ -18,6 +18,7 @@ Here's an example implementation:
 ```python
 from .configuration import stripe_client, origin_url
 
+
 @screening_api_app.post("/")
 def create_order_session(
     request: Request,
@@ -72,7 +73,6 @@ def create_pending_order(
     The database schema ensures duplicate stripe checkout session ids never happen.
     """
 
-
     # let's validate the stripe checkout session id is real
     stripe_session = stripe_client.v1.checkout.sessions.retrieve(
         data.stripe_checkout_session_id
@@ -116,7 +116,9 @@ def complete_ticket_purchase(
     order.status = OrderState.paid
     order.save()
 
-    redirect_url = f"{origin_url}/screening/{order.screening_id}/confirmation/{session_id}"
+    redirect_url = (
+        f"{origin_url}/screening/{order.screening_id}/confirmation/{session_id}"
+    )
     return RedirectResponse(url=redirect_url)
 
 
