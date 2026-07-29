@@ -19,3 +19,16 @@ def test_openapi_operation_ids_are_unique():
     }
 
     assert not duplicate_operation_ids
+
+
+def test_colliding_openapi_operation_ids_include_all_route_details():
+    schema = api_app.openapi()
+
+    assert (
+        schema["paths"]["/internal/v1/ping"]["get"]["operationId"]
+        == "external_api_ping_internal_v1_ping_get"
+    )
+    assert (
+        schema["paths"]["/external/v1/ping"]["get"]["operationId"]
+        == "external_api_ping_external_v1_ping_get"
+    )

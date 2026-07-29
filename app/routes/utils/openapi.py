@@ -7,46 +7,43 @@ Lifted from:
 https://github.com/fastapiutils/fastapi-utils/blob/e9e7e2c834d703503a3bf5d5605db6232dd853b9/fastapi_utils/openapi.py#L7C5-L7C27
 """
 
-from typing import Protocol, cast
+from collections import Counter
 
 from fastapi import APIRouter, FastAPI
-from fastapi.routing import APIRoute
-from starlette.routing import BaseRoute
+from fastapi.routing import APIRoute, iter_route_contexts
 
 from app import log
-
-
-# FastAPI / APIRouter / Mount don't share a public base type that exposes .routes
-class _HasRoutes(Protocol):
-    @property
-    def routes(self) -> list[BaseRoute]: ...
 
 
 def simplify_operation_ids(app: FastAPI | APIRouter) -> None:
     """
     Simplify operation IDs so that generated clients have simpler api function names.
 
-    Walks the full route tree recursively. Included routers are wrapped in
-    `_IncludedRouter` (with an `original_router` attribute), so we unwrap those too.
+    Restore FastAPI's complete operation ID for every route with a colliding name.
     """
-
-    def _walk(router: _HasRoutes) -> bool:
-        found = False
-        for route in router.routes:
-            if isinstance(route, APIRoute):
-                # NOTE this is the core intention of this method: shorten the operation ID to the route name
-                route.operation_id = route.name
-                found = True
-            else:
-                # routes includes Mount/docs/etc.; only _IncludedRouter has original_router
-                inner_router = getattr(route, "original_router", None)
-                if inner_router is None:
-                    # routes are not present when WebSocketRoute, docs route, etc is present (i.e. special cases)
-                    inner_router = route if hasattr(route, "routes") else None
-
-                if inner_router is not None and inner_router is not router:
-                    found = _walk(cast(_HasRoutes, inner_router)) or found
-        return found
-
-    if not _walk(app):
+    route_contexts = [
+        context
+        for context in iter_route_contexts(app.routes)
+        if isinstance(context.original_route, APIRoute)
+    ]
+    if not route_contexts:
         log.warning("no routes found when simplifying operation ids")
+        return
+
+    for context in route_contexts:
+        context.original_route.operation_id = None
+
+    # Rebuild contexts so FastAPI regenerates complete IDs from the effective nested paths.
+    route_contexts = [
+        context
+        for context in iter_route_contexts(app.routes)
+        if isinstance(context.original_route, APIRoute)
+    ]
+    route_name_counts = Counter(context.name for context in route_contexts)
+
+    for context in route_contexts:
+        if route_name_counts[context.name] > 1:
+            context.original_route.operation_id = context.unique_id
+            continue
+
+        context.original_route.operation_id = context.name
