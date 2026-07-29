@@ -126,7 +126,7 @@ def pytest_configure(config: Config):
     ]
 
     # disable visual assertions when running locally
-    # config.option.playwright_visual_disable_snapshots = is_local_testing()
+    config.option.playwright_visual_disable_snapshots = is_local_testing()
 
     config.option.playwright_visual_snapshots_path = env.path(
         "PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY"
