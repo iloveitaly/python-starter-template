@@ -14,8 +14,7 @@ from app.env import env
 
 from app.models.data.geolocation_point import GeolocationPoint
 
-GEOIP_BASE_URL = env.str("GEOIP_BASE_URL")
-assert GEOIP_BASE_URL.endswith("/"), "GEOIP_BASE_URL must end with a trailing slash"
+GEOIP_BASE_URL = env.base_url("GEOIP_BASE_URL")
 
 # Autocomplete must stay snappy; skip location bias if geoip is slow.
 GEOIP_TIMEOUT_SECONDS = 0.1

@@ -14,7 +14,7 @@ export NODE_ENV=test
 
 # the react router generator from py requires this to generate a full url
 # in test, the URL is different, so we need to override the not_production.sh default
-export BASE_URL="https://${PYTHON_TEST_SERVER_HOST}"
+export BASE_URL="https://${PYTHON_TEST_SERVER_HOST}/"
 
 export VITE_PYTHON_URL="https://${PYTHON_TEST_SERVER_HOST}"
 

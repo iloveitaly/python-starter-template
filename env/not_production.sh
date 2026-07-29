@@ -6,7 +6,7 @@
 #     Docker does not like quotes in any of it's env files or vars.
 
 # the react router generator from py requires this to generate a full url
-export BASE_URL="https://${PYTHON_SERVER_HOST}"
+export BASE_URL="https://${PYTHON_SERVER_HOST}/"
 
 # job monitoring configuration
 export FLOWER_PASSWORD=password

@@ -5,7 +5,7 @@ from .environments import is_productionish, python_environment
 NO_COLOR = env.bool("NO_COLOR", False)
 "supports NO_COLOR standard: https://no-color.org/"
 
-BASE_URL = env.str("BASE_URL")
+BASE_URL = env.base_url("BASE_URL")
 "used by the react router url generator and effectively asserts that this var exists"
 
 JAVASCRIPT_CLIENT_BUILD_DIR = env.str(
