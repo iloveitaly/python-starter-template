@@ -2187,7 +2187,7 @@ dependencies = [
 
 [[package]]
 name = "posthog"
-version = "7.32.0"
+version = "7.33.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "backoff" },
@@ -2195,9 +2195,9 @@ dependencies = [
     { name = "requests" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a1/e9/7b6b23bdc779ab423301c09421a2ffd770321e4d2546bfa8aaa205c6e439/posthog-7.32.0.tar.gz", hash = "sha256:46da53050848e2061923d39151b36bf5ff1cb10a33233bd3551474a63ba4a1d9", size = 388932, upload-time = "2026-07-28T14:54:55.902Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/4b/8e/d664a1f9d51871412853702e39ddb23806807b14cb21d7744b1b95f4e2af/posthog-7.33.0.tar.gz", hash = "sha256:963b18cee5315eae51830f7cb2a0bba217d1131ca636a19c45d7c34e69e9ae0e", size = 389275, upload-time = "2026-07-29T07:06:25.013Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/45/28/ee19d2761ff07b4c949ce3e48009691b483a168b05eb5469db6e52d4f275/posthog-7.32.0-py3-none-any.whl", hash = "sha256:04f32797b7a1d88fadb961b8974e233b8e9a6289285b2db21dfa239c375c502b", size = 461756, upload-time = "2026-07-28T14:54:54.327Z" },
+    { url = "https://files.pythonhosted.org/packages/d7/b5/a62d308f749a86112029641392a68d8765b48cc5e925a61bdcee86041980/posthog-7.33.0-py3-none-any.whl", hash = "sha256:4ba7a87ec06447b03effea44dbf584761eafc7e72e01dc1044d0428b92d462d6", size = 462236, upload-time = "2026-07-29T07:06:23.32Z" },
 ]
 
 [[package]]
@@ -2755,7 +2755,7 @@ dependencies = [
 [[package]]
 name = "pytest-playwright-visual-snapshot"
 version = "0.5.1"
-source = { git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git#9e379270d499e7e4fb839eecd677c1e7b21528b5" }
+source = { git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git#955821bd981189e5eeb79cd75a547216b1d0c9aa" }
 dependencies = [
     { name = "pillow" },
     { name = "pixelmatch" },
@@ -3006,7 +3006,7 @@ requires-dist = [
     { name = "css-inline", specifier = ">=0.14.3" },
     { name = "environs", specifier = ">=14.0.0" },
     { name = "facebook-business", specifier = ">=23.0.1" },
-    { name = "fastapi", extras = ["standard"], specifier = ">=0.115.3" },
+    { name = "fastapi", extras = ["standard"], specifier = ">=0.137.0" },
     { name = "flower", git = "https://github.com/iloveitaly/flower?rev=custom" },
     { name = "funcy-pipe", specifier = ">=0.11.1" },
     { name = "furl", specifier = ">=2.1.4" },
@@ -4004,15 +4004,15 @@ wheels = [
 
 [[package]]
 name = "uvicorn"
-version = "0.51.0"
+version = "0.52.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "h11" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a2/65/b7c6c443ccc58678c91e1e973bbe2a878591538655d6e1d47f24ba1c51f3/uvicorn-0.51.0.tar.gz", hash = "sha256:f6f4b69b657c312f516dd2d268ab9ae6f254b11e4bac504f37b2ab58b24dd0b0", size = 94412, upload-time = "2026-07-08T10:59:05.962Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/05/c8/2d307868453a4bca6e64fa3581d122ae0748a0869c53f159339def179c7c/uvicorn-0.52.0.tar.gz", hash = "sha256:ca8876ad6c1983f394157c168b39d52f6dd56dabf5602fa0982751cffc2293ae", size = 97504, upload-time = "2026-07-29T08:45:34.065Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/45/ec/dbb7e5a6b91f86bfb9eb7d2988a2730907b6a729875b949c7f022e8b88fa/uvicorn-0.51.0-py3-none-any.whl", hash = "sha256:5d38af6cd620f2ae3849fb44fd4879e0890aa1febe8d47eb355fb45d93fe6a5b", size = 73219, upload-time = "2026-07-08T10:59:04.44Z" },
+    { url = "https://files.pythonhosted.org/packages/39/e6/b5c0630ace9757232aec07112be8146b812787db52141ff9d50674aa7634/uvicorn-0.52.0-py3-none-any.whl", hash = "sha256:3d887809810b89ed33501bcf0a9aba469b06ecd608158efce04bd6b48d8c9b08", size = 79058, upload-time = "2026-07-29T08:45:32.492Z" },
 ]
 
 [package.optional-dependencies]
