@@ -10,7 +10,6 @@ However, it's easier to just run `pytest` and never think about environment vari
   import any code which imports `app` in this file.
 """
 
-import glob
 import hashlib
 import json
 import os
@@ -18,6 +17,7 @@ import shutil
 import subprocess
 import sys
 import typing as t
+from pathlib import Path
 
 from .constants import TMP_DIRECTORY
 from .log import log
@@ -69,16 +69,21 @@ def direnv_ci_environment() -> dict[str, t.Any]:
 
 def direnv_state_sha() -> str:
     # Glob all .env* files and hash their modified times
-    env_files = sorted([".envrc"] + glob.glob("env/*"))
+    env_files = sorted(
+        [Path(".envrc")] + list(Path("env").glob("*")),
+        key=str,
+    )
 
     # make sure more than one file is found (envrc is assumed!)
     if len(env_files) <= 1:
         raise ValueError("No env files found")
 
-    mtimes = "".join(str(os.path.getmtime(f)) for f in env_files)
+    mtimes = "".join(str(f.stat().st_mtime) for f in env_files)
     sha = hashlib.sha256(mtimes.encode()).hexdigest()
 
-    log.info("env files inspected for direnv state", env_files=env_files)
+    log.info(
+        "env files inspected for direnv state", env_files=[str(f) for f in env_files]
+    )
 
     return sha
 
