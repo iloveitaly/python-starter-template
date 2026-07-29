@@ -1181,17 +1181,13 @@ wheels = [
 [[package]]
 name = "generate-fastapi-typed-routes"
 version = "0.3.4"
-source = { registry = "https://pypi.org/simple" }
+source = { git = "https://github.com/iloveitaly/generate-fastapi-typed-routes.git#753bd4a11ee2e553cb2bb94b1ec648b8d483556c" }
 dependencies = [
     { name = "click" },
     { name = "fastapi" },
     { name = "jinja2" },
     { name = "pydantic" },
     { name = "structlog-config" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/b3/1b/0701022e8008a0d3bf0ab808ed055247b9ade439cd1d4f9c2178a7b7923c/generate_fastapi_typed_routes-0.3.4.tar.gz", hash = "sha256:d95b086a0839da01fe754d6348c1af43c4339e898c3534e743e38aacae349a53", size = 5074, upload-time = "2026-07-28T21:46:26.541Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/95/e4/298e9a7418e1453e286815e8f01f57c663f3c1577b1111888b2dbf928ffb/generate_fastapi_typed_routes-0.3.4-py3-none-any.whl", hash = "sha256:ff6d2f0ceca6290c154ce95ed0ac52f8873ca180e6d77ebaaa663d6ba57775d5", size = 6336, upload-time = "2026-07-28T21:46:25.802Z" },
 ]
 
 [[package]]
@@ -3077,7 +3073,7 @@ dev = [
     { name = "djlint", git = "https://github.com/iloveitaly/djLint.git?rev=github-output" },
     { name = "faker", specifier = ">=40.8.0" },
     { name = "flexmock", specifier = ">=0.12.2" },
-    { name = "generate-fastapi-typed-routes", specifier = ">=0.3.2" },
+    { name = "generate-fastapi-typed-routes", git = "https://github.com/iloveitaly/generate-fastapi-typed-routes.git" },
     { name = "gitignore-parser", specifier = ">=0.1.11" },
     { name = "httpx2-pytest", specifier = ">=1.0.0" },
     { name = "ipython", specifier = ">=8.28.0" },
