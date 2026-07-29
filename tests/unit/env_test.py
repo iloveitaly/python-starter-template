@@ -1,5 +1,6 @@
 import pytest
-from environs import EnvError, EnvValidationError
+from environs import EnvError
+from environs.exceptions import EnvValidationError
 
 from app.env import StrictEnv
 
