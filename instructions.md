@@ -7,8 +7,6 @@ Coding instructions for all programming languages:
 - Prefer `continue` within a loop vs nested if statements.
 - Prefer smaller functions over larger functions. Break up logic into smaller chunks with well-named functions.
 - Prefer constants with separators: `10_000` is preferred to `10000` (or `10_00` over `1000` in the case of a integer representing cents).
-- Only add comments if the code is not self-explanatory. Do not add obvious comments.
-- Do not remove existing comments.
 - When I ask you to write code, prioritize simplicity and legibility over covering all edge cases, handling all errors, etc.
 - When a particular need can be met with a mature, reasonably adopted and maintained package, I would prefer to use that package rather than engineering my own solution.
 - Never add error handling to catch an error without being asked to do so. Fail hard and early with assertions and allow exceptions to propagate.
@@ -37,6 +35,12 @@ session_id = client_secret_id.split("_secret")[0]
 ```
 
 **DO NOT FORGET**: keep your responses short, dense, and without fluff. I am a senior, well-educated software engineer, and hate long explanations.
+
+### Code Comments
+
+- Describe behavior as it exists today—don’t frame comments around version history or “old vs new.”
+- Only add comments if the code is not self-explanatory. Do not add obvious comments.
+- Do not remove existing comments.
 
 ### Important Workflow Rules
 
