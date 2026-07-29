@@ -15,15 +15,29 @@ from app import log
 
 def simplify_operation_ids(app: FastAPI | APIRouter) -> None:
     """
-    Simplify operation IDs so that generated clients have simpler api function names
+    Simplify operation IDs so that generated clients have simpler api function names.
+
+    Walks the full route tree recursively. Included routers are wrapped in
+    `_IncludedRouter` (with an `original_router` attribute), so we unwrap those too.
     """
 
-    found_route = False
+    def _walk(router: FastAPI | APIRouter) -> bool:
+        found = False
+        for route in router.routes:
+            if isinstance(route, APIRoute):
+                # NOTE this is the core intention of this method: shorten the operation ID to the route name
+                route.operation_id = route.name
+                found = True
+            else:
+                # routes includes Mount/docs/etc.; only _IncludedRouter has original_router
+                inner_router = getattr(route, "original_router", None)
+                if inner_router is None:
+                    # routes are not present when WebSocketRoute, docs route, etc is present (i.e. special cases)
+                    inner_router = route if hasattr(route, "routes") else None
 
-    for route in app.routes:
-        if isinstance(route, APIRoute):
-            route.operation_id = route.name
-            found_route = True
+                if inner_router is not None and inner_router is not router:
+                    found = _walk(inner_router) or found
+        return found
 
-    if not found_route:
+    if not _walk(app):
         log.warning("no routes found when simplifying operation ids")
