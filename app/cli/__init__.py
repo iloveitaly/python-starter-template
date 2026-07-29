@@ -57,15 +57,18 @@ def dump_openapi(
     import importlib
 
     from fastapi.openapi.utils import get_openapi
-    from fastapi.routing import APIRoute
+    from fastapi.routing import APIRoute, iter_route_contexts
 
     server_module = importlib.import_module("app.server")
     parent_app = server_module.api_app
 
+    # include_router nests routes under _IncludedRouter; walk with
+    # iter_route_contexts so nested API routes (and include tags/prefixes) are visible.
     public_routes = [
-        r
-        for r in parent_app.router.routes
-        if isinstance(r, APIRoute) and "private" not in (r.tags or [])
+        ctx
+        for ctx in iter_route_contexts(parent_app.router.routes)
+        if isinstance(ctx.original_route, APIRoute)
+        and "private" not in (ctx.tags or [])
     ]
 
     if list_tags:
@@ -107,17 +110,17 @@ def dump_openapi(
 def routes():
     "output list of routes available in the application"
 
-    from fastapi.routing import APIRoute
+    from fastapi.routing import APIRoute, iter_route_contexts
 
     from app.server import api_app
 
-    for route in api_app.routes:
-        if isinstance(route, APIRoute):
-            methods = sorted(route.methods or ())
+    for ctx in iter_route_contexts(api_app.routes):
+        if isinstance(ctx.original_route, APIRoute):
+            methods = sorted(ctx.methods or ())
             method = ", ".join(methods)
-            typer.echo(f"{method}   {route.path}    {route.name}")
+            typer.echo(f"{method}   {ctx.path}    {ctx.name}")
         else:
-            typer.echo(f"unsupported route: {route}")
+            typer.echo(f"unsupported route: {ctx.original_route}")
 
 
 @app.command()
