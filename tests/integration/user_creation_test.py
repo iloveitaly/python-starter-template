@@ -48,6 +48,8 @@ def test_signup(server, page: Page, assert_snapshot) -> None:
     )
 
     expect(page.locator("body")).to_contain_text("Hello From Internal Python")
+    # Clerk UserButton loads async; wait so the masked region is stable for snapshots
+    expect(page.locator('[data-clerk-component="UserButton"]')).to_be_visible()
 
     assert_snapshot(page)
 
@@ -58,9 +60,9 @@ def test_signup(server, page: Page, assert_snapshot) -> None:
     # user should be created at this point!
     assert User.count() == 1
 
-    # logout
-    page.locator(".flex > div:nth-child(3)").first.click()
-    page.get_by_role("menuitem", name="Sign out").click()
+    # logout — Clerk UserButton popover actions are buttons, not menuitems
+    page.locator('[data-clerk-component="UserButton"] button').click()
+    page.get_by_role("button", name="Sign out").click()
 
     expect(page.locator("body")).to_contain_text("Sign in")
 
