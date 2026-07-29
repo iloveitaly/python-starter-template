@@ -8,7 +8,7 @@
     "/internal/v1/admin/users": {
       "get": {
         "summary": "User List",
-        "operationId": "user_list_internal_v1_admin_users_get",
+        "operationId": "user_list",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -101,7 +101,7 @@
     "/internal/v1/admin/login_as/{user_id}": {
       "post": {
         "summary": "Login As User",
-        "operationId": "login_as_user_internal_v1_admin_login_as__user_id__post",
+        "operationId": "login_as_user",
         "security": [
           {
             "HTTPBearer": []
@@ -295,7 +295,7 @@
       "get": {
         "summary": "Application Data",
         "description": "example route to return the user ID that is attached to the request containing a clerk login",
-        "operationId": "application_data_internal_v1__get",
+        "operationId": "application_data",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -480,7 +480,7 @@
     "/unauthenticated/ping": {
       "get": {
         "summary": "Unauthenticated Ping",
-        "operationId": "unauthenticated_ping_unauthenticated_ping_get",
+        "operationId": "unauthenticated_ping",
         "responses": {
           "200": {
             "description": "Successful Response",
