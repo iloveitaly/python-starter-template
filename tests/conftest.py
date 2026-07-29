@@ -245,40 +245,50 @@ def stripe_client():
 
 
 @pytest.fixture
-def httpx_breakpoint(httpx_mock):
+def httpx2_breakpoint(httpx2_mock):
     """
     Debug fixture for httpx2-pytest that pauses at every HTTP request interception.
 
     Usage:
-        def test_something(httpx_breakpoint):
+        def test_something(httpx2_breakpoint):
             # Your test code here
             # When httpx2 makes a request, you'll hit a breakpoint
             # and can inspect the request object
 
     Based on: https://til.simonwillison.net/pytest/pytest-httpx-debug
     """
-    def intercept(request):
-        from pprint import pprint
-        import json
+    return httpx2_mock
 
-        print(f"\nHTTPX2 Request Intercepted:")
-        print(f"URL: {request.url}")
 
-        if request.content:
-            try:
-                print("Body:")
-                pprint(json.loads(request.content))
-            except (json.JSONDecodeError, TypeError):
-                print(f"Body (raw): {request.content}")
+def pytest_collection_modifyitems(items):
+    for item in items:
+        if "httpx2_breakpoint" not in item.fixturenames:
+            continue
 
-        print(f"Method: {request.method}")
-        print(f"Headers: {dict(request.headers)}")
+        item.add_marker(
+            pytest.mark.httpx2_mock(should_mock=_open_httpx2_breakpoint),
+            append=False,
+        )
 
-        breakpoint()
-        return True
 
-    httpx_mock.should_mock = intercept
-    return httpx_mock
+def _open_httpx2_breakpoint(request):
+    import json
+
+    print("\nHTTPX2 Request Intercepted:")
+    print(f"URL: {request.url}")
+
+    if request.content:
+        try:
+            print("Body:")
+            pprint.pprint(json.loads(request.content))
+        except (json.JSONDecodeError, TypeError):
+            print(f"Body (raw): {request.content}")
+
+    print(f"Method: {request.method}")
+    print(f"Headers: {dict(request.headers)}")
+
+    breakpoint()
+    return True
 
 
 @pytest.fixture(scope="session")
