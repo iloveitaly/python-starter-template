@@ -40,6 +40,11 @@ class AppData(BaseModel, extra="forbid"):
     user_id: str
 
 
+@authenticated_api_app.get("/ping")
+def external_api_ping():
+    return {"status": "ok"}
+
+
 @authenticated_api_app.get("/")
 def application_data(request: Request) -> AppData:
     "example route to return the user ID that is attached to the request containing a clerk login"
