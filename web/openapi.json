@@ -8,7 +8,7 @@
     "/internal/v1/admin/users": {
       "get": {
         "summary": "User List",
-        "operationId": "user_list",
+        "operationId": "user_list_internal_v1_admin_users_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -101,7 +101,7 @@
     "/internal/v1/admin/login_as/{user_id}": {
       "post": {
         "summary": "Login As User",
-        "operationId": "login_as_user",
+        "operationId": "login_as_user_internal_v1_admin_login_as__user_id__post",
         "security": [
           {
             "HTTPBearer": []
@@ -200,11 +200,102 @@
         }
       }
     },
+    "/internal/v1/ping": {
+      "get": {
+        "summary": "External Api Ping",
+        "operationId": "external_api_ping_internal_v1_ping_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/internal/v1/": {
       "get": {
         "summary": "Application Data",
         "description": "example route to return the user ID that is attached to the request containing a clerk login",
-        "operationId": "application_data",
+        "operationId": "application_data_internal_v1__get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -298,7 +389,7 @@
       "get": {
         "summary": "External Api Ping",
         "description": "basic uptime + API authentication check",
-        "operationId": "external_api_ping",
+        "operationId": "external_api_ping_external_v1_ping_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -389,7 +480,7 @@
     "/unauthenticated/ping": {
       "get": {
         "summary": "Unauthenticated Ping",
-        "operationId": "unauthenticated_ping",
+        "operationId": "unauthenticated_ping_unauthenticated_ping_get",
         "responses": {
           "200": {
             "description": "Successful Response",
