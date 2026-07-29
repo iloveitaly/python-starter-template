@@ -7,10 +7,19 @@ Lifted from:
 https://github.com/fastapiutils/fastapi-utils/blob/e9e7e2c834d703503a3bf5d5605db6232dd853b9/fastapi_utils/openapi.py#L7C5-L7C27
 """
 
+from typing import Protocol, cast
+
 from fastapi import APIRouter, FastAPI
 from fastapi.routing import APIRoute
+from starlette.routing import BaseRoute
 
 from app import log
+
+
+# FastAPI / APIRouter / Mount don't share a public base type that exposes .routes
+class _HasRoutes(Protocol):
+    @property
+    def routes(self) -> list[BaseRoute]: ...
 
 
 def simplify_operation_ids(app: FastAPI | APIRouter) -> None:
@@ -21,7 +30,7 @@ def simplify_operation_ids(app: FastAPI | APIRouter) -> None:
     `_IncludedRouter` (with an `original_router` attribute), so we unwrap those too.
     """
 
-    def _walk(router: FastAPI | APIRouter) -> bool:
+    def _walk(router: _HasRoutes) -> bool:
         found = False
         for route in router.routes:
             if isinstance(route, APIRoute):
@@ -36,7 +45,7 @@ def simplify_operation_ids(app: FastAPI | APIRouter) -> None:
                     inner_router = route if hasattr(route, "routes") else None
 
                 if inner_router is not None and inner_router is not router:
-                    found = _walk(inner_router) or found
+                    found = _walk(cast(_HasRoutes, inner_router)) or found
         return found
 
     if not _walk(app):
