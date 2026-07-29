@@ -40,6 +40,7 @@ class AppData(BaseModel, extra="forbid"):
     user_id: str
 
 
+# exists primarily to test function name collision resolution
 @authenticated_api_app.get("/ping")
 def external_api_ping():
     return {"status": "ok"}
