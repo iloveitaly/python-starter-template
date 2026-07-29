@@ -10,9 +10,10 @@ This is a separate, simple module, to avoid circular imports.
 """
 
 import typing
+from urllib.parse import urlparse
 
 from environs import Env
-from marshmallow import ValidationError
+from marshmallow import ValidationError, validate
 
 
 def _make_strict_str() -> typing.Any:
@@ -56,12 +57,44 @@ def _make_strict_str() -> typing.Any:
     return method
 
 
+def _make_base_url() -> typing.Any:
+    """
+    Require http(s) + trailing slash to normalize service-like URL extraction from the ENV.
+
+    Mirrors environs' own _field2method pattern: return Any so FieldMethod[str] is preserved.
+    """
+    _parent_str = Env.__dict__["str"]
+
+    def method(self, name: str, default=..., **kwargs):
+        def _base_url_validator(value):
+            if not isinstance(value, str):
+                value = str(value)
+
+            validate.URL(schemes={"http", "https"}, require_tld=True)(value)
+
+            parsed = urlparse(value)
+            if parsed.path not in ("", "/"):
+                raise ValidationError(f"{name} must not include a path")
+            if parsed.params or parsed.query or parsed.fragment:
+                raise ValidationError(
+                    f"{name} must not include params, query, or fragment"
+                )
+            if not value.endswith("/"):
+                raise ValidationError(f"{name} must end with /")
+
+        kwargs.setdefault("validate", _base_url_validator)
+        return _parent_str(self, name, default=default, **kwargs)
+
+    return method
+
+
 class StrictEnv(Env):
     """
     Environs that automatically enforces stripped + non-empty strings by default.
     """
 
     str = _make_strict_str()
+    base_url = _make_base_url()
 
 
 def _make_loose_method(method_name: str) -> typing.Any:
