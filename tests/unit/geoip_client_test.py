@@ -42,8 +42,8 @@ def test_geoip_location_model_parses_api_payload():
     assert location.asnOrganization == "CenturyLink Communications, LLC"
 
 
-def test_lookup_ip_location_returns_parsed_location(httpx_mock):
-    httpx_mock.add_response(json=SAMPLE_GEOIP_PAYLOAD)
+def test_lookup_ip_location_returns_parsed_location(httpx2_mock):
+    httpx2_mock.add_response(json=SAMPLE_GEOIP_PAYLOAD)
 
     location = lookup_ip_location(SAMPLE_IP)
 
@@ -53,25 +53,25 @@ def test_lookup_ip_location_returns_parsed_location(httpx_mock):
     assert location.city == "Denver"
 
 
-def test_lookup_ip_location_is_memoized(httpx_mock):
-    httpx_mock.add_response(json=SAMPLE_GEOIP_PAYLOAD)
+def test_lookup_ip_location_is_memoized(httpx2_mock):
+    httpx2_mock.add_response(json=SAMPLE_GEOIP_PAYLOAD)
 
     first = lookup_ip_location(SAMPLE_IP)
     second = lookup_ip_location(SAMPLE_IP)
 
     assert first is second
     assert first is not None
-    assert len(httpx_mock.get_requests()) == 1
+    assert len(httpx2_mock.get_requests()) == 1
 
 
-def test_lookup_ip_location_returns_none_on_timeout(httpx_mock):
-    httpx_mock.add_exception(httpx2.TimeoutException("timed out"))
+def test_lookup_ip_location_returns_none_on_timeout(httpx2_mock):
+    httpx2_mock.add_exception(httpx2.TimeoutException("timed out"))
 
     assert lookup_ip_location("8.8.8.8") is None
 
 
-def test_lookup_ip_location_returns_none_on_http_error(httpx_mock):
-    httpx_mock.add_response(status_code=404)
+def test_lookup_ip_location_returns_none_on_http_error(httpx2_mock):
+    httpx2_mock.add_response(status_code=404)
 
     assert lookup_ip_location("127.0.0.1") is None
 
@@ -80,8 +80,8 @@ def test_get_point_for_ip_returns_none_without_ip():
     assert get_point_for_ip(None) is None
 
 
-def test_get_point_for_ip_returns_geolocation_point(httpx_mock):
-    httpx_mock.add_response(json=SAMPLE_GEOIP_PAYLOAD)
+def test_get_point_for_ip_returns_geolocation_point(httpx2_mock):
+    httpx2_mock.add_response(json=SAMPLE_GEOIP_PAYLOAD)
 
     point = get_point_for_ip(SAMPLE_IP)
 
