@@ -1,3 +1,4 @@
 {
-  "install": "curl -fsSL https://raw.githubusercontent.com/iloveitaly/agent-containers/master/cursor/install.sh | sudo bash"
+  "$schema": "https://cursor.com/schemas/environment.schema.json",
+  "install": "curl -fsSL https://raw.githubusercontent.com/iloveitaly/agent-containers/master/cursor/install.sh | sudo bash && export MISE_ENV=dev,extras"
 }
