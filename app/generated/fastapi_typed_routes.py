@@ -31,10 +31,6 @@ def api_app_url_path_for(
 
 
 @overload
-def api_app_url_path_for(name: Literal["frontend_handler"], **path_params) -> str: ...
-
-
-@overload
 def api_app_url_path_for(name: Literal["healthcheck"], **path_params) -> str: ...
 
 
@@ -43,11 +39,13 @@ def api_app_url_path_for(name: Literal["index"], **path_params) -> str: ...
 
 
 @overload
-def api_app_url_path_for(name: Literal["javascript_index"], **path_params) -> str: ...
+def api_app_url_path_for(name: Literal["login_as_user"], **path_params) -> str: ...
 
 
 @overload
-def api_app_url_path_for(name: Literal["login_as_user"], **path_params) -> str: ...
+def api_app_url_path_for(
+    name: Literal["unauthenticated_aping"], **path_params
+) -> str: ...
 
 
 @overload
