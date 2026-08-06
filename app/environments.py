@@ -10,11 +10,16 @@ def is_macos():
 
     return sys.platform == "darwin"
 
+
 def is_linux_for_development():
     """
     This is not perfect and assumes you are using a Linux box with Wayland for development.
     """
-    return sys.platform == "linux" and not is_github_actions() and loose_env.str("WAYLAND_DISPLAY")
+    return (
+        sys.platform == "linux"
+        and not is_github_actions()
+        and loose_env.str("WAYLAND_DISPLAY")
+    )
 
 
 def python_environment():
@@ -38,7 +43,10 @@ def is_local_testing():
 
     return is_testing() and (
         # a user or script could set CI=true locally, but we'll never be running in CI on macos
-        env.bool("CI", False) is False or is_macos() or is_wsl() or is_linux_for_development()
+        env.bool("CI", False) is False
+        or is_macos()
+        or is_wsl()
+        or is_linux_for_development()
     )
 
 

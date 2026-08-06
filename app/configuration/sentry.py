@@ -9,11 +9,7 @@ from ..environments import is_job_monitor, is_production, python_environment
 
 # Outside production: valid DSN shape so the client activates, paired with
 # SinkholeTransport (never used for network I/O).
-SENTRY_DSN = (
-    env.str("SENTRY_DSN")
-    if is_production()
-    else "https://public@localhost/1"
-)
+SENTRY_DSN = env.str("SENTRY_DSN") if is_production() else "https://public@localhost/1"
 
 
 class SinkholeTransport(Transport):
