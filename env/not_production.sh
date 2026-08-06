@@ -33,16 +33,13 @@ export EMAIL_FROM_ADDRESS="noreply@example.com"
 # Service Host Configuration
 #############################
 
-# set these conditionally so they be overwritten by CI (or `env/all.local.sh`), which has a different server configuration
-if [ -z "${DATABASE_HOST:-}" ] && [ -z "${REDIS_HOST:-}" ] && [ -z "${SMTP_HOST:-}" ]; then
-  # .orb.local is a nice-to-have feature from: https://docs.orbstack.dev/docker/domains
-  # you can replace with localhost or any other postgres/redis host
-  SERVICES_HOST=$(basename $ROOT_DIR).orb.local
-  REDIS_HOST=redis.${SERVICES_HOST}
-  DATABASE_HOST=postgres.${SERVICES_HOST}
-  SMTP_HOST=mailpit.${SERVICES_HOST}
-  GEOIP_HOST=geoip.${SERVICES_HOST}
-fi
+# Defaults for local OrbStack domains; each host can be overridden independently
+# by CI or env/all.local.sh.orb.local docs: https://docs.orbstack.dev/docker/domains
+SERVICES_HOST="${SERVICES_HOST:-$(basename "$ROOT_DIR").orb.local}"
+REDIS_HOST="${REDIS_HOST:-redis.${SERVICES_HOST}}"
+DATABASE_HOST="${DATABASE_HOST:-postgres.${SERVICES_HOST}}"
+SMTP_HOST="${SMTP_HOST:-mailpit.${SERVICES_HOST}}"
+GEOIP_HOST="${GEOIP_HOST:-geoip.${SERVICES_HOST}}"
 
 # names are important here: pg_isready and docker configuration requires these
 # if you are not using docker for local postgres and redis, you can change these
