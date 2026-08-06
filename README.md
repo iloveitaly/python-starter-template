@@ -207,6 +207,12 @@ Some things to watch out for:
 
 <!-- link to blog post here -->
 
+### Linux Setup
+
+* Mise does not install `op` in the permission group that is required for it to connect to 1Password Desktop and the help documentation does not debug this for you.
+* On Linux, `localias` cannot bind ports 80/443 as a normal user (privileged ports need `CAP_NET_BIND_SERVICE`); grant it with `sudo setcap 'cap_net_bind_service=+ep' "$(readlink -f "$(which localias)")"` (re-run after mise upgrades).
+* On Linux and CI, `just docker_up` runs [`docker-hosts`](https://github.com/iloveitaly/docker-hosts) (via `uvx`) to add container hostnames to `/etc/hosts` (similar to OrbStack on macOS, but not using `.orb.local`); this needs sudo and does not work well on default WSL (containers lack unique IPs).
+
 ### WSL Setup
 
 If you are developing on Windows using WSL (Windows Subsystem for Linux) this section is for you!
