@@ -1,5 +1,8 @@
 """
 Completely unauthenticated API routes.
+
+`/ping` and `/aping` intentionally exercise FastAPI's synchronous and asynchronous
+route paths in automated unit tests.
 """
 
 from fastapi import APIRouter, Depends
@@ -17,4 +20,9 @@ unauthenticated_api = APIRouter(
 
 @unauthenticated_api.get("/ping")
 def unauthenticated_ping():
+    return {"status": "ok"}
+
+
+@unauthenticated_api.get("/aping")
+async def unauthenticated_aping():
     return {"status": "ok"}
