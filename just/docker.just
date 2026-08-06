@@ -24,11 +24,13 @@ docker_up fast="false" latest="false": _not_production
 		docker compose up -d {{ if fast == "true" { "" } else { "--wait" } }}
 	fi
 
-	# enables us to (a) avoid exposing ports to the host machine and (b) have dns names for each service in CI
+	# using host names enables us to (a) avoid exposing ports to the host machine and (b) have dns names for each service
 	# this is done for us on macOS via OrbStack. Without this, the `DOCKER_POSTGRES` binary approach would not work.
-	# this approach works well on Linux, but not on WSL. Default WSL configuration does not assign each container a unique
-	# address.
-	[[ -n "${CI:-}" ]] && sudo $(which uvx) docker-hosts@latest || true
+	# on CI and native Linux we replicate *.orb.local domains via docker-hosts (/etc/hosts).
+	# this works well on Linux, but not on WSL — default WSL config does not assign each container a unique address.
+	if [[ -n "${CI:-}" ]] || [[ "$(uname -s)" == "Linux" ]]; then
+		sudo $(which uvx) docker-hosts@latest || true
+	fi
 
 # stop all containers and remove the images
 docker_down: db_down
