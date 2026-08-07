@@ -1,0 +1,18 @@
+id: py-jobs-lazy-import-models
+language: python
+severity: error
+message: "Jobs must lazy-import models inside a function (def), not at module top-level."
+files:
+  - "app/jobs/**/*.py"
+rule:
+  all:
+    - any:
+        - pattern: from $MOD import $$$REST
+        - pattern: import $MOD
+    - not:
+        inside:
+          kind: function_definition
+          stopBy: end
+constraints:
+  MOD:
+    regex: '^app\.models(\..*)?$'

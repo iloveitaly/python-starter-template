@@ -1,0 +1,13 @@
+id: py-no-commands-import-in-models
+language: python
+severity: error
+message: "Models must not import from app.commands."
+files:
+  - "app/models/**/*.py"
+rule:
+  any:
+    - pattern: from $MOD import $$$REST
+    - pattern: import $MOD
+constraints:
+  MOD:
+    regex: '^app\.commands(\..*)?$'
