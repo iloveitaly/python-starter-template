@@ -10,6 +10,11 @@ from pathlib import Path
 
 from structlog_config import LoggerWithContext, configure_logger
 
+from app.environments import (
+    is_productionish,
+    python_environment,
+)
+
 from . import constants  # import all constants to trigger build failures
 from .configuration.database import configure_database, run_migrations
 from .configuration.debugging import configure_debugging
@@ -21,10 +26,6 @@ from .configuration.posthog import configure_posthog
 from .configuration.sentry import configure_sentry
 from .configuration.signals import configure_signals
 from .configuration.versions import check_service_versions
-from .environments import (
-    is_productionish,
-    python_environment,
-)
 from .setup import get_root_path
 
 root: Path
@@ -85,6 +86,15 @@ def setup():
 # side effects are bad, but it's fun to do bad things
 setup()
 
-# after configuration is complete, import all models and commands to ensure there are no startup issues
+# after configuration is complete, import application packages to fail fast on startup
 # NOTE jobs are excluded since they are not required in all process types
-from . import commands, models  # noqa: F401
+# Order is intentional:
+# - models first (domain foundation; lib/helpers may use them)
+# - lib, helpers next (may depend on models)
+# - generated before commands (commands may use generated; generated.fastapi_typed_routes imports app.server)
+# - commands last
+from . import models  # noqa: F401
+from . import lib  # noqa: F401
+from . import helpers  # noqa: F401
+from . import generated  # noqa: F401
+from . import commands  # noqa: F401

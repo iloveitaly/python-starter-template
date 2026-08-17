@@ -299,9 +299,9 @@ def test_calculate_quote_unknown_county(client):
 
 globs: **/*.py
 
-- `app/lib/` is for code that is not specified to this application and with some effort could extracted into a external package.
-- `app/helpers` is for larger reusable modules that if they weren't specific to this application, could be extracted into their own package.
-- `app/utils` are small helper functions that are specific to a particular page or area of the application.
+- `app/lib/` large modules not specific to this project that with some effort could be extracted into a pypi package.
+- `app/helpers` larg modules that, if they weren't so tightly coupled to this project, could be extracted into their own package.
+- `app/utils` small utility functions specific to a page, domain, or just general utilities that are too small to be extracted into a dedicated package.
 - `app/__init__.py` is the entrypoint for the application which is run when _anything_ is executed (fastapi, celery, etc).
   - It primarily runs `configure_*` commands for any `app.configuration.*` modules. These modules primary setup API clients, database connections, python language configuration, etc.
   - Also makes sure anything that mutates global state loads early.

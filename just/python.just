@@ -55,10 +55,15 @@ py_clean_visual_snapshots:
 # rebuild the venv from scratch
 py_nuke: py_clean py_setup
 
-py_upgrade:
+# upgrade project deps; --bump-constraints also refreshes upper bounds via uv-bump
+[arg("bump-constraints", long, help="run uv-bump to update constraints", value="true")]
+py_upgrade bump-constraints="false":
 	# https://github.com/astral-sh/uv/issues/6794
 	uv sync -U --group=debugging-extras
 	uv tool upgrade --all
+	if [ "{{bump-constraints}}" = "true" ]; then \
+		uvx uv-bump@latest; \
+	fi
 	git add pyproject.toml uv.lock
 
 # open up a python development server

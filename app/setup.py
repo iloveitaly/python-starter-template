@@ -96,13 +96,17 @@ def autoimport_submodules(
         package_path = module.__path__
         public_members: list[tuple[str, object]] = []
 
-        for module_info in pkgutil.walk_packages(
-            package_path, prefix=f"{package_name}."
-        ):
+        # Sort for deterministic import order across filesystems/OSes.
+        module_infos = [
+            module_info
+            for module_info in pkgutil.walk_packages(
+                package_path, prefix=f"{package_name}."
+            )
             # Package __init__ modules are optional to avoid recursive/redundant imports.
-            if module_info.ispkg and not include_packages:
-                continue
+            if not (module_info.ispkg and not include_packages)
+        ]
 
+        for module_info in sorted(module_infos, key=lambda mi: mi.name):
             module_name = module_info.name
 
             try:
