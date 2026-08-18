@@ -69,7 +69,7 @@ jobs:
       - name: Cache Playwright Browsers
         uses: actions/cache@v6
         with:
-          path: ~/.cache/ms-playwright
+          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
           key: ${{ runner.os }}-playwright-${{ hashFiles('uv.lock', '.service-versions') }}
           restore-keys: |
             ${{ runner.os }}-playwright-
