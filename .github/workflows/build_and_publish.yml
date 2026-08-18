@@ -66,6 +66,13 @@ jobs:
         with:
           chrome: true
       - run: just docker_up --fast
+      - name: Cache Playwright Browsers
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('uv.lock', '.service-versions') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
       - run: just py_setup
       - run: just py_lint
       - run: just db_migrate
