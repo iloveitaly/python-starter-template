@@ -9,13 +9,13 @@ from app import log
 from app.celery import celery_app
 from app.configuration.clerk import clerk
 
-from app.models.user import User
-
 
 def perform() -> None:
     """
     Perform the syncing of User email addresses with Clerk user data.
     """
+
+    from app.models.user import User
 
     # TODO support deleted flag in clerk
 
