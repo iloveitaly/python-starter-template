@@ -61,6 +61,7 @@ def user_list(request: Request) -> UserListResponse:
         users=list(
             User.select(User.clerk_id, User.email, User.id)
             .where(User.role != UserRole.admin)
+            .order_by(User.id)
             .all()
         ),  # type: ignore
     )
