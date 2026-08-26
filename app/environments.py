@@ -1,8 +1,17 @@
 import logging
 import platform
 import sys
+from enum import StrEnum
 
 from app.env import env, loose_env
+
+
+class PythonEnvironment(StrEnum):
+    DEVELOPMENT = "development"
+    TEST = "test"
+    PRODUCTION = "production"
+    STAGING = "staging"
+    PREVIEW = "preview"
 
 
 def is_macos():
@@ -22,12 +31,17 @@ def is_linux_for_development():
     )
 
 
-def python_environment():
-    return env.str("PYTHON_ENV", "development").lower()
+def python_environment() -> PythonEnvironment:
+    return PythonEnvironment(env.str("PYTHON_ENV", "development").lower())
 
 
-def is_testing():
-    return python_environment() == "test"
+def assert_environment() -> PythonEnvironment:
+    """Raise if PYTHON_ENV is missing or not a known environment."""
+    return PythonEnvironment(env.str("PYTHON_ENV").lower())
+
+
+def is_testing() -> bool:
+    return python_environment() is PythonEnvironment.TEST
 
 
 def is_github_actions():
@@ -74,23 +88,23 @@ def is_debug_logging():
     return logging.getLogger().getEffectiveLevel() <= logging.DEBUG
 
 
-def is_production():
-    return python_environment() == "production"
+def is_production() -> bool:
+    return python_environment() is PythonEnvironment.PRODUCTION
 
 
-def is_staging():
-    return python_environment() == "staging"
+def is_staging() -> bool:
+    return python_environment() is PythonEnvironment.STAGING
 
 
-def is_preview():
+def is_preview() -> bool:
     """
     Preview environments are distinct from staging in that they are throwaway environments tied to a single PR
     """
 
-    return python_environment() == "preview"
+    return python_environment() is PythonEnvironment.PREVIEW
 
 
-def is_productionish():
+def is_productionish() -> bool:
     """
     Is this environment production-like, meaning production, staging, or preview
     """
@@ -98,8 +112,8 @@ def is_productionish():
     return is_production() or is_staging() or is_preview()
 
 
-def is_development():
-    return python_environment() == "development"
+def is_development() -> bool:
+    return python_environment() is PythonEnvironment.DEVELOPMENT
 
 
 def is_job_monitor():
