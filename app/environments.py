@@ -35,6 +35,11 @@ def python_environment() -> PythonEnvironment:
     return PythonEnvironment(env.str("PYTHON_ENV", "development").lower())
 
 
+def assert_environment() -> PythonEnvironment:
+    """Raise if PYTHON_ENV is missing or not a known environment."""
+    return PythonEnvironment(env.str("PYTHON_ENV").lower())
+
+
 def is_testing() -> bool:
     return python_environment() is PythonEnvironment.TEST
 

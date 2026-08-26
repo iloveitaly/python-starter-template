@@ -1,7 +1,10 @@
 import pytest
+from environs import EnvError
+from environs.exceptions import EnvValidationError
 
 from app.environments import (
     PythonEnvironment,
+    assert_environment,
     is_development,
     is_preview,
     is_production,
@@ -44,6 +47,34 @@ def test_python_environment_rejects_unknown_value(monkeypatch):
 
     with pytest.raises(ValueError, match="'sandbox' is not a valid PythonEnvironment"):
         python_environment()
+
+
+def test_assert_environment_returns_parsed_value(monkeypatch):
+    monkeypatch.setenv("PYTHON_ENV", "TEST")
+
+    assert assert_environment() is PythonEnvironment.TEST
+
+
+def test_assert_environment_requires_python_env(monkeypatch):
+    monkeypatch.delenv("PYTHON_ENV", raising=False)
+
+    with pytest.raises(EnvError, match='Environment variable "PYTHON_ENV" not set'):
+        assert_environment()
+
+
+@pytest.mark.parametrize("value", ["", "   "])
+def test_assert_environment_rejects_empty_python_env(monkeypatch, value):
+    monkeypatch.setenv("PYTHON_ENV", value)
+
+    with pytest.raises(EnvValidationError, match="PYTHON_ENV must not be empty"):
+        assert_environment()
+
+
+def test_assert_environment_rejects_unknown_value(monkeypatch):
+    monkeypatch.setenv("PYTHON_ENV", "sandbox")
+
+    with pytest.raises(ValueError, match="'sandbox' is not a valid PythonEnvironment"):
+        assert_environment()
 
 
 @pytest.mark.parametrize(
