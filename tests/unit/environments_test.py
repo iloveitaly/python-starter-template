@@ -25,7 +25,11 @@ from app.environments import (
 def test_python_environment_parses_known_values(monkeypatch, value, expected):
     monkeypatch.setenv("PYTHON_ENV", value)
 
-    assert python_environment() is expected
+    current = python_environment()
+
+    assert current is expected
+    # StrEnum remains a str so log/Sentry/path interpolation keep working
+    assert current == value.lower()
 
 
 def test_python_environment_defaults_to_development(monkeypatch):
