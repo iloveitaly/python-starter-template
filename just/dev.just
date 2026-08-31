@@ -190,7 +190,7 @@ tooling_upgrade: _dev_only && _mise_web_version_sync _js_sync-engine-versions _m
 		sd '^min_version = ".*"$' "min_version = \"$mise_version\"" .config/mise.dev.toml
 
 	# zsh extended global allows us to write very fancy globs; the one below omits the `.local` overrides
-	mise upgrade --local
+	mise upgrade --yes --local
 	# TODO I think we should be able to remove this in the future, but right now it seems like a separate lock command is required
 	mise lock
 	git add .config/mise*~(*/|*).local*(toml|lock) "{{JAVASCRIPT_PACKAGE_JSON}}"
