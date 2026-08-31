@@ -109,12 +109,14 @@ jobs:
       - run: just js_lint
       - run: just js_test
 
+  # NOTE disabled for now; we are going to switch to railpack soon
+  # https://railpack.com/guides/running-railpack-in-production
   deploy:
     name: 🚀 Deploy
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: [web, app]
-    if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
+    if: false
     permissions:
       packages: write
       contents: read
