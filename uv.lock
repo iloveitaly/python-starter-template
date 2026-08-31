@@ -202,13 +202,17 @@ wheels = [
 [[package]]
 name = "apple-maps-api"
 version = "0.2.0"
-source = { git = "https://github.com/iloveitaly/python-apple-maps-api#75d5a4c261762756518bc32287f60a93c0428d17" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "funcy" },
     { name = "httpx2" },
     { name = "pydantic" },
     { name = "pyjwt", extra = ["crypto"] },
     { name = "tenacity" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/c5/02/f6eb107580a983a1ca743d6a5139d9620627e4a92db0787e43e6efa8bf72/apple_maps_api-0.2.0.tar.gz", hash = "sha256:cf1ec0f9fe8c3390a32c094b9eaa6db38a5c0654e32d5c7ca192b7f52ea787cc", size = 16089, upload-time = "2026-07-20T16:15:17.704Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/42/d9/67b7b7006dc0ae96303cda5b74dff1afb74fa5a9e191c4e4ddb0fadccee5/apple_maps_api-0.2.0-py3-none-any.whl", hash = "sha256:f7f62ad2588c8147af755134a577007e0660bcc8e63b6aa9dbb2857871799327", size = 18164, upload-time = "2026-07-20T16:15:18.572Z" },
 ]
 
 [[package]]
@@ -3128,7 +3132,7 @@ requires-dist = [
     { name = "aiosmtplib", specifier = ">=5.1.2" },
     { name = "alembic", specifier = ">=1.19.0" },
     { name = "alembic-postgresql-enum", specifier = ">=1.10.0" },
-    { name = "apple-maps-api", git = "https://github.com/iloveitaly/python-apple-maps-api" },
+    { name = "apple-maps-api" },
     { name = "beautiful-traceback", git = "https://github.com/iloveitaly/beautiful-traceback.git" },
     { name = "cachetools", specifier = ">=7.1.7" },
     { name = "celery", extras = ["redis"], specifier = ">=5.6.3" },
