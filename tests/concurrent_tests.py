@@ -4,8 +4,6 @@
 so worker URLs must be rewritten before any `app` import.
 """
 
-from __future__ import annotations
-
 import os
 import re
 from urllib.parse import urlparse, urlunparse
