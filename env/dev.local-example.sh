@@ -85,8 +85,6 @@ export PY_COLORS=1
 # debugging a nixpacks/docker issue and want to consume the raw logs?
 # export BUILDKIT_PROGRESS=plain
 
-# casing is important on openai level
-# export OPENAI_LOG=debug
 export LOG_LEVEL=info
 export VITE_LOG_LEVEL=info
 
