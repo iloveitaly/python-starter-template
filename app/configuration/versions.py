@@ -82,6 +82,12 @@ def chrome_version() -> str:
         return browser.version
 
 
+def playwright_version() -> str:
+    from importlib.metadata import version
+
+    return version("playwright")
+
+
 def python_version() -> str:
     """
     Get the current Python version as a string.

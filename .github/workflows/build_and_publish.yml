@@ -66,11 +66,14 @@ jobs:
         with:
           chrome: true
       - run: just docker_up --fast
+      - name: Playwright browser cache version
+        id: playwright-version
+        run: echo "version=$(jq -r '.playwright' .service-versions)" >> "$GITHUB_OUTPUT"
       - name: Cache Playwright Browsers
         uses: actions/cache@v6
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
-          key: ${{ runner.os }}-playwright-${{ hashFiles('uv.lock', '.service-versions') }}
+          key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}
           restore-keys: |
             ${{ runner.os }}-playwright-
       - run: just py_setup
