@@ -299,6 +299,8 @@ def test_calculate_quote_unknown_county(client):
 
 globs: **/*.py
 
+Here's how the python application is organized:
+
 - `app/lib/` is for code that is not specified to this application and with some effort could extracted into a external package.
 - `app/helpers` is for larger reusable modules that if they weren't specific to this application, could be extracted into their own package.
 - `app/utils` are small helper functions that are specific to a particular page or area of the application.
@@ -321,6 +323,18 @@ globs: **/*.py
 - When referencing a command, use the full-qualified name, e.g. `app.commands.transcript_deletion.perform`.
 - When queuing a job or `perform`ing it in a test, use the full-qualified name, e.g. `app.jobs.transcript_deletion.perform`.
 - `app/cli/` is for scripts or CLI tools that are specific to the application.
+
+### Python Test Code Organization
+
+* `tests/**/utils.py` is for test-specific code that is not a fixture or a factory.
+* `app/factories/` is the single source of truth for factories used by tests, local playground code, and dev seeding helpers.
+  This is in the `app/` folder so that it can be used by seeding scripts.
+* `tests/**/assertions.py` all custom `assert_*` functions should go here.
+* `tests/**/conftest.py` is for test-specific fixtures. This is the only place you should put fixtures.
+* `tests/{commands,routes,jobs,models}/` map to corresponding application categories under `app/`.
+* `tests/integration/` is for browser tests.
+  * Certain complex 3rd party dependencies (like Stripe, Clerk, etc) may require complex helpers. If they do, create a
+    dedicated helper file in `tests/integration/**` (i.e. `stripe.py`, `clerk.py`, etc) to contain helper methods.
 
 ### Factories
 
