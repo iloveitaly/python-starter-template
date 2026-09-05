@@ -1,6 +1,5 @@
-import { afterEach, describe, expect, it } from "vitest"
-
 import { LogLevel } from "tslog"
+import { afterEach, describe, expect, it } from "vitest"
 
 import { isDebugEnabled, log } from "./logging"
 

@@ -1,7 +1,7 @@
 /**
  * Originally, we were using loglevel. tslog is typescript-by-default, has JSON support, and is a bit more modern.
  */
-import { type ILogObj, LogLevel, Logger } from "tslog"
+import { type ILogObj, LogLevel, Logger, type TLogLevelName } from "tslog"
 
 import { isProduction } from "~/utils/environment"
 
@@ -25,7 +25,9 @@ function configureLogging() {
 
   // determine the log level from the environment variable
   if (import.meta.env.VITE_LOG_LEVEL) {
-    loggerInstance.setMinLevel(import.meta.env.VITE_LOG_LEVEL)
+    loggerInstance.setMinLevel(
+      import.meta.env.VITE_LOG_LEVEL.toUpperCase() as TLogLevelName,
+    )
   }
 
   // this *could* occur intentionally, but it should be rare and it's ok to be noisy when it happens
