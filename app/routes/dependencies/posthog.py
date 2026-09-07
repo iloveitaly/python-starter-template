@@ -22,7 +22,7 @@ async def inject_posthog_identity(request: Request):
     > If two users have the same distinct ID, their data is merged and they are considered one user in PostHog.
     """
 
-    with posthog.new_context(capture_exceptions=False):
+    with posthog.new_context():
         # by using clerk_id, we can easily use the same UUID on frontend events
         posthog.identify_context(request.state.user.clerk_id)
         yield
@@ -42,8 +42,7 @@ async def inject_posthog_tags(request: Request):
     """
 
     # by default, there is not a context, so we must define one
-    # `capture_exceptions=False` https://github.com/PostHog/posthog-python/issues/353
-    with posthog.new_context(capture_exceptions=False):
+    with posthog.new_context():
         # intentionally overwrite any other session or distinct id set previously
         # it's up to the user to add dependencies in the correct order
         if distinct_id := request.headers.get("X-Posthog-Distinct-Id"):
