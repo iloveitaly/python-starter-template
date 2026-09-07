@@ -196,7 +196,8 @@ tooling_upgrade: _dev_only && _mise_web_version_sync _js_sync-engine-versions _m
 	git add .config/mise*~(*/|*).local*(toml|lock) "{{JAVASCRIPT_PACKAGE_JSON}}"
 
 # upgrade everything: all packages on all languages, tooling, etc
-upgrade: _dev_only tooling_upgrade js_upgrade py_upgrade
+[arg("yes", long, help="auto-accept all dialogs and upgrade everything", value="true")]
+upgrade yes="false": _dev_only tooling_upgrade (js_upgrade yes) py_upgrade
 	playwright install
 	just py_cli write-versions
 	git add .service-versions
