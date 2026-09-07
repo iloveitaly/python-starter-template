@@ -31,6 +31,8 @@ services:
     # NOTE you'll probably need to drop this value for your production environment which will lag edge releases
     image: redis:8
     restart: unless-stopped
+    # default is 16; pytest-xdist workers each get a dedicated logical db
+    command: ["redis-server", "--databases", "128"]
     ports:
       - ${CI:+6379}:6379
     healthcheck:
