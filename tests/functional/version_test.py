@@ -13,6 +13,7 @@ import json
 from app.configuration.versions import (
     VERSIONS_FILE,
     chrome_version,
+    playwright_version,
     postgres_version,
     redis_version,
 )
@@ -38,3 +39,11 @@ def test_chrome_version_matches_persisted_version():
     persisted_chrome_version = json.loads(VERSIONS_FILE.read_bytes())["chrome"]
 
     assert chrome_version() == persisted_chrome_version, VERSION_ERROR.format("chrome")
+
+
+def test_playwright_version_matches_persisted_version():
+    persisted_playwright_version = json.loads(VERSIONS_FILE.read_bytes())["playwright"]
+
+    assert playwright_version() == persisted_playwright_version, VERSION_ERROR.format(
+        "playwright"
+    )

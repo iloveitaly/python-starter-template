@@ -24,8 +24,8 @@ py_setup:
 	fi
 
 	# important for CI to install browsers for playwright
-	# the installation process is fast enough (<10s) to eliminate the need for attempting to cache via GHA
-	# if this turns out not to be true, we should implement: https://github.com/hirasso/thumbhash-custom-element/blob/main/.github/workflows/tests.yml
+	# GHA caches $PLAYWRIGHT_BROWSERS_PATH keyed on .service-versions playwright, so a
+	# cache hit makes this a no-op / version check rather than a full download
 
 	# TODO why should we use --only-shell here? can we extract this out and run it after we update the packages as well?
 

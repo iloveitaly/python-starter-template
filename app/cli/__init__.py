@@ -9,7 +9,7 @@ app = typer.Typer(pretty_exceptions_enable=False)
 @app.command()
 def write_versions():
     """
-    Write chrome, redis, and postgres versions to disk.
+    Write chrome, playwright, redis, and postgres versions to disk.
 
     Helpful to automatically ensuring dev, test, and prod parity
     """
@@ -17,6 +17,7 @@ def write_versions():
     from app.configuration.versions import (
         VERSIONS_FILE,
         chrome_version,
+        playwright_version,
         postgres_version,
         python_version,
         redis_version,
@@ -26,6 +27,8 @@ def write_versions():
         json.dumps(
             {
                 "chrome": chrome_version(),
+                # playwright package version; used as the GHA browser-cache key
+                "playwright": playwright_version(),
                 "postgres": postgres_version(),
                 "redis": redis_version(),
                 # this is already defined via mise, but to alert the developer of venv issues we duplicate it here
