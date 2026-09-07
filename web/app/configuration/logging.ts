@@ -1,46 +1,33 @@
 /**
  * Originally, we were using loglevel. tslog is typescript-by-default, has JSON support, and is a bit more modern.
  */
-import { type ILogObj, Logger } from "tslog"
+import { type ILogObj, LogLevel, Logger, type TLogLevelName } from "tslog"
 
-// ILogLevel
 import { isProduction } from "~/utils/environment"
 
 let loggerInstance: Logger<ILogObj> | undefined
 
-// TODO https://github.com/fullstack-build/tslog/pull/308
-// it's insane, but this mapping does not exist in tslog :/
-// I've removed the levels that are... silly
-const LOG_LEVEL_MAP: Record<string, number> = {
-  // silly: 0,
-  trace: 1,
-  debug: 2,
-  info: 3,
-  warn: 4,
-  error: 5,
-  fatal: 6,
-  // silent: 7,
-}
-
 function configureLogging() {
   if (loggerInstance) return loggerInstance
 
-  const DEFAULT_LOG_LEVEL: number = isProduction()
-    ? LOG_LEVEL_MAP.warn
-    : LOG_LEVEL_MAP.info
+  const defaultMinLevel = isProduction() ? LogLevel.WARN : LogLevel.INFO
 
   loggerInstance = new Logger({
-    minLevel: DEFAULT_LOG_LEVEL,
+    minLevel: defaultMinLevel,
     type: "pretty",
-    prettyLogTemplate: "[{{hh}}:{{MM}}:{{ss}}] {{logLevelName}}: ",
-    hideLogPositionForProduction: isProduction(),
+    pretty: {
+      template: "[{{hh}}:{{MM}}:{{ss}}] {{logLevelName}}: ",
+    },
+    stack: {
+      capture: isProduction() ? "off" : "auto",
+    },
   })
 
   // determine the log level from the environment variable
   if (import.meta.env.VITE_LOG_LEVEL) {
-    const logLevelFromEnv = import.meta.env.VITE_LOG_LEVEL.toLowerCase()
-    loggerInstance.settings.minLevel =
-      LOG_LEVEL_MAP[logLevelFromEnv] ?? DEFAULT_LOG_LEVEL
+    loggerInstance.setMinLevel(
+      import.meta.env.VITE_LOG_LEVEL.toUpperCase() as TLogLevelName,
+    )
   }
 
   // this *could* occur intentionally, but it should be rare and it's ok to be noisy when it happens
@@ -56,7 +43,7 @@ const log = configureLogging()
 // intended to be used to enable verbose logging on various libraries that have a `debug` flag
 export function isDebugEnabled(): boolean {
   const logger = loggerInstance || configureLogging()
-  return logger.settings.minLevel <= LOG_LEVEL_MAP.debug
+  return logger.isLevelEnabled(LogLevel.DEBUG)
 }
 
 export { log }
