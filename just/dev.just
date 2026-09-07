@@ -333,6 +333,9 @@ bootstrap_worktree:
 		# may need some `.local.` customizations in order to generate
 		direnv allow .
 
+		# IDE rule files are gitignored; generate them in this worktree
+		llm-ide-rules explode
+
 		just dev_generate_hosts
 
 		just py_setup
