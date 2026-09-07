@@ -283,16 +283,6 @@ Here's how frontend code is organized in `web/app/`:
 
 [This is documented here](.github/instructions/python-app.instructions.md)
 
-### Python Test Code Organization
-
-* `tests/**/utils.py` is for test-specific code that is not a fixture or a factory.
-* `app/factories/` is the single source of truth for factories used by tests, local playground code, and dev seeding helpers.
-* `tests/**/assertions.py` all custom `assert_*` functions should go here.
-* `tests/**/conftest.py` is for test-specific fixtures. This is the only place you should put fixtures.
-* `tests/{commands,routes,jobs,models}/` map to corresponding application categories under `app/`.
-
-<!-- move to LLM instructions -->
-
 ### Assets & Static Files
 
 Avoid putting assets in the `public/` folder as much as you can. In other words:
