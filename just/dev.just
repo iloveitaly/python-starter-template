@@ -334,8 +334,14 @@ bootstrap_worktree:
 		# may need some `.local.` customizations in order to generate
 		direnv allow .
 
-		# IDE rule files are gitignored; generate them in this worktree
-		llm-ide-rules explode
+		# IDE rule files are gitignored; generate them in this worktree.
+		# Mirror whichever agents the main repo already exploded instead of every client.
+		agents=("${(@f)$(llm-ide-rules exploded "$original_dir_path")}")
+		if [[ -n "$agents" ]]; then
+			for agent in $agents; do
+				llm-ide-rules explode --agent "$agent"
+			done
+		fi
 
 		just dev_generate_hosts
 
