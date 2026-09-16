@@ -70,7 +70,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
-          key: ${{ runner.os }}-playwright-${{ hashFiles('.service-versions') }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('uv.lock', '.service-versions') }}
           restore-keys: |
             ${{ runner.os }}-playwright-
       - run: just py_setup
