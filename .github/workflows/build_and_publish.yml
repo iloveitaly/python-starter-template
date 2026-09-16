@@ -68,7 +68,7 @@ jobs:
       - run: just docker_up --fast
       - name: Playwright browser cache version
         id: playwright-version
-        run: echo "version=$(jq -r '.playwright' .service-versions)" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(jq -r '.chrome' .service-versions)" >> "$GITHUB_OUTPUT"
       - name: Cache Playwright Browsers
         uses: actions/cache@v6
         with:

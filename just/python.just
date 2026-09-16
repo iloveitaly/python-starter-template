@@ -24,7 +24,7 @@ py_setup:
 	fi
 
 	# important for CI to install browsers for playwright
-	# GHA caches $PLAYWRIGHT_BROWSERS_PATH keyed on .service-versions playwright, so a
+	# GHA caches $PLAYWRIGHT_BROWSERS_PATH keyed on .service-versions chrome, so a
 	# cache hit makes this a no-op / version check rather than a full download
 
 	# TODO why should we use --only-shell here? can we extract this out and run it after we update the packages as well?
