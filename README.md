@@ -283,16 +283,6 @@ Here's how frontend code is organized in `web/app/`:
 
 [This is documented here](.github/instructions/python-app.instructions.md)
 
-### Python Test Code Organization
-
-* `tests/**/utils.py` is for test-specific code that is not a fixture or a factory.
-* `app/factories/` is the single source of truth for factories used by tests, local playground code, and dev seeding helpers.
-* `tests/**/assertions.py` all custom `assert_*` functions should go here.
-* `tests/**/conftest.py` is for test-specific fixtures. This is the only place you should put fixtures.
-* `tests/{commands,routes,jobs,models}/` map to corresponding application categories under `app/`.
-
-<!-- move to LLM instructions -->
-
 ### Assets & Static Files
 
 Avoid putting assets in the `public/` folder as much as you can. In other words:
@@ -642,9 +632,12 @@ direnv allow config
 
 ### Using Azure OpenAI
 
-Azure's OpenAI services are great for new projects because they give you a ton of credits to play around with.
+This template does not include the OpenAI Python SDK. Azure OpenAI Terraform still lives in [`infra/azure/openai.tf`](./infra/azure/openai.tf) if you want to provision Azure resources.
 
-You can [easily switch from OpenAI to Azure OpenAI](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/switching-endpoints). Here's the credentials you need to set:
+If you add OpenAI functionality:
+
+1. Add the `openai` package and the `openai` extra on `sentry-sdk` in `pyproject.toml` (for example `"sentry-sdk[fastapi,celery,sqlalchemy,openai]>=X.X.X"`).
+2. [Switch the client to Azure OpenAI](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/switching-endpoints) with credentials like:
 
 ```shell
 export AZURE_OPENAI_API_KEY=does_not_start_with_sk-
@@ -653,8 +646,6 @@ export AZURE_OPENAI_ENDPOINT=https://eastus2.api.cognitive.microsoft.com/
 # not the same as the OAI versions
 export OPENAI_API_VERSION=2025-03-01-preview
 ```
-
-And in [`app/configuration/openai.py`](app/configuration/openai.py):
 
 ```python
 from openai import AzureOpenAI
@@ -665,7 +656,7 @@ openai = AzureOpenAI()
 Other notes:
 
 * [Here's a list of models you can use](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models?tabs=global-standard%2Cstandard-chat-completions#model-summary-table-and-region-availability)
-* The model names must match the deployment names. You have to manage this yourself. [Checkout this terraform example.](./infra/azure/openai.tf)
+* Deployment names must match the model names you pass to the API. [Checkout this terraform example.](./infra/azure/openai.tf)
 * [Here's a list of API versions](https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#rest-api-versioning)
 
 ### Python Commands
