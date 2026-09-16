@@ -18,6 +18,7 @@ function configureLogging() {
     pretty: {
       template: "[{{hh}}:{{MM}}:{{ss}}] {{logLevelName}}: ",
     },
+    // whether each log walks the call stack to attach file/line
     stack: {
       capture: isProduction() ? "off" : "auto",
     },
