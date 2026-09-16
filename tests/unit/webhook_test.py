@@ -32,12 +32,12 @@ def test_queue_webhook_skips_when_no_endpoint(monkeypatch):
 
 
 def test_queue_webhook_enqueues_and_processes_success(
-    monkeypatch, httpx_mock, sync_celery
+    monkeypatch, httpx2_mock, sync_celery
 ):
     webhook_endpoint = "https://example.com/webhook"
     monkeypatch.setattr("app.models.webhook_event.WEBHOOK_ENDPOINT", webhook_endpoint)
 
-    httpx_mock.add_response(
+    httpx2_mock.add_response(
         method="POST", url=webhook_endpoint, json={"status": "received"}
     )
 
@@ -69,10 +69,10 @@ def test_queue_webhook_enqueues_and_processes_success(
         "id": str(random_fake_object_id),
     }
 
-    assert len(httpx_mock.get_requests()) == 1
+    assert len(httpx2_mock.get_requests()) == 1
 
 
-def test_process_webhook_skips_if_already_succeeded(monkeypatch, httpx_mock):
+def test_process_webhook_skips_if_already_succeeded(monkeypatch, httpx2_mock):
     webhook_endpoint = "https://example.com/webhook"
     monkeypatch.setattr("app.models.webhook_event.WEBHOOK_ENDPOINT", webhook_endpoint)
 
@@ -92,18 +92,18 @@ def test_process_webhook_skips_if_already_succeeded(monkeypatch, httpx_mock):
 
     # httpx2.post should not be called when already succeeded, so no mock needed
     app.jobs.process_webhook.perform(event.id)
-    assert len(httpx_mock.get_requests()) == 0
+    assert len(httpx2_mock.get_requests()) == 0
 
 
 def test_process_webhook_records_json_response_payload(
-    monkeypatch, httpx_mock, sync_celery
+    monkeypatch, httpx2_mock, sync_celery
 ):
     webhook_endpoint = "https://example.com/webhook"
     monkeypatch.setattr("app.models.webhook_event.WEBHOOK_ENDPOINT", webhook_endpoint)
 
     expected_response_payload = {"status": "received", "order_id": "test_order_id"}
 
-    httpx_mock.add_response(
+    httpx2_mock.add_response(
         method="POST", url=webhook_endpoint, json=expected_response_payload
     )
 
@@ -127,17 +127,17 @@ def test_process_webhook_records_json_response_payload(
     assert event.response_payload == expected_response_payload
     assert event.succeeded_at is not None
     assert event.failed_at is None
-    assert len(httpx_mock.get_requests()) == 1
+    assert len(httpx2_mock.get_requests()) == 1
 
 
 @pytest.mark.skip(reason="sync_celery causes retries to be run inline")
 def test_process_webhook_records_empty_dict_for_non_json_response(
-    monkeypatch, httpx_mock, sync_celery
+    monkeypatch, httpx2_mock, sync_celery
 ):
     webhook_endpoint = "https://example.com/webhook"
     monkeypatch.setattr("app.models.webhook_event.WEBHOOK_ENDPOINT", webhook_endpoint)
 
-    httpx_mock.add_response(method="POST", url=webhook_endpoint, text="invalid json {")
+    httpx2_mock.add_response(method="POST", url=webhook_endpoint, text="invalid json {")
 
     random_fake_object_id = TypeID(prefix="ob")
 
@@ -161,16 +161,16 @@ def test_process_webhook_records_empty_dict_for_non_json_response(
     assert event.response_payload is None
     assert event.succeeded_at is None
     assert event.failed_at is not None
-    assert len(httpx_mock.get_requests()) == 1
+    assert len(httpx2_mock.get_requests()) == 1
 
 
 def test_process_webhook_handles_empty_response_body(
-    monkeypatch, httpx_mock, sync_celery
+    monkeypatch, httpx2_mock, sync_celery
 ):
     webhook_endpoint = "https://example.com/webhook"
     monkeypatch.setattr("app.models.webhook_event.WEBHOOK_ENDPOINT", webhook_endpoint)
 
-    httpx_mock.add_response(method="POST", url=webhook_endpoint, json={})
+    httpx2_mock.add_response(method="POST", url=webhook_endpoint, json={})
 
     random_fake_object_id = TypeID(prefix="ob")
 
@@ -192,16 +192,16 @@ def test_process_webhook_handles_empty_response_body(
     assert event.response_payload == {}
     assert event.succeeded_at is not None
     assert event.failed_at is None
-    assert len(httpx_mock.get_requests()) == 1
+    assert len(httpx2_mock.get_requests()) == 1
 
 
-def test_process_webhook_errors_on_invalid_host(httpx_mock, sync_celery, monkeypatch):
+def test_process_webhook_errors_on_invalid_host(httpx2_mock, sync_celery, monkeypatch):
     monkeypatch.setattr(app.jobs.process_webhook, "DEFAULT_WEBHOOK_TIMEOUT", 1)
 
     webhook_endpoint = "https://nonexistent.invalid/webhook"
     monkeypatch.setattr("app.models.webhook_event.WEBHOOK_ENDPOINT", webhook_endpoint)
 
-    httpx_mock.add_exception(
+    httpx2_mock.add_exception(
         httpx2.ConnectError("Connection failed"), method="POST", url=webhook_endpoint
     )
 
@@ -230,4 +230,4 @@ def test_process_webhook_errors_on_invalid_host(httpx_mock, sync_celery, monkeyp
     assert event.failed_at is not None
     assert event.succeeded_at is None
     assert event.response_payload is None
-    assert len(httpx_mock.get_requests()) == 1
+    assert len(httpx2_mock.get_requests()) == 1
