@@ -1,13 +1,12 @@
 from cachetools import LRUCache, cached
 
-from app.configuration.clerk import clerk
 from app.factories.constants import (
     CLERK_DEV_ADMIN_EMAIL,
     CLERK_DEV_SEED_EMAIL,
     CLERK_DEV_USER_EMAIL,
     CLERK_DEV_USER_PASSWORD,
 )
-
+from app.helpers.clerk import get_or_create_clerk_user
 from app.models.user import User, UserRole
 
 # TODO this is a bit dangerous, let's see how it performs
@@ -17,18 +16,7 @@ clerk_cache_instance = LRUCache(maxsize=128)
 
 @cached(cache=clerk_cache_instance)
 def _get_or_create_clerk_user(email: str):
-    user_list = clerk.users.list(request={"email_address": [email]})
-    assert user_list is not None
-
-    if len(user_list) == 1:
-        return user_list[0]
-    elif len(user_list) == 0:
-        return clerk.users.create(
-            email_address=[email],
-            password=CLERK_DEV_USER_PASSWORD,
-        )
-    else:
-        raise ValueError("more than one user found")
+    return get_or_create_clerk_user(email, password=CLERK_DEV_USER_PASSWORD)
 
 
 def get_clerk_dev_user():
