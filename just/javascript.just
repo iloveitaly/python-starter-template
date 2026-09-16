@@ -87,7 +87,7 @@ js_upgrade yes="false":
 	# intentionally without lockfile so it's updated
 	{{_pnpm}} install
 
-	{{_pnpm}} dlx {{ if yes == "true" { "--yes" } else { "" } }} update-browserslist-db@latest
+	{{_pnpm}} dlx update-browserslist-db@latest
 
 	cd {{WEB_DIR}} && git add package.json pnpm-*.yaml
 
