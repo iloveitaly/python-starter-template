@@ -79,10 +79,10 @@ js_play:
 	{{_pnpm}} dlx tsx ./playground.ts
 
 # interactively upgrade all js packages
-[arg("yes", long, help="auto-accept all dialogs and upgrade everything", value="true")]
-js_upgrade yes="false":
+[arg("yes", long, help="auto-accept all dialogs and upgrade everything", flag)]
+js_upgrade yes:
 	# 1d is the default pnpm 11 config
-	{{_pnpm}} dlx {{ if yes == "true" { "--yes" } else { "" } }} npm-check-updates@latest {{ if yes == "true" { "--upgrade" } else { "--interactive" } }} --cooldown 1d
+	{{_pnpm}} dlx {{ if bool(yes) { "--yes" } else { "" } }} npm-check-updates@latest {{ if bool(yes) { "--upgrade" } else { "--interactive" } }} --cooldown 1d
 
 	# intentionally without lockfile so it's updated
 	{{_pnpm}} install
