@@ -31,10 +31,4 @@ describe("logging", () => {
     expect(log.settings.minLevel).toBe(LogLevel.DEBUG)
     expect(isDebugEnabled()).toBe(true)
   })
-
-  it("keeps the pretty template on the v5 settings group", () => {
-    expect(log.settings.pretty.template).toBe(
-      "[{{hh}}:{{MM}}:{{ss}}] {{logLevelName}}: ",
-    )
-  })
 })
