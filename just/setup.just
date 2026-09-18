@@ -21,8 +21,8 @@ requirements *flags: _dev_only
 
 	mise install
 
-	# Expand gitignored Cursor/Claude/Copilot/OpenCode files from instructions.md
-	uvx llm-ide-rules explode instructions.md
+	# Expand gitignored Cursor/Claude/Copilot/OpenCode files
+	uvx llm-ide-rules explode
 
 	# bonus packages for a fancy devprod experience
 	@if [[ "{{flags}}" =~ "--extras" ]]; then \
