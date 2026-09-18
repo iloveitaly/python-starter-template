@@ -57,7 +57,6 @@ Pay careful attention to these instructions when running tests, generating datab
   - Run `just --list` to see all available pre-written workflow development commands.
 - **IMPORTANT:** Never manually set environment variables that are required. You can set optional variables for debugging, but any missing required environment variables is an error that should be reported and you should stop your work immediately.
 - **NEVER** git commit changes. Always let me run any git commands which are not read-only.
-- **NEVER** modify `.cursor/environment.json` unless explicitly asked to change Cloud Agent environment configuration.
 - Do not worry about cleaning up the environment. This is done automatically.
 - Run python code with `uv run python`
 - Use `pytest` to run tests. If tests fail because of a configuration, environment, or system error: let me know and stop working.
