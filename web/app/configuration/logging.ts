@@ -13,7 +13,8 @@ function prettySettings() {
     template: isProduction()
       ? `${prettyPrefix}: `
       : `${prettyPrefix} [{{filePathWithLine}}]: `,
-    // https://github.com/fullstack-build/tslog/blob/v5.2.0/README.md#interactive-objects-in-the-browser-console-prettypassobjectsnatively
+    // passObjectsNatively is the browser default; levelMethod is not.
+    // Unmapped levels use console.log: https://github.com/fullstack-build/tslog/issues/330
     levelMethod: {
       INFO: console.info,
       WARN: console.warn,
