@@ -21,6 +21,9 @@ requirements *flags: _dev_only
 
 	mise install
 
+	# Expand gitignored Cursor/Claude/Copilot/OpenCode files from instructions.md
+	just explode_ide_rules
+
 	# bonus packages for a fancy devprod experience
 	@if [[ "{{flags}}" =~ "--extras" ]]; then \
 		echo "Removing sample git hooks..."; \
@@ -29,6 +32,10 @@ requirements *flags: _dev_only
 		echo "Installing git hooks..."; \
 		lefthook install; \
 	fi
+
+# Expand instructions.md into gitignored IDE rule files (Cursor, Claude, Copilot, OpenCode)
+explode_ide_rules:
+	mise exec -- uvx llm-ide-rules explode instructions.md
 
 # setup everything required for local development
 setup: _dev_only requirements && py_setup docker_up db_seed js_setup
