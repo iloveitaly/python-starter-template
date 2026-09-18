@@ -34,9 +34,6 @@ describe("logging", () => {
 
   it("includes file and line on pretty logs outside production", () => {
     expect(log.settings.pretty.template).toContain("{{filePathWithLine}}")
-    expect(log.settings.pretty.errorStackTemplate).toContain(
-      "{{filePathWithLine}}",
-    )
   })
 
   it("routes levels through the matching console methods", () => {

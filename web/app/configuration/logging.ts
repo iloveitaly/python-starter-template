@@ -9,7 +9,8 @@ let loggerInstance: Logger<ILogObj> | undefined
 
 function prettySettings() {
   const prettyPrefix = "[{{hh}}:{{MM}}:{{ss}}] {{logLevelName}}"
-  const pretty = {
+
+  return {
     template: isProduction()
       ? `${prettyPrefix}: `
       : `${prettyPrefix} [{{filePathWithLine}}]: `,
@@ -21,14 +22,6 @@ function prettySettings() {
       ERROR: console.error,
       FATAL: console.error,
     },
-  }
-
-  if (isProduction()) return pretty
-
-  return {
-    ...pretty,
-    errorStackTemplate:
-      "  - {{fileNameWithLine}}\t{{method}}\n\t{{filePathWithLine}}",
   }
 }
 
