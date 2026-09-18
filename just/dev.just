@@ -336,11 +336,10 @@ bootstrap_worktree:
 
 		# IDE rule files are gitignored; generate them in this worktree.
 		# Mirror whichever agents the main repo already exploded instead of every client.
-		agents=("${(@f)$(llm-ide-rules exploded "$original_dir_path")}")
+		# Empty exploded output must skip: `explode` with no agents defaults to all.
+		agents=$(llm-ide-rules exploded "$original_dir_path")
 		if [[ -n "$agents" ]]; then
-			for agent in $agents; do
-				llm-ide-rules explode --agent "$agent"
-			done
+			llm-ide-rules explode ${=agents}
 		fi
 
 		just dev_generate_hosts
