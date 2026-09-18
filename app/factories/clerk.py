@@ -7,6 +7,7 @@ from app.factories.constants import (
     CLERK_DEV_USER_PASSWORD,
 )
 from app.helpers.clerk import get_or_create_clerk_user
+
 from app.models.user import User, UserRole
 
 # TODO this is a bit dangerous, let's see how it performs
