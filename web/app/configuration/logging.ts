@@ -7,26 +7,47 @@ import { isProduction } from "~/utils/environment"
 
 let loggerInstance: Logger<ILogObj> | undefined
 
+function prettySettings() {
+  const prettyPrefix = "[{{hh}}:{{MM}}:{{ss}}] {{logLevelName}}"
+  const pretty = {
+    template: isProduction()
+      ? `${prettyPrefix}: `
+      : `${prettyPrefix} [{{filePathWithLine}}]: `,
+    // native DevTools filtering: warn/error groups instead of every line as console.log
+    levelMethod: {
+      WARN: console.warn.bind(console),
+      ERROR: console.error.bind(console),
+      FATAL: console.error.bind(console),
+    },
+  }
+
+  if (isProduction()) return pretty
+
+  return {
+    ...pretty,
+    errorStackTemplate:
+      "  • {{fileNameWithLine}}\t{{method}}\n\t{{filePathWithLine}}",
+  }
+}
+
 function configureLogging() {
   if (loggerInstance) return loggerInstance
 
   const defaultMinLevel = isProduction() ? LogLevel.WARN : LogLevel.INFO
-  const prettyPrefix = "[{{hh}}:{{MM}}:{{ss}}] {{logLevelName}}"
 
   loggerInstance = new Logger({
     minLevel: defaultMinLevel,
     type: "pretty",
-    pretty: isProduction()
-      ? { template: `${prettyPrefix}: ` }
-      : {
-          template: `${prettyPrefix} [{{filePathWithLine}}]: `,
-          errorStackTemplate:
-            "  • {{fileNameWithLine}}\t{{method}}\n\t{{filePathWithLine}}",
-        },
+    pretty: prettySettings(),
     // whether each log walks the call stack to attach file/line
     stack: {
       capture: isProduction() ? "off" : "auto",
     },
+    mask: {
+      keys: ["password", "token", "secret", "authorization", "apiKey"],
+      caseInsensitive: true,
+    },
+    strictConfig: !isProduction(),
   })
 
   // determine the log level from the environment variable

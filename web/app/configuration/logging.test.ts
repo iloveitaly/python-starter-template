@@ -38,4 +38,17 @@ describe("logging", () => {
       "{{filePathWithLine}}",
     )
   })
+
+  it("routes warn and error through the matching console methods", () => {
+    expect(log.settings.pretty.levelMethod.WARN).toBeTypeOf("function")
+    expect(log.settings.pretty.levelMethod.ERROR).toBeTypeOf("function")
+    expect(log.settings.pretty.levelMethod.FATAL).toBeTypeOf("function")
+  })
+
+  it("masks common secret keys", () => {
+    expect(log.settings.mask.keys).toEqual(
+      expect.arrayContaining(["password", "token", "secret", "apiKey"]),
+    )
+    expect(log.settings.mask.caseInsensitive).toBe(true)
+  })
 })
