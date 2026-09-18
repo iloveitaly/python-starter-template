@@ -65,5 +65,9 @@ def test_signup(server, page: Page, assert_snapshot) -> None:
     page.get_by_role("button", name="Sign out").click()
 
     expect(page.locator("body")).to_contain_text("Sign in")
+    # Wait for the Clerk SignIn widget so its mask box is present and stable
+    expect(
+        page.locator("[data-clerk-component], .cl-rootBox, iframe[src*='clerk']").first
+    ).to_be_visible()
 
     assert_snapshot(page)
