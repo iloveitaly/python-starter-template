@@ -125,6 +125,7 @@ def pytest_configure(config: Config):
         "^sentry_sdk/",
     ]
 
+    # https://github.com/iloveitaly/pytest-playwright-visual-snapshot
     # disable visual assertions when running locally
     config.option.playwright_visual_disable_snapshots = is_local_testing()
 
