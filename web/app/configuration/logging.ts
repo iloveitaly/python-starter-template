@@ -28,7 +28,7 @@ function prettySettings() {
   return {
     ...pretty,
     errorStackTemplate:
-      "  • {{fileNameWithLine}}\t{{method}}\n\t{{filePathWithLine}}",
+      "  - {{fileNameWithLine}}\t{{method}}\n\t{{filePathWithLine}}",
   }
 }
 
