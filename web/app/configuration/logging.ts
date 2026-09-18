@@ -15,6 +15,7 @@ function prettySettings() {
       : `${prettyPrefix} [{{filePathWithLine}}]: `,
     // https://github.com/fullstack-build/tslog/blob/v5.2.0/README.md#interactive-objects-in-the-browser-console-prettypassobjectsnatively
     levelMethod: {
+      INFO: console.info,
       WARN: console.warn,
       ERROR: console.error,
       FATAL: console.error,

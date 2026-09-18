@@ -39,10 +39,11 @@ describe("logging", () => {
     )
   })
 
-  it("routes warn and error through the matching console methods", () => {
-    expect(log.settings.pretty.levelMethod.WARN).toBeTypeOf("function")
-    expect(log.settings.pretty.levelMethod.ERROR).toBeTypeOf("function")
-    expect(log.settings.pretty.levelMethod.FATAL).toBeTypeOf("function")
+  it("routes levels through the matching console methods", () => {
+    expect(log.settings.pretty.levelMethod.INFO).toBe(console.info)
+    expect(log.settings.pretty.levelMethod.WARN).toBe(console.warn)
+    expect(log.settings.pretty.levelMethod.ERROR).toBe(console.error)
+    expect(log.settings.pretty.levelMethod.FATAL).toBe(console.error)
   })
 
   it("masks common secret keys", () => {
