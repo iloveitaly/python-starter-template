@@ -34,9 +34,9 @@ ci_last_failed-tail:
     gh run view --log-failed $(just _gha_last_failed_run_id)
 
 # download test-results artifact from last failed gha run
-[arg("output-dir", long="output-dir", value="true", help="output the raw downloaded directory")]
+[arg("output-dir", long="output-dir", flag, help="output the raw downloaded directory")]
 [script]
-ci_last_failed-download output-dir="false":
+ci_last_failed-download output-dir:
     downloaded_test_results_directory="$TMP_DIRECTORY/gha-artifacts"
     mkdir -p "$downloaded_test_results_directory"
 
@@ -70,7 +70,7 @@ ci_last_failed-download output-dir="false":
     fi
 
     # output a clean path to the downloaded artifacts, for use in other scripts
-    if [[ "{{ output-dir }}" == "true" ]]; then
+    if {{ if bool(output-dir) { "true" } else { "false" } }}; then
         echo "${display_failed_run_target_directory}"
     else
         echo "{{ BLUE }}Downloaded artifacts to ${display_failed_run_target_directory}{{ NORMAL }}"

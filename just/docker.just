@@ -3,25 +3,25 @@
 ##########################
 
 [script]
-[arg("fast", long, help="skip waiting for healthy containers, useful for CI runs", value="true")]
-[arg("latest", long, help="pull latest images and recreate services", value="true")]
-docker_up fast="false" latest="false": _not_production
+[arg("fast", long, help="skip waiting for healthy containers, useful for CI runs", flag)]
+[arg("latest", long, help="pull latest images and recreate services", flag)]
+docker_up fast latest: _not_production
 	# if images have already been pulled, this ensures the latest versions are pulled so they match with
 	# CI or other environments that are pulling fresh versions of the images
-	if [[ "{{latest}}" == "true" ]]; then
+	if {{ if bool(latest) { "true" } else { "false" } }}; then
 		docker compose pull
 	fi
 
 	# force a restart to pick up the latest pulled images
-	if [[ "{{latest}}" == "true" ]]; then
-		docker compose up -d --force-recreate {{ if fast == "true" { "" } else { "--wait" } }}
+	if {{ if bool(latest) { "true" } else { "false" } }}; then
+		docker compose up -d --force-recreate {{ if bool(fast) { "" } else { "--wait" } }}
 
 		just db_migrate
 
 		just py_cli write-versions
 		git add .service-versions
 	else
-		docker compose up -d {{ if fast == "true" { "" } else { "--wait" } }}
+		docker compose up -d {{ if bool(fast) { "" } else { "--wait" } }}
 	fi
 
 	# using host names enables us to (a) avoid exposing ports to the host machine and (b) have dns names for each service

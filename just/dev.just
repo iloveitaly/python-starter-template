@@ -21,8 +21,8 @@ dev_lint:
 
 # start all of the services you need for development in a single terminal
 [script]
-[arg("open", long, help="open the development site in the browser", value="true")]
-dev open="false": _dev_only localias dev_kill
+[arg("open", long, help="open the development site in the browser", flag)]
+dev open: _dev_only localias dev_kill
 	just _banner_echo "Starting dev services"
 
 	# TODO we should think about the worker command a bit more...should we use the same exact command? should we generate vs hardcode?
@@ -38,7 +38,7 @@ dev open="false": _dev_only localias dev_kill
 	db_seed: just db_seed --safe
 	EOF
 
-	if [[ "{{open}}" == "true" ]]; then
+	if {{ if bool(open) { "true" } else { "false" } }}; then
 		echo "dev_open: just dev_open" >> {{GENERATED_PROCFILE}}
 	fi
 

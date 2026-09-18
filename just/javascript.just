@@ -92,9 +92,9 @@ js_upgrade yes:
 	cd {{WEB_DIR}} && git add package.json pnpm-*.yaml
 
 # generate a typescript client from the openapi spec
-[arg("watch", long, help="regenerate openapi spec and client on file changes", value="true")]
-js_generate watch="false":
-	if [[ "{{watch}}" == "true" ]]; then; \
+[arg("watch", long, help="regenerate openapi spec and client on file changes", flag)]
+js_generate watch:
+	if {{ if bool(watch) { "true" } else { "false" } }}; then; \
 		{{WATCHEXEC_APP_PY}} just _js_generate; \
 	else; \
 		just _js_generate; \
