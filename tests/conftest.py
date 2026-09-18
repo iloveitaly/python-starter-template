@@ -38,6 +38,16 @@ if os.getenv("PYTHON_ENV", "development") != "test":
 
     load_ci_environment()
 
+from tests.concurrent_tests import (
+    configure_xdist_worker_environment,
+    setup_xdist_worker_databases,
+    xdist_worker_id,
+)
+
+# app.setup() binds the DB/Redis URLs at import time, so workers must rewrite
+# TEST_* URLs before any `app` import.
+configure_xdist_worker_environment()
+
 import multiprocessing
 from pathlib import Path
 import stripe
@@ -112,7 +122,10 @@ def pytest_configure(config: Config):
     # config.option.log_cli_level = "INFO"
 
     # lower debug level for file debugging, so we can download this artifact and view detailed debugging
-    config.option.log_file = str(TEST_RESULTS_DIRECTORY / "pytest.log")
+    log_name = "pytest.log"
+    if worker_id := xdist_worker_id():
+        log_name = f"pytest-{worker_id}.log"
+    config.option.log_file = str(TEST_RESULTS_DIRECTORY / log_name)
     # config.option.log_file_level = "DEBUG"
 
     config.option.enable_beautiful_traceback = True
@@ -152,6 +165,11 @@ def pytest_configure(config: Config):
 
 def pytest_sessionstart(session):
     "only executes once if a test is run, at the beginning of the test suite execution"
+
+    # workers use cloned databases prepared by pytest_xdist_setupnodes
+    if xdist_worker_id():
+        return
+
     from .utils import delete_all_clerk_users
 
     # without this, the clerk dev instance will get cluttered and throw errors
@@ -159,6 +177,14 @@ def pytest_sessionstart(session):
 
     # clear out any previous cruft in this DB, which is why...
     database_reset_truncate(pytest_config=session.config)
+
+
+def pytest_xdist_setupnodes(config, specs):
+    """Clone the truncated test DB for each worker before xdist starts them.
+
+    xdist's sessionstart is trylast, so pytest_sessionstart has already truncated.
+    """
+    setup_xdist_worker_databases(len(specs))
 
 
 @pytest.fixture(scope="function")
@@ -260,7 +286,18 @@ def httpx2_breakpoint(httpx2_mock):
     return httpx2_mock
 
 
-def pytest_collection_modifyitems(items):
+def pytest_collection_modifyitems(config: Config, items):
+    xdist_active = bool(
+        xdist_worker_id() or getattr(config.option, "numprocesses", None)
+    )
+    if xdist_active:
+        integration_tests = Path(__file__).parent / "integration"
+        if any(item.path.is_relative_to(integration_tests) for item in items):
+            raise pytest.UsageError(
+                "pytest-xdist cannot run integration tests; "
+                "drop -n or pass --ignore tests/integration"
+            )
+
     for item in items:
         if "httpx2_breakpoint" not in item.fixturenames:
             continue
