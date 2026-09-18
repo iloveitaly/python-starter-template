@@ -21,8 +21,8 @@ dev_lint:
 
 # start all of the services you need for development in a single terminal
 [script]
-[arg("open", long, help="open the development site in the browser", value="true")]
-dev open="false": _dev_only localias dev_kill
+[arg("open", long, help="open the development site in the browser", flag)]
+dev open: _dev_only localias dev_kill
 	just _banner_echo "Starting dev services"
 
 	# TODO we should think about the worker command a bit more...should we use the same exact command? should we generate vs hardcode?
@@ -38,7 +38,7 @@ dev open="false": _dev_only localias dev_kill
 	db_seed: just db_seed --safe
 	EOF
 
-	if [[ "{{open}}" == "true" ]]; then
+	if {{ if bool(open) { "true" } else { "false" } }}; then
 		echo "dev_open: just dev_open" >> {{GENERATED_PROCFILE}}
 	fi
 
@@ -196,7 +196,8 @@ tooling_upgrade: _dev_only && _mise_web_version_sync _js_sync-engine-versions _m
 	git add .config/mise*~(*/|*).local*(toml|lock) "{{JAVASCRIPT_PACKAGE_JSON}}"
 
 # upgrade everything: all packages on all languages, tooling, etc
-upgrade: _dev_only tooling_upgrade js_upgrade py_upgrade
+[arg("yes", long, help="auto-accept all dialogs and upgrade everything", flag)]
+upgrade yes: _dev_only tooling_upgrade (js_upgrade yes) py_upgrade
 	playwright install
 	just py_cli write-versions
 	git add .service-versions

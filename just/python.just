@@ -196,10 +196,10 @@ py_test_dev:
 	run_server()
 
 # regenerate all python generated files
-[arg("watch", long, help="run in watch mode", value="true")]
-py_generate watch="false":
+[arg("watch", long, help="run in watch mode", flag)]
+py_generate watch:
 	# j py_js-build, we really need to make sure this is built *first* otherwise the
-	if [[ "{{watch}}" == "true" ]]; then \
+	if {{ if bool(watch) { "true" } else { "false" } }}; then \
 		{{WATCHEXEC_APP_PY}} just _py_generate; \
 	else \
 		just _py_generate; \
@@ -223,10 +223,10 @@ _py_generate:
 		--output app/generated/fastapi_typed_routes.py
 
 # open playwright trace viewer on last trace zip. --remote to download last failed remote trace
-[arg("remote", long, help="download last failed remote trace", value="true")]
+[arg("remote", long, help="download last failed remote trace", flag)]
 [script]
-py_playwright_view_trace remote="false": _dev_only
-		if [ "{{remote}}" = "true" ]; then
+py_playwright_view_trace remote: _dev_only
+		if {{ if bool(remote) { "true" } else { "false" } }}; then
 			gha_artifact_dir=$(just ci_last_failed-download --output-dir)
 			playwright_directory="${gha_artifact_dir}/playwright"
 			echo "{{BLUE}}Downloaded remote GHA run to ${gha_artifact_dir}{{NORMAL}}";
