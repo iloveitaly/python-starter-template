@@ -13,11 +13,11 @@ function prettySettings() {
     template: isProduction()
       ? `${prettyPrefix}: `
       : `${prettyPrefix} [{{filePathWithLine}}]: `,
-    // native DevTools filtering: warn/error groups instead of every line as console.log
+    // https://github.com/fullstack-build/tslog/blob/v5.2.0/README.md#interactive-objects-in-the-browser-console-prettypassobjectsnatively
     levelMethod: {
-      WARN: console.warn.bind(console),
-      ERROR: console.error.bind(console),
-      FATAL: console.error.bind(console),
+      WARN: console.warn,
+      ERROR: console.error,
+      FATAL: console.error,
     },
   }
 
