@@ -64,9 +64,6 @@ def pytest_configure(config):
     start_js_build()
     report_localias_status()
 
-    # Clerk visual snapshot masks are set in tests/conftest.py. Nested
-    # pytest_configure runs first, so assigning them here is overwritten.
-
 
 def pytest_keyboard_interrupt(excinfo):
     log.info("KeyboardInterrupt caught: stopping server...")
