@@ -31,4 +31,11 @@ describe("logging", () => {
     expect(log.settings.minLevel).toBe(LogLevel.DEBUG)
     expect(isDebugEnabled()).toBe(true)
   })
+
+  it("includes file and line on pretty logs outside production", () => {
+    expect(log.settings.pretty.template).toContain("{{filePathWithLine}}")
+    expect(log.settings.pretty.errorStackTemplate).toContain(
+      "{{filePathWithLine}}",
+    )
+  })
 })

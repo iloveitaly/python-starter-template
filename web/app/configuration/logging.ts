@@ -11,13 +11,18 @@ function configureLogging() {
   if (loggerInstance) return loggerInstance
 
   const defaultMinLevel = isProduction() ? LogLevel.WARN : LogLevel.INFO
+  const prettyPrefix = "[{{hh}}:{{MM}}:{{ss}}] {{logLevelName}}"
 
   loggerInstance = new Logger({
     minLevel: defaultMinLevel,
     type: "pretty",
-    pretty: {
-      template: "[{{hh}}:{{MM}}:{{ss}}] {{logLevelName}}: ",
-    },
+    pretty: isProduction()
+      ? { template: `${prettyPrefix}: ` }
+      : {
+          template: `${prettyPrefix} [{{filePathWithLine}}]: `,
+          errorStackTemplate:
+            "  • {{fileNameWithLine}}\t{{method}}\n\t{{filePathWithLine}}",
+        },
     // whether each log walks the call stack to attach file/line
     stack: {
       capture: isProduction() ? "off" : "auto",
