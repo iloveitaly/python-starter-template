@@ -3,4 +3,4 @@ def test_clerk_hosted_ui_is_masked_in_visual_snapshots(pytestconfig):
 
     assert "[data-clerk-component]" in masks
     assert ".cl-rootBox" in masks
-    assert 'iframe[src*="clerk"]' in masks
+    assert ".cl-portal" in masks

@@ -134,17 +134,15 @@ def pytest_configure(config: Config):
     config.option.playwright_visual_snapshot_failures_path = (
         TEST_RESULTS_DIRECTORY / "playwright_visual_snapshot_failures"
     )
-    # Mask Clerk-hosted UI. Root pytest_configure runs after nested conftest
-    # hooks, so these selectors must live here or they get overwritten.
-    # SignIn/SignUp often render in an iframe that [data-clerk-component] misses.
+    # Nested pytest_configure runs first; Clerk masks must be set here or they
+    # are overwritten.
     config.option.playwright_visual_snapshot_masks = [
+        # Clerk React components (SignIn, UserButton, ...)
         "[data-clerk-component]",
+        # documented appearance root of prebuilt Clerk widgets
         ".cl-rootBox",
-        ".cl-cardBox",
-        ".cl-card",
-        ".cl-userButtonPopoverCard",
+        # popovers/modals Clerk portals to document.body
         ".cl-portal",
-        'iframe[src*="clerk"]',
     ]
 
     if not config.option.playwright_artifacts_output:
