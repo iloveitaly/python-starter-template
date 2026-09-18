@@ -21,6 +21,8 @@ requirements *flags: _dev_only
 
 	mise install
 
+	uvx llm-ide-rules explode
+
 	# bonus packages for a fancy devprod experience
 	@if [[ "{{flags}}" =~ "--extras" ]]; then \
 		echo "Removing sample git hooks..."; \
