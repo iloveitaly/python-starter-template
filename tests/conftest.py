@@ -132,7 +132,7 @@ def pytest_configure(config: Config):
 
     from pytest_playwright_visual_snapshot.matchers.odiff_matcher import _ODiffServer
 
-    if not getattr(_ODiffServer.compare, "_antialiasing", False):
+    if _ODiffServer.compare.__name__ != "_odiff_compare_with_antialiasing":
         _odiff_server_compare = _ODiffServer.compare
 
         def _odiff_compare_with_antialiasing(self, base, compare, output, options):
@@ -147,7 +147,6 @@ def pytest_configure(config: Config):
                 return {"requestId": result.get("requestId"), "match": True}
             return result
 
-        _odiff_compare_with_antialiasing._antialiasing = True
         _ODiffServer.compare = _odiff_compare_with_antialiasing
 
     config.option.playwright_visual_snapshots_path = env.path(
