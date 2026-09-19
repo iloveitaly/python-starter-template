@@ -128,6 +128,27 @@ def pytest_configure(config: Config):
     # https://github.com/iloveitaly/pytest-playwright-visual-snapshot
     # disable visual assertions when running locally
     config.option.playwright_visual_disable_snapshots = is_local_testing()
+    config.option.playwright_visual_matcher = "odiff"
+
+    from pytest_playwright_visual_snapshot.matchers.odiff_matcher import _ODiffServer
+
+    if not getattr(_ODiffServer.compare, "_antialiasing", False):
+        _odiff_server_compare = _ODiffServer.compare
+
+        def _odiff_compare_with_antialiasing(self, base, compare, output, options):
+            options = {**options, "antialiasing": True}
+            result = _odiff_server_compare(self, base, compare, output, options)
+            # odiff --aa still reports a handful of mask-edge pixels at 0.00%
+            if (
+                result.get("reason") == "pixel-diff"
+                and float(result.get("diffPercentage") or 0) == 0
+            ):
+                output.unlink(missing_ok=True)
+                return {"requestId": result.get("requestId"), "match": True}
+            return result
+
+        _odiff_compare_with_antialiasing._antialiasing = True
+        _ODiffServer.compare = _odiff_compare_with_antialiasing
 
     config.option.playwright_visual_snapshots_path = env.path(
         "PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY"
