@@ -334,6 +334,8 @@ bootstrap_worktree:
 		# may need some `.local.` customizations in order to generate
 		direnv allow .
 
+		llm-ide-rules explode $(llm-ide-rules exploded "$original_dir_path")
+
 		just dev_generate_hosts
 
 		just py_setup
