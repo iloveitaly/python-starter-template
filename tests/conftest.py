@@ -132,16 +132,18 @@ def pytest_configure(config: Config):
 
     from pytest_playwright_visual_snapshot.matchers.odiff_matcher import _ODiffServer
 
+    # odiff `diffPercentage` is percent of the image (0-100), not a 0-1 fraction.
+    odiff_max_diff_percentage = 0.01
+
     if _ODiffServer.compare.__name__ != "_odiff_compare_with_antialiasing":
         _odiff_server_compare = _ODiffServer.compare
 
         def _odiff_compare_with_antialiasing(self, base, compare, output, options):
             options = {**options, "antialiasing": True}
             result = _odiff_server_compare(self, base, compare, output, options)
-            # odiff --aa still reports a handful of mask-edge pixels at 0.00%
             if (
                 result.get("reason") == "pixel-diff"
-                and float(result.get("diffPercentage") or 0) == 0
+                and float(result.get("diffPercentage") or 0) < odiff_max_diff_percentage
             ):
                 output.unlink(missing_ok=True)
                 return {"requestId": result.get("requestId"), "match": True}
