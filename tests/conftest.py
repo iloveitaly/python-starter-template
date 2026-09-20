@@ -159,15 +159,10 @@ def pytest_configure(config: Config):
     )
     # Nested pytest_configure runs first; Clerk masks must be set here or they
     # are overwritten.
-    # Temporarily disabled to see if odiff 0.01% slack covers Clerk without masks.
-    # config.option.playwright_visual_snapshot_masks = [
-    #     # Clerk React components (SignIn, UserButton, ...)
-    #     "[data-clerk-component]",
-    #     # documented appearance root of prebuilt Clerk widgets
-    #     ".cl-rootBox",
-    #     # popovers/modals Clerk portals to document.body
-    #     ".cl-portal",
-    # ]
+    config.option.playwright_visual_snapshot_masks = [
+        # UserButton avatar pixels change between runs
+        '[data-clerk-component="UserButton"]',
+    ]
 
     if not config.option.playwright_artifacts_output:
         config.option.playwright_artifacts_output = TEST_RESULTS_DIRECTORY / "playwright-artifacts"
