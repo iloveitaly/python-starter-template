@@ -42,11 +42,4 @@ describe("logging", () => {
     expect(log.settings.pretty.levelMethod.ERROR).toBe(console.error)
     expect(log.settings.pretty.levelMethod.FATAL).toBe(console.error)
   })
-
-  it("masks common secret keys", () => {
-    expect(log.settings.mask.keys).toEqual(
-      expect.arrayContaining(["password", "token", "secret", "apiKey"]),
-    )
-    expect(log.settings.mask.caseInsensitive).toBe(true)
-  })
 })

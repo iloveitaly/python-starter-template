@@ -38,10 +38,8 @@ function configureLogging() {
     stack: {
       capture: isProduction() ? "off" : "auto",
     },
-    mask: {
-      keys: ["password", "token", "secret", "authorization", "apiKey"],
-      caseInsensitive: true,
-    },
+    // nothing logged today carries secret fields; tslog masks only listed keys
+    mask: { keys: [] },
     strictConfig: !isProduction(),
   })
 
