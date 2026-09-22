@@ -1,8 +1,9 @@
 import pprint
+import sys
+from functools import partial
 
 import detect_shadowed_modules
 import pytest
-import sys
 from tests.raw_utils import banner, autoload_pytest_plugins_list
 
 # must be registered before the module is first imported
@@ -130,27 +131,6 @@ def pytest_configure(config: Config):
     config.option.playwright_visual_disable_snapshots = is_local_testing()
     config.option.playwright_visual_matcher = "odiff"
 
-    from pytest_playwright_visual_snapshot.matchers.odiff_matcher import _ODiffServer
-
-    # odiff `diffPercentage` is percent of the image (0-100), not a 0-1 fraction.
-    odiff_max_diff_percentage = 0.01
-
-    if _ODiffServer.compare.__name__ != "_odiff_compare_with_antialiasing":
-        _odiff_server_compare = _ODiffServer.compare
-
-        def _odiff_compare_with_antialiasing(self, base, compare, output, options):
-            options = {**options, "antialiasing": True}
-            result = _odiff_server_compare(self, base, compare, output, options)
-            if (
-                result.get("reason") == "pixel-diff"
-                and float(result.get("diffPercentage") or 0) < odiff_max_diff_percentage
-            ):
-                output.unlink(missing_ok=True)
-                return {"requestId": result.get("requestId"), "match": True}
-            return result
-
-        _ODiffServer.compare = _odiff_compare_with_antialiasing
-
     config.option.playwright_visual_snapshots_path = env.path(
         "PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY"
     )
@@ -174,6 +154,16 @@ def pytest_configure(config: Config):
         "alembic_version",
         # add any tables you want to preserve here
     ]
+
+
+@pytest.fixture
+def assert_snapshot(assert_snapshot):
+    # odiff `diffPercentage` is a percent of the image (0-100), not a 0-1 fraction.
+    return partial(
+        assert_snapshot,
+        antialiasing=True,
+        pixel_percentage_threshold=0.01,
+    )
 
 
 def pytest_sessionstart(session):
