@@ -2,7 +2,7 @@
 # Secrets (via 1Password)
 #######################
 
-_secrets_service-token CONTEXT WRITE_PERMISSION="false":
+_secrets_service-token CONTEXT WRITE_PERMISSION=[]:
 	# this can occur if .envrc fails because of an expired service token, it's also hard to notice and understand exactly
 	# what to do here, so let's make it clear to the user what they need to do to fix it.
 	@[[ -n "${OP_VAULT_UID:-}" ]] || { \
@@ -14,7 +14,7 @@ _secrets_service-token CONTEXT WRITE_PERMISSION="false":
 
 	# if OP_SERVICE_ACCOUNT_TOKEN is set, the service-account API will not work
 	unset OP_SERVICE_ACCOUNT_TOKEN && \
-		write_permission=$([[ "{{WRITE_PERMISSION}}" == "true" ]] && echo ",write_items" || echo "") && \
+		write_permission="{{ if bool(WRITE_PERMISSION) { ",write_items" } else { "" } }}" && \
 		op service-account create {{PROJECT_NAME}}-{{CONTEXT}} \
 				--expires-in '90d' \
 				--vault "${OP_VAULT_UID}:read_items${write_permission}" \

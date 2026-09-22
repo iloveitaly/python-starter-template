@@ -35,6 +35,8 @@ set ignore-comments := true
 
 # for [script] support
 set unstable := true
+# for [arg(..., flag)] and bool()
+set lists := true
 
 # used for image name, op vault access, etc
 PROJECT_NAME := "python-starter-template"

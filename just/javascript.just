@@ -79,9 +79,10 @@ js_play:
 	{{_pnpm}} dlx tsx ./playground.ts
 
 # interactively upgrade all js packages
-js_upgrade:
+[arg("yes", long, help="auto-accept all dialogs and upgrade everything", flag)]
+js_upgrade yes:
 	# 1d is the default pnpm 11 config
-	{{_pnpm}} dlx npm-check-updates@latest --interactive --cooldown 1d
+	{{_pnpm}} dlx {{ if bool(yes) { "--yes" } else { "" } }} npm-check-updates@latest {{ if bool(yes) { "--upgrade" } else { "--interactive" } }} --cooldown 1d
 
 	# intentionally without lockfile so it's updated
 	{{_pnpm}} install
@@ -91,9 +92,9 @@ js_upgrade:
 	cd {{WEB_DIR}} && git add package.json pnpm-*.yaml
 
 # generate a typescript client from the openapi spec
-[arg("watch", long, help="regenerate openapi spec and client on file changes", value="true")]
-js_generate watch="false":
-	if [[ "{{watch}}" == "true" ]]; then; \
+[arg("watch", long, help="regenerate openapi spec and client on file changes", flag)]
+js_generate watch:
+	if {{ if bool(watch) { "true" } else { "false" } }}; then; \
 		{{WATCHEXEC_APP_PY}} just _js_generate; \
 	else; \
 		just _js_generate; \

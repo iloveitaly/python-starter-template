@@ -23,8 +23,8 @@ posthog_client = posthog.Posthog(
 if not is_production():
     posthog_client.disabled = True
 
-# https://github.com/PostHog/posthog-python/issues/353
-# without this, a newly-created client will be used for things like catching context exceptions
+# Module-level APIs (`posthog.new_context`, `posthog.capture`, …) use this client.
+# Without it, contexts fall back to a separately constructed default instance.
 posthog.default_client = posthog_client
 
 
