@@ -298,11 +298,10 @@ def httpx2_breakpoint(httpx2_mock):
 
 def pytest_collection_modifyitems(config: Config, items):
     """
-    Reject xdist when integration tests are collected, and wire httpx2 breakpoints.
+    Fail collection when pytest-xdist is running integration tests.
 
-    Integration tests share one server, browser, and truncation-based database reset,
-    so they cannot run across workers. Tests that request `httpx2_breakpoint` pause
-    on every intercepted HTTP call.
+    Those tests share one server, browser, and truncation-based database reset,
+    so they cannot run across workers.
     """
     xdist_active = bool(
         xdist_worker_id() or getattr(config.option, "numprocesses", None)
