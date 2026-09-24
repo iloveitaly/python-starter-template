@@ -1,6 +1,5 @@
 import pprint
 import sys
-from functools import partial
 
 import detect_shadowed_modules
 import pytest
@@ -130,6 +129,11 @@ def pytest_configure(config: Config):
     # disable visual assertions when running locally
     config.option.playwright_visual_disable_snapshots = is_local_testing()
     config.option.playwright_visual_matcher = "odiff"
+    # odiff `diffPercentage` is a percent of the image (0-100), not a 0-1 fraction.
+    config.option.playwright_visual_assertion_kwargs = {
+        "antialiasing": True,
+        "pixel_percentage_threshold": 0.01,
+    }
 
     config.option.playwright_visual_snapshots_path = env.path(
         "PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY"
@@ -154,16 +158,6 @@ def pytest_configure(config: Config):
         "alembic_version",
         # add any tables you want to preserve here
     ]
-
-
-@pytest.fixture
-def assert_snapshot(assert_snapshot):
-    # odiff `diffPercentage` is a percent of the image (0-100), not a 0-1 fraction.
-    return partial(
-        assert_snapshot,
-        antialiasing=True,
-        pixel_percentage_threshold=0.01,
-    )
 
 
 def pytest_sessionstart(session):
