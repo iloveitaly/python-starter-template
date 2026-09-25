@@ -44,22 +44,27 @@ class ErrorResponse(BaseModel):
 
 
 class ClientError(Exception):
-    """Expected client or business logic errors (HTTP 4xx).
+    """
+    Expected client or business logic errors (HTTP 4xx).
 
     Raised when a request is invalid due to client input or business rule
     violations. The contents of `message`, `code`, `param`, and `details` are
     safe to expose to the end user. `internal_details` is logged only.
 
+    This should be used in place of HTTPException in nearly all cases.
+
     Args:
         message: Human-readable error message explaining what went wrong.
             Positional because it is the semantic payload callers think about
             first.
-        status_code: HTTP status code to return. Must be in the 4xx range;
-            enforced by assertion.
-        code: Machine-readable string code for frontend handling
-            (e.g., "INSUFFICIENT_FUNDS", "USER_NOT_FOUND"). Required - no
-            generic fallback, since a default code is worse than no code:
-            present enough to look meaningful, vague enough to be ignored.
+        status_code: HTTP status code to return. Must be in the 4xx range. Unless you are certain
+              that a specific 4xx error code maps to the type of error you are raising, use the default.
+        code: Machine-readable string code for frontend handling ("INSUFFICIENT_FUNDS",
+              "USER_NOT_FOUND", etc). This code is logged on the backend and exposed to
+              frontend. It's useful for searching error logs for common errors and handling
+              specific classes of errors in distinct ways. There is no need to generate a
+              unique code for every error, the default is just fine if there is no specific
+              need for a unique code.
         param: Specific field or query parameter that caused the error
             (e.g., "email", "user_id"). Defaults to None.
         details: Additional structured data providing context about the error.
