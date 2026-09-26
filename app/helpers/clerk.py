@@ -22,7 +22,7 @@ def safely_execute_clerk[**P, R](func: Callable[P, R]) -> Callable[P, R | None]:
     def wrapper(*args: P.args, **kwargs: P.kwargs) -> R | None:
         try:
             return func(*args, **kwargs)
-        except (ClerkBaseError, httpx.RequestError):
+        except ClerkBaseError, httpx.RequestError:
             log.exception("clerk call failed", function=func.__name__)
             return None
 

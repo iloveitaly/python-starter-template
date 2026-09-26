@@ -1,5 +1,5 @@
 import type { Config } from "@react-router/dev/config"
-import { sentryOnBuildEnd } from "@sentry/react-router"
+import { sentryOnBuildEnd } from "@sentry/react-router/vite"
 
 // TODO is mode passed over here at all? So we can avoid the NODE_ENV reference?
 
