@@ -23,16 +23,30 @@ REDIS_DATABASE_COUNT = 128
 
 
 def xdist_worker_id() -> str | None:
+    """Return this process's pytest-xdist worker id, or None on the controller.
+
+    Workers set `PYTEST_XDIST_WORKER` (`gw0`, `gw1`, ...). The controller does not,
+    which is how setup stays on the shared test database.
+    """
     return os.environ.get("PYTEST_XDIST_WORKER")
 
 
 def worker_index(worker_id: str) -> int:
+    """Parse `gwN` into N so the database and Redis names match that worker.
+
+    Anything other than an xdist id would rewrite the URL onto the wrong database.
+    """
     match = WORKER_ID_PATTERN.fullmatch(worker_id)
     assert match, f"unexpected pytest-xdist worker id: {worker_id}"
     return int(match.group(1))
 
 
 def worker_database_name(index: int) -> str:
+    """Name the Postgres database cloned for worker N.
+
+    The `test_xdist_` prefix is how leftover clones from an earlier run are found
+    and dropped before this one creates them again.
+    """
     assert index >= 0
     name = f"test_xdist_{index}"
     assert WORKER_DATABASE_NAME_PATTERN.fullmatch(name)
@@ -40,11 +54,22 @@ def worker_database_name(index: int) -> str:
 
 
 def replace_url_path(url: str, path: str) -> str:
+    """Replace the database segment of a Postgres or Redis URL.
+
+    Both `TEST_DATABASE_URL` and `TEST_REDIS_URL` store the database in the URL
+    path, so one rewrite covers both.
+    """
     parsed = urlparse(url)
     return urlunparse(parsed._replace(path=f"/{path}"))
 
 
 def configure_xdist_worker_environment() -> None:
+    """Point this worker at its own Postgres database and Redis logical DB.
+
+    `app.setup()` reads those URLs at import time, so this has to run before any
+    `app` import. No worker id means this is the controller, which keeps the
+    shared test database.
+    """
     worker_id = xdist_worker_id()
     if not worker_id:
         return
@@ -114,6 +139,11 @@ def setup_xdist_worker_databases(worker_count: int) -> None:
 
 
 def _terminate_connections(conn: Connection, database_name: str) -> None:
+    """Disconnect every other session from `database_name`.
+
+    Postgres refuses `CREATE DATABASE ... TEMPLATE` and `DROP DATABASE` while any
+    session is still connected to that database.
+    """
     conn.execute(
         text(
             """
@@ -128,6 +158,11 @@ def _terminate_connections(conn: Connection, database_name: str) -> None:
 
 
 def _drop_existing_xdist_databases(conn: Connection) -> None:
+    """Drop leftover `test_xdist_*` databases from earlier runs.
+
+    `CREATE DATABASE` fails if the clone name already exists, and a previous xdist
+    run can leave those clones behind.
+    """
     names = list(
         conn.execute(
             text(
