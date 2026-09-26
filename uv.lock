@@ -2944,7 +2944,7 @@ dependencies = [
 [[package]]
 name = "pytest-playwright-visual-snapshot"
 version = "0.5.1"
-source = { git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git?rev=cursor%2Fodiff-aa-and-diff-budget-b115#d15c1e594682a87ceca3580364d6da1a1a486ca7" }
+source = { git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git?rev=master#88fa519c81c923cebff812a28e3d344d3ea087d5" }
 dependencies = [
     { name = "pillow" },
     { name = "pixelmatch" },
@@ -3280,7 +3280,7 @@ dev = [
     { name = "pytest-line-runner", specifier = ">=0.1.0" },
     { name = "pytest-playwright", specifier = ">=0.8.0" },
     { name = "pytest-playwright-artifacts", git = "https://github.com/iloveitaly/pytest-playwright-artifacts.git" },
-    { name = "pytest-playwright-visual-snapshot", git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git?rev=cursor%2Fodiff-aa-and-diff-budget-b115" },
+    { name = "pytest-playwright-visual-snapshot", git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git?rev=master" },
     { name = "pytest-sugar", specifier = ">=1.1.1" },
     { name = "react-router-routes", specifier = ">=0.4.2" },
     { name = "ruff", specifier = ">=0.16.1" },
