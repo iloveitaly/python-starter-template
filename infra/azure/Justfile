@@ -24,6 +24,18 @@ tofu_output:
 tofu_play:
     tofu {{ TOFU_GLOBAL_OPTIONS }} console
 
-# scan terraform for misconfigurations
+# scan terraform for misconfigurations and live credentials
+[script]
 lint:
+	# run both scanners so one failure does not hide the other
+	set +e
+
 	checkov --directory . --framework terraform --compact --quiet
+	checkov_status=$?
+
+	trufflehog filesystem . --fail --no-update --fail-on-scan-errors
+	trufflehog_status=$?
+
+	if [ "$checkov_status" -ne 0 ] || [ "$trufflehog_status" -ne 0 ]; then
+		exit 1
+	fi
