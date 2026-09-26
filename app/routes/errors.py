@@ -2,6 +2,7 @@
 Custom exceptions for the web application.
 """
 
+import http
 import typing as t
 
 from fastapi import FastAPI, Request, status
@@ -9,6 +10,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app import log
 
@@ -235,4 +237,31 @@ def register_exception_handlers(app: FastAPI):
                     details=exc.details,
                 )
             ).model_dump(exclude_none=True),
+        )
+
+    @app.exception_handler(StarletteHTTPException)
+    async def http_exception_handler(
+        request: Request, exc: StarletteHTTPException
+    ) -> JSONResponse:
+        """
+        Format any remaining or third-party HTTPException into the standard ErrorResponse shape.
+        """
+        try:
+            code = http.HTTPStatus(exc.status_code).name
+        except ValueError:
+            code = "HTTP_ERROR"
+
+        message = exc.detail if isinstance(exc.detail, str) else "An error occurred."
+        details = None if isinstance(exc.detail, str) else {"detail": exc.detail}
+
+        return JSONResponse(
+            status_code=exc.status_code,
+            content=ErrorResponse(
+                error=ErrorDetail(
+                    code=code,
+                    message=message,
+                    details=details,
+                )
+            ).model_dump(exclude_none=True),
+            headers=exc.headers,
         )
