@@ -20,6 +20,9 @@ direnv = "latest"
 
 "github:peterldowns/localias" = "latest"
 "github:gitleaks/gitleaks" = "latest"
+# workflow and YAML lint, invoked from `just dev_lint`
+actionlint = "latest"
+yamllint = "latest"
 "jq" = "latest"
 "mprocs" = "latest"
 "fd" = "latest"
