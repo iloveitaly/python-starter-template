@@ -26,6 +26,7 @@ resource "azurerm_resource_group" "tfstate" {
 # IMPORTANT: (2) when bootstrapping a new azure account, this must be done second!
 # by default, tf stores state in the local filesystem. We use remote storage state to sync between
 # multiple devs and eliminate dependency on a single machine.
+# trivy:ignore:AZU-0012 developers and CI read this account; default-deny without an IP allowlist blocks bootstrap
 resource "azurerm_storage_account" "tfstate" {
   name                = local.tfstate.storage_account
   resource_group_name = azurerm_resource_group.tfstate.name
