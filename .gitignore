@@ -45,6 +45,7 @@ lefthook-local.yml
 # START AI INSTRUCTION IGNORES
 /.agents/rules/alembic-migrations.md
 /.agents/rules/fastapi.md
+/.agents/rules/frontend-tests.md
 /.agents/rules/justfiles.md
 /.agents/rules/pytest-integration-tests.md
 /.agents/rules/pytest-tests.md
@@ -81,6 +82,7 @@ lefthook-local.yml
 /.claude/commands/typescript-docstring.md
 /.claude/rules/alembic-migrations.md
 /.claude/rules/fastapi.md
+/.claude/rules/frontend-tests.md
 /.claude/rules/general.md
 /.claude/rules/justfiles.md
 /.claude/rules/pytest-integration-tests.md
@@ -106,6 +108,7 @@ lefthook-local.yml
 /.cursor/commands/typescript-docstring.md
 /.cursor/rules/alembic-migrations.mdc
 /.cursor/rules/fastapi.mdc
+/.cursor/rules/frontend-tests.mdc
 /.cursor/rules/general.mdc
 /.cursor/rules/justfiles.mdc
 /.cursor/rules/pytest-integration-tests.mdc
@@ -117,21 +120,10 @@ lefthook-local.yml
 /.cursor/rules/react.mdc
 /.cursor/rules/shell.mdc
 /.cursor/rules/typescript.mdc
-/.gemini/commands/dev-in-browser.toml
-/.gemini/commands/fastapi_stripe.toml
-/.gemini/commands/fix-tests.toml
-/.gemini/commands/implement-fastapi-routes.toml
-/.gemini/commands/plan-only.toml
-/.gemini/commands/python-command.toml
-/.gemini/commands/react-router-client-loader.toml
-/.gemini/commands/refactor-on-instructions.toml
-/.gemini/commands/secrets.toml
-/.gemini/commands/standalone-python-scripts.toml
-/.gemini/commands/stripe-backend.toml
-/.gemini/commands/typescript-docstring.toml
 /.github/copilot-instructions.md
 /.github/instructions/alembic-migrations.instructions.md
 /.github/instructions/fastapi.instructions.md
+/.github/instructions/frontend-tests.instructions.md
 /.github/instructions/justfiles.instructions.md
 /.github/instructions/pytest-integration-tests.instructions.md
 /.github/instructions/pytest-tests.instructions.md
