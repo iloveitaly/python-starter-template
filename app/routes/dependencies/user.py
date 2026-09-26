@@ -1,7 +1,9 @@
 import sentry_sdk
-from fastapi import HTTPException, Request, status
+from fastapi import Request, status
 from starlette_context import context
 from whenever import Instant
+
+from app.routes.errors import ClientError
 
 from app.models.user import User
 
@@ -25,8 +27,9 @@ def inject_user_record(request: Request):
     )
 
     if user.deleted_at:
-        raise HTTPException(
-            status_code=status.HTTP_410_GONE, detail="Your Account has Been Disabled"
+        raise ClientError(
+            "Your account has been disabled",
+            status_code=status.HTTP_410_GONE,
         )
 
     request.state.user = user

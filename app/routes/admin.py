@@ -6,7 +6,7 @@ Admin-only routes:
 
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Path, Request
+from fastapi import APIRouter, Depends, Path, Request
 from pydantic import BaseModel as BasePydanticModel
 from pydantic import ConfigDict
 from starlette import status
@@ -14,6 +14,7 @@ from typeid import TypeID
 
 from app import log
 from app.errors import ImpossibleStateError
+from app.routes.errors import ClientError
 
 from app.models.user import User, UserRole
 
@@ -28,7 +29,9 @@ def require_admin(request: Request):
         raise ImpossibleStateError("User not found in request state")
 
     if admin_user.role != UserRole.admin:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+        raise ClientError(
+            "Admin privileges required", status_code=status.HTTP_401_UNAUTHORIZED
+        )
 
 
 admin_api_app = APIRouter(prefix="/admin", dependencies=[Depends(require_admin)])

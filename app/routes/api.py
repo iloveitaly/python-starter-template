@@ -4,19 +4,21 @@ and is authenticated via a clerk token, and is meant to be consumed by an extern
 """
 
 import sentry_sdk
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, Request, status
 from fastapi.security import OAuth2PasswordBearer
 from starlette_context import context
 from typeid import TypeID
 from typeid.errors import TypeIDException
 
+from app.routes.errors import ClientError
+
 from app.models.user import API_KEY_PREFIX, User
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-UNAUTHORIZED_EXCEPTION = HTTPException(
+UNAUTHORIZED_EXCEPTION = ClientError(
+    "Invalid key",
     status_code=status.HTTP_401_UNAUTHORIZED,
-    detail="Invalid key",
 )
 
 
@@ -37,8 +39,9 @@ def authenticate_api_request_middleware(
         raise UNAUTHORIZED_EXCEPTION
 
     if api_user.deleted_at:
-        raise HTTPException(
-            status_code=status.HTTP_410_GONE, detail="Your Account has Been Disabled"
+        raise ClientError(
+            "Your account has been disabled",
+            status_code=status.HTTP_410_GONE,
         )
 
     request.state.api_user = api_user

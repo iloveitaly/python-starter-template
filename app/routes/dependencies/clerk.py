@@ -4,10 +4,11 @@ Attempting to upstream at: https://github.com/clerk/clerk-sdk-python/pull/65/fil
 
 import httpx2
 from clerk_backend_api import AuthenticateRequestOptions, Clerk, RequestState
-from fastapi import Depends, HTTPException, Request, status
+from fastapi import Depends, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from app import log
+from app.routes.errors import ClientError
 
 security = HTTPBearer()
 
@@ -34,8 +35,9 @@ class AuthenticateClerkRequest:
         credentials: HTTPAuthorizationCredentials | None = Depends(security),
     ) -> RequestState:
         if not credentials:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="Not Authenticated"
+            raise ClientError(
+                "Not Authenticated",
+                status_code=status.HTTP_401_UNAUTHORIZED,
             )
 
         # Convert FastAPI request headers to a Requestish (headers mapping)
@@ -60,8 +62,9 @@ class AuthenticateClerkRequest:
                 payload=auth_state.payload,
             )
 
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail=auth_state.message
+            raise ClientError(
+                auth_state.message or "Not Authenticated",
+                status_code=status.HTTP_401_UNAUTHORIZED,
             )
 
         # Attach the auth state to the request

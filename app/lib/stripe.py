@@ -1,12 +1,11 @@
 from operator import attrgetter
 
 import stripe
-from fastapi import HTTPException
 from pydantic import BaseModel
-from starlette import status
 from stripe import Charge, PaymentIntent, StripeClient
 
 from app import log
+from app.routes.errors import ClientError
 
 
 def extract_payment_intent_id_from_client_secret(client_secret_id: str) -> str:
@@ -20,11 +19,11 @@ def extract_payment_intent_id_from_client_secret(client_secret_id: str) -> str:
     # TODO need to add details to the exception
 
     if not client_secret_id or "_secret" not in client_secret_id:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST)
+        raise ClientError("Invalid client secret")
 
     payment_intent_id = client_secret_id.split("_secret")[0]
     if not payment_intent_id.startswith("pi_"):
-        raise HTTPException(status.HTTP_400_BAD_REQUEST)
+        raise ClientError("Invalid payment intent ID in client secret")
 
     return payment_intent_id
 
@@ -36,11 +35,11 @@ def extract_checkout_session_id_from_client_secret(client_secret_id: str) -> str
     'cs_test_a1tQWKwHJ9fMYVL2TjkDDqX2qvvnKnI3zb5dw3exS1wb0TXvEjwVxXKmzo'
     """
     if not client_secret_id or "_secret" not in client_secret_id:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST)
+        raise ClientError("Invalid client secret")
 
     session_id = client_secret_id.split("_secret")[0]
     if not session_id.startswith("cs_"):
-        raise HTTPException(status.HTTP_400_BAD_REQUEST)
+        raise ClientError("Invalid checkout session ID in client secret")
 
     return session_id
 
