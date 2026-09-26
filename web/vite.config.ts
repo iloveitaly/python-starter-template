@@ -7,7 +7,7 @@ import svgr from "vite-plugin-svgr"
 
 import { invariant } from "@epic-web/invariant"
 import { reactRouter } from "@react-router/dev/vite"
-import { sentryReactRouter } from "@sentry/react-router"
+import { sentryReactRouter } from "@sentry/react-router/vite"
 import tailwindcss from "@tailwindcss/vite"
 
 const JAVASCRIPT_SERVER_PORT = process.env.JAVASCRIPT_SERVER_PORT
