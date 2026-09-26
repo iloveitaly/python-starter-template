@@ -359,6 +359,53 @@ checksum = "sha256:9dc6e49ef47c7aa2e6a2844503d6cfa34e51a4d15dd78abef6e6de2fc10e5
 url = "https://github.com/pvolok/dekit/releases/download/v0.9.6/mprocs-0.9.6-windows-x86_64.zip"
 url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/440298377"
 
+[[tools.trivy]]
+version = "0.74.0"
+backend = "aqua:aquasecurity/trivy"
+specifiers = ["latest"]
+
+[tools.trivy."platforms.linux-arm64"]
+checksum = "sha256:b94ce1976bbf3c15b514b605ee88be7c6d94a29be2302847ff01cb794d47aad5"
+url = "https://github.com/aquasecurity/trivy/releases/download/v0.74.0/trivy_0.74.0_Linux-ARM64.tar.gz"
+url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/514339429"
+provenance = "cosign"
+
+[tools.trivy."platforms.linux-arm64-musl"]
+checksum = "sha256:b94ce1976bbf3c15b514b605ee88be7c6d94a29be2302847ff01cb794d47aad5"
+url = "https://github.com/aquasecurity/trivy/releases/download/v0.74.0/trivy_0.74.0_Linux-ARM64.tar.gz"
+url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/514339429"
+provenance = "cosign"
+
+[tools.trivy."platforms.linux-x64"]
+checksum = "sha256:2ae6fe3ee734b7fdf11335663e18c75ea12dccc76062f09f164a3b0f8be4371a"
+url = "https://github.com/aquasecurity/trivy/releases/download/v0.74.0/trivy_0.74.0_Linux-64bit.tar.gz"
+url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/514339431"
+provenance = "cosign"
+
+[tools.trivy."platforms.linux-x64-musl"]
+checksum = "sha256:2ae6fe3ee734b7fdf11335663e18c75ea12dccc76062f09f164a3b0f8be4371a"
+url = "https://github.com/aquasecurity/trivy/releases/download/v0.74.0/trivy_0.74.0_Linux-64bit.tar.gz"
+url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/514339431"
+provenance = "cosign"
+
+[tools.trivy."platforms.macos-arm64"]
+checksum = "sha256:1caada5e0e2091909357c7525d3aa76f4b660b13821bc143b190c7483e31cc11"
+url = "https://github.com/aquasecurity/trivy/releases/download/v0.74.0/trivy_0.74.0_macOS-ARM64.tar.gz"
+url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/514339464"
+provenance = "cosign"
+
+[tools.trivy."platforms.macos-x64"]
+checksum = "sha256:472816f6888dda689d075c30254d4210b4d1035acf365aa72332f584c2f60485"
+url = "https://github.com/aquasecurity/trivy/releases/download/v0.74.0/trivy_0.74.0_macOS-64bit.tar.gz"
+url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/514339388"
+provenance = "cosign"
+
+[tools.trivy."platforms.windows-x64"]
+checksum = "sha256:94c40e0696e4b907a74b7b2e1438d5d72ebaca83115817407f568a002d520842"
+url = "https://github.com/aquasecurity/trivy/releases/download/v0.74.0/trivy_0.74.0_windows-64bit.zip"
+url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/514339469"
+provenance = "cosign"
+
 [[tools.watchexec]]
 version = "2.7.2"
 backend = "aqua:watchexec/watchexec"
