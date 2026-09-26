@@ -12,7 +12,7 @@ GENERATED_HOST_ENV := "env/host.sh"
 # we don't guard against _dev_only since this needs to be run to bootstrap the application
 dev_generate: _not_production dev_generate_hosts dev_generate_localias
 
-# lint repo-level config: secrets, YAML, and GitHub Actions workflows
+# lint repo-level config: secrets, YAML, GitHub Actions workflows, and Trivy
 [script]
 dev_lint:
 	# NOTE this is important: we want all operations to run instead of fail fast
@@ -35,6 +35,8 @@ dev_lint:
 		echo "::add-matcher::.github/actionlint-matcher.json"
 	fi
 	actionlint --config-file .config/lint/actionlint.yml -shellcheck= -pyflakes= || exit_code=$?
+
+	trivy fs --config .config/lint/trivy.yaml . || exit_code=$?
 
 	if [[ -n "${exit_code:-}" ]]; then
 		echo "One or more commands failed"
