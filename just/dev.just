@@ -12,7 +12,7 @@ GENERATED_HOST_ENV := "env/host.sh"
 # we don't guard against _dev_only since this needs to be run to bootstrap the application
 dev_generate: _not_production dev_generate_hosts dev_generate_localias
 
-# lint repo-level config: secrets, YAML, GitHub Actions workflows, and TOML
+# lint repo-level config: secrets, YAML, GitHub Actions workflows, TOML, and Trivy
 [script]
 dev_lint:
 	# NOTE this is important: we want all operations to run instead of fail fast
@@ -39,6 +39,8 @@ dev_lint:
 	# both run so a format failure does not hide a lint failure
 	tombi format --check . || exit_code=$?
 	tombi lint . || exit_code=$?
+
+	trivy fs --config .config/lint/trivy.yaml . || exit_code=$?
 
 	if [[ -n "${exit_code:-}" ]]; then
 		echo "One or more commands failed"

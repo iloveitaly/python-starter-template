@@ -39,7 +39,8 @@ resource "azurerm_network_security_group" "vm" {
   location            = local.location
   resource_group_name = azurerm_resource_group.main.name
 
-  # Allow SSH
+  # Allow SSH. Open to the internet so a fresh template VM is reachable; restrict this prefix before production use.
+  # trivy:ignore:AZU-0047 trivy:ignore:AZU-0050
   security_rule {
     name                       = "SSH"
     priority                   = 1001
@@ -52,7 +53,8 @@ resource "azurerm_network_security_group" "vm" {
     destination_address_prefix = "*"
   }
 
-  # Allow HTTP
+  # Allow HTTP. Public ingress is required for the web app.
+  # trivy:ignore:AZU-0047
   security_rule {
     name                       = "HTTP"
     priority                   = 1002
@@ -65,7 +67,8 @@ resource "azurerm_network_security_group" "vm" {
     destination_address_prefix = "*"
   }
 
-  # Allow HTTPS
+  # Allow HTTPS. Public ingress is required for the web app.
+  # trivy:ignore:AZU-0047
   security_rule {
     name                       = "HTTPS"
     priority                   = 1003
