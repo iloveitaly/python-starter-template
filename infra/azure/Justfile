@@ -23,3 +23,7 @@ tofu_output:
 # opentofu repl, helpful for inspecting
 tofu_play:
     tofu {{ TOFU_GLOBAL_OPTIONS }} console
+
+# scan terraform for misconfigurations
+lint:
+	checkov --directory . --framework terraform --compact --quiet
