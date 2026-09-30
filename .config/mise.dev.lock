@@ -360,44 +360,44 @@ url = "https://github.com/pvolok/dekit/releases/download/v0.9.6/mprocs-0.9.6-win
 url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/440298377"
 
 [[tools.watchexec]]
-version = "2.7.2"
+version = "2.7.3"
 backend = "aqua:watchexec/watchexec"
 specifiers = ["latest"]
 
 [tools.watchexec."platforms.linux-arm64"]
-checksum = "sha256:b41387ec129119500085f34ffed619058cae2c944ed76fada63b30e37bc49b47"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.7.2/watchexec-2.7.2-aarch64-unknown-linux-gnu.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/546730415"
+checksum = "sha256:02b3e2beddf96fef5fb2b88849902e3cf9e96da87968bdfb7a488700d64142cc"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.7.3/watchexec-2.7.3-aarch64-unknown-linux-gnu.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/565495662"
 
 [tools.watchexec."platforms.linux-arm64-musl"]
-checksum = "sha256:83cbce2ffc85adaab14d6ded09b292f4383358ac6d9a51b4e4e083df0cb7c831"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.7.2/watchexec-2.7.2-aarch64-unknown-linux-musl.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/546730412"
+checksum = "sha256:80bd9acfc25e4035624d99585b2f920add5ecbdc0c732c4e42fa1451b63d80a5"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.7.3/watchexec-2.7.3-aarch64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/565495670"
 
 [tools.watchexec."platforms.linux-x64"]
-checksum = "sha256:b5b3cf6fd45ce2503bae90ba4017f85d62314b427b91c06818ff39a4c46930c4"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.7.2/watchexec-2.7.2-x86_64-unknown-linux-gnu.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/546730436"
+checksum = "sha256:8ace3a1d2e752d189f28b6766311d58f155ab977fae66aba60b111ec8aec2f64"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.7.3/watchexec-2.7.3-x86_64-unknown-linux-gnu.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/565495660"
 
 [tools.watchexec."platforms.linux-x64-musl"]
-checksum = "sha256:a2c01f82fb4cdafca1fa12cb88e4a1145dec63364dbdf92664efbaac3bb44dd2"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.7.2/watchexec-2.7.2-x86_64-unknown-linux-musl.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/546730471"
+checksum = "sha256:b5bcd00ae3ebb53f7ea5d499fdf98bda14711589a7ecc0619e1847586beaa24d"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.7.3/watchexec-2.7.3-x86_64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/565495691"
 
 [tools.watchexec."platforms.macos-arm64"]
-checksum = "sha256:31e553b7160720796266168987c5e0728c388cc4776a26297b6a9feb00ab6437"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.7.2/watchexec-2.7.2-aarch64-apple-darwin.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/546730424"
+checksum = "sha256:bb2a3acc02de5c64f87779fc0226274d47d79026c6df969c8c1034a110b2efad"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.7.3/watchexec-2.7.3-aarch64-apple-darwin.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/565495664"
 
 [tools.watchexec."platforms.macos-x64"]
-checksum = "sha256:6a5481a14165f30da8826c7ae1ab3501402328834e7e2483d7c8b7ec4e608810"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.7.2/watchexec-2.7.2-x86_64-apple-darwin.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/546730396"
+checksum = "sha256:ddca28bbd6b219a14ffec4893d56dad2e29cfc8b3e47f49e275706c9af20b4c2"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.7.3/watchexec-2.7.3-x86_64-apple-darwin.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/565495778"
 
 [tools.watchexec."platforms.windows-x64"]
-checksum = "sha256:aeabeecbd3eaad0bc8f555790eb7437ecd6cf1caae9bb93fb4e678f43f342d1d"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.7.2/watchexec-2.7.2-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/546730427"
+checksum = "sha256:c20d195ffe0a9f90bc3067db2cc0d991c33aaf1591b20531f4aa8999a20bce67"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.7.3/watchexec-2.7.3-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/565495696"
 
 [[tools.yq]]
 version = "4.53.6"
