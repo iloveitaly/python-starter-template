@@ -1,8 +1,7 @@
 import redis
 
 from app.env import env
-
-from ..environments import is_testing
+from app.environments import is_testing
 
 
 def redis_url():

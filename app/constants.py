@@ -1,6 +1,5 @@
 from app.env import env, loose_env
-
-from .environments import is_productionish, python_environment
+from app.environments import is_productionish, python_environment
 
 NO_COLOR = env.bool("NO_COLOR", False)
 "supports NO_COLOR standard: https://no-color.org/"

@@ -38,11 +38,6 @@ client.setConfig({
   // automatically set bearer auth when requested
   auth: async () => {
     const client = await getClient()
-    invariant(
-      client && client.session,
-      "Clerk client and session should exist when attempting an authenticated API call",
-    )
-
     const token = await client.session.getToken()
     invariant(token, "token should exist if a session exists")
 

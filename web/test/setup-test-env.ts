@@ -6,6 +6,11 @@ import * as matchers from "@testing-library/jest-dom/matchers"
 import "@testing-library/jest-dom/vitest"
 import { cleanup } from "@testing-library/react"
 
+// clerk-js reads isSecureContext as a bare global to pick a cross-tab locking strategy, which
+// throws a ReferenceError under happy-dom. false keeps it off the Web Locks branch, which
+// happy-dom stubs out as a null `navigator.locks`, and onto its localStorage fallback.
+globalThis.isSecureContext ??= false
+
 // without nock, posthog and other services will attempt to load and cause tests to be flakey
 nock.disableNetConnect()
 nock.enableNetConnect((host: string) => {
