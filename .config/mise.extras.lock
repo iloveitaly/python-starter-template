@@ -169,7 +169,7 @@ provenance = "github-attestations"
 version = "0.28.0"
 backend = "pipx:aiautocommit"
 specifiers = ["latest"]
-uv = { path = "mise/locks/mise.extras/pipx-aiautocommit/0.28.0", digest = "sha256:24f0cdd9b0c26892d5c30722669d41db45ee4928336b882925e115da97775c4b" }
+uv = { path = "mise/locks/mise.extras/pipx-aiautocommit/0.28.0", digest = "sha256:74f28d82a0d6daa9b55e310324ffbd3b3f3cd5eee5411e14e23b0b95ba31f0a2" }
 
 [[tools."pipx:jc"]]
 version = "1.25.7"
@@ -178,10 +178,10 @@ specifiers = ["latest"]
 uv = { path = "mise/locks/mise.extras/pipx-jc/1.25.7", digest = "sha256:f3a96d3e04da809746dc1dc635b859b4b0469bae8154f9f785272d5faca52324" }
 
 [[tools."pipx:llm-ide-rules"]]
-version = "0.19.0"
+version = "0.20.0"
 backend = "pipx:llm-ide-rules"
 specifiers = ["latest"]
-uv = { path = "mise/locks/mise.extras/pipx-llm-ide-rules/0.19.0", digest = "sha256:2b193c9bb72b1796bad78d31e5dc3854aa1656c3658a038a90fe8e211d9af754" }
+uv = { path = "mise/locks/mise.extras/pipx-llm-ide-rules/0.20.0", digest = "sha256:b66debc1cdb966bbccfcd868e7796d048d8196812495a7af245c5cb81196e54f" }
 
 [[tools."pipx:uv-development-toggle"]]
 version = "0.7.0"
