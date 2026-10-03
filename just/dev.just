@@ -12,12 +12,34 @@ GENERATED_HOST_ENV := "env/host.sh"
 # we don't guard against _dev_only since this needs to be run to bootstrap the application
 dev_generate: _not_production dev_generate_hosts dev_generate_localias
 
+# lint repo-level config: secrets, YAML, and GitHub Actions workflows
+[script]
 dev_lint:
+	# NOTE this is important: we want all operations to run instead of fail fast
+	set +e
+
 	# `--log-level=debug` for debugging
 	# will report 0 commits scanned since it just outputs a massive diff and doesn't scan commits
-	GIT_CONFIG_GLOBAL=/dev/null gitleaks git --report-path=- --report-format json --redact=20 --no-banner
+	GIT_CONFIG_GLOBAL=/dev/null gitleaks git --report-path=- --report-format json --redact=20 --no-banner || exit_code=$?
 	# TODO link justfiles too
 	# GIT_CONFIG_GLOBAL=/dev/null gitleaks git --report-format json --report-path - | jq -r '.[].Fingerprint' | sort -t ':' -k2 > .gitleaksignore
+
+	# yamllint's default `auto` format emits GitHub annotations when Actions sets
+	# GITHUB_ACTIONS and GITHUB_WORKFLOW.
+	yamllint --strict . || exit_code=$?
+
+	# shellcheck and pyflakes are optional actionlint integrations. GitHub-hosted runners ship shellcheck
+	# and this toolchain does not, so disable both and keep local and CI results the same.
+	# Matcher source: https://github.com/rhysd/actionlint/blob/v1.7.12/.github/actionlint-matcher.json
+	if [ -n "${GITHUB_ACTIONS:-}" ]; then
+		echo "::add-matcher::.github/actionlint-matcher.json"
+	fi
+	actionlint -shellcheck= -pyflakes= || exit_code=$?
+
+	if [[ -n "${exit_code:-}" ]]; then
+		echo "One or more commands failed"
+		exit 1
+	fi
 
 # start all of the services you need for development in a single terminal
 [script]

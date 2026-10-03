@@ -45,6 +45,8 @@ pre-push:
       run: just py_lint
     js_lint:
       run: just js_lint
+    dev_lint:
+      run: just dev_lint
 
 # post-merge: fires after git merge / git pull
 # post-rewrite: fires after git rebase / git commit --amend

@@ -1,0 +1,27 @@
+# https://yamllint.readthedocs.io/en/stable/configuration.html
+extends: default
+
+ignore: |
+  web/pnpm-lock.yaml
+  lefthook-local.yml
+  node_modules/
+  .venv/
+  tmp/
+
+rules:
+  # `{ key: value }` is the flow style used in workflows.
+  braces:
+    max-spaces-inside: 1
+  # `#cloud-config` must be the first bytes of cloud-init user data, with no space after `#`.
+  comments:
+    ignore: |
+      infra/azure/cloud-init-data-disk.yaml
+  # Commented-out keys (see `.commitlintrc.yml`) do not share an indentation with a live node.
+  comments-indentation: disable
+  # Files do not start with `---`. Cloud-init also requires `#cloud-config` on line 1.
+  document-start: disable
+  # Comments, shell one-liners, and copier templates are routinely past 80 columns.
+  line-length: disable
+  # GitHub Actions uses `on:` as a mapping key.
+  truthy:
+    check-keys: false
