@@ -165,26 +165,26 @@ url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.14/leftho
 url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/563149872"
 provenance = "github-attestations"
 
-[[tools."pipx:aiautocommit"]]
+[[tools."pypi:aiautocommit"]]
 version = "0.28.0"
-backend = "pipx:aiautocommit"
+backend = "pypi:aiautocommit"
 specifiers = ["latest"]
-uv = { path = "mise/locks/mise.extras/pipx-aiautocommit/0.28.0", digest = "sha256:74f28d82a0d6daa9b55e310324ffbd3b3f3cd5eee5411e14e23b0b95ba31f0a2" }
+uv = { path = "mise/locks/mise.extras/pypi-aiautocommit/0.28.0", digest = "sha256:fb93a8e06290ae31badfe47ead28e89cb75fc27bae0988f34cf58bf9e5787d6a" }
 
-[[tools."pipx:jc"]]
+[[tools."pypi:jc"]]
 version = "1.25.7"
-backend = "pipx:jc"
+backend = "pypi:jc"
 specifiers = ["latest"]
-uv = { path = "mise/locks/mise.extras/pipx-jc/1.25.7", digest = "sha256:f3a96d3e04da809746dc1dc635b859b4b0469bae8154f9f785272d5faca52324" }
+uv = { path = "mise/locks/mise.extras/pypi-jc/1.25.7", digest = "sha256:3bc3b9881cf1d637637d157b26755a689e60d3fe5c14848b25cba93e07e77b1d" }
 
-[[tools."pipx:llm-ide-rules"]]
+[[tools."pypi:llm-ide-rules"]]
 version = "0.20.0"
-backend = "pipx:llm-ide-rules"
+backend = "pypi:llm-ide-rules"
 specifiers = ["latest"]
-uv = { path = "mise/locks/mise.extras/pipx-llm-ide-rules/0.20.0", digest = "sha256:b66debc1cdb966bbccfcd868e7796d048d8196812495a7af245c5cb81196e54f" }
+uv = { path = "mise/locks/mise.extras/pypi-llm-ide-rules/0.20.0", digest = "sha256:ab62b700f8812cbc313b69b8ad42eb6c184caa15c0c42eae919941d5a6954553" }
 
-[[tools."pipx:uv-development-toggle"]]
+[[tools."pypi:uv-development-toggle"]]
 version = "0.7.0"
-backend = "pipx:uv-development-toggle"
+backend = "pypi:uv-development-toggle"
 specifiers = ["latest"]
-uv = { path = "mise/locks/mise.extras/pipx-uv-development-toggle/0.7.0", digest = "sha256:6639e55d1d153f7911ff813de66546d503ef7f06549141dcadb5b2aaa6421d2d" }
+uv = { path = "mise/locks/mise.extras/pypi-uv-development-toggle/0.7.0", digest = "sha256:0d4942923e8c54ea8f6cf09594d79cc95dd04303406cad122ffd655966479198" }

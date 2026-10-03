@@ -2,7 +2,7 @@ min_version = "2026.10.0"
 
 # packages that are *not* required in production, but are required for development and ci should be included here
 
-# - `pipx` mise backend actually installs tools via `uv tool install` which means the tool can be shared across projects
+# - `pypi` mise backend actually installs tools via `uv tool install` which means the tool can be shared across projects
 # - if a package requires access to the venv of the project itself, it should be in `dev` or `debugging-extras` if it's
 #   only for local development/CI.
 
