@@ -1,0 +1,44 @@
+# https://trivy.dev/docs/latest/guide/references/configuration/config-file/
+# Loaded automatically from the repo root by `trivy fs` (`just dev_lint`).
+
+# Fail the lint when a reported finding matches the severity filter below.
+exit-code: 1
+
+# Drop progress and scanner logs so `just dev_lint` prints the report.
+quiet: true
+
+# Gate on HIGH and CRITICAL.
+severity:
+  - HIGH
+  - CRITICAL
+
+scan:
+  # mise owns upgrades; skip the extra version-check request on every lint.
+  skip-version-check: true
+  disable-telemetry: true
+  scanners:
+    - vuln
+    - misconfig
+    # gitleaks covers git history. Trivy covers the working tree with a different ruleset.
+    - secret
+  skip-dirs:
+    - tmp
+    - .git
+    - .venv
+    - .terraform
+    # vendored mise tool lockfiles, not this project's dependencies
+    - .config/mise/locks
+    - "**/node_modules"
+
+misconfiguration:
+  terraform:
+    # Lint this repo's modules, not third-party modules Terraform downloads.
+    exclude-downloaded-modules: true
+
+vulnerability:
+  # Advisories without a fix are not actionable in a lint gate.
+  ignore-unfixed: true
+
+pkg:
+  # CI installs dev dependencies, so they belong in the scan.
+  include-dev-deps: true
