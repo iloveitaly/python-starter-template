@@ -3413,7 +3413,7 @@ requires-dist = [
     { name = "pydantic", extras = ["email", "timezone"] },
     { name = "python-slugify", specifier = ">=8.0.4" },
     { name = "radar-mapping-api", specifier = ">=0.2.0" },
-    { name = "redis", extras = ["hiredis"], specifier = ">=6.4.0" },
+    { name = "redis", extras = ["hiredis"], specifier = ">=8.1.0" },
     { name = "secure", specifier = ">=2.0.1" },
     { name = "sentry-sdk", extras = ["fastapi", "celery", "sqlalchemy"], specifier = ">=2.66.1" },
     { name = "sqlalchemy", specifier = ">=2.0.51" },
