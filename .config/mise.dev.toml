@@ -7,7 +7,6 @@ min_version = "2026.10.8"
 #   only for local development/CI.
 
 [tools]
-
 ########
 # Core #
 ########
@@ -31,3 +30,5 @@ yamllint = "latest"
 "github:chmln/sd" = "latest"
 "ast-grep" = "latest"
 "github:dmtrKovalenko/odiff" = "latest"
+# TOML formatter and linter, invoked from `just dev_lint`
+tombi = "latest"
