@@ -294,6 +294,9 @@ version = "1.58.0"
 backend = "ubi:casey/just"
 specifiers = ["latest"]
 
+[tools.just."platforms.linux-x64-just"]
+checksum = "blake3:e36b85d760b5980ec163a0246e5430c2de6e32ee282125be903d7dec49c610ed"
+
 [[tools.mprocs]]
 version = "0.9.6"
 backend = "aqua:pvolok/mprocs"
@@ -333,6 +336,53 @@ url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/440298019"
 checksum = "sha256:9dc6e49ef47c7aa2e6a2844503d6cfa34e51a4d15dd78abef6e6de2fc10e5765"
 url = "https://github.com/pvolok/dekit/releases/download/v0.9.6/mprocs-0.9.6-windows-x86_64.zip"
 url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/440298377"
+
+[[tools.tombi]]
+version = "1.5.5"
+backend = "aqua:tombi-toml/tombi"
+specifiers = ["latest"]
+
+[tools.tombi."platforms.linux-arm64"]
+checksum = "sha256:a545a471cec6baf982bcb8e274d097303cece1a72136ada79d240adb6d1354f6"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.5.5/tombi-cli-1.5.5-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/559313379"
+provenance = "github-attestations"
+
+[tools.tombi."platforms.linux-arm64-musl"]
+checksum = "sha256:a545a471cec6baf982bcb8e274d097303cece1a72136ada79d240adb6d1354f6"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.5.5/tombi-cli-1.5.5-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/559313379"
+provenance = "github-attestations"
+
+[tools.tombi."platforms.linux-x64"]
+checksum = "sha256:6c50d2589989e8182e9f6e774b4b25c9f5729b67a2a7e7dcaadddbedbe1da5ec"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.5.5/tombi-cli-1.5.5-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/559313407"
+provenance = "github-attestations"
+
+[tools.tombi."platforms.linux-x64-musl"]
+checksum = "sha256:6c50d2589989e8182e9f6e774b4b25c9f5729b67a2a7e7dcaadddbedbe1da5ec"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.5.5/tombi-cli-1.5.5-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/559313407"
+provenance = "github-attestations"
+
+[tools.tombi."platforms.macos-arm64"]
+checksum = "sha256:460b3269414d2ca26e05863908764f118bea3b4a52068081af6a3dae03c1320e"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.5.5/tombi-cli-1.5.5-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/559313381"
+provenance = "github-attestations"
+
+[tools.tombi."platforms.macos-x64"]
+checksum = "sha256:9276c456e4a0217e95fb84ac3cde29d281d7b53e5eb168d83cb038ec07e2083d"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.5.5/tombi-cli-1.5.5-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/559313375"
+provenance = "github-attestations"
+
+[tools.tombi."platforms.windows-x64"]
+checksum = "sha256:49e8aa14e82038a13c5f9f50cc6524b56b9bce167734bead31439939e0830a3b"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.5.5/tombi-cli-1.5.5-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/559313401"
+provenance = "github-attestations"
 
 [[tools.watchexec]]
 version = "2.7.3"

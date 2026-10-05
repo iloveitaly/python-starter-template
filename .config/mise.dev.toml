@@ -7,7 +7,6 @@ min_version = "2026.10.0"
 #   only for local development/CI.
 
 [tools]
-
 ########
 # Core #
 ########
@@ -28,3 +27,5 @@ direnv = "latest"
 "github:chmln/sd" = "latest"
 "ast-grep" = "latest"
 "github:dmtrKovalenko/odiff" = "latest"
+# TOML formatter and linter. Taplo is unmaintained; Tombi is the maintained replacement.
+tombi = "latest"

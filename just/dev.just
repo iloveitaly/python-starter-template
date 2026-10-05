@@ -19,6 +19,24 @@ dev_lint:
 	# TODO link justfiles too
 	# GIT_CONFIG_GLOBAL=/dev/null gitleaks git --report-format json --report-path - | jq -r '.[].Fingerprint' | sort -t ':' -k2 > .gitleaksignore
 
+# format and lint TOML. Both run so a format failure does not hide a lint failure.
+[script]
+toml_lint:
+	set +e
+	exit_code=0
+
+	tombi format --check . || exit_code=$?
+	tombi lint . || exit_code=$?
+
+	if [[ -n "${exit_code:-}" && "${exit_code}" != 0 ]]; then
+		echo "One or more commands failed"
+		exit 1
+	fi
+
+# format TOML. Lint findings are reported by `toml_lint`; Tombi has no lint autofix.
+toml_lint_fix:
+	tombi format .
+
 # start all of the services you need for development in a single terminal
 [script]
 [arg("open", long, help="open the development site in the browser", flag)]
