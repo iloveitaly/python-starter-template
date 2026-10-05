@@ -28,11 +28,6 @@ url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.39.0/op_darwin_amd64_v2.39
 [tools.1password-cli."platforms.windows-x64"]
 url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.39.0/op_windows_amd64_v2.39.0.zip"
 
-[[tools."cargo:commitlint-rs"]]
-version = "0.2.4"
-backend = "cargo:commitlint-rs"
-specifiers = ["latest"]
-
 [[tools."cargo:fastmod"]]
 version = "0.4.4"
 backend = "cargo:fastmod"
