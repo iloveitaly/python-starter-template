@@ -34,7 +34,7 @@ dev_lint:
 	if [ -n "${GITHUB_ACTIONS:-}" ]; then
 		echo "::add-matcher::.github/actionlint-matcher.json"
 	fi
-	actionlint -shellcheck= -pyflakes= || exit_code=$?
+	actionlint -config-file .config/actionlint.yml -shellcheck= -pyflakes= || exit_code=$?
 
 	if [[ -n "${exit_code:-}" ]]; then
 		echo "One or more commands failed"
