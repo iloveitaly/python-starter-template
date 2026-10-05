@@ -3,10 +3,8 @@
 
 [files]
 exclude = [
-    "uv.lock",
-    ".config/mise.lock",
-    ".config/mise.dev.lock",
-    ".config/mise.extras.lock",
+    "**/*.lock",
+    # vendored tool metadata under mise's lock cache, not project config
     ".config/mise/locks/**",
 ]
 
