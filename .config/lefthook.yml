@@ -29,7 +29,9 @@ prepare-commit-msg:
 commit-msg:
   commands:
     commitlint:
-      run: commitlint
+      # commitlint-rs only auto-discovers a config in the working directory, so pass the path.
+      # The long flag is --config. The short flag in current commitlint-rs is -g, not -c.
+      run: commitlint --config .config/commitlintrc.yml
       skip:
         # only run this if the tool exists, it's conditionally installed
         # https://keisukeyamashita.github.io/commitlint-rs/
