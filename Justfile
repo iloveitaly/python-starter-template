@@ -60,11 +60,11 @@ generate: dev_generate py_generate js_generate
 
 # run automatic fix operations for all linters
 [parallel]
-fix: js_lint-fix py_lint_fix
+fix: js_lint-fix py_lint_fix toml_lint_fix
 
 # run all linters
 [parallel]
-lint: js_lint py_lint db_lint dev_lint
+lint: js_lint py_lint db_lint dev_lint toml_lint
 
 # nicely clean all build artifacts and caches
 clean: js_clean py_clean build_clean

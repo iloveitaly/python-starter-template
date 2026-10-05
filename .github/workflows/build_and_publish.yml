@@ -75,6 +75,7 @@ jobs:
             ${{ runner.os }}-playwright-
       - run: just py_setup
       - run: just py_lint
+      - run: just toml_lint
       - run: just db_migrate
       - run: just db_lint
       - run: just py_test
