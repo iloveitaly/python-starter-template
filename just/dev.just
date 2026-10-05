@@ -26,7 +26,7 @@ dev_lint:
 
 	# yamllint's default `auto` format emits GitHub annotations when Actions sets
 	# GITHUB_ACTIONS and GITHUB_WORKFLOW.
-	yamllint --strict -c .config/yamllint.yml . || exit_code=$?
+	yamllint --strict --config-file .config/lint/yamllint.yml . || exit_code=$?
 
 	# shellcheck and pyflakes are optional actionlint integrations. GitHub-hosted runners ship shellcheck
 	# and this toolchain does not, so disable both and keep local and CI results the same.
@@ -34,7 +34,7 @@ dev_lint:
 	if [ -n "${GITHUB_ACTIONS:-}" ]; then
 		echo "::add-matcher::.github/actionlint-matcher.json"
 	fi
-	actionlint -config-file .config/actionlint.yml -shellcheck= -pyflakes= || exit_code=$?
+	actionlint --config-file .config/lint/actionlint.yml -shellcheck= -pyflakes= || exit_code=$?
 
 	if [[ -n "${exit_code:-}" ]]; then
 		echo "One or more commands failed"
