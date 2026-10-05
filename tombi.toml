@@ -1,0 +1,27 @@
+# Tombi config: https://tombi-toml.github.io/tombi/docs/configuration/
+# Generated lockfiles are rewritten by their own tools, so they stay out of format and lint.
+
+[files]
+exclude = [
+    "uv.lock",
+    ".config/mise.lock",
+    ".config/mise.dev.lock",
+    ".config/mise.extras.lock",
+    ".config/mise/locks/**",
+]
+
+[format.rules]
+# Match the existing TOML style and the editor tab size.
+indent-width = 4
+
+[lint.rules]
+# pyproject.toml is kept in hand-written order, so schema table order is noise.
+tables-out-of-order = "off"
+
+# Schema Store marks pyproject.toml for key sorting. Keep the file's existing
+# order so `uv add` and hand-edited groups are not rewritten on format.
+[[schemas]]
+path = "tombi://www.schemastore.org/pyproject.json"
+include = ["pyproject.toml"]
+format.rules.array-values-order.enabled = false
+format.rules.table-keys-order.enabled = false
