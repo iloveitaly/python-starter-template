@@ -1,6 +1,8 @@
 # https://lefthook.dev/configuration/
 # Full list of hooks: https://git-scm.com/docs/githooks
-# Lefthook does not look in this directory. env/dev.sh sets LEFTHOOK_CONFIG to this file.
+# Lefthook does not look in this directory. `lefthook install` reads this file via
+# LEFTHOOK_CONFIG, then writes git hooks that source `rc` before every `lefthook run`.
+rc: .config/lint/lefthookrc
 
 # debug hooks with:
 # LEFTHOOK_VERBOSE=1 lefthook run pre-push --force
