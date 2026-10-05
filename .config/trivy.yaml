@@ -1,5 +1,5 @@
 # https://trivy.dev/docs/latest/guide/references/configuration/config-file/
-# Loaded automatically from the repo root by `trivy fs` (`just dev_lint`).
+# Passed to `trivy fs` from `just dev_lint` via `--config`.
 
 # Fail the lint when a reported finding matches the severity filter below.
 exit-code: 1
