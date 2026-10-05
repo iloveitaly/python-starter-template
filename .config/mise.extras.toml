@@ -1,8 +1,6 @@
 # your `env/dev.local.sh` should set MISE_ENV=dev,extras to include these tools
 
 [tools]
-# combined with the ast-grep skill, this is a great tool for exploring codebases
-"cargo:fastmod" = "latest"
 "pypi:aiautocommit" = "latest"
 "pypi:uv-development-toggle" = "latest"
 "pypi:llm-ide-rules" = "latest"
