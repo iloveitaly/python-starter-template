@@ -29,7 +29,7 @@ requirements *flags: _dev_only
 		rm .git/hooks/*.sample || true; \
 		\
 		echo "Installing git hooks..."; \
-		lefthook install; \
+		LEFTHOOK_CONFIG=.config/lint/lefthook.yml lefthook install; \
 	fi
 
 # setup everything required for local development

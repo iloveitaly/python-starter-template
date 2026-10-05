@@ -18,8 +18,7 @@ railpack.json
 env/
 *.log
 docker-compose*.yml
-lefthook*yml
-.commitlintrc.yml
+lefthook-local.yml
 .copier-answers.yml
 /copier.yml
 /.copier
@@ -48,6 +47,8 @@ Justfile
 # ast-grep is dev/CI only
 sgconfig.yml
 .config/ast-grep
+# YAML, workflow, commit, and git hook lint configs are dev/CI only
+.config/lint
 # NOTE /Procfile is intentionally included, it can be used by some deployments (dokku)
 
 ################################

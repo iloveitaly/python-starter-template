@@ -16,7 +16,7 @@ rules:
   comments:
     ignore: |
       infra/azure/cloud-init-data-disk.yaml
-  # Commented-out keys (see `.config/commitlintrc.yml`) do not share an indentation with a live node.
+  # Commented-out keys (see `.config/lint/commitlintrc.yml`) do not share an indentation with a live node.
   comments-indentation: disable
   # Files do not start with `---`. Cloud-init also requires `#cloud-config` on line 1.
   document-start: disable

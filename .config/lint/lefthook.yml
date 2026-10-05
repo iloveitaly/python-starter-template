@@ -1,5 +1,6 @@
 # https://lefthook.dev/configuration/
 # Full list of hooks: https://git-scm.com/docs/githooks
+# Lefthook does not look in this directory. env/dev.sh sets LEFTHOOK_CONFIG to this file.
 
 # debug hooks with:
 # LEFTHOOK_VERBOSE=1 lefthook run pre-push --force
@@ -29,9 +30,8 @@ prepare-commit-msg:
 commit-msg:
   commands:
     commitlint:
-      # commitlint-rs only auto-discovers a config in the working directory, so pass the path.
-      # The long flag is --config. The short flag in current commitlint-rs is -g, not -c.
-      run: commitlint --config .config/commitlintrc.yml
+      # commitlint-rs only auto-discovers a config in the working directory.
+      run: commitlint --config .config/lint/commitlintrc.yml
       skip:
         # only run this if the tool exists, it's conditionally installed
         # https://keisukeyamashita.github.io/commitlint-rs/
