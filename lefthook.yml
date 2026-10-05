@@ -25,17 +25,6 @@ prepare-commit-msg:
         # only run this if the tool exists
         - run: "! which aiautocommit"
 
-# Use this to validate commit messages
-commit-msg:
-  commands:
-    commitlint:
-      run: commitlint
-      skip:
-        # only run this if the tool exists, it's conditionally installed
-        # https://keisukeyamashita.github.io/commitlint-rs/
-        - run: "! which commitlint > /dev/null"
-
-
 # {push_files} are just the files that are going to be pushed, not all files unique to this branch that would be pushed if the push was fresh
 # this means that if someone just enables lefthook, or if the linter
 pre-push:
