@@ -1,0 +1,6 @@
+# https://github.com/rhysd/actionlint/blob/main/docs/config.md
+paths:
+  .github/workflows/build_and_publish.yml:
+    # The deploy job is kept in-tree and forced off (`if: false`) until the railpack switch.
+    ignore:
+      - 'constant expression "false" in condition'

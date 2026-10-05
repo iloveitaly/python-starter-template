@@ -1,0 +1,3 @@
+# Sourced by the git hooks created with `lefthook install`.
+root=$(git rev-parse --show-toplevel)
+export LEFTHOOK_CONFIG="$root/.config/lint/lefthook.yml"

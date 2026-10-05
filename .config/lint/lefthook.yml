@@ -1,5 +1,8 @@
 # https://lefthook.dev/configuration/
 # Full list of hooks: https://git-scm.com/docs/githooks
+# Lefthook does not look in this directory. `lefthook install` reads this file via
+# LEFTHOOK_CONFIG, then writes git hooks that source `rc` before every `lefthook run`.
+rc: .config/lint/lefthookrc
 
 # debug hooks with:
 # LEFTHOOK_VERBOSE=1 lefthook run pre-push --force
@@ -29,7 +32,8 @@ prepare-commit-msg:
 commit-msg:
   commands:
     commitlint:
-      run: commitlint
+      # commitlint-rs only auto-discovers a config in the working directory.
+      run: commitlint --config .config/lint/commitlintrc.yml
       skip:
         # only run this if the tool exists, it's conditionally installed
         # https://keisukeyamashita.github.io/commitlint-rs/
@@ -45,6 +49,8 @@ pre-push:
       run: just py_lint
     js_lint:
       run: just js_lint
+    dev_lint:
+      run: just dev_lint
 
 # post-merge: fires after git merge / git pull
 # post-rewrite: fires after git rebase / git commit --amend
