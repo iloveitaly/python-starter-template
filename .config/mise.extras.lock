@@ -3,30 +3,30 @@
 lockfile_version = 2
 
 [[tools.1password-cli]]
-version = "2.39.0"
+version = "2.40.0"
 backend = "vfox:1password-cli"
 specifiers = ["latest"]
 
 [tools.1password-cli."platforms.linux-arm64"]
-url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.39.0/op_linux_arm64_v2.39.0.zip"
+url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.40.0/op_linux_arm64_v2.40.0.zip"
 
 [tools.1password-cli."platforms.linux-arm64-musl"]
-url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.39.0/op_linux_arm64_v2.39.0.zip"
+url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.40.0/op_linux_arm64_v2.40.0.zip"
 
 [tools.1password-cli."platforms.linux-x64"]
-url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.39.0/op_linux_amd64_v2.39.0.zip"
+url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.40.0/op_linux_amd64_v2.40.0.zip"
 
 [tools.1password-cli."platforms.linux-x64-musl"]
-url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.39.0/op_linux_amd64_v2.39.0.zip"
+url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.40.0/op_linux_amd64_v2.40.0.zip"
 
 [tools.1password-cli."platforms.macos-arm64"]
-url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.39.0/op_darwin_arm64_v2.39.0.zip"
+url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.40.0/op_darwin_arm64_v2.40.0.zip"
 
 [tools.1password-cli."platforms.macos-x64"]
-url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.39.0/op_darwin_amd64_v2.39.0.zip"
+url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.40.0/op_darwin_amd64_v2.40.0.zip"
 
 [tools.1password-cli."platforms.windows-x64"]
-url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.39.0/op_windows_amd64_v2.39.0.zip"
+url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.40.0/op_windows_amd64_v2.40.0.zip"
 
 [[tools.dive]]
 version = "0.13.1"
@@ -156,25 +156,25 @@ url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/56
 provenance = "github-attestations"
 
 [[tools."pypi:aiautocommit"]]
-version = "0.28.0"
+version = "0.28.1"
 backend = "pypi:aiautocommit"
 specifiers = ["latest"]
-uv = { path = "mise/locks/mise.extras/pypi-aiautocommit/0.28.0", digest = "sha256:fb93a8e06290ae31badfe47ead28e89cb75fc27bae0988f34cf58bf9e5787d6a" }
+uv = { path = "mise/locks/mise.extras/pypi-aiautocommit/0.28.1", digest = "sha256:4a44a5f248cbc37aa21bebeb53a65ae8bf58fa14ca35addb67271c8d23544a85" }
 
 [[tools."pypi:jc"]]
-version = "1.25.7"
+version = "1.26.0"
 backend = "pypi:jc"
 specifiers = ["latest"]
-uv = { path = "mise/locks/mise.extras/pypi-jc/1.25.7", digest = "sha256:3bc3b9881cf1d637637d157b26755a689e60d3fe5c14848b25cba93e07e77b1d" }
+uv = { path = "mise/locks/mise.extras/pypi-jc/1.26.0", digest = "sha256:f29cb42d763dd0caccc3381186bf2bc3b6c7372f308009e453e4f31659f6f0e2" }
 
 [[tools."pypi:llm-ide-rules"]]
-version = "0.20.0"
+version = "0.20.1"
 backend = "pypi:llm-ide-rules"
 specifiers = ["latest"]
-uv = { path = "mise/locks/mise.extras/pypi-llm-ide-rules/0.20.0", digest = "sha256:ab62b700f8812cbc313b69b8ad42eb6c184caa15c0c42eae919941d5a6954553" }
+uv = { path = "mise/locks/mise.extras/pypi-llm-ide-rules/0.20.1", digest = "sha256:39a8f1ebd5bab81c71bad03daed2fa5b1a6cc3633060bd4c6870408cdde0fcca" }
 
 [[tools."pypi:uv-development-toggle"]]
 version = "0.7.0"
 backend = "pypi:uv-development-toggle"
 specifiers = ["latest"]
-uv = { path = "mise/locks/mise.extras/pypi-uv-development-toggle/0.7.0", digest = "sha256:0d4942923e8c54ea8f6cf09594d79cc95dd04303406cad122ffd655966479198" }
+uv = { path = "mise/locks/mise.extras/pypi-uv-development-toggle/0.7.0", digest = "sha256:ea46a77126c7f37e266c86b161e98c43536c16c47a32d92a7b675c303d1aadcb" }

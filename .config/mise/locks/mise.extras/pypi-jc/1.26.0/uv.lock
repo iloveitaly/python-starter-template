@@ -7,11 +7,11 @@ resolution-markers = [
 ]
 
 [options]
-exclude-newer = "2026-09-19T15:49:02.661053Z"
+exclude-newer = "2026-09-26T13:10:04.761551Z"
 
 [[package]]
 name = "jc"
-version = "1.25.7"
+version = "1.26.0"
 source = { registry = "https://pypi.org/simple/" }
 dependencies = [
     { name = "pygments", version = "2.19.2", source = { registry = "https://pypi.org/simple/" }, marker = "python_full_version < '3.9'" },
@@ -21,9 +21,9 @@ dependencies = [
     { name = "xmltodict", version = "0.15.0", source = { registry = "https://pypi.org/simple/" }, marker = "python_full_version < '3.9'" },
     { name = "xmltodict", version = "1.0.4", source = { registry = "https://pypi.org/simple/" }, marker = "python_full_version >= '3.9'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a9/da/7827d3389d87fa645556d595a2a437576de83f7a7d4a5fceda9c32208c0b/jc-1.25.7.tar.gz", hash = "sha256:63481e34d92715781e1b094eca7d76d122a14489463d45b7f3e8180f44ea3a10", size = 616951, upload-time = "2026-06-18T17:06:23.49Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/95/5f/9e6e8dc65cb15662fcfc090a52ed4fc4334ab7703b42107bc992777d19a1/jc-1.26.0.tar.gz", hash = "sha256:576b5615b5677c7bf4aacf97dcc6c6b4bf437bbc420c7db77b43ae1785372c9e", size = 636334, upload-time = "2026-09-19T23:00:00.159Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/42/59/6eed63d63287e905fe288a1d2791d288e7dee5c80063ec3f5bda4217ab55/jc-1.25.7-py3-none-any.whl", hash = "sha256:5ed6a0da915c931c04693cab806d5c31d9ef14ca998c6c32308460d37cb30baf", size = 705553, upload-time = "2026-06-18T17:06:18.874Z" },
+    { url = "https://files.pythonhosted.org/packages/50/9a/5540123290c8ef7ce3ec88b8f2eb77a269219c1292f81fe3cfa653e13193/jc-1.26.0-py3-none-any.whl", hash = "sha256:2f0ef33cfafcbfc3c756ca2bd6df57c310e24f6cd5cc5e8322f7a442fd33f7ad", size = 723475, upload-time = "2026-09-19T22:59:57.676Z" },
 ]
 
 [[package]]
@@ -35,7 +35,7 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "jc", specifier = "==1.25.7" }]
+requires-dist = [{ name = "jc", specifier = "==1.26.0" }]
 
 [[package]]
 name = "pygments"
