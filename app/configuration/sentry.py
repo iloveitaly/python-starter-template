@@ -4,8 +4,7 @@ from sentry_sdk.transport import Transport
 
 from app.constants import BUILD_COMMIT
 from app.env import env
-
-from ..environments import is_job_monitor, is_production, python_environment
+from app.environments import is_job_monitor, is_production, python_environment
 
 # Outside production: valid DSN shape so the client activates, paired with
 # SinkholeTransport (never used for network I/O).
