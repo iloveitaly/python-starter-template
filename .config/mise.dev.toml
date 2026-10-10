@@ -20,6 +20,8 @@ direnv = "latest"
 
 "github:peterldowns/localias" = "latest"
 "github:gitleaks/gitleaks" = "latest"
+# filesystem vulnerabilities, misconfigurations, and secrets (`just dev_lint`)
+trivy = "latest"
 "jq" = "latest"
 "mprocs" = "latest"
 "fd" = "latest"
