@@ -33,7 +33,10 @@ requirements *flags: _dev_only
 	fi
 
 # setup everything required for local development
-setup: _dev_only requirements && py_setup docker_up db_seed js_setup
+# dev_generate_hosts writes gitignored env/host.sh (PYTHON_SERVER_HOST and ports).
+# Cloud install runs `direnv exec just setup`, so .envrc also generates that file
+# when it is missing; this dependency covers `just setup` once direnv has loaded.
+setup: dev_generate_hosts _dev_only requirements && py_setup docker_up db_seed js_setup
 	# NOTE this task should be non-destructive, the user should opt-in to something destructive like `nuke`
 
 	# `.local` variants enable the developer to override configuration options without
