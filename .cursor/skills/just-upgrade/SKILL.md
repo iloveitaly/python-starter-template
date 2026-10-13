@@ -52,9 +52,15 @@ That engines field was already `^24.21.0` before this upgrade. Any `pnpm install
 
 ## Fix
 
-`mise install` does not help. Node 24.21.0 is already installed. mise only rewrites its own PATH segment. `/exec-daemon` and then `.venv/bin` stay in front of that segment. `.venv/bin` has no `node`. `/exec-daemon/node` is v22.14.0, so pnpm's PATH lookup stops there.
+`mise install` does not help. Node 24.21.0 is already installed.
 
-With `/exec-daemon` removed from `PATH`, `mise exec -C web` resolves `node` to `.../node/24.21.0/bin/node` and `node -v` is v24.21.0. The fix is to stop putting the agent runtime's Node ahead of mise. The harness can keep that binary at an absolute path. Leave `engines.node` in place. Do not set pnpm `engine-strict` off, and do not add a `PATH=` prefix in the justfile.
+The exec daemon prepends its own directory at process start (`prependExecDaemonBundleToPath`, `dirname(process.execPath)` → `/exec-daemon`) so every child resolves the bundled `node` and `rg`. With `--origin-cli-enabled` it also prepends `/exec-daemon/tools`. That `node` is v22.14.0. `.venv/bin` is in the same prefix and has no `node`.
+
+mise path mode keeps every `PATH` entry before the first mise-managed entry as a prefix. `/exec-daemon` is in that prefix, so `mise hook-env` and `mise exec` both emit it ahead of `.../node/24.21.0/bin`. Another precmd hook does not change this. `hook-env` is the rewrite that puts the prefix back. `just` runs `zsh -ceuB`, which does not source `.zshrc`, so an interactive `mise activate` hook never runs for `just upgrade`.
+
+`mise activate --shims` puts `~/.local/share/mise/shims` first and does not run that rewrite. When the shims directory is already ahead of `/exec-daemon`, `mise exec -C web` resolves `node` to `.../node/24.21.0/bin/node` and leaves `/exec-daemon` after the tool bins (node bin at position 3, `/exec-daemon` at 27). A shim at the front of `PATH` with no `mise exec` also prints v24.21.0.
+
+This repo activates path mode (`bootstrap.sh` uses `mise activate` with no `--shims`). Shims have to be first in the environment `just` inherits, and a later path-mode `hook-env` must not run, or `/exec-daemon` moves back in front. Leave `engines.node` in place. Do not turn off pnpm's engine check.
 
 `_mise_web_version_sync` writes the resolved version into `web/mise.toml` (`node@24.21.0`), and `_js_sync-engine-versions` writes `engines.node` `^24.21.0`. A second `just upgrade --yes` still dies at `js_upgrade` line 88 with the same `Got: v22.14.0` error. npm-check-updates then prints `All dependencies not in cooldown match the latest package versions`.
 
