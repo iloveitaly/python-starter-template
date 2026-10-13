@@ -38,9 +38,9 @@ The `git add` inside `tooling_upgrade` runs before `_js_sync-engine-versions` an
 
 ## Cloud agent Node shadow
 
-On a Cursor cloud agent, `/exec-daemon` is prepended to `PATH` and ships Node v22.14.0. mise's Node for this repo is `~/.local/share/mise/installs/node/24.21.0/bin/node`.
+On a Cursor cloud agent, `/exec-daemon` is prepended to `PATH` and ships Node v22.14.0. mise's Node for this repo is already installed at `~/.local/share/mise/installs/node/24.21.0/bin/node`. `mise install` does not fix the failure. `just upgrade` already runs `mise upgrade --yes --local`, and that run left Node at `24.21.0` because it was installed.
 
-`mise exec -C web -- node -v` prints v24.21.0 because mise invokes that tool directly. `pnpm` is a separate binary (`_pnpm` is `mise exec -C web -- pnpm`). It looks up `node` on `PATH` and finds `/exec-daemon/node` first. `web/package.json` `engines.node` is `^24.21.0`, so install exits:
+Inside `mise exec -C web`, PATH starts with `/exec-daemon`, then mise's pnpm bin, then the Node 24.21.0 bin. `mise exec -C web -- node -v` prints v24.21.0 only because mise invokes that tool when `node` is the command. A child process does a PATH lookup: `zsh -c 'command -v node'` is `/exec-daemon/node` and `node -v` is v22.14.0. `pnpm` is a separate binary (`_pnpm` is `mise exec -C web -- pnpm`) and does that same lookup. `web/package.json` `engines.node` is `^24.21.0`, so install exits:
 
 ```
 ERR_PNPM_UNSUPPORTED_ENGINE
