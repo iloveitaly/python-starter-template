@@ -7,9 +7,14 @@ Pydantic doesn't have great solutions for lists of objects
 from pydantic import BaseModel, TypeAdapter
 
 
+def _list_adapter[T: BaseModel](model: type[T]) -> TypeAdapter[list[T]]:
+    # Pyright 1.1.414 still rejects a variable in a type expression (`list[model]`).
+    return TypeAdapter(list[model])  # pyright: ignore[reportInvalidTypeForm]
+
+
 def validate_json_list[T: BaseModel](json_data: str | bytes, model: type[T]) -> list[T]:
     """Parse a JSON array into a list of `model` instances."""
-    return TypeAdapter(list[model]).validate_json(json_data)
+    return _list_adapter(model).validate_json(json_data)
 
 
 def dump_json_list[T: BaseModel](items: list[T], model: type[T] | None = None) -> bytes:
@@ -18,7 +23,7 @@ def dump_json_list[T: BaseModel](items: list[T], model: type[T] | None = None) -
         if not items:
             return b"[]"
         model = type(items[0])
-    return TypeAdapter(list[model]).dump_json(items)
+    return _list_adapter(model).dump_json(items)
 
 
 def dump_python_list[T: BaseModel](
@@ -29,4 +34,4 @@ def dump_python_list[T: BaseModel](
         if not items:
             return []
         model = type(items[0])
-    return TypeAdapter(list[model]).dump_python(items)
+    return _list_adapter(model).dump_python(items)
