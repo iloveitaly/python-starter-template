@@ -60,7 +60,11 @@ mise path mode keeps every `PATH` entry before the first mise-managed entry as a
 
 `mise activate --shims` puts `~/.local/share/mise/shims` first and does not run that rewrite. When the shims directory is already ahead of `/exec-daemon`, `mise exec -C web` resolves `node` to `.../node/24.21.0/bin/node` and leaves `/exec-daemon` after the tool bins (node bin at position 3, `/exec-daemon` at 27). A shim at the front of `PATH` with no `mise exec` also prints v24.21.0.
 
-This repo activates path mode (`bootstrap.sh` uses `mise activate` with no `--shims`). Shims have to be first in the environment `just` inherits, and a later path-mode `hook-env` must not run, or `/exec-daemon` moves back in front. Leave `engines.node` in place. Do not turn off pnpm's engine check.
+This repo activates path mode (`bootstrap.sh` uses `mise activate` with no `--shims`). Shims have to be first in the environment `just` inherits, and a later path-mode `hook-env` must not run, or `/exec-daemon` moves back in front.
+
+The system setting that does this without switching to shims is `activate_aggressive = true`. mise documents it as keeping mise tool directories ahead of `PATH` entries added after activate. With it set, `mise hook-env` and `mise exec -C web` both place `.../node/24.21.0/bin` before `/exec-daemon`, and `node -v` is v24.21.0. `mise exec` reads it from the user config, so `just`'s non-interactive `zsh -ceuB` picks it up with no shell hook.
+
+[agent-containers](https://github.com/iloveitaly/agent-containers) already writes that user config from `cursor/install.sh` to `~/.config/mise/config.toml` (`trusted_config_paths`, global `uv`). Add `activate_aggressive = true` under that `[settings]` table. `miserc.toml` is the wrong file: it is for values mise reads before config (`env`). Do not put this in the project's `.config/mise.toml`; that would change every developer's PATH, not only agent images. Leave `engines.node` in place. Do not turn off pnpm's engine check.
 
 `_mise_web_version_sync` writes the resolved version into `web/mise.toml` (`node@24.21.0`), and `_js_sync-engine-versions` writes `engines.node` `^24.21.0`. A second `just upgrade --yes` still dies at `js_upgrade` line 88 with the same `Got: v22.14.0` error. npm-check-updates then prints `All dependencies not in cooldown match the latest package versions`.
 
