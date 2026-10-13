@@ -17,7 +17,7 @@ just upgrade --yes
 
 Run that command directly. Do not prefix it with `direnv exec`.
 
-`_dev_only` exits unless `PYTHON_ENV=development`. Do not export that variable. A normal zsh loads it through the direnv hook in `~/.zshrc` (`eval "$(direnv hook zsh)"`), which runs `.envrc` on directory entry. This agent shell is non-interactive (`ZSH_EVAL_CONTEXT=cmdarg:eval`) and does not source `~/.zshrc`, so `PYTHON_ENV` stays unset. A bare `just upgrade --yes` then fails immediately:
+`_dev_only` exits unless `PYTHON_ENV=development`. Do not export that variable. A normal interactive zsh loads it through the direnv hook in `~/.zshrc` (`eval "$(direnv hook zsh)"`). Agent commands run as non-interactive, non-login `/bin/zsh -c` (`interactive` off, no `-l`, argv0 `/bin/zsh`). That invocation reads `~/.zshenv` only. `.zshrc` is interactive-only, and there is no `~/.zprofile` sourcing it, so the hook never runs and `PYTHON_ENV` stays unset. A bare `just upgrade --yes` then fails immediately:
 
 ```
 error: PYTHON_ENV must be set to 'development'
