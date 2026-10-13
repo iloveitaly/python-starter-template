@@ -33,7 +33,8 @@ requirements *flags: _dev_only
 	fi
 
 # setup everything required for local development
-setup: _dev_only requirements && py_setup docker_up db_seed js_setup
+[arg("skip_services", long="skip-services", help="skip docker_up and db_seed", flag)]
+setup skip_services: _dev_only requirements && py_setup (_setup_services (if bool(skip_services) { "true" } else { "false" })) js_setup
 	# NOTE this task should be non-destructive, the user should opt-in to something destructive like `nuke`
 
 	# `.local` variants enable the developer to override configuration options without
@@ -54,6 +55,13 @@ setup: _dev_only requirements && py_setup docker_up db_seed js_setup
 	fi
 
 	@echo 'If you are using localias, run `{{CYAN}}just localias{{NORMAL}}` to start the daemon'
+
+# docker_up and db_seed need a running daemon, so --skip-services omits them
+_setup_services skip_services:
+	@if [ "{{skip_services}}" != "true" ]; then \
+		just docker_up; \
+		just db_seed; \
+	fi
 
 # if a dev is having trouble with their environment, this outputs all the versions + debugging information of core tools which could be causing the problem
 setup_debug:
