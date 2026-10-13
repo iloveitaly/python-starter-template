@@ -62,7 +62,9 @@ mise path mode keeps every `PATH` entry before the first mise-managed entry as a
 
 This repo activates path mode (`bootstrap.sh` uses `mise activate` with no `--shims`). Shims have to be first in the environment `just` inherits, and a later path-mode `hook-env` must not run, or `/exec-daemon` moves back in front.
 
-The system setting that does this without switching to shims is `activate_aggressive = true`. mise documents it as keeping mise tool directories ahead of `PATH` entries added after activate. With it set, `mise hook-env` and `mise exec -C web` both place `.../node/24.21.0/bin` before `/exec-daemon`, and `node -v` is v24.21.0. `mise exec` reads it from the user config, so `just`'s non-interactive `zsh -ceuB` picks it up with no shell hook.
+The docs name two ways to put tools on `PATH`, not a separate prepend mode. `mise activate` is PATH activation: it prepends each tool's `bin` directory and rewrites `PATH` on prompt and `cd`. `mise activate --shims` is shim mode: it prepends `~/.local/share/mise/shims` and does not rewrite `PATH` at each prompt. See [Shims](https://mise.jdx.dev/dev-tools/shims.html).
+
+`activate_aggressive` is the PATH-activation setting, not a third mode. The docs say a `PATH=` line after `mise activate` in the shell rc wins unless this is true, or unless `mise activate` is last in that file. With it set, `mise hook-env` and `mise exec -C web` both place `.../node/24.21.0/bin` before `/exec-daemon`, and `node -v` is v24.21.0. `mise exec` reads it from the user config, so `just`'s non-interactive `zsh -ceuB` picks it up with no shell hook.
 
 [agent-containers](https://github.com/iloveitaly/agent-containers) already writes that user config from `cursor/install.sh` to `~/.config/mise/config.toml` (`trusted_config_paths`, global `uv`). Add `activate_aggressive = true` under that `[settings]` table. `miserc.toml` is the wrong file: it is for values mise reads before config (`env`). Do not put this in the project's `.config/mise.toml`; that would change every developer's PATH, not only agent images. Leave `engines.node` in place. Do not turn off pnpm's engine check.
 
