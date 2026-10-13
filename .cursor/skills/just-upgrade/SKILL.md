@@ -50,12 +50,16 @@ Got: v22.14.0
 
 That engines field was already `^24.21.0` before this upgrade. Any `pnpm install` in this environment hits the same check. Do not prepend mise's Node onto `PATH` and do not set `PYTHON_ENV` by hand. Stop and report the shadow.
 
+`_mise_web_version_sync` writes the resolved version into `web/mise.toml` (`node@24.21.0`), and `_js_sync-engine-versions` writes `engines.node` `^24.21.0`. A second `just upgrade --yes` still dies at `js_upgrade` line 88 with the same `Got: v22.14.0` error. npm-check-updates then prints `All dependencies not in cooldown match the latest package versions`.
+
 ## Partial run on 2026-10-13
 
-`direnv exec . just upgrade --yes` died in `js_upgrade` on the engine error above. `py_upgrade`, `playwright install`, and `py_cli write-versions` did not run.
+First `direnv exec . just upgrade --yes` died in `js_upgrade` on the engine error above. `py_upgrade`, `playwright install`, and `py_cli write-versions` did not run.
 
-Staged by the recipe: `.config/mise.dev.toml` `min_version` `2026.10.6` → `2026.10.8` (matches `mise --version`), `.config/mise*.lock`, `.github/actions/common-setup/action.yml` mise `version` to `2026.10.8`, `web/mise.toml` pnpm `11.28.0` → `11.28.2`, `web/mise.lock`.
+Committed from that run: `.config/mise.dev.toml` `min_version` `2026.10.6` → `2026.10.8` (matches `mise --version`), `.config/mise*.lock`, `.github/actions/common-setup/action.yml` mise `version` to `2026.10.8`, `web/mise.toml` pnpm `11.28.0` → `11.28.2`, `web/mise.lock`.
 
-Unstaged: `web/package.json`. npm-check-updates rewrote ranges (pnpm engines `^11.28.2`, radix majors, `happy-dom` `^21.0.1`, and patch bumps). `web/pnpm-lock.yaml` was not updated. Cooldown kept some newer radix releases back; the log marks those `[cooldown]`.
+npm-check-updates rewrote `web/package.json` ranges (pnpm engines `^11.28.2`, radix majors, `happy-dom` `^21.0.1`, and patch bumps). `web/pnpm-lock.yaml` was not updated. Cooldown kept some newer radix releases back; the log marks those `[cooldown]`.
 
-mise tools that actually moved: lefthook `2.1.14` → `2.1.15`, just-lsp `0.9.0` → `0.10.0`, mprocs `0.9.6` → `0.10.0`, yq `4.53.6` → `4.54.1`, pnpm `11.28.0` → `11.28.2`. Node stayed `24.21.0`. Lockfiles printed `mise lock --upgrade` warnings for older lockfile format versions; the recipe does not run that.
+The second run staged that dirty `web/package.json` because `tooling_upgrade`'s `git add` runs before `js_upgrade`, and the file was already modified. Install failed again, so the lockfile still does not match. Do not commit `web/package.json` without `web/pnpm-lock.yaml`.
+
+mise tools that actually moved on the first run: lefthook `2.1.14` → `2.1.15`, just-lsp `0.9.0` → `0.10.0`, mprocs `0.9.6` → `0.10.0`, yq `4.53.6` → `4.54.1`, pnpm `11.28.0` → `11.28.2`. Node stayed `24.21.0` on both runs. Lockfiles printed `mise lock --upgrade` warnings for older lockfile format versions; the recipe does not run that.
