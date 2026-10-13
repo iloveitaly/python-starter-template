@@ -153,6 +153,7 @@ globs: just/*.just
 - Do not create aliases unless explicitly asked
 - Separate scripts larger than 5 lines with newlines and comments for non-obvious logic
 - Do not use inline shebang unless it differs from the default
+- Use uppercase vars for shell script variables
 
 Use the following script execution configuration:
 
