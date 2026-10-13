@@ -69,90 +69,90 @@ url = "https://github.com/wagoodman/dive/releases/download/v0.13.1/dive_0.13.1_w
 url_api = "https://api.github.com/repos/wagoodman/dive/releases/assets/241842460"
 
 [[tools."github:terror/just-lsp"]]
-version = "0.9.0"
+version = "0.10.0"
 backend = "github:terror/just-lsp"
 specifiers = ["latest"]
 
 [tools."github:terror/just-lsp"."platforms.linux-arm64"]
-checksum = "sha256:d55934e447042a32c43d234768515552b1360b0b200bd430f9c6c1c6d8197ad6"
-url = "https://github.com/terror/just-lsp/releases/download/0.9.0/just-lsp-0.9.0-aarch64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/570520746"
+checksum = "sha256:0b48cbf1dfa2efb95348b751a1be6f4837e61ace5dd156daef2c2719f650883c"
+url = "https://github.com/terror/just-lsp/releases/download/0.10.0/just-lsp-0.10.0-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/595782204"
 
 [tools."github:terror/just-lsp"."platforms.linux-arm64-musl"]
-checksum = "sha256:ded12f92d8623256c2bad74f187164b8813a893321b3a23a9af142ce00e7b40a"
-url = "https://github.com/terror/just-lsp/releases/download/0.9.0/just-lsp-0.9.0-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/570520890"
+checksum = "sha256:88d83e1bfb29f5cf41be1d4056d56311bcdcad81aec57b7737cdd98147547478"
+url = "https://github.com/terror/just-lsp/releases/download/0.10.0/just-lsp-0.10.0-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/595782567"
 
 [tools."github:terror/just-lsp"."platforms.linux-x64"]
-checksum = "sha256:64e1557166bce29571751fda5ab637613b791ddcafd4fa12f24dd39fd003a121"
-url = "https://github.com/terror/just-lsp/releases/download/0.9.0/just-lsp-0.9.0-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/570519460"
+checksum = "sha256:9a801d9dd90a2ac06500903b5a8038881f07f1b0e856590d6f91191a305bc305"
+url = "https://github.com/terror/just-lsp/releases/download/0.10.0/just-lsp-0.10.0-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/595781494"
 
 [tools."github:terror/just-lsp"."platforms.linux-x64-musl"]
-checksum = "sha256:2c8e0fb2c81271f2227326c48dd6826dce0b2dd79cb3b662068634062524057c"
-url = "https://github.com/terror/just-lsp/releases/download/0.9.0/just-lsp-0.9.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/570521724"
+checksum = "sha256:3c35e10e76db6cc1931495bb3abdaef02576eaeb406c217420f4fd37e1ebe22c"
+url = "https://github.com/terror/just-lsp/releases/download/0.10.0/just-lsp-0.10.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/595781977"
 
 [tools."github:terror/just-lsp"."platforms.macos-arm64"]
-checksum = "sha256:64476a3d6a1e4adbea6f7980c455b07d517b341fada4040305fabd4d50b0b3da"
-url = "https://github.com/terror/just-lsp/releases/download/0.9.0/just-lsp-0.9.0-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/570522418"
+checksum = "sha256:eeca52c7da21b5b04f059a5e23b99575f77ab9b448bdb84911f6b185d386e9c4"
+url = "https://github.com/terror/just-lsp/releases/download/0.10.0/just-lsp-0.10.0-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/595783983"
 
 [tools."github:terror/just-lsp"."platforms.macos-x64"]
-checksum = "sha256:f73c6058cf0095ad62dd0eeb440de5cd61147283cad5248c765f2120d549dbd2"
-url = "https://github.com/terror/just-lsp/releases/download/0.9.0/just-lsp-0.9.0-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/570521263"
+checksum = "sha256:b177bfb271dac7ce9e181f06e83d61edc87debbe05ae50f27f8c2fb40ac8ec95"
+url = "https://github.com/terror/just-lsp/releases/download/0.10.0/just-lsp-0.10.0-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/595783817"
 
 [tools."github:terror/just-lsp"."platforms.windows-x64"]
-checksum = "sha256:8cbe8eae0bba3a378671ec13ea62c6aa01f4d4632856e0b66f9696234d290562"
-url = "https://github.com/terror/just-lsp/releases/download/0.9.0/just-lsp-0.9.0-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/570524051"
+checksum = "sha256:4465270a43bc71e9ed917320b780a80b53ce632fac83aeafadb689ab8f056f1d"
+url = "https://github.com/terror/just-lsp/releases/download/0.10.0/just-lsp-0.10.0-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/595785502"
 
 [[tools.lefthook]]
-version = "2.1.14"
+version = "2.1.15"
 backend = "aqua:evilmartians/lefthook"
 specifiers = ["latest"]
 
 [tools.lefthook."platforms.linux-arm64"]
-checksum = "sha256:2fd4b1f33aab4e4c8691a1a6a750b0638a40bdef871234cacb33781615dbf7ba"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.14/lefthook_2.1.14_Linux_aarch64.gz"
-url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/563149908"
+checksum = "sha256:883bd1d697eb926b4f4c4fb08ff000fda0306432368199923e415f8e9a4c22d4"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.15/lefthook_2.1.15_Linux_aarch64.gz"
+url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/598600348"
 provenance = "github-attestations"
 
 [tools.lefthook."platforms.linux-arm64-musl"]
-checksum = "sha256:2fd4b1f33aab4e4c8691a1a6a750b0638a40bdef871234cacb33781615dbf7ba"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.14/lefthook_2.1.14_Linux_aarch64.gz"
-url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/563149908"
+checksum = "sha256:883bd1d697eb926b4f4c4fb08ff000fda0306432368199923e415f8e9a4c22d4"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.15/lefthook_2.1.15_Linux_aarch64.gz"
+url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/598600348"
 provenance = "github-attestations"
 
 [tools.lefthook."platforms.linux-x64"]
-checksum = "sha256:2be3187101b3a2edd5edf8b546aa2e3820531c517b4cd0216601a9c06f07c42d"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.14/lefthook_2.1.14_Linux_x86_64.gz"
-url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/563149839"
+checksum = "sha256:b3ed1e83389d0a98b5f243a8a1afcb0fdfad527834f87170f2a2ff9ddfe0f836"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.15/lefthook_2.1.15_Linux_x86_64.gz"
+url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/598600261"
 provenance = "github-attestations"
 
 [tools.lefthook."platforms.linux-x64-musl"]
-checksum = "sha256:2be3187101b3a2edd5edf8b546aa2e3820531c517b4cd0216601a9c06f07c42d"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.14/lefthook_2.1.14_Linux_x86_64.gz"
-url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/563149839"
+checksum = "sha256:b3ed1e83389d0a98b5f243a8a1afcb0fdfad527834f87170f2a2ff9ddfe0f836"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.15/lefthook_2.1.15_Linux_x86_64.gz"
+url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/598600261"
 provenance = "github-attestations"
 
 [tools.lefthook."platforms.macos-arm64"]
-checksum = "sha256:398e6a23dfe2de3fc113e091dd4b592795cc8f1665acf5501856858b8056d686"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.14/lefthook_2.1.14_MacOS_arm64.gz"
-url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/563149840"
+checksum = "sha256:8b40280a2bae6a21a546e42c1f02cb190cfe9888ff541eb500a0b05bd38db17f"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.15/lefthook_2.1.15_MacOS_arm64.gz"
+url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/598600263"
 provenance = "github-attestations"
 
 [tools.lefthook."platforms.macos-x64"]
-checksum = "sha256:9e304cad12b3785bf45ba6085fa6a91ed45f6ff6e7dabd50cb6834959caef06a"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.14/lefthook_2.1.14_MacOS_x86_64.gz"
-url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/563149898"
+checksum = "sha256:61e85903bd9b7ba51b2980ecd2229e61d6c4c2f8961d1ad64a6e0445b1ab0dc6"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.15/lefthook_2.1.15_MacOS_x86_64.gz"
+url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/598600306"
 provenance = "github-attestations"
 
 [tools.lefthook."platforms.windows-x64"]
-checksum = "sha256:61a0f47c75c741fa2788aff55f85dfa0a34307257b176cb6b20fd821ae030454"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.14/lefthook_2.1.14_Windows_x86_64.gz"
-url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/563149872"
+checksum = "sha256:1c38250090d3755305809dfc568bc4aa4d83c25e9c203b603fb1bd93da847b50"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.15/lefthook_2.1.15_Windows_x86_64.gz"
+url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/598600347"
 provenance = "github-attestations"
 
 [[tools."pypi:aiautocommit"]]
