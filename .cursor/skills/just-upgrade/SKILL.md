@@ -15,11 +15,16 @@ just upgrade --yes
 
 `--yes` auto-accepts dialogs. It is forwarded to `js_upgrade`, which then runs `pnpm dlx --yes npm-check-updates@latest --upgrade --cooldown 1d` instead of the interactive `npm-check-updates --interactive` prompt.
 
-The shell must already have direnv loaded. `_dev_only` exits unless `PYTHON_ENV=development`. Do not export that variable. If the shell has not loaded `.envrc`, run:
+Run that command directly. Do not prefix it with `direnv exec`.
+
+`_dev_only` exits unless `PYTHON_ENV=development`. Do not export that variable. A normal zsh loads it through the direnv hook in `~/.zshrc` (`eval "$(direnv hook zsh)"`), which runs `.envrc` on directory entry. This agent shell is non-interactive (`ZSH_EVAL_CONTEXT=cmdarg:eval`) and does not source `~/.zshrc`, so `PYTHON_ENV` stays unset. A bare `just upgrade --yes` then fails immediately:
 
 ```
-direnv exec . just upgrade --yes
+error: PYTHON_ENV must be set to 'development'
+error: recipe `_dev_only` failed on line 19 with exit code 1
 ```
+
+`~/.zshenv` only exports `MISE_ENV` and `OP_INTEGRATION_DISABLED`. The direnv hook is not there. `just` itself runs `zsh -ceuB`, which inherits the parent environment and also skips `~/.zshrc`.
 
 ## Order
 
