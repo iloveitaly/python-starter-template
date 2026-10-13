@@ -4,17 +4,12 @@ TODO need to move to a better place
 Pydantic doesn't have great solutions for lists of objects
 """
 
-from types import GenericAlias
-from typing import Any, cast
-
 from pydantic import BaseModel, TypeAdapter
 
 
 def _list_adapter[T: BaseModel](model: type[T]) -> TypeAdapter[list[T]]:
-    # Pyright rejects a variable in a type expression (`list[model]`).
-    return cast(
-        TypeAdapter[list[T]], TypeAdapter(cast(Any, GenericAlias(list, (model,))))
-    )
+    # Pyright 1.1.414 still rejects a variable in a type expression (`list[model]`).
+    return TypeAdapter(list[model])  # pyright: ignore[reportInvalidTypeForm]
 
 
 def validate_json_list[T: BaseModel](json_data: str | bytes, model: type[T]) -> list[T]:
