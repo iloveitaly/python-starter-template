@@ -56,9 +56,16 @@ setup skip_services: _dev_only requirements && py_setup (_setup_services (if boo
 
 	@echo 'If you are using localias, run `{{CYAN}}just localias{{NORMAL}}` to start the daemon'
 
-# docker_up and db_seed need a running daemon, so --skip-services omits them
+# docker_up and db_seed need a running daemon. --skip-services always omits
+# them. Headless `just setup` (for example Cloud Agent install) can run before
+# dockerd is started, so skip when the daemon is down instead of failing
+# before js_setup.
 _setup_services skip_services:
-	@if [ "{{skip_services}}" != "true" ]; then \
+	@if [ "{{skip_services}}" = "true" ]; then \
+		echo "Skipping docker_up and db_seed (--skip-services)"; \
+	elif ! docker info >/dev/null 2>&1; then \
+		echo "Docker daemon is not running; skipping docker_up and db_seed"; \
+	else \
 		just docker_up; \
 		just db_seed; \
 	fi
