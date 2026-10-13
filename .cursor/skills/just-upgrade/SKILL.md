@@ -26,6 +26,19 @@ error: recipe `_dev_only` failed on line 19 with exit code 1
 
 `~/.zshenv` only exports `MISE_ENV` and `OP_INTEGRATION_DISABLED`. The direnv hook is not there. `just` itself runs `zsh -ceuB`, which inherits the parent environment and also skips `~/.zshrc`.
 
+`direnv hook zsh` only registers `precmd` and `chpwd`. It does not load `.envrc` when the shell starts, so copying that hook into `~/.zshenv` does not help `zsh -c`. `eval "$(direnv export zsh)"` does load it. With `OP_INTEGRATION_DISABLED` already exported, a `ZDOTDIR` whose `.zshenv` runs that export makes `zsh -ceuB` print `PYTHON_ENV=development` in `/workspace` and leaves it unset in `/tmp`. `direnv export zsh` took about 0.08s here.
+
+In [agent-containers](https://github.com/iloveitaly/agent-containers) `cursor/install.sh`, append this to `~/.zshenv` after the `OP_INTEGRATION_DISABLED` and `MISE_ENV` lines, and keep the existing `direnv hook` in `~/.zshrc` for interactive `cd`:
+
+```zsh
+# zsh -c (agent shells, just's zsh -ceuB) does not source .zshrc, so the precmd hook never runs.
+if [[ -z "${DIRENV_DIR:-}" ]] && command -v direnv >/dev/null 2>&1; then
+  eval "$(direnv export zsh)"
+fi
+```
+
+Write it even when direnv was already installed. The current script only appends the hook inside `if $need_direnv`, and only to `~/.zshrc`. Guard the append so a second install does not duplicate it. `.envrc` calling `just` before this export finishes can recurse, because `DIRENV_DIR` is not set until export returns. `env/host.sh` already exists in this checkout, so `.envrc` does not call `just dev_generate_hosts`.
+
 ## Order
 
 `tooling_upgrade: _dev_only && ...` uses just's subsequent-dependency form. Confirm with `just --dry-run tooling_upgrade`.
