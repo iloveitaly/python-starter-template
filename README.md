@@ -849,6 +849,14 @@ worker: rq worker --with-scheduler -w rq.worker.SpawnWorker
 
 * You should use `BigInt` instead of `int` for field types
 
+## Cloud Agents
+
+### Cursor Cloud Agents
+
+* https://cursor.com/dashboard/cloud-agents?view=my-secrets and configure OP_SERVICE_ACCOUNT_TOKEN
+* the install setup of the environment build should have OP integration disabled `OP_INTEGRATION_DISABLED=1`
+* https://github.com/iloveitaly/agent-containers use these containers
+
 ## Production
 
 ### Frontend
