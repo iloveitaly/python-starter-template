@@ -50,6 +50,12 @@ Got: v22.14.0
 
 That engines field was already `^24.21.0` before this upgrade. Any `pnpm install` in this environment hits the same check. Do not prepend mise's Node onto `PATH` and do not set `PYTHON_ENV` by hand. Stop and report the shadow.
 
+## Fix
+
+`mise install` does not help. Node 24.21.0 is already installed. mise only rewrites its own PATH segment. `/exec-daemon` and then `.venv/bin` stay in front of that segment. `.venv/bin` has no `node`. `/exec-daemon/node` is v22.14.0, so pnpm's PATH lookup stops there.
+
+With `/exec-daemon` removed from `PATH`, `mise exec -C web` resolves `node` to `.../node/24.21.0/bin/node` and `node -v` is v24.21.0. The fix is to stop putting the agent runtime's Node ahead of mise. The harness can keep that binary at an absolute path. Leave `engines.node` in place. Do not set pnpm `engine-strict` off, and do not add a `PATH=` prefix in the justfile.
+
 `_mise_web_version_sync` writes the resolved version into `web/mise.toml` (`node@24.21.0`), and `_js_sync-engine-versions` writes `engines.node` `^24.21.0`. A second `just upgrade --yes` still dies at `js_upgrade` line 88 with the same `Got: v22.14.0` error. npm-check-updates then prints `All dependencies not in cooldown match the latest package versions`.
 
 ## Partial run on 2026-10-13
