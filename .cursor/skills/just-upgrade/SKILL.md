@@ -29,9 +29,3 @@ just upgrade --yes
 `.config/mise.toml` version precision plus `minimum_release_age = "14d"` is the upgrade ceiling. `mise upgrade` warns and skips newer releases inside that window. `min_version` records the mise binary that is running. `mise self-update --yes` can report an older eligible release and leave a newer already-installed mise in place.
 
 The `git add` inside `tooling_upgrade` runs before `_js_sync-engine-versions` and before npm-check-updates. A clean `web/package.json` is a no-op there. Engine and dependency edits stay unstaged until the `git add` at the end of `js_upgrade`. Do not commit `web/package.json` without `web/pnpm-lock.yaml`. Lockfiles may print `mise lock --upgrade` warnings for older lockfile format versions. The recipe does not run that.
-
-## Services
-
-`just py_cli write-versions` reads Redis and Postgres. `just docker_up` starts postgres, redis, mailpit, and geoip, then on Linux runs `uvx docker-hosts@latest`. That tool's default `--tld` is `localhost`, so `/etc/hosts` gets `redis.localhost`. This checkout's `SERVICES_HOST` is `workspace.orb.local` (`env/not_production.sh`). CI sets `REDIS_HOST=redis.localhost` instead. `docker-hosts --tld workspace.orb.local` writes `redis.workspace.orb.local`.
-
-`playwright install` can print a host-deps warning (`sudo playwright install-deps`) and still exit 0. `write-versions` rewrites `.service-versions` from the running interpreters and services.
