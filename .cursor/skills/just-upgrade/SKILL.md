@@ -40,6 +40,8 @@ fi
 
 Checked with a temporary `ZDOTDIR`: `zsh -c` and `zsh -ceuB` match. `zsh -ic`, `zsh -lc`, and `zsh -lic` skip. At `.zshenv` time the login option still reflects the invocation. The agent command later restores `setopt login` from its snapshot, which is too late to change which startup files ran.
 
+On 2026-10-14 that block was appended to this VM's `~/.zshenv` only. It is not in agent-containers yet. `zsh -ceuB` then printed `PYTHON_ENV=development` with no `direnv exec` and no new `direnv allow`. `~/.config/direnv/direnv.toml` has `whitelist.prefix = ["/workspace"]`. With the allow file moved aside, the same shell still loaded `.envrc`. `just upgrade --yes` with no prefix exited 0. It bumped web packages (radix, lucide-react, postcss, posthog-js), `uv.lock`, and `.service-versions` chrome `153.0.8010.12` → `156.0.8078.4`. Playwright again printed the host-deps warning and did not fail the recipe.
+
 Write it even when direnv was already installed. The current script only appends the hook inside `if $need_direnv`, and only to `~/.zshrc`. Guard the append so a second install does not duplicate it. `.envrc` calling `just` before this export finishes can recurse, because `DIRENV_DIR` is not set until export returns. `env/host.sh` already exists in this checkout, so `.envrc` does not call `just dev_generate_hosts`.
 
 ## Order
