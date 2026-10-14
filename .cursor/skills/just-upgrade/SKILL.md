@@ -29,3 +29,9 @@ just upgrade --yes
 `.config/mise.toml` version precision plus `minimum_release_age = "14d"` is the upgrade ceiling. `mise upgrade` warns and skips newer releases inside that window. `min_version` records the mise binary that is running. `mise self-update --yes` can report an older eligible release and leave a newer already-installed mise in place.
 
 The `git add` inside `tooling_upgrade` runs before `_js_sync-engine-versions` and before npm-check-updates. A clean `web/package.json` is a no-op there. Engine and dependency edits stay unstaged until the `git add` at the end of `js_upgrade`. Do not commit `web/package.json` without `web/pnpm-lock.yaml`. Lockfiles may print `mise lock --upgrade` warnings for older lockfile format versions. The recipe does not run that.
+
+## Usage updates
+
+Skip patch bumps. For each minor or major bump, change call sites to match the new version in the same change as the upgrade. Do not leave a "consider this later" note in place of the edit.
+
+Record one row per edit: package, old version, new version, what changed, why. Put that table in the PR body. Skip a package when the new version does not change a call site in this repo.
