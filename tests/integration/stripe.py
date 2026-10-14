@@ -36,9 +36,9 @@ def fill_stripe_checkout(
         if frame is None:
             continue
 
-        card_number = frame.get_by_text("Card number")
+        card_number_label = frame.get_by_text("Card number")
         card_button = frame.get_by_role("button", name="Card")
-        if card_number.is_visible() or card_button.is_visible():
+        if card_number_label.is_visible() or card_button.is_visible():
             stripe_iframe = iframe
             stripe_frame = frame
             break
