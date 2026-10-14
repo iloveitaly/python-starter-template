@@ -28,6 +28,8 @@ def fill_stripe_checkout(
 
     # frame_locator() treats a hidden parent iframe as hidden
     # content_frame() does not
+    # TODO nothing in this repo calls this helper. frame_locator() throws if the
+    # card field exists in more than one frame
     stripe_frame = page.frame_locator()
 
     # I had a lot of issues getting this part of the page to properly click, which is why

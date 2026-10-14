@@ -27,8 +27,8 @@ if (isProduction()) {
     release: requireEnv("VITE_BUILD_COMMIT"),
 
     integrations: [
-      // node entry omits this export, so a named import throws during prerender
-      // browser entry includes it and is what the client bundle resolves
+      // TODO move init to a client-only module. root.tsx imports this file while
+      // prerendering, and the node entry does not export reactRouterTracingIntegration
       typeof SentryReactRouter.reactRouterTracingIntegration === "function"
         ? SentryReactRouter.reactRouterTracingIntegration()
         : Sentry.browserTracingIntegration(),

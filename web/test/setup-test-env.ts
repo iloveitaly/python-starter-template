@@ -6,7 +6,7 @@ import * as matchers from "@testing-library/jest-dom/matchers"
 import "@testing-library/jest-dom/vitest"
 import { cleanup } from "@testing-library/react"
 
-// without nock, posthog and other services will attempt to load and cause tests to be flakey
+// vitest disables <script src> loads. posthog.init still calls fetch, so this stays.
 nock.disableNetConnect()
 nock.enableNetConnect((host: string) => {
   return host.startsWith("127.0.0.1") || host.startsWith("localhost")
@@ -19,6 +19,7 @@ function mockGetRequests(hostPattern: RegExp | string) {
     .reply(200, "")
 }
 
+// TODO no app code requests facebook. this mock may be removable
 for (const hostPattern of [/facebook\.(net|com)/]) {
   mockGetRequests(hostPattern)
 }
