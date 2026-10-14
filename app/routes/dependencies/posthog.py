@@ -5,11 +5,30 @@ from structlog_config import fastapi_access_logger
 
 
 def _identify_posthog(request: Request) -> None:
-    # clerk_id matches the uuid the frontend uses, so FE and BE events merge
+    """
+    Attaching an identity UUID:
+
+    1. Eliminates the need for us to do this on each call
+    2. Allows posthog to merge FE events into the same user[0]
+
+    Some notes about posthog:
+
+    - Does not allow email, and other additional properties to be set. This must be set within the JS library.
+    - `capture` runs all POSTs async, so we don't have to worry about blocking the request.
+
+    [0]
+    https://posthog.com/docs/getting-started/identify-users
+
+    > If two users have the same distinct ID, their data is merged and they are considered one user in PostHog.
+    """
+
+    # by using clerk_id, we can easily use the same UUID on frontend events
     user = getattr(request.state, "user", None)
     if user is not None and getattr(user, "clerk_id", None):
         posthog.identify_context(user.clerk_id)
 
+    # intentionally overwrite any other session or distinct id set previously
+    # it's up to the user to add dependencies in the correct order
     # header wins when both are set, same as applying tags after identity
     if distinct_id := request.headers.get("X-Posthog-Distinct-Id"):
         contexts.identify_context(distinct_id)
@@ -19,6 +38,18 @@ def _identify_posthog(request: Request) -> None:
 
 
 def _tag_posthog_request(request: Request) -> None:
+    """
+    Inject some common tags into posthog events for this request. This is helpful for linking frontend events to backend events.
+
+    The Django implementation pulls a lot of data from the request. However, this data should already be in place from the frontend
+    library. If it's not, something else is wrong and we shouldn't hack around it by including more data here.
+
+    Instead, let's primary just tag the distinct_id and session_id from the request headers. These are injected in all HeyAPI
+    requests, but are *not* guaranteed to be present on all requests.
+
+    https://github.com/PostHog/posthog-python/blob/master/posthog/integrations/django.py
+    """
+
     tags = {}
 
     if absolute_url := str(request.url):
@@ -54,6 +85,7 @@ async def inject_posthog_context(request: Request):
     https://posthog.com/docs/getting-started/identify-users
     """
 
+    # by default, there is not a context, so we must define one
     with posthog.new_context():
         _identify_posthog(request)
         _tag_posthog_request(request)
