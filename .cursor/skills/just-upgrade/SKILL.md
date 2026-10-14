@@ -28,14 +28,17 @@ error: recipe `_dev_only` failed on line 19 with exit code 1
 
 `direnv hook zsh` only registers `precmd` and `chpwd`. Upstream `internal/cmd/shell_zsh.go` returns immediately when the shell is not interactive or when zsh's read-only `$ZSH_SUBSHELL` is not 0 (`[[ ! -o interactive || $ZSH_SUBSHELL -ne 0 ]]`). That guard is not in installed direnv 2.37.1. A non-interactive shell still never runs `precmd`, so the hook does not load `.envrc`. Copying it into `~/.zshenv` does not help `zsh -c`. Non-interactive injection is `direnv export zsh` (eval the diff) or `direnv exec DIR COMMAND`. `eval "$(direnv export zsh)"` does load it. With `OP_INTEGRATION_DISABLED` already exported, a `ZDOTDIR` whose `.zshenv` runs that export makes `zsh -ceuB` print `PYTHON_ENV=development` in `/workspace` and leaves it unset in `/tmp`. `direnv export zsh` took about 0.08s here.
 
-In [agent-containers](https://github.com/iloveitaly/agent-containers) `cursor/install.sh`, append this to `~/.zshenv` after the `OP_INTEGRATION_DISABLED` and `MISE_ENV` lines, and keep the existing `direnv hook` in `~/.zshrc` for interactive `cd`:
+zsh has no startup file that only non-interactive, non-login shells read. Those shells read `/etc/zshenv` and `~/.zshenv`, and every other zsh reads those too. In [agent-containers](https://github.com/iloveitaly/agent-containers) `cursor/install.sh`, append this to the ubuntu user's `~/.zshenv` after the `OP_INTEGRATION_DISABLED` and `MISE_ENV` lines. Keep the existing `direnv hook` in `~/.zshrc` for interactive `cd`.
 
 ```zsh
-# zsh -c (agent shells, just's zsh -ceuB) does not source .zshrc, so the precmd hook never runs.
-if [[ -z "${DIRENV_DIR:-}" ]] && command -v direnv >/dev/null 2>&1; then
+# zsh -c and just's zsh -ceuB are non-interactive and non-login. They never source .zshrc.
+# .zshenv also runs for interactive and login shells, so the option check limits this to those two.
+if [[ ! -o interactive && ! -o login && -z "${DIRENV_DIR:-}" ]] && command -v direnv >/dev/null 2>&1; then
   eval "$(direnv export zsh)"
 fi
 ```
+
+Checked with a temporary `ZDOTDIR`: `zsh -c` and `zsh -ceuB` match. `zsh -ic`, `zsh -lc`, and `zsh -lic` skip. At `.zshenv` time the login option still reflects the invocation. The agent command later restores `setopt login` from its snapshot, which is too late to change which startup files ran.
 
 Write it even when direnv was already installed. The current script only appends the hook inside `if $need_direnv`, and only to `~/.zshrc`. Guard the append so a second install does not duplicate it. `.envrc` calling `just` before this export finishes can recurse, because `DIRENV_DIR` is not set until export returns. `env/host.sh` already exists in this checkout, so `.envrc` does not call `just dev_generate_hosts`.
 
