@@ -7,7 +7,7 @@ import {
 } from "~/utils/environment"
 
 import * as Sentry from "@sentry/react"
-import { reactRouterTracingIntegration } from "@sentry/react-router"
+import * as SentryReactRouter from "@sentry/react-router"
 
 if (isProduction()) {
   Sentry.init({
@@ -27,8 +27,11 @@ if (isProduction()) {
     release: requireEnv("VITE_BUILD_COMMIT"),
 
     integrations: [
-      // browserTracingIntegration does not instrument the React Router router
-      reactRouterTracingIntegration(),
+      // node entry omits this export, so a named import throws during prerender
+      // browser entry includes it and is what the client bundle resolves
+      typeof SentryReactRouter.reactRouterTracingIntegration === "function"
+        ? SentryReactRouter.reactRouterTracingIntegration()
+        : Sentry.browserTracingIntegration(),
       // Replay is only available in the client
       Sentry.replayIntegration(),
       Sentry.feedbackIntegration({
