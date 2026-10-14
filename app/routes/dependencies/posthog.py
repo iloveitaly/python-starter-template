@@ -4,7 +4,7 @@ from starlette.requests import Request
 from structlog_config import fastapi_access_logger
 
 
-def _identify_posthog(request: Request) -> None:
+async def inject_posthog_identity(request: Request):
     """
     Attaching an identity UUID:
 
@@ -22,22 +22,13 @@ def _identify_posthog(request: Request) -> None:
     > If two users have the same distinct ID, their data is merged and they are considered one user in PostHog.
     """
 
-    # by using clerk_id, we can easily use the same UUID on frontend events
-    user = getattr(request.state, "user", None)
-    if user is not None and getattr(user, "clerk_id", None):
-        posthog.identify_context(user.clerk_id)
-
-    # intentionally overwrite any other session or distinct id set previously
-    # it's up to the user to add dependencies in the correct order
-    # header wins when both are set, same as applying tags after identity
-    if distinct_id := request.headers.get("X-Posthog-Distinct-Id"):
-        contexts.identify_context(distinct_id)
-
-    if session_id := request.headers.get("X-Posthog-Session-Id"):
-        contexts.set_context_session(session_id)
+    with posthog.new_context():
+        # by using clerk_id, we can easily use the same UUID on frontend events
+        posthog.identify_context(request.state.user.clerk_id)
+        yield
 
 
-def _tag_posthog_request(request: Request) -> None:
+async def inject_posthog_tags(request: Request):
     """
     Inject some common tags into posthog events for this request. This is helpful for linking frontend events to backend events.
 
@@ -50,43 +41,38 @@ def _tag_posthog_request(request: Request) -> None:
     https://github.com/PostHog/posthog-python/blob/master/posthog/integrations/django.py
     """
 
-    tags = {}
-
-    if absolute_url := str(request.url):
-        tags["$current_url"] = absolute_url
-
-    if request.method:
-        tags["$request_method"] = request.method
-
-    if request.url.path:
-        tags["$request_path"] = request.url.path
-        # the js SDK uses this param, I suspect $request_path is incorrect
-        tags["$pathname"] = request.url.path
-
-    if request_ip := fastapi_access_logger.client_ip_from_request(request):
-        # django uses $ip_address, but posthog web library uses $ip
-        tags["$ip"] = request_ip
-
-    # although absolute_url contains the host, we must set it separately
-    if request.url.hostname:
-        tags["$host"] = request.url.hostname
-
-    for key, value in tags.items():
-        contexts.tag(key, value)
-
-
-async def inject_posthog_context(request: Request):
-    """
-    One context for this request so identity and tags land on the same events.
-
-    PostHog does not allow email here. Set that in the JS library.
-    `capture` posts asynchronously, so this does not block the request.
-
-    https://posthog.com/docs/getting-started/identify-users
-    """
-
     # by default, there is not a context, so we must define one
     with posthog.new_context():
-        _identify_posthog(request)
-        _tag_posthog_request(request)
+        # intentionally overwrite any other session or distinct id set previously
+        # it's up to the user to add dependencies in the correct order
+        if distinct_id := request.headers.get("X-Posthog-Distinct-Id"):
+            contexts.identify_context(distinct_id)
+
+        if session_id := request.headers.get("X-Posthog-Session-Id"):
+            contexts.set_context_session(session_id)
+
+        tags = {}
+
+        if absolute_url := str(request.url):
+            tags["$current_url"] = absolute_url
+
+        if request.method:
+            tags["$request_method"] = request.method
+
+        if request.url.path:
+            tags["$request_path"] = request.url.path
+            # the js SDK uses this param, I suspect $request_path is incorrect
+            tags["$pathname"] = request.url.path
+
+        if request_ip := fastapi_access_logger.client_ip_from_request(request):
+            # django uses $ip_address, but posthog web library uses $ip
+            tags["$ip"] = request_ip
+
+        # although absolute_url contains the host, we must set it separately
+        if request.url.hostname:
+            tags["$host"] = request.url.hostname
+
+        for k, v in tags.items():
+            contexts.tag(k, v)
+
         yield
