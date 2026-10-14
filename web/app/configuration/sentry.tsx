@@ -7,8 +7,7 @@ import {
 } from "~/utils/environment"
 
 import * as Sentry from "@sentry/react"
-
-// TODO fix up react router when rr7 is supported https://docs.sentry.io/platforms/javascript/guides/react/features/react-router/
+import { reactRouterTracingIntegration } from "@sentry/react-router"
 
 if (isProduction()) {
   Sentry.init({
@@ -28,8 +27,8 @@ if (isProduction()) {
     release: requireEnv("VITE_BUILD_COMMIT"),
 
     integrations: [
-      Sentry.browserTracingIntegration(),
-      // TODO(mbianco) we should add react-router 7 integration when it's available
+      // browserTracingIntegration does not instrument the React Router router
+      reactRouterTracingIntegration(),
       // Replay is only available in the client
       Sentry.replayIntegration(),
       Sentry.feedbackIntegration({

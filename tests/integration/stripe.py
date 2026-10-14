@@ -23,17 +23,29 @@ def fill_stripe_checkout(
 
     card_number = card_number_map[card_type]
 
-    # Find the Stripe iframe dynamically by its name pattern
+    # Playwright 1.64 treats controls inside a hidden iframe as hidden.
+    # Stripe mounts several __privateStripeFrame frames. Use the one that shows the card UI.
     stripe_iframe = None
+    stripe_frame = None
     for iframe in page.query_selector_all("iframe"):
         name = iframe.get_attribute("name")
-        if name and name.startswith("__privateStripeFrame"):
+        if not name or not name.startswith("__privateStripeFrame"):
+            continue
+
+        frame = iframe.content_frame()
+        if frame is None:
+            continue
+
+        card_number = frame.get_by_text("Card number")
+        card_button = frame.get_by_role("button", name="Card")
+        if card_number.is_visible() or card_button.is_visible():
             stripe_iframe = iframe
+            stripe_frame = frame
             break
 
-    assert stripe_iframe is not None, "Stripe iframe not found"
-    stripe_frame = stripe_iframe.content_frame()
-    assert stripe_frame
+    assert stripe_iframe is not None and stripe_frame is not None, (
+        "Visible Stripe card frame not found"
+    )
 
     # had issues where the click on this button did not properly go through
     # wait_for_loading(page)

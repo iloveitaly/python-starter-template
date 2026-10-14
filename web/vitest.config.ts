@@ -12,6 +12,15 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "happy-dom",
+    environmentOptions: {
+      happyDOM: {
+        settings: {
+          // happy-dom 21 still fetches <script src> by default. nock blocks those
+          // hosts, and the failed loads throw NotSupportedError during render.
+          disableJavaScriptFileLoading: true,
+        },
+      },
+    },
     setupFiles: ["./test/setup-test-env.ts"],
     coverage: {
       provider: "v8",
