@@ -54,8 +54,6 @@ async def inject_posthog_context(request: Request):
     https://posthog.com/docs/getting-started/identify-users
     """
 
-    # new_context inherits parent tags. A second with-block would hide the first
-    # context's identity from events captured during the request.
     with posthog.new_context():
         _identify_posthog(request)
         _tag_posthog_request(request)

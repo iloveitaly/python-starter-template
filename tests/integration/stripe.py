@@ -23,8 +23,7 @@ def fill_stripe_checkout(
 
     card_number = card_number_map[card_type]
 
-    # Playwright 1.64 treats controls inside a hidden iframe as hidden.
-    # Stripe mounts several __privateStripeFrame frames. Use the one that shows the card UI.
+    # Stripe mounts several __privateStripeFrame frames, so use the one that shows the card UI
     stripe_iframe = None
     stripe_frame = None
     for iframe in page.query_selector_all("iframe"):

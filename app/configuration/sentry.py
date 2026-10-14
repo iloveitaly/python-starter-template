@@ -80,8 +80,6 @@ def configure_sentry(integrations=None):
         environment=python_environment(),
         enable_tracing=True,
         traces_sample_rate=0.1,
-        # trace-linked profiling is the stable replacement for profiles_sample_rate
-        # and for the continuous_profiling_auto_start experiment flag
         profile_lifecycle="trace",
         profile_session_sample_rate=0.1,
         # posthog integration is not a standard integration included with Sentry

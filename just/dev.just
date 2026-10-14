@@ -43,7 +43,6 @@ dev open: _dev_only localias dev_kill
 	fi
 
 	mkdir -p $TMP_DIRECTORY/mprocs
-	# mprocs 0.10 ships as dekit. `dekit mprocs` keeps --procfile, --log-dir, and --on-init
 	dekit mprocs --procfile=tmp/Procfile --log-dir=$TMP_DIRECTORY/mprocs --on-init '{c: restart-all}'
 
 # kill all processes bound to server ports
