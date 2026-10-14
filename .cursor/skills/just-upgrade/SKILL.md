@@ -26,7 +26,7 @@ error: recipe `_dev_only` failed on line 19 with exit code 1
 
 `~/.zshenv` only exports `MISE_ENV` and `OP_INTEGRATION_DISABLED`. The direnv hook is not there. `just` itself runs `zsh -ceuB`, which inherits the parent environment and also skips `~/.zshrc`.
 
-`direnv hook zsh` only registers `precmd` and `chpwd`. It does not load `.envrc` when the shell starts, so copying that hook into `~/.zshenv` does not help `zsh -c`. `eval "$(direnv export zsh)"` does load it. With `OP_INTEGRATION_DISABLED` already exported, a `ZDOTDIR` whose `.zshenv` runs that export makes `zsh -ceuB` print `PYTHON_ENV=development` in `/workspace` and leaves it unset in `/tmp`. `direnv export zsh` took about 0.08s here.
+`direnv hook zsh` only registers `precmd` and `chpwd`. Current upstream returns immediately unless the shell is interactive (`[[ ! -o interactive || $ZSH_SUBSHELL -ne 0 ]]`). Installed direnv 2.37.1 does not have that guard, but a non-interactive shell still never runs `precmd`, so the hook does not load `.envrc`. Copying it into `~/.zshenv` does not help `zsh -c`. Non-interactive injection is `direnv export zsh` (eval the diff) or `direnv exec DIR COMMAND`. `eval "$(direnv export zsh)"` does load it. With `OP_INTEGRATION_DISABLED` already exported, a `ZDOTDIR` whose `.zshenv` runs that export makes `zsh -ceuB` print `PYTHON_ENV=development` in `/workspace` and leaves it unset in `/tmp`. `direnv export zsh` took about 0.08s here.
 
 In [agent-containers](https://github.com/iloveitaly/agent-containers) `cursor/install.sh`, append this to `~/.zshenv` after the `OP_INTEGRATION_DISABLED` and `MISE_ENV` lines, and keep the existing `direnv hook` in `~/.zshrc` for interactive `cd`:
 
