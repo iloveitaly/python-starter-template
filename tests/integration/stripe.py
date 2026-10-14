@@ -23,33 +23,12 @@ def fill_stripe_checkout(
 
     card_number = card_number_map[card_type]
 
-    # Stripe mounts several __privateStripeFrame frames, so use the one that shows the card UI
-    stripe_iframe = None
-    stripe_frame = None
-    for iframe in page.query_selector_all("iframe"):
-        name = iframe.get_attribute("name")
-        if not name or not name.startswith("__privateStripeFrame"):
-            continue
-
-        frame = iframe.content_frame()
-        if frame is None:
-            continue
-
-        card_number_label = frame.get_by_text("Card number")
-        card_button = frame.get_by_role("button", name="Card")
-        if card_number_label.is_visible() or card_button.is_visible():
-            stripe_iframe = iframe
-            stripe_frame = frame
-            break
-
-    assert stripe_iframe is not None and stripe_frame is not None, (
-        "Visible Stripe card frame not found"
-    )
-
     # had issues where the click on this button did not properly go through
     # wait_for_loading(page)
 
-    stripe_iframe.scroll_into_view_if_needed()
+    # frame_locator() treats a hidden parent iframe as hidden
+    # content_frame() does not
+    stripe_frame = page.frame_locator()
 
     # I had a lot of issues getting this part of the page to properly click, which is why
     # we have this insane workaround
