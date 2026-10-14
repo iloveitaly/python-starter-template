@@ -32,6 +32,10 @@ The `git add` inside `tooling_upgrade` runs before `_js_sync-engine-versions` an
 
 `tooling_upgrade`, `js_upgrade`, and `py_upgrade` each `git add`. Before any other commit, check `git status`. An interrupted upgrade leaves `web/package.json` and the lockfiles staged.
 
+## Instructions
+
+After `just upgrade --yes`, run `llm-ide-rules download`. It refreshes `instructions.md` and `commands.md` from `iloveitaly/llm-ide-rules` and explodes the Cursor rules. Commit those two markdown files. Exploded `.cursor/rules/*.mdc` files are gitignored. When the download creates a new rule file, add that filename to `.gitignore`.
+
 ## Usage updates
 
 Skip patch bumps. Diff `web/package.json`, `pyproject.toml`, and the lockfiles against the base branch. Review a lockfile-only bump when this repo imports that package. For each minor or major bump, read the changelog for a deprecation or replacement that matches a call site here, then change that call site in the same change as the upgrade. Do not leave a "consider this later" note in place of the edit.
