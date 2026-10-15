@@ -121,6 +121,8 @@ dev = [
 # causes the application code to be duplicated
 [tool.uv]
 package = false
+# pluggy 1.7 stalls pytest collection past the Backend job limit
+constraint-dependencies = ["pluggy<1.7"]
 
 # this eliminates the need for `editable_mode = "strict"` and other config that was previously required
 [build-system]
