@@ -23,6 +23,9 @@ export PLAYWRIGHT_BROWSERS_PATH=$TMP_DIRECTORY/ms-playwright
 # host port sits in the worktree's existing port block. the container listens on 3000
 export PLAYWRIGHT_CHROME_PORT=$(( ${START_PORT} + 4 + ${PORT_OFFSET} ))
 export PLAYWRIGHT_CHROME_WS_ENDPOINT=ws://127.0.0.1:${PLAYWRIGHT_CHROME_PORT}/
+# image tag and npx package in docker-compose.yml. follows the locked python package.
+export PLAYWRIGHT_VERSION="$(awk '$1=="name" && $3=="\"playwright\"" { found=1 } found && $1=="version" { gsub(/"/, "", $3); print $3; exit }' "$ROOT_DIR/uv.lock")"
+[ -n "$PLAYWRIGHT_VERSION" ]
 
 # Since `package=false` in pyproject.toml, we need to explicitly add the current directory to PYTHONPATH
 export PYTHONPATH=$ROOT_DIR
