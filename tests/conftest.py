@@ -307,7 +307,7 @@ def connect_options(pytestconfig: pytest.Config):
     if not use_docker_chrome(pytestconfig):
         return None
 
-    endpoint = os.environ["PLAYWRIGHT_CHROME_WS_ENDPOINT"]
+    endpoint = env.str("PLAYWRIGHT_CHROME_WS_ENDPOINT")
     log.info("using docker chromium", endpoint=endpoint)
     return {"wsEndpoint": endpoint}
 
