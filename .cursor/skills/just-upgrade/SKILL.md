@@ -34,7 +34,7 @@ The `git add` inside `tooling_upgrade` runs before `_js_sync-engine-versions` an
 
 ## Instructions
 
-After `just upgrade --yes`, run `llm-ide-rules download`. It refreshes `instructions.md` and `commands.md` from `iloveitaly/llm-ide-rules` and explodes the Cursor rules. Commit those two markdown files. Exploded `.cursor/rules/*.mdc` files are gitignored. When the download creates a new rule file, add that filename to `.gitignore`.
+After `just upgrade --yes`, run `llm-ide-rules download`, then `llm-ide-rules ignores`. Download refreshes `instructions.md` and `commands.md` from `iloveitaly/llm-ide-rules` and explodes the Cursor rules. `ignores` rewrites the AI instruction block in `.gitignore`, including a new exploded rule file. Commit `instructions.md`, `commands.md`, and `.gitignore`.
 
 ## Usage updates
 
