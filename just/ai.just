@@ -1,6 +1,8 @@
 AI_CLIENTS := "antigravity,cursor"
 
 ai_setup:
+    pnpx skills add https://github.com/iloveitaly/ai-skills -g --all
+
     mcp-add \
       --name terraform \
       --type stdio \
