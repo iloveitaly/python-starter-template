@@ -1,4 +1,5 @@
 import * as inflection from "inflection"
+import { href } from "react-router"
 import { Temporal } from "temporal-polyfill"
 
 import type { Route } from "./+types/home"
@@ -73,6 +74,9 @@ export default function Page({ loaderData }: Route.ComponentProps) {
             <SiReact className="h-5 w-5 text-blue-500" />
             <a href="/form" className="text-blue-600 underline">
               Go to Form Page
+            </a>
+            <a href={href("/pay")} className="text-blue-link">
+              Example payment
             </a>
             <span className="text-muted-foreground ml-2 text-sm">
               {placeholderCount} {inflection.pluralize("message")}
