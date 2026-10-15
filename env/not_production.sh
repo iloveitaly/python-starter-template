@@ -20,8 +20,7 @@ export PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY=tests/integration/__snapshots__
 export PLAYWRIGHT_BROWSERS_PATH=$TMP_DIRECTORY/ms-playwright
 # integration tests attach to compose chromium so macos, linux, and CI paint the same pixels
 # unset the websocket endpoint to launch a browser on the host instead
-# host port sits in the worktree's existing port block. the container listens on 3000
-export PLAYWRIGHT_CHROME_PORT=$(( ${START_PORT} + 4 + ${PORT_OFFSET} ))
+# PLAYWRIGHT_CHROME_PORT comes from the generated host env
 export PLAYWRIGHT_CHROME_WS_ENDPOINT=ws://127.0.0.1:${PLAYWRIGHT_CHROME_PORT}/
 # image tag and npx package in docker-compose.yml. follows the locked python package.
 export PLAYWRIGHT_VERSION="$(awk '$1=="name" && $3=="\"playwright\"" { found=1 } found && $1=="version" { gsub(/"/, "", $3); print $3; exit }' "$ROOT_DIR/uv.lock")"
