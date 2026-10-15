@@ -3,13 +3,16 @@ import re
 from pathlib import Path
 
 import pytest
+import pytest_playwright_visual_snapshot.plugin as snapshot_plugin
 from playwright.sync_api import Page
+from pytest_playwright_visual_snapshot.plugin import AssertSnapshot
 
 from app import log
 from app.environments import is_local_testing
 
 from tests.constants import LONG_INTEGRATION_TEST_TIMEOUT
 from tests.integration.utils import apply_playwright_timeouts
+from tests.playwright_chrome import use_docker_chrome
 
 from .javascript_build import start_js_build
 from .server import (  # noqa: F401
@@ -55,6 +58,36 @@ def pytest_runtest_makereport(item, call):
 
         # log for the LLMs to pick up when they analyze the output
         log.info("Wrote rendered playwright page HTML", file_path=failure_file)
+
+
+@pytest.fixture
+def assert_snapshot(
+    pytestconfig: pytest.Config, request: pytest.FixtureRequest, browser_name: str
+):
+    # browser_name binds the snapshot fixture to the active playwright browser
+    del browser_name
+
+    failures: list[str] = []
+
+    def finalize() -> None:
+        if failures:
+            pytest.fail("\n".join(failures))
+
+    request.addfinalizer(finalize)
+
+    # filenames follow the renderer. compose chromium is linux on every host.
+    original_platform = snapshot_plugin.sys.platform
+    if use_docker_chrome(request.config):
+        snapshot_plugin.sys.platform = "linux"
+
+    try:
+        return AssertSnapshot(
+            pytestconfig=pytestconfig,
+            request=request,
+            failures=failures,
+        )
+    finally:
+        snapshot_plugin.sys.platform = original_platform
 
 
 # NOTE this runs on any pytest invocation, even if no tests are run, once per pytest invocation

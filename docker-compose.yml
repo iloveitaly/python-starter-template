@@ -1,5 +1,6 @@
 # NOTE: for development use only, do not run this compose in production!
 # ports are not exposed, instead dynamic orb domains are used
+# exception: chrome publishes a localhost websocket so host pytest can attach
 services:
   # port 5432
   postgres:
@@ -80,6 +81,51 @@ services:
       start_period: 15s
       timeout: 5s
       retries: 5
+
+  # Playwright Chromium shared by macOS, Linux, and CI.
+  # The image tag is pinned to the python playwright package.
+  # tests/unit/playwright_chrome_test.py fails if those versions drift.
+  chrome:
+    image: mcr.microsoft.com/playwright:v1.63.0-noble
+    init: true
+    # chromium crashes under the default 64mb /dev/shm
+    ipc: host
+    shm_size: 2gb
+    user: pwuser
+    working_dir: /home/pwuser
+    environment:
+      TZ: UTC
+      # browsers are baked into the image; npx must not download a second copy
+      PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
+    command:
+      - npx
+      - -y
+      - playwright@1.63.0
+      - run-server
+      - --port
+      - "3000"
+      - --host
+      - 0.0.0.0
+    ports:
+      - "127.0.0.1:${PLAYWRIGHT_CHROME_PORT}:3000"
+    healthcheck:
+      # TCP open is enough; the server speaks websockets on this port
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/3000'"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+
+  # Chrome resolves *.localhost to loopback and ignores /etc/hosts.
+  # Share chrome's netns and forward loopback 80/443 to host localias.
+  chrome-localhost-proxy:
+    image: alpine/socat:1.8.0.0
+    network_mode: service:chrome
+    depends_on:
+      - chrome
+    volumes:
+      - ./infra/chrome-localhost-proxy.sh:/chrome-localhost-proxy.sh:ro
+    entrypoint: ["/bin/sh", "/chrome-localhost-proxy.sh"]
 
 volumes:
   mailpit_data:
