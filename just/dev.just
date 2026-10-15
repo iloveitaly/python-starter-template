@@ -236,6 +236,8 @@ export PYTHON_SERVER_PORT=$(( ${START_PORT} + ${PORT_OFFSET} ))
 export PYTHON_TEST_SERVER_PORT=$(( ${START_PORT} + 1 + ${PORT_OFFSET} ))
 export JAVASCRIPT_SERVER_PORT=$(( ${START_PORT} + 2 + ${PORT_OFFSET} ))
 export FLOWER_PORT=$(( ${START_PORT} + 3 + ${PORT_OFFSET} ))
+# published host port for compose chromium. the container listens on 3000
+export PLAYWRIGHT_CHROME_PORT=$(( ${START_PORT} + 4 + ${PORT_OFFSET} ))
 
 # only applicable in development, javascript is bundled in the py container in prod
 export JAVASCRIPT_SERVER_HOST=${WORKTREE_PREFIX}${PROJECT_NAME}.localhost
