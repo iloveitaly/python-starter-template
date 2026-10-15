@@ -23,6 +23,9 @@ def fill_stripe_checkout(
 
     card_number = card_number_map[card_type]
 
+    # TODO Playwright 1.64 treats a control inside a hidden iframe as hidden when the
+    # locator comes from the page. content_frame() does not. frame_locator() does, and
+    # throws if that control exists in more than one frame
     # Find the Stripe iframe dynamically by its name pattern
     stripe_iframe = None
     for iframe in page.query_selector_all("iframe"):

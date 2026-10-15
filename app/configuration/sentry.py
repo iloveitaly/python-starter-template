@@ -80,18 +80,14 @@ def configure_sentry(integrations=None):
         environment=python_environment(),
         enable_tracing=True,
         traces_sample_rate=0.1,
+        profile_lifecycle="trace",
+        profile_session_sample_rate=0.1,
         # posthog integration is not a standard integration included with Sentry
         # https://docs.sentry.io/platforms/python/integrations/
         integrations=integrations,
         # these have a way of piling up quickly if they aren't ignored!
         ignore_errors=["WebhookDeliveryError"],
         before_send_transaction=filter_transactions,
-        _experiments={
-            # Set continuous_profiling_auto_start to True
-            # to automatically start the profiler on when
-            # possible.
-            "continuous_profiling_auto_start": True,
-        },
     )
 
     log.info(
