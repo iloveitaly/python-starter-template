@@ -5,9 +5,9 @@ of extremely hard-to-debug issues, so we capture & check versions on test & in p
 
 import inspect
 import json
-import os
 import sys
 
+from app.env import loose_env
 from app.setup import get_root_path
 
 VERSIONS_FILE = get_root_path() / ".service-versions"
@@ -86,7 +86,7 @@ def chrome_version() -> str:
 
     from playwright.sync_api import sync_playwright
 
-    endpoint = os.environ.get("PLAYWRIGHT_CHROME_WS_ENDPOINT")
+    endpoint = loose_env.str("PLAYWRIGHT_CHROME_WS_ENDPOINT")
 
     with sync_playwright() as playwright:
         if endpoint:
