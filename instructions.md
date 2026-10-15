@@ -24,7 +24,7 @@ Use line breaks to organize code into logical groups. Instead of:
 
 ```python
 if not client_secret_id:
-    raise HTTPException(status.HTTP_400_BAD_REQUEST)
+    raise ClientError("Invalid client secret")
 session_id = client_secret_id.split("_secret")[0]
 ```
 
@@ -32,27 +32,43 @@ Prefer:
 
 ```python
 if not client_secret_id:
-    raise HTTPException(status.HTTP_400_BAD_REQUEST)
+    raise ClientError("Invalid client secret")
 
 session_id = client_secret_id.split("_secret")[0]
 ```
 
 **DO NOT FORGET**: keep your responses short, dense, and without fluff. I am a senior, well-educated software engineer, and hate long explanations.
 
-### Add Comments for Expert Engineer with Limited Domain Knowledge
-
-The engineer reading your code is a world-class software engineer, but is not familiar with the internals of every system. Include concise one-line comments explaining key hooks, API usage, blocks of logic, etc., to help the reader quickly understand the code you've written.
-
-In other words, embed the business requirements as comments in the code when the code does not self-document.
-
 ### Code Comments
 
+Default to no comment. Names, structure, and the command itself should explain what the code does.
+
+The reader is a world-class engineer who may not know this domain or every third-party system. Add a concise one-line comment only when they would otherwise miss *why*:
+
+- a business rule the code can't express
+- non-obvious behavior or a gotcha in an external API, library, or tool
+- a workaround for a tooling limitation (e.g. `Any` for an unresolvable type)
+- a non-obvious edge case being handled
+
+If the comment restates the next line, its names, or the command's flags, delete it.
+
+Bad, restates the command:
+
+```just
+# install shared agent skills into the global skills dir
+pnpx skills add https://github.com/iloveitaly/ai-skills -g --all
+```
+
+Good, explains a tool limitation the code can't show:
+
+```just
+# docker can't copy files out of an image, only a container, so create a throwaway one
+docker create --name tmp-js-container {{JAVASCRIPT_IMAGE_TAG}}
+docker cp tmp-js-container:/app/build/production/client public
+```
+
 - Describe behavior as it exists today—don't frame comments around version history or "old vs new."
-- Only add comments if the code is not self-explanatory. Do not add obvious comments. This does not allow deleting a comment that is already there.
-- Do not remove existing comments. This includes `#` and `//` comments, block comments, TODOs, and docstrings.
-- Do not replace an existing comment or docstring with a shorter paraphrase. Add a new line under it if you have something to add.
-- Moving, merging, or renaming a function does not allow dropping its comments or docstring. Carry them to the code that still does that work.
-- Delete a comment, TODO, or docstring only when the code it describes is gone and the comment would now be false.
+- Do not remove existing comments.
 - Do not capitalize or add periods at the end of single-line comments.
 
 ### Git Usage
@@ -143,7 +159,7 @@ op.execute(
 
 globs: app/routes/**/*.py
 
-- When throwing a `HTTPException`, do not add a `detail=` and use a named status code (`status.HTTP_400_BAD_REQUEST`)
+- Raise `ClientError` (`app.routes.errors`) instead of `HTTPException`. See the `ClientError` docstring for further instructions and usage.
 - Do not return a `dict`, instead create a `class RouteNameResponse`
   - Locate these classes right above the `def route_name():` function which uses them.
 - Use `Model.one` when a record must exist in order for the business logic to succeed.
@@ -158,6 +174,17 @@ globs: **/*.test.tsx
 
 - Do not add unit tests that duplicate Playwright coverage. Only add unit tests for edge cases which are not covered by Playwright.
 
+## Shell Scripts
+
+globs: **/*.sh
+
+- Prefer zsh (assume latest version) over bash when you are certain it exists
+- Prefer stricter error handling over silent failure.
+- Hoist common environment variables to the top of the script.
+- Add a `Description:` comment at the top of the script to describe what the script does. 1-4 lines max.
+- Document conditional exits with a one-line explanation if it's not obvious.
+- Add line breaks between logical groups of code.
+
 ## Justfiles
 
 globs: just/*.just
@@ -169,10 +196,11 @@ globs: just/*.just
 - Separate scripts larger than 5 lines with newlines and comments for non-obvious logic
 - Do not use inline shebang unless it differs from the default
 - Use `_` convention, not `[private]`
+- Use uppercase for shell variable
 
 Use the following script execution configuration:
 
-```
+```justfile
 # zsh is the default shell under macos, let's mirror it everywhere
 set shell := ["zsh", "-ceuB", "-o", "pipefail", "-o", "extended_glob"]
 
