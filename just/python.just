@@ -53,7 +53,15 @@ py_upgrade:
 	# https://github.com/astral-sh/uv/issues/6794
 	uv sync -U --group=debugging-extras
 	uv tool upgrade --all
-	git add pyproject.toml uv.lock
+
+	# the compose image and `playwright@` package must match the python package
+	playwright_version=$(uv run python -c "from importlib.metadata import version; print(version('playwright'))")
+	sd 'mcr\.microsoft\.com/playwright:v[0-9]+\.[0-9]+\.[0-9]+-noble' "mcr.microsoft.com/playwright:v${playwright_version}-noble" docker-compose.yml
+	sd 'playwright@[0-9]+\.[0-9]+\.[0-9]+' "playwright@${playwright_version}" docker-compose.yml
+	grep -q "mcr.microsoft.com/playwright:v${playwright_version}-noble" docker-compose.yml
+	grep -q "playwright@${playwright_version}" docker-compose.yml
+
+	git add pyproject.toml uv.lock docker-compose.yml
 
 # open up a python development server
 py_dev:
