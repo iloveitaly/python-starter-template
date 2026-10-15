@@ -9,6 +9,8 @@ from fastapi import APIRouter, Depends
 
 from activemodel.session_manager import aglobal_session
 
+from app.routes.example_payment import example_payment_api
+
 unauthenticated_api = APIRouter(
     prefix="/unauthenticated",
     dependencies=[
@@ -26,3 +28,6 @@ def unauthenticated_ping():
 @unauthenticated_api.get("/aping")
 async def unauthenticated_aping():
     return {"status": "ok"}
+
+
+unauthenticated_api.include_router(example_payment_api)
