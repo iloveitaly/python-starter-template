@@ -85,7 +85,7 @@ services:
   # Playwright Chromium shared by macOS, Linux, and CI.
   # The image tag is pinned to the python playwright package.
   chrome:
-    image: mcr.microsoft.com/playwright:v1.63.0-noble
+    image: mcr.microsoft.com/playwright:v${PLAYWRIGHT_VERSION:?}-noble
     init: true
     # chromium crashes under the default 64mb /dev/shm
     ipc: host
@@ -99,7 +99,7 @@ services:
     command:
       - npx
       - -y
-      - playwright@1.63.0
+      - playwright@${PLAYWRIGHT_VERSION:?}
       - run-server
       - --port
       - "3000"
