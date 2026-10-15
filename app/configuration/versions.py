@@ -5,6 +5,7 @@ of extremely hard-to-debug issues, so we capture & check versions on test & in p
 
 import inspect
 import json
+import os
 import sys
 
 from app.setup import get_root_path
@@ -75,11 +76,29 @@ def redis_version() -> str:
 
 
 def chrome_version() -> str:
+    """
+    Chromium build used for integration tests.
+
+    `PLAYWRIGHT_CHROME_WS_ENDPOINT` is the compose playwright server, so the
+    recorded version matches CI and every laptop. A local launch is only used
+    when that endpoint is unset.
+    """
+
     from playwright.sync_api import sync_playwright
 
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        return browser.version
+    endpoint = os.environ.get("PLAYWRIGHT_CHROME_WS_ENDPOINT")
+
+    with sync_playwright() as playwright:
+        if endpoint:
+            browser = playwright.chromium.connect(endpoint, timeout=30_000)
+        else:
+            browser = playwright.chromium.launch()
+
+        version = browser.version
+        browser.close()
+
+    assert version
+    return version
 
 
 def python_version() -> str:
