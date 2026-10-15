@@ -23,14 +23,25 @@ def fill_stripe_checkout(
 
     card_number = card_number_map[card_type]
 
+    # TODO Playwright 1.64 treats a control inside a hidden iframe as hidden when the
+    # locator comes from the page. content_frame() does not. frame_locator() does, and
+    # throws if that control exists in more than one frame
+    # Find the Stripe iframe dynamically by its name pattern
+    stripe_iframe = None
+    for iframe in page.query_selector_all("iframe"):
+        name = iframe.get_attribute("name")
+        if name and name.startswith("__privateStripeFrame"):
+            stripe_iframe = iframe
+            break
+
+    assert stripe_iframe is not None, "Stripe iframe not found"
+    stripe_frame = stripe_iframe.content_frame()
+    assert stripe_frame
+
     # had issues where the click on this button did not properly go through
     # wait_for_loading(page)
 
-    # frame_locator() treats a hidden parent iframe as hidden
-    # content_frame() does not
-    # TODO nothing in this repo calls this helper. frame_locator() throws if the
-    # card field exists in more than one frame
-    stripe_frame = page.frame_locator()
+    stripe_iframe.scroll_into_view_if_needed()
 
     # I had a lot of issues getting this part of the page to properly click, which is why
     # we have this insane workaround
