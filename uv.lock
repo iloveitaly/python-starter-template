@@ -2,9 +2,6 @@ version = 1
 revision = 5
 requires-python = ">=3.14"
 
-[manifest]
-constraints = [{ name = "pluggy", specifier = "<1.7" }]
-
 [[package]]
 name = "activemodel"
 version = "0.24.3"

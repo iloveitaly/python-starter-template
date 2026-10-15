@@ -8,7 +8,8 @@
 
 # language + package manager versions required for the web project
 uv = "latest"
-python = "3.14"
+# 3.14.8 leaves Backend pytest collection running until the 10 minute job is cancelled
+python = "3.14.7"
 
 pnpm = "11"
 
