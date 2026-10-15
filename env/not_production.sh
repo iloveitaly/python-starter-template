@@ -77,6 +77,10 @@ export SESSION_SECRET_KEY=de76c21e-e79d-4ad8-8e89-80ec58c71997
 # - `inject` is much faster than individually sourcing keys with `op read`, which is why we have this wonky heredoc format
 # - Env var values should be in the format of "op://${OP_VAULT_UID}/epctgojloj7legp7h62zktshha/sandbox-clerk-secret-key"
 
+# Example payment page (`/pay`). Put test-mode keys in env/dev.local.sh:
+#   export STRIPE_SECRET_KEY=sk_test_...
+#   export VITE_STRIPE_PUBLIC_KEY=pk_test_...
+
 op_inject_source <<'EOF'
 export CLERK_PRIVATE_KEY="op://${OP_VAULT_UID}/f5k2z5od2bmbibupey4fze6koi/sandbox-clerk-secret-key"
 export SENTRY_DSN="backend-dsn"
