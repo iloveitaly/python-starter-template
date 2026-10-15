@@ -62,7 +62,8 @@ jobs:
       - uses: ./.github/actions/common-setup
         timeout-minutes: 3
       - run: just dev_lint
-      - uses: iloveitaly/github-action-localias@master
+      # Feb 18 2026. master moved again on Oct 14-15.
+      - uses: iloveitaly/github-action-localias@b6ed1f2decb4bc1d4e0e55e7113f61c86a3a004d
         with:
           chrome: true
       - run: just docker_up --fast
