@@ -84,7 +84,6 @@ services:
 
   # Playwright Chromium shared by macOS, Linux, and CI.
   # The image tag is pinned to the python playwright package.
-  # tests/unit/playwright_chrome_test.py fails if those versions drift.
   chrome:
     image: mcr.microsoft.com/playwright:v1.63.0-noble
     init: true
