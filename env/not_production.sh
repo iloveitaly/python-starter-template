@@ -18,6 +18,13 @@ export PLAYWRIGHT_RESULT_DIRECTORY=$TEST_RESULTS_DIRECTORY/playwright
 export PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY=tests/integration/__snapshots__
 # without this, playwright will use a different browser path across linux and macos
 export PLAYWRIGHT_BROWSERS_PATH=$TMP_DIRECTORY/ms-playwright
+# integration tests attach to compose chromium so macos, linux, and CI paint the same pixels
+# unset the websocket endpoint to launch a browser on the host instead
+# PLAYWRIGHT_CHROME_PORT comes from the generated host env
+export PLAYWRIGHT_CHROME_WS_ENDPOINT=ws://127.0.0.1:${PLAYWRIGHT_CHROME_PORT}/
+# image tag and npx package in docker-compose.yml. follows the locked python package.
+export PLAYWRIGHT_VERSION="$(awk '$1=="name" && $3=="\"playwright\"" { found=1 } found && $1=="version" { gsub(/"/, "", $3); print $3; exit }' "$ROOT_DIR/uv.lock")"
+[ -n "$PLAYWRIGHT_VERSION" ]
 
 # Since `package=false` in pyproject.toml, we need to explicitly add the current directory to PYTHONPATH
 export PYTHONPATH=$ROOT_DIR
