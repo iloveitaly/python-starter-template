@@ -1,5 +1,5 @@
 version = 1
-revision = 5
+revision = 3
 requires-python = ">=3.14"
 
 [[package]]
@@ -3512,7 +3512,7 @@ requires-dist = [
     { name = "radar-mapping-api", specifier = ">=0.2.0" },
     { name = "redis", extras = ["hiredis"], specifier = ">=6.4.0" },
     { name = "secure", specifier = ">=2.0.1" },
-    { name = "sentry-sdk", extras = ["fastapi", "celery", "sqlalchemy"], specifier = ">=2.66.1" },
+    { name = "sentry-sdk", extras = ["fastapi", "celery", "sqlalchemy"], specifier = ">=2.72.0" },
     { name = "sqlalchemy", specifier = ">=2.0.51" },
     { name = "sqlmodel", specifier = ">=0.0.39" },
     { name = "starlette-context", specifier = ">=0.5.1" },
