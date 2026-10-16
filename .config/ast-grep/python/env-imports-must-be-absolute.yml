@@ -1,0 +1,18 @@
+
+id: py-env-imports-must-be-absolute
+language: python
+severity: error
+message: "Import app.env / app.environments with an absolute path (from app.env / app.environments), not a relative import."
+# Top-level app/*.py only. ast-grep treats `*` like `**` in path globs, so
+# without ignores this would also match app/configuration/*.py etc.
+files:
+  - "app/*.py"
+ignores:
+  - "app/*/**"
+rule:
+  any:
+    - pattern: from $MOD import $$$REST
+    - pattern: import $MOD
+constraints:
+  MOD:
+    regex: '^\.+env(ironments)?$'
