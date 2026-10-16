@@ -20,6 +20,24 @@ def api_app_url_path_for(name: Literal["application_data"], **path_params) -> st
 
 @overload
 def api_app_url_path_for(
+    name: Literal["create_example_payment_pending"], **path_params
+) -> str: ...
+
+
+@overload
+def api_app_url_path_for(
+    name: Literal["create_example_payment_session"], **path_params
+) -> str: ...
+
+
+@overload
+def api_app_url_path_for(
+    name: Literal["example_payment_status"], **path_params
+) -> str: ...
+
+
+@overload
+def api_app_url_path_for(
     name: Literal["external_api_ping_external_v1_ping_get"], **path_params
 ) -> str: ...
 
@@ -31,19 +49,11 @@ def api_app_url_path_for(
 
 
 @overload
-def api_app_url_path_for(name: Literal["frontend_handler"], **path_params) -> str: ...
-
-
-@overload
 def api_app_url_path_for(name: Literal["healthcheck"], **path_params) -> str: ...
 
 
 @overload
 def api_app_url_path_for(name: Literal["index"], **path_params) -> str: ...
-
-
-@overload
-def api_app_url_path_for(name: Literal["javascript_index"], **path_params) -> str: ...
 
 
 @overload
