@@ -217,6 +217,10 @@ tooling_upgrade: _dev_only && _mise_web_version_sync _js_sync-engine-versions _m
 	mise lock
 	git add .config/mise*~(*/|*).local*(toml|lock) "{{JAVASCRIPT_PACKAGE_JSON}}"
 
+	# `.pinact.yaml` min_age skips action releases younger than 30 days
+	GITHUB_TOKEN="$(mise token github --raw)" pinact run -u
+	git add .github/workflows .github/actions
+
 # upgrade everything: all packages on all languages, tooling, etc
 [arg("yes", long, help="auto-accept all dialogs and upgrade everything", flag)]
 upgrade yes: _dev_only tooling_upgrade (js_upgrade yes) py_upgrade
