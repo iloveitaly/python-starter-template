@@ -1,4 +1,6 @@
 [pytest]
+# pytest-xdist is enabled by `just py_test` for non-integration tests only
+# (`-n auto --dist loadgroup`). Integration tests stay serial.
 addopts = [
     # disable all of default log capture: structlog does this for us
     "-p no:logging",

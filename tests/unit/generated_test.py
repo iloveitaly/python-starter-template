@@ -7,6 +7,9 @@ from app.generated import fastapi_typed_routes, react_router_routes
 
 from tests.direnv import run_just_recipe
 
+# these tests rewrite generated files; keep them on one worker
+pytestmark = pytest.mark.xdist_group("generated_files")
+
 
 def test_openapi_schema_matches_generated_file():
     # NOTE this is not set anywhere in the py codebase, which is why we need to manually source it here
