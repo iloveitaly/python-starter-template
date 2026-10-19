@@ -17,7 +17,7 @@ filterwarnings = [
 testpaths = ["tests"]
 
 # if there are specific directories that contain other projects that you want to skip, add them here
-norecursedirs = ["tmp", "pypi"]
+norecursedirs = ["tmp", "pypi", "web"]
 
 # TODO right now this option does not enable us to get it directly
 asyncio_default_test_loop_scope = "function"
