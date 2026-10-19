@@ -328,11 +328,8 @@ def browser_type_launch_args(browser_type_launch_args, pytestconfig: pytest.Conf
     if not use_docker_chrome(pytestconfig):
         return launch_options
 
-    # UDP 443 would skip the tcp forwarder that reaches host localias
-    args.append("--disable-quic")
     # the container has no display, even if a desktop debugger is attached
     launch_options["headless"] = True
-    launch_options["args"] = args
     return launch_options
 
 
