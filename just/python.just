@@ -156,7 +156,7 @@ py_test:
 	# TODO we don't need to see all of the details for this part of the build, since we are primarily testing javascript
 
 	# the chrome version check and integration tests attach to this server
-	docker compose up -d --wait chrome chrome-localhost-proxy
+	docker compose up -d --wait chrome
 
 	# TODO I wonder if I could make EXECUTE_IN_TEST blank if in the test environment...
 	# NOTE unfortunately, because of the asyncio loop + playwright, we need to run the playwright integration tests separately

@@ -599,10 +599,9 @@ pytd tests/integration/user_creation_test.py -k signup --headed
 
 Note that `--headed` *does* change a lot of underlying Chrome parameters which can impact how the browser interacts
 with the web page. Headless runs (including CI) attach to the `chrome` service in `docker-compose.yml`
-(`mcr.microsoft.com/playwright`, same tag as the Python `playwright` package) so macOS, Linux, and CI render
-with one Chromium build and one set of fonts. `--headed` and `PWDEBUG` still launch Chromium on the host, because
-the container has no display. Chrome inside the container reaches `*.localhost` through `chrome-localhost-proxy`,
-which forwards loopback ports 80 and 443 to host `localias`.
+(`ghcr.io/iloveitaly/playwright-loophole`) so macOS, Linux, and CI render with one Chromium build and one set of
+fonts. That image forwards container loopback ports 80 and 443 to host `localias`. `--headed` and `PWDEBUG` still
+launch Chromium on the host, because the container has no display.
 
 If a test fails, a screenshot *and* trace is generated that you can use to replay the session and quickly visually inspect what went wrong.
 
