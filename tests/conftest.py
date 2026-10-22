@@ -45,7 +45,7 @@ import stripe
 import pytest
 from activemodel.pytest import database_reset_transaction, database_reset_truncate
 from pytest import Config, FixtureRequest
-from app.env import env
+from app.env import env, loose_env
 
 # important to ensure model metadata is added to the application
 import app.models  # noqa: F401
@@ -55,7 +55,6 @@ from app.environments import is_local_testing, is_wsl
 
 from .constants import TEST_RESULTS_DIRECTORY
 from .log import log
-from .playwright_chrome import use_docker_chrome
 
 # add any local plugins here, ex: ["tests.plugins.improved_playwright_failures"]
 pytest_plugins = autoload_pytest_plugins_list("plugins")
@@ -302,9 +301,20 @@ def _open_httpx2_breakpoint(request):
     return True
 
 
+def _use_docker_chrome(config: pytest.Config) -> bool:
+    if config.getoption("--headed"):
+        return False
+
+    # PWDEBUG opens the inspector against a local browser window
+    if loose_env.str("PWDEBUG") in {"1", "console"}:
+        return False
+
+    return bool(loose_env.str("PLAYWRIGHT_CHROME_WS_ENDPOINT"))
+
+
 @pytest.fixture(scope="session")
 def connect_options(pytestconfig: pytest.Config):
-    if not use_docker_chrome(pytestconfig):
+    if not _use_docker_chrome(pytestconfig):
         return None
 
     endpoint = env.str("PLAYWRIGHT_CHROME_WS_ENDPOINT")
@@ -319,13 +329,13 @@ def browser_type_launch_args(browser_type_launch_args, pytestconfig: pytest.Conf
     # Auto-disable GPU if we detect we are inside WSL
     # As GPU acceleration in WSL can be unstable and cause test failures,
     # we disable it for better stability.
-    if is_wsl() and not use_docker_chrome(pytestconfig):
+    if is_wsl() and not _use_docker_chrome(pytestconfig):
         log.info("WSL detected: Disabling GPU for stability.")
         args.append("--disable-gpu")
 
     launch_options = {**browser_type_launch_args, "args": args}
 
-    if not use_docker_chrome(pytestconfig):
+    if not _use_docker_chrome(pytestconfig):
         return launch_options
 
     # the container has no display, even if a desktop debugger is attached
@@ -335,7 +345,7 @@ def browser_type_launch_args(browser_type_launch_args, pytestconfig: pytest.Conf
 
 @pytest.fixture(scope="session")
 def browser_context_args(browser_context_args, pytestconfig: pytest.Config):
-    if not use_docker_chrome(pytestconfig):
+    if not _use_docker_chrome(pytestconfig):
         return browser_context_args
 
     return {
