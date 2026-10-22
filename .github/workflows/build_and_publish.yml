@@ -62,9 +62,8 @@ jobs:
       - uses: ./.github/actions/common-setup
         timeout-minutes: 3
       - run: just dev_lint
+      # no `chrome: true`: tests attach to the compose chromium, so warming a host chromium is wasted work
       - uses: iloveitaly/github-action-localias@master
-        with:
-          chrome: true
       - run: just docker_up --fast
       - run: just py_setup
       - run: just py_lint
