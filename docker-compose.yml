@@ -84,9 +84,8 @@ services:
 
   # Playwright Chromium shared by macOS, Linux, and CI.
   # The image relays loopback 80/443 to host localias and disables QUIC.
-  # Tag major.minor must match the python playwright package.
   chrome:
-    image: ghcr.io/iloveitaly/playwright-loophole:${PLAYWRIGHT_LOOPHOLE_TAG:?}
+    image: ghcr.io/iloveitaly/playwright-loophole:latest
     extra_hosts:
       - "host.docker.internal:host-gateway"
     # chromium crashes under the default 64mb /dev/shm
