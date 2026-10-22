@@ -7,6 +7,7 @@ min_version = "2026.10.18"
 #   only for local development/CI.
 
 [tools]
+
 ########
 # Core #
 ########
@@ -33,5 +34,4 @@ pinact = "latest"
 "ast-grep" = "latest"
 "github:dmtrKovalenko/odiff" = "latest"
 "github:railwayapp/railpack" = "latest"
-# TOML formatter and linter, invoked from `just dev_lint`
 tombi = "latest"
