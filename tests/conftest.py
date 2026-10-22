@@ -302,6 +302,9 @@ def _open_httpx2_breakpoint(request):
 
 
 def _use_docker_chrome(config: pytest.Config) -> bool:
+    if not is_local_testing():
+        return True
+
     if config.getoption("--headed"):
         return False
 
