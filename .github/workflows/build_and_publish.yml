@@ -64,6 +64,12 @@ jobs:
       - run: just dev_lint
       # no `chrome: true`: tests attach to the compose chromium, so warming a host chromium is wasted work
       - uses: iloveitaly/github-action-localias@master
+      # the localias action only warms TLS (via a host chromium) when `chrome: true`; the first https request to a host otherwise fails with an SSL error
+      - name: Warm localias TLS certificates
+        run: |
+          for host in ${ALLOWED_HOST_LIST//,/ }; do
+            curl --silent --show-error --output /dev/null --retry 5 --retry-all-errors --retry-delay 1 "https://$host"
+          done
       - run: just docker_up --fast
       - run: just py_setup
       - run: just py_lint
@@ -76,6 +82,14 @@ jobs:
       - uses: mxschmitt/action-tmate@35b54afac29c97fb54faba5b513f8fbd1882f113  # v3.24
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
         with: { detached: true }
+
+      - name: Dump chrome relay and localias state
+        if: ${{ failure() }}
+        run: |
+          docker compose logs chrome
+          for host in ${ALLOWED_HOST_LIST//,/ }; do
+            curl --verbose --silent --output /dev/null "https://$host" || echo "curl failed for $host"
+          done
 
       - name: Upload test artifacts
         if: ${{ failure() }}
