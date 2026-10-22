@@ -62,10 +62,8 @@ jobs:
       - uses: ./.github/actions/common-setup
         timeout-minutes: 3
       - run: just dev_lint
+      - uses: iloveitaly/github-action-localias@master
       - run: just docker_up --fast
-      - uses: iloveitaly/github-action-localias@cursor/chrome-websocket-warmup-f3f6
-        with:
-          chrome: ${{ env.PLAYWRIGHT_CHROME_WS_ENDPOINT }}
       - run: just py_setup
       - run: just py_lint
       - run: just db_migrate

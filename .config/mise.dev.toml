@@ -18,7 +18,8 @@ direnv = "latest"
 # Utilities #
 #############
 
-"github:peterldowns/localias" = "latest"
+# mise's "latest" semver sort picks 3.0.0+commit.5d74685 over 3.0.0+commit.43c3619 because of the +commit suffix
+"github:peterldowns/localias" = "3.0.0+commit.43c3619"
 "github:gitleaks/gitleaks" = "latest"
 actionlint = "latest"
 yamllint = "latest"

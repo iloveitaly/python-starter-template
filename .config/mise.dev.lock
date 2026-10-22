@@ -290,39 +290,39 @@ url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8
 url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/378333178"
 
 [[tools."github:peterldowns/localias"]]
-version = "3.0.0+commit.5d74685"
+version = "3.0.0+commit.43c3619"
 backend = "github:peterldowns/localias"
-specifiers = ["latest"]
+specifiers = ["3.0.0+commit.43c3619"]
 
 [tools."github:peterldowns/localias"."platforms.linux-arm64"]
-checksum = "sha256:9dc69245b8ec8ed7e7b98b8a1019b03ff3ba74afddb4d769d4e604a66eab094d"
-url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.5d74685/localias-linux-arm64"
-url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/277499122"
+checksum = "sha256:464c5cf95b9ed8fb2bfd3baed8b55554d2191d20e3fd9ac5c923c7482f475d08"
+url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.43c3619/localias-linux-arm64"
+url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/313805326"
 
 [tools."github:peterldowns/localias"."platforms.linux-arm64-musl"]
-checksum = "sha256:9dc69245b8ec8ed7e7b98b8a1019b03ff3ba74afddb4d769d4e604a66eab094d"
-url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.5d74685/localias-linux-arm64"
-url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/277499122"
+checksum = "sha256:464c5cf95b9ed8fb2bfd3baed8b55554d2191d20e3fd9ac5c923c7482f475d08"
+url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.43c3619/localias-linux-arm64"
+url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/313805326"
 
 [tools."github:peterldowns/localias"."platforms.linux-x64"]
-checksum = "sha256:7155f30f1f00d591cdb30428ef2969d690c2dc748ba44d7e70a1a53ae00e4bb2"
-url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.5d74685/localias-linux-amd64"
-url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/277499181"
+checksum = "sha256:e7e8ae3a6cf2b1d7b637b6d871ea615b66509096f35ed8f4cc2c370a812193aa"
+url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.43c3619/localias-linux-amd64"
+url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/313805715"
 
 [tools."github:peterldowns/localias"."platforms.linux-x64-musl"]
-checksum = "sha256:7155f30f1f00d591cdb30428ef2969d690c2dc748ba44d7e70a1a53ae00e4bb2"
-url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.5d74685/localias-linux-amd64"
-url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/277499181"
+checksum = "sha256:e7e8ae3a6cf2b1d7b637b6d871ea615b66509096f35ed8f4cc2c370a812193aa"
+url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.43c3619/localias-linux-amd64"
+url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/313805715"
 
 [tools."github:peterldowns/localias"."platforms.macos-arm64"]
-checksum = "sha256:63d14ed513023fca8d16049f9fb45a9dea75616af986fa0d0d7c245d10926ed3"
-url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.5d74685/localias-darwin-arm64"
-url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/277499108"
+checksum = "sha256:2ee5ae68b864a1b639a26ec042b5590764aeef3536eb2681236946eb4f3d2614"
+url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.43c3619/localias-darwin-arm64"
+url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/313805089"
 
 [tools."github:peterldowns/localias"."platforms.macos-x64"]
-checksum = "sha256:3663f724c752bca5deb2d31798c7e33f94a4027e8aca10c25a56312353d573f2"
-url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.5d74685/localias-darwin-amd64"
-url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/277499098"
+checksum = "sha256:da15cca479447d5466569b91a679e9fe2cdb97b2be5a3c09c912ebe75ce0de17"
+url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.43c3619/localias-darwin-amd64"
+url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/313804897"
 
 [[tools.jq]]
 version = "1.8.2"
