@@ -46,7 +46,7 @@ dev_lint:
 	fi
 
 # format TOML. Lint findings are reported by `dev_lint`; Tombi has no lint autofix.
-toml_lint_fix:
+dev_lint_fix:
 	tombi format .
 
 # start all of the services you need for development in a single terminal

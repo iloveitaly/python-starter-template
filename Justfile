@@ -60,7 +60,7 @@ generate: dev_generate py_generate js_generate
 
 # run automatic fix operations for all linters
 [parallel]
-fix: js_lint-fix py_lint_fix toml_lint_fix
+fix: js_lint-fix py_lint_fix dev_lint_fix
 
 # run all linters
 [parallel]
