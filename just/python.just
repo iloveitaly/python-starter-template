@@ -23,16 +23,10 @@ py_setup:
 		uv sync --no-editable; \
 	fi
 
-	# important for CI to install browsers for playwright
-	# GHA caches $PLAYWRIGHT_BROWSERS_PATH keyed on uv.lock and .service-versions, so a
-	# cache hit makes this a no-op / version check rather than a full download
-
-	# TODO why should we use --only-shell here? can we extract this out and run it after we update the packages as well?
-
+	# headed debugging and codegen still launch chromium on the host.
+	# CI and headless runs use the compose chrome service, so skip the download there.
 	if [ -z "${CI:-}" ]; then \
 		uv run playwright install chromium; \
-	else \
-		uv run playwright install chromium --only-shell; \
 	fi
 
 # clean entire py project without rebuilding
@@ -160,6 +154,9 @@ py_test:
 	set -x
 
 	# TODO we don't need to see all of the details for this part of the build, since we are primarily testing javascript
+
+	# the chrome version check and integration tests attach to this server
+	docker compose up -d --wait chrome
 
 	# TODO I wonder if I could make EXECUTE_IN_TEST blank if in the test environment...
 	# NOTE unfortunately, because of the asyncio loop + playwright, we need to run the playwright integration tests separately

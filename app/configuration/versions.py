@@ -7,6 +7,7 @@ import inspect
 import json
 import sys
 
+from app.env import loose_env
 from app.setup import get_root_path
 
 VERSIONS_FILE = get_root_path() / ".service-versions"
@@ -75,11 +76,29 @@ def redis_version() -> str:
 
 
 def chrome_version() -> str:
+    """
+    Chromium build used for integration tests.
+
+    `PLAYWRIGHT_CHROME_WS_ENDPOINT` is the compose playwright server, so the
+    recorded version matches CI and every laptop. A local launch is only used
+    when that endpoint is unset.
+    """
+
     from playwright.sync_api import sync_playwright
 
-    with sync_playwright() as p:
-        browser = p.chromium.launch()
-        return browser.version
+    endpoint = loose_env.str("PLAYWRIGHT_CHROME_WS_ENDPOINT")
+
+    with sync_playwright() as playwright:
+        if endpoint:
+            browser = playwright.chromium.connect(endpoint, timeout=30_000)
+        else:
+            browser = playwright.chromium.launch()
+
+        version = browser.version
+        browser.close()
+
+    assert version
+    return version
 
 
 def python_version() -> str:

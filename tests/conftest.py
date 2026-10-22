@@ -45,7 +45,7 @@ import stripe
 import pytest
 from activemodel.pytest import database_reset_transaction, database_reset_truncate
 from pytest import Config, FixtureRequest
-from app.env import env
+from app.env import env, loose_env
 
 # important to ensure model metadata is added to the application
 import app.models  # noqa: F401
@@ -301,15 +301,60 @@ def _open_httpx2_breakpoint(request):
     return True
 
 
+def _use_docker_chrome(config: pytest.Config) -> bool:
+    if not is_local_testing():
+        return True
+
+    if config.getoption("--headed"):
+        return False
+
+    # PWDEBUG opens the inspector against a local browser window
+    if loose_env.str("PWDEBUG") in {"1", "console"}:
+        return False
+
+    return bool(loose_env.str("PLAYWRIGHT_CHROME_WS_ENDPOINT"))
+
+
 @pytest.fixture(scope="session")
-def browser_type_launch_args(browser_type_launch_args):
+def connect_options(pytestconfig: pytest.Config):
+    if not _use_docker_chrome(pytestconfig):
+        return None
+
+    endpoint = env.str("PLAYWRIGHT_CHROME_WS_ENDPOINT")
+    log.info("using docker chromium", endpoint=endpoint)
+    return {"endpoint": endpoint}
+
+
+@pytest.fixture(scope="session")
+def browser_type_launch_args(browser_type_launch_args, pytestconfig: pytest.Config):
     args = list(browser_type_launch_args.get("args", []))
 
     # Auto-disable GPU if we detect we are inside WSL
     # As GPU acceleration in WSL can be unstable and cause test failures,
     # we disable it for better stability.
-    if is_wsl():
+    if is_wsl() and not _use_docker_chrome(pytestconfig):
         log.info("WSL detected: Disabling GPU for stability.")
         args.append("--disable-gpu")
 
-    return {**browser_type_launch_args, "args": args}
+    launch_options = {**browser_type_launch_args, "args": args}
+
+    if not _use_docker_chrome(pytestconfig):
+        return launch_options
+
+    # the container has no display, even if a desktop debugger is attached
+    launch_options["headless"] = True
+    return launch_options
+
+
+@pytest.fixture(scope="session")
+def browser_context_args(browser_context_args, pytestconfig: pytest.Config):
+    if not _use_docker_chrome(pytestconfig):
+        return browser_context_args
+
+    return {
+        **browser_context_args,
+        # localias's CA is trusted on the host, not in the container
+        "ignore_https_errors": True,
+        "locale": "en-US",
+        "timezone_id": "UTC",
+    }

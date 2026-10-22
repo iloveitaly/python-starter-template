@@ -1,5 +1,6 @@
 # NOTE: for development use only, do not run this compose in production!
 # ports are not exposed, instead dynamic orb domains are used
+# exception: chrome publishes a localhost websocket so host pytest can attach
 services:
   # port 5432
   postgres:
@@ -80,6 +81,27 @@ services:
       start_period: 15s
       timeout: 5s
       retries: 5
+
+  # Playwright Chromium shared by macOS, Linux, and CI.
+  # The image relays loopback 80/443 to host localias and disables QUIC.
+  chrome:
+    image: ghcr.io/iloveitaly/playwright-loophole:latest
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    # chromium crashes under the default 64mb /dev/shm
+    ipc: host
+    shm_size: 1gb
+    environment:
+      TZ: UTC
+    ports:
+      - "127.0.0.1:${PLAYWRIGHT_CHROME_PORT}:3000"
+    healthcheck:
+      # TCP open is enough; the server speaks websockets on this port
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/3000'"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
 
 volumes:
   mailpit_data:
