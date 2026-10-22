@@ -319,7 +319,7 @@ def connect_options(pytestconfig: pytest.Config):
 
     endpoint = env.str("PLAYWRIGHT_CHROME_WS_ENDPOINT")
     log.info("using docker chromium", endpoint=endpoint)
-    return {"wsEndpoint": endpoint}
+    return {"endpoint": endpoint}
 
 
 @pytest.fixture(scope="session")
