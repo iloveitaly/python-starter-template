@@ -18,7 +18,9 @@ direnv = "latest"
 # Utilities #
 #############
 
-"github:peterldowns/localias" = "latest"
+# SemVer ignores build metadata (+commit.hash), so "latest" treats 3.0.0+commit.* releases as equal and won't auto-upgrade.
+# See: https://github.com/peterldowns/localias/pull/75
+"github:peterldowns/localias" = "3.0.0+commit.43c3619"
 "github:gitleaks/gitleaks" = "latest"
 actionlint = "latest"
 yamllint = "latest"
