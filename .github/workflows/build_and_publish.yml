@@ -70,9 +70,9 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
-          key: ${{ runner.os }}-playwright-${{ hashFiles('uv.lock', '.service-versions') }}
+          key: ${{ runner.os }}-${{ runner.arch }}-playwright-${{ hashFiles('uv.lock', '.service-versions') }}
           restore-keys: |
-            ${{ runner.os }}-playwright-
+            ${{ runner.os }}-${{ runner.arch }}-playwright-
       - run: just py_setup
       - run: just py_lint
       - run: just db_migrate
