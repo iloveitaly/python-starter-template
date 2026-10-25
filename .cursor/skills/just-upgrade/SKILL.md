@@ -30,7 +30,7 @@ just upgrade --yes
 
 The `git add` inside `tooling_upgrade` runs before `_js_sync-engine-versions` and before npm-check-updates. A clean `web/package.json` is a no-op there. Engine and dependency edits stay unstaged until the `git add` at the end of `js_upgrade`. Do not commit `web/package.json` without `web/pnpm-lock.yaml`. Lockfiles may print `mise lock --upgrade` warnings for older lockfile format versions. The recipe does not run that.
 
-`tooling_upgrade`, `js_upgrade`, and `py_upgrade` each `git add`. Before any other commit, check `git status`. An interrupted upgrade leaves `web/package.json` and the lockfiles staged.
+`tooling_upgrade`, `js_upgrade`, and `py_upgrade` each `git add`. Before any other commit, check `git status`. An interrupted upgrade leaves `web/package.json` and the lockfiles staged. If `js_upgrade` encounters a pnpm precedence or engine mismatch (`[ERR_PNPM_UNSUPPORTED_ENGINE]`), stop and report it immediately.
 
 ## Instructions
 
@@ -50,4 +50,4 @@ A symbol present in a package's types and browser entry can be missing from its 
 
 `just upgrade --yes` can exit 0 and still leave the pull request red. After the usage edits, run `just js_lint`, `just py_lint`, `just js_test`, and `just py_test`. Push and watch the pull request until Backend and Frontend pass. Deploy stays skipped off `master`.
 
-If the failure is direnv, PATH, Docker, certificates, or secrets, stop and report it. Do not record the workaround in this skill. Do not rewrite visual snapshots to match a local-only rendering difference.
+If the failure is direnv, PATH, pnpm/tool precedence or version shadowing, Docker, certificates, or secrets, stop and report it immediately without attempting workarounds. Do not record the workaround in this skill. Do not rewrite visual snapshots to match a local-only rendering difference.
