@@ -28,8 +28,8 @@ docker_up fast latest: _not_production
 	# this is done for us on macOS via OrbStack. Without this, the `DOCKER_POSTGRES` binary approach would not work.
 	# on CI and native Linux we replicate *.orb.local domains via docker-hosts (/etc/hosts).
 	# this works well on Linux, but not on WSL — default WSL config does not assign each container a unique address.
-	if [[ -n "${CI:-}" ]] || [[ "$(uname -s)" == "Linux" ]]; then
-		sudo $(which uvx) docker-hosts@latest || true
+	if [[ "$(uname -s)" == "Linux" ]]; then
+		sudo $(which uvx) docker-hosts@latest
 	fi
 
 # stop all containers and remove the images
