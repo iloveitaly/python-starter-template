@@ -324,6 +324,53 @@ checksum = "sha256:3663f724c752bca5deb2d31798c7e33f94a4027e8aca10c25a56312353d57
 url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.5d74685/localias-darwin-amd64"
 url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/277499098"
 
+[[tools."github:railwayapp/railpack"]]
+version = "0.42.0"
+backend = "github:railwayapp/railpack"
+specifiers = ["latest"]
+
+[tools."github:railwayapp/railpack"."platforms.linux-arm64"]
+checksum = "sha256:63c0417d6c0a437162fa2c688ddf58aabf9e4433eeffb69d8c3fb498603e2c3b"
+url = "https://github.com/railwayapp/railpack/releases/download/v0.42.0/railpack-v0.42.0-arm64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/railwayapp/railpack/releases/assets/645507107"
+provenance = "github-attestations"
+
+[tools."github:railwayapp/railpack"."platforms.linux-arm64-musl"]
+checksum = "sha256:63c0417d6c0a437162fa2c688ddf58aabf9e4433eeffb69d8c3fb498603e2c3b"
+url = "https://github.com/railwayapp/railpack/releases/download/v0.42.0/railpack-v0.42.0-arm64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/railwayapp/railpack/releases/assets/645507107"
+provenance = "github-attestations"
+
+[tools."github:railwayapp/railpack"."platforms.linux-x64"]
+checksum = "sha256:81bca91d0577c7650378762609116d12d8630e2cfc1779e41d3ac3964fc7194b"
+url = "https://github.com/railwayapp/railpack/releases/download/v0.42.0/railpack-v0.42.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/railwayapp/railpack/releases/assets/645507152"
+provenance = "github-attestations"
+
+[tools."github:railwayapp/railpack"."platforms.linux-x64-musl"]
+checksum = "sha256:81bca91d0577c7650378762609116d12d8630e2cfc1779e41d3ac3964fc7194b"
+url = "https://github.com/railwayapp/railpack/releases/download/v0.42.0/railpack-v0.42.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/railwayapp/railpack/releases/assets/645507152"
+provenance = "github-attestations"
+
+[tools."github:railwayapp/railpack"."platforms.macos-arm64"]
+checksum = "sha256:5805f3ae2b4f8ee4e4946d56f80d0828bf6c5db532f32a65532fd9556725f2a9"
+url = "https://github.com/railwayapp/railpack/releases/download/v0.42.0/railpack-v0.42.0-arm64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/railwayapp/railpack/releases/assets/645507179"
+provenance = "github-attestations"
+
+[tools."github:railwayapp/railpack"."platforms.macos-x64"]
+checksum = "sha256:34b3cd7de9067d962f1ebbdea6e7c747434d63cc56ffc9dbc2a15bc48854a658"
+url = "https://github.com/railwayapp/railpack/releases/download/v0.42.0/railpack-v0.42.0-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/railwayapp/railpack/releases/assets/645507167"
+provenance = "github-attestations"
+
+[tools."github:railwayapp/railpack"."platforms.windows-x64"]
+checksum = "sha256:1ea1d7b1aa1496ce81e70cc4e47e71f4b7c08b83fa6be515b360b5dee7f4e408"
+url = "https://github.com/railwayapp/railpack/releases/download/v0.42.0/railpack-v0.42.0-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/railwayapp/railpack/releases/assets/645507100"
+provenance = "github-attestations"
+
 [[tools.jq]]
 version = "1.8.2"
 backend = "aqua:jqlang/jq"
