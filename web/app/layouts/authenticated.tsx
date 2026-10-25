@@ -27,12 +27,14 @@ function PosthogIdentity() {
   const { isSignedIn, userId } = useAuth()
 
   useEffect(() => {
+    // if the user just recently signed in, identify them in posthog
     if (isSignedIn && userId && user && !posthog._isIdentified()) {
       posthog.identify(userId, {
         email: user.primaryEmailAddress?.emailAddress,
       })
     }
 
+    // if the user just recently signed out, reset posthog state
     if (!isSignedIn && posthog._isIdentified()) {
       posthog.reset()
     }
@@ -49,8 +51,11 @@ export function AuthenticatedLayout() {
           <LoadingSpinner />
         </div>
       </ClerkLoading>
+
+      {/* NOTE this line is very important! This ensures that the posthog user state is properly synced based on the login state */}
+      <PosthogIdentity />
+
       <Show when="signed-in">
-        <PosthogIdentity />
         <AdminBar />
         <Outlet />
       </Show>

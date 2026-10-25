@@ -32,7 +32,7 @@ This whole situation isn't great. Here's what is happening:
 - I've posted on Discord to see if there is a better way: https://discord.com/channels/856971667393609759/1330542079260229632
 */
 
-export async function getClient() {
+export async function getClient({ requireLoggedIn = true } = {}) {
   if (!window.Clerk) {
     // recommended officially here:
     // https://clerk.com/docs/references/sdk/frontend-only#call-window-clerk-load
@@ -51,7 +51,7 @@ export async function getClient() {
   }
 
   // protect users from hitting the internal API if they aren't authenticated
-  if (!clerk.user) {
+  if (requireLoggedIn && !clerk.user) {
     await clerk.redirectToSignIn()
     // redirectToSignIn resolves before the browser navigation completes; block forever
     // so callers never proceed to fire an unauthenticated request or render an error page
@@ -71,6 +71,7 @@ export default function withClerkProvider(Component: React.ComponentType) {
       publishableKey={CLERK_PUBLIC_KEY}
       signInFallbackRedirectUrl="/"
       signUpFallbackRedirectUrl="/"
+      afterSignOutUrl="/login"
     >
       <Component {...props} />
     </ClerkProvider>
