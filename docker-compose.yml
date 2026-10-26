@@ -93,6 +93,8 @@ services:
     shm_size: 1gb
     environment:
       TZ: UTC
+      # root.crt is mode 0600, so the host passes the PEM instead of a bind mount
+      LOOPHOLE_CA_CERT_B64: ${LOCALIAS_CA_B64:?}
     ports:
       - "127.0.0.1:${PLAYWRIGHT_CHROME_PORT}:3000"
     healthcheck:

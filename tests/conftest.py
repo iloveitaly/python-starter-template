@@ -353,8 +353,6 @@ def browser_context_args(browser_context_args, pytestconfig: pytest.Config):
 
     return {
         **browser_context_args,
-        # localias's CA is trusted on the host, not in the container
-        "ignore_https_errors": True,
         "locale": "en-US",
         "timezone_id": "UTC",
     }
