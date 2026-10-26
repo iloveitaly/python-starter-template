@@ -45,6 +45,8 @@ import stripe
 import pytest
 from activemodel.pytest import database_reset_transaction, database_reset_truncate
 from pytest import Config, FixtureRequest
+from whenever import SYSTEM_TZ, ZonedDateTime, reset_system_tz
+
 from app.env import env, loose_env
 
 # important to ensure model metadata is added to the application
@@ -302,18 +304,18 @@ def _open_httpx2_breakpoint(request):
 
 
 def _machine_timezone_id() -> str:
-    # env/all.sh forces TZ=UTC, so the process zone is not the machine zone
-    localtime = Path("/etc/localtime").resolve()
-    for root in (Path("/usr/share/zoneinfo"), Path("/var/db/timezone/zoneinfo")):
-        if not localtime.is_relative_to(root):
-            continue
-
-        zone = localtime.relative_to(root).as_posix()
-        if zone.startswith(("posix/", "right/")):
-            zone = zone.split("/", 1)[1]
-        return zone
-
-    return "UTC"
+    # env/all.sh forces TZ=UTC. whenever follows that until it is cleared.
+    previous = os.environ.get("TZ")
+    os.environ.pop("TZ", None)
+    reset_system_tz()
+    try:
+        return ZonedDateTime.now(SYSTEM_TZ).tz_id
+    finally:
+        if previous is None:
+            os.environ.pop("TZ", None)
+        else:
+            os.environ["TZ"] = previous
+        reset_system_tz()
 
 
 def _use_docker_chrome(config: pytest.Config) -> bool:
