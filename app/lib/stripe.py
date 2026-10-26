@@ -34,6 +34,7 @@ def extract_checkout_session_id_from_client_secret(client_secret_id: str) -> str
     >>> extract_checkout_session_id_from_client_secret("cs_test_a1tQWKwHJ9fMYVL2TjkDDqX2qvvnKnI3zb5dw3exS1wb0TXvEjwVxXKmzo_secret_fidwbEhqYWAnPydmcHZxamgneCUl")
     'cs_test_a1tQWKwHJ9fMYVL2TjkDDqX2qvvnKnI3zb5dw3exS1wb0TXvEjwVxXKmzo'
     """
+
     if not client_secret_id or "_secret" not in client_secret_id:
         raise ClientError("Invalid client secret")
 
@@ -129,9 +130,8 @@ def stripe_retrieve(stripe_object_id: str, client: stripe.StripeClient):
 def payment_intent_is_disputed(
     client: stripe.StripeClient, payment_intent_id: str
 ) -> bool:
-    """
-    Returns True if any charge for the PaymentIntent has an active dispute.
-    """
+    "Returns True if any charge for the PaymentIntent has an active dispute"
+
     for charge in client.charges.list(
         params={"payment_intent": payment_intent_id}
     ).auto_paging_iter():
@@ -149,13 +149,15 @@ class CheckoutCountryZip(BaseModel):
 def extract_country_zip_from_checkout_session(
     stripe_client: StripeClient, session_id: str
 ) -> CheckoutCountryZip:
-    """Extract country and postal_code from a Checkout Session.
+    """
+    Extract country and postal_code from a Checkout Session.
 
     Prefers customer_details.address; falls back to payment_intent.latest_charge.billing_details.address.
 
     Returns an empty object CheckoutCountryZip on Stripe errors. Gracefully fail on failures since this is designed
     to be used with conversion tracking (i.e.,fine if it fails every once in a while).
     """
+
     try:
         session = stripe_client.v1.checkout.sessions.retrieve(
             session_id,

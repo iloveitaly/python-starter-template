@@ -16,11 +16,11 @@ from app.models.data.geolocation_point import GeolocationPoint
 
 GEOIP_BASE_URL = env.base_url("GEOIP_BASE_URL")
 
-# Autocomplete must stay snappy; skip location bias if geoip is slow.
+# autocomplete must stay snappy; skip location bias if geoip is slow
 GEOIP_TIMEOUT_SECONDS = 0.1
 
-# Arbitrary bound so unique IPs cannot grow memory without limit.
-_geoip_cache: LRUCache = LRUCache(maxsize=1024)
+# arbitrary bound so unique IPs cannot grow memory without limit
+_geoip_cache: LRUCache = LRUCache(maxsize=1_024)
 _geoip_client = httpx2.Client(
     base_url=GEOIP_BASE_URL,
     timeout=GEOIP_TIMEOUT_SECONDS,
