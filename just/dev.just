@@ -171,7 +171,12 @@ localias_restart: _dev_only
 [script]
 _localias_ca_b64:
 	localias_bin=$(mise which localias)
-	{ "$localias_bin" debug cert --print || sudo -n -E "$localias_bin" debug cert --print; } | base64 | tr -d '\n'
+	{
+		"$localias_bin" debug cert --print \
+			|| sudo -n -E "$localias_bin" debug cert --print
+	} \
+		| base64 \
+		| tr -d '\n'
 
 # sync the mise version to github actions yaml
 _mise_gha_version_sync: _dev_only
