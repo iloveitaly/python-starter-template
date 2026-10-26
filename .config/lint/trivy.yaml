@@ -40,5 +40,5 @@ vulnerability:
   ignore-unfixed: true
 
 pkg:
-  # CI installs dev dependencies, so they belong in the scan.
-  include-dev-deps: true
+  # Dev dependencies are not shipped.
+  include-dev-deps: false
