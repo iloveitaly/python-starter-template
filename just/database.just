@@ -17,14 +17,14 @@ _run_in_dev_and_test label *command: _dev_only
 
 # separate task for the db to support db_reset
 db_up: _dev_only
-	docker compose up -d --wait postgres
+	{{COMPOSE}} up -d --wait postgres
 
 # TODO may need to run `docker rm $(docker ps -aq)` as well
 # TODO docker down does not exit 1 if it partially failed
 
 # turn off the database *and* completely remove the data
 db_down: _dev_only
-	docker compose down --volumes postgres
+	{{COMPOSE}} down --volumes postgres
 
 # destroy dev and test databases, nuking containers and rebuilding them
 db_reset_hard: _dev_only db_down db_up db_migrate db_seed
@@ -49,7 +49,7 @@ DB_TERMINATE_AND_RESET_SCHEMA := "SELECT pg_terminate_backend(pid) FROM pg_stat_
 #   * Interactive commands (psql) need TTY (-t)
 #   * Non-interactive commands (pg_dump) don't need TTY and can fail with TTY (-T)
 #   * pg_dump with output redirection (> file) works best without TTY
-DOCKER_POSTGRES := "docker compose run --rm -T postgres"
+DOCKER_POSTGRES := COMPOSE + " run --rm -T postgres"
 
 # drop all DB connections and then drop all tables and completely reset the schema
 db_reset_schema: _dev_only
