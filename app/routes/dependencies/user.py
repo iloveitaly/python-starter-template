@@ -1,7 +1,7 @@
 import sentry_sdk
 from fastapi import Request, status
 from starlette_context import context
-from whenever import Instant
+from whenever import SYSTEM_TZ, Instant
 
 from app.routes.errors import ClientError
 
@@ -19,9 +19,9 @@ def inject_user_record(request: Request):
     user = User.upsert(
         data={
             "clerk_id": clerk_id,
-            "last_active_at": Instant.now().to_system_tz(),
+            "last_active_at": Instant.now().to_tz(SYSTEM_TZ),
             # upsert does not automatically update timestamps
-            "updated_at": Instant.now().to_system_tz(),
+            "updated_at": Instant.now().to_tz(SYSTEM_TZ),
         },
         unique_by="clerk_id",
     )
