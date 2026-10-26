@@ -2,13 +2,22 @@ from typing import Any, Self
 
 import us
 from i18naddress import InvalidAddressError, format_address, normalize_address
-from pydantic import BaseModel, ConfigDict, Field, computed_field, model_validator
+from pydantic import (
+    BaseModel as PydanticBaseModel,
+)
+from pydantic import (
+    ConfigDict,
+    Field,
+    computed_field,
+    model_validator,
+)
 
 from app.utils.address import parse_address
 
 
-class Address(BaseModel):
-    """US postal address with flexible state input and derived state name.
+class Address(PydanticBaseModel):
+    """
+    US postal address with flexible state input and derived state name.
 
     **State input:** The canonical stored field is `state_code` (two-letter,
     uppercase). Callers may pass `state=` at construction with any form the
@@ -55,11 +64,13 @@ class Address(BaseModel):
 
     @classmethod
     def from_string(cls, address_str: str) -> Self:
-        """Parse a free-form US address string into an `Address`.
+        """
+        Parse a free-form US address string into an `Address`.
 
         Args:
             address_str: Free-form US address string, e.g. `"123 Main St, Denver, CO 80203"`.
         """
+
         parsed = parse_address(address_str)
         # use `state=` (not `state_code=`) so the value passes through _resolve_state
         return cls.model_validate(
@@ -141,8 +152,10 @@ class Address(BaseModel):
         return formatted.replace("\n", ", ") if formatted else None
 
     def validate_address(self) -> list[dict[str, Any]]:
-        """Return a list of pydantic-style error dicts for any postal-completeness
-        issues. Empty list means the address passes US postal validation."""
+        """
+        Return a list of pydantic-style error dicts for any postal-completeness
+        issues. Empty list means the address passes US postal validation.
+        """
 
         # maps i18naddress field names (from InvalidAddressError.errors) back to our model field names
         field_map = {
@@ -172,13 +185,15 @@ class Address(BaseModel):
         return []
 
     def normalized(self) -> Self:
-        """Return a new `Address` with library-corrected fields. Does not mutate self.
+        """
+        Return a new `Address` with library-corrected fields. Does not mutate self.
 
         Raises:
             ValueError: If the address is incomplete or invalid per US postal
                 rules (missing street, city, state, or ZIP, or a ZIP that does
                 not match the state).
         """
+
         try:
             clean = normalize_address(self._as_i18n_dict())
         except InvalidAddressError as e:
