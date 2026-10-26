@@ -305,11 +305,11 @@ def _open_httpx2_breakpoint(request):
 def browser_type_launch_args(browser_type_launch_args):
     args = list(browser_type_launch_args.get("args", []))
 
-    # Auto-disable GPU if we detect we are inside WSL
-    # As GPU acceleration in WSL can be unstable and cause test failures,
-    # we disable it for better stability.
+    # auto-disable GPU if we detect we are inside WSL
+    # as GPU acceleration in WSL can be unstable and cause test failures,
+    # we disable it for better stability
     if is_wsl():
-        log.info("WSL detected: Disabling GPU for stability.")
+        log.info("wsl detected: disabling gpu for stability")
         args.append("--disable-gpu")
 
     return {**browser_type_launch_args, "args": args}

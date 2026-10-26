@@ -1,4 +1,5 @@
-"""Optional teardown pause for Playwright ``page`` fixtures (``pytest --playwright-pause``).
+"""
+Optional teardown pause for Playwright ``page`` fixtures (``pytest --playwright-pause``).
 
 Overrides pytest-playwright's ``page`` by using ``context.new_page()`` so
 multi-browser parametrization keeps working; see
@@ -38,7 +39,8 @@ def pytest_configure(config: pytest.Config) -> None:
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_teardown(item: pytest.Function, nextitem: pytest.Item | None):
-    """Pause before any fixture teardowns run.
+    """
+    Pause before any fixture teardowns run.
 
     We use ``pytest_runtest_teardown`` as a hookwrapper rather than putting the
     pause inside the ``page`` fixture's post-yield block because fixture teardown
@@ -53,6 +55,7 @@ def pytest_runtest_teardown(item: pytest.Function, nextitem: pytest.Item | None)
     you inspect the page.  The ``yield`` then hands control back to pytest, which
     runs all fixture teardowns normally.
     """
+
     if _playwright_pause_enabled(item.config) and "page" in item.funcargs:
         context = cast(BrowserContext | None, item.funcargs.get("context"))
         page = cast(Page, item.funcargs["page"])

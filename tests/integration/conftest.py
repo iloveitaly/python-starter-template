@@ -66,7 +66,7 @@ def pytest_configure(config):
 
 
 def pytest_keyboard_interrupt(excinfo):
-    log.info("KeyboardInterrupt caught: stopping server...")
+    log.info("keyboardinterrupt caught: stopping server")
     terminate_server()
 
     # TODO https://grok.com/share/bGVnYWN5_e93dbbbb-0afc-46ba-b2f3-7043e1f5399e

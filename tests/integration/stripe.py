@@ -77,11 +77,13 @@ def fill_stripe_checkout(
 
 
 def assert_customer_attached_to_session(stripe_client: Any, session_id: str) -> None:
-    """Assert that a non-guest Stripe customer is attached to the checkout session.
+    """
+    Assert that a non-guest Stripe customer is attached to the checkout session.
 
     - Asserts the session has a `customer` attached
     - Asserts the attached customer has an email (indicates non-guest customer)
     """
+
     session = stripe_client.v1.checkout.sessions.retrieve(session_id)
 
     assert session.customer, (

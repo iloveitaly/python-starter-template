@@ -113,7 +113,7 @@ REAL_ZIP_CODES = [
 
 
 def real_zip_code():
-    """Return a random real zip code from the list."""
+    "return a random real zip code from the list"
 
     return choice(REAL_ZIP_CODES)
 
@@ -154,7 +154,7 @@ REAL_LOCATIONS = [
 
 
 def random_geolocation_point():
-    """Return a random real location as a GeolocationPoint."""
+    "return a random real location as a GeolocationPoint"
 
     from app.models.data.geolocation_point import GeolocationPoint
 

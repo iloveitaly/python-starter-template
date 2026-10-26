@@ -40,7 +40,8 @@ def banner(text, color="red", file=sys.__stderr__, flush=True):
 
 
 def autoload_pytest_plugins_list(folder: str | Path) -> list[str]:
-    """Return a list suitable for assigning to `pytest_plugins`.
+    """
+    Return a list suitable for assigning to `pytest_plugins`.
 
     Relative paths are resolved against the tests/ directory. The dotted
     package name is inferred from the path relative to the project root.
@@ -48,6 +49,7 @@ def autoload_pytest_plugins_list(folder: str | Path) -> list[str]:
     Example:
         pytest_plugins = autoload_pytest_plugins_list("plugins")
     """
+
     folder = Path(folder)
     if not folder.is_absolute():
         folder = (_TESTS_ROOT / folder).resolve()
