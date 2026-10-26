@@ -93,7 +93,7 @@ services:
     ipc: host
     shm_size: 1gb
     environment:
-      TZ: UTC
+      TZ: ${TZ:?}
     ports:
       - "127.0.0.1:${PLAYWRIGHT_CHROME_PORT}:3000"
     healthcheck:
