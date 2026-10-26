@@ -50,84 +50,79 @@ url_api = "https://api.github.com/repos/rhysd/actionlint/releases/assets/3849249
 provenance = "github-attestations"
 
 [[tools.ast-grep]]
-version = "0.45.3"
+version = "0.50.0"
 backend = "aqua:ast-grep/ast-grep"
 specifiers = ["latest"]
 
 [tools.ast-grep."platforms.linux-arm64"]
-checksum = "sha256:b39cfbc58da4b869a88b8a4bc57bd5deb0d24541e704cf7c257da7b53ec81c8f"
-url = "https://github.com/ast-grep/ast-grep/releases/download/0.45.3/app-aarch64-unknown-linux-gnu.zip"
-url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/537333400"
+checksum = "sha256:3a4ad22dd1dca7a4900a173de65885578617af57fa13dd93b8d345d6b352770e"
+url = "https://github.com/ast-grep/ast-grep/releases/download/0.50.0/app-aarch64-unknown-linux-gnu.zip"
+url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/625207184"
 
 [tools.ast-grep."platforms.linux-arm64-musl"]
-checksum = "sha256:b39cfbc58da4b869a88b8a4bc57bd5deb0d24541e704cf7c257da7b53ec81c8f"
-url = "https://github.com/ast-grep/ast-grep/releases/download/0.45.3/app-aarch64-unknown-linux-gnu.zip"
-url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/537333400"
+checksum = "sha256:3a4ad22dd1dca7a4900a173de65885578617af57fa13dd93b8d345d6b352770e"
+url = "https://github.com/ast-grep/ast-grep/releases/download/0.50.0/app-aarch64-unknown-linux-gnu.zip"
+url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/625207184"
 
 [tools.ast-grep."platforms.linux-x64"]
-checksum = "sha256:f8ac830881339d1edee6b2652f54798c0f4da5a827f2db38a08ee31117783ce8"
-url = "https://github.com/ast-grep/ast-grep/releases/download/0.45.3/app-x86_64-unknown-linux-gnu.zip"
-url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/537332692"
+checksum = "sha256:0fd3f489639abb8465a914b74b8779171577582318d8a940d00399f59dba81c5"
+url = "https://github.com/ast-grep/ast-grep/releases/download/0.50.0/app-x86_64-unknown-linux-gnu.zip"
+url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/625203767"
 
 [tools.ast-grep."platforms.linux-x64-musl"]
-checksum = "sha256:f8ac830881339d1edee6b2652f54798c0f4da5a827f2db38a08ee31117783ce8"
-url = "https://github.com/ast-grep/ast-grep/releases/download/0.45.3/app-x86_64-unknown-linux-gnu.zip"
-url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/537332692"
+checksum = "sha256:0fd3f489639abb8465a914b74b8779171577582318d8a940d00399f59dba81c5"
+url = "https://github.com/ast-grep/ast-grep/releases/download/0.50.0/app-x86_64-unknown-linux-gnu.zip"
+url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/625203767"
 
 [tools.ast-grep."platforms.macos-arm64"]
-checksum = "sha256:6d2279dea5bea2ad79c66ea93f5fe54ba926e398a8a26de76c56db68fe59eac6"
-url = "https://github.com/ast-grep/ast-grep/releases/download/0.45.3/app-aarch64-apple-darwin.zip"
-url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/537332514"
+checksum = "sha256:b7de40f9c4a29b1c6e26619b776d02b432902550de9a79e4a71a416e86cc41f5"
+url = "https://github.com/ast-grep/ast-grep/releases/download/0.50.0/app-aarch64-apple-darwin.zip"
+url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/625198087"
 
 [tools.ast-grep."platforms.macos-x64"]
-checksum = "sha256:b2ffd26f42810340326a9e8a084bdc3647a8795c1a3f21fc06bd7bef3c7c5b2c"
-url = "https://github.com/ast-grep/ast-grep/releases/download/0.45.3/app-x86_64-apple-darwin.zip"
-url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/537333391"
+checksum = "sha256:b057d51bc3b0fa55c71c40774cdef687656e57b630a891c1a7d4e96e57b27d35"
+url = "https://github.com/ast-grep/ast-grep/releases/download/0.50.0/app-x86_64-apple-darwin.zip"
+url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/625198978"
 
 [tools.ast-grep."platforms.windows-x64"]
-checksum = "sha256:3751b7d6be7fd39a80df1180ffe7e053903dcf92d3190e5a8336ff1746af9059"
-url = "https://github.com/ast-grep/ast-grep/releases/download/0.45.3/app-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/537334241"
+checksum = "sha256:e332ce9b10731c6d9bf142ed5ce2ab3795a8715e434dcca77de18e3e0f86e3f5"
+url = "https://github.com/ast-grep/ast-grep/releases/download/0.50.0/app-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/625198178"
 
 [[tools.direnv]]
-version = "2.37.1"
+version = "2.38.2"
 backend = "aqua:direnv/direnv"
 specifiers = ["latest"]
 
 [tools.direnv."platforms.linux-arm64"]
-checksum = "sha256:2a9cef8d73521d6a3ec3f2871c4b747b8c4cc038628c1b57a7efa42b393a2d82"
-url = "https://github.com/direnv/direnv/releases/download/v2.37.1/direnv.linux-arm64"
-url_api = "https://api.github.com/repos/direnv/direnv/releases/assets/274610549"
+checksum = "sha256:ec2a32dbe2f19dd085bd9315a1b4ea88b55ec288aa7eabe8723490baf466cb23"
+url = "https://github.com/direnv/direnv/releases/download/v2.38.2/direnv.linux-arm64"
+url_api = "https://api.github.com/repos/direnv/direnv/releases/assets/627455481"
 
 [tools.direnv."platforms.linux-arm64-musl"]
-checksum = "sha256:2a9cef8d73521d6a3ec3f2871c4b747b8c4cc038628c1b57a7efa42b393a2d82"
-url = "https://github.com/direnv/direnv/releases/download/v2.37.1/direnv.linux-arm64"
-url_api = "https://api.github.com/repos/direnv/direnv/releases/assets/274610549"
+checksum = "sha256:ec2a32dbe2f19dd085bd9315a1b4ea88b55ec288aa7eabe8723490baf466cb23"
+url = "https://github.com/direnv/direnv/releases/download/v2.38.2/direnv.linux-arm64"
+url_api = "https://api.github.com/repos/direnv/direnv/releases/assets/627455481"
 
 [tools.direnv."platforms.linux-x64"]
-checksum = "sha256:1f1b93dd6f38523fde26dfac96151ef9d31a374e3005cd3345fb93555ae0c9b5"
-url = "https://github.com/direnv/direnv/releases/download/v2.37.1/direnv.linux-amd64"
-url_api = "https://api.github.com/repos/direnv/direnv/releases/assets/274610548"
+checksum = "sha256:148820a187930d36ca6a204504e5cdb30d8396cd1a97e64c3b3f10d793c11247"
+url = "https://github.com/direnv/direnv/releases/download/v2.38.2/direnv.linux-amd64"
+url_api = "https://api.github.com/repos/direnv/direnv/releases/assets/627455476"
 
 [tools.direnv."platforms.linux-x64-musl"]
-checksum = "sha256:1f1b93dd6f38523fde26dfac96151ef9d31a374e3005cd3345fb93555ae0c9b5"
-url = "https://github.com/direnv/direnv/releases/download/v2.37.1/direnv.linux-amd64"
-url_api = "https://api.github.com/repos/direnv/direnv/releases/assets/274610548"
+checksum = "sha256:148820a187930d36ca6a204504e5cdb30d8396cd1a97e64c3b3f10d793c11247"
+url = "https://github.com/direnv/direnv/releases/download/v2.38.2/direnv.linux-amd64"
+url_api = "https://api.github.com/repos/direnv/direnv/releases/assets/627455476"
 
 [tools.direnv."platforms.macos-arm64"]
-checksum = "sha256:4f569f3a36732bfd8b8fea7bfcc6ad87a59745c109022164d0ca4832451d5369"
-url = "https://github.com/direnv/direnv/releases/download/v2.37.1/direnv.darwin-arm64"
-url_api = "https://api.github.com/repos/direnv/direnv/releases/assets/274610544"
+checksum = "sha256:30443c413e74614a53deb90234e9c97661b1041a0f4aca601ceb482a578ae8b6"
+url = "https://github.com/direnv/direnv/releases/download/v2.38.2/direnv.darwin-arm64"
+url_api = "https://api.github.com/repos/direnv/direnv/releases/assets/627455431"
 
 [tools.direnv."platforms.macos-x64"]
-checksum = "sha256:24fb9ce48b563d7e9fbdd3a4e3e836941654a31ce3e67eba9eaafc3dcd8ae73b"
-url = "https://github.com/direnv/direnv/releases/download/v2.37.1/direnv.darwin-amd64"
-url_api = "https://api.github.com/repos/direnv/direnv/releases/assets/274610540"
-
-[tools.direnv."platforms.windows-x64"]
-checksum = "sha256:d96fc8b7cf020c2d4c1dbbc2ccec5fd1cab05b51c491f02c8527a7fa6c50a1cd"
-url = "https://github.com/direnv/direnv/releases/download/v2.37.1/direnv.windows-amd64"
-url_api = "https://api.github.com/repos/direnv/direnv/releases/assets/274610569"
+checksum = "sha256:91ad9ce96e156065ba2c751a7392ee748fa8e49b063e14d7203df6e957c212f9"
+url = "https://github.com/direnv/direnv/releases/download/v2.38.2/direnv.darwin-amd64"
+url_api = "https://api.github.com/repos/direnv/direnv/releases/assets/627455432"
 
 [[tools.fd]]
 version = "10.5.0"
@@ -290,39 +285,39 @@ url = "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8
 url_api = "https://api.github.com/repos/gitleaks/gitleaks/releases/assets/378333178"
 
 [[tools."github:peterldowns/localias"]]
-version = "3.0.0+commit.5d74685"
+version = "3.0.0+commit.43c3619"
 backend = "github:peterldowns/localias"
-specifiers = ["latest"]
+specifiers = ["3.0.0+commit.43c3619"]
 
 [tools."github:peterldowns/localias"."platforms.linux-arm64"]
-checksum = "sha256:9dc69245b8ec8ed7e7b98b8a1019b03ff3ba74afddb4d769d4e604a66eab094d"
-url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.5d74685/localias-linux-arm64"
-url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/277499122"
+checksum = "sha256:464c5cf95b9ed8fb2bfd3baed8b55554d2191d20e3fd9ac5c923c7482f475d08"
+url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.43c3619/localias-linux-arm64"
+url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/313805326"
 
 [tools."github:peterldowns/localias"."platforms.linux-arm64-musl"]
-checksum = "sha256:9dc69245b8ec8ed7e7b98b8a1019b03ff3ba74afddb4d769d4e604a66eab094d"
-url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.5d74685/localias-linux-arm64"
-url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/277499122"
+checksum = "sha256:464c5cf95b9ed8fb2bfd3baed8b55554d2191d20e3fd9ac5c923c7482f475d08"
+url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.43c3619/localias-linux-arm64"
+url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/313805326"
 
 [tools."github:peterldowns/localias"."platforms.linux-x64"]
-checksum = "sha256:7155f30f1f00d591cdb30428ef2969d690c2dc748ba44d7e70a1a53ae00e4bb2"
-url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.5d74685/localias-linux-amd64"
-url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/277499181"
+checksum = "sha256:e7e8ae3a6cf2b1d7b637b6d871ea615b66509096f35ed8f4cc2c370a812193aa"
+url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.43c3619/localias-linux-amd64"
+url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/313805715"
 
 [tools."github:peterldowns/localias"."platforms.linux-x64-musl"]
-checksum = "sha256:7155f30f1f00d591cdb30428ef2969d690c2dc748ba44d7e70a1a53ae00e4bb2"
-url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.5d74685/localias-linux-amd64"
-url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/277499181"
+checksum = "sha256:e7e8ae3a6cf2b1d7b637b6d871ea615b66509096f35ed8f4cc2c370a812193aa"
+url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.43c3619/localias-linux-amd64"
+url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/313805715"
 
 [tools."github:peterldowns/localias"."platforms.macos-arm64"]
-checksum = "sha256:63d14ed513023fca8d16049f9fb45a9dea75616af986fa0d0d7c245d10926ed3"
-url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.5d74685/localias-darwin-arm64"
-url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/277499108"
+checksum = "sha256:2ee5ae68b864a1b639a26ec042b5590764aeef3536eb2681236946eb4f3d2614"
+url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.43c3619/localias-darwin-arm64"
+url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/313805089"
 
 [tools."github:peterldowns/localias"."platforms.macos-x64"]
-checksum = "sha256:3663f724c752bca5deb2d31798c7e33f94a4027e8aca10c25a56312353d573f2"
-url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.5d74685/localias-darwin-amd64"
-url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/277499098"
+checksum = "sha256:da15cca479447d5466569b91a679e9fe2cdb97b2be5a3c09c912ebe75ce0de17"
+url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.43c3619/localias-darwin-amd64"
+url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/313804897"
 
 [[tools."github:railwayapp/railpack"]]
 version = "0.42.0"
@@ -459,44 +454,44 @@ url = "https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-x86_64
 url_api = "https://api.github.com/repos/casey/just/releases/assets/500511374"
 
 [[tools.mprocs]]
-version = "0.10.0"
+version = "0.10.1"
 backend = "aqua:pvolok/mprocs"
 specifiers = ["latest"]
 
 [tools.mprocs."platforms.linux-arm64"]
-checksum = "sha256:35b2ae81a23a1b67c3f2fb95f993b26257af23270f651cc44cc1f64eba23d5fe"
-url = "https://github.com/pvolok/dekit/releases/download/v0.10.0/dekit-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/596466883"
+checksum = "sha256:6bbc4de2f475ece6a0211578f8754fe611d70149fca24e59f3bc694a78db37fc"
+url = "https://github.com/pvolok/dekit/releases/download/v0.10.1/dekit-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/623033489"
 
 [tools.mprocs."platforms.linux-arm64-musl"]
-checksum = "sha256:35b2ae81a23a1b67c3f2fb95f993b26257af23270f651cc44cc1f64eba23d5fe"
-url = "https://github.com/pvolok/dekit/releases/download/v0.10.0/dekit-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/596466883"
+checksum = "sha256:6bbc4de2f475ece6a0211578f8754fe611d70149fca24e59f3bc694a78db37fc"
+url = "https://github.com/pvolok/dekit/releases/download/v0.10.1/dekit-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/623033489"
 
 [tools.mprocs."platforms.linux-x64"]
-checksum = "sha256:330753d26feb9f96b79a388e730f8bd4414564520257f37bfc997c626b450f44"
-url = "https://github.com/pvolok/dekit/releases/download/v0.10.0/dekit-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/596466904"
+checksum = "sha256:59563c26122073b0430488ec16ab38f44c838b5cf6924f34fc5971f68e2cc810"
+url = "https://github.com/pvolok/dekit/releases/download/v0.10.1/dekit-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/623033517"
 
 [tools.mprocs."platforms.linux-x64-musl"]
-checksum = "sha256:330753d26feb9f96b79a388e730f8bd4414564520257f37bfc997c626b450f44"
-url = "https://github.com/pvolok/dekit/releases/download/v0.10.0/dekit-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/596466904"
+checksum = "sha256:59563c26122073b0430488ec16ab38f44c838b5cf6924f34fc5971f68e2cc810"
+url = "https://github.com/pvolok/dekit/releases/download/v0.10.1/dekit-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/623033517"
 
 [tools.mprocs."platforms.macos-arm64"]
-checksum = "sha256:abdcdf7c1d42139da3a3fc40b95f8000bb9245fa793565f3c18108150cfb645b"
-url = "https://github.com/pvolok/dekit/releases/download/v0.10.0/dekit-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/596466890"
+checksum = "sha256:920abd0e040d4c1384255cc16c46e3fa64c69008d46c2159dc3eda73e0e68549"
+url = "https://github.com/pvolok/dekit/releases/download/v0.10.1/dekit-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/623033486"
 
 [tools.mprocs."platforms.macos-x64"]
-checksum = "sha256:f88f44751969b4e58ef650c845f905ccf4647d0027bc2f837ab50cdc78259e80"
-url = "https://github.com/pvolok/dekit/releases/download/v0.10.0/dekit-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/596466880"
+checksum = "sha256:f615acf1a677ff1f5ee7aff9f581418cd4c5d5a863b61a33c5ec89f3afef93e8"
+url = "https://github.com/pvolok/dekit/releases/download/v0.10.1/dekit-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/623033480"
 
 [tools.mprocs."platforms.windows-x64"]
-checksum = "sha256:9eb6e86513f5dff7b9712ceb62ff2127b8dba057a61d9b600491572a27a2ba62"
-url = "https://github.com/pvolok/dekit/releases/download/v0.10.0/dekit-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/596466888"
+checksum = "sha256:60059e4085c0377282ff11f66b0e03ae12c8c26f6229f7582a286d3eafa5eef9"
+url = "https://github.com/pvolok/dekit/releases/download/v0.10.1/dekit-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/623033488"
 
 [[tools.pinact]]
 version = "5.0.0"
@@ -546,44 +541,44 @@ url_api = "https://api.github.com/repos/suzuki-shunsuke/pinact/releases/assets/5
 provenance = "github-attestations"
 
 [[tools.watchexec]]
-version = "2.7.4"
+version = "2.8.0"
 backend = "aqua:watchexec/watchexec"
 specifiers = ["latest"]
 
 [tools.watchexec."platforms.linux-arm64"]
-checksum = "sha256:b649cf89bda51ba060abb9e9765ea585823ee94b9bf2e2ad86081323a13a81c4"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.7.4/watchexec-2.7.4-aarch64-unknown-linux-gnu.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/605904467"
+checksum = "sha256:aaa5eb7e62e9ce99cad7f14260265aaa9df8884e195c0661ab011825a6d61634"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.8.0/watchexec-2.8.0-aarch64-unknown-linux-gnu.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/616138796"
 
 [tools.watchexec."platforms.linux-arm64-musl"]
-checksum = "sha256:8596e3082e7116d4438f71f3e8eb1ad25d39dc4fe8560d2b1240af86e0c56df8"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.7.4/watchexec-2.7.4-aarch64-unknown-linux-musl.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/605904476"
+checksum = "sha256:3961878b21e3c1729279322f4007dd5bbf0032110fbcb5e7b983946a9ceb3bf6"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.8.0/watchexec-2.8.0-aarch64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/616138804"
 
 [tools.watchexec."platforms.linux-x64"]
-checksum = "sha256:6d7e89e8815ac1b4eafb9497ed0a8ada986117fbba460b2f9282e0e160f776dd"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.7.4/watchexec-2.7.4-x86_64-unknown-linux-gnu.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/605904460"
+checksum = "sha256:21839e9840ef592b4d571885ccbd692f54ae5bd4231f3caf29fcf31fa7723afe"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.8.0/watchexec-2.8.0-x86_64-unknown-linux-gnu.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/616138794"
 
 [tools.watchexec."platforms.linux-x64-musl"]
-checksum = "sha256:00a4be01add74acfaa37978081b331d60f4691f7e39b2028e5301242d61a464b"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.7.4/watchexec-2.7.4-x86_64-unknown-linux-musl.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/605904457"
+checksum = "sha256:35ea667cbe4bc96c23ba2a1f46c94c46bc385b67165e3bf621c0e7e4959aa99b"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.8.0/watchexec-2.8.0-x86_64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/616138798"
 
 [tools.watchexec."platforms.macos-arm64"]
-checksum = "sha256:1e5052fe1f0690cd04d13d59f2d6bb0b090985d88c7406acadacd1198f58706e"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.7.4/watchexec-2.7.4-aarch64-apple-darwin.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/605904470"
+checksum = "sha256:8da8bdbfb8568138616a082c05a87224e08d5cb2994feb956426291cf0c6fe10"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.8.0/watchexec-2.8.0-aarch64-apple-darwin.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/616138836"
 
 [tools.watchexec."platforms.macos-x64"]
-checksum = "sha256:e3016a20879510ea3a585e75d73a5aff8be0648d9e88d71439d515e63da13255"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.7.4/watchexec-2.7.4-x86_64-apple-darwin.tar.xz"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/605904462"
+checksum = "sha256:b7f694ad19c1cf168388f3295a5e825425f7dac5cd27cffd2d89a51ed4ab0f22"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.8.0/watchexec-2.8.0-x86_64-apple-darwin.tar.xz"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/616138831"
 
 [tools.watchexec."platforms.windows-x64"]
-checksum = "sha256:4f380d9785661d05d188e2c36c221678d2614e9dd8c7d8397e72660596498a6d"
-url = "https://github.com/watchexec/watchexec/releases/download/v2.7.4/watchexec-2.7.4-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/605904498"
+checksum = "sha256:0c872fc18c8e801f21614c6daf2504a5826d5c705bb67f7a583d879f5410d9ea"
+url = "https://github.com/watchexec/watchexec/releases/download/v2.8.0/watchexec-2.8.0-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/watchexec/watchexec/releases/assets/616138784"
 
 [[tools.yamllint]]
 version = "1.38.0"

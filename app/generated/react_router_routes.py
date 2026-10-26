@@ -16,7 +16,7 @@ from urllib.parse import quote, urlencode
 
 logger = logging.getLogger("react_router_routes.generated")
 
-RoutePaths = Literal["/", "/home", "/form", "/login"]
+RoutePaths = Literal["/", "/home", "/form", "/logout", "/login"]
 
 
 ALIAS_MAP: dict[str, dict[str, str]] = {}
@@ -45,6 +45,15 @@ def react_router_path(
 @overload
 def react_router_path(
     path: Literal["/form"],
+    params: None | Mapping[str, object] = None,
+    *,
+    url_params: dict[str, str] | None = None,
+) -> str: ...
+
+
+@overload
+def react_router_path(
+    path: Literal["/logout"],
     params: None | Mapping[str, object] = None,
     *,
     url_params: dict[str, str] | None = None,
@@ -149,6 +158,16 @@ def react_router_url(
 @overload
 def react_router_url(
     path: Literal["/form"],
+    params: None | Mapping[str, object] = None,
+    *,
+    base_url: str | None = None,
+    url_params: dict[str, str] | None = None,
+) -> str: ...
+
+
+@overload
+def react_router_url(
+    path: Literal["/logout"],
     params: None | Mapping[str, object] = None,
     *,
     base_url: str | None = None,
