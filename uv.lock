@@ -3323,7 +3323,7 @@ dependencies = [
 [[package]]
 name = "pytest-playwright-visual-snapshot"
 version = "0.5.1"
-source = { git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git?rev=cursor%2Fbrowser-os-snapshot-suffix-8611#486b67d51c40e76537f3b54afc57a3561ab079bb" }
+source = { git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git?rev=master#0e19997d72c86b368fc30c54ff1d338240ab98f8" }
 dependencies = [
     { name = "pillow" },
     { name = "pixelmatch" },
@@ -3650,7 +3650,7 @@ dev = [
     { name = "pytest-line-runner", specifier = ">=0.1.0" },
     { name = "pytest-playwright", specifier = ">=0.8.0" },
     { name = "pytest-playwright-artifacts", git = "https://github.com/iloveitaly/pytest-playwright-artifacts.git" },
-    { name = "pytest-playwright-visual-snapshot", git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git?rev=cursor%2Fbrowser-os-snapshot-suffix-8611" },
+    { name = "pytest-playwright-visual-snapshot", git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git?rev=master" },
     { name = "react-router-routes", specifier = ">=0.4.2" },
     { name = "ruff", specifier = ">=0.16.1" },
     { name = "squawk-cli", specifier = ">=2.62.0" },
