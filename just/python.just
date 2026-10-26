@@ -151,13 +151,12 @@ py_test:
 	# Define a more detailed colored PS4 without current directory so -x output is easier to read
 	setopt prompt_subst
 	export PS4='%F{green}+%f '
-	export LOCALIAS_CA_B64="${LOCALIAS_CA_B64:-$(just _localias_ca_b64)}"
 	set -x
 
 	# TODO we don't need to see all of the details for this part of the build, since we are primarily testing javascript
 
 	# the chrome version check and integration tests attach to this server
-	docker compose up -d --wait chrome
+	{{COMPOSE}} up -d --wait chrome
 
 	# TODO I wonder if I could make EXECUTE_IN_TEST blank if in the test environment...
 	# NOTE unfortunately, because of the asyncio loop + playwright, we need to run the playwright integration tests separately
