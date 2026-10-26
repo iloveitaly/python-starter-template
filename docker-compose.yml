@@ -94,8 +94,8 @@ services:
     shm_size: 1gb
     environment:
       TZ: ${TZ:?}
-      # root.crt is mode 0600, so the host passes the PEM instead of a bind mount
-      LOOPHOLE_CA_CERT_B64: ${LOCALIAS_CA_B64:?}
+      # exported by docker_up and py_test, which are the recipes that create chrome
+      LOOPHOLE_CA_CERT_B64: ${LOCALIAS_CA_B64:-}
     ports:
       - "127.0.0.1:${PLAYWRIGHT_CHROME_PORT}:3000"
     healthcheck:
