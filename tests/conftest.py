@@ -353,10 +353,8 @@ def browser_context_args(browser_context_args, pytestconfig: pytest.Config):
     if not _use_docker_chrome(pytestconfig):
         return browser_context_args
 
-    timezone_id = ZonedDateTime.now(SYSTEM_TZ).tz_id
-    log.info("using machine timezone for docker chromium", timezone_id=timezone_id)
     return {
         **browser_context_args,
         "locale": "en-US",
-        "timezone_id": timezone_id,
+        "timezone_id": ZonedDateTime.now(SYSTEM_TZ).tz_id,
     }
