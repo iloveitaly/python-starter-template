@@ -165,6 +165,17 @@ localias_restart: _dev_only
 	localias -c {{GLOBAL_LOCALIAS_CONFIG}} stop || true
 	just localias
 
+# base64 PEM of the localias root CA, for the compose chromium NSS db
+# Linux CI owns the cert as root; a user-owned daemon can print it directly
+[script]
+_localias_ca_b64:
+	localias_bin=$(command -v localias)
+	if "$localias_bin" debug cert --print >/dev/null 2>&1; then
+		"$localias_bin" debug cert --print | base64 | tr -d '\n'
+	else
+		sudo -n -E "$localias_bin" debug cert --print | base64 | tr -d '\n'
+	fi
+
 # sync the mise version to github actions yaml
 _mise_gha_version_sync: _dev_only
 	mise_version=$(mise --version | awk '{print $1}') && \
