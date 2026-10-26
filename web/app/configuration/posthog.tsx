@@ -52,12 +52,12 @@ if (typeof window !== "undefined") {
   })
 }
 
-export default function withPostHogProvider(Component: React.ComponentType) {
+export default function withPostHogProvider<Props extends object>(
+  Component: React.FunctionComponent<Props>,
+): React.FunctionComponent<Props> {
   // we intentionally do NOT disable this functionality in specific environments
   // instead, we just disable capturing and session recording in non-production environments. This allows us to test that the provider is working and that events are being sent without polluting our production data with test events.
-  return function WithPostHogProviderWrapper(
-    props: React.ComponentProps<typeof Component>,
-  ) {
+  return function WithPostHogProviderWrapper(props: Props) {
     return (
       <PostHogProvider client={posthog}>
         <Component {...props} />
