@@ -61,6 +61,13 @@ jobs:
           fetch-depth: 0
       - uses: ./.github/actions/common-setup
         timeout-minutes: 3
+      - name: Cache Trivy databases
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
+        with:
+          path: ~/.cache/trivy
+          key: ${{ runner.os }}-${{ runner.arch }}-trivy-${{ hashFiles('.config/mise.dev.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-trivy-
       - run: just dev_lint
       - uses: iloveitaly/github-action-localias@master
         with:

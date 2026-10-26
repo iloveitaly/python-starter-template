@@ -87,6 +87,11 @@ js_upgrade yes:
 	# intentionally without lockfile so it's updated
 	{{_pnpm}} install
 
+	# ncu rewrites package.json. install keeps an already-locked transitive version.
+	# --fix=update moves a vulnerable package to a fixed release the parent range allows.
+	# exits 1 when that range blocks the fixed release
+	{{_pnpm}} audit --fix=update || true
+
 	{{_pnpm}} dlx update-browserslist-db@latest
 
 	cd {{WEB_DIR}} && git add package.json pnpm-*.yaml

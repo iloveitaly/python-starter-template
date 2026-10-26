@@ -410,7 +410,7 @@ There are top-level commands for many of these (`clean`, `setup`, `dev`, etc) wh
 
 The more linting tools the better, as long as they are well maintained, useful, and add value. I think of linters as helpful teammates that let me know when I missed something.
 
-This project implements many linting tools (including DB SQL linting!). This could cause developer friction at some point, but we'll see how this scales as the codebase complexity grows.
+This project implements many linting tools (including DB SQL linting and Trivy filesystem scans for vulnerabilities, misconfigurations, and secrets). This could cause developer friction at some point, but we'll see how this scales as the codebase complexity grows.
 
 ### Test Database Cleaning
 
