@@ -2,7 +2,8 @@ import inspect
 
 
 def callable_file_line_reference(target: object) -> str | None:
-    """Return a `file:line` source reference for a callable when available."""
+    "return a `file:line` source reference for a callable when available"
+
     if not callable(target):
         return None
 

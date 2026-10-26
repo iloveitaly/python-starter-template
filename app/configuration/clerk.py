@@ -13,4 +13,4 @@ if is_debug_logging():
 
     clerk_kwargs["debug_logger"] = logging.getLogger("app.clerk")
 
-clerk = Clerk(bearer_auth=CLERK_PRIVATE_KEY, **clerk_kwargs)
+clerk = Clerk(bearer_auth=CLERK_PRIVATE_KEY, timeout_ms=5_000, **clerk_kwargs)

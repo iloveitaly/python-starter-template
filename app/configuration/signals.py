@@ -1,4 +1,5 @@
-"""Signal chaining for process observability and graceful behavior.
+"""
+Signal chaining for process observability and graceful behavior.
 
 This module installs a chained signal handler that preserves prior signal
 behavior while allowing additional application handlers to be registered.
@@ -119,10 +120,12 @@ def _log_existing_handler(sig: int, old_handler: OriginalSignalHandler) -> None:
 
 
 def _signal_name(signum: int) -> str:
-    """Return a clean signal name without any trailing numeric suffix.
+    """
+    Return a clean signal name without any trailing numeric suffix.
 
     Some platforms may format the string as "Name: 28"; strip the numeric suffix.
     """
+
     text = signal.strsignal(signum) or ""
 
     head, sep, tail = text.rpartition(":")

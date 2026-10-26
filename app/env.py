@@ -17,8 +17,11 @@ from marshmallow import ValidationError, validate
 
 
 def _make_strict_str() -> typing.Any:
-    """Mirrors environs' own _field2method pattern: return Any so the class-level
-    FieldMethod[str] annotation from the parent is preserved for type checkers."""
+    """
+    Mirrors environs' own _field2method pattern: return Any so the class-level
+    FieldMethod[str] annotation from the parent is preserved for type checkers.
+    """
+
     _parent_str = Env.__dict__["str"]
 
     def method(self, name: str, default=..., **kwargs):
@@ -28,6 +31,7 @@ def _make_strict_str() -> typing.Any:
         If 'validate' is not in kwargs, adds a validator requiring non-empty, stripped strings.
         If 'validate' is in kwargs (even None), disables strict validation.
         """
+
         should_strip = False
 
         if "validate" not in kwargs:
@@ -98,7 +102,8 @@ class StrictEnv(Env):
 
 
 def _make_loose_method(method_name: str) -> typing.Any:
-    """Mirrors environs' own _field2method pattern: return Any so FieldMethod[T] annotations are preserved."""
+    "mirrors environs' own _field2method pattern: return Any so FieldMethod[T] annotations are preserved"
+
     parent_method = Env.__dict__[method_name]
 
     def method(self, name: str, default=..., **kwargs):

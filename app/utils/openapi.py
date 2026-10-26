@@ -15,14 +15,15 @@ def generate_openapi_schema(app: FastAPI | APIRouter) -> dict:
     """
     from app.routes.utils.openapi import simplify_operation_ids
 
-    # Apply simplification to operation IDs
+    # apply simplification to operation IDs
     simplify_operation_ids(app)
 
-    # Get the OpenAPI schema
+    # get the OpenAPI schema
     schema_title = f"{app.__class__.__name__} API"
     return get_openapi(
         title=schema_title,
-        version=getattr(app, "version", "0.1.0"),  # Default to 0.1.0 if not set
+        # default to 0.1.0 if not set
+        version=getattr(app, "version", "0.1.0"),
         routes=app.routes,
         # TODO If we are hosting the OpenAPI spec on a separate domain than the API is hosted on, then we must specify servers to point it to a, uh, different endpoint to hit.
         #      However, if the domain is the same, then we don't need to add this and retool will hit the same domain

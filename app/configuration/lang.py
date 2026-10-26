@@ -65,7 +65,7 @@ def configure_python():
 
     # prefer intentional timezone configuration
     if loose_env.str("TZ") is None:
-        log.warning("TZ not set, update your environment configuration")
+        log.warning("tz not set, update your environment configuration")
 
     # prefer UTC for consistent server behavior
     if time.timezone != 0 or time.daylight != 0:

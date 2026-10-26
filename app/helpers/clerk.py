@@ -30,7 +30,7 @@ def safely_execute_clerk[**P, R](func: Callable[P, R]) -> Callable[P, R | None]:
 
 
 def clerk_user_exists(email: str) -> bool:
-    """Whether a Clerk account already exists for this email."""
+    "whether a Clerk account already exists for this email"
 
     users = clerk.users.list(request={"email_address": [email]})
     return bool(users)
