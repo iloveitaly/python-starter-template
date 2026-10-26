@@ -6,6 +6,9 @@
 [arg("fast", long, help="skip waiting for healthy containers, useful for CI runs", flag)]
 [arg("latest", long, help="pull latest images and recreate services", flag)]
 docker_up fast latest: _not_production
+	# chrome imports this into its NSS db. Linux CI owns the cert as root; a user-owned daemon can print it directly.
+	export LOCALIAS_CA_B64="${LOCALIAS_CA_B64:-$(just _localias_ca_b64)}"
+
 	# if images have already been pulled, this ensures the latest versions are pulled so they match with
 	# CI or other environments that are pulling fresh versions of the images
 	if {{ if bool(latest) { "true" } else { "false" } }}; then
@@ -30,6 +33,15 @@ docker_up fast latest: _not_production
 	# this works well on Linux, but not on WSL — default WSL config does not assign each container a unique address.
 	if [[ "$(uname -s)" == "Linux" ]]; then
 		sudo $(which uvx) docker-hosts@latest
+	fi
+
+[script]
+_localias_ca_b64:
+	localias_bin=$(command -v localias)
+	if "$localias_bin" debug cert --print >/dev/null 2>&1; then
+		"$localias_bin" debug cert --print | base64 | tr -d '\n'
+	else
+		sudo -n -E "$localias_bin" debug cert --print | base64 | tr -d '\n'
 	fi
 
 # stop all containers and remove the images

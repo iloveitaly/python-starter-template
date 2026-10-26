@@ -151,6 +151,7 @@ py_test:
 	# Define a more detailed colored PS4 without current directory so -x output is easier to read
 	setopt prompt_subst
 	export PS4='%F{green}+%f '
+	export LOCALIAS_CA_B64="${LOCALIAS_CA_B64:-$(just _localias_ca_b64)}"
 	set -x
 
 	# TODO we don't need to see all of the details for this part of the build, since we are primarily testing javascript
