@@ -12,15 +12,13 @@ import { AlertCircleIcon } from "lucide-react"
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
-interface ServerErrorAlertProps {
-  error?: { message?: string }
-  className?: string
-}
-
 export function ServerErrorAlert({
   error,
   className = "mb-4",
-}: ServerErrorAlertProps) {
+}: {
+  error?: { message?: string }
+  className?: string
+}) {
   // need ref to scroll to the error
   const errorRef = useRef<HTMLDivElement>(null)
 
@@ -40,10 +38,14 @@ export function ServerErrorAlert({
 
   const errorMessage =
     error?.message ??
-    "An unknown error occurred. Please try again, and come back later if the error persists"
+    "An unknown error occurred. Please try again, and come back later if the error persists."
 
   return (
-    <Alert ref={errorRef} variant="destructive" className={className}>
+    <Alert
+      ref={errorRef}
+      variant="destructive"
+      className={`${className} animate-in fade-in duration-200`}
+    >
       <AlertCircleIcon />
       <AlertTitle>Error</AlertTitle>
       <AlertDescription>{errorMessage}</AlertDescription>

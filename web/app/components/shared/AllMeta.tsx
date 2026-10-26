@@ -126,23 +126,24 @@ export function MetaProvider({
   )
 }
 
-// AllMeta component props (partial for overrides)
-interface AllMetaProps {
+export function AllMeta({
+  basic,
+  twitter,
+  facebook,
+}: {
   basic?: Partial<BasicOptions>
   twitter?: Partial<TwitterOptions>
   facebook?: Partial<FacebookOptions>
-}
-
-export function AllMeta(props: AllMetaProps) {
+} = {}) {
   const defaults = useContext(MetaContext) ?? {}
   const merged: Options = {
-    basic: { ...defaults.basic, ...props.basic },
-    twitter: { ...defaults.twitter, ...props.twitter },
-    facebook: { ...defaults.facebook, ...props.facebook },
+    basic: { ...defaults.basic, ...basic },
+    twitter: { ...defaults.twitter, ...twitter },
+    facebook: { ...defaults.facebook, ...facebook },
   }
 
-  // Render function to generate tags based on merged options
-  const renderTags = (options: Options): React.ReactElement[] => {
+  // render function to generate tags based on merged options
+  function renderTags(options: Options): React.ReactElement[] {
     const elements: React.ReactElement[] = []
     const { basic, twitter, facebook } = options
 
