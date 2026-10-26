@@ -301,6 +301,21 @@ def _open_httpx2_breakpoint(request):
     return True
 
 
+def _machine_timezone_id() -> str:
+    # env/all.sh forces TZ=UTC, so the process zone is not the machine zone
+    localtime = Path("/etc/localtime").resolve()
+    for root in (Path("/usr/share/zoneinfo"), Path("/var/db/timezone/zoneinfo")):
+        if not localtime.is_relative_to(root):
+            continue
+
+        zone = localtime.relative_to(root).as_posix()
+        if zone.startswith(("posix/", "right/")):
+            zone = zone.split("/", 1)[1]
+        return zone
+
+    return "UTC"
+
+
 def _use_docker_chrome(config: pytest.Config) -> bool:
     if not is_local_testing():
         return True
@@ -351,8 +366,10 @@ def browser_context_args(browser_context_args, pytestconfig: pytest.Config):
     if not _use_docker_chrome(pytestconfig):
         return browser_context_args
 
+    timezone_id = _machine_timezone_id()
+    log.info("using machine timezone for docker chromium", timezone_id=timezone_id)
     return {
         **browser_context_args,
         "locale": "en-US",
-        "timezone_id": "UTC",
+        "timezone_id": timezone_id,
     }
