@@ -2,8 +2,8 @@
 # Dev Container Management
 ##########################
 
-# chrome reads the cert when `up` creates the container
-COMPOSE_UP := 'LOCALIAS_CA_B64="${LOCALIAS_CA_B64:-$(just _localias_ca_b64)}" docker compose -f docker-compose.yml -f docker-compose.chrome.yml'
+# compose interpolates every service on every subcommand, so the CA must be set first
+COMPOSE := 'LOCALIAS_CA_B64="${LOCALIAS_CA_B64:-$(just _localias_ca_b64)}" docker compose'
 
 [script]
 [arg("fast", long, help="skip waiting for healthy containers, useful for CI runs", flag)]
@@ -12,19 +12,19 @@ docker_up fast latest: _not_production
 	# if images have already been pulled, this ensures the latest versions are pulled so they match with
 	# CI or other environments that are pulling fresh versions of the images
 	if {{ if bool(latest) { "true" } else { "false" } }}; then
-		docker compose pull
+		{{COMPOSE}} pull
 	fi
 
 	# force a restart to pick up the latest pulled images
 	if {{ if bool(latest) { "true" } else { "false" } }}; then
-		{{COMPOSE_UP}} up -d --force-recreate {{ if bool(fast) { "" } else { "--wait" } }}
+		{{COMPOSE}} up -d --force-recreate {{ if bool(fast) { "" } else { "--wait" } }}
 
 		just db_migrate
 
 		just py_cli write-versions
 		git add .service-versions
 	else
-		{{COMPOSE_UP}} up -d {{ if bool(fast) { "" } else { "--wait" } }}
+		{{COMPOSE}} up -d {{ if bool(fast) { "" } else { "--wait" } }}
 	fi
 
 	# using host names enables us to (a) avoid exposing ports to the host machine and (b) have dns names for each service
@@ -37,7 +37,7 @@ docker_up fast latest: _not_production
 
 # stop all containers and remove the images
 docker_down: db_down
-	docker compose down
+	{{COMPOSE}} down
 
 # open redis database in the default macos GUI
 redis_open: _dev_only

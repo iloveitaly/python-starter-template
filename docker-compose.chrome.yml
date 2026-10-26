@@ -1,7 +1,0 @@
-# Merged in by `docker compose up` when chrome is created.
-# pull, down, and run use docker-compose.yml alone and do not need the cert.
-services:
-  chrome:
-    environment:
-      # root.crt is mode 0600, so the host passes the PEM instead of a bind mount
-      LOOPHOLE_CA_CERT_B64: ${LOCALIAS_CA_B64:?}
