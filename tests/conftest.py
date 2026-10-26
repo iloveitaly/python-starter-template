@@ -45,7 +45,7 @@ import stripe
 import pytest
 from activemodel.pytest import database_reset_transaction, database_reset_truncate
 from pytest import Config, FixtureRequest
-from whenever import SYSTEM_TZ, ZonedDateTime, reset_system_tz
+from whenever import SYSTEM_TZ, ZonedDateTime
 
 from app.env import env, loose_env
 
@@ -303,21 +303,6 @@ def _open_httpx2_breakpoint(request):
     return True
 
 
-def _machine_timezone_id() -> str:
-    # env/all.sh forces TZ=UTC. whenever follows that until it is cleared.
-    previous = os.environ.get("TZ")
-    os.environ.pop("TZ", None)
-    reset_system_tz()
-    try:
-        return ZonedDateTime.now(SYSTEM_TZ).tz_id
-    finally:
-        if previous is None:
-            os.environ.pop("TZ", None)
-        else:
-            os.environ["TZ"] = previous
-        reset_system_tz()
-
-
 def _use_docker_chrome(config: pytest.Config) -> bool:
     if not is_local_testing():
         return True
@@ -368,7 +353,7 @@ def browser_context_args(browser_context_args, pytestconfig: pytest.Config):
     if not _use_docker_chrome(pytestconfig):
         return browser_context_args
 
-    timezone_id = _machine_timezone_id()
+    timezone_id = ZonedDateTime.now(SYSTEM_TZ).tz_id
     log.info("using machine timezone for docker chromium", timezone_id=timezone_id)
     return {
         **browser_context_args,
