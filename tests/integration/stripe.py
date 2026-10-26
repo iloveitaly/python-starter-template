@@ -16,6 +16,13 @@ def fill_stripe_checkout(
     card_type: str = "success",
     only_card_number: bool = False,
 ) -> None:
+    """
+    Fill the Stripe checkout form with a success or failure test card.
+
+    Note: field names can change over time or be A/B tested, which results
+    in flaky tests.
+    """
+
     card_number_map = {
         "success": "4242424242424242",  # Stripe test card for success
         "failure": "4000000000000002",  # Stripe test card for failure (card declined)

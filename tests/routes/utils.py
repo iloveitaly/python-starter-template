@@ -33,12 +33,18 @@ def base_server_url(protocol: t.Literal["http", "https"] = "https"):
 
 
 def bearer_headers(token: str) -> dict[str, str]:
-    """Generate Authorization header with Bearer token."""
+    "generate authorization header with bearer token"
+
     return {"Authorization": f"Bearer {token}"}
 
 
 def distribution_headers(distribution) -> dict[str, str]:
-    """Generate Authorization header for distribution API key."""
+    """
+    Generate Authorization header for distribution API key.
+
+    The distribution must already have an api_key set, otherwise the request will return 401 Unauthorized.
+    """
+
     return bearer_headers(distribution.api_key)
 
 

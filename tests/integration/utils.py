@@ -95,15 +95,15 @@ def wait_for_loading(page: Page, timeout: int = 30000, extreme: bool = False):
             poll();
         }""")
 
-        # Wait for React and animation loading to complete
+        # wait for React and animation loading to complete
         try:
             page.wait_for_function(
                 "() => window._reactLoadingComplete === true", timeout=timeout
             )
         except PlaywrightTimeoutError as e:
-            log.warning(f"React and animation loading check timed out: {e}")
+            log.warning("react and animation loading check timed out", error=e)
 
-    # Brief pause for any final renders
+    # brief pause for any final renders
     page.wait_for_timeout(100)
 
 

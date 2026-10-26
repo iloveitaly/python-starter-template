@@ -68,7 +68,7 @@ def direnv_ci_environment() -> dict[str, t.Any]:
 
 
 def direnv_state_sha() -> str:
-    # Glob all .env* files and hash their modified times
+    # glob all .env* files and hash their modified times
     env_files = sorted(
         [Path(".envrc")] + list(Path("env").glob("*")),
         key=str,
@@ -117,7 +117,7 @@ def update_environment(env: dict[str, t.Any]) -> None:
 
 def load_ci_environment():
     if not is_using_direnv():
-        log.info("Skipping direnv setup, not using direnv locally")
+        log.info("skipping direnv setup, not using direnv locally")
         return
 
     assert "app" not in sys.modules, (
