@@ -9,15 +9,20 @@ TODO
 - disable option for local tests? Is this needed with how facebook works?
 """
 
-import hashlib
-import re
 import time
 from typing import Literal
 
-from facebook_business.adobjects.adspixel import AdsPixel
+import phonenumbers
+import sentry_sdk
+from capi_param_builder import ParamBuilder
+from facebook_business.adobjects.serverside.action_source import ActionSource
+from facebook_business.adobjects.serverside.custom_data import CustomData
+from facebook_business.adobjects.serverside.event import Event
+from facebook_business.adobjects.serverside.event_request import EventRequest
+from facebook_business.adobjects.serverside.user_data import UserData
 from facebook_business.api import FacebookAdsApi
 from fastapi import BackgroundTasks, Request
-from pydantic import BaseModel
+from phonenumbers import NumberParseException, PhoneNumberFormat
 from structlog_config.fastapi_access_logger import client_ip_from_request
 
 from app import log
@@ -36,49 +41,23 @@ def set_test_event_code(code: str | None) -> None:
     TEST_EVENT_CODE_OVERRIDE = code
 
 
-API_VERSION = "v20.0"
-
-# request/cookie parameter names
 FBP_COOKIE_NAME = "_fbp"
-"""Facebook Browser ID cookie - tracks user across sessions"""
+"Facebook Browser ID cookie - tracks user across sessions"
 
 FBC_COOKIE_NAME = "_fbc"
-"""Facebook Click ID cookie - tracks clicks from Facebook ads"""
+"Facebook Click ID cookie - tracks clicks from Facebook ads"
 
 FBP_QUERY_PARAM = "fbp"
-"""Query parameter for Facebook Browser ID"""
+"Query parameter for Facebook Browser ID"
 
 FBC_QUERY_PARAM = "fbc"
-"""Query parameter for Facebook Click ID"""
+"Query parameter for Facebook Click ID"
 
 FBCLID_QUERY_PARAM = "fbclid"
-"""Query parameter for Facebook Click ID from ad clicks"""
+"Query parameter for Facebook Click ID from ad clicks"
 
 USER_AGENT_HEADER = "user-agent"
-"""HTTP header containing user agent string"""
-
-# event payload constants
-ACTION_SOURCE_WEBSITE = "website"
-
-
-class MetaUserData(BaseModel):
-    fbp: str | None = None
-    fbc: str | None = None
-    client_ip_address: str | None = None
-    client_user_agent: str | None = None
-    # hashed identifiers per Meta CAPI spec
-    em: str | None = None
-    ph: str | None = None
-    fn: str | None = None
-    ln: str | None = None
-    ct: str | None = None
-    st: str | None = None
-    zp: str | None = None
-    country: str | None = None
-
-    def as_sdk_dict(self) -> dict:
-        return self.model_dump(exclude_none=True)
-
+"HTTP header containing user agent string"
 
 MetaEventName = Literal[
     # should be used if we don't have a content ID and/or price
@@ -104,51 +83,31 @@ MetaEventName = Literal[
 ]
 
 
-def get_facebook_pixel() -> AdsPixel:
-    FacebookAdsApi.init(
-        access_token=META_PIXEL_KEY,
-        api_version=API_VERSION,
-        # this is crazy: without this, facebook overrides sys.excepthook AND sends exception data to their servers
-        crash_log=False,
-    )
-    return AdsPixel(META_PIXEL_ID)
+def _normalize_phone(phone: str, region: str | None) -> str | None:
+    """
+    E.164 without the leading `+`, which is the shape Meta hashes phone numbers in.
 
+    `region` is only consulted for numbers typed without a `+`, so it decides how a bare
+    national number is read: `22 622 15 00` is a real Warsaw line under `PL` and a bogus
+    +1 under `US`. Pass the buyer's country so non-US locals aren't mangled into an
+    invalid +1 and dropped below.
 
-def _sha256(value: str) -> str:
-    return hashlib.sha256(value.encode("utf-8")).hexdigest()
+    Parsing succeeding is not enough to send: it only means the string was number-shaped.
+    `555-555-5555`, `1234567890` and `00000` all parse and none of them are real numbers,
+    so `is_valid_number` is what keeps unmatchable hashes out of the `ph` key.
+    """
 
+    try:
+        parsed = phonenumbers.parse(phone, region)
+    except NumberParseException:
+        log.warning("phone unparseable, omitting from meta event", region=region)
+        return None
 
-def _normalize_email(email: str) -> str:
-    return email.strip().lower()
+    if not phonenumbers.is_valid_number(parsed):
+        log.warning("phone invalid, omitting from meta event", region=region)
+        return None
 
-
-def _normalize_phone(phone: str) -> str:
-    # keep digits only
-    digits = re.sub(r"\D", "", phone)
-    # best-effort: if US 10-digit, prefix country code 1
-    if len(digits) == 10:
-        return f"1{digits}"
-    return digits
-
-
-def _normalize_name(value: str) -> str:
-    return value.strip().lower()
-
-
-def _normalize_city(value: str) -> str:
-    return value.strip().lower()
-
-
-def _normalize_state(value: str) -> str:
-    return value.strip().lower()
-
-
-def _normalize_zip(value: str) -> str:
-    return value.strip().lower()
-
-
-def _normalize_country(value: str) -> str:
-    return value.strip().lower()
+    return phonenumbers.format_number(parsed, PhoneNumberFormat.E164).lstrip("+")
 
 
 def _split_full_name(full_name: str) -> tuple[str | None, str | None]:
@@ -157,7 +116,93 @@ def _split_full_name(full_name: str) -> tuple[str | None, str | None]:
         return None, None
     if len(parts) == 1:
         return parts[0], None
+
     return parts[0], parts[-1]
+
+
+def _resolve_fbp(request: Request) -> str | None:
+    "Facebook Browser ID, preferring an explicit query param over the cookie"
+
+    if fbp := request.query_params.get(FBP_QUERY_PARAM):
+        cookie_fbp = request.cookies.get(FBP_COOKIE_NAME)
+
+        if cookie_fbp is None:
+            log.warning("fbp cookie missing while query param present")
+        elif cookie_fbp == "":
+            log.warning("fbp cookie empty while query param present")
+        elif cookie_fbp != fbp:
+            log.warning(
+                "fbp query param and cookie mismatch",
+                query_value=fbp,
+                cookie_value=cookie_fbp,
+            )
+
+        log.debug("fbp resolved", source="query")
+        return fbp
+
+    if fbp := request.cookies.get(FBP_COOKIE_NAME):
+        log.debug("fbp resolved", source="cookie")
+        return fbp
+
+    log.debug("fbp not resolved")
+    return None
+
+
+def resolve_fbc(
+    request: Request, tracking_params: dict[str, str] | None = None
+) -> str | None:
+    """
+    Facebook Click ID in the `fbc` wire format, derived from the request.
+
+    Meta (and PostHog's Meta Ads destination) want the fully-formed value rather than a
+    bare `fbclid`, since a raw click ID has to be paired with a click time and anything
+    reconstructing it later can only guess `now()`. Resolving it here, at the request
+    that actually carries the ad click, keeps that timestamp honest.
+
+    `tracking_params` covers the requests the ad click cannot ride on by itself: an XHR
+    posted from a page whose *URL* carries the click, with the params forwarded in the
+    body by `trackingParamsFromSearch()`. Without it those requests fall through to the
+    `_fbc` cookie, which does not exist when the Meta pixel is blocked.
+    """
+
+    params = {**request.query_params, **(tracking_params or {})}
+
+    if fbc := params.get(FBC_QUERY_PARAM):
+        cookie_fbc = request.cookies.get(FBC_COOKIE_NAME)
+
+        if cookie_fbc is None:
+            log.warning("fbc cookie missing while query param present")
+        elif cookie_fbc == "":
+            log.warning("fbc cookie empty while query param present")
+        elif cookie_fbc != fbc:
+            log.warning(
+                "fbc query param and cookie mismatch",
+                query_value=fbc,
+                cookie_value=cookie_fbc,
+            )
+
+        log.debug("fbc resolved", source="query")
+        return fbc
+
+    if params.get(FBCLID_QUERY_PARAM):
+        # ParamBuilder derives the subdomain index, millisecond timestamp, and Meta version appendix
+        builder = ParamBuilder()
+        builder.process_request(
+            host=request.headers.get("host") or "",
+            queries={key: [value] for key, value in params.items()},
+            cookies=dict(request.cookies),
+        )
+
+        if fbc := builder.get_fbc():
+            log.debug("fbc resolved", source="fbclid")
+            return fbc
+
+    if fbc := request.cookies.get(FBC_COOKIE_NAME):
+        log.debug("fbc resolved", source="cookie")
+        return fbc
+
+    log.debug("fbc not resolved")
+    return None
 
 
 def build_meta_user_data(
@@ -172,99 +217,39 @@ def build_meta_user_data(
     first_name: str | None = None,
     last_name: str | None = None,
     full_name: str | None = None,
-) -> MetaUserData:
-    query_params = request.query_params
-
-    # fbp: prefer explicit query param, then cookie
-    if fbp := query_params.get(FBP_QUERY_PARAM):
-        fbp_source = "query"
-    elif fbp := request.cookies.get(FBP_COOKIE_NAME):
-        fbp_source = "cookie"
-    else:
-        fbp_source = None
-
-    if fbp_source == "query":
-        cookie_fbp = request.cookies.get(FBP_COOKIE_NAME)
-        if cookie_fbp is None:
-            log.warning("fbp cookie missing while query param present")
-        elif cookie_fbp == "":
-            log.warning("fbp cookie empty while query param present")
-        elif cookie_fbp != fbp:
-            log.warning(
-                "fbp query param and cookie mismatch",
-                query_value=fbp,
-                cookie_value=cookie_fbp,
-            )
-
-    # fbc: prefer explicit query param, then construct from fbclid, then cookie
-    if fbc := query_params.get(FBC_QUERY_PARAM):
-        fbc_source = "query"
-    elif fbclid := query_params.get(FBCLID_QUERY_PARAM):
-        # TODO explain where this recommended format comes from
-        # recommended format when derived from fbclid
-        fbc = f"fb.1.{int(time.time())}.{fbclid}"
-        fbc_source = "fbclid"
-    elif fbc := request.cookies.get(FBC_COOKIE_NAME):
-        fbc_source = "cookie"
-    else:
-        fbc = None
-        fbc_source = None
-
-    if fbc_source == "query":
-        cookie_fbc = request.cookies.get(FBC_COOKIE_NAME)
-        if cookie_fbc is None:
-            log.warning("fbc cookie missing while query param present")
-        elif cookie_fbc == "":
-            log.warning("fbc cookie empty while query param present")
-        elif cookie_fbc != fbc:
-            log.warning(
-                "fbc query param and cookie mismatch",
-                query_value=fbc,
-                cookie_value=cookie_fbc,
-            )
-
-    if fbp_source:
-        log.debug("fbp resolved", source=fbp_source)
-    else:
-        log.debug("fbp not resolved")
-
-    if fbc_source:
-        log.debug("fbc resolved", source=fbc_source)
-    else:
-        log.debug("fbc not resolved")
-
-    em_hashed = _sha256(_normalize_email(email)) if email else None
-    ph_hashed = _sha256(_normalize_phone(phone)) if phone else None
+    fbc: str | None = None,
+) -> UserData:
+    fbp = _resolve_fbp(request)
+    fbc = fbc or resolve_fbc(request)
 
     if full_name and not (first_name or last_name):
         split_first, split_last = _split_full_name(full_name)
         first_name = first_name or split_first
         last_name = last_name or split_last
 
-    fn_hashed = _sha256(_normalize_name(first_name)) if first_name else None
-    ln_hashed = _sha256(_normalize_name(last_name)) if last_name else None
-    ct_hashed = _sha256(_normalize_city(city)) if city else None
-    st_hashed = _sha256(_normalize_state(state)) if state else None
-    zp_hashed = _sha256(_normalize_zip(zip_code)) if zip_code else None
-    country_hashed = _sha256(_normalize_country(country)) if country else None
+    if phone is not None:
+        # phonenumbers needs an uppercase region code; default to US when none is given
+        phone = _normalize_phone(phone, country.upper() if country else "US")
 
-    return MetaUserData(
-        fbp=fbp,
-        fbc=fbc,
-        client_ip_address=client_ip_from_request(request),
-        client_user_agent=request.headers.get(USER_AGENT_HEADER),
-        em=em_hashed,
-        ph=ph_hashed,
-        fn=fn_hashed,
-        ln=ln_hashed,
-        ct=ct_hashed,
-        st=st_hashed,
-        zp=zp_hashed,
-        country=country_hashed,
-    )
+    # constructor args are mistyped as required `str` in the SDK's stubs, so assign via
+    # the correctly-typed property setters instead
+    user_data = UserData()
+    user_data.email = email
+    user_data.phone = phone
+    user_data.first_name = first_name
+    user_data.last_name = last_name
+    user_data.city = city
+    user_data.state = state
+    user_data.zip_code = zip_code
+    user_data.country_code = country
+    user_data.fbp = fbp
+    user_data.fbc = fbc
+    user_data.client_ip_address = client_ip_from_request(request)
+    user_data.client_user_agent = request.headers.get(USER_AGENT_HEADER)
+    return user_data
 
 
-def build_conversion_event_payload(
+def send_conversion_event(
     *,
     event_name: MetaEventName,
     request: Request,
@@ -280,66 +265,71 @@ def build_conversion_event_payload(
     last_name: str | None = None,
     full_name: str | None = None,
     event_id: str | None = None,
+    fbc: str | None = None,
     background_tasks: BackgroundTasks | None = None,
-) -> dict:
-    """Build a Facebook Pixel event payload.
+) -> None:
+    """
+    Build and send a Meta Conversions API event.
 
-    https://developers.facebook.com/docs/marketing-api/conversions-api/parameters/server-event"""
-    # derive values that used to be parameters
-    event_time = int(time.time())
-    event_source_url = str(request.url)
+    Sends async via `background_tasks` when provided, since the pixel endpoint can take
+    200-400ms and that cost shouldn't land on the caller's request. Failures are swallowed
+    by `_send_facebook_event`, so this never fails the request it rides on.
 
+    When fbc is omitted, it is resolved from the request’s query parameters, then the _fbc cookie.
+    Landing-page parameters must be explicitly forwarded to API requests.
+    This fallback does not inspect the request body. Pass fbc when it was already captured earlier.
+    """
     custom_data = None
     if value_in_cents is not None:
-        custom_data = {"value": round(value_in_cents / 100, 2), "currency": currency}
+        custom_data = CustomData(
+            value=round(value_in_cents / 100, 2),
+            currency=currency,
+        )
 
-    payload: dict = {
-        "data": [
-            {
-                "event_name": event_name,
-                "event_time": event_time,
-                "action_source": ACTION_SOURCE_WEBSITE,
-                "event_source_url": event_source_url,
-                "user_data": build_meta_user_data(
-                    request,
-                    email=email,
-                    phone=phone,
-                    city=city,
-                    state=state,
-                    zip_code=zip_code,
-                    country=country,
-                    first_name=first_name,
-                    last_name=last_name,
-                    full_name=full_name,
-                ).as_sdk_dict(),
-                "custom_data": custom_data,
-                # order id, or other unique identifier for deduplication
-                "event_id": event_id,
-            }
-        ]
-    }
+    event = Event(event_name=event_name, event_time=int(time.time()))
+    event.action_source = ActionSource.WEBSITE
+    event.event_source_url = str(request.url)
+    event.user_data = build_meta_user_data(
+        request,
+        email=email,
+        phone=phone,
+        city=city,
+        state=state,
+        zip_code=zip_code,
+        country=country,
+        first_name=first_name,
+        last_name=last_name,
+        full_name=full_name,
+        fbc=fbc,
+    )
+    if custom_data is not None:
+        event.custom_data = custom_data
+    event.event_id = event_id
 
-    # include test event code only when set by tests
-    if TEST_EVENT_CODE_OVERRIDE:
-        payload["test_event_code"] = TEST_EVENT_CODE_OVERRIDE
-
-    # Send async if background_tasks provided, otherwise sync
     if background_tasks:
-        background_tasks.add_task(_send_facebook_event, payload, event_name)
+        background_tasks.add_task(_send_facebook_event, event, TEST_EVENT_CODE_OVERRIDE)
     else:
-        _send_facebook_event(payload, event_name)
-
-    return payload
+        _send_facebook_event(event, TEST_EVENT_CODE_OVERRIDE)
 
 
-def _send_facebook_event(payload: dict, event_name: str) -> None:
-    """Send event to Facebook."""
+def _send_facebook_event(event: Event, test_event_code: str | None = None) -> None:
     try:
-        pixel = get_facebook_pixel()
-        pixel.create_event(params=payload)
-    except Exception as e:  # noqa: BLE001
+        FacebookAdsApi.init(
+            access_token=META_PIXEL_KEY,
+            # Without this, Facebook overrides sys.excepthook and sends exception data to its servers.
+            crash_log=False,
+        )
+        event_request = EventRequest(
+            pixel_id=META_PIXEL_ID,
+            events=[event],
+        )
+        if test_event_code:
+            event_request.test_event_code = test_event_code
+        event_request.execute()
+    except Exception:  # noqa: BLE001
+        # structlog writes straight to stdout, so nothing here reaches Sentry on its own
+        sentry_sdk.capture_exception()
         log.exception(
             "facebook pixel event send failed",
-            error=str(e),
-            event_name=payload["data"][0]["event_name"],
+            event_name=event.event_name,
         )
