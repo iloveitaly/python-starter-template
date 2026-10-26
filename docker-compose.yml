@@ -86,6 +86,7 @@ services:
   # The image relays loopback 80/443 to host localias and disables QUIC.
   chrome:
     image: ghcr.io/iloveitaly/playwright-loophole:latest
+    # native Linux, including CI, does not define host.docker.internal; Docker Desktop and OrbStack already do
     extra_hosts:
       - "host.docker.internal:host-gateway"
     # chromium crashes under the default 64mb /dev/shm
