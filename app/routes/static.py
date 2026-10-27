@@ -186,6 +186,8 @@ def mount_public_directory(app: FastAPI):
             headers=HTML_NOCACHE_HEADERS.copy(),
         )
 
+    build_root = public_path.resolve()
+
     @app.get("/{path:path}", include_in_schema=False)
     async def frontend_handler(path: str):
         """
@@ -196,11 +198,18 @@ def mount_public_directory(app: FastAPI):
 
         https://gist.github.com/ultrafunkamsterdam/b1655b3f04893447c3802453e05ecb5e
         """
-        fp = public_path / path
+        fp = (public_path / path).resolve()
+
+        # Raw requests can contain `..` segments. Keep file reads inside the build directory.
+        if not fp.is_relative_to(build_root):
+            return FileResponse(
+                public_path / "index.html",
+                headers=HTML_NOCACHE_HEADERS.copy(),
+            )
 
         # react-router puts prerendered HTML routes into the `index.html` in directory name of the route requested
         # https://reactrouter.com/how-to/pre-rendering
-        prerender_path = public_path / path / "index.html"
+        prerender_path = fp / "index.html"
         if prerender_path.exists():
             return FileResponse(prerender_path, headers=HTML_NOCACHE_HEADERS.copy())
 
