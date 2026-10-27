@@ -68,14 +68,13 @@ lint: js_lint py_lint db_lint dev_lint
 
 # nicely clean all build artifacts and caches
 clean: js_clean py_clean build_clean
-
-# aggressively destroy everything and rebuild it
-nuke: js_nuke py_nuke db_nuke
 		rm -rf $TMP_DIRECTORY/* || true
 		mkdir -p $TMP_DIRECTORY
 
 		rm -rf .git/hooks/* || true
 
+# aggressively destroy everything and rebuild it
+nuke: js_nuke py_nuke db_nuke clean
 
 TEMPLATE_UPDATE_NOTICE := '''
 This project was just updated using the python copier tool with the upstream template (github reference in @.copier-answers.yml).
