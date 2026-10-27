@@ -93,9 +93,9 @@ services:
     ipc: host
     shm_size: 1gb
     environment:
-      TZ: ${TZ:?}
+      TZ: ${TZ:?TZ is unset, env/all.sh exports it}
       # root.crt is mode 0600, so the host passes the PEM instead of a bind mount
-      LOOPHOLE_CA_CERT_B64: ${LOCALIAS_CA_B64:?}
+      LOOPHOLE_CA_CERT_B64: ${LOCALIAS_CA_B64:?LOCALIAS_CA_B64 is unset, run compose through just}
     ports:
       - "127.0.0.1:${PLAYWRIGHT_CHROME_PORT}:3000"
     healthcheck:
