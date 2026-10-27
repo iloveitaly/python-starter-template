@@ -39,6 +39,11 @@ js_lint +FILES=".":
 
 	{{_pnpm}} dlx depcheck
 
+# typecheck the frontend. web/client is gitignored, so generate it from the committed openapi spec first
+js_typecheck:
+	{{_pnpm}} run openapi
+	{{_pnpm}} run typecheck
+
 # automatically fix linting errors
 js_lint-fix:
 	{{_pnpm}} prettier --write .
