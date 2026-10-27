@@ -23,11 +23,7 @@ export default defineConfig({
   plugins: [
     "@hey-api/client-fetch",
     "@hey-api/sdk",
-    // https://github.com/hey-api/openapi-ts/issues/1571
-    {
-      identifierCase: "preserve",
-      name: "@hey-api/typescript",
-    },
+    "@hey-api/typescript",
     "@tanstack/react-query",
     "zod",
   ],

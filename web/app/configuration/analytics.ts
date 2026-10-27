@@ -15,7 +15,6 @@
  */
 import { Analytics } from "analytics"
 
-import rewardfulPlugin from "~/lib/rewardful"
 import { requireEnv } from "~/utils/environment"
 
 import { isDebugEnabled } from "./logging"
@@ -35,9 +34,7 @@ const analytics = Analytics({
     googleTagManager({
       containerId: requireEnv("VITE_GOOGLE_TAG_MANAGER"),
     }),
-    rewardfulPlugin({
-      apiKey: requireEnv("VITE_REWARDFUL_API_KEY"),
-    }),
+    // add plugins that need to load before clientLoader code runs here (e.g. Rewardful, see above)
   ],
 })
 
