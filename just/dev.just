@@ -169,7 +169,7 @@ localias_restart: _dev_only
 # Linux CI owns the cert as root. sudo -E keeps HOME so localias still finds it.
 # mise which returns a real binary; a shim breaks under sudo because HOME=/root
 [script]
-_localias_ca_b64:
+localias_cert_base64:
 	localias_bin=$(mise which localias)
 	{
 		"$localias_bin" debug cert --print \
