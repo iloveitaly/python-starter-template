@@ -41,7 +41,10 @@ terraform.tfstate*
 .cursor/screenshots/
 .antigravitycli/
 lefthook-local.yml
+
+# mcp configuration is setup by a justfile recipe
 .cursor/mcp.json
+mcp_config.json
 
 # START AI INSTRUCTION IGNORES
 /.agents/rules/alembic-migrations.md
