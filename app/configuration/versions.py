@@ -80,8 +80,9 @@ def chrome_version() -> str:
     Chromium build used for integration tests.
 
     `PLAYWRIGHT_CHROME_WS_ENDPOINT` is the compose playwright server, so the
-    recorded version matches CI and every laptop. A local launch is only used
-    when that endpoint is unset.
+    recorded version matches CI and every laptop. A local launch, for
+    interactive debugging with a headful browser, is only used when that
+    endpoint is unset.
     """
 
     from playwright.sync_api import sync_playwright
