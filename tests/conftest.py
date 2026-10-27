@@ -304,6 +304,12 @@ def _open_httpx2_breakpoint(request):
 
 
 def _use_docker_chrome(config: pytest.Config) -> bool:
+    """
+    Attach Playwright to the compose chromium over its websocket endpoint.
+
+    CI always does. Locally, `--headed` and `PWDEBUG` need a host window, and
+    docker chrome is used only when `PLAYWRIGHT_CHROME_WS_ENDPOINT` is set.
+    """
     if not is_local_testing():
         return True
 
