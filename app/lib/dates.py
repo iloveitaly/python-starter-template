@@ -6,13 +6,13 @@ from typing import ClassVar
 
 from pydantic import BaseModel as PydanticBaseModel
 from pydantic import Field, computed_field
-from whenever import Date, Time, ZonedDateTime
+from whenever import SYSTEM_TZ, Date, Time, ZonedDateTime
 
 
-def start_of_day(date: Date, tz: str) -> ZonedDateTime:
-    "midnight at the beginning of `date` in the IANA timezone `tz`"
+def start_of_day(date: Date, tz: str | None) -> ZonedDateTime:
+    "midnight at the beginning of `date`; `None` selects the system timezone"
 
-    return date.at(Time.MIDNIGHT).assume_tz(tz)
+    return date.at(Time.MIDNIGHT).assume_tz(tz or SYSTEM_TZ)
 
 
 class Quarter(PydanticBaseModel):
