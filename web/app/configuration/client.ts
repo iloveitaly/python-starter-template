@@ -80,6 +80,8 @@ export const publicClient = createClient({
  */
 export const publicClientLoader = createClient({
   baseUrl: VITE_PYTHON_URL,
+  // otherwise interceptor errors are returned instead of reaching loader error handlers
+  throwOnError: true,
 
   // explicitly exclude any authentication configuration
 })
