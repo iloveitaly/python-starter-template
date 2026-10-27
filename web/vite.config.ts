@@ -101,8 +101,10 @@ export default defineConfig((config) => ({
   devtools:
     config.mode === "production" && process.env.ENABLE_VITE_DEVTOOLS === "true",
   build: {
-    // option required for Sentry sourcemap upload
-    sourcemap: "hidden",
+    // option required for Sentry sourcemap upload. "hidden" only drops the sourceMappingURL comment, the
+    // .map files are still written. sentryOnBuildEnd deletes them after upload, but the Sentry plugin only
+    // runs with a token, so a tokenless build would ship every .map to public/ where FastAPI serves them.
+    sourcemap: process.env.SENTRY_AUTH_TOKEN ? "hidden" : false,
     // Using OXC for faster builds.
     minify: "oxc",
     /*
