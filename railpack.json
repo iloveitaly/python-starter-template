@@ -48,11 +48,14 @@
         // { "include": ["."], "local": true }
         "."
       ],
+      // every service built from this repo runs this step. Services that don't serve the SPA (worker, scheduler,
+      // job_monitor) can set SKIP_SPA_BUILD=1: the build hard-requires OPENAPI_JSON_PATH and the VITE_* vars, which
+      // on those services are usually references to the web service that can be undefined in a fresh PR environment.
+      // An empty public/ is still staged so later steps that include it don't fail.
       "commands": [
         {
-          "cmd": "sh -c 'cd web && pnpm run build'"
-        },
-        { "cmd": "cp -RT web/build/production/client/ public/" }
+          "cmd": "sh -c 'if [ -n \"$SKIP_SPA_BUILD\" ]; then echo \"SKIP_SPA_BUILD is set, skipping SPA build\" && mkdir -p public; else (cd web && pnpm run build) && cp -RT web/build/production/client/ public/; fi'"
+        }
       ],
       // include build secrets in the build process so sentry properly references the latest git sha for uploading source maps
       "secrets": ["*"],
