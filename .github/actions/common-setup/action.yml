@@ -7,7 +7,7 @@ runs:
     # NOTE cannot run checkout in this local action, must be run by the parent action
     # mise can rarely get stuck installing. It normally takes < 10s to install, so this should never be more than a minute
     # web/ has it's own mise config, but it's copied from the root mise config, so we don't need to worry about it
-    - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+    - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c  # v4.3.0
       with:
         version: 2026.10.18
     # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
@@ -19,7 +19,7 @@ runs:
     - shell: bash
       run: just dev_generate_hosts
     # without any additional options, this simply installs the latest version of the cli
-    - uses: 1password/load-secrets-action@70062d7a876d3eb6334754fa26efd2fbd90c32f2 # v5.0.1
+    - uses: 1password/load-secrets-action@70062d7a876d3eb6334754fa26efd2fbd90c32f2  # v5.0.1
     - uses: iloveitaly/github-action-direnv-load-and-mask@master
       with:
         environment_allowlist: >
@@ -28,7 +28,7 @@ runs:
     - shell: bash
       run: just dev_generate_localias
     # cache node_modules
-    - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+    - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
       with:
         path: web/node_modules
         key: ${{ runner.os }}-${{ runner.arch }}-node-modules-${{ hashFiles('web/pnpm-lock.yaml') }}
