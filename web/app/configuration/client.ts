@@ -39,8 +39,8 @@ client.setConfig({
   auth: async () => {
     const client = await getClient()
     invariant(
-      client && client.session,
-      "Clerk client and session should exist when attempting an authenticated API call",
+      client && client.session && client.user,
+      "Clerk client, session, and user should exist when attempting an authenticated API call",
     )
 
     const token = await client.session.getToken()
