@@ -123,6 +123,10 @@ dev = [
 # causes the application code to be duplicated
 [tool.uv]
 package = false
+# billiard (celery's process pool) 4.3 breaks pool children under the spawn start method set in
+# app/configuration/lang.py: the worker boots, then every task fails with
+# "not enough values to unpack (expected 3, got 0)". Eager-mode tests never see it.
+constraint-dependencies = ["billiard<4.3"]
 
 # this eliminates the need for `editable_mode = "strict"` and other config that was previously required
 [build-system]
