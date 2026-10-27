@@ -250,17 +250,20 @@ Below is an example test. Notice the following:
 - Fixtures and factories are generated at the beginning of the test
 - We assert against database state after each major user action
 - Some of the comments (i.e. comments on included fixtures) are included for instructional purposes only and should not be included in the tests you write
+- comments in `()` are for description only, those sort of comments should exist in the code you write
 
 ```python
 from pytest_playwright_artifacts import assert_no_console_errors
 
 
 def test_streaming_checkout_creates_user_and_links_order(
-    # this fixture ensures that the underlying python server is started
+    # (this fixture ensures that the underlying python server is started)
     server,
+    # (if you need to generate fake data)
     faker,
+    # (always required for playwright/browser access)
     page: Page,
-    # if you need to create objects (like factories) tied to a common session, include this fixture
+    # (if you need to create objects (like factories) tied to a common DB session, include this fixture)
     db_truncate_session,
     # for asserting against the console logs
     request: FixtureRequest,
@@ -268,23 +271,29 @@ def test_streaming_checkout_creates_user_and_links_order(
     distribution = DistributionWithWebhooksFactory.save()
     test_email = clerk_test_email()
 
-    # 1) Run through streaming checkout
+    # 1) Run through streaming checkout (describe the main user flow)
     page.goto(react_router_url("/streaming"))
+
+    # (if there are multiple important states to the flow under test, take multiple screenshots and name them)
+    assert_snapshot(page, name="01-streaming-checkout")
 
     page.get_by_placeholder("your@email.com").first.fill(test_email)
     page.get_by_placeholder("your@email.com").last.fill(test_email)
 
-    # Check TOS
+    # Check TOS (the role of this line is not obvious without this comment)
     page.get_by_role("checkbox").last.check()
 
     fill_stripe_checkout(page)
 
     # 2) Complete checkout
-    # the stripe checkout form will expand and cause the purchase button to move below the screen
+    # the stripe checkout form will expand and cause the purchase button to move below the screen (it's not obvious why we need to safely_scroll_then_click without this comment)
     safely_scroll_then_click(page.get_by_role("button", name="Complete Purchase"))
 
     expect(page.get_by_role("heading", name="You're ready to watch!")).to_be_visible()
     page.get_by_role("link", name="Login & Start Watching").click()
+
+    # (the checkout completion state is a key state, take a another screenshot)
+    assert_snapshot(page, name="02-checkout-complete")
 
     # 3) Assert against database and Clerk state
 
@@ -299,22 +308,28 @@ def test_streaming_checkout_creates_user_and_links_order(
     # 4) Login to the app via the Clerk login page
     clerk_login_and_verify(page, test_email)
 
-    expect(page.get_by_text("Triumph of the Heart").first).to_be_visible()
+    expect(page.get_by_text("A Great Movie Name").first).to_be_visible()
+
+    # (notice that although this is a different page state, I did not get a screenshot, since the login page is not unique to this test and is screenshotted elsewhere)
 
     # 5) Play the video
     page.get_by_role("button").filter(has_text="Play").click()
 
-    # wait for the page to completely load
+    # wait for the page to completely load (this is only required when there are many integrations on the page, such as loading an external iframe in this case)
     wait_for_loading(page)
 
-    expect(page.get_by_text("Triumph of the Heart").first).to_be_visible()
+    expect(page.get_by_text("A Great Movie Name").first).to_be_visible()
     expect(page.get_by_text("Play")).not_to_be_visible()
 
+    assert_snapshot(page, name="03-play-movie")
+
+    # (at the end of every integration test, assert that there are no console errors)
     assert_no_console_errors(
         request,
         ignore=[
             {
-                # if there are console errors specific to the project, exclude them here. Match to the specific URL if you can.
+                # (if there are console errors specific to the project, exclude them here. Match to the specific URL if you can)
+                # (prefer globally-defined exclusions unless there are errors specific to this particular test)
                 "file": r"https://iframe.cloudflarestream.com/.*",
                 "message": "the server responded with a status of 403",
             }
