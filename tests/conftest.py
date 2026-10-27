@@ -305,6 +305,9 @@ def _open_httpx2_breakpoint(request):
 def browser_type_launch_args(browser_type_launch_args):
     args = list(browser_type_launch_args.get("args", []))
 
+    # prevent scrollbars from causing responsive width jumps in visual snapshots
+    args.append("--hide-scrollbars")
+
     # auto-disable GPU if we detect we are inside WSL
     # as GPU acceleration in WSL can be unstable and cause test failures,
     # we disable it for better stability
