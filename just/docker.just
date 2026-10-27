@@ -4,7 +4,7 @@
 
 # Compose interpolates every service for every subcommand, so chrome's required
 # CA is resolved for pull, down, and run as well as up.
-COMPOSE := 'LOCALIAS_CA_B64="$(just _localias_ca_b64)" docker compose'
+COMPOSE := 'LOCALIAS_CA_B64="$(just localias_cert_base64)" docker compose'
 
 [script]
 [arg("fast", long, help="skip waiting for healthy containers, useful for CI runs", flag)]
