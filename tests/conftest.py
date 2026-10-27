@@ -356,6 +356,15 @@ def browser_type_launch_args(browser_type_launch_args, pytestconfig: pytest.Conf
 
 @pytest.fixture(scope="session")
 def browser_context_args(browser_context_args, pytestconfig: pytest.Config):
+    """
+    Pin `en-US` and the process timezone on compose-chromium contexts.
+
+    pytest builds this once per session, the first time a test requests
+    `page`, `context`, or `new_context`. pytest-playwright then passes the
+    dict to `browser.new_context()` for each of those tests. The timezone id
+    comes from `whenever`'s `SYSTEM_TZ`, which `env/all.sh` sets to UTC.
+    Without docker chrome, the plugin's own args are returned unchanged.
+    """
     if not _use_docker_chrome(pytestconfig):
         return browser_context_args
 
