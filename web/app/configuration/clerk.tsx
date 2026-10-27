@@ -61,19 +61,23 @@ export async function getClient({ requireLoggedIn = true } = {}) {
   return clerk
 }
 
-export default function withClerkProvider(Component: React.ComponentType) {
-  return (props: React.ComponentProps<typeof Component>) => (
-    <ClerkProvider
-      // hand the already-loaded instance to the provider so IsomorphicClerk reuses it
-      // instead of hotloading clerk-js again and re-calling `.load()` (extra API call)
-      // https://github.com/clerk/javascript/issues/8569
-      Clerk={window.Clerk}
-      publishableKey={CLERK_PUBLIC_KEY}
-      signInFallbackRedirectUrl="/"
-      signUpFallbackRedirectUrl="/"
-      afterSignOutUrl="/login"
-    >
-      <Component {...props} />
-    </ClerkProvider>
-  )
+export default function withClerkProvider<Props extends object>(
+  Component: React.FunctionComponent<Props>,
+): React.FunctionComponent<Props> {
+  return function WithClerkProvider(props: Props) {
+    return (
+      <ClerkProvider
+        // hand the already-loaded instance to the provider so IsomorphicClerk reuses it
+        // instead of hotloading clerk-js again and re-calling `.load()` (extra API call)
+        // https://github.com/clerk/javascript/issues/8569
+        Clerk={window.Clerk}
+        publishableKey={CLERK_PUBLIC_KEY}
+        signInFallbackRedirectUrl="/"
+        signUpFallbackRedirectUrl="/"
+        afterSignOutUrl="/login"
+      >
+        <Component {...props} />
+      </ClerkProvider>
+    )
+  }
 }

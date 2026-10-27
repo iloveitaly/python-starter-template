@@ -10,7 +10,7 @@
  * - Fallback to wildcard origin if referrer cannot be determined
  */
 import { useEffect } from "react"
-import { type ComponentType } from "react"
+import { type FunctionComponent } from "react"
 
 import { debounce } from "~/lib/utils"
 
@@ -111,10 +111,10 @@ export const useIframeHeightSender = () => {
  * const MyComponentWithHeightSender = withIFrameHeightSender(MyComponent)
  * ```
  */
-export function withIFrameHeightSender<P extends object>(
-  WrappedComponent: ComponentType<P>,
-) {
-  return function WithIFrameHeightSender(props: P) {
+export function withIFrameHeightSender<Props extends object>(
+  WrappedComponent: FunctionComponent<Props>,
+): FunctionComponent<Props> {
+  return function WithIFrameHeightSender(props: Props) {
     useIframeHeightSender()
 
     return <WrappedComponent {...props} />
