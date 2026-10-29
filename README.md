@@ -900,6 +900,15 @@ This is not enabled on this application. I don't dev working differently than pr
 * Update production secrets based on current direnv-style files in `env/`
 * Trigger a release using the new image tag based on the commit sha
 
+### Railway Database Networking
+
+Postgres and Redis should only be reachable over Railway's private network:
+
+* In each database service, open **Settings → Networking** and make sure there is no **Public Access** / TCP proxy (a `*.proxy.rlwy.net:PORT` endpoint). A proxy exposes the database to the internet, protected only by its password. Railway's current database templates deploy private by default, but databases provisioned earlier can still have one, so check existing projects.
+* Point every service (web, worker, scheduler) at the private connection strings, which use `*.railway.internal`: reference `${{Postgres.DATABASE_URL}}` and `${{Redis.REDIS_URL}}`, never `DATABASE_PUBLIC_URL` or `REDIS_PUBLIC_URL`. Traffic over the proxy is also billed as egress.
+* If you find a proxy that has been open, remove it, then [regenerate the password](https://docs.railway.com/databases/database-view#connection) (the database's **Config → Connection → Regenerate**) and redeploy the services that reference it. Treat the data as possibly accessed.
+* For access from your machine, use [`railway connect`](https://docs.railway.com/cli/connect), which goes through an SSH tunnel, rather than enabling a proxy.
+
 ### 1Password SSH Integration
 
 * Edit `~/.config/1Password/ssh/agent.toml` and add the 1Password vault that contains the server SSH key. You'll also have to make sure that SSH services are enabled.
