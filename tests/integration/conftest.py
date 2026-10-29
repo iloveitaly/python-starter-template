@@ -13,7 +13,7 @@ from tests.integration.utils import apply_playwright_timeouts
 
 from .javascript_build import start_js_build
 from .server import (  # noqa: F401
-    report_localias_status,
+    assert_localias_configuration,
     # IMPORTANT `server` is a fixture and this important exposes it to the tests
     server,
     terminate_server,
@@ -59,10 +59,11 @@ def pytest_runtest_makereport(item, call):
 
 # NOTE this runs on any pytest invocation, even if no tests are run, once per pytest invocation
 def pytest_configure(config):
+    assert_localias_configuration()
+
     # start JS build right away, since it takes some time. Separately, the test server will wait until the build
     # is finished to start running tests against the server.
     start_js_build()
-    report_localias_status()
 
 
 def pytest_keyboard_interrupt(excinfo):
