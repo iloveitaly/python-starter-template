@@ -98,7 +98,6 @@ dev = [
     "pytest>=9.1.1",
     "ruff>=0.16.1",
     "djlint>=1.36.4",
-    "pytest-sugar>=1.1.1",
     "j2lint>=1.3.0",
     "pytest-playwright>=0.8.0",
     "pytest-cov>=7.1.0",
@@ -116,6 +115,7 @@ dev = [
     "alembic-squawk>=0.2.0",
     "truststore>=0.10.4",
     "httpx2-pytest>=1.0.1",
+    "termcolor>=3.3.0",
 ]
 
 # this configuration is VERY important! Without this `--no-editable` flag when building for production will
