@@ -9,7 +9,10 @@ https://github.com/microsoft/playwright-python/issues/462
 """
 
 import os
+import socket
+import subprocess
 import time
+from multiprocessing import Process
 
 import psutil
 import pytest
@@ -19,6 +22,7 @@ from app.environments import is_github_actions
 
 from ..log import log
 from .javascript_build import wait_for_javascript_build
+from .subprocess_server import run_server
 
 PYTHON_SERVER_TEST_PORT = env.int("PYTHON_TEST_SERVER_PORT")
 
@@ -63,10 +67,6 @@ def wait_for_termination(pid, timeout=10) -> bool:
 def wait_for_port(port: int, timeout: int = 30) -> bool:
     "used by the server fixture to wait until the server is ready to accept connections on the specified test port, which is used by localias"
 
-    import socket
-
-    from tests.conftest import log
-
     start_time = time.time()
     while time.time() - start_time < timeout:
         try:
@@ -93,10 +93,6 @@ def server():
 
     https://stackoverflow.com/questions/57412825/how-to-start-a-uvicorn-fastapi-in-background-when-testing-with-pytest
     """
-
-    from multiprocessing import Process
-
-    from tests.integration.subprocess_server import run_server
 
     # defensively code against multiprocessing coding errors
     if wait_for_port(PYTHON_SERVER_TEST_PORT, 1):
@@ -137,8 +133,6 @@ def report_localias_status():
 
     TODO https://github.com/peterldowns/localias/issues/64
     """
-    import subprocess
-
     command = ["localias", "status"]
 
     # localias must run on sudo on GHA
