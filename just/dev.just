@@ -165,6 +165,19 @@ localias_restart: _dev_only
 	localias -c {{GLOBAL_LOCALIAS_CONFIG}} stop || true
 	just localias
 
+# base64 PEM of the localias root CA, for the compose chromium NSS db
+# Linux CI owns the cert as root. sudo -E keeps HOME so localias still finds it.
+# mise which returns a real binary; a shim breaks under sudo because HOME=/root
+[script]
+localias_cert_base64:
+	localias_bin=$(mise which localias)
+	{
+		"$localias_bin" debug cert --print \
+			|| sudo -n -E "$localias_bin" debug cert --print
+	} \
+		| base64 \
+		| tr -d '\n'
+
 # sync the mise version to github actions yaml
 _mise_gha_version_sync: _dev_only
 	mise_version=$(mise --version | awk '{print $1}') && \
@@ -272,6 +285,8 @@ export PYTHON_SERVER_PORT=$(( ${START_PORT} + ${PORT_OFFSET} ))
 export PYTHON_TEST_SERVER_PORT=$(( ${START_PORT} + 1 + ${PORT_OFFSET} ))
 export JAVASCRIPT_SERVER_PORT=$(( ${START_PORT} + 2 + ${PORT_OFFSET} ))
 export FLOWER_PORT=$(( ${START_PORT} + 3 + ${PORT_OFFSET} ))
+# published host port for compose chromium. the container listens on 3000
+export PLAYWRIGHT_CHROME_PORT=$(( ${START_PORT} + 4 + ${PORT_OFFSET} ))
 
 # only applicable in development, javascript is bundled in the py container in prod
 export JAVASCRIPT_SERVER_HOST=${WORKTREE_PREFIX}${PROJECT_NAME}.localhost
