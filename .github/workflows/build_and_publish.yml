@@ -47,6 +47,10 @@ env:
   # dev tools must be installed in CI as well
   MISE_ENV: dev
 
+  # extra Clerk users the test suite must not delete, see app/factories/constants.py
+  # a repository variable rather than a secret: these are just emails, and masked values are unreadable in logs
+  CLERK_PRESERVED_USER_EMAILS: ${{ vars.CLERK_PRESERVED_USER_EMAILS }}
+
 jobs:
   # NOTE there is no global timeout minutes, so we need to set it on each job :/
 

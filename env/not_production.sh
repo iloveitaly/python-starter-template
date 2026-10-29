@@ -88,3 +88,7 @@ export VITE_POSTHOG_KEY="public-key"
 EOF
 
 export CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLIC_KEY
+
+# the test suite deletes every Clerk user except a fixed set of fixtures. To keep users you created by hand, set
+# this (comma separated) in a gitignored local env file, and as a repository variable of the same name for CI:
+# export CLERK_PRESERVED_USER_EMAILS=me+dev@example.com
