@@ -8,6 +8,7 @@ https://github.com/microsoft/playwright-pytest/issues/74#issuecomment-2497976914
 https://github.com/microsoft/playwright-python/issues/462
 """
 
+import json
 import os
 import time
 
@@ -131,25 +132,41 @@ def server():
     # TODO should we install a signal trap to ensure the server is killed?
 
 
-def report_localias_status():
+def assert_localias_configuration():
     """
+    Validate the daemon and test-server mapping before starting integration tests.
+
     For integration tests, we require localias to be running in the background since we use https.
 
     TODO https://github.com/peterldowns/localias/issues/64
     """
     import subprocess
 
-    command = ["localias", "status"]
+    command = ["localias"]
 
     # localias must run on sudo on GHA
     if is_github_actions():
         command.insert(0, "sudo")
 
-    result = subprocess.run(command, capture_output=True, text=True, check=False)
-    log.debug("localias Status", output=result.stdout)
+    result = subprocess.run(
+        [*command, "status", "--json"], capture_output=True, text=True, check=False
+    )
+    log.debug("localias status", output=result.stdout)
 
-    if "daemon running" not in result.stdout:
-        log.error(
-            "localias daemon is not running. Integration tests may fail.",
-            output=result.stdout,
+    if result.returncode != 0 or not json.loads(result.stdout)["running"]:
+        raise pytest.UsageError(
+            "localias daemon is not running. Run `just localias` before integration tests."
+        )
+
+    result = subprocess.run(
+        [*command, "list", "--json"], capture_output=True, text=True, check=True
+    )
+    configured_ports: dict[str, int] = json.loads(result.stdout)["aliases"]
+
+    hostname = env.str("PYTHON_TEST_SERVER_HOST")
+    configured_port = configured_ports.get(hostname)
+    if configured_port != PYTHON_SERVER_TEST_PORT:
+        raise pytest.UsageError(
+            f"localias routes {hostname} to {configured_port}; "
+            f"expected {PYTHON_SERVER_TEST_PORT}. Run `just localias` to refresh aliases."
         )
