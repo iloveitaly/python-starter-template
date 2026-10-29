@@ -14,6 +14,15 @@ async def test_healthcheck(aclient):
     assert response.status_code == status.HTTP_200_OK
 
 
+async def test_healthcheck_fails_when_migrations_pending(aclient, monkeypatch):
+    # simulate a deploy whose migrations never ran
+    monkeypatch.setattr("app.routes.healthcheck.needs_alembic_migration", lambda: True)
+
+    response = await aclient.get(api_app_url_path_for("healthcheck"))
+
+    assert response.status_code == status.HTTP_503_SERVICE_UNAVAILABLE
+
+
 async def test_user_status(aclient):
     response = await aclient.get(api_app_url_path_for("active_user_status"))
 

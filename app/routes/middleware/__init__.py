@@ -138,9 +138,14 @@ def add_middleware(app: FastAPI):
     # not specify the `Host` header explicitly, it's inferred from `:authority` pseudo-header)
     # when this check fails, you'll get a plain "Invalid host header" response with a 400 status code. No logs.
     allowed_hosts_without_scheme = allowed_hosts(False)
-    app.add_middleware(
-        TrustedHostMiddleware, allowed_hosts=allowed_hosts_without_scheme
-    )
+
+    # Railway's deploy healthcheck sends this `Host`. Without it the healthcheck gets a 400, the deploy never goes
+    # healthy, and Railway rolls it back. Trusted-host only: it never needs CORS or to be the cookie domain.
+    trusted_hosts = list(allowed_hosts_without_scheme)
+    if env.str("RAILWAY_ENVIRONMENT_NAME", default=None):
+        trusted_hosts.append("healthcheck.railway.app")
+
+    app.add_middleware(TrustedHostMiddleware, allowed_hosts=trusted_hosts)
 
     cookie_domain = allowed_hosts_without_scheme[0]
     log.info("cookie_domain", cookie_domain=cookie_domain)

@@ -94,14 +94,51 @@ def needs_alembic_migration() -> bool:
         ctx = MigrationContext.configure(conn)
         current_heads = ctx.get_current_heads()
 
-    needs_migration = set(current_heads) != set(heads)
-
-    if needs_migration:
-        log.info("migrations needed", current_heads=current_heads, heads=heads)
-    else:
+    if set(current_heads) == set(heads):
         log.info("no migrations needed", current_heads=current_heads, heads=heads)
+        return False
 
-    return needs_migration
+    # A bare `current != heads` is also true when the database is *ahead* of
+    # this build, which is not "needs migration" — it's an older image booting
+    # after a newer deploy already migrated. Rolling deploys make that routine:
+    # ship two releases a minute apart with a migration in the newer one, and
+    # the old container starts, sees a revision it has never heard of, and
+    # `command.upgrade` raises `CommandError: Can't locate revision` while
+    # resolving the path *from* it.
+    #
+    # An old container must never migrate — it can only get it wrong. Upgrade
+    # only when every revision the database is stamped with is one this build
+    # knows about, i.e. we are genuinely behind rather than ahead.
+    unknown = [rev for rev in current_heads if _revision_is_unknown(script_dir, rev)]
+    if unknown:
+        log.info(
+            "database ahead of this build, skipping migrations",
+            current_heads=current_heads,
+            heads=heads,
+            unknown_revisions=unknown,
+        )
+        return False
+
+    log.info("migrations needed", current_heads=current_heads, heads=heads)
+    return True
+
+
+def _revision_is_unknown(script_dir, revision: str) -> bool:
+    """Whether `revision` is absent from this build's migrations/versions.
+
+    `get_revision` raises for an unrecognized identifier rather than returning
+    None, so the lookup is wrapped. Alembic re-raises its internal
+    `ResolutionError` as `CommandError` via `_catch_revision_errors`, so both
+    are caught. Used to tell "database is ahead of the code" apart from
+    "database is behind it".
+    """
+    from alembic.script.revision import ResolutionError
+    from alembic.util.exc import CommandError
+
+    try:
+        return script_dir.get_revision(revision) is None
+    except CommandError, ResolutionError, KeyError:
+        return True
 
 
 def run_migrations():
