@@ -59,6 +59,22 @@ FBCLID_QUERY_PARAM = "fbclid"
 USER_AGENT_HEADER = "user-agent"
 "HTTP header containing user agent string"
 
+# casefolded substrings, so `healthcheck` also covers ELB-HealthChecker and Cloudflare-Healthchecks
+_MONITORING_USER_AGENT_MARKERS = (
+    "uptime-kuma",
+    "uptimerobot",
+    "pingdom",
+    "kube-probe",
+    "kubelet",
+    "curl/",
+    "wget",
+    "googlehc",
+    "amazon-route53-health-check",
+    "better uptime",
+    "sentryuptimebot",
+    "healthcheck",
+)
+
 MetaEventName = Literal[
     # should be used if we don't have a content ID and/or price
     "PageView",
@@ -81,6 +97,24 @@ MetaEventName = Literal[
     "SubmitApplication",
     "Subscribe",
 ]
+
+
+def _is_monitoring_user_agent(user_agent: str | None) -> bool:
+    """
+    True for uptime probes and other synthetic HTTP clients.
+
+    A poller hits public routes on a timer and carries no click id, browser id,
+    or hashed identifiers. Sending that as a conversion adds a zero-quality
+    event and an outbound call to graph.facebook.com on every poll.
+
+    Absence of the header is not enough to skip: some real clients strip it.
+    """
+
+    if not user_agent:
+        return False
+
+    folded = user_agent.casefold()
+    return any(marker in folded for marker in _MONITORING_USER_AGENT_MARKERS)
 
 
 def _normalize_phone(phone: str, region: str | None) -> str | None:
@@ -275,10 +309,22 @@ def send_conversion_event(
     200-400ms and that cost shouldn't land on the caller's request. Failures are swallowed
     by `_send_facebook_event`, so this never fails the request it rides on.
 
+    Monitoring clients are dropped before an event is built. A match key on the
+    request does not override that: the client is still the probe.
+
     When fbc is omitted, it is resolved from the request’s query parameters, then the _fbc cookie.
     Landing-page parameters must be explicitly forwarded to API requests.
     This fallback does not inspect the request body. Pass fbc when it was already captured earlier.
     """
+    user_agent = request.headers.get(USER_AGENT_HEADER)
+    if _is_monitoring_user_agent(user_agent):
+        log.debug(
+            "skipping meta event for monitoring client",
+            event_name=event_name,
+            user_agent=user_agent,
+        )
+        return
+
     custom_data = None
     if value_in_cents is not None:
         custom_data = CustomData(
