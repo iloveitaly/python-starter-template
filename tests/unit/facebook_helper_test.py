@@ -107,6 +107,86 @@ def setup_facebook_mocks(monkeypatch, *, error: RuntimeError | None = None):
     return sent
 
 
+@pytest.mark.parametrize(
+    "user_agent",
+    [
+        "Uptime-Kuma/2.5.5",
+        # Mozilla-compatible, so a "looks like a browser" check would miss it
+        "Mozilla/5.0 (compatible; UptimeRobot/2.0; http://www.uptimerobot.com/)",
+        "Pingdom.com_bot_version_1.4_(http://www.pingdom.com/)",
+        "kube-probe/1.29",
+        "curl/8.7.1",
+        "Wget/1.21.4",
+        "ELB-HealthChecker/2.0",
+        "GoogleHC/1.0",
+        "Amazon-Route53-Health-Check-Service",
+        "SentryUptimeBot/1.0 (+https://docs.sentry.io/product/alerts/uptime-monitoring/)",
+        "Better Stack Better Uptime Bot Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "Cloudflare-Healthchecks",
+        # looks like Chrome, and still has to be dropped
+        "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.6778.139 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+        "Mozilla/5.0 (compatible; AdsBot-Google; +http://www.google.com/adsbot.html)",
+        "Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)",
+        "Mozilla/5.0 (compatible; AhrefsBot/7.0; +http://ahrefs.com/robot/)",
+        "facebookexternalhit/1.1",
+        "Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)",
+    ],
+)
+def test_non_human_client_does_not_send_conversion(monkeypatch, user_agent):
+    sent = setup_facebook_mocks(monkeypatch)
+    tasks = BackgroundTasks()
+
+    fb.send_conversion_event(
+        event_name="PageView",
+        request=make_request(
+            path="/public/v1/screening/",
+            query_string="postal_code=90210",
+            user_agent=user_agent,
+        ),
+        # a match key does not turn a probe into a conversion
+        email="not-a-person@example.com",
+        background_tasks=tasks,
+    )
+
+    assert sent == []
+    assert tasks.tasks == []
+
+
+@pytest.mark.parametrize(
+    "user_agent",
+    [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+        # in-app browsers are the traffic CAPI is for
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/21F79 [FBAN/FBIOS;FBAV/500.0.0.0.0;]",
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/21F79 Instagram 350.0.0.0.0",
+        # `bot` as a substring would drop this phone
+        "Mozilla/5.0 (Linux; Android 11; CUBOT NOTE 20) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36",
+    ],
+)
+def test_real_client_still_sends(monkeypatch, user_agent):
+    sent = setup_facebook_mocks(monkeypatch)
+
+    fb.send_conversion_event(
+        event_name="PageView",
+        request=make_request(user_agent=user_agent),
+    )
+
+    assert len(sent) == 1
+
+
+def test_blank_user_agent_still_sends(monkeypatch):
+    "a stripped user agent is not evidence of a probe or a crawler"
+
+    sent = setup_facebook_mocks(monkeypatch)
+
+    fb.send_conversion_event(
+        event_name="PageView",
+        request=make_request(user_agent=""),
+    )
+
+    assert len(sent) == 1
+
+
 def test_pageview_sends_event_with_query_params_preferred(monkeypatch):
     sent = setup_facebook_mocks(monkeypatch)
 
