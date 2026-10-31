@@ -124,6 +124,15 @@ def routes():
 
 
 @app.command()
+def notify_sentry_deploy():
+    "Record a Sentry deploy for the release that just went live"
+
+    from app.commands.notify_sentry_deploy import perform
+
+    perform()
+
+
+@app.command()
 def migrate():
     """
     Run migrations on the database. This is helpful when running a `release:` command before

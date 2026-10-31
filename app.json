@@ -41,5 +41,10 @@
         "attempts": 5
       }
     ]
+  },
+  "scripts": {
+    "dokku": {
+      "postdeploy": "python -m app.cli notify-sentry-deploy"
+    }
   }
 }

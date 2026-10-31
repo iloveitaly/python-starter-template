@@ -33,5 +33,10 @@ export CLERK_PRIVATE_KEY="fake"
 op_inject_source <<'EOF'
 export SENTRY_DSN='op://${OP_VAULT_UID}/l6tqzu6znjffvpux53uiloftli/backend-dsn'
 export SESSION_SECRET_KEY="op://${OP_VAULT_UID}/oi7yjtezhbmtpxzc72eqsl4pse/password"
+
+# same org token the vite build uses for sourcemaps. postdeploy needs it at runtime
+# to record the deploy; the SDK itself only needs SENTRY_DSN.
+export SENTRY_AUTH_TOKEN="op://${OP_VAULT_UID}/4dsjcmjzybuipafki2wl2eovsy/authorization-token"
+export SENTRY_ORG="op://${OP_VAULT_UID}/4dsjcmjzybuipafki2wl2eovsy/organization-slug"
 EOF
 export JAVASCRIPT_CLIENT_BUILD_DIR="public"
