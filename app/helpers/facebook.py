@@ -75,6 +75,49 @@ _MONITORING_USER_AGENT_MARKERS = (
     "healthcheck",
 )
 
+# casefolded substrings. bare `bot` matches Cubot phones, and bare `facebook`
+# matches the in-app browser. `googlebot` covers Googlebot-Image and the rest
+# of that family
+_CRAWLER_USER_AGENT_MARKERS = (
+    "googlebot",
+    "adsbot-google",
+    "mediapartners-google",
+    "feedfetcher-google",
+    "storebot-google",
+    "googleother",
+    "google-inspectiontool",
+    "apis-google",
+    "bingbot",
+    "bingpreview",
+    "duckduckbot",
+    "baiduspider",
+    "yandexbot",
+    "applebot",
+    "amazonbot",
+    "petalbot",
+    "bytespider",
+    "ahrefsbot",
+    "semrushbot",
+    "mj12bot",
+    "dotbot",
+    "blexbot",
+    "dataforseobot",
+    "screaming frog",
+    "gptbot",
+    "oai-searchbot",
+    "claudebot",
+    "perplexitybot",
+    "ccbot",
+    "facebookexternalhit",
+    "facebot",
+    "twitterbot",
+    "slackbot",
+    "linkedinbot",
+    "discordbot",
+    "slurp",
+    "headlesschrome",
+)
+
 MetaEventName = Literal[
     # should be used if we don't have a content ID and/or price
     "PageView",
@@ -99,13 +142,12 @@ MetaEventName = Literal[
 ]
 
 
-def _is_monitoring_user_agent(user_agent: str | None) -> bool:
+def _is_non_human_user_agent(user_agent: str | None) -> bool:
     """
-    True for uptime probes and other synthetic HTTP clients.
+    True for uptime probes and crawlers.
 
-    A poller hits public routes on a timer and carries no click id, browser id,
-    or hashed identifiers. Sending that as a conversion adds a zero-quality
-    event and an outbound call to graph.facebook.com on every poll.
+    A poll or a scrape is not a person. The event would carry no click id,
+    browser id, or hashed identifiers, and it still calls graph.facebook.com.
 
     Absence of the header is not enough to skip: some real clients strip it.
     """
@@ -114,7 +156,8 @@ def _is_monitoring_user_agent(user_agent: str | None) -> bool:
         return False
 
     folded = user_agent.casefold()
-    return any(marker in folded for marker in _MONITORING_USER_AGENT_MARKERS)
+    markers = (*_MONITORING_USER_AGENT_MARKERS, *_CRAWLER_USER_AGENT_MARKERS)
+    return any(marker in folded for marker in markers)
 
 
 def _normalize_phone(phone: str, region: str | None) -> str | None:
@@ -309,17 +352,17 @@ def send_conversion_event(
     200-400ms and that cost shouldn't land on the caller's request. Failures are swallowed
     by `_send_facebook_event`, so this never fails the request it rides on.
 
-    Monitoring clients are dropped before an event is built. A match key on the
-    request does not override that: the client is still the probe.
+    Probes and crawlers are dropped before an event is built. A match key on the
+    request does not override that.
 
     When fbc is omitted, it is resolved from the request’s query parameters, then the _fbc cookie.
     Landing-page parameters must be explicitly forwarded to API requests.
     This fallback does not inspect the request body. Pass fbc when it was already captured earlier.
     """
     user_agent = request.headers.get(USER_AGENT_HEADER)
-    if _is_monitoring_user_agent(user_agent):
+    if _is_non_human_user_agent(user_agent):
         log.debug(
-            "skipping meta event for monitoring client",
+            "skipping meta event for non-human client",
             event_name=event_name,
             user_agent=user_agent,
         )
