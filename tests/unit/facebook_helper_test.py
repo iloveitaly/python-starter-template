@@ -1,5 +1,6 @@
 import hashlib
 import io
+import sys
 
 import pytest
 import structlog
@@ -268,6 +269,43 @@ def test_send_failure_logs_exception(monkeypatch, capture_structlog_logs):
     assert "RuntimeError" in logs
     assert "Traceback" in logs
     assert captured == [True]
+
+
+def test_send_failure_redacts_access_token_before_log_and_sentry(
+    monkeypatch, capture_structlog_logs
+):
+    log, output = capture_structlog_logs
+
+    import app.helpers.facebook
+
+    monkeypatch.setattr(app.helpers.facebook, "log", log)
+
+    token = "EAAMSECRETZDZD"
+    url = f"https://graph.facebook.com/v26.0/1103726080810040/events?access_token={token}&foo=1"
+    captured: list[str] = []
+
+    def capture_exception():
+        _exc_type, value, _traceback = sys.exc_info()
+        assert value is not None
+        captured.append(str(value))
+
+    # capture_exception reads sys.exc_info(), which is the live exception we just rewrote
+    monkeypatch.setattr(fb.sentry_sdk, "capture_exception", capture_exception)
+
+    setup_facebook_mocks(
+        monkeypatch,
+        error=RuntimeError(f"Max retries exceeded with url: {url} (Caused by OSError)"),
+    )
+
+    fb.send_conversion_event(event_name="PageView", request=make_request())
+
+    logs = output.getvalue()
+
+    assert token not in logs
+    assert token not in captured[0]
+    assert "access_token=[Filtered]" in logs
+    assert "foo=1" in logs
+    assert "facebook pixel event send failed" in logs
 
 
 def test_phone_uses_buyers_country(monkeypatch):
