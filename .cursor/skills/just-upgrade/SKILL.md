@@ -26,7 +26,7 @@ just upgrade --yes
 `tooling_upgrade: _dev_only && ...` uses just's subsequent-dependency form. Confirm with `just --dry-run tooling_upgrade`.
 
 1. `_dev_only`
-2. `tooling_upgrade` body: `mise self-update --yes`, rewrite `min_version` in `.config/mise.dev.toml` to `mise --version`, `mise upgrade --yes --local`, `mise lock`, `git add` mise configs and `web/package.json`, then `GITHUB_TOKEN="$(mise token github --raw)" pinact run -u` and `git add` `.github/workflows` and `.github/actions`. `.pinact.yaml` `min_age.value` is 30, so releases younger than 30 days are skipped. Do not loosen that window.
+2. `tooling_upgrade` body: `mise self-update --yes`, rewrite `min_version` in `.config/mise.dev.toml` to `mise --version`, `mise upgrade --yes --no-global`, `mise lock`, `git add` mise configs and `web/package.json`, then `GITHUB_TOKEN="$(mise token github --raw)" pinact run -u` and `git add` `.github/workflows` and `.github/actions`. `.pinact.yaml` `min_age.value` is 30, so releases younger than 30 days are skipped. Do not loosen that window.
 3. Subsequent deps, after that body: `_mise_web_version_sync`, `_js_sync-engine-versions`, `_mise_gha_version_sync`
 4. `js_upgrade`: npm-check-updates, `pnpm install`, `pnpm audit --fix=update`, `update-browserslist-db`, `git add` `web/package.json` and `web/pnpm-*.yaml`
 5. `py_upgrade`: `uv sync -U --group=debugging-extras`, `uv tool upgrade --all`, `git add` `pyproject.toml` `uv.lock`

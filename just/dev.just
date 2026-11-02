@@ -212,7 +212,7 @@ _js_sync-engine-versions: _dev_only
 	mv "$tmp_package" "{{JAVASCRIPT_PACKAGE_JSON}}"
 
 # upgrade mise, language versions, and essential packages
-# version precision in .config/mise.toml controls how far `mise upgrade --local` advances each tool.
+# version precision in .config/mise.toml controls how far `mise upgrade --no-global` advances each tool.
 tooling_upgrade: _dev_only && _mise_web_version_sync _js_sync-engine-versions _mise_gha_version_sync
 	mise self-update --yes
 
@@ -222,7 +222,7 @@ tooling_upgrade: _dev_only && _mise_web_version_sync _js_sync-engine-versions _m
 		sd '^min_version = ".*"$' "min_version = \"$mise_version\"" .config/mise.dev.toml
 
 	# zsh extended global allows us to write very fancy globs; the one below omits the `.local` overrides
-	mise upgrade --yes --local
+	mise upgrade --yes --no-global
 	# TODO I think we should be able to remove this in the future, but right now it seems like a separate lock command is required
 	mise lock
 	git add .config/mise*~(*/|*).local*(toml|lock) "{{JAVASCRIPT_PACKAGE_JSON}}"

@@ -50,44 +50,51 @@ url_api = "https://api.github.com/repos/rhysd/actionlint/releases/assets/3849249
 provenance = "github-attestations"
 
 [[tools.ast-grep]]
-version = "0.50.0"
+version = "0.51.0"
 backend = "aqua:ast-grep/ast-grep"
 specifiers = ["latest"]
 
 [tools.ast-grep."platforms.linux-arm64"]
-checksum = "sha256:3a4ad22dd1dca7a4900a173de65885578617af57fa13dd93b8d345d6b352770e"
-url = "https://github.com/ast-grep/ast-grep/releases/download/0.50.0/app-aarch64-unknown-linux-gnu.zip"
-url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/625207184"
+checksum = "sha256:73af0ebe5958acee012754a5b2826a186580ef83333092408a7a01096fc30b8b"
+checksum_source = "mise-versions"
+url = "https://github.com/ast-grep/ast-grep/releases/download/0.51.0/app-aarch64-unknown-linux-gnu.zip"
+url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/644253212"
 
 [tools.ast-grep."platforms.linux-arm64-musl"]
-checksum = "sha256:3a4ad22dd1dca7a4900a173de65885578617af57fa13dd93b8d345d6b352770e"
-url = "https://github.com/ast-grep/ast-grep/releases/download/0.50.0/app-aarch64-unknown-linux-gnu.zip"
-url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/625207184"
+checksum = "sha256:73af0ebe5958acee012754a5b2826a186580ef83333092408a7a01096fc30b8b"
+checksum_source = "mise-versions"
+url = "https://github.com/ast-grep/ast-grep/releases/download/0.51.0/app-aarch64-unknown-linux-gnu.zip"
+url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/644253212"
 
 [tools.ast-grep."platforms.linux-x64"]
-checksum = "sha256:0fd3f489639abb8465a914b74b8779171577582318d8a940d00399f59dba81c5"
-url = "https://github.com/ast-grep/ast-grep/releases/download/0.50.0/app-x86_64-unknown-linux-gnu.zip"
-url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/625203767"
+checksum = "sha256:a7eead5552d3a8daad70f5d50d935da44bd0c138e946b5b0a96b1d38169fa639"
+checksum_source = "mise-versions"
+url = "https://github.com/ast-grep/ast-grep/releases/download/0.51.0/app-x86_64-unknown-linux-gnu.zip"
+url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/644248664"
 
 [tools.ast-grep."platforms.linux-x64-musl"]
-checksum = "sha256:0fd3f489639abb8465a914b74b8779171577582318d8a940d00399f59dba81c5"
-url = "https://github.com/ast-grep/ast-grep/releases/download/0.50.0/app-x86_64-unknown-linux-gnu.zip"
-url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/625203767"
+checksum = "sha256:a7eead5552d3a8daad70f5d50d935da44bd0c138e946b5b0a96b1d38169fa639"
+checksum_source = "mise-versions"
+url = "https://github.com/ast-grep/ast-grep/releases/download/0.51.0/app-x86_64-unknown-linux-gnu.zip"
+url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/644248664"
 
 [tools.ast-grep."platforms.macos-arm64"]
-checksum = "sha256:b7de40f9c4a29b1c6e26619b776d02b432902550de9a79e4a71a416e86cc41f5"
-url = "https://github.com/ast-grep/ast-grep/releases/download/0.50.0/app-aarch64-apple-darwin.zip"
-url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/625198087"
+checksum = "sha256:e18e13c27ed6c4b3ec4de00745b0755dee9dc26c035e226f4dd5d147dca99cc8"
+checksum_source = "mise-versions"
+url = "https://github.com/ast-grep/ast-grep/releases/download/0.51.0/app-aarch64-apple-darwin.zip"
+url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/644256001"
 
 [tools.ast-grep."platforms.macos-x64"]
-checksum = "sha256:b057d51bc3b0fa55c71c40774cdef687656e57b630a891c1a7d4e96e57b27d35"
-url = "https://github.com/ast-grep/ast-grep/releases/download/0.50.0/app-x86_64-apple-darwin.zip"
-url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/625198978"
+checksum = "sha256:8438fe549da59da28518c45bdaab5b851aabafe8fb4f8dc05c261a7649b4eca6"
+checksum_source = "mise-versions"
+url = "https://github.com/ast-grep/ast-grep/releases/download/0.51.0/app-x86_64-apple-darwin.zip"
+url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/644256580"
 
 [tools.ast-grep."platforms.windows-x64"]
-checksum = "sha256:e332ce9b10731c6d9bf142ed5ce2ab3795a8715e434dcca77de18e3e0f86e3f5"
-url = "https://github.com/ast-grep/ast-grep/releases/download/0.50.0/app-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/625198178"
+checksum = "sha256:1a5b7824c5925ac34257f806488e54860817cefd855fd308d13df7550d068908"
+checksum_source = "mise-versions"
+url = "https://github.com/ast-grep/ast-grep/releases/download/0.51.0/app-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/ast-grep/ast-grep/releases/assets/644255645"
 
 [[tools.direnv]]
 version = "2.38.2"
@@ -414,44 +421,51 @@ url_api = "https://api.github.com/repos/jqlang/jq/releases/assets/453012788"
 provenance = "github-attestations"
 
 [[tools.just]]
-version = "1.58.0"
+version = "1.59.0"
 backend = "aqua:casey/just"
 specifiers = ["latest"]
 
 [tools.just."platforms.linux-arm64"]
-checksum = "sha256:748237128c4c40cbdabc65e841d05ceba13cc23a91eaba395495894c1d9764df"
-url = "https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/casey/just/releases/assets/500510099"
+checksum = "sha256:23871b1702bfd550fb5f901778fd4290ecf2ee034a45a889fbe96d89b188086d"
+checksum_source = "mise-versions"
+url = "https://github.com/casey/just/releases/download/1.59.0/just-1.59.0-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/casey/just/releases/assets/642950086"
 
 [tools.just."platforms.linux-arm64-musl"]
-checksum = "sha256:748237128c4c40cbdabc65e841d05ceba13cc23a91eaba395495894c1d9764df"
-url = "https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/casey/just/releases/assets/500510099"
+checksum = "sha256:23871b1702bfd550fb5f901778fd4290ecf2ee034a45a889fbe96d89b188086d"
+checksum_source = "mise-versions"
+url = "https://github.com/casey/just/releases/download/1.59.0/just-1.59.0-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/casey/just/releases/assets/642950086"
 
 [tools.just."platforms.linux-x64"]
-checksum = "sha256:4a5cc2f53e6f0f8c59092a6cc38291eb729d46a7dd95d3ae582008881b84931d"
-url = "https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/casey/just/releases/assets/500509978"
+checksum = "sha256:409044617b6f06517c1035e55ca38c8c856ff8b650e41bc2aa1ef82d5903a23e"
+checksum_source = "mise-versions"
+url = "https://github.com/casey/just/releases/download/1.59.0/just-1.59.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/casey/just/releases/assets/642949555"
 
 [tools.just."platforms.linux-x64-musl"]
-checksum = "sha256:4a5cc2f53e6f0f8c59092a6cc38291eb729d46a7dd95d3ae582008881b84931d"
-url = "https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/casey/just/releases/assets/500509978"
+checksum = "sha256:409044617b6f06517c1035e55ca38c8c856ff8b650e41bc2aa1ef82d5903a23e"
+checksum_source = "mise-versions"
+url = "https://github.com/casey/just/releases/download/1.59.0/just-1.59.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/casey/just/releases/assets/642949555"
 
 [tools.just."platforms.macos-arm64"]
-checksum = "sha256:50ae3e996c974a0bf32ea7d10f495070df33f1b43e0616b2769e3d4821ed8f48"
-url = "https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/casey/just/releases/assets/500509965"
+checksum = "sha256:6574cea774ed4cae12e24b6aa11857de33e80dab4667cf628fd5840df96a2a9d"
+checksum_source = "mise-versions"
+url = "https://github.com/casey/just/releases/download/1.59.0/just-1.59.0-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/casey/just/releases/assets/643129724"
 
 [tools.just."platforms.macos-x64"]
-checksum = "sha256:9a09cfef66aaa79da58203970103a0684307716caaabd3e9844cacc4dc0f4023"
-url = "https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/casey/just/releases/assets/500510084"
+checksum = "sha256:036ead9df9bc31dbae9934ae3b4236ed124d0bafcffd33439460ae084d5c9cb7"
+checksum_source = "mise-versions"
+url = "https://github.com/casey/just/releases/download/1.59.0/just-1.59.0-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/casey/just/releases/assets/643131819"
 
 [tools.just."platforms.windows-x64"]
-checksum = "sha256:759f16fb7aa17c5c8b9594b6d4a8c1a6630dfd042cf2b3ff84841454d3d188dc"
-url = "https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/casey/just/releases/assets/500511374"
+checksum = "sha256:9c5463e2d0974e31bee71346aa5cbf19167de1585a4abc1bae7b3b04604ea9c0"
+checksum_source = "mise-versions"
+url = "https://github.com/casey/just/releases/download/1.59.0/just-1.59.0-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/casey/just/releases/assets/643131303"
 
 [[tools.mprocs]]
 version = "0.10.2"
@@ -541,97 +555,97 @@ url_api = "https://api.github.com/repos/suzuki-shunsuke/pinact/releases/assets/5
 provenance = "github-attestations"
 
 [[tools.tombi]]
-version = "1.8.4"
+version = "1.8.9"
 backend = "aqua:tombi-toml/tombi"
 specifiers = ["latest"]
 
 [tools.tombi."platforms.linux-arm64"]
-checksum = "sha256:681003a505bfb40f79ec8e833dda0d5c03e5f43c4c362f494ee8d6652775c73a"
-url = "https://github.com/tombi-toml/tombi/releases/download/v1.8.4/tombi-cli-1.8.4-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/633725972"
+checksum = "sha256:4862f4fea963536bfb07678bed3d005735408e700701e979e6b68b9571084de6"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.8.9/tombi-cli-1.8.9-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/656427372"
 provenance = "github-attestations"
 
 [tools.tombi."platforms.linux-arm64-musl"]
-checksum = "sha256:681003a505bfb40f79ec8e833dda0d5c03e5f43c4c362f494ee8d6652775c73a"
-url = "https://github.com/tombi-toml/tombi/releases/download/v1.8.4/tombi-cli-1.8.4-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/633725972"
+checksum = "sha256:4862f4fea963536bfb07678bed3d005735408e700701e979e6b68b9571084de6"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.8.9/tombi-cli-1.8.9-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/656427372"
 provenance = "github-attestations"
 
 [tools.tombi."platforms.linux-x64"]
-checksum = "sha256:597e08f9fa336b365c011c94387997dd3d2dadd904cde5b7dc55033d29680e5e"
-url = "https://github.com/tombi-toml/tombi/releases/download/v1.8.4/tombi-cli-1.8.4-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/633726039"
+checksum = "sha256:26d7207a4de89e5d846d5a9e5d3bc9c407f8b035f06adfdb774564bd7e440c15"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.8.9/tombi-cli-1.8.9-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/656427416"
 provenance = "github-attestations"
 
 [tools.tombi."platforms.linux-x64-musl"]
-checksum = "sha256:597e08f9fa336b365c011c94387997dd3d2dadd904cde5b7dc55033d29680e5e"
-url = "https://github.com/tombi-toml/tombi/releases/download/v1.8.4/tombi-cli-1.8.4-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/633726039"
+checksum = "sha256:26d7207a4de89e5d846d5a9e5d3bc9c407f8b035f06adfdb774564bd7e440c15"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.8.9/tombi-cli-1.8.9-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/656427416"
 provenance = "github-attestations"
 
 [tools.tombi."platforms.macos-arm64"]
-checksum = "sha256:ec873e21e7165007d4ba785c817b2ffd26b3833396bdbf80cfe49540d45f08f8"
-url = "https://github.com/tombi-toml/tombi/releases/download/v1.8.4/tombi-cli-1.8.4-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/633726028"
+checksum = "sha256:287d02319d42d997237cab16a9876c0c116ea654be82f31e19c10c0a24159a60"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.8.9/tombi-cli-1.8.9-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/656427377"
 provenance = "github-attestations"
 
 [tools.tombi."platforms.macos-x64"]
-checksum = "sha256:fa3d7fca1853c27da005795d51fed0ec311de7d9e2a795bda5efc87191d21fb8"
-url = "https://github.com/tombi-toml/tombi/releases/download/v1.8.4/tombi-cli-1.8.4-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/633725988"
+checksum = "sha256:c566db7e0d1b98b75ebdbd080d75407140039eb52a7af503e3028e318f01f8f2"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.8.9/tombi-cli-1.8.9-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/656427371"
 provenance = "github-attestations"
 
 [tools.tombi."platforms.windows-x64"]
-checksum = "sha256:11809d18477d7ac952110dc3e8423533ff480915f780add1e589e1d27493b61e"
-url = "https://github.com/tombi-toml/tombi/releases/download/v1.8.4/tombi-cli-1.8.4-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/633726019"
+checksum = "sha256:c6b6efff4e1d480087a0c672969d21e66ea60e6844efe94492be10b8fd99a326"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.8.9/tombi-cli-1.8.9-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/656427411"
 provenance = "github-attestations"
 
 [[tools.trivy]]
-version = "0.75.0"
+version = "0.76.0"
 backend = "aqua:aquasecurity/trivy"
 specifiers = ["latest"]
 
 [tools.trivy."platforms.linux-arm64"]
-checksum = "sha256:a1ee9f6ffb7d112b64ff726a2a0717c21175c1114361391f4a132956751a13b3"
-url = "https://github.com/aquasecurity/trivy/releases/download/v0.75.0/trivy_0.75.0_Linux-ARM64.tar.gz"
-url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/603335583"
+checksum = "sha256:aab21e677a7b7071fc79f1711480840754c18a1b9d9cefa7ccd06af63a0e8f4c"
+url = "https://github.com/aquasecurity/trivy/releases/download/v0.76.0/trivy_0.76.0_Linux-ARM64.tar.gz"
+url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/640213448"
 provenance = "cosign"
 
 [tools.trivy."platforms.linux-arm64-musl"]
-checksum = "sha256:a1ee9f6ffb7d112b64ff726a2a0717c21175c1114361391f4a132956751a13b3"
-url = "https://github.com/aquasecurity/trivy/releases/download/v0.75.0/trivy_0.75.0_Linux-ARM64.tar.gz"
-url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/603335583"
+checksum = "sha256:aab21e677a7b7071fc79f1711480840754c18a1b9d9cefa7ccd06af63a0e8f4c"
+url = "https://github.com/aquasecurity/trivy/releases/download/v0.76.0/trivy_0.76.0_Linux-ARM64.tar.gz"
+url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/640213448"
 provenance = "cosign"
 
 [tools.trivy."platforms.linux-x64"]
-checksum = "sha256:c6e65abddb348e25f10549df887045629cf28cc72453cd1c63acb717316b3f3f"
-url = "https://github.com/aquasecurity/trivy/releases/download/v0.75.0/trivy_0.75.0_Linux-64bit.tar.gz"
-url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/603335432"
+checksum = "sha256:e24b1c51293c1b15e4ba8d45bbc7891ba053f90278ec2698f3562c993e145fe7"
+url = "https://github.com/aquasecurity/trivy/releases/download/v0.76.0/trivy_0.76.0_Linux-64bit.tar.gz"
+url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/640213415"
 provenance = "cosign"
 
 [tools.trivy."platforms.linux-x64-musl"]
-checksum = "sha256:c6e65abddb348e25f10549df887045629cf28cc72453cd1c63acb717316b3f3f"
-url = "https://github.com/aquasecurity/trivy/releases/download/v0.75.0/trivy_0.75.0_Linux-64bit.tar.gz"
-url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/603335432"
+checksum = "sha256:e24b1c51293c1b15e4ba8d45bbc7891ba053f90278ec2698f3562c993e145fe7"
+url = "https://github.com/aquasecurity/trivy/releases/download/v0.76.0/trivy_0.76.0_Linux-64bit.tar.gz"
+url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/640213415"
 provenance = "cosign"
 
 [tools.trivy."platforms.macos-arm64"]
-checksum = "sha256:4a77108cccf8e55c8d6823e1e759939a622277e66cd0daa3c1fc621ed69e4568"
-url = "https://github.com/aquasecurity/trivy/releases/download/v0.75.0/trivy_0.75.0_macOS-ARM64.tar.gz"
-url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/603335435"
+checksum = "sha256:e7ec0d21fe842553f59af99aba2efbcc822369fbaed27019c575408b6d135fce"
+url = "https://github.com/aquasecurity/trivy/releases/download/v0.76.0/trivy_0.76.0_macOS-ARM64.tar.gz"
+url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/640213409"
 provenance = "cosign"
 
 [tools.trivy."platforms.macos-x64"]
-checksum = "sha256:291edaa9778acbe4693d067b5ad60ee11570e5ac68296e85595417528ca641e4"
-url = "https://github.com/aquasecurity/trivy/releases/download/v0.75.0/trivy_0.75.0_macOS-64bit.tar.gz"
-url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/603335728"
+checksum = "sha256:89563d4d495cf4ef06a0d1950f8710b124e9f7bd2615ec6c47b03673f4ad45a2"
+url = "https://github.com/aquasecurity/trivy/releases/download/v0.76.0/trivy_0.76.0_macOS-64bit.tar.gz"
+url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/640213124"
 provenance = "cosign"
 
 [tools.trivy."platforms.windows-x64"]
-checksum = "sha256:4e43bd71a30f51aee39525f60f2b47043af77eb8df8fe082aae4372b69c6660f"
-url = "https://github.com/aquasecurity/trivy/releases/download/v0.75.0/trivy_0.75.0_windows-64bit.zip"
-url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/603335433"
+checksum = "sha256:7b4762a5a5326cb4b83dfd2bb5d9aaf15a1ed867c75cad7dd8b38840a28e7be6"
+url = "https://github.com/aquasecurity/trivy/releases/download/v0.76.0/trivy_0.76.0_windows-64bit.zip"
+url_api = "https://api.github.com/repos/aquasecurity/trivy/releases/assets/640213125"
 provenance = "cosign"
 
 [[tools.watchexec]]

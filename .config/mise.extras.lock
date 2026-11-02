@@ -169,16 +169,16 @@ specifiers = ["latest"]
 uv = { path = "mise/locks/mise.extras/pypi-aiautocommit/0.28.1", digest = "sha256:f8d05805bfa47b107e761a5f0cfa496f005d71edd4f4a61ace49c4d4a1d78864" }
 
 [[tools."pypi:jc"]]
-version = "1.26.0"
+version = "1.26.1"
 backend = "pypi:jc"
 specifiers = ["latest"]
-uv = { path = "mise/locks/mise.extras/pypi-jc/1.26.0", digest = "sha256:27a30e6d74e2521073b50e909748a80e18f84c9fd8a96b7b80f86f9bba5f5903" }
+uv = { path = "mise/locks/mise.extras/pypi-jc/1.26.1", digest = "sha256:ad5db4832bccbe5934a6fccaf4805221c810eae3389f6a5b9900b158fbadb67c" }
 
 [[tools."pypi:llm-ide-rules"]]
-version = "0.20.1"
+version = "0.21.1"
 backend = "pypi:llm-ide-rules"
 specifiers = ["latest"]
-uv = { path = "mise/locks/mise.extras/pypi-llm-ide-rules/0.20.1", digest = "sha256:a6160faab8fb4aea55a8207b1db9834a379b201be15f36ffdd1d03e87171be0c" }
+uv = { path = "mise/locks/mise.extras/pypi-llm-ide-rules/0.21.1", digest = "sha256:2b9f4f5ef24439f09f34596467ab2ad07be5df3cce4930466d090cea947057a7" }
 
 [[tools."pypi:uv-development-toggle"]]
 version = "0.7.0"
