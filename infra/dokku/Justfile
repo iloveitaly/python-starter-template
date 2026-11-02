@@ -38,7 +38,6 @@ build_pussh $UNREGISTRY_IMAGE="ghcr.io/psviderski/unregistry:0.3.1":
 	docker tag {{PYTHON_IMAGE_TAG}} {{PYTHON_PRODUCTION_IMAGE_NAME}}:latest
 	docker pussh {{PYTHON_PRODUCTION_IMAGE_NAME}}:latest {{HOST_USER}}@{{HOST}}
 
-# git:from-image reads app.json from the image WORKDIR (/app/app.json), not this directory
 deploy $DOKKU_HOST=HOST:
 	# TODO dokku failures do not report a non-zero exit code
 
