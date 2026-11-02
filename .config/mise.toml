@@ -10,14 +10,13 @@
 uv = "latest"
 python = "3.14"
 
-sentry-cli = "latest"
-
 pnpm = "11"
 
 # it's best to use a LTS version of node. Many packages (such as better-sqlite3) precompile binaries for LTS
 # node versions. Ensuring the right packages, etc are available during container creation for these packages is a pain.
 # https://nodejs.org/en/about/previous-releases
 node = "lts"
+sentry-cli = "latest"
 
 [settings]
 lockfile = true
