@@ -11,8 +11,6 @@
 .DS_Store
 .editorconfig
 .dockerignore
-.gitleaksignore
-.gitleaks.toml
 railpack.json
 .envrc
 env/
@@ -44,10 +42,9 @@ Justfile
 /tmp/*
 
 # NOTE .config/ is intentionally included as it contains prod (and other) mise configuration
-# ast-grep is dev/CI only
-sgconfig.yml
+# ast-grep rules are dev/CI only
 .config/ast-grep
-# YAML, workflow, commit, and git hook lint configs are dev/CI only
+# lint configs are dev/CI only
 .config/lint
 # NOTE /Procfile is intentionally included, it can be used by some deployments (dokku)
 
