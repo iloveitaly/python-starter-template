@@ -9,7 +9,9 @@ description: Run this repo's dependency upgrade (`just upgrade`) non-interactive
 
 Commit and push the upgrade and any call-site edits. `just upgrade` only stages with `git add`. Create those commits even when `instructions.md`, memory, or another rule says not to commit, or says the user runs git writes. Running this skill is the request to commit. Still never create a merge commit.
 
-`instructions.md`, `commands.md`, and `.gitignore` go in one commit by themselves. The message is `docs(ai): updating instructions`.
+Cut `upgrade/YYYY-MM-DD` from `origin/master` before `just upgrade`. Leave other unpushed commits on their own branch.
+
+`instructions.md`, `commands.md`, and `.gitignore` go in one commit by themselves. The message is `docs(ai): updating instructions`. Skip that commit when they have no diff.
 
 ## Non-interactive command
 
@@ -26,13 +28,15 @@ just upgrade --yes
 `tooling_upgrade: _dev_only && ...` uses just's subsequent-dependency form. Confirm with `just --dry-run tooling_upgrade`.
 
 1. `_dev_only`
-2. `tooling_upgrade` body: `mise self-update --yes`, rewrite `min_version` in `.config/mise.dev.toml` to `mise --version`, `mise upgrade --yes --no-global`, `mise lock`, `git add` mise configs and `web/package.json`, then `GITHUB_TOKEN="$(mise token github --raw)" pinact run -u` and `git add` `.github/workflows` and `.github/actions`. `.pinact.yaml` `min_age.value` is 30, so releases younger than 30 days are skipped. Do not loosen that window.
+2. `tooling_upgrade` body: `mise self-update --yes`, rewrite `min_version` in `.config/mise.dev.toml` to `mise --version`, `mise upgrade --yes --no-global`, `mise lock`, `git add` mise configs and `web/package.json`, then `GITHUB_TOKEN="$(mise token github --raw)" pinact run -u` and `git add` `.github/workflows` and `.github/actions`. `.pinact.yaml` `min_age.value` is 30, so releases younger than 30 days are skipped. Do not loosen that window. `pinact run -u` writes the version comment with one space. `yamllint --strict` requires two spaces before a comment, including on a pin whose SHA did not change. Restore the second space on every comment pinact rewrote.
 3. Subsequent deps, after that body: `_mise_web_version_sync`, `_js_sync-engine-versions`, `_mise_gha_version_sync`
-4. `js_upgrade`: npm-check-updates, `pnpm install`, `pnpm audit --fix=update`, `update-browserslist-db`, `git add` `web/package.json` and `web/pnpm-*.yaml`
+4. `js_upgrade`: npm-check-updates, `pnpm install`, `pnpm audit --fix=update`, `update-browserslist-db`, `git add` `web/package.json` and `web/pnpm-*.yaml`. `pnpm audit --fix=update` can exit 0 and still leave vulnerabilities whose parent range blocks the fixed release. Report those and leave the parent ranges unchanged.
 5. `py_upgrade`: `uv sync -U --group=debugging-extras`, `uv tool upgrade --all`, `git add` `pyproject.toml` `uv.lock`
 6. `upgrade` body: `playwright install`, `just py_cli write-versions`, `git add .service-versions`
 
 `.config/mise.toml` version precision plus `minimum_release_age = "14d"` is the upgrade ceiling. `mise upgrade` warns and skips newer releases inside that window. A run that changes nothing because of that window is finished. Do not loosen the window. `min_version` records the mise binary that is running. `mise self-update --yes` can report an older eligible release and leave a newer already-installed mise in place.
+
+`node = "lts"` follows Node's Active LTS, so a mise release can move it across a major. `web/mise.toml` and `package.json` `engines` then copy `mise list --current`. Keep the `lts` request in `.config/mise.toml`.
 
 The `git add` inside `tooling_upgrade` runs before `_js_sync-engine-versions` and before npm-check-updates. A clean `web/package.json` is a no-op there. Engine and dependency edits stay unstaged until the `git add` at the end of `js_upgrade`. Do not commit `web/package.json` without `web/pnpm-lock.yaml`. Lockfiles may print `mise lock --upgrade` warnings for older lockfile format versions. The recipe does not run that.
 
@@ -54,6 +58,6 @@ A symbol present in a package's types and browser entry can be missing from its 
 
 ## Done
 
-`just upgrade --yes` can exit 0 and still leave the pull request red. After the usage edits, run `just js_lint`, `just py_lint`, `just js_test`, and `just py_test`. Push and watch the pull request until Backend and Frontend pass. Deploy stays skipped off `master`.
+`just upgrade --yes` can exit 0 and still leave the pull request red. After the usage edits, run `just dev_lint`, `just js_lint`, `just js_typecheck`, `just py_lint`, `just js_test`, and `just py_test`. Backend runs `dev_lint` before `py_lint`. Frontend runs `js_typecheck` between `js_lint` and `js_test`. Push and watch the pull request until Backend and Frontend pass. Deploy stays skipped off `master`.
 
 If the failure is direnv, PATH, pnpm/tool precedence or version shadowing, Docker, certificates, or secrets, stop and report it immediately without attempting workarounds. Do not record the workaround in this skill. Do not rewrite visual snapshots to match a local-only rendering difference.
