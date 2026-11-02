@@ -170,6 +170,22 @@ def test_real_client_still_sends(monkeypatch, user_agent):
     assert len(sent) == 1
 
 
+def test_http_library_logs_warning_and_still_sends(
+    monkeypatch, capture_structlog_logs
+):
+    log, output = capture_structlog_logs
+    monkeypatch.setattr(fb, "log", log)
+    sent = setup_facebook_mocks(monkeypatch)
+
+    fb.send_conversion_event(
+        event_name="PageView",
+        request=make_request(user_agent="curl/8.7.1"),
+    )
+
+    assert len(sent) == 1
+    assert "meta event from http library" in output.getvalue()
+
+
 def test_blank_user_agent_still_sends(monkeypatch):
     "a stripped user agent is not evidence of a probe or a crawler"
 

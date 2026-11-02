@@ -16,6 +16,7 @@ import phonenumbers
 import sentry_sdk
 from capi_param_builder import ParamBuilder
 from device_detector import DeviceDetector
+from device_detector.enums import AppType
 from facebook_business.adobjects.serverside.action_source import ActionSource
 from facebook_business.adobjects.serverside.custom_data import CustomData
 from facebook_business.adobjects.serverside.event import Event
@@ -82,24 +83,6 @@ MetaEventName = Literal[
     "SubmitApplication",
     "Subscribe",
 ]
-
-
-def _is_non_human_user_agent(user_agent: str | None) -> bool:
-    """
-    True for uptime probes and crawlers.
-
-    Device Detector's bot catalog is the filter. A poll or a scrape is not a
-    person, and the event would still call graph.facebook.com.
-
-    Absence of the header is not enough to skip: some real clients strip it.
-    """
-
-    if not user_agent:
-        return False
-
-    detector = DeviceDetector(user_agent)
-    detector.parse_bot()
-    return detector.is_bot()
 
 
 def _normalize_phone(phone: str, region: str | None) -> str | None:
@@ -295,20 +278,32 @@ def send_conversion_event(
     by `_send_facebook_event`, so this never fails the request it rides on.
 
     Probes and crawlers, per Device Detector, are dropped before an event is built.
-    A match key on the request does not override that.
+    A match key on the request does not override that. An HTTP library such as
+    curl still sends, and is logged at warning.
 
     When fbc is omitted, it is resolved from the request’s query parameters, then the _fbc cookie.
     Landing-page parameters must be explicitly forwarded to API requests.
     This fallback does not inspect the request body. Pass fbc when it was already captured earlier.
     """
     user_agent = request.headers.get(USER_AGENT_HEADER)
-    if _is_non_human_user_agent(user_agent):
-        log.debug(
-            "skipping meta event for non-human client",
-            event_name=event_name,
-            user_agent=user_agent,
-        )
-        return
+    if user_agent:
+        # full parse: bot detection does not classify HTTP libraries
+        detector = DeviceDetector(user_agent).parse()
+        if detector.is_bot():
+            log.debug(
+                "skipping meta event for non-human client",
+                event_name=event_name,
+                user_agent=user_agent,
+            )
+            return
+
+        if detector.client_type() == AppType.Library:
+            log.warning(
+                "meta event from http library",
+                event_name=event_name,
+                user_agent=user_agent,
+                client_name=detector.client_name(),
+            )
 
     custom_data = None
     if value_in_cents is not None:
