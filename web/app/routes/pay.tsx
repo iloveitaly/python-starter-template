@@ -185,11 +185,13 @@ export default function ExamplePaymentPage({
           description: "Pay with Stripe Checkout to exercise the payment helpers.",
         }}
       />
-      <h1 className="mb-2 text-2xl font-bold">Example payment</h1>
-      <p className="text-muted-foreground mb-6">
-        {loaderData.product_name} · {amountLabel}. Use test card 4242 4242 4242
-        4242, any future expiry, and any CVC.
-      </p>
+      <div className="payment-intro">
+        <h1 className="mb-2 text-2xl font-bold">Example payment</h1>
+        <p className="text-muted-foreground mb-6">
+          {loaderData.product_name} · {amountLabel}. Use test card 4242 4242
+          4242 4242, any future expiry, and any CVC.
+        </p>
+      </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
