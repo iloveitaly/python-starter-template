@@ -64,5 +64,9 @@ def delete_all_clerk_users():
         raise RuntimeError("cannot delete dev users outside of testing")
 
     for user in clerk.users.list():
-        if user.email_addresses[0].email_address not in CLERK_ALL_USERS_TO_PRESERVE:
+        # check every address, not just the first: a preserved user who added a second email would
+        # otherwise be deleted depending on which address Clerk returns first
+        emails = {address.email_address.lower() for address in user.email_addresses}
+
+        if emails.isdisjoint(CLERK_ALL_USERS_TO_PRESERVE):
             clerk.users.delete(user_id=user.id)
