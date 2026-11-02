@@ -1,7 +1,4 @@
 version: 2
 
-updates:
-  - package-ecosystem: "uv"
-    directory: "/"
-    schedule:
-      interval: "monthly"
+# `just upgrade` is used instead of dependabot
+updates: []
