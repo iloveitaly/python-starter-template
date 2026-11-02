@@ -139,6 +139,10 @@ build-backend = "uv_build"
 module-root = ""
 module-name = "app"
 
+[tool.ruff]
+# A root ruff.toml would override this table.
+extend = ".config/lint/ruff.toml"
+
 [tool.pyright]
 exclude = [
     # standard excludes that get wiped out with this custom configuration

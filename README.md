@@ -560,7 +560,7 @@ Note that gpatch is GNU patch, [available through Homebrew](https://github.com/H
 ### GitLeaks Baseline
 
 ```shell
-GIT_CONFIG_GLOBAL=/dev/null gitleaks git --report-format json --report-path - | jq -r '.[].Fingerprint' > .gitleaksignore
+GIT_CONFIG_GLOBAL=/dev/null gitleaks git -c .config/lint/gitleaks.toml --report-format json --report-path - | jq -r '.[].Fingerprint' > .config/lint/gitleaksignore
 ```
 
 ### Cookies & Sessions

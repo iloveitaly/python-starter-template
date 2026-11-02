@@ -20,9 +20,9 @@ dev_lint:
 
 	# `--log-level=debug` for debugging
 	# will report 0 commits scanned since it just outputs a massive diff and doesn't scan commits
-	GIT_CONFIG_GLOBAL=/dev/null gitleaks git --report-path=- --report-format json --redact=20 --no-banner || exit_code=$?
+	GIT_CONFIG_GLOBAL=/dev/null gitleaks git -c .config/lint/gitleaks.toml --gitleaks-ignore-path .config/lint/gitleaksignore --report-path=- --report-format json --redact=20 --no-banner || exit_code=$?
 	# TODO link justfiles too
-	# GIT_CONFIG_GLOBAL=/dev/null gitleaks git --report-format json --report-path - | jq -r '.[].Fingerprint' | sort -t ':' -k2 > .gitleaksignore
+	# GIT_CONFIG_GLOBAL=/dev/null gitleaks git -c .config/lint/gitleaks.toml --report-format json --report-path - | jq -r '.[].Fingerprint' | sort -t ':' -k2 > .config/lint/gitleaksignore
 
 	# yamllint's default `auto` format emits GitHub annotations when Actions sets
 	# GITHUB_ACTIONS and GITHUB_WORKFLOW.
@@ -227,8 +227,8 @@ tooling_upgrade: _dev_only && _mise_web_version_sync _js_sync-engine-versions _m
 	mise lock
 	git add .config/mise*~(*/|*).local*(toml|lock) "{{JAVASCRIPT_PACKAGE_JSON}}"
 
-	# `.pinact.yaml` min_age skips action releases younger than 30 days
-	GITHUB_TOKEN="$(mise token github --raw)" pinact run -u
+	# `.config/lint/pinact.yaml` min_age skips action releases younger than 30 days
+	GITHUB_TOKEN="$(mise token github --raw)" pinact run -c .config/lint/pinact.yaml -u
 	git add .github/workflows .github/actions
 
 # upgrade everything: all packages on all languages, tooling, etc
