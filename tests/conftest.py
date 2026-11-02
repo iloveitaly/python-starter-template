@@ -52,6 +52,7 @@ from app.env import env, loose_env
 # important to ensure model metadata is added to the application
 import app.models  # noqa: F401
 from app.celery import celery_app
+from app.configuration.lang import process_locale
 from app.configuration.redis import get_redis
 from app.environments import is_local_testing, is_wsl
 
@@ -360,19 +361,20 @@ def browser_type_launch_args(browser_type_launch_args, pytestconfig: pytest.Conf
 @pytest.fixture(scope="session")
 def browser_context_args(browser_context_args, pytestconfig: pytest.Config):
     """
-    Pin `en-US` and the process timezone on compose-chromium contexts.
+    Pin the process locale and timezone on compose-chromium contexts.
 
     pytest builds this once per session, the first time a test requests
     `page`, `context`, or `new_context`. pytest-playwright then passes the
-    dict to `browser.new_context()` for each of those tests. The timezone id
-    comes from `whenever`'s `SYSTEM_TZ`, which `env/all.sh` sets to UTC.
-    Without docker chrome, the plugin's own args are returned unchanged.
+    dict to `browser.new_context()` for each of those tests. The locale comes
+    from `process_locale()`. The timezone id comes from `whenever`'s
+    `SYSTEM_TZ`, which `env/all.sh` sets to UTC. Without docker chrome, the
+    plugin's own args are returned unchanged.
     """
     if not _use_docker_chrome(pytestconfig):
         return browser_context_args
 
     return {
         **browser_context_args,
-        "locale": "en-US",
+        "locale": process_locale(),
         "timezone_id": ZonedDateTime.now(SYSTEM_TZ).tz_id,
     }
