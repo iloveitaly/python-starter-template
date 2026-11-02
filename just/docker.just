@@ -2,30 +2,27 @@
 # Dev Container Management
 ##########################
 
-# Compose interpolates every service for every subcommand, so chrome's required
-# CA is resolved for pull, down, and run as well as up.
-COMPOSE := 'LOCALIAS_CA_B64="$(just localias_cert_base64)" docker compose'
-
 [script]
+[env("LOCALIAS_CA_B64", `just localias_cert_base64`)]
 [arg("fast", long, help="skip waiting for healthy containers, useful for CI runs", flag)]
 [arg("latest", long, help="pull latest images and recreate services", flag)]
 docker_up fast latest: _not_production
 	# if images have already been pulled, this ensures the latest versions are pulled so they match with
 	# CI or other environments that are pulling fresh versions of the images
 	if {{ if bool(latest) { "true" } else { "false" } }}; then
-		{{COMPOSE}} pull
+		docker compose pull
 	fi
 
 	# force a restart to pick up the latest pulled images
 	if {{ if bool(latest) { "true" } else { "false" } }}; then
-		{{COMPOSE}} up -d --force-recreate {{ if bool(fast) { "" } else { "--wait" } }}
+		docker compose up -d --force-recreate {{ if bool(fast) { "" } else { "--wait" } }}
 
 		just db_migrate
 
 		just py_cli write-versions
 		git add .service-versions
 	else
-		{{COMPOSE}} up -d {{ if bool(fast) { "" } else { "--wait" } }}
+		docker compose up -d {{ if bool(fast) { "" } else { "--wait" } }}
 	fi
 
 	# using host names enables us to (a) avoid exposing ports to the host machine and (b) have dns names for each service
@@ -38,7 +35,7 @@ docker_up fast latest: _not_production
 
 # stop all containers and remove the images
 docker_down: db_down
-	{{COMPOSE}} down
+	docker compose down
 
 # open redis database in the default macos GUI
 redis_open: _dev_only
