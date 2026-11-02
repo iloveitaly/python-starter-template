@@ -285,8 +285,7 @@ def send_conversion_event(
     Landing-page parameters must be explicitly forwarded to API requests.
     This fallback does not inspect the request body. Pass fbc when it was already captured earlier.
     """
-    user_agent = request.headers.get(USER_AGENT_HEADER)
-    if user_agent:
+    if user_agent := request.headers.get(USER_AGENT_HEADER):
         # full parse: bot detection does not classify HTTP libraries
         detector = DeviceDetector(user_agent).parse()
         if detector.is_bot():
