@@ -906,6 +906,8 @@ A release is recorded at build time. The Vite plugin uploads sourcemaps under `B
 
 `sentry-cli` reads `SENTRY_ORG` and `SENTRY_AUTH_TOKEN` from the environment. The release argument has to be `BUILD_COMMIT`. The environment argument has to be `PYTHON_ENV`, which is what the SDK sends as `environment`.
 
+#### Dokku
+
 One place to run it is a [Dokku](https://dokku.com/) `scripts.dokku.postdeploy` hook, which runs once per deploy after the new containers are up. `infra/dokku/app.json`:
 
 ```json
