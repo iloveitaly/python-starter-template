@@ -43,7 +43,7 @@ export default function ExamplePaymentConfirmationPage({
       />
       <h1 className="mb-2 text-2xl font-bold">Payment complete</h1>
       <p className="mb-6">
-        {amountLabel} for {loaderData.email}
+        {amountLabel} for <span className="snapshot-mask">{loaderData.email}</span>
       </p>
       <dl className="space-y-2 text-sm">
         <div>
@@ -56,11 +56,15 @@ export default function ExamplePaymentConfirmationPage({
         </div>
         <div>
           <dt className="text-muted-foreground">Checkout session</dt>
-          <dd className="font-mono">{loaderData.stripe_checkout_session_id}</dd>
+          <dd className="snapshot-mask font-mono break-all">
+            {loaderData.stripe_checkout_session_id}
+          </dd>
         </div>
         <div>
           <dt className="text-muted-foreground">Payment intent</dt>
-          <dd className="font-mono">{loaderData.payment_intent_id}</dd>
+          <dd className="snapshot-mask font-mono break-all">
+            {loaderData.payment_intent_id}
+          </dd>
         </div>
       </dl>
       {loaderData.disputed && (
