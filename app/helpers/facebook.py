@@ -27,6 +27,7 @@ from structlog_config.fastapi_access_logger import client_ip_from_request
 
 from app import log
 from app.env import env
+from app.lib.secret_redaction import redact_exception_chain
 
 META_PIXEL_ID = env.str("META_PIXEL_ID")
 META_PIXEL_KEY = env.str("META_PIXEL_KEY")
@@ -326,8 +327,10 @@ def _send_facebook_event(event: Event, test_event_code: str | None = None) -> No
         if test_event_code:
             event_request.test_event_code = test_event_code
         event_request.execute()
-    except Exception:  # noqa: BLE001
+    except Exception as exc:  # noqa: BLE001
         # structlog writes straight to stdout, so nothing here reaches Sentry on its own
+        # the SDK interpolates the credential into the exception text
+        redact_exception_chain(exc)
         sentry_sdk.capture_exception()
         log.exception(
             "facebook pixel event send failed",

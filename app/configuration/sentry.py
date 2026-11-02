@@ -4,6 +4,7 @@ from sentry_sdk.transport import Transport
 
 from app.constants import BUILD_COMMIT
 from app.env import env
+from app.lib.secret_redaction import scrub_sentry_event
 
 from ..environments import is_job_monitor, is_production, python_environment
 
@@ -70,6 +71,10 @@ def configure_sentry(integrations=None):
 
         return event
 
+    def scrub_transaction(event, hint):
+        scrub_sentry_event(event, hint)
+        return filter_transactions(event, hint)
+
     sinkhole = not is_production()
 
     sentry_sdk.init(
@@ -87,7 +92,8 @@ def configure_sentry(integrations=None):
         integrations=integrations,
         # these have a way of piling up quickly if they aren't ignored!
         ignore_errors=["WebhookDeliveryError"],
-        before_send_transaction=filter_transactions,
+        before_send=scrub_sentry_event,
+        before_send_transaction=scrub_transaction,
     )
 
     log.info(
