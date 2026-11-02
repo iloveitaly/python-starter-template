@@ -652,7 +652,7 @@
     "/unauthenticated/example-payment/session": {
       "post": {
         "summary": "Create Example Payment Session",
-        "description": "Create a Checkout Session when the example payment page loads.\n\nThe browser confirms this session with Stripe.js. `return_url` is where Stripe\nsends the browser after a redirect-based payment method.",
+        "description": "Create a Checkout Session when the example payment page loads.\n\n`return_url` is the backend complete route. Stripe replaces `{CHECKOUT_SESSION_ID}`\nand that value must stay unescaped.",
         "operationId": "create_example_payment_session",
         "responses": {
           "200": {
@@ -741,7 +741,7 @@
     "/unauthenticated/example-payment/pending": {
       "post": {
         "summary": "Create Example Payment Pending",
-        "description": "Validate the checkout session is still open before the browser confirms payment.\n\nThe client secret is parsed with the stripe helper so a tampered secret never\nreaches Stripe. This can run again if confirmation fails and the buyer retries.",
+        "description": "Save the order immediately before the browser confirms payment.\n\nThis can run again if Stripe rejects the form and the buyer retries. The unique\ncheckout session id keeps those retries on one order.",
         "operationId": "create_example_payment_pending",
         "requestBody": {
           "content": {
@@ -837,10 +837,108 @@
         }
       }
     },
+    "/unauthenticated/example-payment/complete": {
+      "get": {
+        "summary": "Complete Example Payment",
+        "description": "Stripe redirects the browser here after payment.\n\nMark the pending order paid, then send the browser to the confirmation page.",
+        "operationId": "complete_example_payment",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Session Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Content"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          }
+        }
+      }
+    },
     "/unauthenticated/example-payment/status": {
       "get": {
         "summary": "Example Payment Status",
-        "description": "Read a completed checkout session for the confirmation page.\n\nCountry and postal code come from the checkout helper. Dispute state comes from\nthe payment intent helper.",
+        "description": "Read a paid order for the confirmation page.\n\nCountry, postal code, and dispute state come from the stripe helpers. This can\nrun every time the confirmation page is opened.",
         "operationId": "example_payment_status",
         "parameters": [
           {
@@ -1043,36 +1141,60 @@
         "title": "ErrorResponse",
         "description": "Envelope wrapping `ErrorDetail` under an `error` key.\n\nThe wrapper gives error responses a stable shape (`{\"error\": {...}}`)\nthat clients can discriminate on, and leaves room to add sibling\ntop-level fields later (e.g., `request_id`, `meta`) without a\nbreaking change."
       },
+      "ExamplePaymentOrderStatus": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "paid"
+        ],
+        "title": "ExamplePaymentOrderStatus"
+      },
       "ExamplePaymentPendingRequest": {
         "properties": {
-          "client_secret": {
+          "stripe_checkout_session_id": {
             "type": "string",
-            "title": "Client Secret"
+            "title": "Stripe Checkout Session Id"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
           }
         },
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "client_secret"
+          "stripe_checkout_session_id",
+          "email"
         ],
         "title": "ExamplePaymentPendingRequest"
       },
       "ExamplePaymentPendingResponse": {
         "properties": {
-          "stripe_checkout_session_id": {
+          "order_id": {
             "type": "string",
-            "title": "Stripe Checkout Session Id"
+            "title": "Order Id"
           }
         },
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "stripe_checkout_session_id"
+          "order_id"
         ],
         "title": "ExamplePaymentPendingResponse"
       },
       "ExamplePaymentStatusResponse": {
         "properties": {
+          "order_id": {
+            "type": "string",
+            "title": "Order Id"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ExamplePaymentOrderStatus"
+          },
           "stripe_checkout_session_id": {
             "type": "string",
             "title": "Stripe Checkout Session Id"
@@ -1119,6 +1241,9 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
+          "order_id",
+          "email",
+          "status",
           "stripe_checkout_session_id",
           "payment_intent_id",
           "disputed",
