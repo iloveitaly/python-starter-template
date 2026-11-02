@@ -10,6 +10,9 @@
 uv = "latest"
 python = "3.14"
 
+# dokku postdeploy runs this in the runtime image to record a Sentry deploy
+sentry-cli = "latest"
+
 pnpm = "11"
 
 # it's best to use a LTS version of node. Many packages (such as better-sqlite3) precompile binaries for LTS
