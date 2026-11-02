@@ -60,15 +60,6 @@ FBCLID_QUERY_PARAM = "fbclid"
 USER_AGENT_HEADER = "user-agent"
 "HTTP header containing user agent string"
 
-# Matomo's bot list does not include these scripted HTTP clients
-_NON_BROWSER_CLIENT_MARKERS = (
-    "curl/",
-    "wget",
-    "kube-probe",
-    "kubelet",
-    "googlehc",
-)
-
 MetaEventName = Literal[
     # should be used if we don't have a content ID and/or price
     "PageView",
@@ -97,19 +88,14 @@ def _is_non_human_user_agent(user_agent: str | None) -> bool:
     """
     True for uptime probes and crawlers.
 
-    Device Detector is the bot catalog. A few scripted HTTP clients are matched
-    locally because they are absent from that list. A poll or a scrape is not
-    a person, and the event would still call graph.facebook.com.
+    Device Detector's bot catalog is the filter. A poll or a scrape is not a
+    person, and the event would still call graph.facebook.com.
 
     Absence of the header is not enough to skip: some real clients strip it.
     """
 
     if not user_agent:
         return False
-
-    folded = user_agent.casefold()
-    if any(marker in folded for marker in _NON_BROWSER_CLIENT_MARKERS):
-        return True
 
     detector = DeviceDetector(user_agent)
     detector.parse_bot()

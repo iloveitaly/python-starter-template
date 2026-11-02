@@ -114,11 +114,7 @@ def setup_facebook_mocks(monkeypatch, *, error: RuntimeError | None = None):
         # Mozilla-compatible, so a "looks like a browser" check would miss it
         "Mozilla/5.0 (compatible; UptimeRobot/2.0; http://www.uptimerobot.com/)",
         "Pingdom.com_bot_version_1.4_(http://www.pingdom.com/)",
-        "kube-probe/1.29",
-        "curl/8.7.1",
-        "Wget/1.21.4",
         "ELB-HealthChecker/2.0",
-        "GoogleHC/1.0",
         "Amazon-Route53-Health-Check-Service",
         "SentryUptimeBot/1.0 (+https://docs.sentry.io/product/alerts/uptime-monitoring/)",
         "Better Stack Better Uptime Bot Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
