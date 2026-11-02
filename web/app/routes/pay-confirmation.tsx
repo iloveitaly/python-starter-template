@@ -42,7 +42,9 @@ export default function ExamplePaymentConfirmationPage({
         }}
       />
       <h1 className="mb-2 text-2xl font-bold">Payment complete</h1>
-      <p className="mb-6">{amountLabel}</p>
+      <p className="mb-6">
+        {amountLabel} for {loaderData.email}
+      </p>
       <dl className="space-y-2 text-sm">
         <div>
           <dt className="text-muted-foreground">Country</dt>

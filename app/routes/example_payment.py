@@ -1,11 +1,16 @@
 """
-Example Checkout payment used to exercise `app.lib.stripe` helpers.
+Example Checkout payment.
 
-This does not persist an order. Stripe remains the source of truth so the page
-can run without a new table. A saved order would need a migration.
+Follows the four-step flow in commands.md:
+
+1. Create a checkout session when the payment page loads.
+2. Save a pending order immediately before Stripe confirms payment.
+3. Mark the order paid when Stripe redirects back to `/complete`.
+4. Read the order on the confirmation page. That read can happen more than once.
 """
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Request
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 from stripe import PaymentIntent
 from stripe.checkout import Session as CheckoutSession
@@ -14,10 +19,14 @@ from app import log
 from app.configuration.stripe import stripe_client
 from app.env import env
 from app.lib.stripe import (
-    extract_checkout_session_id_from_client_secret,
     extract_country_zip_from_checkout_session,
+    get_stripe_type_from_id,
     payment_intent_is_disputed,
     stripe_retrieve,
+)
+from app.models.example_payment_order import (
+    ExamplePaymentOrder,
+    ExamplePaymentOrderStatus,
 )
 from app.routes.errors import ClientError
 
@@ -26,12 +35,6 @@ EXAMPLE_PAYMENT_CURRENCY = "usd"
 EXAMPLE_PAYMENT_PRODUCT_NAME = "Example payment"
 
 example_payment_api = APIRouter(prefix="/example-payment")
-
-
-def example_payment_return_url() -> str:
-    # CHECKOUT_SESSION_ID is Stripe's placeholder and must stay unescaped
-    frontend_base = env.base_url("VITE_APP_BASE_URL")
-    return f"{frontend_base}pay/confirmation?session_id={{CHECKOUT_SESSION_ID}}"
 
 
 def payment_intent_id_from_session(session: CheckoutSession) -> str:
@@ -45,6 +48,23 @@ def payment_intent_id_from_session(session: CheckoutSession) -> str:
     return payment_intent
 
 
+def require_checkout_session_id(stripe_checkout_session_id: str) -> str:
+    stripe_type = get_stripe_type_from_id(
+        stripe_checkout_session_id, raise_on_missing=False
+    )
+    if stripe_type != "checkout.sessions":
+        raise ClientError("Invalid checkout session")
+
+    return stripe_checkout_session_id
+
+
+def retrieve_checkout_session(stripe_checkout_session_id: str) -> CheckoutSession:
+    session_id = require_checkout_session_id(stripe_checkout_session_id)
+    session = stripe_retrieve(session_id, stripe_client())
+    assert isinstance(session, CheckoutSession)
+    return session
+
+
 class CreateExamplePaymentSessionResponse(BaseModel, extra="forbid"):
     client_secret: str
     amount_cents: int
@@ -53,14 +73,18 @@ class CreateExamplePaymentSessionResponse(BaseModel, extra="forbid"):
 
 
 class ExamplePaymentPendingRequest(BaseModel, extra="forbid"):
-    client_secret: str
+    stripe_checkout_session_id: str
+    email: str
 
 
 class ExamplePaymentPendingResponse(BaseModel, extra="forbid"):
-    stripe_checkout_session_id: str
+    order_id: str
 
 
 class ExamplePaymentStatusResponse(BaseModel, extra="forbid"):
+    order_id: str
+    email: str
+    status: ExamplePaymentOrderStatus
     stripe_checkout_session_id: str
     payment_intent_id: str
     disputed: bool
@@ -71,18 +95,24 @@ class ExamplePaymentStatusResponse(BaseModel, extra="forbid"):
 
 
 @example_payment_api.post("/session")
-def create_example_payment_session() -> CreateExamplePaymentSessionResponse:
+def create_example_payment_session(
+    request: Request,
+) -> CreateExamplePaymentSessionResponse:
     """
     Create a Checkout Session when the example payment page loads.
 
-    The browser confirms this session with Stripe.js. `return_url` is where Stripe
-    sends the browser after a redirect-based payment method.
+    `return_url` is the backend complete route. Stripe replaces `{CHECKOUT_SESSION_ID}`
+    and that value must stay unescaped.
     """
 
+    # elements is the current name of the template's ui_mode "custom"
+    return_url = (
+        str(request.url_for("complete_example_payment"))
+        + "?session_id={CHECKOUT_SESSION_ID}"
+    )
     client = stripe_client()
     session = client.v1.checkout.sessions.create(
         params={
-            # elements matches stripe.js initCheckoutElementsSdk
             "ui_mode": "elements",
             "mode": "payment",
             "billing_address_collection": "required",
@@ -96,7 +126,7 @@ def create_example_payment_session() -> CreateExamplePaymentSessionResponse:
                     },
                 }
             ],
-            "return_url": example_payment_return_url(),
+            "return_url": return_url,
         }
     )
 
@@ -124,47 +154,18 @@ def create_example_payment_pending(
     data: ExamplePaymentPendingRequest,
 ) -> ExamplePaymentPendingResponse:
     """
-    Validate the checkout session is still open before the browser confirms payment.
+    Save the order immediately before the browser confirms payment.
 
-    The client secret is parsed with the stripe helper so a tampered secret never
-    reaches Stripe. This can run again if confirmation fails and the buyer retries.
+    This can run again if Stripe rejects the form and the buyer retries. The unique
+    checkout session id keeps those retries on one order.
     """
 
-    session_id = extract_checkout_session_id_from_client_secret(data.client_secret)
-    session = stripe_retrieve(session_id, stripe_client())
-    assert isinstance(session, CheckoutSession)
+    session = retrieve_checkout_session(data.stripe_checkout_session_id)
 
     if session.status != "open":
         raise ClientError(
             "Your checkout session has expired. Please refresh the page and try again.",
         )
-
-    return ExamplePaymentPendingResponse(stripe_checkout_session_id=session_id)
-
-
-@example_payment_api.get("/status")
-def example_payment_status(
-    session_id: str = Query(),
-) -> ExamplePaymentStatusResponse:
-    """
-    Read a completed checkout session for the confirmation page.
-
-    Country and postal code come from the checkout helper. Dispute state comes from
-    the payment intent helper.
-    """
-
-    client = stripe_client()
-    session = stripe_retrieve(session_id, client)
-    assert isinstance(session, CheckoutSession)
-
-    if session.status != "complete":
-        raise ClientError(
-            "Checkout is not complete. Return to the payment page and try again.",
-        )
-
-    payment_intent_id = payment_intent_id_from_session(session)
-    disputed = payment_intent_is_disputed(client, payment_intent_id)
-    country_zip = extract_country_zip_from_checkout_session(client, session_id)
 
     amount_cents = session.amount_total
     assert amount_cents is not None
@@ -172,14 +173,79 @@ def example_payment_status(
     currency = session.currency
     assert currency
 
-    assert session.id
+    order = ExamplePaymentOrder.one_or_none(
+        stripe_checkout_session_id=data.stripe_checkout_session_id
+    )
+    if order:
+        order.email = data.email
+        order.save()
+    else:
+        order = ExamplePaymentOrder(
+            stripe_checkout_session_id=data.stripe_checkout_session_id,
+            email=data.email,
+            amount_cents=amount_cents,
+            currency=currency,
+        ).save()
+
+    return ExamplePaymentPendingResponse(order_id=str(order.id))
+
+
+@example_payment_api.get("/complete")
+def complete_example_payment(session_id: str = Query()) -> RedirectResponse:
+    """
+    Stripe redirects the browser here after payment.
+
+    Mark the pending order paid, then send the browser to the confirmation page.
+    """
+
+    session = retrieve_checkout_session(session_id)
+    if session.status != "complete":
+        raise ClientError(
+            "Checkout is not complete. Return to the payment page and try again.",
+            status_code=404,
+            code="NOT_FOUND",
+        )
+
+    order = ExamplePaymentOrder.one(stripe_checkout_session_id=session_id)
+    order.status = ExamplePaymentOrderStatus.paid
+    order.save()
+
+    confirmation_url = (
+        f"{env.base_url('VITE_APP_BASE_URL')}pay/confirmation?session_id={session_id}"
+    )
+    return RedirectResponse(url=confirmation_url)
+
+
+@example_payment_api.get("/status")
+def example_payment_status(session_id: str = Query()) -> ExamplePaymentStatusResponse:
+    """
+    Read a paid order for the confirmation page.
+
+    Country, postal code, and dispute state come from the stripe helpers. This can
+    run every time the confirmation page is opened.
+    """
+
+    client = stripe_client()
+    session = retrieve_checkout_session(session_id)
+    if session.status != "complete":
+        raise ClientError(
+            "Checkout is not complete. Return to the payment page and try again.",
+        )
+
+    order = ExamplePaymentOrder.one(stripe_checkout_session_id=session_id)
+    payment_intent_id = payment_intent_id_from_session(session)
+    disputed = payment_intent_is_disputed(client, payment_intent_id)
+    country_zip = extract_country_zip_from_checkout_session(client, session_id)
 
     return ExamplePaymentStatusResponse(
-        stripe_checkout_session_id=session.id,
+        order_id=str(order.id),
+        email=order.email,
+        status=order.status,
+        stripe_checkout_session_id=order.stripe_checkout_session_id,
         payment_intent_id=payment_intent_id,
         disputed=disputed,
         country=country_zip.country,
         postal_code=country_zip.postal_code,
-        amount_cents=amount_cents,
-        currency=currency,
+        amount_cents=order.amount_cents,
+        currency=order.currency,
     )

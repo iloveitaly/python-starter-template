@@ -22,6 +22,12 @@ def api_app_url_path_for(name: Literal["application_data"], **path_params) -> st
 
 @overload
 def api_app_url_path_for(
+    name: Literal["complete_example_payment"], **path_params
+) -> str: ...
+
+
+@overload
+def api_app_url_path_for(
     name: Literal["create_example_payment_pending"], **path_params
 ) -> str: ...
 

@@ -142,9 +142,13 @@ export default function ExamplePaymentPage({
       return
     }
 
+    const checkoutSession = loaded.actions.getSession()
     const pending = await createExamplePaymentPending({
       client: publicClient,
-      body: { client_secret: loaderData.client_secret },
+      body: {
+        stripe_checkout_session_id: checkoutSession.id,
+        email: values.email,
+      },
     })
 
     if (pending.error || !pending.data) {
@@ -157,9 +161,10 @@ export default function ExamplePaymentPage({
       return
     }
 
+    // Stripe sends the browser to the backend complete route, which redirects here
     const confirmed = await loaded.actions.confirm({
       email: values.email,
-      redirect: "if_required",
+      redirect: "always",
     })
 
     if (confirmed.type === "error") {
@@ -167,9 +172,8 @@ export default function ExamplePaymentPage({
       return
     }
 
-    const sessionId = pending.data.stripe_checkout_session_id
     navigate(
-      `${href("/pay/confirmation")}?session_id=${encodeURIComponent(sessionId)}`,
+      `${href("/pay/confirmation")}?session_id=${encodeURIComponent(checkoutSession.id)}`,
     )
   }
 
