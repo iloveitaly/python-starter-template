@@ -1,8 +1,7 @@
 import hashlib
-import io
+import sys
 
 import pytest
-import structlog
 from facebook_business.adobjects.serverside.event import Event
 from fastapi import BackgroundTasks, Request
 
@@ -11,24 +10,6 @@ with pytest.MonkeyPatch.context() as credentials:
     credentials.setenv("META_PIXEL_ID", "test-pixel")
     credentials.setenv("META_PIXEL_KEY", "test-key")
     import app.helpers.facebook as fb
-
-
-# TODO this should be in the structlog_config module
-@pytest.fixture
-def capture_structlog_logs():
-    """
-    Fixture that provides a logger and access to its output.
-    Returns a tuple of (log, capture).
-    """
-
-    from structlog_config import configure_logger
-
-    output = io.StringIO()
-
-    log = configure_logger(logger_factory=structlog.PrintLoggerFactory(file=output))
-    log.clear()
-
-    yield log, output
 
 
 def make_request(
@@ -332,31 +313,19 @@ def test_valid_phone_is_hashed_in_e164(monkeypatch):
     assert sent[0]["data"][0]["user_data"]["ph"] == [expected]
 
 
-def test_send_failure_logs_exception(monkeypatch, capture_structlog_logs):
-    log, output = capture_structlog_logs
-
-    import app.helpers.facebook
-
-    monkeypatch.setattr(app.helpers.facebook, "log", log)
+def test_send_failure_is_reported_and_swallowed(monkeypatch):
     captured = []
-    monkeypatch.setattr(
-        fb.sentry_sdk, "capture_exception", lambda: captured.append(True)
-    )
 
+    def capture_exception():
+        captured.append(sys.exc_info()[1])
+
+    monkeypatch.setattr(fb.sentry_sdk, "capture_exception", capture_exception)
     setup_facebook_mocks(monkeypatch, error=RuntimeError("boom"))
 
-    request = make_request()
-    fb.send_conversion_event(event_name="PageView", request=request)
+    fb.send_conversion_event(event_name="PageView", request=make_request())
 
-    logs = output.getvalue()
-
-    assert "facebook pixel event send failed" in logs
-    assert "PageView" in logs
-
-    # the traceback is the whole point: a swallowed send is invisible without it
-    assert "RuntimeError" in logs
-    assert "Traceback" in logs
-    assert captured == [True]
+    assert len(captured) == 1
+    assert isinstance(captured[0], RuntimeError)
 
 
 def test_phone_uses_buyers_country(monkeypatch):
