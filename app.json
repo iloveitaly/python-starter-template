@@ -44,7 +44,7 @@
   },
   "scripts": {
     "dokku": {
-      "postdeploy": "python -m app.cli notify-sentry-deploy"
+      "postdeploy": "sentry-cli deploys new --release \"$BUILD_COMMIT\" --env \"$PYTHON_ENV\""
     }
   }
 }
