@@ -82,9 +82,13 @@ export CLERK_PRIVATE_KEY="op://${OP_VAULT_UID}/f5k2z5od2bmbibupey4fze6koi/sandbo
 export SENTRY_DSN="backend-dsn"
 export POSTHOG_SECRET_KEY="secret-key"
 
+export STRIPE_PUBLIC_KEY="op://${OP_VAULT_UID}/div6qufv4d5quhalzjrmeiuh5i/publishable-key"
+export STRIPE_SECRET_KEY="op://${OP_VAULT_UID}/div6qufv4d5quhalzjrmeiuh5i/secret-key"
+
 export VITE_SENTRY_DSN="frontend-dsn"
 export VITE_CLERK_PUBLIC_KEY="op://${OP_VAULT_UID}/f5k2z5od2bmbibupey4fze6koi/sandbox-clerk-public-key"
 export VITE_POSTHOG_KEY="public-key"
 EOF
 
 export CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLIC_KEY
+export VITE_STRIPE_PUBLIC_KEY=$STRIPE_PUBLIC_KEY

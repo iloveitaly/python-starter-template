@@ -31,6 +31,7 @@ export CLERK_PRIVATE_KEY="fake"
 
 # TODO we need to document these further, and maybe autogenerate some of the secrets?
 op_inject_source <<'EOF'
+export STRIPE_SECRET_KEY="op://${OP_VAULT_UID}/div6qufv4d5quhalzjrmeiuh5i/secret-key"
 export SENTRY_DSN='op://${OP_VAULT_UID}/l6tqzu6znjffvpux53uiloftli/backend-dsn'
 export SESSION_SECRET_KEY="op://${OP_VAULT_UID}/oi7yjtezhbmtpxzc72eqsl4pse/password"
 EOF

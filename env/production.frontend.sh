@@ -14,6 +14,7 @@ export OPENAPI_JSON_PATH=openapi.json
 # `inject` is much faster than individually sourcing keys with `op read`
 # IMPORTANT: these should only be used in production!
 op_inject_source <<'EOF'
+export VITE_STRIPE_PUBLIC_KEY="op://${OP_VAULT_UID}/div6qufv4d5quhalzjrmeiuh5i/publishable-key"
 export VITE_SENTRY_DSN="op://${OP_VAULT_UID}/4dsjcmjzybuipafki2wl2eovsy/frontend-dsn"
 export VITE_CLERK_PUBLIC_KEY="op://${OP_VAULT_UID}/epctgojloj7legp7h62zktshha/sandbox-clerk-public-key"
 export VITE_POSTHOG_KEY="op://${OP_VAULT_UID}/25dj3ith4d37cy5ghssr3mo5rq/public-key"
