@@ -1,9 +1,11 @@
+# `pyproject.toml` extends this file, so a pattern that contains `/` is
+# relative to this directory rather than the repository root.
 extend-exclude = [
     "playground",
     "playground.py",
-    "migrations/env.py",
-    "migrations/versions/*.py",
-    "tests/conftest.py",
+    "../../migrations/env.py",
+    "../../migrations/versions/*.py",
+    "../../tests/conftest.py",
     ".copier",
     "tmp",
 ]
@@ -14,9 +16,9 @@ extend-select = ["I", "ISC", "UP", "C4", "B"]
 
 [lint.per-file-ignores]
 # B008: FastAPI uses function calls (e.g. Depends(), Query()) as default argument values, which is intentional
-"app/routes/**" = ["B008"]
+"../../app/routes/**" = ["B008"]
 # E731: Factory fields use lambda assignments to defer execution per polyfactory's convention
-"app/factories/**" = ["E731"]
+"../../app/factories/**" = ["E731"]
 
 [lint.isort]
 section-order = [
