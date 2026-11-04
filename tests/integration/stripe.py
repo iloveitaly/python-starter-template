@@ -83,6 +83,91 @@ def fill_stripe_checkout(
     page.wait_for_timeout(500)
 
 
+def fill_stripe_payment_elements(page: Page) -> None:
+    """
+    Fill the example payment page's Checkout Elements card and billing address.
+
+    Card and address render in separate Stripe iframes. The card iframe may start
+    collapsed behind a Card button.
+    """
+
+    card_frame = None
+    for _ in range(20):
+        for iframe in page.query_selector_all("iframe"):
+            name = iframe.get_attribute("name") or ""
+            if not name.startswith("__privateStripeFrame"):
+                continue
+
+            frame = iframe.content_frame()
+            if not frame:
+                continue
+
+            card_number = frame.get_by_role("textbox", name="Card number")
+            if card_number.count() and card_number.is_visible():
+                card_frame = frame
+                break
+
+            card_button = frame.get_by_role("button", name="Card")
+            if card_button.count() and card_button.is_visible():
+                safely_scroll_then_click(card_button)
+
+        if card_frame:
+            break
+
+        page.wait_for_timeout(500)
+
+    assert card_frame is not None, "Stripe card iframe not found"
+
+    textbox_names = card_frame.get_by_role("textbox").evaluate_all(
+        "elements => elements.map(element => element.getAttribute('aria-label') || element.getAttribute('name') || element.placeholder || '')"
+    )
+    expiry_name = next(
+        (name for name in textbox_names if name and "expir" in name.lower()),
+        None,
+    )
+    security_name = next(
+        (
+            name
+            for name in textbox_names
+            if name and ("security" in name.lower() or name.lower() == "cvc")
+        ),
+        None,
+    )
+    if not expiry_name or not security_name:
+        raise AssertionError(f"card fields missing, textboxes={textbox_names}")
+
+    card_frame.get_by_role("textbox", name="Card number").fill("4242424242424242")
+    card_frame.get_by_role("textbox", name=expiry_name).fill("10 / 30")
+    card_frame.get_by_role("textbox", name=security_name).fill("123")
+
+    address_frame = None
+    for iframe in page.query_selector_all("iframe"):
+        name = iframe.get_attribute("name") or ""
+        if not name.startswith("__privateStripeFrame"):
+            continue
+
+        frame = iframe.content_frame()
+        if not frame:
+            continue
+
+        if (
+            frame.get_by_text("Full name").count()
+            or frame.get_by_label("Country").count()
+        ):
+            address_frame = frame
+            break
+
+    assert address_frame is not None, "Stripe billing address iframe not found"
+
+    # Address Element inputs have no accessible names, only billingAddress-* ids
+    address_frame.locator("#billingAddress-nameInput").fill("Test Buyer")
+    address_frame.locator("#billingAddress-countryInput").select_option("US")
+    address_frame.locator("#billingAddress-addressLine1Input").fill("1 Market St")
+    address_frame.locator("#billingAddress-localityInput").fill("Denver")
+    address_frame.locator("#billingAddress-administrativeAreaInput").select_option("CO")
+    address_frame.locator("#billingAddress-postalCodeInput").fill("80110")
+
+
 def assert_customer_attached_to_session(stripe_client: Any, session_id: str) -> None:
     """
     Assert that a non-guest Stripe customer is attached to the checkout session.
