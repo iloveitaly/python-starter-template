@@ -63,11 +63,13 @@ mode = "comment"
 name = "default"
 default = true
 
-[[plugin]]
-name = "actionlint"
+# actionlint already runs in dev_lint
+# [[plugin]]
+# name = "actionlint"
 
-[[plugin]]
-name = "ast-grep"
+# ast-grep already runs in py_lint
+# [[plugin]]
+# name = "ast-grep"
 
 [[plugin]]
 name = "bandit"
@@ -77,14 +79,16 @@ name = "bandit"
 name = "editorconfig-checker"
 mode = "comment"
 
-[[plugin]]
-name = "eslint"
-package_file = "web/package.json"
+# eslint already runs in js_lint
+# [[plugin]]
+# name = "eslint"
+# package_file = "web/package.json"
 # package_filters keeps dependency names that contain these strings; the flat config imports globals
-package_filters = ["eslint", "globals", "jest", "prettier"]
+# package_filters = ["eslint", "globals", "jest", "prettier"]
 
-[[plugin]]
-name = "gitleaks"
+# gitleaks already runs in dev_lint
+# [[plugin]]
+# name = "gitleaks"
 
 [[plugin]]
 name = "osv-scanner"
@@ -101,8 +105,9 @@ mode = "comment"
 name = "ripgrep"
 mode = "comment"
 
-[[plugin]]
-name = "ruff"
+# ruff check and ruff format already run in py_lint
+# [[plugin]]
+# name = "ruff"
 
 [[plugin]]
 name = "shellcheck"
