@@ -120,6 +120,9 @@ py_lint +FILES=".":
 		ast-grep scan --error --filter '^py-' || exit_code=$?
 	fi
 
+	# ruff, bandit, and radarlint. Other plugins run from js_lint or dev_lint.
+	qlty check --filter ruff,bandit,radarlint-python {{FILES}} || exit_code=$?
+
 	# TODO should only run if {{FILES}} contains a template
 	# NOTE djlint does *not* check jinja syntax, only HTML. GH friendly output is automatically enabled.
 	uv run djlint {{JINJA_TEMPLATE_DIR}} --profile=jinja
