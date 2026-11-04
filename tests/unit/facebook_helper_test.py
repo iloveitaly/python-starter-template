@@ -6,6 +6,10 @@ import pytest
 import structlog
 from facebook_business.adobjects.serverside.event import Event
 from fastapi import BackgroundTasks, Request
+from requests import PreparedRequest
+from requests.adapters import HTTPAdapter
+from requests.exceptions import ConnectionError as RequestsConnectionError
+from urllib3.exceptions import MaxRetryError
 
 # all sends are mocked; credentials are only needed to import the helper
 with pytest.MonkeyPatch.context() as credentials:
@@ -90,14 +94,6 @@ class FakeEventRequest:
 
 
 def setup_facebook_mocks(monkeypatch, *, error: RuntimeError | None = None):
-    # avoid real SDK init
-    class _NoopApi:
-        @staticmethod
-        def init(**_kwargs):
-            return None
-
-    monkeypatch.setattr(fb, "FacebookAdsApi", _NoopApi)
-
     sent: list[dict] = []
     monkeypatch.setattr(
         fb,
@@ -271,41 +267,39 @@ def test_send_failure_logs_exception(monkeypatch, capture_structlog_logs):
     assert captured == [True]
 
 
-def test_send_failure_redacts_access_token_before_log_and_sentry(
-    monkeypatch, capture_structlog_logs
-):
+def test_network_failure_does_not_leak_access_token(monkeypatch, capture_structlog_logs):
     log, output = capture_structlog_logs
+    monkeypatch.setattr(fb, "log", log)
 
-    import app.helpers.facebook
-
-    monkeypatch.setattr(app.helpers.facebook, "log", log)
-
-    token = "EAAMSECRETZDZD"
-    url = f"https://graph.facebook.com/v26.0/1103726080810040/events?access_token={token}&foo=1"
-    captured: list[str] = []
-
-    def capture_exception():
-        _exc_type, value, _traceback = sys.exc_info()
-        assert value is not None
-        captured.append(str(value))
-
-    # capture_exception reads sys.exc_info(), which is the live exception we just rewrote
-    monkeypatch.setattr(fb.sentry_sdk, "capture_exception", capture_exception)
-
-    setup_facebook_mocks(
-        monkeypatch,
-        error=RuntimeError(f"Max retries exceeded with url: {url} (Caused by OSError)"),
+    captured_messages: list[str] = []
+    monkeypatch.setattr(
+        fb.sentry_sdk,
+        "capture_exception",
+        lambda: captured_messages.append(repr(sys.exc_info()[1])),
     )
+
+    sent_requests: list[PreparedRequest] = []
+
+    # simulate ENETUNREACH at the transport layer so the real SDK builds the request and the exception chain
+    def unreachable_send(_adapter, request, **_kwargs):
+        sent_requests.append(request)
+        raise RequestsConnectionError(
+            MaxRetryError(None, request.url, OSError(101, "Network is unreachable")),
+            request=request,
+        )
+
+    monkeypatch.setattr(HTTPAdapter, "send", unreachable_send)
 
     fb.send_conversion_event(event_name="PageView", request=make_request())
 
-    logs = output.getvalue()
+    request = sent_requests[0]
+    assert "access_token" not in request.url
+    assert request.headers["Authorization"] == f"Bearer {fb.META_PIXEL_KEY}"
 
-    assert token not in logs
-    assert token not in captured[0]
-    assert "access_token=[Filtered]" in logs
-    assert "foo=1" in logs
-    assert "facebook pixel event send failed" in logs
+    logs = output.getvalue()
+    assert "Network is unreachable" in logs
+    assert fb.META_PIXEL_KEY not in logs
+    assert fb.META_PIXEL_KEY not in captured_messages[0]
 
 
 def test_phone_uses_buyers_country(monkeypatch):

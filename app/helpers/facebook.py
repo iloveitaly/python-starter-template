@@ -27,7 +27,6 @@ from structlog_config.fastapi_access_logger import client_ip_from_request
 
 from app import log
 from app.env import env
-from app.lib.secret_redaction import redact_exception_chain
 
 META_PIXEL_ID = env.str("META_PIXEL_ID")
 META_PIXEL_KEY = env.str("META_PIXEL_KEY")
@@ -313,13 +312,26 @@ def send_conversion_event(
         _send_facebook_event(event, TEST_EVENT_CODE_OVERRIDE)
 
 
+def _move_access_token_to_header(api: FacebookAdsApi) -> None:
+    """
+    The SDK sends the token as a URL query parameter, and HTTP client exceptions embed
+    the full URL, which leaked the token into Sentry. The Graph API also accepts it as
+    a bearer header, which never appears in exception text.
+    """
+
+    session = api._session.requests
+    session.params.pop("access_token")
+    session.headers["Authorization"] = f"Bearer {META_PIXEL_KEY}"
+
+
 def _send_facebook_event(event: Event, test_event_code: str | None = None) -> None:
     try:
-        FacebookAdsApi.init(
+        api = FacebookAdsApi.init(
             access_token=META_PIXEL_KEY,
             # Without this, Facebook overrides sys.excepthook and sends exception data to its servers.
             crash_log=False,
         )
+        _move_access_token_to_header(api)
         event_request = EventRequest(
             pixel_id=META_PIXEL_ID,
             events=[event],
@@ -327,10 +339,8 @@ def _send_facebook_event(event: Event, test_event_code: str | None = None) -> No
         if test_event_code:
             event_request.test_event_code = test_event_code
         event_request.execute()
-    except Exception as exc:  # noqa: BLE001
+    except Exception:  # noqa: BLE001
         # structlog writes straight to stdout, so nothing here reaches Sentry on its own
-        # the SDK interpolates the credential into the exception text
-        redact_exception_chain(exc)
         sentry_sdk.capture_exception()
         log.exception(
             "facebook pixel event send failed",
