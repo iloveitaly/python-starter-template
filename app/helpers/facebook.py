@@ -15,6 +15,8 @@ from typing import Literal
 import phonenumbers
 import sentry_sdk
 from capi_param_builder import ParamBuilder
+from device_detector import DeviceDetector
+from device_detector.enums import AppType
 from facebook_business.adobjects.serverside.action_source import ActionSource
 from facebook_business.adobjects.serverside.custom_data import CustomData
 from facebook_business.adobjects.serverside.event import Event
@@ -275,10 +277,33 @@ def send_conversion_event(
     200-400ms and that cost shouldn't land on the caller's request. Failures are swallowed
     by `_send_facebook_event`, so this never fails the request it rides on.
 
+    Probes and crawlers, per Device Detector, are dropped before an event is built.
+    A match key on the request does not override that. An HTTP library such as
+    curl still sends, and is logged at warning.
+
     When fbc is omitted, it is resolved from the request’s query parameters, then the _fbc cookie.
     Landing-page parameters must be explicitly forwarded to API requests.
     This fallback does not inspect the request body. Pass fbc when it was already captured earlier.
     """
+    if user_agent := request.headers.get(USER_AGENT_HEADER):
+        # full parse: bot detection does not classify HTTP libraries
+        detector = DeviceDetector(user_agent).parse()
+        if detector.is_bot():
+            log.debug(
+                "skipping meta event for non-human client",
+                event_name=event_name,
+                user_agent=user_agent,
+            )
+            return
+
+        if detector.client_type() == AppType.Library:
+            log.warning(
+                "meta event from http library",
+                event_name=event_name,
+                user_agent=user_agent,
+                client_name=detector.client_name(),
+            )
+
     custom_data = None
     if value_in_cents is not None:
         custom_data = CustomData(
