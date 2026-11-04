@@ -150,7 +150,10 @@ def fill_stripe_payment_elements(page: Page) -> None:
         if not frame:
             continue
 
-        if frame.get_by_text("Full name").count() or frame.get_by_label("Country").count():
+        if (
+            frame.get_by_text("Full name").count()
+            or frame.get_by_label("Country").count()
+        ):
             address_frame = frame
             break
 

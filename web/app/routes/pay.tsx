@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react"
-import { href, useNavigate } from "react-router"
 import { useForm } from "react-hook-form"
+import { href, useNavigate } from "react-router"
 import { z } from "zod"
-import type { StripeCheckoutElementsSdk } from "@stripe/stripe-js"
+
+import type { Route } from "./+types/pay"
 
 import { AllMeta } from "~/components/shared/AllMeta"
 import { ServerErrorAlert } from "~/components/shared/ServerErrorAlert"
@@ -27,10 +28,9 @@ import { log } from "~/configuration/logging"
 import { stripePromise } from "~/configuration/stripe"
 import { formatCurrency } from "~/lib/currency"
 
-import { zodResolver } from "@hookform/resolvers/zod"
 import { invariant } from "@epic-web/invariant"
-
-import type { Route } from "./+types/pay"
+import { zodResolver } from "@hookform/resolvers/zod"
+import type { StripeCheckoutElementsSdk } from "@stripe/stripe-js"
 
 const formSchema = z.object({
   email: z.email("Enter a valid email"),
@@ -72,15 +72,16 @@ export default function ExamplePaymentPage({
     resolver: zodResolver(formSchema),
     defaultValues: { email: "" },
   })
-  const checkoutRef = useRef<StripeCheckoutElementsSdk | null>(null)
   const billingMountRef = useRef<HTMLDivElement>(null)
   const paymentMountRef = useRef<HTMLDivElement>(null)
 
-
-  const [checkoutReady, setCheckoutReady] = useState(false)
+  const [checkout, setCheckout] = useState<StripeCheckoutElementsSdk | null>(
+    null,
+  )
 
   useEffect(() => {
     let cancelled = false
+    let mountedCheckout: StripeCheckoutElementsSdk | null = null
 
     async function mountCheckout() {
       const stripe = await stripePromise
@@ -91,11 +92,11 @@ export default function ExamplePaymentPage({
       }
 
       // Checkout Elements SDK reads the API version from this client secret
-      const checkout = stripe.initCheckoutElementsSdk({
+      const nextCheckout = stripe.initCheckoutElementsSdk({
         clientSecret: loaderData.client_secret,
       })
-      const billingElement = checkout.createBillingAddressElement()
-      const paymentElement = checkout.createPaymentElement({
+      const billingElement = nextCheckout.createBillingAddressElement()
+      const paymentElement = nextCheckout.createPaymentElement({
         fields: { billingDetails: { address: "never" } },
       })
 
@@ -105,17 +106,17 @@ export default function ExamplePaymentPage({
 
       billingElement.mount(billingMountRef.current)
       paymentElement.mount(paymentMountRef.current)
-      checkoutRef.current = checkout
-      setCheckoutReady(true)
+      mountedCheckout = nextCheckout
+      setCheckout(nextCheckout)
     }
 
     void mountCheckout()
 
     return () => {
       cancelled = true
-      checkoutRef.current?.getBillingAddressElement()?.unmount()
-      checkoutRef.current?.getPaymentElement()?.unmount()
-      checkoutRef.current = null
+      mountedCheckout?.getBillingAddressElement()?.unmount()
+      mountedCheckout?.getPaymentElement()?.unmount()
+      setCheckout(null)
     }
   }, [loaderData.client_secret])
 
@@ -133,7 +134,6 @@ export default function ExamplePaymentPage({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     clearErrors("root")
 
-    const checkout = checkoutRef.current
     invariant(checkout, "Checkout is not ready")
 
     const loaded = await checkout.loadActions()
@@ -182,7 +182,8 @@ export default function ExamplePaymentPage({
       <AllMeta
         basic={{
           title: "Example payment",
-          description: "Pay with Stripe Checkout to exercise the payment helpers.",
+          description:
+            "Pay with Stripe Checkout to exercise the payment helpers.",
         }}
       />
       <div className="payment-intro">
@@ -220,7 +221,7 @@ export default function ExamplePaymentPage({
           <Button
             type="submit"
             className="w-full"
-            disabled={!checkoutReady || isSubmitting}
+            disabled={!checkout || isSubmitting}
           >
             {isSubmitting ? "Paying..." : `Pay ${amountLabel}`}
           </Button>

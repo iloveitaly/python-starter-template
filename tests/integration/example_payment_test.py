@@ -3,6 +3,7 @@ from pytest import FixtureRequest
 from pytest_playwright_artifacts import assert_no_console_errors
 
 from app.generated.react_router_routes import react_router_url
+
 from app.models.example_payment_order import (
     ExamplePaymentOrder,
     ExamplePaymentOrderStatus,

@@ -1,9 +1,12 @@
+import type { Route } from "./+types/pay-confirmation"
+
 import { AllMeta } from "~/components/shared/AllMeta"
-import { examplePaymentStatus, publicClientLoader } from "~/configuration/client"
+import {
+  examplePaymentStatus,
+  publicClientLoader,
+} from "~/configuration/client"
 import { formatCurrency } from "~/lib/currency"
 import { getQueryParam } from "~/lib/utils"
-
-import type { Route } from "./+types/pay-confirmation"
 
 export async function clientLoader(loaderArgs: Route.ClientLoaderArgs) {
   const sessionId = getQueryParam(loaderArgs.request, "session_id")
@@ -43,7 +46,8 @@ export default function ExamplePaymentConfirmationPage({
       />
       <h1 className="mb-2 text-2xl font-bold">Payment complete</h1>
       <p className="mb-6">
-        {amountLabel} for <span className="snapshot-mask">{loaderData.email}</span>
+        {amountLabel} for{" "}
+        <span className="snapshot-mask">{loaderData.email}</span>
       </p>
       <dl className="space-y-2 text-sm">
         <div>
