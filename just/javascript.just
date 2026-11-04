@@ -39,7 +39,7 @@ js_lint +FILES=".":
 
 	{{_pnpm}} dlx depcheck
 
-	# FILES are web-relative, same as prettier and eslint. Qlty runs from the repo root.
+	# eslint only, so this does not repeat the python plugins; paths are web-relative and qlty runs from the repo root
 	files=({{FILES}}); \
 	qlty_paths=(); \
 	for file in $files; do \

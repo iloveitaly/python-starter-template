@@ -120,7 +120,7 @@ py_lint +FILES=".":
 		ast-grep scan --error --filter '^py-' || exit_code=$?
 	fi
 
-	# ruff, bandit, and radarlint. Other plugins run from js_lint or dev_lint.
+	# one qlty.toml for every language; --filter takes one comma-separated plugin list
 	qlty check --filter ruff,bandit,radarlint-python {{FILES}} || exit_code=$?
 
 	# TODO should only run if {{FILES}} contains a template
