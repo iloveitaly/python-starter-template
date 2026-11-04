@@ -35,4 +35,5 @@ trivy = "latest"
 "github:dmtrKovalenko/odiff" = "latest"
 "github:railwayapp/railpack" = "latest"
 tombi = "latest"
-"github:qltysh/qlty" = "latest"
+# repo-wide minimum_release_age is 14d, which holds this tool on an older release
+"github:qltysh/qlty" = { version = "latest", minimum_release_age = "0s" }
