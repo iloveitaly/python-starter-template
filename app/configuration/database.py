@@ -94,6 +94,19 @@ def needs_alembic_migration() -> bool:
         ctx = MigrationContext.configure(conn)
         current_heads = ctx.get_current_heads()
 
+    # during rolling deploys or rollbacks, an older container may boot after a newer deploy already migrated;
+    # return early to gracefully skip migrations instead of letting command.upgrade raise CommandError and crash startup
+    known_revisions = {rev.revision for rev in script_dir.walk_revisions()}
+    unknown_revisions = set(current_heads) - known_revisions
+    if unknown_revisions:
+        log.warning(
+            "database has revisions missing from this build; skipping migrations",
+            current_heads=current_heads,
+            heads=heads,
+            unknown_revisions=sorted(unknown_revisions),
+        )
+        return False
+
     needs_migration = set(current_heads) != set(heads)
 
     if needs_migration:
@@ -160,4 +173,7 @@ def run_migrations():
     # already executed the migrations. This is why we just `command.upgrade` after checking if migrations should be run.
 
     if needs_alembic_migration():
-        command.upgrade(get_alembic_config(), "head")
+        config = get_alembic_config()
+        # custom flag read by migrations/env.py so the post-lock early return is only executed when running migrations on startup
+        config.attributes["inline_migration_execution"] = True
+        command.upgrade(config, "head")

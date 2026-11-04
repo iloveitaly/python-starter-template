@@ -28,7 +28,7 @@ import alembic_postgresql_enum
 from sqlmodel import SQLModel
 from app import log
 from app.models import *
-from app.configuration.database import database_url
+from app.configuration.database import database_url, needs_alembic_migration
 
 config.set_main_option("sqlalchemy.url", database_url())
 
@@ -132,6 +132,11 @@ def run_migrations_online() -> None:
             SELECT pg_advisory_xact_lock({ALEMBIC_LOCK_KEY});
             """))
             log.info("acquired advisory lock")
+
+            # inline_migration_execution is a custom attribute set by run_migrations() so this post-lock early return
+            # only runs during automatic startup migrations and does not short-circuit alembic CLI operations
+            if config.attributes.get("inline_migration_execution") and not needs_alembic_migration():
+                return
 
             context.run_migrations()
 
