@@ -71,6 +71,7 @@ name = "ast-grep"
 
 [[plugin]]
 name = "bandit"
+# B101 is skipped in .qlty/configs/.bandit because asserts are not stripped
 
 [[plugin]]
 name = "editorconfig-checker"
