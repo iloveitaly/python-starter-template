@@ -39,6 +39,20 @@ js_lint +FILES=".":
 
 	{{_pnpm}} dlx depcheck
 
+	# FILES are web-relative, same as prettier and eslint. Qlty runs from the repo root.
+	files=({{FILES}}); \
+	qlty_paths=(); \
+	for file in $files; do \
+		if [[ $file == . ]]; then \
+			qlty_paths+=({{WEB_DIR}}); \
+		elif [[ $file == {{WEB_DIR}} || $file == {{WEB_DIR}}/* ]]; then \
+			qlty_paths+=($file); \
+		else \
+			qlty_paths+=({{WEB_DIR}}/$file); \
+		fi; \
+	done; \
+	qlty check --filter eslint $qlty_paths
+
 	{{_pnpm}} run typecheck
 
 # automatically fix linting errors
