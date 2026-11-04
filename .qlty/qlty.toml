@@ -11,6 +11,8 @@
 #
 # For a guide to configuration, visit https://qlty.sh/d/config
 # Or for a full reference, visit https://qlty.sh/d/qlty-toml
+# the cli only reads this file, so python and javascript share it
+# per-language smell thresholds go under [language.<name>.smells]
 config_version = "0"
 
 exclude_patterns = [
@@ -39,7 +41,7 @@ exclude_patterns = [
     "**/templates/**",
     "**/testdata/**",
     "**/vendor/**",
-    # Celery signal receivers have to keep the framework's parameter list.
+    # built-in smells have no per-function ignore, and these receivers must keep celery's parameter list
     "app/celery.py",
 ]
 
@@ -77,6 +79,7 @@ mode = "comment"
 [[plugin]]
 name = "eslint"
 package_file = "web/package.json"
+# package_filters keeps dependency names that contain these strings; the flat config imports globals
 package_filters = ["eslint", "globals", "jest", "prettier"]
 
 [[plugin]]
