@@ -41,5 +41,10 @@
         "attempts": 5
       }
     ]
+  },
+  "scripts": {
+    "dokku": {
+      "postdeploy": "sentry-cli deploys new --release \"$BUILD_COMMIT\" --env \"$PYTHON_ENV\""
+    }
   }
 }

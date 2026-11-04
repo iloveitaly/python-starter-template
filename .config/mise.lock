@@ -113,6 +113,53 @@ checksum = "sha256:dce851f280b986764037bd952d40819e94ccceb08ac914004123f43ce17f4
 url = "https://github.com/astral-sh/python-build-standalone/releases/download/20261013/cpython-3.14.8+20261013-x86_64-pc-windows-msvc-install_only_stripped.tar.gz"
 provenance = "github-attestations"
 
+[[tools.sentry-cli]]
+version = "3.8.0"
+backend = "aqua:getsentry/sentry-cli"
+specifiers = ["latest"]
+
+[tools.sentry-cli."platforms.linux-arm64"]
+checksum = "sha256:eaea24b5b47b61a96d9a2e353268ea41fd9a8c5b7979694330df614d4af672bf"
+checksum_source = "mise-versions"
+url = "https://github.com/getsentry/sentry-cli/releases/download/3.8.0/sentry-cli-Linux-aarch64"
+url_api = "https://api.github.com/repos/getsentry/sentry-cli/releases/assets/568158248"
+
+[tools.sentry-cli."platforms.linux-arm64-musl"]
+checksum = "sha256:eaea24b5b47b61a96d9a2e353268ea41fd9a8c5b7979694330df614d4af672bf"
+checksum_source = "mise-versions"
+url = "https://github.com/getsentry/sentry-cli/releases/download/3.8.0/sentry-cli-Linux-aarch64"
+url_api = "https://api.github.com/repos/getsentry/sentry-cli/releases/assets/568158248"
+
+[tools.sentry-cli."platforms.linux-x64"]
+checksum = "sha256:13f8cb34ae01a6a272d7d7c22e277a105286615b4020de900ea95a8de47cdbb6"
+checksum_source = "mise-versions"
+url = "https://github.com/getsentry/sentry-cli/releases/download/3.8.0/sentry-cli-Linux-x86_64"
+url_api = "https://api.github.com/repos/getsentry/sentry-cli/releases/assets/568158243"
+
+[tools.sentry-cli."platforms.linux-x64-musl"]
+checksum = "sha256:13f8cb34ae01a6a272d7d7c22e277a105286615b4020de900ea95a8de47cdbb6"
+checksum_source = "mise-versions"
+url = "https://github.com/getsentry/sentry-cli/releases/download/3.8.0/sentry-cli-Linux-x86_64"
+url_api = "https://api.github.com/repos/getsentry/sentry-cli/releases/assets/568158243"
+
+[tools.sentry-cli."platforms.macos-arm64"]
+checksum = "sha256:1dda212b0e168b9c4dc48d7d3aa24c1c37de9c6edf786e6ae661236e529969cd"
+checksum_source = "mise-versions"
+url = "https://github.com/getsentry/sentry-cli/releases/download/3.8.0/sentry-cli-Darwin-arm64"
+url_api = "https://api.github.com/repos/getsentry/sentry-cli/releases/assets/568158233"
+
+[tools.sentry-cli."platforms.macos-x64"]
+checksum = "sha256:279c795b15de7a76106d30b6611b7942b1a97323307327bafc18335f10384c4d"
+checksum_source = "mise-versions"
+url = "https://github.com/getsentry/sentry-cli/releases/download/3.8.0/sentry-cli-Darwin-x86_64"
+url_api = "https://api.github.com/repos/getsentry/sentry-cli/releases/assets/568158237"
+
+[tools.sentry-cli."platforms.windows-x64"]
+checksum = "sha256:2257cf6805a616f5c3ee291a549ebbba021190048b646adc006beb4e8cdef7fd"
+checksum_source = "mise-versions"
+url = "https://github.com/getsentry/sentry-cli/releases/download/3.8.0/sentry-cli-Windows-x86_64.exe"
+url_api = "https://api.github.com/repos/getsentry/sentry-cli/releases/assets/568158249"
+
 [[tools.uv]]
 version = "0.13.1"
 backend = "aqua:astral-sh/uv"

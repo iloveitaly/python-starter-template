@@ -900,6 +900,26 @@ This is not enabled on this application. I don't dev working differently than pr
 * Update production secrets based on current direnv-style files in `env/`
 * Trigger a release using the new image tag based on the commit sha
 
+### Notifying Sentry of a Deploy
+
+A release is recorded at build time. The Vite plugin uploads sourcemaps under `BUILD_COMMIT`, and both SDKs tag events with that same value. A deploy is a later signal that this release is live in an environment. Put that signal in the deploy hook. A container restart is not a deploy.
+
+`sentry-cli` reads `SENTRY_ORG` and `SENTRY_AUTH_TOKEN` from the environment. The release argument has to be `BUILD_COMMIT`. The environment argument has to be `PYTHON_ENV`, which is what the SDK sends as `environment`.
+
+#### Dokku
+
+One place to run it is a [Dokku](https://dokku.com/) `scripts.dokku.postdeploy` hook, which runs once per deploy after the new containers are up. `infra/dokku/app.json`:
+
+```json
+{
+  "scripts": {
+    "dokku": {
+      "postdeploy": "sentry-cli deploys new --release \"$BUILD_COMMIT\" --env \"$PYTHON_ENV\""
+    }
+  }
+}
+```
+
 ### 1Password SSH Integration
 
 * Edit `~/.config/1Password/ssh/agent.toml` and add the 1Password vault that contains the server SSH key. You'll also have to make sure that SSH services are enabled.
