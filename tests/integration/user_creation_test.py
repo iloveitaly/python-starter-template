@@ -16,6 +16,8 @@ def test_signin(server, page: Page, assert_snapshot) -> None:
     _user = login_as_dev_user(page)
 
     expect(page.locator("body")).to_contain_text("Hello From Internal Python")
+    # Clerk UserButton loads async; wait so the masked region is stable for snapshots
+    expect(page.locator('[data-clerk-component="UserButton"]')).to_be_visible()
 
     assert_snapshot(page)
 

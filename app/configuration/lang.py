@@ -104,6 +104,20 @@ def configure_python():
         log.info("disabling python breakpoints in production environment")
 
 
+def process_locale() -> str:
+    """
+    BCP 47 tag for the process locale.
+
+    `locale.getlocale()` returns a POSIX code (`en_US`). Playwright's context
+    `locale` wants a hyphenated tag.
+    """
+
+    language_code, _encoding = locale.getlocale()
+    assert language_code, "process locale is unset"
+
+    return language_code.replace("_", "-")
+
+
 def inspect_lang() -> None:
     """
     Inspect the process locale configuration without mutating it.

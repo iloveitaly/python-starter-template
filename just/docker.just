@@ -3,6 +3,7 @@
 ##########################
 
 [script]
+[env("LOCALIAS_CA_B64", `just localias_cert_base64`)]
 [arg("fast", long, help="skip waiting for healthy containers, useful for CI runs", flag)]
 [arg("latest", long, help="pull latest images and recreate services", flag)]
 docker_up fast latest: _not_production

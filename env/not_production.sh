@@ -18,6 +18,10 @@ export PLAYWRIGHT_RESULT_DIRECTORY=$TEST_RESULTS_DIRECTORY/playwright
 export PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY=tests/integration/__snapshots__
 # without this, playwright will use a different browser path across linux and macos
 export PLAYWRIGHT_BROWSERS_PATH=$TMP_DIRECTORY/ms-playwright
+# integration tests attach to compose chromium so macos, linux, and CI paint the same pixels
+# pytest --headed, or PWDEBUG=1, launches a headful browser on the host for interactive debugging
+# PLAYWRIGHT_CHROME_PORT comes from the generated host env
+export PLAYWRIGHT_CHROME_WS_ENDPOINT=ws://127.0.0.1:${PLAYWRIGHT_CHROME_PORT}/
 
 # Since `package=false` in pyproject.toml, we need to explicitly add the current directory to PYTHONPATH
 export PYTHONPATH=$ROOT_DIR
