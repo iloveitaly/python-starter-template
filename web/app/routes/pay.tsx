@@ -215,7 +215,7 @@ export default function ExamplePaymentPage({
           <div>
             <p className="mb-2 text-sm font-medium">Card</p>
             <div ref={paymentMountRef} />
-            {!checkoutReady && <Skeleton className="h-40 w-full" />}
+            {!checkout && <Skeleton className="h-40 w-full" />}
           </div>
           <ServerErrorAlert error={errors.root?.serverError} />
           <Button
