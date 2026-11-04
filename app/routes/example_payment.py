@@ -24,11 +24,12 @@ from app.lib.stripe import (
     payment_intent_is_disputed,
     stripe_retrieve,
 )
+from app.routes.errors import ClientError
+
 from app.models.example_payment_order import (
     ExamplePaymentOrder,
     ExamplePaymentOrderStatus,
 )
-from app.routes.errors import ClientError
 
 EXAMPLE_PAYMENT_AMOUNT_CENTS = 5_00
 EXAMPLE_PAYMENT_CURRENCY = "usd"

@@ -7,9 +7,9 @@ route paths in automated unit tests.
 
 from fastapi import APIRouter, Depends
 
-from activemodel.session_manager import aglobal_session
-
 from app.routes.example_payment import example_payment_api
+
+from activemodel.session_manager import aglobal_session
 
 unauthenticated_api = APIRouter(
     prefix="/unauthenticated",
