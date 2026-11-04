@@ -100,6 +100,7 @@ mode = "monitor"
 [[plugin]]
 name = "radarlint-python"
 mode = "comment"
+# python:S1135 is off in .qlty/configs/radarlint.properties because TODO comments are kept
 
 [[plugin]]
 name = "ripgrep"
