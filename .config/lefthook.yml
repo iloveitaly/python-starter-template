@@ -37,6 +37,8 @@ pre-push:
       run: just js_lint
     dev_lint:
       run: just dev_lint
+    db_lint:
+      run: just db_lint
 
 # post-merge: fires after git merge / git pull
 # post-rewrite: fires after git rebase / git commit --amend
