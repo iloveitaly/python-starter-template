@@ -594,7 +594,7 @@ When writing Python:
   * Prefer docstr to multi-line comments at the top of a function or file.
   * If a docstr does not span multiple lines, do not use triple-quoted strings.
   * If a comment or docstr is a single line, do not end it in a period.
-  * Add a newline after all docstrs.
+  * Put multiline docstring delimiters on separate lines; leave a blank line after every docstring.
 * Do not create `__init__` files unless specifically instructed
 * Use Pydantic models over dataclass or a typed dict.
 * Use SQLAlchemy for generating any SQL queries.
