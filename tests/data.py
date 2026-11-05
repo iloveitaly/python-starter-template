@@ -115,7 +115,8 @@ REAL_ZIP_CODES = [
 def real_zip_code():
     "return a random real zip code from the list"
 
-    return choice(REAL_ZIP_CODES)
+    # fixture selection, not a cryptographic value
+    return choice(REAL_ZIP_CODES)  # nosec B311
 
 
 # location is (longitude, latitude)
@@ -158,7 +159,8 @@ def random_geolocation_point():
 
     from app.models.data.geolocation_point import GeolocationPoint
 
-    location_data = choice(REAL_LOCATIONS)
+    # fixture selection, not a cryptographic value
+    location_data = choice(REAL_LOCATIONS)  # nosec B311
     lon, lat = location_data["location"]
 
     return GeolocationPoint(
