@@ -14,9 +14,13 @@ from app.jobs.process_webhook import WebhookDeliveryError
 
 from app.models.webhook_event import WebhookBase, WebhookEvent
 
+EXAMPLE_WEBHOOK_URL = "https://example.com/webhook"
+ORDER_CREATED = "order.created"
+WEBHOOK_ENDPOINT_TARGET = "app.models.webhook_event.WEBHOOK_ENDPOINT"
+
 
 def test_queue_webhook_skips_when_no_endpoint(monkeypatch):
-    monkeypatch.setattr("app.models.webhook_event.WEBHOOK_ENDPOINT", None)
+    monkeypatch.setattr(WEBHOOK_ENDPOINT_TARGET, None)
 
     random_fake_object_id = TypeID(prefix="ob")
 
@@ -24,7 +28,7 @@ def test_queue_webhook_skips_when_no_endpoint(monkeypatch):
         pass
 
     TestWebhook(
-        type="order.created",
+        type=ORDER_CREATED,
         id=random_fake_object_id,  # type: ignore
     ).queue_webhook()
 
@@ -34,8 +38,8 @@ def test_queue_webhook_skips_when_no_endpoint(monkeypatch):
 def test_queue_webhook_enqueues_and_processes_success(
     monkeypatch, httpx2_mock, sync_celery
 ):
-    webhook_endpoint = "https://example.com/webhook"
-    monkeypatch.setattr("app.models.webhook_event.WEBHOOK_ENDPOINT", webhook_endpoint)
+    webhook_endpoint = EXAMPLE_WEBHOOK_URL
+    monkeypatch.setattr(WEBHOOK_ENDPOINT_TARGET, webhook_endpoint)
 
     httpx2_mock.add_response(
         method="POST", url=webhook_endpoint, json={"status": "received"}
@@ -48,7 +52,7 @@ def test_queue_webhook_enqueues_and_processes_success(
 
     # since sync_celery is used, the webhook will be processed eagerly
     TestWebhook(
-        type="order.created",
+        type=ORDER_CREATED,
         id=random_fake_object_id,  # type: ignore
     ).queue_webhook()
 
@@ -58,14 +62,14 @@ def test_queue_webhook_enqueues_and_processes_success(
     assert webhook is not None
 
     assert webhook.destination == webhook_endpoint
-    assert webhook.type == "order.created"
+    assert webhook.type == ORDER_CREATED
     assert webhook.succeeded_at is not None
     assert webhook.failed_at is None
     assert webhook.response_payload == {"status": "received"}
     # str is intentional here: the UUID types used between these are *not* the same
     assert str(webhook.originating_id) == str(random_fake_object_id.uuid)
     assert webhook.payload == {
-        "type": "order.created",
+        "type": ORDER_CREATED,
         "id": str(random_fake_object_id),
     }
 
@@ -73,8 +77,8 @@ def test_queue_webhook_enqueues_and_processes_success(
 
 
 def test_process_webhook_skips_if_already_succeeded(monkeypatch, httpx2_mock):
-    webhook_endpoint = "https://example.com/webhook"
-    monkeypatch.setattr("app.models.webhook_event.WEBHOOK_ENDPOINT", webhook_endpoint)
+    webhook_endpoint = EXAMPLE_WEBHOOK_URL
+    monkeypatch.setattr(WEBHOOK_ENDPOINT_TARGET, webhook_endpoint)
 
     random_fake_object_id = TypeID(prefix="ob")
 
@@ -82,7 +86,7 @@ def test_process_webhook_skips_if_already_succeeded(monkeypatch, httpx2_mock):
         pass
 
     webhook_data = TestWebhook(
-        type="order.created",
+        type=ORDER_CREATED,
         id=random_fake_object_id,  # type: ignore
     )
 
@@ -98,8 +102,8 @@ def test_process_webhook_skips_if_already_succeeded(monkeypatch, httpx2_mock):
 def test_process_webhook_records_json_response_payload(
     monkeypatch, httpx2_mock, sync_celery
 ):
-    webhook_endpoint = "https://example.com/webhook"
-    monkeypatch.setattr("app.models.webhook_event.WEBHOOK_ENDPOINT", webhook_endpoint)
+    webhook_endpoint = EXAMPLE_WEBHOOK_URL
+    monkeypatch.setattr(WEBHOOK_ENDPOINT_TARGET, webhook_endpoint)
 
     expected_response_payload = {"status": "received", "order_id": "test_order_id"}
 
@@ -113,7 +117,7 @@ def test_process_webhook_records_json_response_payload(
         pass
 
     webhook_data = TestWebhook(
-        type="order.created",
+        type=ORDER_CREATED,
         id=random_fake_object_id,  # type: ignore
     )
 
@@ -134,8 +138,8 @@ def test_process_webhook_records_json_response_payload(
 def test_process_webhook_records_empty_dict_for_non_json_response(
     monkeypatch, httpx2_mock, sync_celery
 ):
-    webhook_endpoint = "https://example.com/webhook"
-    monkeypatch.setattr("app.models.webhook_event.WEBHOOK_ENDPOINT", webhook_endpoint)
+    webhook_endpoint = EXAMPLE_WEBHOOK_URL
+    monkeypatch.setattr(WEBHOOK_ENDPOINT_TARGET, webhook_endpoint)
 
     httpx2_mock.add_response(method="POST", url=webhook_endpoint, text="invalid json {")
 
@@ -145,7 +149,7 @@ def test_process_webhook_records_empty_dict_for_non_json_response(
         pass
 
     webhook_data = TestWebhook(
-        type="order.created",
+        type=ORDER_CREATED,
         id=random_fake_object_id,  # type: ignore
     )
 
@@ -167,8 +171,8 @@ def test_process_webhook_records_empty_dict_for_non_json_response(
 def test_process_webhook_handles_empty_response_body(
     monkeypatch, httpx2_mock, sync_celery
 ):
-    webhook_endpoint = "https://example.com/webhook"
-    monkeypatch.setattr("app.models.webhook_event.WEBHOOK_ENDPOINT", webhook_endpoint)
+    webhook_endpoint = EXAMPLE_WEBHOOK_URL
+    monkeypatch.setattr(WEBHOOK_ENDPOINT_TARGET, webhook_endpoint)
 
     httpx2_mock.add_response(method="POST", url=webhook_endpoint, json={})
 
@@ -178,7 +182,7 @@ def test_process_webhook_handles_empty_response_body(
         pass
 
     webhook_data = TestWebhook(
-        type="order.created",
+        type=ORDER_CREATED,
         id=random_fake_object_id,  # type: ignore
     )
 
@@ -199,7 +203,7 @@ def test_process_webhook_errors_on_invalid_host(httpx2_mock, sync_celery, monkey
     monkeypatch.setattr(app.jobs.process_webhook, "DEFAULT_WEBHOOK_TIMEOUT", 1)
 
     webhook_endpoint = "https://nonexistent.invalid/webhook"
-    monkeypatch.setattr("app.models.webhook_event.WEBHOOK_ENDPOINT", webhook_endpoint)
+    monkeypatch.setattr(WEBHOOK_ENDPOINT_TARGET, webhook_endpoint)
 
     httpx2_mock.add_exception(
         httpx2.ConnectError("Connection failed"), method="POST", url=webhook_endpoint
@@ -211,7 +215,7 @@ def test_process_webhook_errors_on_invalid_host(httpx2_mock, sync_celery, monkey
         pass
 
     webhook_data = TestWebhook(
-        type="order.created",
+        type=ORDER_CREATED,
         id=random_fake_object_id,  # type: ignore
     )
 
@@ -226,7 +230,7 @@ def test_process_webhook_errors_on_invalid_host(httpx2_mock, sync_celery, monkey
     event.refresh()
 
     assert event.destination == webhook_endpoint
-    assert event.type == "order.created"
+    assert event.type == ORDER_CREATED
     assert event.failed_at is not None
     assert event.succeeded_at is None
     assert event.response_payload is None
