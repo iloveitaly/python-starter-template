@@ -6,6 +6,7 @@ that the system works properly in production.
 """
 
 from random import choice
+from typing import TypedDict
 
 # Realistic zip codes to use in tests, faker does not generate correct zip codes
 REAL_ZIP_CODES = [
@@ -118,8 +119,15 @@ def real_zip_code():
     return choice(REAL_ZIP_CODES)
 
 
-# location is (longitude, latitude)
-REAL_LOCATIONS = [
+class RealLocation(TypedDict):
+    # (longitude, latitude)
+    location: tuple[float, float]
+    city: str
+    state: str
+    zip_code: str
+
+
+REAL_LOCATIONS: list[RealLocation] = [
     {
         "location": (-74.006, 40.7128),
         "city": "New York",

@@ -51,6 +51,10 @@
   },
   "python.analysis.autoFormatStrings": true,
 
+  // pyrefly is the language server. None stops Pylance from running beside it.
+  "python.languageServer": "None",
+  "cursorpyright.disableLanguageServices": true,
+
   // for import autosuggest
   "python.analysis.indexing": true,
   "python.analysis.autoImportCompletions": true,
@@ -148,9 +152,6 @@
   "markdownlint.config": {
     "MD034": false
   },
-
-  // cursor specific config :/
-  "cursorpyright.analysis.autoImportCompletions": true
 
   // terminal profiles are really important! Make sure you configure these properly based on your zsh config:
   // https://github.com/iloveitaly/dotfiles/blob/master/.vscode/settings.json

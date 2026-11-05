@@ -620,7 +620,7 @@ When writing Python:
 
 ### Typing
 
-* Assume the latest pyright version
+* Assume the latest pyrefly version
 * Prefer modern typing: `list[str]` over `List[str]`, `dict[str, int]` over `Dict[str, int]`, etc.
 * Prefer to keep typing errors in place than eliminate type specificity:
   * Do not add ignore comments such as `# type: ignore`
