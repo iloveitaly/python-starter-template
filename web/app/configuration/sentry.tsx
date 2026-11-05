@@ -58,16 +58,22 @@ if (isProduction()) {
   })
 }
 
-export default function withSentryProvider(Component: React.ComponentType) {
+export default function withSentryProvider<Props extends object>(
+  Component: React.ComponentType<Props>,
+) {
   // if this is enabled in testing, it impacts the resulting debugging output provided
   // https://discord.com/channels/621778831602221064/1307425055667519578
   // TODO should add env var for testing the sentry error reporting experience
   if (isDevelopment() || isTesting()) {
-    return Component
+    return (props: Props) => <Component {...props} />
   }
 
-  return Sentry.withErrorBoundary(Component, {
-    // TODO implement custom fallback for a nicer experience
-    showDialog: true,
-  })
+  return (props: Props) => (
+    <Sentry.ErrorBoundary
+      // TODO implement custom fallback for a nicer experience
+      showDialog
+    >
+      <Component {...props} />
+    </Sentry.ErrorBoundary>
+  )
 }

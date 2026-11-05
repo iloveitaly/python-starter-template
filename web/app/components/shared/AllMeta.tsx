@@ -99,19 +99,15 @@ interface FacebookOptions {
 // Context for global defaults
 const MetaContext = createContext<Options | undefined>(undefined)
 
-export function withMetaProvider(
-  Component: React.ComponentType,
+export function withMetaProvider<Props extends object>(
+  Component: React.ComponentType<Props>,
   defaults: Options = {},
 ) {
-  return function MetaProviderWrapper(
-    props: React.ComponentProps<typeof Component>,
-  ) {
-    return (
-      <MetaContext.Provider value={defaults}>
-        <Component {...props} />
-      </MetaContext.Provider>
-    )
-  }
+  return (props: Props) => (
+    <MetaContext.Provider value={defaults}>
+      <Component {...props} />
+    </MetaContext.Provider>
+  )
 }
 
 export function MetaProvider({

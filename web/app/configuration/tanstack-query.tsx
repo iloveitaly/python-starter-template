@@ -7,10 +7,10 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 // https://stackoverflow.com/questions/65590195/error-no-queryclient-set-use-queryclientprovider-to-set-one
 const queryClient = new QueryClient()
 
-export default function withTanstackQueryProvider(
-  Component: React.ComponentType,
+export default function withTanstackQueryProvider<Props extends object>(
+  Component: React.ComponentType<Props>,
 ) {
-  return (props: React.ComponentProps<typeof Component>) => (
+  return (props: Props) => (
     <QueryClientProvider client={queryClient}>
       <Component {...props} />
       {isDevelopment() && <ReactQueryDevtools initialIsOpen={false} />}
