@@ -26,10 +26,10 @@ def test_quarter_start_and_end():
 
 def test_quarter_invalid_number():
     with pytest.raises(ValidationError):
-        Quarter(year=2026, number=0)
+        Quarter.model_validate({"year": 2026, "number": 0})
 
     with pytest.raises(ValidationError):
-        Quarter(year=2026, number=5)
+        Quarter.model_validate({"year": 2026, "number": 5})
 
 
 def test_quarter_all_in_year():

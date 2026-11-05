@@ -628,7 +628,7 @@ Here's a video demonstrating how to debug a playwright test:
 notes:
 assume injection of pretty traceback
 ipython in prod for console exploration
-typing from python to typescript via pyright + openapi + typescript library gen
+typing from python to typescript via pyrefly + openapi + typescript library gen
 react-router seems to wrap `vite preview`
 direnv allow config
 -->

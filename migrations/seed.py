@@ -2,7 +2,7 @@
 Seed development, test, and preview databases with data that is mostly realistic.
 
 - Will refuse to run in production or staging.
-- This file is excluded from pyright, so it's not imported from.
+- This file is excluded from pyrefly, so it's not imported from.
 - `--safe` option exists to only run if the DB is empty. This is helpful when running automatically (via `just dev`) to
   avoid accidentally clobbering data or cluttering the database.
 

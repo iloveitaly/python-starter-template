@@ -54,7 +54,7 @@ Change only the lines the new version requires. Do not rename functions, extract
 
 Record one row per edit: package, old version, new version, what changed, why. Put that table in the PR body. Skip a package when the new version does not change a call site in this repo. Do not add a comment that only records why a call site moved. The table row is that record.
 
-A symbol present in a package's types and browser entry can be missing from its node entry. A named import of that symbol from a module loaded by both the client and the server fails the prerender inside `just py_js-build`. Call it only when the export is present, or from client-only code, and run `just py_js-build` after that kind of change. `just js_lint` does not prerender. `just py_lint` includes pyright.
+A symbol present in a package's types and browser entry can be missing from its node entry. A named import of that symbol from a module loaded by both the client and the server fails the prerender inside `just py_js-build`. Call it only when the export is present, or from client-only code, and run `just py_js-build` after that kind of change. `just js_lint` does not prerender. `just py_lint` includes pyrefly.
 
 ## Done
 
