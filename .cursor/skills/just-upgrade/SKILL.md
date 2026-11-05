@@ -58,6 +58,6 @@ A symbol present in a package's types and browser entry can be missing from its 
 
 ## Done
 
-`just upgrade --yes` can exit 0 and still leave the pull request red. After the usage edits, run `just dev_lint`, `just js_lint`, `just js_typecheck`, `just py_lint`, `just js_test`, and `just py_test`. Backend runs `dev_lint` before `py_lint`. Frontend runs `js_typecheck` between `js_lint` and `js_test`. Push and watch the pull request until Backend and Frontend pass. Deploy stays skipped off `master`.
+`just upgrade --yes` can exit 0 and still leave the pull request red. After the usage edits, run `just dev_lint`, `just js_lint`, `just py_lint`, `just js_test`, and `just py_test`. Backend runs `dev_lint` before `py_lint`. Frontend runs `js_lint` before `js_test`. Push and watch the pull request until Backend and Frontend pass. Deploy stays skipped off `master`.
 
 If the failure is direnv, PATH, pnpm/tool precedence or version shadowing, Docker, certificates, or secrets, stop and report it immediately without attempting workarounds. Do not record the workaround in this skill. Do not rewrite visual snapshots to match a local-only rendering difference.
