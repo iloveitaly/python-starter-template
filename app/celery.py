@@ -102,8 +102,11 @@ celery_app = Celery(
 
 @signals.worker_process_init.connect(weak=False)
 def init_worker(**kwargs):
-    # Ensure engine is created per process
-    SessionManager.get_instance().get_engine()
+    # SessionManager caches one engine on its singleton, so a forked pool process inherits the parent's connection
+    # pool and its sockets. Sharing them across processes surfaces as psycopg errors like "can't change 'autocommit'
+    # now: connection in transaction status INTRANS" on the first task. close=False drops the inherited pool without
+    # closing the parent's connections, per https://docs.sqlalchemy.org/en/20/core/pooling.html#pooling-multiprocessing
+    SessionManager.get_instance().get_engine().dispose(close=False)
 
 
 @signals.worker_process_shutdown.connect
@@ -141,6 +144,13 @@ celery_app.conf.task_reject_on_worker_lost = True
 celery_app.conf.task_acks_late = True
 
 celery_app.conf.beat_schedule_filename = str(root / "tmp/celerybeat-schedule")
+
+# beat is a singleton guarded by the RedBeat lock, whose TTL defaults to 5x the max loop interval (25m). On a redeploy
+# the new beat starts while the old one holds the lock; if the old one is SIGKILLed it never releases it, and the new
+# beat can't start until the TTL expires, which is far longer than a typical deploy window. Keep
+# lock_timeout > max_loop_interval so a live beat always re-extends the lock before it expires.
+celery_app.conf.beat_max_loop_interval = 60
+celery_app.conf.redbeat_lock_timeout = 60 * 3
 
 
 @signals.celeryd_init.connect
