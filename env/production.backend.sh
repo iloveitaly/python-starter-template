@@ -28,6 +28,8 @@ export WEB_CONCURRENCY=1
 
 # TODO swap these out for real values, will not complain on build if they exist and are fake
 export CLERK_PRIVATE_KEY="fake"
+export META_PIXEL_ID="fake"
+export META_PIXEL_KEY="fake"
 
 # TODO we need to document these further, and maybe autogenerate some of the secrets?
 op_inject_source <<'EOF'

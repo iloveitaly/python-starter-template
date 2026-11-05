@@ -85,6 +85,8 @@ op_inject_source <<'EOF'
 export CLERK_PRIVATE_KEY="op://${OP_VAULT_UID}/f5k2z5od2bmbibupey4fze6koi/sandbox-clerk-secret-key"
 export SENTRY_DSN="backend-dsn"
 export POSTHOG_SECRET_KEY="secret-key"
+export META_PIXEL_ID="fake-pixel-id"
+export META_PIXEL_KEY="fake-pixel-key"
 
 export STRIPE_PUBLIC_KEY="op://${OP_VAULT_UID}/div6qufv4d5quhalzjrmeiuh5i/publishable-key"
 export STRIPE_SECRET_KEY="op://${OP_VAULT_UID}/div6qufv4d5quhalzjrmeiuh5i/secret-key"
