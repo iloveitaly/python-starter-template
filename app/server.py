@@ -15,12 +15,12 @@ import typing as t
 from fastapi import FastAPI
 
 from app.constants import BUILD_COMMIT
+from app.environments import is_productionish
 from app.routes.api import external_api_app
 from app.routes.errors import ErrorResponse, register_exception_handlers
 from app.routes.utils.json_response import ORJSONSortedResponse
 from app.routes.utils.openapi import simplify_operation_ids
 
-from .environments import is_productionish
 from .routes.authenticated import authenticated_api_app
 from .routes.healthcheck import healthcheck_api_app
 from .routes.middleware import add_middleware

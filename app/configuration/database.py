@@ -1,10 +1,10 @@
 from app.env import env
+from app.environments import is_development, is_testing
 
 import activemodel
 from activemodel.session_manager import get_engine
 from sqlmodel import SQLModel
 
-from ..environments import is_development, is_testing
 from ..setup import get_root_path
 
 

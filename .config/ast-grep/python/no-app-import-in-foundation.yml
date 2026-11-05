@@ -1,0 +1,15 @@
+id: py-no-app-import-in-foundation
+language: python
+severity: error
+message: "Foundational modules (app/setup.py, app/env.py, app/errors.py) must not import from app.* (keep them free of app package deps)."
+files:
+  - "app/setup.py"
+  - "app/env.py"
+  - "app/errors.py"
+rule:
+  any:
+    - pattern: from $MOD import $$$REST
+    - pattern: import $MOD
+constraints:
+  MOD:
+    regex: '^app(\..*)?$'
