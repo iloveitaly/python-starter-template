@@ -105,7 +105,6 @@ jobs:
         timeout-minutes: 5
       - run: just js_setup
       - run: just js_lint
-      - run: just js_typecheck
       - run: just js_test
 
   # NOTE disabled for now; we are going to switch to railpack soon

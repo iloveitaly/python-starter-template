@@ -7,7 +7,7 @@
     "start": "",
     "test": "pnpm run openapi && react-router typegen && vitest run",
     "openapi": "pnpm exec openapi-ts",
-    "typecheck": "react-router typegen && tsc",
+    "typecheck": "pnpm run openapi && react-router typegen && tsc",
     "typegen:watch": "react-router typegen --watch"
   },
   "dependencies": {
