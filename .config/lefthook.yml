@@ -1,6 +1,6 @@
 # https://lefthook.dev/configuration/
 # Full list of hooks: https://git-scm.com/docs/githooks
-# Lefthook does not look in this directory. env/dev.sh sets LEFTHOOK_CONFIG.
+# Lefthook auto-discovers this configuration without an environment override
 
 # debug hooks with:
 # LEFTHOOK_VERBOSE=1 lefthook run pre-push --force
@@ -53,6 +53,9 @@ pre-push:
     detect_pnpm_lock:
       glob: "web/pnpm-lock.yaml"
       run: printf '\033[31mpnpm-lock.yaml changed, run just js_setup\033[0m\n'
+    detect_host_template:
+      glob: "just/dev.just"
+      run: printf '\033[31mhost generation definitions may have changed, run just dev_generate_hosts\033[0m\n'
     detect_mise:
       glob: "{.config/**,web/mise.toml,infra/mise.toml}"
       run: printf '\033[31mmise config changed, run mise install\033[0m\n'
