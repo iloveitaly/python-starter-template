@@ -14,6 +14,7 @@ from app.environments import (
     is_productionish,
     python_environment,
 )
+
 from . import constants  # import all constants to trigger build failures
 from .configuration.database import configure_database, run_migrations
 from .configuration.debugging import configure_debugging
@@ -94,7 +95,7 @@ setup()
 #
 # NOTE jobs are excluded since they are not required in all process types
 #
-from . import models  # noqa: F401
+from . import models  # noqa: F401, I001
 from . import lib  # noqa: F401
 from . import helpers  # noqa: F401
 from . import generated  # noqa: F401
