@@ -107,14 +107,14 @@ def react_router_path(
             return quote(str(values[name]), safe="")
         return ""
 
-    rendered = re.sub(r":([A-Za-z0-9_]+)\?", _replace_optional, rendered)
+    rendered = re.sub(r":(\w+)\?", _replace_optional, rendered)
 
     def _replace_required(match: re.Match[str]) -> str:
         name = match.group(1)
         assert name in values, f"missing required param: {name}"
         return quote(str(values[name]), safe="")
 
-    rendered = re.sub(r":([A-Za-z0-9_]+)(?!\?)", _replace_required, rendered)
+    rendered = re.sub(r":(\w+)(?!\?)", _replace_required, rendered)
 
     if "*" in rendered:
         assert "splat" in values, "missing required param: splat"
