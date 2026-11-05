@@ -139,22 +139,17 @@ dev_open: _dev_only
 # this is currently the default global config path
 GLOBAL_LOCALIAS_CONFIG := "~/.config/localias.yaml"
 
-# need `[script]` for early exit
+# start reloads the shared configuration even when a daemon is already running
 # run (or reload) daemon to setup local development aliases
 [script]
 localias: _dev_only dev_generate_localias
 	# We want to support running multiple concurrent projects with different localias configs
 	# to do this, we need to use a global config, instead of simply loading from the project config.
-	# This is why we iterate over the local config and use the native `set` to update the global config.
-	yq eval 'to_entries | .[] | "localias -c {{GLOBAL_LOCALIAS_CONFIG}} set \"\(.key)\" \"\(.value)\""' {{GENERATED_LOCALIAS_CONFIG}} | zsh
+	# importing merges this project's aliases into the global config, preserving other projects
+	localias -c {{GLOBAL_LOCALIAS_CONFIG}} import {{GENERATED_LOCALIAS_CONFIG}}
 
-	# if localias is already running, the above `set` will automatically reload localias with the new aliases
-	if [[ "$(localias status)" == "daemon running with pid "* ]]; then
-		just _banner_echo "Localias Daemon Already Running, Updated Aliases"
-		exit 0
-	fi
-
-	localias -c {{GLOBAL_LOCALIAS_CONFIG}} start
+	# import writes the config but does not reload the running daemon
+	localias -c {{GLOBAL_LOCALIAS_CONFIG}} reload
 
 	just _banner_echo "Global Local Alias Configuration"
 	localias -c {{GLOBAL_LOCALIAS_CONFIG}} debug config --print
