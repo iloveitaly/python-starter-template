@@ -114,6 +114,9 @@ py_lint +FILES=".":
 		ast-grep scan -c .config/lint/sgconfig.yml --error --filter '^py-' || exit_code=$?
 	fi
 
+	# ruff already runs above; qlty only adds the python plugins this recipe does not
+	qlty check --filter bandit,radarlint-python {{FILES}} || exit_code=$?
+
 	# TODO should only run if {{FILES}} contains a template
 	# NOTE djlint does *not* check jinja syntax, only HTML. GH friendly output is automatically enabled.
 	uv run djlint {{JINJA_TEMPLATE_DIR}} --profile=jinja

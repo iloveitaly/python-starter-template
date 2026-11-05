@@ -8,7 +8,7 @@ from app.routes.errors import ClientError
 
 
 def test_extract_payment_intent_id_from_client_secret_success():
-    client_secret = "pi_3RPofKPNRRX3VZhd0CHUAjEi_secret_aRC74awl3qM01aWWqSDDF8t1r"
+    client_secret = "pi_3RPofKPNRRX3VZhd0CHUAjEi_secret_aRC74awl3qM01aWWqSDDF8t1r"  # nosec B105
     assert (
         extract_payment_intent_id_from_client_secret(client_secret)
         == "pi_3RPofKPNRRX3VZhd0CHUAjEi"
@@ -31,7 +31,7 @@ def test_extract_payment_intent_id_from_client_secret_invalid():
 
 
 def test_extract_checkout_session_id_from_client_secret_success():
-    client_secret = "cs_test_a1tQWKwHJ9fMYVL2TjkDDqX2qvvnKnI3zb5dw3exS1wb0TXvEjwVxXKmzo_secret_fidwbEhqYWAnPydmcHZxamgneCUl"
+    client_secret = "cs_test_a1tQWKwHJ9fMYVL2TjkDDqX2qvvnKnI3zb5dw3exS1wb0TXvEjwVxXKmzo_secret_fidwbEhqYWAnPydmcHZxamgneCUl"  # nosec B105
     assert (
         extract_checkout_session_id_from_client_secret(client_secret)
         == "cs_test_a1tQWKwHJ9fMYVL2TjkDDqX2qvvnKnI3zb5dw3exS1wb0TXvEjwVxXKmzo"

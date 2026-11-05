@@ -326,6 +326,53 @@ checksum = "sha256:da15cca479447d5466569b91a679e9fe2cdb97b2be5a3c09c912ebe75ce0d
 url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit.43c3619/localias-darwin-amd64"
 url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/313804897"
 
+[[tools."github:qltysh/qlty"]]
+version = "0.659.0"
+backend = "github:qltysh/qlty"
+specifiers = ["latest"]
+
+[tools."github:qltysh/qlty"."platforms.linux-arm64"]
+checksum = "sha256:67eb0deb1f5d2de8b47a1b41957a060fd606f4cd546da306b52d38ff6fb2da5e"
+url = "https://github.com/qltysh/qlty/releases/download/v0.659.0/qlty-aarch64-unknown-linux-gnu.tar.xz"
+url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/659774614"
+provenance = "github-attestations"
+
+[tools."github:qltysh/qlty"."platforms.linux-arm64-musl"]
+checksum = "sha256:38d8c8aedea92cbeeb5b45b6153ed8736634e8c5cf3fc88a429926ede7e827df"
+url = "https://github.com/qltysh/qlty/releases/download/v0.659.0/qlty-aarch64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/659774645"
+provenance = "github-attestations"
+
+[tools."github:qltysh/qlty"."platforms.linux-x64"]
+checksum = "sha256:a1b7a4707d880030b22c4715e3a33b2e4cfe4b2ecb7e0620d4c7269dec92aeb8"
+url = "https://github.com/qltysh/qlty/releases/download/v0.659.0/qlty-x86_64-unknown-linux-gnu.tar.xz"
+url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/659774686"
+provenance = "github-attestations"
+
+[tools."github:qltysh/qlty"."platforms.linux-x64-musl"]
+checksum = "sha256:056d355e682f8e709e017e456d003dd1a59c64b755a352b4723cd399c9d699a5"
+url = "https://github.com/qltysh/qlty/releases/download/v0.659.0/qlty-x86_64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/659774717"
+provenance = "github-attestations"
+
+[tools."github:qltysh/qlty"."platforms.macos-arm64"]
+checksum = "sha256:32fa05fe6979037607c0a2b1c450381a5818cd744ffa205221bd37bf63499c7c"
+url = "https://github.com/qltysh/qlty/releases/download/v0.659.0/qlty-aarch64-apple-darwin.tar.xz"
+url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/659774624"
+provenance = "github-attestations"
+
+[tools."github:qltysh/qlty"."platforms.macos-x64"]
+checksum = "sha256:1d59a4297ba2ef71292609c01b867bab7d926d62dec973720e2af797b3d8c4a5"
+url = "https://github.com/qltysh/qlty/releases/download/v0.659.0/qlty-x86_64-apple-darwin.tar.xz"
+url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/659774657"
+provenance = "github-attestations"
+
+[tools."github:qltysh/qlty"."platforms.windows-x64"]
+checksum = "sha256:a4553fc9369f03d2c4234d26cde8c6bcc237606b72107acb0a9bf28429f18add"
+url = "https://github.com/qltysh/qlty/releases/download/v0.659.0/qlty-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/659774670"
+provenance = "github-attestations"
+
 [[tools."github:railwayapp/railpack"]]
 version = "0.43.0"
 backend = "github:railwayapp/railpack"
