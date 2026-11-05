@@ -80,6 +80,14 @@ py_lint +FILES=".":
 	export PS4='%F{green}+%f '
 	set -x
 
+	# `.` is the recipe default. Pass no paths so project-excludes apply.
+	# An explicit path list checks those files and ignores project-excludes.
+	if [ "{{FILES}}" = "." ]; then
+		pyrefly_check=(uv run pyrefly check)
+	else
+		pyrefly_check=(uv run pyrefly check {{FILES}})
+	fi
+
 	if [ -n "${CI:-}" ]; then
 		# TODO I'm surprised that ruff doesn't auto detect github... need to double check on this
 		uv run ruff check --output-format=github {{FILES}} || exit_code=$?
@@ -87,19 +95,10 @@ py_lint +FILES=".":
 		uvx detect-shadowed-modules@latest || exit_code=$?
 		ast-grep scan -c .config/lint/sgconfig.yml --error --filter '^py-' --format github || exit_code=$?
 
-		uv run pyright {{FILES}} --outputjson > pyright_report.json || exit_code=$?
-		# TODO this is a neat trick, we should use it in other places too + document
-		# https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/workflow-commands-for-github-actions#setting-a-warning-message
-		# https://github.com/jakebailey/pyright-action/blob/b7d7f8e5e5f195796c6f3f0b471a761a115d3b2c/src/main.ts#L62
-		jq -r \
-		--arg root "$GITHUB_WORKSPACE/" \
-		'
-			.generalDiagnostics[] |
-			.file as $file |
-			($file | sub("^\\Q\($root)\\E"; "")) as $rel_file |
-			"::\(.severity) file=\($rel_file),line=\(.range.start.line),endLine=\(.range.end.line),col=\(.range.start.character),endColumn=\(.range.end.character)::\($rel_file):\(.range.start.line): \(.message)"
-		' < pyright_report.json
-		rm pyright_report.json
+		# workflow commands need repo-relative paths; pyrefly prints absolute ones
+		"${pyrefly_check[@]}" --output-format=full-text-with-github \
+			| sed "s#file=${GITHUB_WORKSPACE}/#file=#g" \
+			|| exit_code=$?
 
 		# check jinja2 template language
 		uv run j2lint --extensions j2,html {{JINJA_TEMPLATE_DIR}} --json > j2link_report.json || exit_code=$?
@@ -108,7 +107,7 @@ py_lint +FILES=".":
 	else
 		uv run ruff check {{FILES}} || exit_code=$?
 		uv run ruff format --check {{FILES}} || exit_code=$?
-		uv run pyright {{FILES}} || exit_code=$?
+		"${pyrefly_check[@]}" || exit_code=$?
 		uvx detect-shadowed-modules@latest || exit_code=$?
 		uv run j2lint --extensions j2,html {{JINJA_TEMPLATE_DIR}} || exit_code=$?
 		ast-grep scan -c .config/lint/sgconfig.yml --error --filter '^py-' || exit_code=$?
@@ -135,7 +134,7 @@ py_lint_fix:
 
 	uv run djlint --profile=jinja --reformat {{JINJA_TEMPLATE_DIR}}
 
-	# NOTE pyright and other linters do not have an automatic fix flow
+	# NOTE pyrefly does not autofix type errors
 
 # build js for py e2e tests
 py_js-build:
