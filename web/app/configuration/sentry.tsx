@@ -9,6 +9,13 @@ import {
 import * as Sentry from "@sentry/react"
 import * as SentryReactRouter from "@sentry/react-router"
 
+// vendor/network script-load failures: frames live in our bundle, so denyUrls/thirdParty filters miss them
+// deliberately omit Failed to fetch / Load failed — those also match first-party API errors
+export const SENTRY_IGNORE_ERRORS = [
+  /Failed to load Stripe\.js/,
+  /Importing a module script failed/,
+]
+
 if (isProduction()) {
   Sentry.init({
     dsn: requireEnv("VITE_SENTRY_DSN"),
@@ -42,6 +49,8 @@ if (isProduction()) {
 
     // assume `contains` on all string entries
     denyUrls: ["youtube.com"],
+
+    ignoreErrors: SENTRY_IGNORE_ERRORS,
 
     // 1.0 to capture 100% of transactions for performance monitoring.
     tracesSampleRate: 0.05,
