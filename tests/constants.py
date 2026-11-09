@@ -15,3 +15,5 @@ PYTHON_TEST_SERVER_HOST = env.str("PYTHON_TEST_SERVER_HOST")
 
 LONG_INTEGRATION_TEST_TIMEOUT = 15_000
 "indicates that a particular part of a integration test may need a while to resolve"
+
+PLAYWRIGHT_CHROME_WS_ENDPOINT = env.str("PLAYWRIGHT_CHROME_WS_ENDPOINT", default=None)

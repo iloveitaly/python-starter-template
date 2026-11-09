@@ -8,12 +8,16 @@ https://github.com/microsoft/playwright-pytest/issues/74#issuecomment-2497976914
 https://github.com/microsoft/playwright-python/issues/462
 """
 
+import importlib.metadata
 import os
 import socket
 import subprocess
 import time
+from http import HTTPStatus
 from multiprocessing import Process
+from urllib.parse import urlparse, urlunparse
 
+import httpx2
 import psutil
 import pytest
 
@@ -147,3 +151,25 @@ def report_localias_status():
             "localias daemon is not running. Integration tests may fail.",
             output=result.stdout,
         )
+
+
+def assert_playwright_server_version(endpoint: str) -> None:
+    "exit immediately when the remote playwright server rejects the client version"
+
+    client_version = importlib.metadata.version("playwright")
+
+    parsed = urlparse(endpoint)
+    scheme = "https" if parsed.scheme == "wss" else "http"
+    http_url = urlunparse(parsed._replace(scheme=scheme))
+
+    response = httpx2.get(
+        http_url,
+        headers={
+            "Connection": "Upgrade",
+            "Upgrade": "websocket",
+            "User-Agent": f"Playwright/{client_version}",
+        },
+    )
+
+    if response.status_code == HTTPStatus.PRECONDITION_REQUIRED:
+        pytest.exit(response.text.strip(), returncode=1)

@@ -32,9 +32,36 @@ just upgrade --yes
 3. Subsequent deps, after that body: `_mise_web_version_sync`, `_js_sync-engine-versions`, `_mise_gha_version_sync`
 4. `js_upgrade`: npm-check-updates, `pnpm install`, `pnpm audit --fix=update`, `update-browserslist-db`, `git add` `web/package.json` and `web/pnpm-*.yaml`. `pnpm audit --fix=update` can exit 0 and still leave vulnerabilities whose parent range blocks the fixed release. Report those and leave the parent ranges unchanged.
 5. `py_upgrade`: `uv sync -U --group=debugging-extras`, `uv tool upgrade --all`, `git add` `pyproject.toml` `uv.lock`
-6. `upgrade` body: `playwright install`, `just py_cli write-versions`, `git add .service-versions`
+6. Playwright / docker chrome alignment (see below). Do this after `py_upgrade` and before treating the run as finished.
+7. `upgrade` body: `playwright install`, `just py_cli write-versions`, `git add .service-versions`
 
 `.config/mise.toml` version precision plus `minimum_release_age = "14d"` is the upgrade ceiling. `mise upgrade` warns and skips newer releases inside that window. A run that changes nothing because of that window is finished. Do not loosen the window. `min_version` records the mise binary that is running. `mise self-update --yes` can report an older eligible release and leave a newer already-installed mise in place.
+
+### Playwright Python and docker chrome
+
+Headless and CI Playwright attach to the compose `chrome` service (`ghcr.io/iloveitaly/playwright-loophole`). The Python `playwright` client and that image must share the same Playwright protocol version. A mismatch fails at connect time (or earlier via `assert_playwright_server_version`).
+
+Keep these three in lockstep:
+
+| Source | Field |
+| --- | --- |
+| `pyproject.toml` | exact pin `playwright==X.Y.Z` (do not use a floating range) |
+| `docker-compose.yml` `chrome.image` | `ghcr.io/iloveitaly/playwright-loophole:vX.Y.Z` |
+| lockfile | `uv.lock` entry for `playwright` at `X.Y.Z` |
+
+`.service-versions` `chrome` is the Chromium *browser* build string from `just py_cli write-versions` (live browser via the websocket or a host launch). It is not the Playwright package version. Refresh it after the image pin changes; do not invent the string by hand.
+
+`playwright==X.Y.Z` is an exact pin, so `uv sync -U` will not advance it. After `py_upgrade`, always check for a newer aligned pair:
+
+1. Read the current pin from `pyproject.toml` and the current image tag from `docker-compose.yml`. They must already match. If they do not, fix that before upgrading.
+2. Find the newest Playwright Python release on PyPI (`uv pip index versions playwright` or the GitHub `microsoft/playwright-python` releases).
+3. List `ghcr.io/iloveitaly/playwright-loophole` tags (GHCR token + `/v2/iloveitaly/playwright-loophole/tags/list`, or `docker pull` probes). Eligible tags look like `vX.Y.Z` (ignore `latest`, distro suffixes like `vX.Y.Z-noble`, and arch-only tags except as proof the version exists).
+4. Choose the newest `X.Y.Z` that exists on both PyPI and as image tag `vX.Y.Z`. Prefer an exact `vX.Y.Z` tag, not `latest`.
+5. If that version is newer than the current pin: set `playwright==X.Y.Z` in `pyproject.toml`, set `chrome.image` to `ghcr.io/iloveitaly/playwright-loophole:vX.Y.Z`, run `uv lock` / `uv sync` so `uv.lock` matches, recreate the chrome service (`docker compose pull chrome && docker compose up -d chrome`), then continue with `playwright install` and `just py_cli write-versions`.
+6. If PyPI is ahead of every published loophole tag, leave the pin at the newest version that has an image. Do not float `playwright` past the image. Note the lag in the PR body (Playwright release vs missing `vX.Y.Z` tag).
+7. Do not switch the compose image back to `:latest`. The pin exists so CI and local compose do not silently drift when `latest` moves.
+
+`tests/integration/server.py` `assert_playwright_server_version` probes the websocket HTTP upgrade with `User-Agent: Playwright/{client_version}` and `pytest.exit`s on HTTP 428. After bumping the pair, a quick `just py_test` (or an integration smoke that connects to chrome) should pass that check.
 
 `node = "lts"` follows Node's Active LTS, so a mise release can move it across a major. `web/mise.toml` and `package.json` `engines` then copy `mise list --current`. Keep the `lts` request in `.config/mise.toml`.
 

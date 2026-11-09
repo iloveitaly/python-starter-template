@@ -8,11 +8,16 @@ from playwright.sync_api import Page
 from app import log
 from app.environments import is_local_testing
 
-from tests.constants import LONG_INTEGRATION_TEST_TIMEOUT
+from tests.conftest import should_use_docker_chrome
+from tests.constants import (
+    LONG_INTEGRATION_TEST_TIMEOUT,
+    PLAYWRIGHT_CHROME_WS_ENDPOINT,
+)
 from tests.integration.utils import apply_playwright_timeouts
 
 from .javascript_build import start_js_build
 from .server import (  # noqa: F401
+    assert_playwright_server_version,
     report_localias_status,
     # IMPORTANT `server` is a fixture and this important exposes it to the tests
     server,
@@ -59,6 +64,12 @@ def pytest_runtest_makereport(item, call):
 
 # NOTE this runs on any pytest invocation, even if no tests are run, once per pytest invocation
 def pytest_configure(config):
+    if should_use_docker_chrome(config):
+        assert PLAYWRIGHT_CHROME_WS_ENDPOINT, (
+            "PLAYWRIGHT_CHROME_WS_ENDPOINT must be set when using docker chrome"
+        )
+        assert_playwright_server_version(PLAYWRIGHT_CHROME_WS_ENDPOINT)
+
     # start JS build right away, since it takes some time. Separately, the test server will wait until the build
     # is finished to start running tests against the server.
     start_js_build()
