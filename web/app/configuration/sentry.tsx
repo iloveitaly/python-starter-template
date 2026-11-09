@@ -43,11 +43,8 @@ if (isProduction()) {
     // assume `contains` on all string entries
     denyUrls: ["youtube.com"],
 
-    // vendor script-load failures land as unhandled rejections with frames in our bundle
-    ignoreErrors: [
-      /Failed to load Stripe\.js/,
-      /Importing a module script failed/,
-    ],
+    // Stripe.js script fetch failed (blocked/offline); frames are in our bundle so denyUrls misses it
+    ignoreErrors: [/Failed to load Stripe\.js/],
 
     // 1.0 to capture 100% of transactions for performance monitoring.
     tracesSampleRate: 0.05,
