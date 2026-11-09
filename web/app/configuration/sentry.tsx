@@ -43,6 +43,13 @@ if (isProduction()) {
     // assume `contains` on all string entries
     denyUrls: ["youtube.com"],
 
+    ignoreErrors: [
+      // js.stripe.com fetch fails in-browser (adblock, offline, in-app browsers like Instagram)
+      /Failed to load Stripe\.js/,
+      // WebKit: module script couldn't be fetched/evaluated (network, blocker, CDN, MIME/CORS)
+      /Importing a module script failed/,
+    ],
+
     // 1.0 to capture 100% of transactions for performance monitoring.
     tracesSampleRate: 0.05,
 
