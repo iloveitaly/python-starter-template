@@ -56,7 +56,8 @@ from app.configuration.lang import process_locale
 from app.configuration.redis import get_redis
 from app.environments import is_local_testing, is_wsl
 
-from .constants import TEST_RESULTS_DIRECTORY
+from .constants import PLAYWRIGHT_CHROME_WS_ENDPOINT, TEST_RESULTS_DIRECTORY
+from .integration.server import assert_playwright_server_version
 from .log import log
 
 # add any local plugins here, ex: ["tests.plugins.improved_playwright_failures"]
@@ -304,7 +305,7 @@ def _open_httpx2_breakpoint(request):
     return True
 
 
-def _use_docker_chrome(config: pytest.Config) -> bool:
+def should_use_docker_chrome(config: pytest.Config) -> bool:
     """
     Attach Playwright to the compose chromium over its websocket endpoint.
 
@@ -321,17 +322,22 @@ def _use_docker_chrome(config: pytest.Config) -> bool:
     if loose_env.str("PWDEBUG") in {"1", "console"}:
         return False
 
-    return bool(loose_env.str("PLAYWRIGHT_CHROME_WS_ENDPOINT"))
+    return bool(PLAYWRIGHT_CHROME_WS_ENDPOINT)
 
 
 @pytest.fixture(scope="session")
 def connect_options(pytestconfig: pytest.Config):
-    if not _use_docker_chrome(pytestconfig):
+    if not should_use_docker_chrome(pytestconfig):
         return None
 
-    endpoint = env.str("PLAYWRIGHT_CHROME_WS_ENDPOINT")
-    log.info("using docker chromium", endpoint=endpoint)
-    return {"endpoint": endpoint}
+    assert PLAYWRIGHT_CHROME_WS_ENDPOINT, (
+        "PLAYWRIGHT_CHROME_WS_ENDPOINT must be set when using docker chrome"
+    )
+    log.info("using docker chromium", endpoint=PLAYWRIGHT_CHROME_WS_ENDPOINT)
+
+    assert_playwright_server_version(PLAYWRIGHT_CHROME_WS_ENDPOINT)
+
+    return {"endpoint": PLAYWRIGHT_CHROME_WS_ENDPOINT}
 
 
 @pytest.fixture(scope="session")
@@ -344,13 +350,13 @@ def browser_type_launch_args(browser_type_launch_args, pytestconfig: pytest.Conf
     # auto-disable GPU if we detect we are inside WSL
     # as GPU acceleration in WSL can be unstable and cause test failures,
     # we disable it for better stability
-    if is_wsl() and not _use_docker_chrome(pytestconfig):
+    if is_wsl() and not should_use_docker_chrome(pytestconfig):
         log.info("wsl detected: disabling gpu for stability")
         args.append("--disable-gpu")
 
     launch_options = {**browser_type_launch_args, "args": args}
 
-    if not _use_docker_chrome(pytestconfig):
+    if not should_use_docker_chrome(pytestconfig):
         return launch_options
 
     # the container has no display, even if a desktop debugger is attached
@@ -370,7 +376,7 @@ def browser_context_args(browser_context_args, pytestconfig: pytest.Config):
     `SYSTEM_TZ`, which `env/all.sh` sets to UTC. Without docker chrome, the
     plugin's own args are returned unchanged.
     """
-    if not _use_docker_chrome(pytestconfig):
+    if not should_use_docker_chrome(pytestconfig):
         return browser_context_args
 
     return {
