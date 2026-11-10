@@ -25,6 +25,7 @@ import { SiReact } from "@icons-pack/react-simple-icons"
 
 export async function clientLoader(_loader_args: Route.ClientLoaderArgs) {
   // route is authenticated and will include the clerk authentication token
+  // this is a critical test route to make sure the clerk auth works outside of the react rendering context
   const { data } = await applicationData()
 
   // TODO need idiomatic error handling here

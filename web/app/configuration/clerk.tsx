@@ -1,61 +1,61 @@
 import { requireEnv } from "~/utils/environment"
 
+import { Clerk } from "@clerk/clerk-js"
 import { ClerkProvider } from "@clerk/react"
-import { loadClerkJsScript } from "@clerk/shared/loadClerkJsScript"
-import type { BrowserClerk, HeadlessBrowserClerk } from "@clerk/shared/types"
+import type { ClerkOptions } from "@clerk/shared/types"
+import { ui } from "@clerk/ui"
 import { invariant } from "@epic-web/invariant"
-
-declare global {
-  interface Window {
-    Clerk?: BrowserClerk | HeadlessBrowserClerk
-  }
-}
 
 const CLERK_PUBLIC_KEY = requireEnv("VITE_CLERK_PUBLIC_KEY")
 
 /*
-This whole situation isn't great. Here's what is happening:
-
-- The ClerkProvider is a React component that wraps the entire app. It looks like it hits the Clerk API
-  but should also set window.Clerk. However, the `clientLoader`s load before providers/react components
-  (at least sometimes).We need to load the clerk client in a way that will play well with the provider
-  to avoid additional API calls to Clerk.
-
-- There's not an easy way to do this. This insane `loadClerkJsScript` function is the only way I've found.
-  `IsomorphicClerk.getOrCreateInstance(options)` is what react uses, but that is not exposed to us.
-
-- The clerk-js package is not bundled in a way that can be split, so it greatly increases bundle size when
-  used directly.
-
-- This method is assumed to be called in a clientLoader, or automatically called by HeyAPI.
-
-- I've posted on Discord to see if there is a better way: https://discord.com/channels/856971667393609759/1330542079260229632
+clientLoaders run before ClerkProvider, so both must share an instance
+the provider skips load() for an already-loaded instance, so our load() must
+include UI and redirect options as well
+https://github.com/clerk/javascript/issues/8569
 */
 
-export async function getClient({ requireLoggedIn = true } = {}) {
-  if (!window.Clerk) {
-    // recommended officially here:
-    // https://clerk.com/docs/references/sdk/frontend-only#call-window-clerk-load
-    await loadClerkJsScript({
-      publishableKey: CLERK_PUBLIC_KEY,
-    })
-  }
+const clerkOptions = {
+  ui,
+  signInFallbackRedirectUrl: "/",
+  signUpFallbackRedirectUrl: "/",
+  afterSignOutUrl: "/login",
+} satisfies ClerkOptions
 
-  invariant(window.Clerk, "Clerk should be defined")
+// react router prerenders the root in node even with ssr disabled
+const clerk =
+  typeof document === "undefined" ? undefined : new Clerk(CLERK_PUBLIC_KEY)
 
-  const clerk = window.Clerk
+let loadPromise: Promise<void> | undefined
+
+async function getClerk() {
+  invariant(clerk, "clerk is only available in the browser")
 
   if (!clerk.loaded) {
     // https://clerk.com/docs/js-frontend/reference/objects/clerk#load
-    await clerk.load()
+    loadPromise ??= clerk.load(clerkOptions)
+    await loadPromise
   }
+
+  return clerk
+}
+
+/**
+ * Clerk client for authenticated requests; redirects unless `requireLoggedIn: false` is passed
+ *
+ * Assumed to be called in a clientLoader, or automatically called by HeyAPI.
+ */
+export async function getClient({ requireLoggedIn = true } = {}) {
+  const clerk = await getClerk()
 
   // protect users from hitting the internal API if they aren't authenticated
   if (requireLoggedIn && !clerk.user) {
     await clerk.redirectToSignIn()
-    // redirectToSignIn resolves before the browser navigation completes; block forever
-    // so callers never proceed to fire an unauthenticated request or render an error page
-    await new Promise(() => {})
+
+    // redirectToSignIn only queues the navigation, so this page keeps running until the new
+    // document commits. never settling parks callers for that window rather than letting them
+    // run on with no session and flash an error page just before the redirect lands.
+    return new Promise<never>(() => {})
   }
 
   return clerk
@@ -69,11 +69,9 @@ export default function withClerkProvider<Props extends object>(
       // hand the already-loaded instance to the provider so IsomorphicClerk reuses it
       // instead of hotloading clerk-js again and re-calling `.load()` (extra API call)
       // https://github.com/clerk/javascript/issues/8569
-      Clerk={window.Clerk}
+      Clerk={clerk}
       publishableKey={CLERK_PUBLIC_KEY}
-      signInFallbackRedirectUrl="/"
-      signUpFallbackRedirectUrl="/"
-      afterSignOutUrl="/login"
+      {...clerkOptions}
     >
       <Component {...props} />
     </ClerkProvider>
