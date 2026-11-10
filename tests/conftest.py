@@ -152,6 +152,12 @@ def pytest_configure(config: Config):
         '[data-clerk-component="UserButton"]',
     ]
 
+    config.option.playwright_console_ignore = [
+        # ignore console errors from third-party services using dummy dev keys
+        {"domain": "posthog.com"},
+        {"domain": "sentry.io"},
+    ]
+
     if not config.option.playwright_artifacts_output:
         config.option.playwright_artifacts_output = TEST_RESULTS_DIRECTORY / "playwright-artifacts"
     else:
