@@ -291,6 +291,8 @@ Avoid putting assets in the `public/` folder as much as you can. In other words:
 * Since the image is content-hashed, this enables the python static asset logic to add cache headers which enable reverse proxies like cloudflare to aggressively cache the assets. This is a big win for performance and eliminates the need for you to setup the assets on a CDN manually.
 * Also, avoiding the `public/` directory makes it explicit what code or systems rely on an asset. Since the
   image, CSS, etc is content-hashed, other systems by definition will not rely on it unless it's within the vite build system
+* In order to run, the Python application requires that JavaScript assets are built. Generated routes require a server app import, and the
+  server requires the static assets are built in non-dev and non-local testing environments.
 
 ### Public Directories
 

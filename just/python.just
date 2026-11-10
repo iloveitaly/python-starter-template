@@ -167,8 +167,7 @@ py_test:
 	# TODO I wonder if I could make EXECUTE_IN_TEST blank if in the test environment...
 	# NOTE unfortunately, because of the asyncio loop + playwright, we need to run the playwright integration tests separately
 	if [[ -n "${CI:-}" ]]; then
-		just _banner_echo "Building Javascript for Integration Tests"
-		just py_js-build
+		# tests require that JS is built, the JS build is run before tests on GHA
 		just _banner_echo "Running Non-Integration Tests"
 		uv run pytest . --verbosity=2 --ignore tests/integration {{PYTEST_COV_PARAMS}}
 		just _banner_echo "Running Integration"
