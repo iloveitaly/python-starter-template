@@ -86,15 +86,15 @@ setup()
 
 # after configuration is complete, import application packages to fail fast on startup
 #
-# Order is intentional:
+# order is intentional:
 #
-# - models first (domain foundation; lib/helpers may use them)
-# - lib, helpers next (may depend on models)
-# - generated before commands (commands may use generated; generated.fastapi_typed_routes imports app.server)
+# - models first
+# - lib, helpers. Often depend on models
+# - generated files. These import the server app, which requires a javascript bundle in most environments.
 # - commands last
 #
 # NOTE jobs are excluded since they are not required in all process types
-#
+
 from . import models  # noqa: F401, I001
 from . import lib  # noqa: F401
 from . import helpers  # noqa: F401
