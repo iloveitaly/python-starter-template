@@ -9,7 +9,7 @@ runs:
     # web/ has it's own mise config, but it's copied from the root mise config, so we don't need to worry about it
     - uses: jdx/mise-action@2d8d4cafcbd33be2ea37d2b6f5ad595363d1f1ca  # v5.1.1
       with:
-        version: 2026.11.0
+        version: 2026.11.5
     # TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
     # there is not a backend for zsh in mise, crazy!
     # libnss3-tools is needed for localias to generate certs

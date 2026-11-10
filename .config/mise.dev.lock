@@ -468,137 +468,144 @@ url = "https://github.com/casey/just/releases/download/1.59.0/just-1.59.0-x86_64
 url_api = "https://api.github.com/repos/casey/just/releases/assets/643131303"
 
 [[tools.mprocs]]
-version = "0.10.2"
+version = "0.10.3"
 backend = "aqua:pvolok/mprocs"
 specifiers = ["latest"]
 
 [tools.mprocs."platforms.linux-arm64"]
-checksum = "sha256:b522ab96d03829b44013a141801220f4830c0cb9ca2a93d7d08798eeb28defa9"
-url = "https://github.com/pvolok/dekit/releases/download/v0.10.2/dekit-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/631602488"
+checksum = "sha256:1024d2b04c99550001d6d7da4a762417a72fb9a3f544f4fa6f407f4d39d809e0"
+checksum_source = "mise-versions"
+url = "https://github.com/pvolok/dekit/releases/download/v0.10.3/dekit-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/676202098"
 
 [tools.mprocs."platforms.linux-arm64-musl"]
-checksum = "sha256:b522ab96d03829b44013a141801220f4830c0cb9ca2a93d7d08798eeb28defa9"
-url = "https://github.com/pvolok/dekit/releases/download/v0.10.2/dekit-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/631602488"
+checksum = "sha256:1024d2b04c99550001d6d7da4a762417a72fb9a3f544f4fa6f407f4d39d809e0"
+checksum_source = "mise-versions"
+url = "https://github.com/pvolok/dekit/releases/download/v0.10.3/dekit-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/676202098"
 
 [tools.mprocs."platforms.linux-x64"]
-checksum = "sha256:964672af1c68f6c60a0eac3aca2b3d9847060fcc5a287747e084e84e10505a1b"
-url = "https://github.com/pvolok/dekit/releases/download/v0.10.2/dekit-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/631602500"
+checksum = "sha256:12c93546af4f35258610785d557519caa5a4780563bf845d4bd0b8010c7741d5"
+checksum_source = "mise-versions"
+url = "https://github.com/pvolok/dekit/releases/download/v0.10.3/dekit-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/676202122"
 
 [tools.mprocs."platforms.linux-x64-musl"]
-checksum = "sha256:964672af1c68f6c60a0eac3aca2b3d9847060fcc5a287747e084e84e10505a1b"
-url = "https://github.com/pvolok/dekit/releases/download/v0.10.2/dekit-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/631602500"
+checksum = "sha256:12c93546af4f35258610785d557519caa5a4780563bf845d4bd0b8010c7741d5"
+checksum_source = "mise-versions"
+url = "https://github.com/pvolok/dekit/releases/download/v0.10.3/dekit-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/676202122"
 
 [tools.mprocs."platforms.macos-arm64"]
-checksum = "sha256:51a3b0ed9ab65283ff9e216b4e12f69dfd62682fda69a357e59013383ee9c313"
-url = "https://github.com/pvolok/dekit/releases/download/v0.10.2/dekit-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/631602486"
+checksum = "sha256:4bc3018ec915805cdadc48018b1b6eb363c3db81901bcef6b37b4926e55ae788"
+checksum_source = "mise-versions"
+url = "https://github.com/pvolok/dekit/releases/download/v0.10.3/dekit-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/676202097"
 
 [tools.mprocs."platforms.macos-x64"]
-checksum = "sha256:69fab0205ea537d2efad0918b14959c6c8e413abbfe431d790648d7f737c8b1c"
-url = "https://github.com/pvolok/dekit/releases/download/v0.10.2/dekit-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/631602479"
+checksum = "sha256:67586f5bb140a0e88cca0cea4a69a4c7b991d3ce612bd1d01c6425b286819172"
+checksum_source = "mise-versions"
+url = "https://github.com/pvolok/dekit/releases/download/v0.10.3/dekit-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/676202096"
 
 [tools.mprocs."platforms.windows-x64"]
-checksum = "sha256:60c60da3b2e0e273fde15ce31f2ab733989f83278bb71d70f219e0f75b6577d5"
-url = "https://github.com/pvolok/dekit/releases/download/v0.10.2/dekit-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/631602487"
+checksum = "sha256:853332f4a4621558ae5fd7ab2c4a7f69878914a1bdf88dd49f6af53b8541eb4c"
+checksum_source = "mise-versions"
+url = "https://github.com/pvolok/dekit/releases/download/v0.10.3/dekit-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/676202090"
 
 [[tools.pinact]]
-version = "5.0.1"
+version = "5.0.2"
 backend = "aqua:suzuki-shunsuke/pinact"
 specifiers = ["latest"]
 
 [tools.pinact."platforms.linux-arm64"]
-checksum = "sha256:fc1432004f378ae51d549a356195b4d2e3ee05935dbd20e3bbca66db1cdf6590"
-url = "https://github.com/suzuki-shunsuke/pinact/releases/download/v5.0.1/pinact_linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/suzuki-shunsuke/pinact/releases/assets/664460182"
+checksum = "sha256:326e27f5b3b5fca21e6a169b2785ba2023df3dd9ee82dd0f4e438cb1220b68d7"
+url = "https://github.com/suzuki-shunsuke/pinact/releases/download/v5.0.2/pinact_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/suzuki-shunsuke/pinact/releases/assets/675205656"
 provenance = "github-attestations"
 
 [tools.pinact."platforms.linux-arm64-musl"]
-checksum = "sha256:fc1432004f378ae51d549a356195b4d2e3ee05935dbd20e3bbca66db1cdf6590"
-url = "https://github.com/suzuki-shunsuke/pinact/releases/download/v5.0.1/pinact_linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/suzuki-shunsuke/pinact/releases/assets/664460182"
+checksum = "sha256:326e27f5b3b5fca21e6a169b2785ba2023df3dd9ee82dd0f4e438cb1220b68d7"
+url = "https://github.com/suzuki-shunsuke/pinact/releases/download/v5.0.2/pinact_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/suzuki-shunsuke/pinact/releases/assets/675205656"
 provenance = "github-attestations"
 
 [tools.pinact."platforms.linux-x64"]
-checksum = "sha256:12500c0fff5db94a0155e2e76ed959d1dc0e899056ee168d8fb7b4840e7c04f0"
-url = "https://github.com/suzuki-shunsuke/pinact/releases/download/v5.0.1/pinact_linux_amd64.tar.gz"
-url_api = "https://api.github.com/repos/suzuki-shunsuke/pinact/releases/assets/664460175"
+checksum = "sha256:7f003d8f51e984c2264d2009d430e3e0e87ae404a0e2dc2a9a277b0f731bf5b7"
+url = "https://github.com/suzuki-shunsuke/pinact/releases/download/v5.0.2/pinact_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/suzuki-shunsuke/pinact/releases/assets/675205650"
 provenance = "github-attestations"
 
 [tools.pinact."platforms.linux-x64-musl"]
-checksum = "sha256:12500c0fff5db94a0155e2e76ed959d1dc0e899056ee168d8fb7b4840e7c04f0"
-url = "https://github.com/suzuki-shunsuke/pinact/releases/download/v5.0.1/pinact_linux_amd64.tar.gz"
-url_api = "https://api.github.com/repos/suzuki-shunsuke/pinact/releases/assets/664460175"
+checksum = "sha256:7f003d8f51e984c2264d2009d430e3e0e87ae404a0e2dc2a9a277b0f731bf5b7"
+url = "https://github.com/suzuki-shunsuke/pinact/releases/download/v5.0.2/pinact_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/suzuki-shunsuke/pinact/releases/assets/675205650"
 provenance = "github-attestations"
 
 [tools.pinact."platforms.macos-arm64"]
-checksum = "sha256:58390ac843b7a14414df79762e2f64051158d00549762b1c49ded3d2f1746007"
-url = "https://github.com/suzuki-shunsuke/pinact/releases/download/v5.0.1/pinact_darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/suzuki-shunsuke/pinact/releases/assets/664460145"
+checksum = "sha256:9b9545d53376654005daaee5ab736d579887205ca3df99925c8fe8358c6e7fdb"
+url = "https://github.com/suzuki-shunsuke/pinact/releases/download/v5.0.2/pinact_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/suzuki-shunsuke/pinact/releases/assets/675205643"
 provenance = "github-attestations"
 
 [tools.pinact."platforms.macos-x64"]
-checksum = "sha256:a8eb8dd4daecb7eefa660e1920ff65302714173be9c2f335a0ae77f053fd975a"
-url = "https://github.com/suzuki-shunsuke/pinact/releases/download/v5.0.1/pinact_darwin_amd64.tar.gz"
-url_api = "https://api.github.com/repos/suzuki-shunsuke/pinact/releases/assets/664460144"
+checksum = "sha256:8fb6a0ee87b59bc2778371527c58a46073d5e289919bbd1c2559eff7efeb74e3"
+url = "https://github.com/suzuki-shunsuke/pinact/releases/download/v5.0.2/pinact_darwin_amd64.tar.gz"
+url_api = "https://api.github.com/repos/suzuki-shunsuke/pinact/releases/assets/675205626"
 provenance = "github-attestations"
 
 [tools.pinact."platforms.windows-x64"]
-checksum = "sha256:d679bfd3ecb489f3d4242e54016f57181948980bf0ca7b98c6003c8d256c27f2"
-url = "https://github.com/suzuki-shunsuke/pinact/releases/download/v5.0.1/pinact_windows_amd64.zip"
-url_api = "https://api.github.com/repos/suzuki-shunsuke/pinact/releases/assets/664460186"
+checksum = "sha256:abda382f54a28994e6c7aa220229d5077309def0666bffe0d8d35852bba54b14"
+url = "https://github.com/suzuki-shunsuke/pinact/releases/download/v5.0.2/pinact_windows_amd64.zip"
+url_api = "https://api.github.com/repos/suzuki-shunsuke/pinact/releases/assets/675205667"
 provenance = "github-attestations"
 
 [[tools.tombi]]
-version = "1.9.0"
+version = "1.9.6"
 backend = "aqua:tombi-toml/tombi"
 specifiers = ["latest"]
 
 [tools.tombi."platforms.linux-arm64"]
-checksum = "sha256:66eae15cf2c7644fa318de6c72857303d86bdadbced9f8c372a6fa5f65e47d47"
-url = "https://github.com/tombi-toml/tombi/releases/download/v1.9.0/tombi-cli-1.9.0-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/664579573"
+checksum = "sha256:e29f2af283d9c090c7da16468406ffa5b7183d06cefeae19da40ac6d70ffc42c"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.9.6/tombi-cli-1.9.6-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/676901374"
 provenance = "github-attestations"
 
 [tools.tombi."platforms.linux-arm64-musl"]
-checksum = "sha256:66eae15cf2c7644fa318de6c72857303d86bdadbced9f8c372a6fa5f65e47d47"
-url = "https://github.com/tombi-toml/tombi/releases/download/v1.9.0/tombi-cli-1.9.0-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/664579573"
+checksum = "sha256:e29f2af283d9c090c7da16468406ffa5b7183d06cefeae19da40ac6d70ffc42c"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.9.6/tombi-cli-1.9.6-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/676901374"
 provenance = "github-attestations"
 
 [tools.tombi."platforms.linux-x64"]
-checksum = "sha256:8d67a6d488be4186ad0a14e0cd0293e4893b9c4c66d41f958d22987749d56ec8"
-url = "https://github.com/tombi-toml/tombi/releases/download/v1.9.0/tombi-cli-1.9.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/664579604"
+checksum = "sha256:a845f9275c83ee8ce408cc16fee11a7dbe5009214a4b92f2bbac5c0aa3afafe3"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.9.6/tombi-cli-1.9.6-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/676901407"
 provenance = "github-attestations"
 
 [tools.tombi."platforms.linux-x64-musl"]
-checksum = "sha256:8d67a6d488be4186ad0a14e0cd0293e4893b9c4c66d41f958d22987749d56ec8"
-url = "https://github.com/tombi-toml/tombi/releases/download/v1.9.0/tombi-cli-1.9.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/664579604"
+checksum = "sha256:a845f9275c83ee8ce408cc16fee11a7dbe5009214a4b92f2bbac5c0aa3afafe3"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.9.6/tombi-cli-1.9.6-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/676901407"
 provenance = "github-attestations"
 
 [tools.tombi."platforms.macos-arm64"]
-checksum = "sha256:380797de9eeec47ce91a0408f948c424d95ea55bfab59364bd7207f66848996a"
-url = "https://github.com/tombi-toml/tombi/releases/download/v1.9.0/tombi-cli-1.9.0-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/664579570"
+checksum = "sha256:e3e29db219a07e2e8534735a61c340f1bb3ec1bee845a4fcd6d72f59e0e9383e"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.9.6/tombi-cli-1.9.6-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/676901370"
 provenance = "github-attestations"
 
 [tools.tombi."platforms.macos-x64"]
-checksum = "sha256:e85b1630a8598c9f2f449de6132a21261e5d57ad963cc7558634bd1af266b04b"
-url = "https://github.com/tombi-toml/tombi/releases/download/v1.9.0/tombi-cli-1.9.0-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/664579567"
+checksum = "sha256:8f9b2e3ba04f2d2773b15211024233a89d6ba0e1732c6b9d0b5f98a06ab2bd75"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.9.6/tombi-cli-1.9.6-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/676901373"
 provenance = "github-attestations"
 
 [tools.tombi."platforms.windows-x64"]
-checksum = "sha256:ad04974c44fc46fb4a03040ef91a20c00aadb8b32934bb3f909df9a7db8c5d5e"
-url = "https://github.com/tombi-toml/tombi/releases/download/v1.9.0/tombi-cli-1.9.0-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/664579595"
+checksum = "sha256:6080696714182be2e35bd89e3bbe4f301f92fb2cb888088fd282c341a4f1e5c1"
+url = "https://github.com/tombi-toml/tombi/releases/download/v1.9.6/tombi-cli-1.9.6-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/tombi-toml/tombi/releases/assets/676901391"
 provenance = "github-attestations"
 
 [[tools.trivy]]

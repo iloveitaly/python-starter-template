@@ -1,4 +1,6 @@
-"""Auto-generated typed url_path_for functions for FastAPI apps."""
+"""
+Auto-generated typed url_path_for functions for FastAPI apps.
+"""
 
 from typing import Literal, overload
 
