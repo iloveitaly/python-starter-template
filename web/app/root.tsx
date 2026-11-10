@@ -1,6 +1,7 @@
 /**
  * This file is prerendered and generates the index.html that is served to the client.
  */
+import { Suspense, lazy } from "react"
 import {
   Links,
   Meta,
@@ -44,6 +45,11 @@ function MetaLinks() {
   )
 }
 
+// compile-time constant: when empty (production) the import and chunk are removed from the build
+const EnvironmentBadge = import.meta.env.VITE_ENVIRONMENT_BADGE?.trim()
+  ? lazy(() => import("@/components/shared/environment-badge"))
+  : null
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -56,6 +62,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
+        {EnvironmentBadge && (
+          <Suspense>
+            <EnvironmentBadge />
+          </Suspense>
+        )}
         <ScrollRestoration />
         <Scripts />
       </body>

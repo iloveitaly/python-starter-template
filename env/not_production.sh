@@ -98,3 +98,5 @@ EOF
 
 export CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLIC_KEY
 export VITE_STRIPE_PUBLIC_KEY=$STRIPE_PUBLIC_KEY
+# label shown in the frontend environment badge; never set in production so the badge is compiled out
+export VITE_ENVIRONMENT_BADGE=development
