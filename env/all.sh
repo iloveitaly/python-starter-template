@@ -17,3 +17,5 @@ export PYTHONIOENCODING='UTF-8'
 export TZ=UTC
 # requires this locale to be included in the container
 export LANG=en_US.UTF-8
+# inherited LC_* values take precedence over LANG
+export LC_ALL="$LANG"
