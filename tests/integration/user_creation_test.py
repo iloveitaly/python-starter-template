@@ -1,10 +1,13 @@
+import pytest
 from playwright.sync_api import Page, expect
+from pytest_playwright_artifacts import assert_no_console_errors
 
 from app.factories.constants import CLERK_DEV_USER_PASSWORD
 from app.generated.react_router_routes import react_router_url
 
 from app.models.user import User
 
+from .assertions import assert_no_loading_indicators
 from .clerk import (
     clerk_test_email,
     setup_clerk_testing_token,
@@ -12,19 +15,30 @@ from .clerk import (
 from .utils import login_as_dev_user, wait_for_loading
 
 
-def test_signin(server, page: Page, assert_snapshot) -> None:
+def test_signin(
+    server, page: Page, assert_snapshot, request: pytest.FixtureRequest
+) -> None:
     _user = login_as_dev_user(page)
 
     expect(page.locator("body")).to_contain_text("Hello From Internal Python")
     # Clerk UserButton loads async; wait so the masked region is stable for snapshots
     expect(page.locator('[data-clerk-component="UserButton"]')).to_be_visible()
+    assert_no_loading_indicators(page)
+
+    # Test full-page reload on protected route with clientLoader
+    page.reload()
+    assert_no_loading_indicators(page)
 
     assert_snapshot(page)
 
     assert User.count() == 1
 
+    assert_no_console_errors(request)
 
-def test_signup(server, page: Page, assert_snapshot) -> None:
+
+def test_signup(
+    server, page: Page, assert_snapshot, request: pytest.FixtureRequest
+) -> None:
     # paranoid testing to ensure database cleaning is working
     assert User.count() == 0
 
@@ -52,10 +66,12 @@ def test_signup(server, page: Page, assert_snapshot) -> None:
     expect(page.locator("body")).to_contain_text("Hello From Internal Python")
     # Clerk UserButton loads async; wait so the masked region is stable for snapshots
     expect(page.locator('[data-clerk-component="UserButton"]')).to_be_visible()
+    assert_no_loading_indicators(page)
 
     assert_snapshot(page)
 
     wait_for_loading(page)
+    assert_no_loading_indicators(page)
 
     assert_snapshot(page)
 
@@ -69,3 +85,5 @@ def test_signup(server, page: Page, assert_snapshot) -> None:
     expect(page.locator("body")).to_contain_text("Sign in")
 
     assert_snapshot(page)
+
+    assert_no_console_errors(request)
