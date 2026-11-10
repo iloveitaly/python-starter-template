@@ -81,19 +81,21 @@ export SESSION_SECRET_KEY=de76c21e-e79d-4ad8-8e89-80ec58c71997
 # - `inject` is much faster than individually sourcing keys with `op read`, which is why we have this wonky heredoc format
 # - Env var values should be in the format of "op://${OP_VAULT_UID}/epctgojloj7legp7h62zktshha/sandbox-clerk-secret-key"
 
-op_inject_source <<'EOF'
-export CLERK_PRIVATE_KEY="op://${OP_VAULT_UID}/f5k2z5od2bmbibupey4fze6koi/sandbox-clerk-secret-key"
-export SENTRY_DSN="backend-dsn"
+# fake values satisfy sdk startup validation without sending live 3rd-party traffic
+export SENTRY_DSN="https://public@sentry.io/1"
+export VITE_SENTRY_DSN="https://public@sentry.io/1"
+
 export POSTHOG_SECRET_KEY="secret-key"
+export VITE_POSTHOG_KEY="public-key"
+
 export META_PIXEL_ID="fake-pixel-id"
 export META_PIXEL_KEY="fake-pixel-key"
 
+op_inject_source <<'EOF'
+export CLERK_PRIVATE_KEY="op://${OP_VAULT_UID}/f5k2z5od2bmbibupey4fze6koi/sandbox-clerk-secret-key"
 export STRIPE_PUBLIC_KEY="op://${OP_VAULT_UID}/div6qufv4d5quhalzjrmeiuh5i/publishable-key"
 export STRIPE_SECRET_KEY="op://${OP_VAULT_UID}/div6qufv4d5quhalzjrmeiuh5i/secret-key"
-
-export VITE_SENTRY_DSN="frontend-dsn"
 export VITE_CLERK_PUBLIC_KEY="op://${OP_VAULT_UID}/f5k2z5od2bmbibupey4fze6koi/sandbox-clerk-public-key"
-export VITE_POSTHOG_KEY="public-key"
 EOF
 
 export CLERK_PUBLISHABLE_KEY=$VITE_CLERK_PUBLIC_KEY
