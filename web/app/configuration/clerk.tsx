@@ -61,8 +61,10 @@ export async function getClient({ requireLoggedIn = true } = {}) {
   return clerk
 }
 
-export default function withClerkProvider(Component: React.ComponentType) {
-  return (props: React.ComponentProps<typeof Component>) => (
+export default function withClerkProvider<Props extends object>(
+  Component: React.ComponentType<Props>,
+) {
+  return (props: Props) => (
     <ClerkProvider
       // hand the already-loaded instance to the provider so IsomorphicClerk reuses it
       // instead of hotloading clerk-js again and re-calling `.load()` (extra API call)
