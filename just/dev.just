@@ -30,7 +30,7 @@ dev_lint:
 
 	# shellcheck and pyflakes are optional actionlint integrations. GitHub-hosted runners ship shellcheck
 	# and this toolchain does not, so disable both and keep local and CI results the same.
-	# Matcher source: https://github.com/kjanat/actionlint/blob/v1.17.0/.github/actionlint-matcher.json
+	# Matcher source: https://github.com/rhysd/actionlint/blob/v1.7.12/.github/actionlint-matcher.json
 	if [ -n "${GITHUB_ACTIONS:-}" ]; then
 		echo "::add-matcher::.github/actionlint-matcher.json"
 	fi
