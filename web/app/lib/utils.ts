@@ -37,14 +37,13 @@ export function getQueryParams(request: Request): Record<string, string> {
   return params
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function debounce<T extends (...args: any[]) => void>(
-  func: T,
+export function debounce<TArgs extends unknown[]>(
+  func: (...args: TArgs) => unknown,
   wait: number,
-): (...args: Parameters<T>) => void {
-  let timeout: ReturnType<typeof setTimeout> | null = null
+): (...args: TArgs) => void {
+  let timeout: NodeJS.Timeout | null = null
 
-  return (...args: Parameters<T>) => {
+  return (...args: TArgs) => {
     if (timeout) clearTimeout(timeout)
     timeout = setTimeout(() => func(...args), wait)
   }
