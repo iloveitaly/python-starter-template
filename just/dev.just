@@ -277,8 +277,9 @@ tooling_upgrade: _dev_only && _mise_web_version_sync _js_sync-engine-versions _m
 	mise lock
 	git add .config/mise*~(*/|*).local*(toml|lock) "{{JAVASCRIPT_PACKAGE_JSON}}"
 
-	# `.config/lint/pinact.yaml` min_age skips action releases younger than 30 days
-	GITHUB_TOKEN="$(mise token github --raw)" pinact run -c .config/lint/pinact.yaml -u
+	# pins live in .github/workflows/actions.lock; workflows keep major version tags
+	gh extension install github/gh-actions-lock --pin v0.4.1
+	gh actions-lock --relock
 	git add .github/workflows .github/actions
 
 # upgrade everything: all packages on all languages, tooling, etc
