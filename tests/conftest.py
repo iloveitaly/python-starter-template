@@ -130,8 +130,10 @@ def pytest_configure(config: Config):
     ]
 
     # https://github.com/iloveitaly/pytest-playwright-visual-snapshot
-    # disable visual assertions when running locally
-    config.option.playwright_visual_disable_snapshots = is_local_testing()
+    # disable visual assertions when running locally, unless updating snapshots
+    config.option.playwright_visual_disable_snapshots = (
+        is_local_testing() and not config.option.playwright_visual_update_snapshots
+    )
     config.option.playwright_visual_matcher = "odiff"
     # odiff `diffPercentage` is a percent of the image (0-100), not a 0-1 fraction.
     config.option.playwright_visual_assertion_kwargs = {
