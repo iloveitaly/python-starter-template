@@ -35,3 +35,10 @@ trivy = "latest"
 "github:dmtrKovalenko/odiff" = "latest"
 "github:railwayapp/railpack" = "latest"
 tombi = "latest"
+
+[bootstrap.packages]
+# TODO document: https://github.com/actions/runner-images/issues/4849, https://github.com/actions/runner-images/issues/264
+# there is not a backend for zsh in mise, crazy!
+"apt:zsh" = "latest"
+# libnss3-tools is needed for localias to generate certs
+"apt:libnss3-tools" = "latest"
