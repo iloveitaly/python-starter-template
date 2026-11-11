@@ -37,6 +37,7 @@ if (isProduction()) {
       Sentry.feedbackIntegration({
         colorScheme: "system",
         showBranding: false,
+        autoInject: false,
       }),
     ],
 
