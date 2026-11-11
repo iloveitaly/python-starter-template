@@ -907,7 +907,7 @@ wheels = [
 
 [[package]]
 name = "datamodel-code-generator"
-version = "0.92.0"
+version = "0.93.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "argcomplete" },
@@ -920,9 +920,9 @@ dependencies = [
     { name = "pyyaml" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b1/1b/1102c045161715e2dc3cf1664b8dbc71b5681e91b6cd368d4386447580eb/datamodel_code_generator-0.92.0.tar.gz", hash = "sha256:1f4537e6a5970d104b781d833443b3ba34b246105de396e5368f8a58bc7bd9c2", size = 9489462, upload-time = "2026-11-10T03:38:35.45Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/3e/4f/1d89232ee9d78d44a6cc463c4648861045b36f5c75b5942fb1a67848468a/datamodel_code_generator-0.93.0.tar.gz", hash = "sha256:00d992fc6e7d852b909374193eb3aae0bf9ae55ae2e62f034c5f3836a0b6bc0a", size = 9535469, upload-time = "2026-11-11T07:51:57.475Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/52/f4/9cf836c11a9c33d110c9a4b388631ce7980d9e054a757d2a2d1bebd84449/datamodel_code_generator-0.92.0-py3-none-any.whl", hash = "sha256:763875be7a125aa0abe6a55a2614bbfaded798dca68aabb904a590a41199abd3", size = 2433507, upload-time = "2026-11-10T03:38:32.805Z" },
+    { url = "https://files.pythonhosted.org/packages/40/c3/3fa4bf22aa4e0afcee1930e24611b2366c09f76e6d1406f5da7102816f1d/datamodel_code_generator-0.93.0-py3-none-any.whl", hash = "sha256:d4074c2bb818799067e4b76517846405cd89243aa163741b341003c4d286eeb6", size = 2444040, upload-time = "2026-11-11T07:51:55.433Z" },
 ]
 
 [[package]]
@@ -1149,14 +1149,14 @@ wheels = [
 
 [[package]]
 name = "faker"
-version = "40.52.0"
+version = "40.54.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/25/39/08d27f19a9e8e849d702fc58a7e4c6c0e57d30f4a47ad15d0230ac7267c4/faker-40.52.0.tar.gz", hash = "sha256:a57e48f8e9430917a75d7b53a1568dd10cf4f442058c1fab8a4253c81b2a745a", size = 2037131, upload-time = "2026-11-09T18:28:59.518Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d9/64/eace8e5941eaf51b62d56a54e3ab8380934b0ab2deef2c640ed1153ea47f/faker-40.54.0.tar.gz", hash = "sha256:38fba73e32699a9f1071724d67e5a66a84bf057987cffb27c9d0c979fda3f135", size = 2037669, upload-time = "2026-11-10T22:05:54.089Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b8/94/2ac151962ca2df0d6fbb7414e05cb0ba84329e5e8f08818d30e3725de3b4/faker-40.52.0-py3-none-any.whl", hash = "sha256:73f3f9c0a82cfc5ca341972ef4282e7ec2fffe340d2fabe018238ae0da062ec1", size = 2070879, upload-time = "2026-11-09T18:28:57.642Z" },
+    { url = "https://files.pythonhosted.org/packages/85/2d/031405437c6ccdc5fb24fc8cc715fbe5fbf9af492749ad070d9cc85f69dc/faker-40.54.0-py3-none-any.whl", hash = "sha256:2dd88ee8cb63a9149e19ef48bdd73879bc3854d8ba2d6c1535e902a762e603f7", size = 2071041, upload-time = "2026-11-10T22:05:51.787Z" },
 ]
 
 [[package]]
@@ -1195,16 +1195,16 @@ standard = [
 
 [[package]]
 name = "fastapi-cli"
-version = "0.0.32"
+version = "0.0.33"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "rich-toolkit" },
     { name = "typer" },
     { name = "uvicorn", extra = ["standard"] },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/33/eb/3b534c6f8e157f9ddbf2a153512307c886cad0b258739c200dd8ff8c4452/fastapi_cli-0.0.32.tar.gz", hash = "sha256:38024d2345275e1b37ce8848727a580d84901b570e96b3256d9d36a9a5039424", size = 26636, upload-time = "2026-07-16T12:16:58.678Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/41/8c/d2fe2da44fe68a442bbfea5e6436e2de7829c0c2d419a7c314e2e91ae95f/fastapi_cli-0.0.33.tar.gz", hash = "sha256:94f19bcde4bd6ae26328292ac864082543262b7ee9f5d11bd7224614c22fb958", size = 26627, upload-time = "2026-11-11T09:18:05.981Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d5/53/56ae5ae17bb0a5d89d1d31e5320eb1865553ebbfbde91cdc4c221245f2a8/fastapi_cli-0.0.32-py3-none-any.whl", hash = "sha256:8dcc286fa32f01bbd3f65dd09cfd5a2540ed5f2230b77db7fd30978d6165f3c4", size = 14670, upload-time = "2026-07-16T12:16:57.297Z" },
+    { url = "https://files.pythonhosted.org/packages/68/07/7b9b4bccb46032067de7a4584aef096ee720dcc26ef56c4b09beb970d45c/fastapi_cli-0.0.33-py3-none-any.whl", hash = "sha256:699b95a4b0fc6d54152c9c0e3550f79ac66641717cfb0333c2fbb53ad291767e", size = 14646, upload-time = "2026-11-11T09:18:04.93Z" },
 ]
 
 [package.optional-dependencies]
@@ -1215,7 +1215,7 @@ standard = [
 
 [[package]]
 name = "fastapi-cloud-cli"
-version = "0.27.1"
+version = "0.28.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "agent-detector" },
@@ -1229,9 +1229,9 @@ dependencies = [
     { name = "typer" },
     { name = "uvicorn", extra = ["standard"] },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/08/05/ee5db04afed32e6957ffec49514ba247268a48ff3016bae103defd41c8cf/fastapi_cloud_cli-0.27.1.tar.gz", hash = "sha256:ce8ebc45236ec64b50ee4b676566b4442a0e61566a805676b9da3a2831f8eace", size = 129197, upload-time = "2026-11-08T14:41:39.024Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/97/c7/3b7c8eb16c5777c40c3b5ef675804796b92a9cde96fd0aa9c85cde3b0449/fastapi_cloud_cli-0.28.0.tar.gz", hash = "sha256:7e70611d3f3f1f3bbd48cf5def95db927566f9668929cec96bc34dd632f09963", size = 130012, upload-time = "2026-11-11T12:36:57.738Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cf/ab/dd4a9d104391fcebe3dec74b526642082c24642655a4f7c338775d0e641d/fastapi_cloud_cli-0.27.1-py3-none-any.whl", hash = "sha256:2ea97b1105e1de6060a002b3a4b801181a0018357cb3fc1cc4da045cef1d0ab5", size = 109665, upload-time = "2026-11-08T14:41:38.017Z" },
+    { url = "https://files.pythonhosted.org/packages/17/0c/d1f01df6de9c3b6647aaf0042d3ab5d02a577858adaff775c6e26add15e4/fastapi_cloud_cli-0.28.0-py3-none-any.whl", hash = "sha256:e1409bc42017a86f8092fdf1dd64ead129698936cfeb151a6c3e023f611fd620", size = 109934, upload-time = "2026-11-11T12:36:56.616Z" },
 ]
 
 [[package]]
@@ -1330,11 +1330,11 @@ wheels = [
 
 [[package]]
 name = "flexmock"
-version = "0.13.0"
+version = "0.14.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/75/a6/9f3a7fea15d309a41e472aad643396c41ef88302ea038dc7c8c45e3bad12/flexmock-0.13.0.tar.gz", hash = "sha256:6829d7a0d7f746db3087da8fda62f924e52df7ece4051c2f59ad586cf5ad7977", size = 50748, upload-time = "2026-01-10T19:53:25.152Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/3e/e1/87fb28510aba050ea034dc9554f32ab2198decd2e487d5a7f64aef9c42ee/flexmock-0.14.0.tar.gz", hash = "sha256:7877e1da8b648849d522e7a7357a883ae0fa032cbd7248e40afc2f27a0ac2bf4", size = 51309, upload-time = "2026-11-11T16:38:04.936Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cb/ca/4d99da952769810955eed0777ae20de67cf8257ab22b294ca43cbb5531d1/flexmock-0.13.0-py3-none-any.whl", hash = "sha256:524f657591147d4cbdd82ce6002f361393ec439cb81ab560429926ca2fb44937", size = 20618, upload-time = "2026-01-10T19:53:23.619Z" },
+    { url = "https://files.pythonhosted.org/packages/9b/f4/7c0d76161f925f9e387d99644b6d28f39ba20c4bac0b44c65a0016aab79a/flexmock-0.14.0-py3-none-any.whl", hash = "sha256:bcc80913c9808bd82a37243843251dc8bb0b8dab68c514e359b7befdcd07c402", size = 20689, upload-time = "2026-11-11T16:38:03.6Z" },
 ]
 
 [[package]]
@@ -2710,7 +2710,7 @@ dependencies = [
 
 [[package]]
 name = "posthog"
-version = "7.86.6"
+version = "7.87.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "backoff" },
@@ -2718,9 +2718,9 @@ dependencies = [
     { name = "requests" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e5/ed/ace897f5b58a8e5a4051478b3a534eb9218af6df0f0be6c5dee8dd81d6f4/posthog-7.86.6.tar.gz", hash = "sha256:5232c5b49d26fb5bb72f53cca9d66a3e11876c308e2f457416136862ca3b62ab", size = 916157, upload-time = "2026-11-10T13:04:14.847Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ad/67/f07a25f7aa8d1a517dbfea23bd02ed37076d0efb743231bb2351a8887c14/posthog-7.87.1.tar.gz", hash = "sha256:613c4dcd3410f862c9d4d52d10a8d6d305cfa9ade560ab494503175e67b5dd81", size = 936593, upload-time = "2026-11-11T18:11:31.535Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f4/04/532271b1d240e4f8ae9623fd3187ccc8d21aa244efa7e0b08135c753746f/posthog-7.86.6-py3-none-any.whl", hash = "sha256:1108635ceea437c0f3ab014fc5c865f8fda085d3018a009f3818353e26b909fd", size = 1060169, upload-time = "2026-11-10T13:04:12.891Z" },
+    { url = "https://files.pythonhosted.org/packages/ca/93/8d1757751b842aa0981843d22eca36cad0e15898cb7415c681fb3f6c60e3/posthog-7.87.1-py3-none-any.whl", hash = "sha256:9e7cd5d0635a14ee1d947cb7b6ffbd0c52451a6c1d79ea0a65b2bc9839b5c321", size = 1081630, upload-time = "2026-11-11T18:11:29.494Z" },
 ]
 
 [[package]]
@@ -4524,7 +4524,7 @@ cli = [
 
 [[package]]
 name = "typer"
-version = "0.29.0"
+version = "0.29.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "annotated-doc" },
@@ -4533,9 +4533,9 @@ dependencies = [
     { name = "rich" },
     { name = "shellingham" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ed/db/401793a0d5345409a28de2c571d4ef8bea9a08700c20ea7f7b6af3b050d2/typer-0.29.0.tar.gz", hash = "sha256:6871960a1603fba66af2ff751be48a6735af6480a67660afaf2fab2f7e008ed4", size = 206371, upload-time = "2026-11-09T18:48:12.751Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/6c/aa/0de7986aa1fa856adb961c67345189b97d13f6e250b34ba68884df865f07/typer-0.29.1.tar.gz", hash = "sha256:ab6eb3880bf67ce96147734717f9ec333c06f66e361f3ea947d0be43da39f242", size = 205843, upload-time = "2026-11-11T09:18:39.782Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c1/3d/cc08d3cb257764101c71c47f18e2f547782d013928edc877f155cb99229d/typer-0.29.0-py3-none-any.whl", hash = "sha256:b3c3de6e06a848274dc7bd56a433499e9cf25fa1d40aa3ba4eccfec4e1624c7b", size = 121058, upload-time = "2026-11-09T18:48:11.665Z" },
+    { url = "https://files.pythonhosted.org/packages/05/ff/51969745f31cea6bcd12151e668febcf979656316e67a7755942267c1273/typer-0.29.1-py3-none-any.whl", hash = "sha256:00dbc549c13428bec1be55fe1f4d0fb8c6637a310e4f178ef14abe9534ee7b58", size = 121064, upload-time = "2026-11-11T09:18:38.671Z" },
 ]
 
 [[package]]
@@ -4591,14 +4591,14 @@ wheels = [
 
 [[package]]
 name = "urwid"
-version = "5.1.1"
+version = "5.1.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "wcwidth" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/de/9b/b046feec9276183dd9ea9ac8c17c2fb71aacd56c514030858e316c7a22e3/urwid-5.1.1.tar.gz", hash = "sha256:bc05b5d48ba17fa9e44b18be38ca8c6fbcdda496a1c453a93af2cd29f37488fd", size = 555535, upload-time = "2026-11-10T15:14:38.399Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/cf/c6/0269d312e238480e63cbd2ced3a1dd2133dc819d7587a170ab8740c2d848/urwid-5.1.2.tar.gz", hash = "sha256:b9f4221c6b9cb7721208cccb1614d272e4715841df892dfaa71906f2e9f497ec", size = 557056, upload-time = "2026-11-11T12:36:43.437Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/22/a4/d0c103e52e418db8c03223934666294f0befc0fa6e0d1a6c89d2606f8ef2/urwid-5.1.1-py3-none-any.whl", hash = "sha256:ec8044a321390b377ae3fdfda954ef2ace806464db5a401cc30af71c5d545dd3", size = 588977, upload-time = "2026-11-10T15:14:36.574Z" },
+    { url = "https://files.pythonhosted.org/packages/db/45/f031dd34a415a561aba84435336b0009714d5b644050fd877861d2c88884/urwid-5.1.2-py3-none-any.whl", hash = "sha256:28aa0593d41c3b65ce707e608aea158ee06a19977e978cb7b40d2f7cdb5fa9ee", size = 590576, upload-time = "2026-11-11T12:36:41.157Z" },
 ]
 
 [[package]]
