@@ -138,14 +138,15 @@ def login_as_dev_user(page: Page) -> User:
     # depending on clerk configuration, clerk may prompt for password, OTP directly, or password then OTP
     password_input.or_(otp_input).first.wait_for(state="visible")
 
-    if password_input.is_visible():
+    used_password = password_input.is_visible()
+    if used_password:
         password_input.fill(password)
         page.get_by_role("button", name="Continue").click()
 
     # depending on clerk configuration, we may need to enter OTP
     # "Enter verification code" is the aria-label and not visible on page
     try:
-        if password_input.is_visible():
+        if used_password:
             otp_input.wait_for(state="visible", timeout=2_500)
         else:
             otp_input.wait_for(state="visible")

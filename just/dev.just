@@ -124,7 +124,7 @@ dev_kill: _dev_only
 	# exits 1 when no runner is running, which is the common case
 	dekit runner stop || true
 
-	for port in "$JAVASCRIPT_SERVER_PORT" "$PYTHON_SERVER_PORT" "$PYTHON_TEST_SERVER_PORT" "$EMBED_TEST_SERVER_PORT"; do
+	for port in "$JAVASCRIPT_SERVER_PORT" "$PYTHON_SERVER_PORT" "$PYTHON_TEST_SERVER_PORT"; do
 		echo "Checking for processes on port $port"
 		pids=("${(@f)$(lsof -t -i :${port} 2>/dev/null || true)}")
 		if [[ -n "$pids" ]]; then
