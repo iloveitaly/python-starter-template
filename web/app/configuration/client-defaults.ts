@@ -1,5 +1,4 @@
 // loaded by the generated client via runtimeConfigPath in web/openapi-ts.config.ts
-
 import { isDevelopment, requireEnv } from "~/utils/environment"
 
 import * as Sentry from "@sentry/react"
