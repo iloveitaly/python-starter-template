@@ -5,10 +5,7 @@
  */
 export default function EnvironmentBadge() {
   return (
-    <div
-      data-testid="environment-badge"
-      className="pointer-events-none fixed bottom-2 left-2 z-[9999] rounded-[4px] bg-[#f59e0b] px-2 py-1 font-mono text-xs/normal font-semibold text-black"
-    >
+    <div className="pointer-events-none fixed bottom-2 left-2 z-[9999] rounded-[4px] bg-[#f59e0b] px-2 py-1 font-mono text-xs/normal font-semibold text-black">
       {import.meta.env.VITE_ENVIRONMENT_BADGE?.trim()}
     </div>
   )

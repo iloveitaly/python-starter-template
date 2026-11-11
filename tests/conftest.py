@@ -152,10 +152,6 @@ def pytest_configure(config: Config):
     config.option.playwright_visual_snapshot_masks = [
         # UserButton avatar pixels change between runs
         '[data-clerk-component="UserButton"]',
-        # label text/color vary by VITE_ENVIRONMENT_BADGE
-        '[data-testid="environment-badge"]',
-        # React Query Devtools toggle (pink) can shift a few pixels
-        ".tsqd-open-btn-container",
     ]
 
     config.option.playwright_console_ignore = [
