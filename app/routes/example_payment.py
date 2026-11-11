@@ -61,7 +61,7 @@ def require_checkout_session_id(stripe_checkout_session_id: str) -> str:
 
 def retrieve_checkout_session(stripe_checkout_session_id: str) -> CheckoutSession:
     session_id = require_checkout_session_id(stripe_checkout_session_id)
-    session = stripe_retrieve(session_id, stripe_client())
+    session = stripe_retrieve(session_id, stripe_client)
     assert isinstance(session, CheckoutSession)
     return session
 
@@ -111,8 +111,7 @@ def create_example_payment_session(
         str(request.url_for("complete_example_payment"))
         + "?session_id={CHECKOUT_SESSION_ID}"
     )
-    client = stripe_client()
-    session = client.v1.checkout.sessions.create(
+    session = stripe_client.v1.checkout.sessions.create(
         params={
             "ui_mode": "elements",
             "mode": "payment",
@@ -226,7 +225,6 @@ def example_payment_status(session_id: str = Query()) -> ExamplePaymentStatusRes
     run every time the confirmation page is opened.
     """
 
-    client = stripe_client()
     session = retrieve_checkout_session(session_id)
     if session.status != "complete":
         raise ClientError(
@@ -235,8 +233,8 @@ def example_payment_status(session_id: str = Query()) -> ExamplePaymentStatusRes
 
     order = ExamplePaymentOrder.one(stripe_checkout_session_id=session_id)
     payment_intent_id = payment_intent_id_from_session(session)
-    disputed = payment_intent_is_disputed(client, payment_intent_id)
-    country_zip = extract_country_zip_from_checkout_session(client, session_id)
+    disputed = payment_intent_is_disputed(stripe_client, payment_intent_id)
+    country_zip = extract_country_zip_from_checkout_session(stripe_client, session_id)
 
     return ExamplePaymentStatusResponse(
         order_id=str(order.id),
