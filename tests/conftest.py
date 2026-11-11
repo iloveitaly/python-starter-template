@@ -154,8 +154,6 @@ def pytest_configure(config: Config):
         '[data-clerk-component="UserButton"]',
         # label text/color vary by VITE_ENVIRONMENT_BADGE
         '[data-testid="environment-badge"]',
-        # Sentry feedback loads async and is absent from some baselines
-        "#sentry-feedback",
         # React Query Devtools toggle (pink) can shift a few pixels
         ".tsqd-open-btn-container",
     ]
