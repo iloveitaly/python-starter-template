@@ -10,21 +10,24 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { getClient } from "~/configuration/clerk"
-import { loginAsUser } from "~/configuration/client"
+import { useLoginAsUserMutation, useUserListQuery } from "~/configuration/client"
 
 import { invariant } from "@epic-web/invariant"
-import { useQuery } from "@tanstack/react-query"
-import { userListOptions } from "client/@tanstack/react-query.gen"
 
 function AdminBar() {
+  const { data, error } = useUserListQuery()
+  const { mutateAsync: loginAsUser, isPending } = useLoginAsUserMutation()
+
+
   const [selectedUser, setSelectedUser] = useState("")
-  const { data, error } = useQuery({ ...userListOptions() })
+
+  const isSwitchUserDisabled = !selectedUser || isPending
 
   if (!data || error) {
     return
   }
 
-  const handleLoginAs = async () => {
+  async function switchToSelectedUser() {
     if (!selectedUser) return
 
     await loginAsUser({ path: { user_id: selectedUser } })
@@ -33,7 +36,7 @@ function AdminBar() {
     window.location.replace(href("/"))
   }
 
-  const handleLogout = async () => {
+  async function restoreSignedInUser() {
     const { user } = await getClient()
     invariant(user, "user should exist since getClient requires a login")
 
@@ -63,8 +66,8 @@ function AdminBar() {
         </SelectContent>
       </Select>
       <Button
-        onClick={handleLoginAs}
-        disabled={!selectedUser}
+        onClick={switchToSelectedUser}
+        disabled={isSwitchUserDisabled}
         size="sm"
         variant="link"
         className="ml-2 h-2"
@@ -73,7 +76,8 @@ function AdminBar() {
       </Button>
       {data.current_user && (
         <Button
-          onClick={handleLogout}
+          onClick={restoreSignedInUser}
+          disabled={isPending}
           size="sm"
           variant="link"
           className="ml-2 h-2"

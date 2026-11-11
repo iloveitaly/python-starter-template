@@ -21,10 +21,32 @@ export default defineConfig({
     postProcess: ["prettier"],
   },
   plugins: [
-    "@hey-api/client-fetch",
+    {
+      name: "@hey-api/client-fetch",
+      runtimeConfigPath: "./app/configuration/client-defaults",
+    },
     "@hey-api/sdk",
-    "@hey-api/typescript",
-    "@tanstack/react-query",
-    "zod",
+    // https://github.com/hey-api/openapi-ts/issues/1571
+    {
+      name: "@hey-api/typescript",
+      definitions: {
+        case: "preserve",
+      },
+    },
+    {
+      name: "@tanstack/react-query",
+      useQuery: true,
+      useMutation: true,
+      getQueryData: true,
+      setQueryData: true,
+      mutationKeys: true,
+    },
+    {
+      name: "zod",
+      types: {
+        input: true,
+        output: true,
+      },
+    },
   ],
 })
