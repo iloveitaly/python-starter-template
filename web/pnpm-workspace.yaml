@@ -1,5 +1,7 @@
 allowBuilds:
   '@clerk/shared': true
+  # the postinstall only prints a sponsorship message
+  browser-tabs-lock: false
   '@sentry/cli': true
   core-js: true
   esbuild: true
