@@ -21,7 +21,8 @@ direnv = "latest"
 # See: https://github.com/peterldowns/localias/pull/75
 "github:peterldowns/localias" = "3.0.0+commit.43c3619"
 "github:gitleaks/gitleaks" = "latest"
-actionlint = "latest"
+# rhysd/actionlint 1.7.12 rejects `$/` same-repo refs (rhysd/actionlint#732); this fork accepts them
+"github:kjanat/actionlint" = "latest"
 yamllint = "latest"
 trivy = "latest"
 "jq" = "latest"
