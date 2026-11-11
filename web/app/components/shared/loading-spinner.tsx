@@ -22,7 +22,11 @@ export function LoadingSpinner({
   }
 
   return (
-    <div className={cn("flex items-center justify-center py-8", className)}>
+    <div
+      aria-busy="true"
+      data-testid="loading-spinner"
+      className={cn("flex items-center justify-center py-8", className)}
+    >
       {/* animate the wrapper div, not the SVG: will-change promotes it to a compositor
         layer so the spin keeps running while the main thread is blocked (e.g. clerk-js parsing) */}
       <div className="animate-spin will-change-transform">
