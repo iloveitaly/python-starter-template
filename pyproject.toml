@@ -91,7 +91,7 @@ dev = [
     "coverage>=7.15.4",
     "deptry>=0.25.1",
     "ipython>=9.16.1",
-    "pyright[nodejs]>=1.1.414",
+    "pyrefly>=1.4.0",
     "pytest-asyncio>=1.4.0",
     "pytest-celery[redis]>=1.3.0",
     "pytest-celery-utils>=0.1.2",
@@ -142,18 +142,13 @@ build-backend = "uv_build"
 module-root = ""
 module-name = "app"
 
-[tool.pyright]
-exclude = [
-    # standard excludes that get wiped out with this custom configuration
-    "**/node_modules",
-    "**/__pycache__",
-    "**/.*",
+[tool.pyrefly]
+# empty containers stay Any, same as pyright standard mode
+infer-with-first-use = false
 
-    ".venv",
-    # exclude our local package clones
+project-excludes = [
+    # local package clones
     "pypi",
-    # sometimes python code can be bundled in node repos
-    "web/node_modules",
     # migrations are autogen'd
     "migrations/versions",
     "migrations/seed.py",
@@ -164,10 +159,6 @@ exclude = [
     ".copier",
     "tmp",
 ]
-# https://github.com/microsoft/pylance-release/blob/71dcf9409c5ba65f1138069ac80ae9e2122d7867/USING_WITH_PYRIGHT.md
-# the above documentation seems out of date: autoSearchPaths and extraPaths is deprecated
-extraPaths = []  # Include paths from PYTHONPATH env var and .env definition
-typeCheckingMode = "standard"
 
 [tool.djlint]
 ignore = "H030,H031"

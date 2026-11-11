@@ -20,7 +20,7 @@ def parse_address(input_str: str) -> dict[str, str]:
         "OccupancyType",
         "OccupancyIdentifier",
     ]
-    address1 = " ".join(project(parsed, addr_keys).values()).strip()  # pyright: ignore[reportAttributeAccessIssue]
+    address1 = " ".join(project(parsed, addr_keys).values()).strip()
 
     return {
         "address1": address1,

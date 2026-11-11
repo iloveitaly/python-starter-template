@@ -100,7 +100,8 @@ def configure_python():
         and loose_env.str("PYTHONBREAKPOINT") is None
         and sys.breakpointhook
     ):
-        sys.breakpointhook = None
+        # None is not callable, so breakpoint() would raise TypeError instead of no-op
+        sys.breakpointhook = lambda *_args, **_kwargs: None
         log.info("disabling python breakpoints in production environment")
 
 
