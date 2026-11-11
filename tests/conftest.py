@@ -153,6 +153,8 @@ def pytest_configure(config: Config):
     ]
 
     config.option.playwright_console_ignore = [
+        # clerk hosted accounts domain
+        {"domain": "accounts.dev"},
         # ignore console errors from third-party services using dummy dev keys
         {"domain": "posthog.com"},
         {"domain": "sentry.io"},

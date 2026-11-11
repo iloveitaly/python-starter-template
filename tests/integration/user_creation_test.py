@@ -1,3 +1,5 @@
+import re
+
 import pytest
 from playwright.sync_api import Page, expect
 from pytest_playwright_artifacts import assert_no_console_errors
@@ -13,6 +15,11 @@ from .clerk import (
     setup_clerk_testing_token,
 )
 from .utils import login_as_dev_user, wait_for_loading
+
+# admin bar probes admin endpoint for all logged in users, 401 is expected for non-admin users
+NON_ADMIN_CONSOLE_IGNORE: list[str | re.Pattern[str] | dict[str, str]] = [
+    {"file": r"/internal/v1/admin/users", "message": r"status of 401"},
+]
 
 
 def test_signin(
@@ -33,7 +40,7 @@ def test_signin(
 
     assert User.count() == 1
 
-    assert_no_console_errors(request)
+    assert_no_console_errors(request, ignore=NON_ADMIN_CONSOLE_IGNORE)
 
 
 def test_signup(
@@ -86,4 +93,4 @@ def test_signup(
 
     assert_snapshot(page)
 
-    assert_no_console_errors(request)
+    assert_no_console_errors(request, ignore=NON_ADMIN_CONSOLE_IGNORE)
