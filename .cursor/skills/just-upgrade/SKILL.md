@@ -28,14 +28,34 @@ just upgrade --yes
 `tooling_upgrade: _dev_only && ...` uses just's subsequent-dependency form. Confirm with `just --dry-run tooling_upgrade`.
 
 1. `_dev_only`
-2. `tooling_upgrade` body: `mise self-update --yes`, rewrite `min_version` in `.config/mise.dev.toml` to `mise --version`, `mise upgrade --yes --no-global`, `mise lock`, `git add` mise configs and `web/package.json`, then `gh extension install github/gh-actions-lock --pin v0.4.1`, `gh actions-lock --relock`, and `git add` `.github/workflows` and `.github/actions`. Workflows keep major version tags; immutable SHAs live in `.github/workflows/actions.lock`. Review lockfile diffs the same way as other dependency bumps.
-3. Subsequent deps, after that body: `_mise_web_version_sync`, `_js_sync-engine-versions`, `_mise_gha_version_sync`
-4. `js_upgrade`: npm-check-updates, `pnpm install`, `pnpm audit --fix=update`, `update-browserslist-db`, `git add` `web/package.json` and `web/pnpm-*.yaml`. `pnpm audit --fix=update` can exit 0 and still leave vulnerabilities whose parent range blocks the fixed release. Report those and leave the parent ranges unchanged.
-5. `py_upgrade`: `uv sync -U --group=debugging-extras`, `uv tool upgrade --all`, `git add` `pyproject.toml` `uv.lock`
-6. Playwright / docker chrome alignment (see below). Do this after `py_upgrade` and before treating the run as finished.
-7. `upgrade` body: `playwright install`, `just py_cli write-versions`, `git add .service-versions`
+2. Before `tooling_upgrade`, bump `github/gh-actions-lock` if needed (see below).
+3. `tooling_upgrade` body: `mise self-update --yes`, rewrite `min_version` in `.config/mise.dev.toml` to `mise --version`, `mise upgrade --yes --no-global`, `mise lock`, `git add` mise configs and `web/package.json`, then `gh extension install github/gh-actions-lock --pin <pin>`, `gh actions-lock --relock`, and `git add` `.github/workflows` and `.github/actions`. Workflows keep major version tags; immutable SHAs live in `.github/workflows/actions.lock`. Review lockfile diffs the same way as other dependency bumps.
+4. Subsequent deps, after that body: `_mise_web_version_sync`, `_js_sync-engine-versions`, `_mise_gha_version_sync`
+5. `js_upgrade`: npm-check-updates, `pnpm install`, `pnpm audit --fix=update`, `update-browserslist-db`, `git add` `web/package.json` and `web/pnpm-*.yaml`. `pnpm audit --fix=update` can exit 0 and still leave vulnerabilities whose parent range blocks the fixed release. Report those and leave the parent ranges unchanged.
+6. `py_upgrade`: `uv sync -U --group=debugging-extras`, `uv tool upgrade --all`, `git add` `pyproject.toml` `uv.lock`
+7. Playwright / docker chrome alignment (see below). Do this after `py_upgrade` and before treating the run as finished.
+8. `upgrade` body: `playwright install`, `just py_cli write-versions`, `git add .service-versions`
 
 `.config/mise.toml` version precision plus `minimum_release_age = "14d"` is the upgrade ceiling. `mise upgrade` warns and skips newer releases inside that window. A run that changes nothing because of that window is finished. Do not loosen the window. `min_version` records the mise binary that is running. `mise self-update --yes` can report an older eligible release and leave a newer already-installed mise in place.
+
+### gh-actions-lock extension pin
+
+`tooling_upgrade` and CI install the extension with an explicit `--pin` so local relock and `verify-lockfile` use the same binary. That pin is not advanced by `mise upgrade` or `gh extension upgrade`. Keep these two sites on the same tag:
+
+| Source | Field |
+| --- | --- |
+| `just/dev.just` `tooling_upgrade` | `gh extension install github/gh-actions-lock --pin vX.Y.Z` |
+| `.github/workflows/verify-lockfile.yml` | `gh extension install github/gh-actions-lock --pin vX.Y.Z` |
+
+Before `tooling_upgrade`:
+
+1. Read the current pin from both sites. They must already match. If they do not, fix that before upgrading.
+2. Find the newest non-prerelease tag on `github/gh-actions-lock` (`gh release list -R github/gh-actions-lock --exclude-pre-releases --limit 1` or `gh api repos/github/gh-actions-lock/releases/latest --jq .tag_name`).
+3. If that tag is newer than the pin: update both sites to `--pin vX.Y.Z`, then continue with `tooling_upgrade` so install + `--relock` run on the new binary.
+4. If already current, leave the pin unchanged and still run `tooling_upgrade` (relock can still move action SHAs under existing major tags).
+5. Stage the pin edits with the lockfile (`git add just/dev.just .github/workflows`). Do not leave CI on an older pin than local.
+
+Skip prereleases. Review the extension changelog for a pin bump the same way as other tooling bumps; record the row in the PR table when the pin moves.
 
 ### Playwright Python and docker chrome
 
@@ -75,7 +95,7 @@ After `just upgrade --yes`, run `llm-ide-rules download`, then `llm-ide-rules ig
 
 ## Usage updates
 
-Skip patch bumps. Diff `web/package.json`, `pyproject.toml`, the lockfiles, and `.github/workflows/actions.lock` against the base branch. `gh actions-lock --relock` can advance a floating major tag to a newer upstream SHA, including across a minor/patch within that major. Review that action's changelog the same way before keeping the pin. Review a lockfile-only bump when this repo imports that package. For each minor or major bump, read the changelog for a deprecation or replacement that matches a call site here, then change that call site in the same change as the upgrade. Do not leave a "consider this later" note in place of the edit.
+Skip patch bumps. Diff `web/package.json`, `pyproject.toml`, the lockfiles, `.github/workflows/actions.lock`, and the `gh-actions-lock` `--pin` sites against the base branch. A pin bump for `github/gh-actions-lock` is a tooling change: review its release notes before keeping it. `gh actions-lock --relock` can advance a floating major tag to a newer upstream SHA, including across a minor/patch within that major. Review that action's changelog the same way before keeping the pin. Review a lockfile-only bump when this repo imports that package. For each minor or major bump, read the changelog for a deprecation or replacement that matches a call site here, then change that call site in the same change as the upgrade. Do not leave a "consider this later" note in place of the edit.
 
 Change only the lines the new version requires. Do not rename functions, extract helpers, or rewrite control flow around that edit.
 
