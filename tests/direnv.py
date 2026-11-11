@@ -14,7 +14,7 @@ import hashlib
 import json
 import os
 import shutil
-import subprocess
+import subprocess  # nosec B404
 import sys
 import typing as t
 from pathlib import Path
@@ -44,7 +44,8 @@ def run_just_recipe(recipe: str, **kwargs) -> str:
             "just executable not found in PATH. Ensure just is installed and in PATH/setup is correct."
         )
 
-    result = subprocess.run(
+    # just is resolved from PATH above and the recipe is not a shell string
+    result = subprocess.run(  # nosec B603, B607
         ["just", recipe],
         check=True,
         capture_output=True,

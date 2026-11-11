@@ -39,6 +39,20 @@ js_lint +FILES=".":
 
 	{{_pnpm}} dlx depcheck
 
+	# eslint already runs above, so qlty's eslint plugin is disabled for now
+	# files=({{FILES}}); \
+	# qlty_paths=(); \
+	# for file in $files; do \
+	# 	if [[ $file == . ]]; then \
+	# 		qlty_paths+=({{WEB_DIR}}); \
+	# 	elif [[ $file == {{WEB_DIR}} || $file == {{WEB_DIR}}/* ]]; then \
+	# 		qlty_paths+=($file); \
+	# 	else \
+	# 		qlty_paths+=({{WEB_DIR}}/$file); \
+	# 	fi; \
+	# done; \
+	# qlty check --filter eslint $qlty_paths
+
 	{{_pnpm}} run typecheck
 
 # automatically fix linting errors
