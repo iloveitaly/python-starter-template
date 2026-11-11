@@ -51,14 +51,4 @@ def test_example_payment_completes_checkout(
     assert order.amount_cents == 5_00
     assert order.stripe_checkout_session_id.startswith("cs_")
 
-    assert_no_console_errors(
-        request,
-        ignore=[
-            # not_production.sh uses placeholder Sentry and PostHog keys
-            "Invalid Sentry Dsn: frontend-dsn",
-            {
-                "file": r"https://us-assets\.i\.posthog\.com/.*",
-                "message": "the server responded with a status of 404",
-            },
-        ],
-    )
+    assert_no_console_errors(request)
