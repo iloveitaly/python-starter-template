@@ -2,5 +2,9 @@
 paths:
   .github/workflows/build_and_publish.yml:
     # The deploy job is kept in-tree and forced off (`if: false`) until the railpack switch.
+    # Prefer upstream rhysd/actionlint (not a fork). `$/` same-repo refs are
+    # still unknown in 1.7.12; drop this ignore when the official fix lands:
+    # https://github.com/rhysd/actionlint/issues/711
     ignore:
       - 'constant expression "false" in condition'
+      - 'specifying action "\$/\.github/actions/common-setup" in invalid format because ref is missing'
