@@ -21,7 +21,7 @@ requirements *flags: _dev_only
 
 	mise install
 
-	uvx llm-ide-rules explode
+	uvx llm-ide-rules@latest explode
 
 	# bonus packages for a fancy devprod experience
 	@if [[ "{{flags}}" =~ "--extras" ]]; then \
@@ -34,7 +34,7 @@ requirements *flags: _dev_only
 
 # setup everything required for local development
 [arg("skip_services", long="skip-services", help="skip docker_up and db_seed", flag)]
-setup skip_services: _dev_only requirements && py_setup (_setup_services (if bool(skip_services) { "true" } else { "false" })) js_setup
+setup skip_services: && _dev_only requirements py_setup (_setup_services (if bool(skip_services) { "true" } else { "false" })) js_setup
 	# NOTE this task should be non-destructive, the user should opt-in to something destructive like `nuke`
 
 	# `.local` variants enable the developer to override configuration options without
