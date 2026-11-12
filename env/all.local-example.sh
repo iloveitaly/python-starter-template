@@ -9,11 +9,12 @@
 # avoid committing to source control if you are security paranoid
 # export OP_ACCOUNT=yourdomain.1password.com
 
-# if your services are not hosted via orb stack
+# if your services are not hosted via orb stack (CI / docker-hosts use *.localhost)
 # export DATABASE_HOST=localhost
 # export REDIS_HOST=localhost
 # export SMTP_HOST=localhost
 # export GEOIP_HOST=localhost
+# export CHROME_HOST=chrome.localhost
 
 # azure does not allow for subscriptions to be set via an ENV var:
 # https://stackoverflow.com/questions/38475104/azure-cli-how-to-change-subscription-default
