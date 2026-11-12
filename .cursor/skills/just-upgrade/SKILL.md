@@ -31,7 +31,7 @@ just upgrade --yes
 2. Before `tooling_upgrade`, bump `github/gh-actions-lock` if needed (see below).
 3. `tooling_upgrade` body: `mise self-update --yes`, rewrite `min_version` in `.config/mise.dev.toml` to `mise --version`, `mise upgrade --yes --no-global`, `mise lock`, `git add` mise configs and `web/package.json`, then `gh extension install github/gh-actions-lock --pin <pin>`, `gh actions-lock --relock`, and `git add` `.github/workflows` and `.github/actions`. Workflows keep major version tags; immutable SHAs live in `.github/workflows/actions.lock`. Review lockfile diffs the same way as other dependency bumps.
 4. Subsequent deps, after that body: `_mise_web_version_sync`, `_js_sync-engine-versions`, `_mise_gha_version_sync`
-5. `js_upgrade`: npm-check-updates, `pnpm install`, `pnpm audit --fix=update`, `update-browserslist-db`, `git add` `web/package.json` and `web/pnpm-*.yaml`. `pnpm audit --fix=update` can exit 0 and still leave vulnerabilities whose parent range blocks the fixed release. Report those and leave the parent ranges unchanged.
+5. `js_upgrade`: npm-check-updates, `pnpm install`, `pnpm audit --fix=update`, `update-browserslist-db`, `git add` `web/package.json` and `web/pnpm-*.yaml`. `pnpm audit --fix=update` can exit 0 with unresolved vulnerabilities; review them as described in Security findings.
 6. `py_upgrade`: `uv sync -U --group=debugging-extras`, `uv tool upgrade --all`, `git add` `pyproject.toml` `uv.lock`
 7. Playwright / docker chrome alignment (see below). Do this after `py_upgrade` and before treating the run as finished.
 8. `upgrade` body: `playwright install`, `just py_cli write-versions`, `git add .service-versions`
@@ -93,18 +93,32 @@ The `git add` inside `tooling_upgrade` runs before `_js_sync-engine-versions` an
 
 After `just upgrade --yes`, run `llm-ide-rules download`, then `llm-ide-rules ignores all`. Download refreshes `instructions.md` and `commands.md` from `iloveitaly/llm-ide-rules` and explodes the Cursor rules. `ignores` with no arguments rewrites `.gitignore` for the detected agent only. `all` rewrites the AI instruction block for every client. Then make the instruction commit from Commits.
 
+## Security findings
+
+Preserve upstream dependency pins and ranges; do not add overrides to force security fixes. For remaining advisories, distinguish verified upstream pins or major-version limits from older lockfile resolutions that existing ranges allow. Inspect the affected dependency path before claiming a constraint blocks a fix; leave unexplained resolver behavior explicitly unresolved. Avoid broad dependency churn to clear an advisory.
+
+Report remaining advisory counts by severity and distinguish advisory count from affected package count. Keep a concise note in the PR even when fixes require upstream changes.
+
 ## Usage updates
 
 Skip patch bumps. Diff `web/package.json`, `pyproject.toml`, the lockfiles, `.github/workflows/actions.lock`, and the `gh-actions-lock` `--pin` sites against the base branch. A pin bump for `github/gh-actions-lock` is a tooling change: review its release notes before keeping it. `gh actions-lock --relock` can advance a floating major tag to a newer upstream SHA, including across a minor/patch within that major. Review that action's changelog the same way before keeping the pin. Review a lockfile-only bump when this repo imports that package. For each minor or major bump, read the changelog for a deprecation or replacement that matches a call site here, then change that call site in the same change as the upgrade. Do not leave a "consider this later" note in place of the edit.
 
 Change only the lines the new version requires. Do not rename functions, extract helpers, or rewrite control flow around that edit.
 
-Record one row per edit: package, old version, new version, what changed, why. Put that table in the PR body. Skip a package when the new version does not change a call site in this repo. Do not add a comment that only records why a call site moved. The table row is that record.
-
 A symbol present in a package's types and browser entry can be missing from its node entry. A named import of that symbol from a module loaded by both the client and the server fails the prerender inside `just py_js-build`. Call it only when the export is present, or from client-only code, and run `just py_js-build` after that kind of change. `just js_lint` does not prerender. `just py_lint` includes pyright.
+
+## PR description
+
+Include only notable features or behavior changes relevant to this repo, required usage edits, and remaining security findings. Link release notes supporting notable changes. Omit a generic dependency-update summary, routine version inventory, and validation logs; report validation status separately.
+
+For usage edits, include a table with package, old version, new version, what changed, and why. Omit the table when there are no usage edits. Do not add code comments that merely record the upgrade rationale.
 
 ## Done
 
 `just upgrade --yes` can exit 0 and still leave the pull request red. After the usage edits, run `just dev_lint`, `just js_lint`, `just py_lint`, `just js_test`, and `just py_test`. Backend runs `dev_lint` before `py_lint`. Frontend runs `js_lint` before `js_test`. Push and watch the pull request until Backend and Frontend pass. Deploy stays skipped off `master`.
+
+To investigate whether a check already failed before the upgrade, inspect the base commit's GitHub Actions results and executed steps first. A green run establishes a baseline only for checks it actually ran. Create a separate checkout only when the missing baseline evidence matters; account for its environment setup before running commands. Distinguish reproduced baseline failures from suspected ones and avoid expanding the upgrade into unrelated repairs.
+
+You may run `direnv allow .` in directories you create for testing to authorize their `.envrc` files. Other direnv failures remain subject to the stop rule below.
 
 If the failure is direnv, PATH, pnpm/tool precedence or version shadowing, Docker, certificates, or secrets, stop and report it immediately without attempting workarounds. Do not record the workaround in this skill. Do not rewrite visual snapshots to match a local-only rendering difference.
