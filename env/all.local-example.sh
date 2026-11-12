@@ -14,6 +14,7 @@
 # export REDIS_HOST=localhost
 # export SMTP_HOST=localhost
 # export GEOIP_HOST=localhost
+# export CHROME_HOST=localhost
 
 # azure does not allow for subscriptions to be set via an ENV var:
 # https://stackoverflow.com/questions/38475104/azure-cli-how-to-change-subscription-default
