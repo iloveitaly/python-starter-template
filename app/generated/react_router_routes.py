@@ -16,7 +16,9 @@ from urllib.parse import quote, urlencode
 
 logger = logging.getLogger("react_router_routes.generated")
 
-RoutePaths = Literal["/", "/home", "/form", "/logout", "/login"]
+RoutePaths = Literal[
+    "/", "/home", "/form", "/logout", "/login", "/pay", "/pay/confirmation"
+]
 
 
 ALIAS_MAP: dict[str, dict[str, str]] = {}
@@ -63,6 +65,24 @@ def react_router_path(
 @overload
 def react_router_path(
     path: Literal["/login"],
+    params: None | Mapping[str, object] = None,
+    *,
+    url_params: dict[str, str] | None = None,
+) -> str: ...
+
+
+@overload
+def react_router_path(
+    path: Literal["/pay"],
+    params: None | Mapping[str, object] = None,
+    *,
+    url_params: dict[str, str] | None = None,
+) -> str: ...
+
+
+@overload
+def react_router_path(
+    path: Literal["/pay/confirmation"],
     params: None | Mapping[str, object] = None,
     *,
     url_params: dict[str, str] | None = None,
@@ -178,6 +198,26 @@ def react_router_url(
 @overload
 def react_router_url(
     path: Literal["/login"],
+    params: None | Mapping[str, object] = None,
+    *,
+    base_url: str | None = None,
+    url_params: dict[str, str] | None = None,
+) -> str: ...
+
+
+@overload
+def react_router_url(
+    path: Literal["/pay"],
+    params: None | Mapping[str, object] = None,
+    *,
+    base_url: str | None = None,
+    url_params: dict[str, str] | None = None,
+) -> str: ...
+
+
+@overload
+def react_router_url(
+    path: Literal["/pay/confirmation"],
     params: None | Mapping[str, object] = None,
     *,
     base_url: str | None = None,
