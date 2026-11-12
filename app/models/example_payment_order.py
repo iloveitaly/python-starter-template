@@ -12,7 +12,7 @@ class ExamplePaymentOrderStatus(StrEnum):
 
 
 class ExamplePaymentOrder(BaseModel, TimestampsMixin, table=True):
-    """Order saved before Stripe confirms payment, then marked paid on return."""
+    "Order saved before Stripe confirms payment, then marked paid on return"
 
     id: TypeIDField[Literal["epo"]] = TypeIDPrimaryKey("epo")
 
