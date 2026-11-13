@@ -3,7 +3,7 @@
 #######################
 
 # this is used for jinja + HTML linting, if you put templates elsewhere, you'll need to update this
-JINJA_TEMPLATE_DIR := "app/templates"
+JINJA_TEMPLATE_PATH := "app/templates"
 
 WATCHEXEC_APP_PY := "watchexec -e py --ignore 'tests/' --ignore 'migrations/' --ignore 'playground/' -- "
 
@@ -107,7 +107,7 @@ py_lint +FILES=".":
 		rm pyright_report.json
 
 		# check jinja2 template language
-		uv run j2lint --extensions j2,html {{JINJA_TEMPLATE_DIR}} --json > j2link_report.json || exit_code=$?
+		uv run j2lint --extensions j2,html {{JINJA_TEMPLATE_PATH}} --json > j2link_report.json || exit_code=$?
 		jq -r '(.ERRORS[] | "::\(if .severity == "HIGH" then "error" else "warning" end) file=\(.filename),line=\(.line_number),title=\(.id)::\(.message)"), (.WARNINGS[] | "::warning file=\(.filename),line=\(.line_number),title=\(.id)::\(.message)")' < j2link_report.json
 		rm j2link_report.json
 	else
@@ -115,13 +115,13 @@ py_lint +FILES=".":
 		uv run ruff format --check {{FILES}} || exit_code=$?
 		uv run pyright {{FILES}} || exit_code=$?
 		uvx detect-shadowed-modules@latest || exit_code=$?
-		uv run j2lint --extensions j2,html {{JINJA_TEMPLATE_DIR}} || exit_code=$?
+		uv run j2lint --extensions j2,html {{JINJA_TEMPLATE_PATH}} || exit_code=$?
 		ast-grep scan -c .config/lint/sgconfig.yml --error --filter '^py-' || exit_code=$?
 	fi
 
 	# TODO should only run if {{FILES}} contains a template
 	# NOTE djlint does *not* check jinja syntax, only HTML. GH friendly output is automatically enabled.
-	uv run djlint {{JINJA_TEMPLATE_DIR}} --profile=jinja
+	uv run djlint {{JINJA_TEMPLATE_PATH}} --profile=jinja
 
 	# TODO right now, this tool doesn't work with manual maps :/
 	# TODO https://github.com/fpgmaas/deptry/issues/610#issue-2190147786
@@ -138,7 +138,7 @@ py_lint_fix:
 	uv run ruff check . --fix
 	uv run ruff format
 
-	uv run djlint --profile=jinja --reformat {{JINJA_TEMPLATE_DIR}}
+	uv run djlint --profile=jinja --reformat {{JINJA_TEMPLATE_PATH}}
 
 	# NOTE pyright and other linters do not have an automatic fix flow
 
@@ -217,7 +217,7 @@ _py_generate:
 	# `mise exec` is required for the pnpm execution
 	mise exec -- uv run react-router-routes \
 		app/generated/react_router_routes.py \
-		--directory {{WEB_DIR}}
+		--directory {{WEB_PATH}}
 
 	# generate typed fastapi routes, for python, from the fastapi app
 	LOG_LEVEL=ERROR uv run generate-fastapi-typed-routes \
