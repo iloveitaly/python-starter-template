@@ -2,7 +2,7 @@
 # CI Management
 #######################
 
-GHA_YML_NAME := "build_and_publish.yml"
+GHA_YML_PATH := "build_and_publish.yml"
 
 # if you use an interactive pager, this can cause scripts to stop working
 
@@ -11,12 +11,12 @@ export GH_PAGER := "cat"
 # TODO should we scope these requests via `--branch "$(git branch --show-current)"`
 
 _gha_running_run_id:
-    gh run list --status=in_progress --workflow={{ GHA_YML_NAME }} --json databaseId --jq '.[0].databaseId'
+    gh run list --status=in_progress --workflow={{ GHA_YML_PATH }} --json databaseId --jq '.[0].databaseId'
 
 _gha_last_failed_run_id:
     # NOTE this is tied to the name of the yml!
     branch=$(git branch --show-current) && \
-    gh run list --branch "$branch" --status=failure --workflow={{ GHA_YML_NAME }} \
+    gh run list --branch "$branch" --status=failure --workflow={{ GHA_YML_PATH }} \
     --json databaseId --jq '.[0].databaseId'
 
 # rerun last failed CI run
