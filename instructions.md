@@ -204,6 +204,7 @@ globs: just/*.just
 - Do not use inline shebang unless it differs from the default
 - Use `_` convention, not `[private]`
 - Use uppercase for shell variable
+- File path constants must end with `_PATH` (e.g. `WEB_PATH`, `SHARED_ENV_PATH`); do not use `_DIR` / `_FILE` suffixes for paths
 
 Use the following script execution configuration:
 

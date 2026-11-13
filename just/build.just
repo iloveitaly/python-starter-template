@@ -28,7 +28,7 @@ PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
 	" " + NIXPACKS_BUILD_METADATA + \
 	" --env PYTHON_ENV=production" + \
 	" --platform=" + BUILD_PLATFORM + \
-	" $(just direnv_export_docker '" + SHARED_ENV_FILE +"' --params)" + \
+	" $(just direnv_export_docker '" + SHARED_ENV_PATH +"' --params)" + \
 	" --inline-cache --cache-from " + PYTHON_PRODUCTION_IMAGE_NAME + ":latest" + \
 	" --label org.opencontainers.image.revision='" + GIT_SHA + "'" + \
 	" --label org.opencontainers.image.created='" + BUILD_CREATED_AT + "'" + \
@@ -40,24 +40,24 @@ PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
 # for this reason, we need to emulate the production environment, then build the assets statically.
 # Also, we can't just mount /app/build/server with -v since the build process removes the entire /app/build directory.
 # Some ENV var are set for us, like NODE_ENV: https://nixpacks.com/docs/providers/node#environment-variables
-JAVASCRIPT_NIXPACKS_BUILD_CMD := "nixpacks build " + WEB_DIR + " " + \
+JAVASCRIPT_NIXPACKS_BUILD_CMD := "nixpacks build " + WEB_PATH + " " + \
 	" --name " + JAVASCRIPT_IMAGE_TAG + " " + \
 	" " + NIXPACKS_BUILD_METADATA + \
 	" --platform=" + BUILD_PLATFORM + \
 	" --env VITE_BUILD_COMMIT=" + GIT_SHA + " " + \
 	" --cache-from " + JAVASCRIPT_PRODUCTION_IMAGE_NAME + ":latest --inline-cache" + \
-	" $(just direnv_export_docker '" + JAVASCRIPT_SECRETS_FILE + "' --params) " + \
-	" $(just direnv_export_docker '" + SHARED_ENV_FILE + "' --params) " + \
+	" $(just direnv_export_docker '" + JAVASCRIPT_SECRETS_PATH + "' --params) " + \
+	" $(just direnv_export_docker '" + SHARED_ENV_PATH + "' --params) " + \
 	" --label org.opencontainers.image.description=\"Used for building javascript assets, not for deployment\""
 
 # .env file without any secrets that should exist on all environments
-SHARED_ENV_FILE := "env/all.sh"
+SHARED_ENV_PATH := "env/all.sh"
 
 # .env file with production secrets for python
-PYTHON_PRODUCTION_ENV_FILE := "env/production.backend.sh"
+PYTHON_PRODUCTION_ENV_PATH := "env/production.backend.sh"
 
 # .env file with production variables that are safe to share publicly (frontend)
-JAVASCRIPT_SECRETS_FILE := "env/production.frontend.sh"
+JAVASCRIPT_SECRETS_PATH := "env/production.frontend.sh"
 
 # by default, the py image name is pulled from the project name
 PYTHON_IMAGE_NAME := PROJECT_NAME
@@ -84,20 +84,20 @@ _production_build_assertions:
 			exit 1; \
 	fi
 
-	if [ ! -d "{{JINJA_TEMPLATE_DIR}}" ]; then \
+	if [ ! -d "{{JINJA_TEMPLATE_PATH}}" ]; then \
 		echo "Jinja template directory does not exist! This should never happen on prod" >&2; \
 		exit 1; \
 	fi
 
 # within nixpacks, this is where the SPA client assets are built
-JAVASCRIPT_CONTAINER_BUILD_DIR := "/app/build/client"
+JAVASCRIPT_CONTAINER_BUILD_PATH := "/app/build/client"
 # outside of nixpacks, within the python application folder, this is where the SPA assets are stored
-JAVASCRIPT_PRODUCTION_BUILD_DIR := "public"
+JAVASCRIPT_PRODUCTION_BUILD_PATH := "public"
 
 # build the javascript assets by creating an image, building assets inside the container, and then copying them to the host
 build_javascript: _production_build_assertions
 	@just _banner_echo "Building JavaScript Assets in Container..."
-	rm -rf "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}" || true
+	rm -rf "{{JAVASCRIPT_PRODUCTION_BUILD_PATH}}" || true
 
 	{{JAVASCRIPT_NIXPACKS_BUILD_CMD}}
 
@@ -106,11 +106,11 @@ build_javascript: _production_build_assertions
 	# Cannot extract files out of a image, only a container. We create a tmp container to extract assets.
 	docker rm tmp-js-container || true
 	docker create --name tmp-js-container {{JAVASCRIPT_IMAGE_TAG}}
-	docker cp tmp-js-container:/app/build/production/client "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}"
+	docker cp tmp-js-container:/app/build/production/client "{{JAVASCRIPT_PRODUCTION_BUILD_PATH}}"
 
 # dump nixpacks-generated Dockerfile for manual build and production debugging
 build_javascript_dump:
-	{{JAVASCRIPT_NIXPACKS_BUILD_CMD}} --out {{WEB_DIR}}
+	{{JAVASCRIPT_NIXPACKS_BUILD_CMD}} --out {{WEB_PATH}}
 
 # inject a shell where the javascript build fails, helpful for debugging nixpacks build failures
 build_javascript_debug: build_javascript_dump
@@ -118,7 +118,7 @@ build_javascript_debug: build_javascript_dump
 	# Force the latest builder: `docker buildx use orbstack`
 
 	# store the modified build command in a variable rather than editing the file
-	BUILD_DEBUG_CMD=$(sed 's/docker build/BUILDX_EXPERIMENTAL=1 docker buildx debug --invoke bash build/' {{WEB_DIR}}/.nixpacks/build.sh) && \
+	BUILD_DEBUG_CMD=$(sed 's/docker build/BUILDX_EXPERIMENTAL=1 docker buildx debug --invoke bash build/' {{WEB_PATH}}/.nixpacks/build.sh) && \
 		eval "$BUILD_DEBUG_CMD"
 
 # support non-macos installations for github actions
@@ -200,7 +200,7 @@ build_run-as-production procname="web" image_name=PYTHON_IMAGE_TAG:
 	# NOTE that resources are limited to a production-like environment, change if your production requirements are different
 	docker run -p ${JAVASCRIPT_SERVER_PORT}:80 \
 		--memory=1g --cpus=2 \
-		$(just direnv_export_docker "env/production.backend.sh" --params) \
+		$(just direnv_export_docker "{{PYTHON_PRODUCTION_ENV_PATH}}" --params) \
 		--platform {{BUILD_PLATFORM}} \
 		--env DATABASE_URL="${DATABASE_URL}" \
 		--env REDIS_URL="${REDIS_URL}" \
