@@ -2,10 +2,10 @@
 # Javascript
 #######################
 
-WEB_PATH := "web"
+WEB_DIR := "web"
 
 # `mise exec` to the version specified in the web/ directory is used
-_pnpm := f"mise exec -C {{WEB_PATH}} -- pnpm ${PNPM_GLOBAL_FLAGS:-}"
+_pnpm := f"mise exec -C {{WEB_DIR}} -- pnpm ${PNPM_GLOBAL_FLAGS:-}"
 
 # pnpm alias to avoid having to make sure you are in the right directory
 pnpm +PNPM_CMD:
@@ -21,11 +21,11 @@ js_dependency_tree:
 	{{_pnpm}} list --prod --depth 2
 
 js_clean:
-	rm -rf {{WEB_PATH}}/build \
-				 {{WEB_PATH}}/client \
-				 {{WEB_PATH}}/node_modules \
+	rm -rf {{WEB_DIR}}/build \
+				 {{WEB_DIR}}/client \
+				 {{WEB_DIR}}/node_modules \
 				 public \
-				 {{WEB_PATH}}/.react-router || true
+				 {{WEB_DIR}}/.react-router || true
 
 # clean and rebuild
 js_nuke: js_clean js_setup
@@ -53,12 +53,12 @@ js_test:
 	if [[ -n "${CI:-}" ]]; then \
 		{{_pnpm}} run test; \
 	else \
-		cd {{WEB_PATH}} && {{EXECUTE_IN_TEST}} pnpm run test; \
+		cd {{WEB_DIR}} && {{EXECUTE_IN_TEST}} pnpm run test; \
 	fi
 
 # run a development server
 js_dev:
-	[[ -d {{WEB_PATH}}/node_modules ]] || just js_setup
+	[[ -d {{WEB_DIR}}/node_modules ]] || just js_setup
 	# if the server doesn't quit perfectly, it can still consume the port, let's avoid having to think about that
 	kill -9 $(lsof -t -i :${JAVASCRIPT_SERVER_PORT}) 2>/dev/null || true
 	{{_pnpm}} run dev
@@ -96,7 +96,7 @@ js_upgrade yes:
 
 	{{_pnpm}} dlx update-browserslist-db@latest
 
-	cd {{WEB_PATH}} && git add package.json pnpm-*.yaml
+	cd {{WEB_DIR}} && git add package.json pnpm-*.yaml
 
 # generate a typescript client from the openapi spec
 [arg("watch", long, help="regenerate openapi spec and client on file changes", flag)]
@@ -128,4 +128,4 @@ js_shadcn *arguments:
 	{{_pnpm}} dlx shadcn@latest {{arguments}}
 
 js_shadcn_upgrade:
-	just js_shadcn add -y --overwrite $(for file in {{WEB_PATH}}/app/components/ui/*.tsx; do basename "$file" .tsx; done)
+	just js_shadcn add -y --overwrite $(for file in {{WEB_DIR}}/app/components/ui/*.tsx; do basename "$file" .tsx; done)

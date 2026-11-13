@@ -40,7 +40,7 @@ PYTHON_NIXPACKS_BUILD_CMD := "nixpacks build ." + \
 # for this reason, we need to emulate the production environment, then build the assets statically.
 # Also, we can't just mount /app/build/server with -v since the build process removes the entire /app/build directory.
 # Some ENV var are set for us, like NODE_ENV: https://nixpacks.com/docs/providers/node#environment-variables
-JAVASCRIPT_NIXPACKS_BUILD_CMD := "nixpacks build " + WEB_PATH + " " + \
+JAVASCRIPT_NIXPACKS_BUILD_CMD := "nixpacks build " + WEB_DIR + " " + \
 	" --name " + JAVASCRIPT_IMAGE_TAG + " " + \
 	" " + NIXPACKS_BUILD_METADATA + \
 	" --platform=" + BUILD_PLATFORM + \
@@ -84,20 +84,20 @@ _production_build_assertions:
 			exit 1; \
 	fi
 
-	if [ ! -d "{{JINJA_TEMPLATE_PATH}}" ]; then \
+	if [ ! -d "{{JINJA_TEMPLATE_DIR}}" ]; then \
 		echo "Jinja template directory does not exist! This should never happen on prod" >&2; \
 		exit 1; \
 	fi
 
 # within nixpacks, this is where the SPA client assets are built
-JAVASCRIPT_CONTAINER_BUILD_PATH := "/app/build/client"
+JAVASCRIPT_CONTAINER_BUILD_DIR := "/app/build/client"
 # outside of nixpacks, within the python application folder, this is where the SPA assets are stored
-JAVASCRIPT_PRODUCTION_BUILD_PATH := "public"
+JAVASCRIPT_PRODUCTION_BUILD_DIR := "public"
 
 # build the javascript assets by creating an image, building assets inside the container, and then copying them to the host
 build_javascript: _production_build_assertions
 	@just _banner_echo "Building JavaScript Assets in Container..."
-	rm -rf "{{JAVASCRIPT_PRODUCTION_BUILD_PATH}}" || true
+	rm -rf "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}" || true
 
 	{{JAVASCRIPT_NIXPACKS_BUILD_CMD}}
 
@@ -106,11 +106,11 @@ build_javascript: _production_build_assertions
 	# Cannot extract files out of a image, only a container. We create a tmp container to extract assets.
 	docker rm tmp-js-container || true
 	docker create --name tmp-js-container {{JAVASCRIPT_IMAGE_TAG}}
-	docker cp tmp-js-container:/app/build/production/client "{{JAVASCRIPT_PRODUCTION_BUILD_PATH}}"
+	docker cp tmp-js-container:/app/build/production/client "{{JAVASCRIPT_PRODUCTION_BUILD_DIR}}"
 
 # dump nixpacks-generated Dockerfile for manual build and production debugging
 build_javascript_dump:
-	{{JAVASCRIPT_NIXPACKS_BUILD_CMD}} --out {{WEB_PATH}}
+	{{JAVASCRIPT_NIXPACKS_BUILD_CMD}} --out {{WEB_DIR}}
 
 # inject a shell where the javascript build fails, helpful for debugging nixpacks build failures
 build_javascript_debug: build_javascript_dump
@@ -118,7 +118,7 @@ build_javascript_debug: build_javascript_dump
 	# Force the latest builder: `docker buildx use orbstack`
 
 	# store the modified build command in a variable rather than editing the file
-	BUILD_DEBUG_CMD=$(sed 's/docker build/BUILDX_EXPERIMENTAL=1 docker buildx debug --invoke bash build/' {{WEB_PATH}}/.nixpacks/build.sh) && \
+	BUILD_DEBUG_CMD=$(sed 's/docker build/BUILDX_EXPERIMENTAL=1 docker buildx debug --invoke bash build/' {{WEB_DIR}}/.nixpacks/build.sh) && \
 		eval "$BUILD_DEBUG_CMD"
 
 # support non-macos installations for github actions

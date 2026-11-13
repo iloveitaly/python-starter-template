@@ -228,14 +228,14 @@ _mise_web_version_sync: _dev_only
 	# `requested_version` is the exact version expression in the parent. Now that we have lockfiles, we want to use the
 	# resolved version so that the web/ lockfiles stay in sync with the parent.
 
-	mise --cd {{WEB_PATH}} use \
+	mise --cd {{WEB_DIR}} use \
 		node@$(mise list --current --json | jq -r '.node[0].version') \
 		pnpm@$(mise list --current --json | jq -r '.pnpm[0].version')
-	mise --cd {{WEB_PATH}} lock
+	mise --cd {{WEB_DIR}} lock
 
-	git add {{WEB_PATH}}/mise.{toml,lock}
+	git add {{WEB_DIR}}/mise.{toml,lock}
 
-JAVASCRIPT_PACKAGE_JSON_PATH := WEB_PATH / "package.json"
+JAVASCRIPT_PACKAGE_JSON_PATH := WEB_DIR / "package.json"
 
 # update package.json engines to match the current version expressions in .config/mise.toml
 [script]
