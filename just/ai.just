@@ -1,9 +1,9 @@
-AI_CLIENTS := "antigravity,cursor"
+AI_CLIENTS := "antigravity,cursor,codex"
 AI_BROWSER_CLIENTS := "codex"
 
 # for additional ai configuration, see https://github.com/iloveitaly/dotfiles/blob/master/brew.sh#L88
 ai_setup:
-    pnpx skills add https://github.com/iloveitaly/ai-skills -g --all
+    pnpx skills@latest add https://github.com/iloveitaly/ai-skills -g --all
 
     mcp-add \
       --name chrome-devtools \
