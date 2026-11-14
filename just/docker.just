@@ -27,10 +27,12 @@ docker_up fast latest: _not_production
 
 	# using host names enables us to (a) avoid exposing ports to the host machine and (b) have dns names for each service
 	# this is done for us on macOS via OrbStack. Without this, the `DOCKER_POSTGRES` binary approach would not work.
-	# on CI and native Linux we replicate *.orb.local domains via docker-hosts (/etc/hosts).
+	# on CI and native Linux we map service names into /etc/hosts via docker-hosts so `docker compose run`
+	# containers can reach published services by the same DATABASE_HOST/REDIS_HOST values CI sets (*.localhost).
+	# --tld localhost is required: docker-hosts defaults to .internal, which breaks CI's *.localhost hosts.
 	# this works well on Linux, but not on WSL — default WSL config does not assign each container a unique address.
 	if [[ "$(uname -s)" == "Linux" ]]; then
-		sudo $(which uvx) docker-hosts@latest
+		sudo $(which uvx) docker-hosts@latest --tld localhost
 	fi
 
 # stop all containers and remove the images
