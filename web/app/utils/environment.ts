@@ -51,6 +51,6 @@ console.debug("environment status", {
 })
 
 if (typeof window !== "undefined" && isDevelopment()) {
-  // @ts-expect-error - copy environment to global state for debugging
+  // copy environment to global state for debugging
   window.VITE_ENV = import.meta.env
 }
