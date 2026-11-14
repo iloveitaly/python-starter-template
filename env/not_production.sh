@@ -18,10 +18,6 @@ export PLAYWRIGHT_RESULT_DIRECTORY=$TEST_RESULTS_DIRECTORY/playwright
 export PLAYWRIGHT_VISUAL_SNAPSHOT_DIRECTORY=tests/integration/__snapshots__
 # without this, playwright will use a different browser path across linux and macos
 export PLAYWRIGHT_BROWSERS_PATH=$TMP_DIRECTORY/ms-playwright
-# integration tests attach to compose chromium so macos, linux, and CI paint the same pixels
-# pytest --headed, or PWDEBUG=1, launches a headful browser on the host for interactive debugging
-# PLAYWRIGHT_CHROME_PORT comes from the generated host env
-export PLAYWRIGHT_CHROME_WS_ENDPOINT=ws://127.0.0.1:${PLAYWRIGHT_CHROME_PORT}/
 
 # Since `package=false` in pyproject.toml, we need to explicitly add the current directory to PYTHONPATH
 export PYTHONPATH=$ROOT_DIR
@@ -44,6 +40,7 @@ REDIS_HOST="${REDIS_HOST:-redis.${SERVICES_HOST}}"
 DATABASE_HOST="${DATABASE_HOST:-postgres.${SERVICES_HOST}}"
 SMTP_HOST="${SMTP_HOST:-mailpit.${SERVICES_HOST}}"
 GEOIP_HOST="${GEOIP_HOST:-geoip.${SERVICES_HOST}}"
+CHROME_HOST="${CHROME_HOST:-chrome.${SERVICES_HOST}}"
 
 # names are important here: pg_isready and docker configuration requires these
 # if you are not using docker for local postgres and redis, you can change these
@@ -55,6 +52,9 @@ export REDIS_URL=redis://${REDIS_HOST}:6379/1
 export DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DATABASE_HOST}:5432/development
 export SMTP_URL=smtp://${SMTP_HOST}:1025
 export GEOIP_BASE_URL=http://${GEOIP_HOST}:8080/
+# integration tests attach to compose chromium so macos, linux, and CI paint the same pixels
+# pytest --headed, or PWDEBUG=1, launches a headful browser on the host for interactive debugging
+export PLAYWRIGHT_CHROME_WS_ENDPOINT=ws://${CHROME_HOST}:3000/
 
 #######################
 # Secrets
