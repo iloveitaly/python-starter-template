@@ -30,8 +30,9 @@ docker_up fast latest: _not_production
 	# on CI and native Linux we map service names into /etc/hosts via docker-hosts (default *.internal) so
 	# `docker compose run` can reach published services by the same DATABASE_HOST/REDIS_HOST values CI sets.
 	# this works well on Linux, but not on WSL — default WSL config does not assign each container a unique address.
+	# mise which returns a real binary; a shim breaks under sudo because HOME=/root
 	if [[ "$(uname -s)" == "Linux" ]]; then
-		sudo $(which uvx) docker-hosts@latest
+		sudo "$(mise which docker-hosts)"
 	fi
 
 # stop all containers and remove the images

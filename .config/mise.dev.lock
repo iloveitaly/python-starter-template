@@ -561,6 +561,12 @@ checksum_source = "mise-versions"
 url = "https://github.com/pvolok/dekit/releases/download/v0.10.3/dekit-x86_64-pc-windows-msvc.zip"
 url_api = "https://api.github.com/repos/pvolok/dekit/releases/assets/676202090"
 
+[[tools."pypi:docker-hosts"]]
+version = "0.2.1"
+backend = "pypi:docker-hosts"
+specifiers = ["latest"]
+uv = { path = "mise/locks/mise.dev/pypi-docker-hosts/0.2.1", digest = "sha256:6c6175dfb29f6a7e7d6448b3795d1ca5ef97feba1835fd954eb6518f41c0f70c" }
+
 [[tools.tombi]]
 version = "1.9.7"
 backend = "aqua:tombi-toml/tombi"
