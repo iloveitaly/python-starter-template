@@ -444,6 +444,8 @@ Everyone calls integration testing something different. To me, integration tests
 
 Here are some tips for working with the Playwright integration tests.
 
+* Avoid 3rd party network calls. Bundle fonts, external JS, etc.
+
 Log the DOM structure:
 
 ```python
