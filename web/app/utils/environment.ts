@@ -10,6 +10,12 @@
  */
 import { invariant } from "@epic-web/invariant"
 
+declare global {
+  interface Window {
+    VITE_ENV?: ImportMetaEnv
+  }
+}
+
 export function environmentName() {
   // https://vite.dev/guide/env-and-mode#modes
   return import.meta.env.MODE.toLowerCase()
