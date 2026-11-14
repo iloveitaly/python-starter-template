@@ -204,6 +204,7 @@ globs: just/*.just
 - Do not use inline shebang unless it differs from the default
 - Use `_` convention, not `[private]`
 - Use uppercase for shell variable
+- File path constants must end with `_PATH` (e.g. `SHARED_ENV_PATH`, `JAVASCRIPT_PACKAGE_JSON_PATH`); directory constants must end with `_DIR` (e.g. `WEB_DIR`, `JINJA_TEMPLATE_DIR`); do not use `_FILE`
 
 Use the following script execution configuration:
 

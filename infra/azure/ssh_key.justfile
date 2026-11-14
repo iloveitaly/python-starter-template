@@ -6,7 +6,7 @@
 
 OP_VAULT_ID := env_var("OP_VAULT_UID")
 OP_AZURE_VM_SSH_KEY_ITEM := "Azure Dokku SSH Key"
-AZURE_SSH_KEY_FILE_NAME_PREFIX := "azure_vm_ssh_key"
+AZURE_SSH_KEY_PATH_PREFIX := "azure_vm_ssh_key"
 
 [script]
 ssh_generate:
@@ -33,8 +33,8 @@ ssh_generate:
 # Extract ssh keys from 1p for access from azure terraform
 [script]
 ssh_export item_id:
-    pub="{{ AZURE_SSH_KEY_FILE_NAME_PREFIX }}.pub"
-    pem="{{ AZURE_SSH_KEY_FILE_NAME_PREFIX }}.pem"
+    pub="{{ AZURE_SSH_KEY_PATH_PREFIX }}.pub"
+    pem="{{ AZURE_SSH_KEY_PATH_PREFIX }}.pem"
 
     if [[ ! -f "$pub" ]]; then
         op read "op://{{ OP_VAULT_ID }}/{{ item_id }}/public key" --out-file "$pub"
