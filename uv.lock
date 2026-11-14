@@ -3355,6 +3355,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "pytest-playwright-pause"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest-playwright" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/4d/08/aea9df3919a4ad1f046cca1841270e9087954157a597a49f84303f7d880d/pytest_playwright_pause-0.1.0.tar.gz", hash = "sha256:b33c36f8f836b29ad4a47f652ed5419e9d280dd8523d5cd3907fc6f64c13a5b5", size = 4246, upload-time = "2026-11-13T23:49:13.626Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/93/02/3737caa9e70ab24719ce505c9c998b0060e71a7d03e3bcab3cf3c7c7d163/pytest_playwright_pause-0.1.0-py3-none-any.whl", hash = "sha256:77b3ce9c092c401b1a00bb0795e6ed10f9f54b13ec80185d43dc459c06f15ee3", size = 5313, upload-time = "2026-11-13T23:49:12.782Z" },
+]
+
+[[package]]
 name = "pytest-playwright-visual-snapshot"
 version = "0.5.1"
 source = { git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git?rev=master#1ebb028c7fdb811f444adcf1a94a8aa323a3452e" }
@@ -3571,6 +3583,7 @@ dev = [
     { name = "pytest-line-runner" },
     { name = "pytest-playwright" },
     { name = "pytest-playwright-artifacts" },
+    { name = "pytest-playwright-pause" },
     { name = "pytest-playwright-visual-snapshot" },
     { name = "react-router-routes" },
     { name = "ruff" },
@@ -3688,6 +3701,7 @@ dev = [
     { name = "pytest-line-runner", specifier = ">=0.1.0" },
     { name = "pytest-playwright", specifier = ">=0.8.0" },
     { name = "pytest-playwright-artifacts", git = "https://github.com/iloveitaly/pytest-playwright-artifacts.git" },
+    { name = "pytest-playwright-pause", specifier = ">=0.1.0" },
     { name = "pytest-playwright-visual-snapshot", git = "https://github.com/iloveitaly/pytest-playwright-visual-snapshot.git?rev=master" },
     { name = "react-router-routes", specifier = ">=0.4.2" },
     { name = "ruff", specifier = ">=0.16.1" },

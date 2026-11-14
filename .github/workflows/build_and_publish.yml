@@ -33,10 +33,10 @@ env:
   # a important design goal is to avoid custom configuration in CI. This enables tests to be run in a CI-like environment
   # locally, making it easy to replicate CI issues. This is one of the few CI-specific configuration changes since
   # the host where services are located is truly unique to the CI environment.
-  DATABASE_HOST: postgres.localhost
-  REDIS_HOST: redis.localhost
-  SMTP_HOST: mailpit.localhost
-  GEOIP_HOST: geoip.localhost
+  DATABASE_HOST: postgres.internal
+  REDIS_HOST: redis.internal
+  SMTP_HOST: mailpit.internal
+  GEOIP_HOST: geoip.internal
 
   # https://github.com/Textualize/rich/issues/2769
   COLUMNS: 120
