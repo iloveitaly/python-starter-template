@@ -51,6 +51,7 @@ export POSTGRES_DB=development
 export REDIS_URL=redis://${REDIS_HOST}:6379/1
 export DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DATABASE_HOST}:5432/development
 export SMTP_URL=smtp://${SMTP_HOST}:1025
+# GeoIP API listens on port 8080 in the container
 export GEOIP_BASE_URL=http://${GEOIP_HOST}:8080/
 # integration tests attach to compose chromium so macos, linux, and CI paint the same pixels
 # pytest --headed, or PWDEBUG=1, launches a headful browser on the host for interactive debugging
