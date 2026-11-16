@@ -3,6 +3,9 @@ import time
 from contextlib import contextmanager
 
 from fastapi import status
+from httpx2 import Response
+
+from app.routes.errors import ErrorResponse
 
 
 @contextmanager
@@ -26,6 +29,12 @@ def assert_status(response, status_code: int = status.HTTP_200_OK):
     assert response.status_code == status_code, (
         f"{response.status_code}: {response.json()}"
     )
+
+
+def assert_error_code(response: Response, error_code: str):
+    error_response = ErrorResponse.model_validate_json(response.content, strict=True)
+
+    assert error_response.error.code == error_code
 
 
 def assert_main_server_config_is_stable():
