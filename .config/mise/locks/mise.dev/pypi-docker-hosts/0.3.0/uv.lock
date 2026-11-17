@@ -167,16 +167,16 @@ wheels = [
 
 [[package]]
 name = "docker-hosts"
-version = "0.2.1"
+version = "0.3.0"
 source = { registry = "https://pypi.org/simple/" }
 dependencies = [
     { name = "click" },
     { name = "docker" },
     { name = "structlog-config" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/3f/33/1a0a31e3c674aaac0907adfc21f549540fb797e4706ad1630e782e196164/docker_hosts-0.2.1.tar.gz", hash = "sha256:8f037ae01b69b97b504949b78b18f0572c5acaec805d0661f96917c211bb8b42", size = 8323, upload-time = "2026-11-13T01:16:53.839Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/cb/64/ee584202e544fa8bdf1e37b35395919303303f666b72576eea9931feb0c8/docker_hosts-0.3.0.tar.gz", hash = "sha256:c678b18426cd3efd9d3727340228cbc517414c48d5dcb7878a9f96bc89af3982", size = 8628, upload-time = "2026-11-16T23:49:25.467Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3b/89/e60aef2e6bbfbe93691c20ea5ac718767385d735933d135ea54af2ccba60/docker_hosts-0.2.1-py3-none-any.whl", hash = "sha256:2dc378f88f2794aa80061509bde207146b6e5bc034c5eb197d95240aac9143fc", size = 8783, upload-time = "2026-11-13T01:16:52.797Z" },
+    { url = "https://files.pythonhosted.org/packages/9e/17/51e14013e418c4c7992439eca538b53117449d16eed22aafe1e389a83488/docker_hosts-0.3.0-py3-none-any.whl", hash = "sha256:b71f111fc7909b6172c65a12618b3c6f96a6d0eb5449dd4f8c72483a6e9c79b2", size = 9074, upload-time = "2026-11-16T23:49:24.61Z" },
 ]
 
 [[package]]
@@ -197,7 +197,7 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "docker-hosts", specifier = "==0.2.1" }]
+requires-dist = [{ name = "docker-hosts", specifier = "==0.3.0" }]
 
 [[package]]
 name = "orjson"

@@ -1,9 +1,10 @@
 # your `env/dev.local.sh` should set MISE_ENV=dev,extras to include these tools
 
 [tools]
-"pypi:aiautocommit" = "latest"
-"pypi:uv-development-toggle" = "latest"
-"pypi:llm-ide-rules" = "latest"
+# iloveitaly-owned packages bypass the repo 14d minimum_release_age gate
+"pypi:aiautocommit" = { version = "latest", minimum_release_age = "0s" }
+"pypi:uv-development-toggle" = { version = "latest", minimum_release_age = "0s" }
+"pypi:llm-ide-rules" = { version = "latest", minimum_release_age = "0s" }
 # git hook manager
 "lefthook" = "latest"
 # not really an extra, since this is used on CI, but the CI version is installed/used via a GHA

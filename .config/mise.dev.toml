@@ -35,7 +35,6 @@ trivy = "latest"
 "github:dmtrKovalenko/odiff" = "latest"
 "github:railwayapp/railpack" = "latest"
 tombi = "latest"
-# TODO(2026-11-27): drop minimum_release_age once 0.2.1 clears the repo 14d gate, leave version = "latest"
 "pypi:docker-hosts" = { version = "latest", minimum_release_age = "0s" }
 
 [bootstrap.packages]
