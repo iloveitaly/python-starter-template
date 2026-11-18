@@ -16,23 +16,28 @@ docker_up fast latest: _not_production
 	# force a restart to pick up the latest pulled images
 	if {{ if bool(latest) { "true" } else { "false" } }}; then
 		docker compose up -d --force-recreate {{ if bool(fast) { "" } else { "--wait" } }}
-
-		just db_migrate
-
-		just py_cli write-versions
-		git add .service-versions
 	else
 		docker compose up -d {{ if bool(fast) { "" } else { "--wait" } }}
 	fi
 
 	# using host names enables us to (a) avoid exposing ports to the host machine and (b) have dns names for each service
 	# this is done for us on macOS via OrbStack. Without this, the `DOCKER_POSTGRES` binary approach would not work.
-	# on CI and native Linux we map service names into /etc/hosts via docker-hosts (default *.internal) so
-	# `docker compose run` can reach published services by the same DATABASE_HOST/REDIS_HOST values CI sets.
+	#
+	# on CI and native Linux we map service names into /etc/hosts via docker-hosts
 	# this works well on Linux, but not on WSL — default WSL config does not assign each container a unique address.
-	# mise which returns a real binary; a shim breaks under sudo because HOME=/root
-	if [[ "$(uname -s)" == "Linux" ]]; then
-		sudo "$(mise which docker-hosts)"
+	just _docker_hosts_sync
+
+	if {{ if bool(latest) { "true" } else { "false" } }}; then
+		just db_migrate
+		just py_cli write-versions
+		git add .service-versions
+	fi
+
+# Map running container hostnames into /etc/hosts on Linux (CI and local).
+# mise which returns a real binary; a shim breaks under sudo because HOME=/root
+_docker_hosts_sync:
+	if [[ "$(uname -s)" == "Linux" ]]; then \
+		sudo "$(mise which docker-hosts)"; \
 	fi
 
 # stop all containers and remove the images

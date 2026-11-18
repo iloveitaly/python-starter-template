@@ -18,6 +18,7 @@ _run_in_dev_and_test label *command: _dev_only
 # separate task for the db to support db_reset
 db_up: _dev_only
 	docker compose up -d --wait postgres
+	just _docker_hosts_sync
 
 # TODO may need to run `docker rm $(docker ps -aq)` as well
 # TODO docker down does not exit 1 if it partially failed
@@ -37,13 +38,9 @@ DB_TERMINATE_AND_RESET_SCHEMA := "SELECT pg_terminate_backend(pid) FROM pg_stat_
 # - Not all devs have psql* installed, and brew does not install binary aliases by default
 # - Using the image versions ensures the exact same version of the binaries are used everywhere
 #
-# However, this does complicate interactions:
-#
-# * Locally, I'm using OrbStack which has nice friendly domain references that work anywhere. No problems there.
-# * In other environments (CI/Linux/WSL), this is not the case. Since we are using `run` the pg binaries are running
-#   in a new container so `localhost` references won't work.
-#
-# In order to fix this we must replicate the *.orb domains on CI by updating the /etc/hosts file.
+# The temporary container shares the Compose network: macOS uses OrbStack domains, while
+# Linux (local and CI) uses docker-hosts /etc/hosts aliases resolved via the host resolver.
+# A localhost address would refer to the temporary container itself.
 #
 # -T flag: Disables pseudo-TTY allocation
 #   * Interactive commands (psql) need TTY (-t)

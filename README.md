@@ -211,7 +211,7 @@ Some things to watch out for:
 
 * Mise does not install `op` in the permission group that is required for it to connect to 1Password Desktop and the help documentation does not debug this for you.
 * On Linux, `localias` cannot bind ports 80/443 as a normal user (privileged ports need `CAP_NET_BIND_SERVICE`); grant it with `sudo setcap 'cap_net_bind_service=+ep' "$(readlink -f "$(which localias)")"` (re-run after mise upgrades).
-* On Linux and CI, `just docker_up` runs [`docker-hosts`](https://github.com/iloveitaly/docker-hosts) (mise-managed) to add container hostnames to `/etc/hosts` (similar to OrbStack on macOS, but not using `.orb.local`); this needs sudo and does not work well on default WSL (containers lack unique IPs).
+* On Linux and CI, `just docker_up` runs [`docker-hosts`](https://github.com/iloveitaly/docker-hosts) (mise-managed) to add `*.internal` container hostnames to `/etc/hosts` (similar to OrbStack's `.orb.local` on macOS, using `<service>.<project>.internal` via `env/not_production.sh`); this needs sudo and does not work well on default WSL (containers lack unique IPs).
 
 ### WSL Setup
 
@@ -399,7 +399,7 @@ All commands to control and operate the application are in the [Justfile](./Just
 
 * `clean`. Wipe all temporary files related to the environment.
 * `setup`. Set up the environment.
-* `nuke`. Clean & setup.
+* `nuke`. Destroy environment state (containers, volumes, generated hosts, caches) without rebuilding; run `setup` to recreate.
 * `play`. Interactive playground.
 * `lint`. Run linting.
 * `lint`-fix. Run linting and fix all errors.

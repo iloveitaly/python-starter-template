@@ -203,17 +203,21 @@ localias_restart: _dev_only
 	just localias
 
 # base64 PEM of the localias root CA, for the compose chromium NSS db
-# Linux CI owns the cert as root. sudo -E keeps HOME so localias still finds it.
+# Linux CI runs localias under sudo without preserving HOME, so the cert lives under /root.
 # mise which returns a real binary; a shim breaks under sudo because HOME=/root
 [script]
 localias_cert_base64:
 	localias_bin=$(mise which localias)
 	{
 		"$localias_bin" debug cert --print \
-			|| sudo -n -E "$localias_bin" debug cert --print
+			|| sudo -n "$localias_bin" debug cert --print
 	} \
 		| base64 \
-		| tr -d '\n'
+		| tr -d '\n' \
+		|| {
+			echo "{{RED}}error: localias CA not found; run just localias first{{NORMAL}}" >&2; \
+			exit 1; \
+		}
 
 # sync the mise version to github actions yaml
 _mise_gha_version_sync: _dev_only

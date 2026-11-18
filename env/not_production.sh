@@ -33,9 +33,14 @@ export EMAIL_FROM_ADDRESS="noreply@example.com"
 # Service Host Configuration
 #############################
 
-# Defaults for local OrbStack domains; each host can be overridden independently
-# by CI or env/all.local.sh.orb.local docs: https://docs.orbstack.dev/docker/domains
-SERVICES_HOST="${SERVICES_HOST:-$(basename "$ROOT_DIR").orb.local}"
+# Defaults for local service domains: .internal (docker-hosts) on Linux/CI, .orb.local (OrbStack) on macOS.
+# Each host can be overridden independently via env/all.local.sh. OrbStack docs: https://docs.orbstack.dev/docker/domains
+if [ "$(uname -s)" = "Linux" ]; then
+  SERVICES_TLD="internal"
+else
+  SERVICES_TLD="orb.local"
+fi
+SERVICES_HOST="${SERVICES_HOST:-$(basename "$ROOT_DIR").${SERVICES_TLD}}"
 REDIS_HOST="${REDIS_HOST:-redis.${SERVICES_HOST}}"
 DATABASE_HOST="${DATABASE_HOST:-postgres.${SERVICES_HOST}}"
 SMTP_HOST="${SMTP_HOST:-mailpit.${SERVICES_HOST}}"
