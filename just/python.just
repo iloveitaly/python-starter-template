@@ -46,9 +46,6 @@ py_clean:
 py_clean_visual_snapshots:
 	find tests -type d -name __snapshots__ -exec rm -rf {} +
 
-# rebuild the venv from scratch
-py_nuke: py_clean py_setup
-
 # upgrade project deps; --bump-constraints also refreshes upper bounds via uv-bump
 [arg("bump-constraints", long, help="run uv-bump to update constraints", value="true")]
 py_upgrade bump-constraints="false":

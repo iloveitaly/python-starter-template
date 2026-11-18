@@ -27,9 +27,6 @@ js_clean:
 				 public \
 				 {{WEB_DIR}}/.react-router || true
 
-# clean and rebuild
-js_nuke: js_clean js_setup
-
 # run all javascript linters, optionally include a list of files to check
 js_lint +FILES=".":
 	# TODO support GITHUB_ACTIONS/CI formatting

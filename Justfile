@@ -71,13 +71,17 @@ clean: js_clean py_clean build_clean
 		rm -rf $TMP_DIRECTORY/* || true
 		mkdir -p $TMP_DIRECTORY
 
-		rm -f {{GENERATED_DEKIT_CONFIG_PATH}} || true
+		rm -f {{GENERATED_DEKIT_CONFIG_PATH}} .coverage || true
 		rm -rf .git/hooks/* || true
 
-# aggressively destroy everything and rebuild it
-nuke: js_nuke py_nuke db_nuke clean
+# aggressively destroy everything without rebuilding (run `just setup` to recreate)
+nuke: clean
 		rm -f {{GENERATED_HOST_ENV_PATH}} || true
+		localias -c {{GLOBAL_LOCALIAS_CONFIG_PATH}} stop || true
 		docker compose down --volumes --remove-orphans || true
+
+		@local_files=$(fd --no-ignore-vcs --type f --exclude '*-example*' local env .config | sort || true) && \
+		[ -z "$local_files" ] || printf '\n{{YELLOW}}Note: the following local config files were preserved (not deleted):{{NORMAL}}\n%s\n' "$local_files"
 
 TEMPLATE_UPDATE_NOTICE := '''
 This project was just updated using the python copier tool with the upstream template (github reference in @.copier-answers.yml).
