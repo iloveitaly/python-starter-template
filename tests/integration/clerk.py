@@ -44,7 +44,7 @@ class SetupClerkTestingTokenOptions:
     frontend_api_url: str | None = None
 
 
-TESTING_TOKEN_PARAM = "__clerk_testing_token"
+TESTING_TOKEN_PARAM = "__clerk_testing_token"  # nosec B105
 
 PUBLISHABLE_KEY_LIVE_PREFIX = "pk_live_"
 PUBLISHABLE_KEY_TEST_PREFIX = "pk_test_"

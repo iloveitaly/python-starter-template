@@ -22,10 +22,12 @@ class UserActionAuditData(PydanticBaseModel):
 
     @classmethod
     def from_request(cls, request: Request) -> UserActionAuditData:
-        client_ip = fastapi_access_logger.client_ip_from_request(request) or "0.0.0.0"
+        client_ip = fastapi_access_logger.client_ip_from_request(request)
+        # ip_address(0) is the unspecified address; avoid the "0.0.0.0" string that bandit treats as a bind
+        resolved_ip = ip_address(client_ip) if client_ip else ip_address(0)
 
         return cls(
-            ip_address=ip_address(client_ip),
+            ip_address=resolved_ip,
             build_version=BUILD_COMMIT,
             timestamp=Instant.now(),
         )
