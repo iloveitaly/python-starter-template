@@ -106,6 +106,11 @@ mode = "comment"
 name = "ripgrep"
 mode = "comment"
 
+# intentional TODO/NOTE markers must not fail checks (same rationale as disabling radarlint python:S1135)
+[[triage]]
+match.rules = ["ripgrep:TODO", "ripgrep:NOTE"]
+set.ignored = true
+
 # ruff check and ruff format already run in py_lint
 # [[plugin]]
 # name = "ruff"
