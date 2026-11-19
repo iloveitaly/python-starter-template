@@ -15,7 +15,7 @@ from app.jobs.process_webhook import WebhookDeliveryError
 from app.models.webhook_event import WebhookBase, WebhookEvent
 
 EXAMPLE_WEBHOOK_URL = "https://example.com/webhook"
-ORDER_CREATED = "order.created"
+ORDER_CREATED_WEBHOOK = "order.created"
 WEBHOOK_ENDPOINT_TARGET = "app.models.webhook_event.WEBHOOK_ENDPOINT"
 
 
@@ -28,7 +28,7 @@ def test_queue_webhook_skips_when_no_endpoint(monkeypatch):
         pass
 
     TestWebhook(
-        type=ORDER_CREATED,
+        type=ORDER_CREATED_WEBHOOK,
         id=random_fake_object_id,  # type: ignore
     ).queue_webhook()
 
@@ -52,7 +52,7 @@ def test_queue_webhook_enqueues_and_processes_success(
 
     # since sync_celery is used, the webhook will be processed eagerly
     TestWebhook(
-        type=ORDER_CREATED,
+        type=ORDER_CREATED_WEBHOOK,
         id=random_fake_object_id,  # type: ignore
     ).queue_webhook()
 
@@ -62,14 +62,14 @@ def test_queue_webhook_enqueues_and_processes_success(
     assert webhook is not None
 
     assert webhook.destination == webhook_endpoint
-    assert webhook.type == ORDER_CREATED
+    assert webhook.type == ORDER_CREATED_WEBHOOK
     assert webhook.succeeded_at is not None
     assert webhook.failed_at is None
     assert webhook.response_payload == {"status": "received"}
     # str is intentional here: the UUID types used between these are *not* the same
     assert str(webhook.originating_id) == str(random_fake_object_id.uuid)
     assert webhook.payload == {
-        "type": ORDER_CREATED,
+        "type": ORDER_CREATED_WEBHOOK,
         "id": str(random_fake_object_id),
     }
 
@@ -86,7 +86,7 @@ def test_process_webhook_skips_if_already_succeeded(monkeypatch, httpx2_mock):
         pass
 
     webhook_data = TestWebhook(
-        type=ORDER_CREATED,
+        type=ORDER_CREATED_WEBHOOK,
         id=random_fake_object_id,  # type: ignore
     )
 
@@ -117,7 +117,7 @@ def test_process_webhook_records_json_response_payload(
         pass
 
     webhook_data = TestWebhook(
-        type=ORDER_CREATED,
+        type=ORDER_CREATED_WEBHOOK,
         id=random_fake_object_id,  # type: ignore
     )
 
@@ -149,7 +149,7 @@ def test_process_webhook_records_empty_dict_for_non_json_response(
         pass
 
     webhook_data = TestWebhook(
-        type=ORDER_CREATED,
+        type=ORDER_CREATED_WEBHOOK,
         id=random_fake_object_id,  # type: ignore
     )
 
@@ -182,7 +182,7 @@ def test_process_webhook_handles_empty_response_body(
         pass
 
     webhook_data = TestWebhook(
-        type=ORDER_CREATED,
+        type=ORDER_CREATED_WEBHOOK,
         id=random_fake_object_id,  # type: ignore
     )
 
@@ -215,7 +215,7 @@ def test_process_webhook_errors_on_invalid_host(httpx2_mock, sync_celery, monkey
         pass
 
     webhook_data = TestWebhook(
-        type=ORDER_CREATED,
+        type=ORDER_CREATED_WEBHOOK,
         id=random_fake_object_id,  # type: ignore
     )
 
@@ -230,7 +230,7 @@ def test_process_webhook_errors_on_invalid_host(httpx2_mock, sync_celery, monkey
     event.refresh()
 
     assert event.destination == webhook_endpoint
-    assert event.type == ORDER_CREATED
+    assert event.type == ORDER_CREATED_WEBHOOK
     assert event.failed_at is not None
     assert event.succeeded_at is None
     assert event.response_payload is None
