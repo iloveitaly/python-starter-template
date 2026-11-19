@@ -107,6 +107,10 @@ Change only the lines the new version requires. Do not rename functions, extract
 
 A symbol present in a package's types and browser entry can be missing from its node entry. A named import of that symbol from a module loaded by both the client and the server fails the prerender inside `just py_js-build`. Call it only when the export is present, or from client-only code, and run `just py_js-build` after that kind of change. `just js_lint` does not prerender. `just py_lint` includes pyright.
 
+### Clerk integration helper (`tests/integration/clerk.py`)
+
+`tests/integration/clerk.py` adapts `@clerk/testing` (`clerk/javascript` `packages/testing/src/playwright` and `packages/testing/src/common/setup.ts`). During an upgrade, inspect the upstream git history and files referenced in `tests/integration/clerk.py`'s docstring for material changes (e.g. route deduplication, FAPI/backend retry logic, error diagnostics, or captcha-bypass handling). If they have materially changed, update `tests/integration/clerk.py` to match the upstream behavior and record the change in the usage-edits table.
+
 ## PR description
 
 Include only notable features or behavior changes relevant to this repo, required usage edits, and remaining security findings. Link release notes supporting notable changes. Omit a generic dependency-update summary, routine version inventory, and validation logs; report validation status separately.
