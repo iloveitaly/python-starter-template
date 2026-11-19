@@ -85,7 +85,7 @@ services:
   # The image relays loopback 80/443 to host localias and disables QUIC.
   # Keep this aligned with playwright in pyproject.toml so client and server versions match.
   chrome:
-    image: ghcr.io/iloveitaly/playwright-loophole:v1.64.1
+    image: ghcr.io/iloveitaly/playwright-loophole:v1.65.1
     # native Linux, including CI, does not define host.docker.internal; Docker Desktop and OrbStack already do
     extra_hosts:
       - "host.docker.internal:host-gateway"

@@ -3,37 +3,37 @@
 lockfile_version = 2
 
 [[tools.1password-cli]]
-version = "2.41.1"
+version = "2.42.0"
 backend = "vfox:1password-cli"
 specifiers = ["latest"]
 
 [tools.1password-cli."platforms.linux-arm64"]
-checksum = "sha256:89abd60c17d5c614066c20e6abed816449eb018c5e0679ed63d57071c7bee85e"
-url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.41.1/op_linux_arm64_v2.41.1.zip"
+checksum = "sha256:e56c379fabafb393ce699258e484694abe464870fb41f35ce1b5c3f17868ba61"
+url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.42.0/op_linux_arm64_v2.42.0.zip"
 
 [tools.1password-cli."platforms.linux-arm64-musl"]
-checksum = "sha256:89abd60c17d5c614066c20e6abed816449eb018c5e0679ed63d57071c7bee85e"
-url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.41.1/op_linux_arm64_v2.41.1.zip"
+checksum = "sha256:e56c379fabafb393ce699258e484694abe464870fb41f35ce1b5c3f17868ba61"
+url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.42.0/op_linux_arm64_v2.42.0.zip"
 
 [tools.1password-cli."platforms.linux-x64"]
-checksum = "sha256:e52476700cba9202ac7469bdfb2648ecdbf3438ac85822010f77230139e74966"
-url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.41.1/op_linux_amd64_v2.41.1.zip"
+checksum = "sha256:261fe3844a43e7e83a3d85e8a9f36411729436a1d3add1dc7dd46cbbceebe9e5"
+url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.42.0/op_linux_amd64_v2.42.0.zip"
 
 [tools.1password-cli."platforms.linux-x64-musl"]
-checksum = "sha256:e52476700cba9202ac7469bdfb2648ecdbf3438ac85822010f77230139e74966"
-url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.41.1/op_linux_amd64_v2.41.1.zip"
+checksum = "sha256:261fe3844a43e7e83a3d85e8a9f36411729436a1d3add1dc7dd46cbbceebe9e5"
+url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.42.0/op_linux_amd64_v2.42.0.zip"
 
 [tools.1password-cli."platforms.macos-arm64"]
-checksum = "sha256:2289771b68b521ee3dc1d63a013a6a1c5691e0c53e4c4fe79af8042b6ad3c7f5"
-url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.41.1/op_darwin_arm64_v2.41.1.zip"
+checksum = "sha256:216e86c6db491c752ccb7819b3b1851cc8456ea015a1f7c8a58dd103ef0a474e"
+url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.42.0/op_darwin_arm64_v2.42.0.zip"
 
 [tools.1password-cli."platforms.macos-x64"]
-checksum = "sha256:e77fc9a8ebb23c176fed7c56ea6e4a7184d2b89957e9a5d9a2feb724e7e0574b"
-url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.41.1/op_darwin_amd64_v2.41.1.zip"
+checksum = "sha256:917b0d2b41de3d943bb6562331275c43c4b525af6b003eade06248905ddd62b0"
+url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.42.0/op_darwin_amd64_v2.42.0.zip"
 
 [tools.1password-cli."platforms.windows-x64"]
-checksum = "sha256:7c7ab33e0c1096db62645b72bdf3e284e8734cd39ee0175922ef7ab2a18370da"
-url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.41.1/op_windows_amd64_v2.41.1.zip"
+checksum = "sha256:8c457a0dc852c15beb35af77717ed32294345a300e15c444ed42c79ebc4330e9"
+url = "https://cache.agilebits.com/dist/1P/op2/pkg/v2.42.0/op_windows_amd64_v2.42.0.zip"
 
 [[tools.dive]]
 version = "0.13.1"
@@ -76,44 +76,51 @@ url = "https://github.com/wagoodman/dive/releases/download/v0.13.1/dive_0.13.1_w
 url_api = "https://api.github.com/repos/wagoodman/dive/releases/assets/241842460"
 
 [[tools."github:terror/just-lsp"]]
-version = "0.10.0"
+version = "0.11.0"
 backend = "github:terror/just-lsp"
 specifiers = ["latest"]
 
 [tools."github:terror/just-lsp"."platforms.linux-arm64"]
-checksum = "sha256:0b48cbf1dfa2efb95348b751a1be6f4837e61ace5dd156daef2c2719f650883c"
-url = "https://github.com/terror/just-lsp/releases/download/0.10.0/just-lsp-0.10.0-aarch64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/595782204"
+checksum = "sha256:8f964b4c1a9f66cf6faedfa5e98fc6b41b52687b074ae1bfff4b5078a6f772f4"
+checksum_source = "mise-versions"
+url = "https://github.com/terror/just-lsp/releases/download/0.11.0/just-lsp-0.11.0-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/701861291"
 
 [tools."github:terror/just-lsp"."platforms.linux-arm64-musl"]
-checksum = "sha256:88d83e1bfb29f5cf41be1d4056d56311bcdcad81aec57b7737cdd98147547478"
-url = "https://github.com/terror/just-lsp/releases/download/0.10.0/just-lsp-0.10.0-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/595782567"
+checksum = "sha256:d53ef28ab754de8a4088d93ee9ed1b87cf81e88cced1c7c76f432a50faed667f"
+checksum_source = "mise-versions"
+url = "https://github.com/terror/just-lsp/releases/download/0.11.0/just-lsp-0.11.0-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/701864320"
 
 [tools."github:terror/just-lsp"."platforms.linux-x64"]
-checksum = "sha256:9a801d9dd90a2ac06500903b5a8038881f07f1b0e856590d6f91191a305bc305"
-url = "https://github.com/terror/just-lsp/releases/download/0.10.0/just-lsp-0.10.0-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/595781494"
+checksum = "sha256:70d663b0b004bdcb1fa26786b7d1a4dac47337234b3d6c120c043177dd6f8743"
+checksum_source = "mise-versions"
+url = "https://github.com/terror/just-lsp/releases/download/0.11.0/just-lsp-0.11.0-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/701861563"
 
 [tools."github:terror/just-lsp"."platforms.linux-x64-musl"]
-checksum = "sha256:3c35e10e76db6cc1931495bb3abdaef02576eaeb406c217420f4fd37e1ebe22c"
-url = "https://github.com/terror/just-lsp/releases/download/0.10.0/just-lsp-0.10.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/595781977"
+checksum = "sha256:272697ee4b21d4602ab435a7f11d25a5a23c5757e3b26c553e1844dd8008e652"
+checksum_source = "mise-versions"
+url = "https://github.com/terror/just-lsp/releases/download/0.11.0/just-lsp-0.11.0-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/701862403"
 
 [tools."github:terror/just-lsp"."platforms.macos-arm64"]
-checksum = "sha256:eeca52c7da21b5b04f059a5e23b99575f77ab9b448bdb84911f6b185d386e9c4"
-url = "https://github.com/terror/just-lsp/releases/download/0.10.0/just-lsp-0.10.0-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/595783983"
+checksum = "sha256:a2d00567bad91c49b1658129581d226652ce8302918cc5a64c11924daee68792"
+checksum_source = "mise-versions"
+url = "https://github.com/terror/just-lsp/releases/download/0.11.0/just-lsp-0.11.0-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/701864428"
 
 [tools."github:terror/just-lsp"."platforms.macos-x64"]
-checksum = "sha256:b177bfb271dac7ce9e181f06e83d61edc87debbe05ae50f27f8c2fb40ac8ec95"
-url = "https://github.com/terror/just-lsp/releases/download/0.10.0/just-lsp-0.10.0-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/595783817"
+checksum = "sha256:2d64c3257a8bb5391fc8e02da7453ffb9e7a0c668cc24fe61eb1055f68517e56"
+checksum_source = "mise-versions"
+url = "https://github.com/terror/just-lsp/releases/download/0.11.0/just-lsp-0.11.0-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/701863289"
 
 [tools."github:terror/just-lsp"."platforms.windows-x64"]
-checksum = "sha256:4465270a43bc71e9ed917320b780a80b53ce632fac83aeafadb689ab8f056f1d"
-url = "https://github.com/terror/just-lsp/releases/download/0.10.0/just-lsp-0.10.0-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/595785502"
+checksum = "sha256:27a72395028d4ecc825dd244a5cc9d4c46b7baf98a915849c69c16b1f1743d89"
+checksum_source = "mise-versions"
+url = "https://github.com/terror/just-lsp/releases/download/0.11.0/just-lsp-0.11.0-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/701863275"
 
 [[tools.lefthook]]
 version = "2.2.2"
@@ -163,22 +170,22 @@ url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/63
 provenance = "github-attestations"
 
 [[tools."pypi:aiautocommit"]]
-version = "0.28.1"
+version = "0.30.0"
 backend = "pypi:aiautocommit"
 specifiers = ["latest"]
-uv = { path = "mise/locks/mise.extras/pypi-aiautocommit/0.28.1", digest = "sha256:f8d05805bfa47b107e761a5f0cfa496f005d71edd4f4a61ace49c4d4a1d78864" }
+uv = { path = "mise/locks/mise.extras/pypi-aiautocommit/0.30.0", digest = "sha256:9877eb06e1d6979dc79bd576f06ce831ab29edfc60166d9c4358861210a0f2d2" }
 
 [[tools."pypi:jc"]]
-version = "1.26.1"
+version = "1.26.2"
 backend = "pypi:jc"
 specifiers = ["latest"]
-uv = { path = "mise/locks/mise.extras/pypi-jc/1.26.1", digest = "sha256:ad5db4832bccbe5934a6fccaf4805221c810eae3389f6a5b9900b158fbadb67c" }
+uv = { path = "mise/locks/mise.extras/pypi-jc/1.26.2", digest = "sha256:189d36e6a12a573305bb3ed9d3dd9c320642caa654e35fa59e2c41337421030e" }
 
 [[tools."pypi:llm-ide-rules"]]
-version = "0.21.1"
+version = "0.22.0"
 backend = "pypi:llm-ide-rules"
 specifiers = ["latest"]
-uv = { path = "mise/locks/mise.extras/pypi-llm-ide-rules/0.21.1", digest = "sha256:2b9f4f5ef24439f09f34596467ab2ad07be5df3cce4930466d090cea947057a7" }
+uv = { path = "mise/locks/mise.extras/pypi-llm-ide-rules/0.22.0", digest = "sha256:6f05370017bac84036c98bd86f192f282c960628becee43335e2342170e49f56" }
 
 [[tools."pypi:uv-development-toggle"]]
 version = "0.7.0"
