@@ -109,7 +109,7 @@ A symbol present in a package's types and browser entry can be missing from its 
 
 ### Clerk integration helper (`tests/integration/clerk.py`)
 
-`tests/integration/clerk.py` adapts `@clerk/testing` (`clerk/javascript` `packages/testing/src/playwright` and `packages/testing/src/common/setup.ts`). During an upgrade, inspect the upstream git history and files referenced in `tests/integration/clerk.py`'s docstring for material changes (e.g. route deduplication, FAPI/backend retry logic, error diagnostics, or captcha-bypass handling). If they have materially changed, update `tests/integration/clerk.py` to match the upstream behavior and record the change in the usage-edits table.
+`tests/integration/clerk.py` adapts `@clerk/testing` (`clerk/javascript` `packages/testing/src/playwright` and `packages/testing/src/common/setup.ts`). During an upgrade, inspect the upstream git history and files referenced in `tests/integration/clerk.py`'s docstring for material changes (e.g. route deduplication, FAPI/backend retry logic, error diagnostics, or captcha-bypass handling). If they have materially changed, update `tests/integration/clerk.py` to match the upstream behavior and record the change in the usage-edits table. Do not add unit tests for `tests/integration/clerk.py` or upgrade edits; the existing test suite already covers this functionality.
 
 ## PR description
 
