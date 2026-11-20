@@ -249,14 +249,14 @@ def test_fbclid_is_expanded_into_fbc(monkeypatch):
     assert ".CLICKID." in fbc
 
 
-def test_resolve_fbc_uses_forwarded_tracking_params_when_request_has_none():
+def test_resolve_fbc_uses_forwarded_query_params():
     """
-    `/pending` and `/free-access` are XHRs: the ad click is on the page URL, never on the request.
-    The frontend forwards it in the body, and that has to beat the cookie-only fallback.
+    `/pending` and `/free-access` XHRs forward `fbclid` on the query string via the request
+    interceptor, and that has to resolve and beat the cookie-only fallback.
     """
 
-    request = make_request(path="/streaming/pending")
-    fbc = fb.resolve_fbc(request, {"fbclid": "CLICKID"})
+    request = make_request(path="/streaming/pending", query_string="fbclid=CLICKID")
+    fbc = fb.resolve_fbc(request)
 
     assert fbc is not None
     assert fbc.startswith("fb.1.")
@@ -266,20 +266,23 @@ def test_resolve_fbc_uses_forwarded_tracking_params_when_request_has_none():
 def test_resolve_fbc_prefers_forwarded_click_over_stale_cookie():
     "the `_fbc` cookie lives ~90 days, so it can hold an older click than the one that just landed"
 
-    request = make_request(path="/streaming/pending", cookies="_fbc=fb.1.111.OLDCLICK")
-    fbc = fb.resolve_fbc(request, {"fbclid": "NEWCLICK"})
+    request = make_request(
+        path="/streaming/pending",
+        query_string="fbclid=NEWCLICK",
+        cookies="_fbc=fb.1.111.OLDCLICK",
+    )
+    fbc = fb.resolve_fbc(request)
 
     assert fbc is not None
     assert ".NEWCLICK." in fbc
 
 
 def test_resolve_fbc_falls_back_to_cookie_without_forwarded_params():
-    "orders created before the frontend started forwarding params still resolve"
+    "orders created without forwarded query params still resolve from the cookie"
 
     request = make_request(path="/streaming/pending", cookies="_fbc=FBC_COOKIE")
 
     assert fb.resolve_fbc(request) == "FBC_COOKIE"
-    assert fb.resolve_fbc(request, {}) == "FBC_COOKIE"
 
 
 def test_invalid_phone_drops_only_the_phone(monkeypatch):

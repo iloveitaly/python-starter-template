@@ -150,9 +150,7 @@ def _resolve_fbp(request: Request) -> str | None:
     return None
 
 
-def resolve_fbc(
-    request: Request, tracking_params: dict[str, str] | None = None
-) -> str | None:
+def resolve_fbc(request: Request) -> str | None:
     """
     Facebook Click ID in the `fbc` wire format, derived from the request.
 
@@ -161,15 +159,12 @@ def resolve_fbc(
     reconstructing it later can only guess `now()`. Resolving it here, at the request
     that actually carries the ad click, keeps that timestamp honest.
 
-    `tracking_params` covers the requests the ad click cannot ride on by itself: an XHR
-    posted from a page whose *URL* carries the click, with the params forwarded in the
-    body by `trackingParamsFromSearch()`. Without it those requests fall through to the
-    `_fbc` cookie, which does not exist when the Meta pixel is blocked.
+    The frontend request interceptor forwards tracking parameters from the page URL
+    on the request query string, so XHRs carry `fbclid` / `fbc` here directly rather
+    than falling back to the `_fbc` cookie.
     """
 
-    params = {**request.query_params, **(tracking_params or {})}
-
-    if fbc := params.get(FBC_QUERY_PARAM):
+    if fbc := request.query_params.get(FBC_QUERY_PARAM):
         cookie_fbc = request.cookies.get(FBC_COOKIE_NAME)
 
         if cookie_fbc is None:
@@ -186,12 +181,12 @@ def resolve_fbc(
         log.debug("fbc resolved", source="query")
         return fbc
 
-    if params.get(FBCLID_QUERY_PARAM):
+    if request.query_params.get(FBCLID_QUERY_PARAM):
         # ParamBuilder derives the subdomain index, millisecond timestamp, and Meta version appendix
         builder = ParamBuilder()
         builder.process_request(
             host=request.headers.get("host") or "",
-            queries={key: [value] for key, value in params.items()},
+            queries={key: [value] for key, value in request.query_params.items()},
             cookies=dict(request.cookies),
         )
 
