@@ -96,6 +96,7 @@ name = "osv-scanner"
 [[plugin]]
 name = "radarlint-iac"
 mode = "monitor"
+# terraform:S1135 is off in .qlty/configs/radarlint.properties because TODO comments are kept
 
 [[plugin]]
 name = "radarlint-python"
@@ -106,7 +107,7 @@ mode = "comment"
 name = "ripgrep"
 mode = "comment"
 
-# intentional TODO/NOTE markers must not fail checks (same rationale as disabling radarlint python:S1135)
+# intentional TODO/NOTE markers must not fail checks (same rationale as disabling radarlint S1135)
 [[triage]]
 match.rules = ["ripgrep:TODO", "ripgrep:NOTE"]
 set.ignored = true
