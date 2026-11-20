@@ -61,7 +61,7 @@ def check_fastapi_cli():
 
     if (
         hash_function_code(fastapi_cli.cli._run)
-        != "d7e4dad43fc556d58b699fdf316eba558b75ece0d73f177176578c2ee8745f3b"
+        != "80122615394293d21bad146db50481f6f5e3666023d7e9b00e06d31a7e73fe19"
     ):
         log.warning("fastapi-cli internal _run function has changed, update main.py")
 
