@@ -111,6 +111,12 @@ mode = "comment"
 match.rules = ["ripgrep:TODO", "ripgrep:NOTE"]
 set.ignored = true
 
+# env/*.sh are direnv fragments, not standalone scripts
+[[triage]]
+match.rules = ["shellcheck:2148"]
+match.file_patterns = ["env/**"]
+set.ignored = true
+
 # ruff check and ruff format already run in py_lint
 # [[plugin]]
 # name = "ruff"

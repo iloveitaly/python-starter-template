@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+# Description: Bootstrap Cursor agent environments with mise, direnv, and zsh/localias deps.
+
 ###############################
 # Bootstrap Agent Environments
 ###############################
@@ -9,15 +12,13 @@ mise trust
 export MISE_ENV=dev,extras
 mise install
 
+# shellcheck disable=SC1090
 source <(mise activate)
 
 # zsh and ssl cert stuff for localias
 sudo apt update && sudo apt install -y zsh libnss3-tools
 
 # mise must be setup first!
-echo 'eval "$(mise activate bash)"' >> ~/.bashrc
-echo 'eval "$(direnv hook bash)"' >> ~/.bashrc
-
 cat << 'EOF' >> ~/.bashrc
 
 ###################################
