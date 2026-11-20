@@ -116,13 +116,6 @@ def is_development() -> bool:
     return python_environment() is PythonEnvironment.DEVELOPMENT
 
 
-def is_job_monitor():
-    "is this the production flower application"
-    # TODO should use a ENV var for app name, rather than hardcoding; how we determine & store container names needs to be refactored
-    # TODO this is an azure-specific ENV var, we should use a more generic one?
-    return env.str("CONTAINER_APP_NAME", "") == "prod-jmon"
-
-
 def is_pytest():
     """
     PYTEST_CURRENT_TEST is set by pytest to indicate the current test being run
