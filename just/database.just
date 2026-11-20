@@ -84,7 +84,7 @@ db_lint:
 # open the database in the default macos GUI
 db_open: _dev_only
 	# TablePlus via Setapp is a great option here
-	open $DATABASE_URL
+	open $DATABASE_URL --env SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
 
 # tui to interact with the database
 db_play: _dev_only
@@ -190,7 +190,7 @@ db_prompt: _dev_only
 [script]
 db_dump_production: _dev_only
 	echo "{{ BLUE }}Enter the op:// reference or postgres:// URL for the production DB:{{ NORMAL }}"
-	echo "{{ BLUE }}e.g., op://Dev/prod DB/db-connection-string or postgres://user:pass@host:5432/dbname{{ NORMAL }}"
+	echo "{{ BLUE }}e.g., op://<vault-uuid>/<item-uuid>/db-connection-string or postgres://user:pass@host:5432/dbname{{ NORMAL }}"
 	read db_ref
 
 	if [[ "$db_ref" == postgres://* ]]; then
