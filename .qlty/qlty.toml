@@ -118,6 +118,12 @@ match.rules = ["shellcheck:2148"]
 match.file_patterns = ["env/**"]
 set.ignored = true
 
+# alembic migrations repeat SQL literals like server_default='now()'
+[[triage]]
+match.rules = ["radarlint-python:python:S1192"]
+match.file_patterns = ["migrations/**"]
+set.ignored = true
+
 # ruff check and ruff format already run in py_lint
 # [[plugin]]
 # name = "ruff"
