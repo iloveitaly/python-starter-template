@@ -104,6 +104,8 @@ def server():
             "server is already running, should be closed! Use `just dev_kill` to terminall all processes holding ports."
         )
 
+    # fastapi mounts the frontend routes at startup only if the build exists
+    wait_for_javascript_build()
     log.info("starting server subprocess for integration tests")
 
     # NOTE this is a very important line! It forks an *entirely new* python process and does not inherit
@@ -122,8 +124,6 @@ def server():
         raise RuntimeError("server failed to start")
 
     try:
-        wait_for_javascript_build()
-
         yield
     finally:
         assert wait_for_termination(proc.pid)
