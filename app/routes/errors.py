@@ -221,6 +221,7 @@ def register_exception_handlers(app: FastAPI):
         log_func(
             "client_error",
             code=exc.code,
+            message=exc.message,
             status_code=exc.status_code,
             param=exc.param,
             details=exc.details,
