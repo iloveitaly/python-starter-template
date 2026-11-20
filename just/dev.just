@@ -282,7 +282,7 @@ tooling_upgrade: _dev_only && _mise_web_version_sync _js_sync-engine-versions _m
 	git add .config/mise*~(*/|*).local*(toml|lock) "{{JAVASCRIPT_PACKAGE_JSON_PATH}}"
 
 	# pins live in .github/workflows/actions.lock; workflows keep major version tags
-	gh extension install github/gh-actions-lock --pin v0.4.1
+	gh extension install github/gh-actions-lock --pin v0.5.1
 	gh actions-lock --relock
 	git add .github/workflows .github/actions
 
