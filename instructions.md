@@ -41,7 +41,9 @@ session_id = client_secret_id.split("_secret")[0]
 
 ### Code Comments
 
-Default to no comment. Names, structure, and the command itself should explain what the code does.
+Focus on self-documentation. Names, structure, and the command itself should explain what the code does.
+
+Comments and docstrings should explain actual business rules, user-visible behavior, or non-obvious technical constraints; avoid restating code structure or claiming unenforced behavior.
 
 The reader is a world-class engineer who may not know this domain or every third-party system. Add a concise one-line comment only when they would otherwise miss *why*:
 
@@ -80,12 +82,13 @@ docker cp tmp-js-container:/app/build/production/client public
 
 Pay careful attention to these instructions when running tests, generating database migrations, or otherwise figuring out how to operate this project:
 
+- When addressing review feedback, apply the underlying lesson to comparable code added or changed on the branch, not just the commented location.
 - Run `just` to understand the more important workflow commands.
   - Run `just --list` to see all available pre-written workflow development commands.
 - **IMPORTANT:** Never manually set environment variables that are required. You can set optional variables for debugging, but any missing required environment variables is an error that should be reported and you should stop your work immediately.
 - Do not worry about cleaning up the environment. This is done automatically.
 - Run python code with `uv run python`
-- Use `pytest` to run tests. If tests fail because of a configuration, environment, or system error: let me know and stop working.
+- Build required test assets before running `pytest`; report the exact failure and stop when configuration, environment, system, or migration issues block validation.
   - Initially run `pytest --ignore=tests/integration` then only run `pytest tests/integration`
   - When debugging integration tests look at `$PLAYWRIGHT_RESULT_DIRECTORY`. There's a directory for each test failure. In that directory you fill find a `failure.html` containing the rendered DOM of the page on failure and a screenshot of the contents. Use these to debug why it failed.
 - Do not attempt to create or run database migrations. Pause your work and let me know you need a migration run.
@@ -204,6 +207,7 @@ globs: just/*.just
 - Do not use inline shebang unless it differs from the default
 - Use `_` convention, not `[private]`
 - Use uppercase for shell variable
+- File path constants must end with `_PATH` (e.g. `SHARED_ENV_PATH`, `JAVASCRIPT_PACKAGE_JSON_PATH`); directory constants must end with `_DIR` (e.g. `WEB_DIR`, `JINJA_TEMPLATE_DIR`); do not use `_FILE`
 
 Use the following script execution configuration:
 
@@ -504,6 +508,7 @@ When accessing database records:
 
 When writing database models:
 
+* ActiveModel maps model docstrings and field documentation to database comments; changing them can require a migration even when no tables or columns change.
 * Don't use `Field(...)` unless required (i.e. when specifying a JSON type for a `dict` or pydantic model using `Field(sa_type=JSONB)`). For instance, use `= None` instead of `= Field(default=None)`.
 * Add enum classes close to where they are used, unless they are used across multiple classes (then put them at the top of the file)
 * Use `ModelName.foreign_key()` when generating a foreign key field
@@ -893,16 +898,108 @@ Here's how frontend code is organized in `web/app/`:
 
 globs: infra/**/*.tf
 
-- All "bootstrap" secrets required to run the terraform code should be `export`ed in the Justfile. The Justfile is guarded so agents cannot run it, ensuring that required secrets are not available to agents ensures that terraform cannot be run by an agent.
+Terraform code is very important because it controls production systems. For this reason, it's critical that agents should never:
+
+1. Modify production systems using CLI tools for cloud providers such as `gcloud`, `az`, etc unless explicitly asked
+2. Be able to run terraform directly via `tofu apply`. Terraform must be designed to run only via `just apply`.
+3. Justfile execution must be guarded against agent execution using `is-ai-agent`.
+
+Instructions when writing terraform:
+
+- All "bootstrap" secrets (i.e. vars required to run the terraform code) should be `export`ed in the Justfile. The Justfile is guarded so agents cannot run it, ensuring that required secrets are not available to agents ensures that terraform cannot be run by an agent.
 - Don't add a `locals` for a variable only used a single time
 - Don't add `output` resources unless specifically asked
 - Use `~> 9.9.0` style provider version pinning
+- Always assume you are using or can use the latest version of a terraform module. Never workaround a missing feature that has been added to a terraform module.
 - Consult the terraform MCP when using an external module. Module surfaces change often.
-- When creating a worker, always set the `compatibility_date` to the current date.
+- When creating a cloudflare worker, always set the `compatibility_date` to the current date.
 - Add `# sourced from ENV` for any `variable` sourced from the ENV.
 - Uppercase all `TF_VAR_*`
 - Put `locals` at the top of the file
 - Reference Terraform-managed resources directly; add a data source only when a verified provider limitation requires it or the resource is managed elsewhere.
+- Add a one line comment at the top of each `.tf`` file describing it's purpose.
+- Always document magic numbers or strings with a one-line comment and a link to the doc if applicable. For example, if an IP address references a range defined in a cloud provider's documentation, link to those docs and indicate why we are using it.
+- When using submodules, do not specify provider versions in the submodule. Let the root provider configuration specify the version.
+- Name Terraform resources using consistent <application_or_system>_<purpose> identifiers that communicate business ownership and function independently of cloud providers, environments, or incidental implementation details
+- Always add a `description` to any `variable` block.
+- If an SSH key is required for a VM, encryption, or something else I'll generate it manually in 1P and provide a UUID to reference.
+- Make infrastructure configuration changes in Terraform for the operator to apply. Use cloud CLIs, ssh, APIs, 1password, etc for read-only inspection and verification. Never make infrastructure changes directly.
+- Prefer pre-built, well-supported terraform modules for configuration over complicated shell scripts. By way of example, using `system_file` or `system_folder` over custom shell commands when creating files.
+- Prefer `terraform_data` with `remote-exec` over `local-exec` and `ssh` commands.
+- Never rewrite host headers, or any other headers, unless specifically asked to when setting up a Cloudflare Tunnel.
+- All 1Password references should use item uuids since they change less often than titles. However, the name of the item should be added in a comment the 1p resource. The uuid can change if the item was moved out of a vault, so the name helps us locate the uuid if this occurs.
+  - 1P uuids should never be a `variable` and should always be hardcoded.
+  - 1P items should always use consistent tags so it's easy to understand which items are system- vs user-created.
+
+When referencing secret or sensitive information, use `ephemeral` instead of `data`:
+
+```terraform file="onepassword_secrets.tf"
+# Required secrets read through the 1Password provider
+#
+# Custom fields require a named section (provider has no root field_map).
+# R2 deployment state backend credentials stay out of TF, do not include them here.
+
+ephemeral "onepassword_item" "application_server" {
+  vault = var.OP_VAULT_UID
+  uuid  = "uu2mxzr32hnwtfun3viom62ggq"
+}
+
+locals {
+  onepassword_secrets = {
+    application_server_ip = data.onepassword_item.application_server.url
+  }
+}
+```
+
+
+Most modules should have dedicated file to store various local variables to DRY up the codebase, make sure consistent string constants are used across the project, etc:
+
+```terraform file="locals.tf"
+locals {
+  base_name              = "app-name"
+  base_name_alphanumeric = replace(local.base_name, "/[^a-zA-Z0-9]/", "")
+
+  # indicate the environment explicitly to make it clear when viewing resources
+  # in the cloud provider this is not a test/staging resource, and to make it
+  # easy to create an entire staging environment with a simple refactor in the future
+  environment = "prod"
+  name        = "${local.base_name}-${local.environment}"
+
+  # configuration to store tf state for ability for multiple devs to deploy
+  tfstate = {
+    # resource group should be distinct from the resource group of the deployment
+    resource_group = "${local.base_name}-tfstate"
+    container      = "${local.base_name}-tfstate"
+    key            = "${local.environment}.tfstate"
+  }
+}
+```
+
+### Comments
+
+- Notice the comment block at the top of the example files describing the purpose of the file. All files should have this.
+- Not all files require a longer description, but all should at least have a single comment line describing the purpose of the file.
+- If a file requires a longer comment it should use the following format:
+
+```terraform
+# configure public application uploads and their CORS policy
+#
+# - host images have public read access and must stay separate from private screening downloads
+# - bucket names are persistent storage identifiers; changing them requires migrating their contents
+
+locals {
+  # ...
+```
+
+Note the blank `#` if a file requires a longer explanation. Prefer bullets over longer sentences.
+
+### SSH Keys
+
+- All SSH required exist in 1Password and are available through the 1P `SSH_AUTH_SOCK`
+- The `SSH_AUTH_SOCK` value is not set to 1Password by default. `ssh` parses the local SSH config, which includes the 1Password socket, but Terraform does not. This is intentional and ensures terraform is only run from the Justfile.
+- All SSH keys should be generated manually in 1Password and only the public keys should be read into the ENV via a Justfile `export`.
+- Private keys should never make their way into terraform deployment state
+- Parse effective OpenSSH client settings with `ssh -G … | jc --ssh-conf` and read the resulting JSON fields.
 
 ### File Structure
 
@@ -910,7 +1007,26 @@ globs: infra/**/*.tf
 * `onepassword_secrets.tf` extracts secrets from 1Password that are required to run the terraform code. Secrets should be pulled from here, and not ENV.
 * `providers.tf` defines the providers to use.
 * `variables.tf` defines "global" variables, including those sourced from the ENV.
-* `deployment_state.tf` stores the terraform state in a remote bucket.
+* `deployment_state.tf` stores the terraform state in a remote bucket. This should only exist in the root module.
 * `Justfile` contains the commands to run the terraform code. Never run it directly.
+* `locals.tf` most modules should have dedicated file to store various local variables to DRY up the codebase and make sure consistent string constants are used across the project.
+
+## Secrets
+
+globs: env/**/*.sh
+
+Here's how environment variables are managed in this application:
+
+- `.envrc` entry point to load the correct env stack. Should not contain secrets and should be simple some shell logic and direnv stdlib calls.
+- `env/all.sh` common configuration for all systems. No secrets. No dotenv/custom scripts. Just `export`s to modify core configuration settings like `export TZ=UTC`.
+- `env/all.local.sh` overrides across all environments (dev and test). Useful for things like 1Password service account token and database hosts which mutate the logic followed in `env/not_production.sh`. Not committed to source control.
+- `env/host.sh` host-specific configuration overrides. Empty for main repo, contains port offsets and host prefixes for git worktrees. Auto-generated by `just dev_generate_hosts`. Not committed to source control.
+- `env/not_production.sh` This contains the bulk of your system configuration. Shared across test, CI, dev, etc but not production.
+- `env/dev.local.sh` configuration overrides for non-test environments. `PYTHONBREAKPOINT`, `LOG_LEVEL`, etc. Most of your environment changes end up happening here.
+- `env/test.sh` test-only environment variables (`PYTHON_ENV=test`). This file should generally be short.
+- `env/production.{backend,frontend}.sh` for most medium-sized projects you'll have separate frontend and backend systems (even if your frontend is SPA, which I'm a fan of). These two files enable you to document the variables required to build (in the case of a SPA frontend) or run (in the case of a python backend) your system in production.
+- `env/*local.*` files have a `-example` variant which is committed to version control. These document helpful environment variables for local development. Make sure these two are in sync.
+- Within `op_inject_source` for each unique 1Password UUID, add a comment with the name of the item and a link to the 1Password item. i.e. `# item "My Item"`.
+- When writing TypeScript/JavaScript/React, use `requireEnv("THE_ENV_VAR_NAME")` to read an environment variable. `import {requireEnv} from '~/utils/environment'`
 
 <!-- END CLONED INSTRUCTIONS -->
