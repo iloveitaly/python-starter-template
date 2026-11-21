@@ -166,7 +166,7 @@ def _build_api_url_pattern(frontend_api_url: str) -> re.Pattern[str]:
 def _compute_backoff_delay_ms(
     attempt: int, base_delay_ms: int, jitter_max_ms: int
 ) -> float:
-    return base_delay_ms * (2**attempt) + random.uniform(0, jitter_max_ms)
+    return base_delay_ms * (2**attempt) + random.uniform(0, jitter_max_ms)  # nosec B311
 
 
 def _format_response_diagnostics(response: APIResponse) -> str:

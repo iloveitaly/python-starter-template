@@ -11,7 +11,7 @@ https://github.com/microsoft/playwright-python/issues/462
 import importlib.metadata
 import os
 import socket
-import subprocess
+import subprocess  # nosec B404
 import time
 from http import HTTPStatus
 from multiprocessing import Process
@@ -26,7 +26,7 @@ from app.environments import is_github_actions
 
 from ..log import log
 from .javascript_build import wait_for_javascript_build
-from .subprocess_server import run_server
+from .subprocess_server import run_server  # nosec B404
 
 PYTHON_SERVER_TEST_PORT = env.int("PYTHON_TEST_SERVER_PORT")
 
@@ -143,7 +143,9 @@ def report_localias_status():
     if is_github_actions():
         command.insert(0, "sudo")
 
-    result = subprocess.run(command, capture_output=True, text=True, check=False)
+    result = subprocess.run(  # nosec B603
+        command, capture_output=True, text=True, check=False
+    )
     log.debug("localias Status", output=result.stdout)
 
     if "daemon running" not in result.stdout:

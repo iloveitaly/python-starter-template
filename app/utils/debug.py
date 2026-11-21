@@ -156,7 +156,7 @@ def memray_profile(log: Logger | None = None, live: bool = False):
     import memray
 
     if live:
-        live_socket = memray.SocketDestination(12345, "0.0.0.0")
+        live_socket = memray.SocketDestination(12345, "0.0.0.0")  # nosec B104
 
         # NOTE follow_fork does not seem to work with live
         # > --follow-fork mode can only be used with an output file. It is incompatible with --live mode and --live-remote mode, since the TUI can’t be attached to multiple processes at once.
