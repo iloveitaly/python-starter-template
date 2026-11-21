@@ -22,14 +22,33 @@ if is_production() or is_staging():
     raise RuntimeError("sanitize_production.py must never run in production or staging")
 
 
-from activemodel.session_manager import global_session
+from app import log
+
+from activemodel.session_manager import get_session, global_session
 
 
 def randomize_stripe_checkout_and_payment_ids() -> None:
     """Randomize stored Stripe IDs so a production dump does not leak them.
 
-    This template has no model with a Stripe ID, so there is nothing to update.
+    This template has no model with a Stripe ID. Uncomment the update once one
+    does, for example `TicketReservationOrder.stripe_checkout_session_id`.
     """
+
+    with get_session() as session:
+        # session.exec(
+        #     TicketReservationOrder.__table__.update().values(
+        #         {
+        #             "stripe_checkout_session_id": literal("cs_test_")
+        #             + func.base32_encode(func.gen_random_uuid()),
+        #             "stripe_payment_intent_id": literal("pi_")
+        #             + func.base32_encode(func.gen_random_uuid()),
+        #         }
+        #     )
+        # )
+
+        session.commit()
+
+    log.info("randomized stripe ids")
 
 
 def main() -> None:
