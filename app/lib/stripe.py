@@ -132,7 +132,7 @@ def payment_intent_is_disputed(
 ) -> bool:
     "Returns True if any charge for the PaymentIntent has an active dispute"
 
-    for charge in client.charges.list(
+    for charge in client.v1.charges.list(
         params={"payment_intent": payment_intent_id}
     ).auto_paging_iter():
         if charge.disputed:
