@@ -124,6 +124,12 @@ match.rules = ["radarlint-python:python:S1192"]
 match.file_patterns = ["migrations/**"]
 set.ignored = true
 
+# alembic env and playground intentionally star-import model/modules
+[[triage]]
+match.rules = ["radarlint-python:python:S2208"]
+match.file_patterns = ["migrations/env.py", "playground.py"]
+set.ignored = true
+
 # generated / single-directive files without a trailing newline
 [[exclude]]
 plugins = ["editorconfig-checker"]
