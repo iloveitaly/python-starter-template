@@ -124,6 +124,11 @@ match.rules = ["radarlint-python:python:S1192"]
 match.file_patterns = ["migrations/**"]
 set.ignored = true
 
+# generated / single-directive files without a trailing newline
+[[exclude]]
+plugins = ["editorconfig-checker"]
+file_patterns = [".qlty/configs/.shellcheckrc", ".service-versions"]
+
 # ruff check and ruff format already run in py_lint
 # [[plugin]]
 # name = "ruff"
