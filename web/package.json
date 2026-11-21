@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "react-router dev",
     "build": "pnpm run openapi && react-router typegen && react-router build",
+    "lint": "prettier --check . && eslint --cache --cache-location ./node_modules/.cache/eslint . && pnpm run openapi && react-router typegen && knip",
     "start": "",
     "test": "pnpm run openapi && react-router typegen && vitest run",
     "openapi": "pnpm exec openapi-ts",
@@ -90,6 +91,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.14.0",
     "happy-dom": "^21.0.4",
+    "knip": "^6.47.0",
     "nock": "^15.0.6",
     "prettier": "^3.10.1",
     "prettier-plugin-tailwindcss": "^0.8.1",

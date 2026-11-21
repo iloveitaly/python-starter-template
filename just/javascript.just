@@ -38,6 +38,8 @@ js_lint +FILES=".":
 
 	{{_pnpm}} run typecheck
 
+	{{_pnpm}} exec knip
+
 # automatically fix linting errors
 js_lint-fix:
 	{{_pnpm}} prettier --write .
