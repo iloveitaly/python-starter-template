@@ -160,7 +160,7 @@ def login_as_dev_user(page: Page) -> User:
         # we need to ensure the loading states are reset before moving on, otherwise we won't be on the next page when
         # so we wait for the OTP field to dissapear
         otp_input.wait_for(state="detached", timeout=LONG_INTEGRATION_TEST_TIMEOUT)
-    except PlaywrightTimeoutError, PlaywrightError:
+    except (PlaywrightTimeoutError, PlaywrightError):
         # OTP step is optional depending on clerk configuration
         log.debug("clerk OTP step skipped or timed out")
 

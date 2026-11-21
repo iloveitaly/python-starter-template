@@ -5,6 +5,11 @@ import pytest
 from facebook_business.adobjects.serverside.event import Event
 from fastapi import BackgroundTasks, Request
 
+from app.generated.react_router_routes import react_router_path
+
+# resolve_fbc ignores the path; a generated route keeps it on the router
+REQUEST_PATH = react_router_path("/home")
+
 # all sends are mocked; credentials are only needed to import the helper
 with pytest.MonkeyPatch.context() as credentials:
     credentials.setenv("META_PIXEL_ID", "test-pixel")
@@ -255,7 +260,7 @@ def test_resolve_fbc_uses_forwarded_query_params():
     interceptor, and that has to resolve and beat the cookie-only fallback.
     """
 
-    request = make_request(path="/streaming/pending", query_string="fbclid=CLICKID")
+    request = make_request(path=REQUEST_PATH, query_string="fbclid=CLICKID")
     fbc = fb.resolve_fbc(request)
 
     assert fbc is not None
@@ -267,7 +272,7 @@ def test_resolve_fbc_prefers_forwarded_click_over_stale_cookie():
     "the `_fbc` cookie lives ~90 days, so it can hold an older click than the one that just landed"
 
     request = make_request(
-        path="/streaming/pending",
+        path=REQUEST_PATH,
         query_string="fbclid=NEWCLICK",
         cookies="_fbc=fb.1.111.OLDCLICK",
     )
@@ -280,7 +285,7 @@ def test_resolve_fbc_prefers_forwarded_click_over_stale_cookie():
 def test_resolve_fbc_falls_back_to_cookie_without_forwarded_params():
     "orders created without forwarded query params still resolve from the cookie"
 
-    request = make_request(path="/streaming/pending", cookies="_fbc=FBC_COOKIE")
+    request = make_request(path=REQUEST_PATH, cookies="_fbc=FBC_COOKIE")
 
     assert fb.resolve_fbc(request) == "FBC_COOKIE"
 

@@ -11,7 +11,7 @@ In CI, the javascript assets are built before running any tests. Locally, we ass
 and automatically kick off a build for you.
 """
 
-import subprocess
+import subprocess  # nosec B404
 import threading
 from pathlib import Path
 
@@ -114,7 +114,8 @@ def start_js_build():
 
     # run_just_recipe uses subprocess.run which blocks; we need the build to run
     # concurrently with test collection, so we use Popen + a daemon thread instead.
-    _build_process = subprocess.Popen(
+    # fixed just recipe from this repo, not a shell string from outside input
+    _build_process = subprocess.Popen(  # nosec B603
         PYTHON_JAVASCRIPT_BUILD_CMD,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,

@@ -51,6 +51,14 @@ def install_system_certificates():
     truststore.inject_into_ssl()
 
 
+def reject_python_optimize() -> None:
+    "asserts are part of the application and PYTHONOPTIMIZE strips them"
+
+    # sys.flags.optimize covers PYTHONOPTIMIZE and python -O; an assert cannot check this
+    if sys.flags.optimize:
+        raise RuntimeError("PYTHONOPTIMIZE is enabled")
+
+
 def configure_python():
     """
     Linux vs macOS changes the default spawn method, which heavily impacts how the multiprocess module operates.
@@ -59,6 +67,7 @@ def configure_python():
     """
     from app import log
 
+    reject_python_optimize()
     install_system_certificates()
     inspect_lang()
     inspect_python_runtime()

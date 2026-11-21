@@ -8,6 +8,8 @@ from playwright.sync_api import Page, expect
 
 from .utils import safely_scroll_then_click
 
+CARD_NUMBER_LABEL = "Card number"
+
 
 # removed old card_number version, only card_type version remains
 def fill_stripe_checkout(
@@ -55,15 +57,15 @@ def fill_stripe_checkout(
     for _ in range(3):
         # checking for this first allows us to use this method twice if we are filling out a form with
         # the intention of failing the first time, and then succeeding the second time
-        if stripe_frame.get_by_text("Card number").is_visible():
+        if stripe_frame.get_by_text(CARD_NUMBER_LABEL).is_visible():
             break
 
         safely_scroll_then_click(stripe_frame.get_by_role("button", name="Card"))
     else:
-        expect(stripe_frame.get_by_text("Card number")).to_be_visible()
+        expect(stripe_frame.get_by_text(CARD_NUMBER_LABEL)).to_be_visible()
 
-    stripe_frame.get_by_role("textbox", name="Card number").clear()
-    stripe_frame.get_by_role("textbox", name="Card number").fill(card_number)
+    stripe_frame.get_by_role("textbox", name=CARD_NUMBER_LABEL).clear()
+    stripe_frame.get_by_role("textbox", name=CARD_NUMBER_LABEL).fill(card_number)
 
     if not only_card_number:
         # this field in particular has some weird keyboard hijacking that causes issues when attempting to be refilled

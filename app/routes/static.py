@@ -44,6 +44,8 @@ assert (
     == "3d07bc7f0fe742eb7a2b9c85517c3607dc3161cba865dbeec8b23f05b22dcbfb"
 )
 
+INDEX_HTML = "index.html"
+
 HTML_NOCACHE_HEADERS = {
     # allow storage but require revalidation to avoid stale SPA shell
     "Cache-Control": "no-cache, max-age=0, must-revalidate",
@@ -182,7 +184,7 @@ def mount_public_directory(app: FastAPI):
         # without this, we run the risk of some strange state issue corrupting the request
         # and causing issues over time.
         return FileResponse(
-            public_path / "index.html",
+            public_path / INDEX_HTML,
             headers=HTML_NOCACHE_HEADERS.copy(),
         )
 
@@ -203,19 +205,19 @@ def mount_public_directory(app: FastAPI):
         # Raw requests can contain `..` segments. Keep file reads inside the build directory.
         if not fp.is_relative_to(build_root):
             return FileResponse(
-                public_path / "index.html",
+                public_path / INDEX_HTML,
                 headers=HTML_NOCACHE_HEADERS.copy(),
             )
 
         # react-router puts prerendered HTML routes into the `index.html` in directory name of the route requested
         # https://reactrouter.com/how-to/pre-rendering
-        prerender_path = fp / "index.html"
+        prerender_path = fp / INDEX_HTML
         if prerender_path.exists():
             return FileResponse(prerender_path, headers=HTML_NOCACHE_HEADERS.copy())
 
         if not fp.exists():
             return FileResponse(
-                public_path / "index.html",
+                public_path / INDEX_HTML,
                 headers=HTML_NOCACHE_HEADERS.copy(),
             )
 
