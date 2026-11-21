@@ -23,8 +23,7 @@ if (isProduction()) {
     },
 
     environment: environmentName(),
-    // TODO this may not be needed if we integrate sentry release, unsure
-    release: requireEnv("VITE_BUILD_COMMIT"),
+    // release is injected into index.html via <meta name="sentry-release"> by the sentryReactRouter Vite plugin
 
     integrations: [
       // TODO move init to a client-only module. root.tsx imports this file while
