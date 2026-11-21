@@ -9,7 +9,7 @@ runs:
     # web/ has it's own mise config, but it's copied from the root mise config, so we don't need to worry about it
     - uses: jdx/mise-action@v5
       with:
-        version: 2026.11.8
+        version: 2026.11.10
         bootstrap: true
         bootstrap_args: --yes --update
     # host config needs to be generated first, before direnv, then localias can be setup
@@ -21,7 +21,6 @@ runs:
       with:
         environment_allowlist: >
           PYTHON_SERVER_HOST, PYTHON_TEST_SERVER_HOST, JAVASCRIPT_SERVER_HOST, VITE_PYTHON_URL, PYTHONPYCACHEPREFIX, ALLOWED_HOST_LIST, PLAYWRIGHT_BROWSERS_PATH, PLAYWRIGHT_CHROME_WS_ENDPOINT, TEST_RESULTS_DIRECTORY, TMP_DIRECTORY, PLAYWRIGHT_RESULT_DIRECTORY, JAVASCRIPT_CLIENT_BUILD_DIR
-
     - shell: bash
       run: just dev_generate_localias
     # cache node_modules
