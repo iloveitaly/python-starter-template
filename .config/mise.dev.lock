@@ -381,50 +381,50 @@ url = "https://github.com/peterldowns/localias/releases/download/v3.0.0%2Bcommit
 url_api = "https://api.github.com/repos/peterldowns/localias/releases/assets/313804897"
 
 [[tools."github:qltysh/qlty"]]
-version = "0.667.0"
+version = "0.668.0"
 backend = "github:qltysh/qlty"
 specifiers = ["latest"]
 
 [tools."github:qltysh/qlty"."platforms.linux-arm64"]
-checksum = "sha256:33b071ccc78f8af5fe5e351b21b275f39309d3cb1f89930caee63d1f29e60089"
-url = "https://github.com/qltysh/qlty/releases/download/v0.667.0/qlty-aarch64-unknown-linux-gnu.tar.xz"
-url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/706559224"
+checksum = "sha256:59519d0e4355242e18d301ddd04eea051e4fa46c635bdbaf59368812f8b3ec20"
+url = "https://github.com/qltysh/qlty/releases/download/v0.668.0/qlty-aarch64-unknown-linux-gnu.tar.xz"
+url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/718244631"
 provenance = "github-attestations"
 
 [tools."github:qltysh/qlty"."platforms.linux-arm64-musl"]
-checksum = "sha256:da41dd622ef4aafde5f6e784bd18b3f15ae79dabd9eb219f9fa77abd93be35ac"
-url = "https://github.com/qltysh/qlty/releases/download/v0.667.0/qlty-aarch64-unknown-linux-musl.tar.xz"
-url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/706559245"
+checksum = "sha256:854cce3e5987e143abe04b9500682e8edf07a112c07bcf47d5d48bbdb2518da7"
+url = "https://github.com/qltysh/qlty/releases/download/v0.668.0/qlty-aarch64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/718244669"
 provenance = "github-attestations"
 
 [tools."github:qltysh/qlty"."platforms.linux-x64"]
-checksum = "sha256:ed85387153e75ef18631b8cc187daac9368ba2ef19fc8a9dbd972206fc6b326c"
-url = "https://github.com/qltysh/qlty/releases/download/v0.667.0/qlty-x86_64-unknown-linux-gnu.tar.xz"
-url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/706559297"
+checksum = "sha256:59318df9b8d264c9544ae426007867fcbf62417f68bdac28f1e2799b73d6ebfc"
+url = "https://github.com/qltysh/qlty/releases/download/v0.668.0/qlty-x86_64-unknown-linux-gnu.tar.xz"
+url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/718244731"
 provenance = "github-attestations"
 
 [tools."github:qltysh/qlty"."platforms.linux-x64-musl"]
-checksum = "sha256:ea55b6359bf01c80557cd17df42b54a9c478c6d6738f26e9178bd9bc8cf96d75"
-url = "https://github.com/qltysh/qlty/releases/download/v0.667.0/qlty-x86_64-unknown-linux-musl.tar.xz"
-url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/706559305"
+checksum = "sha256:a275a616f5362985f5c316fd4676480cb73ae9e7a75d58f29529ce953bbfa134"
+url = "https://github.com/qltysh/qlty/releases/download/v0.668.0/qlty-x86_64-unknown-linux-musl.tar.xz"
+url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/718244780"
 provenance = "github-attestations"
 
 [tools."github:qltysh/qlty"."platforms.macos-arm64"]
-checksum = "sha256:aba6c72624ed071971b4f0f8b99410bf60d0aadd1f4572e68d0ad7faa5b1970d"
-url = "https://github.com/qltysh/qlty/releases/download/v0.667.0/qlty-aarch64-apple-darwin.tar.xz"
-url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/706559221"
+checksum = "sha256:ed936ec361a0b5ba13483cddf2252864b77005cb7cca979adc956b22b2bbad42"
+url = "https://github.com/qltysh/qlty/releases/download/v0.668.0/qlty-aarch64-apple-darwin.tar.xz"
+url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/718244636"
 provenance = "github-attestations"
 
 [tools."github:qltysh/qlty"."platforms.macos-x64"]
-checksum = "sha256:e1e5ca82db94f0929d15964c4023dd421ab6236c711ccbe5de9486d43b440903"
-url = "https://github.com/qltysh/qlty/releases/download/v0.667.0/qlty-x86_64-apple-darwin.tar.xz"
-url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/706559254"
+checksum = "sha256:f1eacab8cfee41b4815fb1987d98f61e98ebff06cfe860df42e0e35f2441e8be"
+url = "https://github.com/qltysh/qlty/releases/download/v0.668.0/qlty-x86_64-apple-darwin.tar.xz"
+url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/718244684"
 provenance = "github-attestations"
 
 [tools."github:qltysh/qlty"."platforms.windows-x64"]
-checksum = "sha256:663770af30b129330ee025c5cc83c2359871a40f5eda9295b4295035afd6318f"
-url = "https://github.com/qltysh/qlty/releases/download/v0.667.0/qlty-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/706559281"
+checksum = "sha256:2b866ead0ba5ff547bd3ddbb01dfcb4879aeb3a4f0b2dc8e3ac190c028260e44"
+url = "https://github.com/qltysh/qlty/releases/download/v0.668.0/qlty-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/qltysh/qlty/releases/assets/718244690"
 provenance = "github-attestations"
 
 [[tools."github:railwayapp/railpack"]]
