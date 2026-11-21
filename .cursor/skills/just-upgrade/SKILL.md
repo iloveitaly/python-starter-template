@@ -101,9 +101,12 @@ Report remaining advisory counts by severity and distinguish advisory count from
 
 ## Usage updates
 
-Skip patch bumps. Diff `web/package.json`, `pyproject.toml`, the lockfiles, `.github/workflows/actions.lock`, and the `gh-actions-lock` `--pin` sites against the base branch. A pin bump for `github/gh-actions-lock` is a tooling change: review its release notes before keeping it. `gh actions-lock --relock` can advance a floating major tag to a newer upstream SHA, including across a minor/patch within that major. Review that action's changelog the same way before keeping the pin. Review a lockfile-only bump when this repo imports that package. For each minor or major bump, read the changelog for a deprecation or replacement that matches a call site here, then change that call site in the same change as the upgrade. Do not leave a "consider this later" note in place of the edit.
+Skip patch bumps. Diff `web/package.json`, `pyproject.toml`, the lockfiles, `.github/workflows/actions.lock`, and the `gh-actions-lock` `--pin` sites against the base branch. A pin bump for `github/gh-actions-lock` is a tooling change: review its release notes before keeping it. `gh actions-lock --relock` can advance a floating major tag to a newer upstream SHA, including across a minor/patch within that major. Review that action's changelog the same way before keeping the pin. Review a lockfile-only bump when this repo imports that package. For each minor, major, or tooling/pin bump, read the changelog for:
 
-Change only the lines the new version requires. Do not rename functions, extract helpers, or rewrite control flow around that edit.
+1. **Deprecations or replacements** matching a call site here, then change that call site in the same change as the upgrade. Do not leave a "consider this later" note in place of the edit.
+2. **Improvements** (new flags, options, APIs, or fixes that resolve existing workarounds/`TODO`s in this repo). Apply clear, low-risk improvements with the upgrade; surface improvements that carry tradeoffs or need broader refactoring concisely in the PR description and final summary.
+
+Keep call-site fixes minimal—change only the lines the new version requires without renaming functions, extracting helpers, or rewriting surrounding control flow.
 
 A symbol present in a package's types and browser entry can be missing from its node entry. A named import of that symbol from a module loaded by both the client and the server fails the prerender inside `just py_js-build`. Call it only when the export is present, or from client-only code, and run `just py_js-build` after that kind of change. `just js_lint` does not prerender. `just py_lint` includes pyright.
 
