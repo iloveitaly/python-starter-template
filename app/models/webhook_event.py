@@ -92,10 +92,10 @@ class WebhookEvent(BaseModel, TimestampsMixin, table=True):
     succeeded_at: Instant | None = None
     "timestamp when delivery last succeeded (used to prevent resends)"
 
-    originating_id: TypeID | None = Field(
+    originating_id: TypeID | None = Field(  # pyrefly: ignore[no-matching-overload]
         default=None,
         index=True,
-        sa_type=TypeIDType.raw(),  # type: ignore[arg-type]
+        sa_type=TypeIDType.raw(),
     )
     "identifier of the domain object this event refers to, if any"
 

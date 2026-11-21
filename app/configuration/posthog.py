@@ -25,7 +25,8 @@ if not is_production():
 
 # Module-level APIs (`posthog.new_context`, `posthog.capture`, …) use this client.
 # Without it, contexts fall back to a separately constructed default instance.
-posthog.default_client = posthog_client
+# `default_client` is annotated with a type comment pyrefly does not read
+posthog.default_client = posthog_client  # pyrefly: ignore[bad-assignment]
 
 
 def configure_posthog():

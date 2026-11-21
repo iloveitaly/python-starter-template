@@ -105,7 +105,7 @@ Skip patch bumps. Diff `web/package.json`, `pyproject.toml`, the lockfiles, `.gi
 
 Change only the lines the new version requires. Do not rename functions, extract helpers, or rewrite control flow around that edit.
 
-A symbol present in a package's types and browser entry can be missing from its node entry. A named import of that symbol from a module loaded by both the client and the server fails the prerender inside `just py_js-build`. Call it only when the export is present, or from client-only code, and run `just py_js-build` after that kind of change. `just js_lint` does not prerender. `just py_lint` includes pyright.
+A symbol present in a package's types and browser entry can be missing from its node entry. A named import of that symbol from a module loaded by both the client and the server fails the prerender inside `just py_js-build`. Call it only when the export is present, or from client-only code, and run `just py_js-build` after that kind of change. `just js_lint` does not prerender. `just py_lint` includes pyrefly.
 
 ### Clerk integration helper (`tests/integration/clerk.py`)
 
