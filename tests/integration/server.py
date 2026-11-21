@@ -80,7 +80,7 @@ def wait_for_port(port: int, timeout: int = 30) -> bool:
                 # localhost allows for ipv4 and ipv6 loopback
                 sock.connect(("localhost", port))
                 return True
-        except TimeoutError, ConnectionRefusedError:
+        except (TimeoutError, ConnectionRefusedError):
             log.debug("waiting for port")
             time.sleep(0.5)
 
