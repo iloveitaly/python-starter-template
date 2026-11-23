@@ -571,7 +571,20 @@ GIT_CONFIG_GLOBAL=/dev/null gitleaks git -c .config/lint/gitleaks.toml --report-
 
 * The FastAPI session middleware is setup so you can use cookies/sessions in your project.
 * Subdomains are used for the API server instead of separate domains in test, so cookies can be shared between the API server and the web client.
+  Note that this only works if the `Domain=` cookie attribute is set.
 * `same-origin` cookies are enforced in prod, but not in dev.
+
+Here's how to customize the `SessionMiddleware` to avoid tying cookies to a specific domain:
+
+```python
+# omit `domain` so browsers bind host-only cookies to whichever allowed host served the request
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=SESSION_SECRET_KEY,
+    https_only=True,
+    # same_site="Lax", is defined by default
+)
+```
 
 ### Pytest Route Tests
 
