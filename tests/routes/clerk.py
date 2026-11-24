@@ -17,7 +17,7 @@ class MockAuthenticateRequest:
         fake_auth_state = RequestState(
             status=AuthStatus.SIGNED_IN,
             reason=None,
-            token="eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18yb25uM1E3TkRmcndDNW9WWGd6R2U2dkExdTQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE3MzY3ODk1ODgsImZ2YSI6Wy0xLC0xXSwiaWF0IjoxNzM2Nzg5NTI4LCJpc3MiOiJodHRwczovL3Jlc29sdmVkLWVtdS01My5jbGVyay5hY2NvdW50cy5kZXYiLCJuYmYiOjE3MzY3ODk1MTgsInNpZCI6InNlc3NfMnJhRnh2anVDUE5QRVFxaE8wdlFyMjVncjlvIiwic3ViIjoidXNlcl8ycmFGeHAzRENWUkZobnpqSlZpSDQ0Y2l2d3UifQ.DgnSSybWpG4ovKIDwDEvtnpMYOz8toWOJf8GXuftPIa0RiWp8EWpiX_m6fCTQBT3oCoR_BQXOEfTHtutzMYT5zmEL7FzDqBg_dE_dH9LJlq4s9WJ49pjWr1gfdMJF1okf0vdfROdKYnlCiKO4ocP1gM6s8hOPjRp_FTlFcj5bHhKSvRW63gmbeH-G-mZvxVkmXV7g9FeZ3idtSvzap8fBawYmhhqmtEa8-Re2Ikd1v3FxmnMcV2HPcKt1Kv9Vuo7oTC4_uMiX2MS-2EYt0Y5H6bkCyvbEmWmznIx2ZEnVQYFS36gpvjayEnr0uFK_jE1Uc7MIMgybueDqEcA1zqBjQ",
+            token="eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18yb25uM1E3TkRmcndDNW9WWGd6R2U2dkExdTQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE3MzY3ODk1ODgsImZ2YSI6Wy0xLC0xXSwiaWF0IjoxNzM2Nzg5NTI4LCJpc3MiOiJodHRwczovL3Jlc29sdmVkLWVtdS01My5jbGVyay5hY2NvdW50cy5kZXYiLCJuYmYiOjE3MzY3ODk1MTgsInNpZCI6InNlc3NfMnJhRnh2anVDUE5QRVFxaE8wdlFyMjVncjlvIiwic3ViIjoidXNlcl8ycmFGeHAzRENWUkZobnpqSlZpSDQ0Y2l2d3UifQ.DgnSSybWpG4ovKIDwDEvtnpMYOz8toWOJf8GXuftPIa0RiWp8EWpiX_m6fCTQBT3oCoR_BQXOEfTHtutzMYT5zmEL7FzDqBg_dE_dH9LJlq4s9WJ49pjWr1gfdMJF1okf0vdfROdKYnlCiKO4ocP1gM6s8hOPjRp_FTlFcj5bHhKSvRW63gmbeH-G-mZvxVkmXV7g9FeZ3idtSvzap8fBawYmhhqmtEa8-Re2Ikd1v3FxmnMcV2HPcKt1Kv9Vuo7oTC4_uMiX2MS-2EYt0Y5H6bkCyvbEmWmznIx2ZEnVQYFS36gpvjayEnr0uFK_jE1Uc7MIMgybueDqEcA1zqBjQ",  # nosec B106
             payload={
                 "exp": 1736789588,
                 "fva": [-1, -1],

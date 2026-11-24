@@ -23,14 +23,7 @@ copier_answers = json.loads(Path(".copier-answers.yml").read_text())
 
 
 def replace_lines_in_files(replacements: dict[str, list[tuple[str, str]]]):
-    """
-    replacements = {
-        'file.txt': [
-            (r'regex_pattern', 'replacement_line'),
-            (r'another_pattern', 'another_replacement'),
-        ]
-    }
-    """
+    """Rewrite each file by applying its list of regex pattern and replacement pairs."""
     for filepath, patterns in replacements.items():
         path = Path(filepath)
         content = path.read_text()

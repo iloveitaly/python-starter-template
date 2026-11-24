@@ -178,7 +178,7 @@ def resolve_fbc(request: Request) -> str | None:
                 cookie_value=cookie_fbc,
             )
 
-        log.debug("fbc resolved", source="query")
+        log.debug("fbc resolved", source="query")  # NOSONAR shared log event for the three resolution paths
         return fbc
 
     if request.query_params.get(FBCLID_QUERY_PARAM):
@@ -247,7 +247,7 @@ def build_meta_user_data(
 
 
 def send_conversion_event(
-    *,
+    *,  # NOSONAR parameter list matches the conversions api fields
     event_name: MetaEventName,
     request: Request,
     value_in_cents: int | None = None,

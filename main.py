@@ -38,8 +38,8 @@ def get_server_config():
     config_args = {
         # a import path is required for dev, so we use that for prod as well
         "app": "app.server:api_app",
-        # bind on all interfaces
-        "host": "0.0.0.0",
+        # container listener; publish is controlled by docker ports / the reverse proxy
+        "host": "0.0.0.0",  # nosec B104
         "port": PORT,
         # NOTE important to ensure structlog controls logging in production
         "log_config": None,

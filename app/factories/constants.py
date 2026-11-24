@@ -1,4 +1,4 @@
-CLERK_DEV_USER_PASSWORD = "clerk-development-123"
+CLERK_DEV_USER_PASSWORD = "clerk-development-123"  # nosec B105
 
 CLERK_QA_USER_EMAIL = "qa+clerk_test@example.com"
 "not used in the test suite, but used for dev login"

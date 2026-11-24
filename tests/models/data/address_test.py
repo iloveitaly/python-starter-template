@@ -3,8 +3,12 @@ from pydantic import ValidationError
 
 from app.models.data.address import Address
 
+VALID_US_ADDRESS_1 = "200 E Colfax Ave"
+INCOMPLETE_US_ADDRESS = "Incomplete or invalid US address"
+LOS_ANGELES = "Los Angeles"
+
 VALID_ADDRESS = {
-    "address1": "200 E Colfax Ave",
+    "address1": VALID_US_ADDRESS_1,
     "city": "Denver",
     "state_code": "CO",
     "postal_code": "80203",
@@ -137,45 +141,45 @@ def test_normalized_preserves_zip_plus_four():
 
 def test_normalized_two_line_street_preserved():
     addr = Address(
-        **{**VALID_ADDRESS, "address1": "200 E Colfax Ave", "address2": "Suite 100"}
+        **{**VALID_ADDRESS, "address1": VALID_US_ADDRESS_1, "address2": "Suite 100"}
     )
     normalized = addr.normalized()
 
-    assert normalized.address1 == "200 E Colfax Ave"
+    assert normalized.address1 == VALID_US_ADDRESS_1
     assert normalized.address2 == "Suite 100"
 
 
 def test_normalized_missing_street_raises():
     addr = Address(city="Denver", state_code="CO", postal_code="80203")
 
-    with pytest.raises(ValueError, match="Incomplete or invalid US address"):
+    with pytest.raises(ValueError, match=INCOMPLETE_US_ADDRESS):
         addr.normalized()
 
 
 def test_normalized_missing_city_raises():
-    addr = Address(address1="200 E Colfax Ave", state_code="CO", postal_code="80203")
+    addr = Address(address1=VALID_US_ADDRESS_1, state_code="CO", postal_code="80203")
 
-    with pytest.raises(ValueError, match="Incomplete or invalid US address"):
+    with pytest.raises(ValueError, match=INCOMPLETE_US_ADDRESS):
         addr.normalized()
 
 
 def test_normalized_missing_postal_code_raises():
-    addr = Address(address1="200 E Colfax Ave", city="Denver", state_code="CO")
+    addr = Address(address1=VALID_US_ADDRESS_1, city="Denver", state_code="CO")
 
-    with pytest.raises(ValueError, match="Incomplete or invalid US address"):
+    with pytest.raises(ValueError, match=INCOMPLETE_US_ADDRESS):
         addr.normalized()
 
 
 def test_normalized_zip_state_mismatch_raises():
     # CO zip (80203) does not match CA
     addr = Address(
-        address1="200 E Colfax Ave",
-        city="Los Angeles",
+        address1=VALID_US_ADDRESS_1,
+        city=LOS_ANGELES,
         state_code="CA",
         postal_code="80203",
     )
 
-    with pytest.raises(ValueError, match="Incomplete or invalid US address"):
+    with pytest.raises(ValueError, match=INCOMPLETE_US_ADDRESS):
         addr.normalized()
 
 
@@ -185,9 +189,9 @@ def test_normalized_zip_state_mismatch_raises():
 
 
 def test_from_string_full_address():
-    addr = Address.from_string("200 E Colfax Ave, Denver, CO 80203")
+    addr = Address.from_string(f"{VALID_US_ADDRESS_1}, Denver, CO 80203")
 
-    assert addr.address1 == "200 E Colfax Ave"
+    assert addr.address1 == VALID_US_ADDRESS_1
     assert addr.city == "Denver"
     assert addr.state_code == "CO"
     assert addr.postal_code == "80203"
@@ -202,7 +206,7 @@ def test_from_string_empty_components_are_none():
 
 
 def test_from_string_state_resolves_to_code():
-    addr = Address.from_string("200 E Colfax Ave, Denver, Colorado 80203")
+    addr = Address.from_string(f"{VALID_US_ADDRESS_1}, Denver, Colorado 80203")
 
     assert addr.state_code == "CO"
     assert addr.state == "Colorado"
@@ -225,14 +229,14 @@ def test_validate_address_missing_street():
 
 
 def test_validate_address_missing_city():
-    addr = Address(address1="200 E Colfax Ave", state_code="CO", postal_code="80203")
+    addr = Address(address1=VALID_US_ADDRESS_1, state_code="CO", postal_code="80203")
     errors = addr.validate_address()
 
     assert any(e["loc"] == ("city",) for e in errors)
 
 
 def test_validate_address_missing_postal_code():
-    addr = Address(address1="200 E Colfax Ave", city="Denver", state_code="CO")
+    addr = Address(address1=VALID_US_ADDRESS_1, city="Denver", state_code="CO")
     errors = addr.validate_address()
 
     assert any(e["loc"] == ("postal_code",) for e in errors)
@@ -240,8 +244,8 @@ def test_validate_address_missing_postal_code():
 
 def test_validate_address_zip_state_mismatch():
     addr = Address(
-        address1="200 E Colfax Ave",
-        city="Los Angeles",
+        address1=VALID_US_ADDRESS_1,
+        city=LOS_ANGELES,
         state_code="CA",
         postal_code="80203",
     )
@@ -251,7 +255,7 @@ def test_validate_address_zip_state_mismatch():
 
 
 def test_validate_address_error_dict_shape():
-    addr = Address(address1="200 E Colfax Ave", city="Denver", state_code="CO")
+    addr = Address(address1=VALID_US_ADDRESS_1, city="Denver", state_code="CO")
     errors = addr.validate_address()
 
     assert errors
@@ -276,7 +280,7 @@ REAL_ADDRESSES = [
     ("1101 Wilson Blvd", "Arlington", "VA", "22209"),
     ("520 Chestnut St", "Philadelphia", "PA", "19106"),
     ("13000 SD-244", "Keystone", "SD", "57751"),
-    ("4059 Mt Lee Dr", "Los Angeles", "CA", "90068"),
+    ("4059 Mt Lee Dr", LOS_ANGELES, "CA", "90068"),
     ("11 N 4th St", "St. Louis", "MO", "63102"),
 ]
 
