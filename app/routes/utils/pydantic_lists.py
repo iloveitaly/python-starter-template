@@ -8,8 +8,7 @@ from pydantic import BaseModel, TypeAdapter
 
 
 def _list_adapter[T: BaseModel](model: type[T]) -> TypeAdapter[list[T]]:
-    # Pyright 1.1.414 still rejects a variable in a type expression (`list[model]`).
-    return TypeAdapter(list[model])  # pyright: ignore[reportInvalidTypeForm]
+    return TypeAdapter(list[model])
 
 
 def validate_json_list[T: BaseModel](json_data: str | bytes, model: type[T]) -> list[T]:
