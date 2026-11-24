@@ -76,51 +76,51 @@ url = "https://github.com/wagoodman/dive/releases/download/v0.13.1/dive_0.13.1_w
 url_api = "https://api.github.com/repos/wagoodman/dive/releases/assets/241842460"
 
 [[tools."github:terror/just-lsp"]]
-version = "0.11.0"
+version = "0.11.2"
 backend = "github:terror/just-lsp"
 specifiers = ["latest"]
 
 [tools."github:terror/just-lsp"."platforms.linux-arm64"]
-checksum = "sha256:8f964b4c1a9f66cf6faedfa5e98fc6b41b52687b074ae1bfff4b5078a6f772f4"
+checksum = "sha256:9016393c98312a4532d2bef031e7e31c01109a6aabab7c3656eef0596dd5144e"
 checksum_source = "mise-versions"
-url = "https://github.com/terror/just-lsp/releases/download/0.11.0/just-lsp-0.11.0-aarch64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/701861291"
+url = "https://github.com/terror/just-lsp/releases/download/0.11.2/just-lsp-0.11.2-aarch64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/756078962"
 
 [tools."github:terror/just-lsp"."platforms.linux-arm64-musl"]
-checksum = "sha256:d53ef28ab754de8a4088d93ee9ed1b87cf81e88cced1c7c76f432a50faed667f"
+checksum = "sha256:d22a12f1db16575271ba9e303c9164dd8ac5eb1ee0714b0940cd177d2eff7349"
 checksum_source = "mise-versions"
-url = "https://github.com/terror/just-lsp/releases/download/0.11.0/just-lsp-0.11.0-aarch64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/701864320"
+url = "https://github.com/terror/just-lsp/releases/download/0.11.2/just-lsp-0.11.2-aarch64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/756079730"
 
 [tools."github:terror/just-lsp"."platforms.linux-x64"]
-checksum = "sha256:70d663b0b004bdcb1fa26786b7d1a4dac47337234b3d6c120c043177dd6f8743"
+checksum = "sha256:7fbac50a070d108e01beb69c0e276ae4df4228bf4ed85ad584c6c9d075fbe7b9"
 checksum_source = "mise-versions"
-url = "https://github.com/terror/just-lsp/releases/download/0.11.0/just-lsp-0.11.0-x86_64-unknown-linux-gnu.tar.gz"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/701861563"
+url = "https://github.com/terror/just-lsp/releases/download/0.11.2/just-lsp-0.11.2-x86_64-unknown-linux-gnu.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/756076079"
 
 [tools."github:terror/just-lsp"."platforms.linux-x64-musl"]
-checksum = "sha256:272697ee4b21d4602ab435a7f11d25a5a23c5757e3b26c553e1844dd8008e652"
+checksum = "sha256:02cc551138fb377080d537e99c7f09d4a6b6a04e4d0e36ab6b25854d9bc48c4a"
 checksum_source = "mise-versions"
-url = "https://github.com/terror/just-lsp/releases/download/0.11.0/just-lsp-0.11.0-x86_64-unknown-linux-musl.tar.gz"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/701862403"
+url = "https://github.com/terror/just-lsp/releases/download/0.11.2/just-lsp-0.11.2-x86_64-unknown-linux-musl.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/756079080"
 
 [tools."github:terror/just-lsp"."platforms.macos-arm64"]
-checksum = "sha256:a2d00567bad91c49b1658129581d226652ce8302918cc5a64c11924daee68792"
+checksum = "sha256:4c3fee654dba32d2452902562211b609f657024ea3faa45bca881aa4270af2d0"
 checksum_source = "mise-versions"
-url = "https://github.com/terror/just-lsp/releases/download/0.11.0/just-lsp-0.11.0-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/701864428"
+url = "https://github.com/terror/just-lsp/releases/download/0.11.2/just-lsp-0.11.2-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/756077727"
 
 [tools."github:terror/just-lsp"."platforms.macos-x64"]
-checksum = "sha256:2d64c3257a8bb5391fc8e02da7453ffb9e7a0c668cc24fe61eb1055f68517e56"
+checksum = "sha256:1556b437214064230b4f26cd6ef299ee191d164382ece0a98bfd92d8c7e57844"
 checksum_source = "mise-versions"
-url = "https://github.com/terror/just-lsp/releases/download/0.11.0/just-lsp-0.11.0-x86_64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/701863289"
+url = "https://github.com/terror/just-lsp/releases/download/0.11.2/just-lsp-0.11.2-x86_64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/756088830"
 
 [tools."github:terror/just-lsp"."platforms.windows-x64"]
-checksum = "sha256:27a72395028d4ecc825dd244a5cc9d4c46b7baf98a915849c69c16b1f1743d89"
+checksum = "sha256:4802f46769ed6bda4f47317bd6987058a573c1aa2fd74e3a448dcf9bca4902a8"
 checksum_source = "mise-versions"
-url = "https://github.com/terror/just-lsp/releases/download/0.11.0/just-lsp-0.11.0-x86_64-pc-windows-msvc.zip"
-url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/701863275"
+url = "https://github.com/terror/just-lsp/releases/download/0.11.2/just-lsp-0.11.2-x86_64-pc-windows-msvc.zip"
+url_api = "https://api.github.com/repos/terror/just-lsp/releases/assets/756084779"
 
 [[tools.lefthook]]
 version = "2.2.2"

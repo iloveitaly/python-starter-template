@@ -9,7 +9,7 @@ runs:
     # web/ has it's own mise config, but it's copied from the root mise config, so we don't need to worry about it
     - uses: jdx/mise-action@v5
       with:
-        version: 2026.11.10
+        version: 2026.11.12
         bootstrap: true
         bootstrap_args: --yes --update
     # host config needs to be generated first, before direnv, then localias can be setup
