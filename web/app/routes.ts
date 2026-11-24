@@ -11,5 +11,9 @@ export default [
     route("/form", "routes/form.tsx"),
     route("/logout", "routes/logout.tsx"),
   ]),
-  layout("layouts/unauthenticated.tsx", [route("/login", "routes/login.tsx")]),
+  layout("layouts/unauthenticated.tsx", [
+    route("/login", "routes/login.tsx"),
+    route("/pay", "routes/pay.tsx"),
+    route("/pay/confirmation", "routes/pay-confirmation.tsx"),
+  ]),
 ] satisfies RouteConfig
