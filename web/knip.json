@@ -1,0 +1,21 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["app/routes/**/*.{ts,tsx}", "app/layouts/**/*.{ts,tsx}"],
+  "exclude": [
+    "dependencies",
+    "devDependencies",
+    "exports",
+    "types",
+    "duplicates"
+  ],
+  "ignoreFiles": [
+    "app/components/shared/ServerErrorAlert.tsx",
+    "app/components/ui/**",
+    "app/configuration/**",
+    "app/hooks/**",
+    "app/lib/**",
+    "app/utils/**",
+    "expose-globals.ts",
+    "playground.ts"
+  ]
+}
