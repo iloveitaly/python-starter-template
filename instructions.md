@@ -871,7 +871,7 @@ globs: **/*.ts,**/*.tsx
 - Use `lib/` for generic code, `utils/` for project utilities, `hooks/` for React hooks, and `helpers/` for page-specific helpers.
 - Prefer `function theName() {` over `const theName = () =>`
 - Use `import { invariant } from @epic-web/invariant` instead of another invariant library
-- Use `requireEnv("VITE_THE_ENV_VAR")` instead of `process.env.THE_ENV_VAR`
+- Use `requireEnv("VITE_THE_ENV_VAR")` instead of `process.env.THE_ENV_VAR`.  `import {requireEnv} from '~/utils/environment'`
 - Use `import.meta.env.VITE_THE_VAR` to lazy load an environment variable and never setup `define:` configuration in vite for an environment variable.
 - Don't use `console.{log,error}`. Use `from ~/configuration/logging import log` and `log.info("string", {structured: "log"})` instead.
 
@@ -906,6 +906,8 @@ Terraform code is very important because it controls production systems. For thi
 
 Instructions when writing terraform:
 
+- Implement the requested behavior directly. Add a boolean, feature flag, or optional setting only when I explicitly request configurability or the feature needs to support multiple modes.
+  If quota, permissions, or cost block deployment, report the blocker and use the existing plan and apply workflow. Don’t add a toggle as a precaution.
 - All "bootstrap" secrets (i.e. vars required to run the terraform code) should be `export`ed in the Justfile. The Justfile is guarded so agents cannot run it, ensuring that required secrets are not available to agents ensures that terraform cannot be run by an agent.
 - Don't add a `locals` for a variable only used a single time
 - Don't add `output` resources unless specifically asked
@@ -913,12 +915,10 @@ Instructions when writing terraform:
 - Always assume you are using or can use the latest version of a terraform module. Never workaround a missing feature that has been added to a terraform module.
 - Consult the terraform MCP when using an external module. Module surfaces change often.
 - When creating a cloudflare worker, always set the `compatibility_date` to the current date.
-- Add `# sourced from ENV` for any `variable` sourced from the ENV.
 - Uppercase all `TF_VAR_*`
 - Put `locals` at the top of the file
 - Reference Terraform-managed resources directly; add a data source only when a verified provider limitation requires it or the resource is managed elsewhere.
 - Add a one line comment at the top of each `.tf`` file describing it's purpose.
-- Always document magic numbers or strings with a one-line comment and a link to the doc if applicable. For example, if an IP address references a range defined in a cloud provider's documentation, link to those docs and indicate why we are using it.
 - When using submodules, do not specify provider versions in the submodule. Let the root provider configuration specify the version.
 - Name Terraform resources using consistent <application_or_system>_<purpose> identifiers that communicate business ownership and function independently of cloud providers, environments, or incidental implementation details
 - Always add a `description` to any `variable` block.
@@ -927,11 +927,14 @@ Instructions when writing terraform:
 - Prefer pre-built, well-supported terraform modules for configuration over complicated shell scripts. By way of example, using `system_file` or `system_folder` over custom shell commands when creating files.
 - Prefer `terraform_data` with `remote-exec` over `local-exec` and `ssh` commands.
 - Never rewrite host headers, or any other headers, unless specifically asked to when setting up a Cloudflare Tunnel.
+- Don't worry about other users on the machine reading content. You can assume the data is safe during the terraform application process.
 - All 1Password references should use item uuids since they change less often than titles. However, the name of the item should be added in a comment the 1p resource. The uuid can change if the item was moved out of a vault, so the name helps us locate the uuid if this occurs.
   - 1P uuids should never be a `variable` and should always be hardcoded.
   - 1P items should always use consistent tags so it's easy to understand which items are system- vs user-created.
 
-When referencing secret or sensitive information, use `ephemeral` instead of `data`:
+Prefer ephemeral reads when the provider supports them directly. Keep a sensitive data source if using an ephemeral read would require custom scripts, extra resources, manual rotation tracking, or weaker drift detection. Add a one-line comment explaining the provider limitation or operational trade-off.
+
+Here's an example of how to structure pulling data from 1p using ephemeral resources:
 
 ```terraform file="onepassword_secrets.tf"
 # Required secrets read through the 1Password provider
@@ -977,7 +980,11 @@ locals {
 
 ### Comments
 
-- Notice the comment block at the top of the example files describing the purpose of the file. All files should have this.
+Clear comments are critical to documenting the various design and technical decisions that went into why infrastructure was structured in a particular way. Keep these rules in mind when writing terraform comments:
+
+- Always document magic numbers or strings with a one-line comment and a link to the doc if applicable. For example, if an IP address references a range defined in a cloud provider's documentation, link to those docs and indicate why we are using it.
+- Add `# sourced from ENV` for any `variable` sourced from the ENV.
+- Notice the comment block at the top of the example block above describing the purpose of the file. All files should have this.
 - Not all files require a longer description, but all should at least have a single comment line describing the purpose of the file.
 - If a file requires a longer comment it should use the following format:
 
@@ -991,7 +998,7 @@ locals {
   # ...
 ```
 
-Note the blank `#` if a file requires a longer explanation. Prefer bullets over longer sentences.
+Note the blank `#` if a file requires a longer explanation. Prefer bullets over longer sentences. If there's just a single bullet, write it as a sentence not a bullet.
 
 ### SSH Keys
 
@@ -1027,6 +1034,5 @@ Here's how environment variables are managed in this application:
 - `env/production.{backend,frontend}.sh` for most medium-sized projects you'll have separate frontend and backend systems (even if your frontend is SPA, which I'm a fan of). These two files enable you to document the variables required to build (in the case of a SPA frontend) or run (in the case of a python backend) your system in production.
 - `env/*local.*` files have a `-example` variant which is committed to version control. These document helpful environment variables for local development. Make sure these two are in sync.
 - Within `op_inject_source` for each unique 1Password UUID, add a comment with the name of the item and a link to the 1Password item. i.e. `# item "My Item"`.
-- When writing TypeScript/JavaScript/React, use `requireEnv("THE_ENV_VAR_NAME")` to read an environment variable. `import {requireEnv} from '~/utils/environment'`
 
 <!-- END CLONED INSTRUCTIONS -->
