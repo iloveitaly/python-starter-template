@@ -1,3 +1,5 @@
+import re
+
 import sentry_sdk
 import sentry_sdk.integrations
 from sentry_sdk.transport import Transport
@@ -46,25 +48,6 @@ def configure_sentry(integrations=None):
 
     from app import log
 
-    def filter_transactions(event, _hint):
-        """
-        Filter out noisy urls that don't add any value to profiling
-
-        - https://docs.sentry.io/platforms/python/configuration/filtering/
-        - https://github.com/getsentry/sentry-docs/pull/6364/files
-        """
-        from urllib.parse import urlparse
-
-        IGNORED_PATHS = ["/healthcheck", "/", "{path:path}"]
-
-        url_string = event["request"]["url"]
-        parsed_url = urlparse(url_string)
-
-        if parsed_url.path in IGNORED_PATHS or parsed_url.path.startswith("/assets/"):
-            return None
-
-        return event
-
     sinkhole = not is_production()
 
     sentry_sdk.init(
@@ -73,7 +56,6 @@ def configure_sentry(integrations=None):
         transport=SinkholeTransport() if sinkhole else None,
         release=BUILD_COMMIT,
         environment=python_environment(),
-        enable_tracing=True,
         traces_sample_rate=0.1,
         profile_lifecycle="trace",
         profile_session_sample_rate=0.1,
@@ -82,7 +64,13 @@ def configure_sentry(integrations=None):
         integrations=integrations,
         # these have a way of piling up quickly if they aren't ignored!
         ignore_errors=["WebhookDeliveryError"],
-        before_send_transaction=filter_transactions,
+        ignore_spans=[
+            "/healthcheck",
+            "/",
+            "/{path:path}",
+            "{path:path}",
+            re.compile(r"^/assets/.*"),
+        ],
     )
 
     log.info(
